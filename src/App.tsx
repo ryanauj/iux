@@ -1,52 +1,42 @@
 import { useEffect, useState } from 'react'
-import ThemesTab from './tabs/ThemesTab'
-import ComponentsTab from './tabs/ComponentsTab'
-import LayoutsTab from './tabs/LayoutsTab'
+import { findDemo } from './demos'
+import Hub from './shell/Hub'
+import DemoShell from './shell/DemoShell'
 
-type TabId = 'themes' | 'components' | 'layouts'
-
-const TAB_IDS: TabId[] = ['themes', 'components', 'layouts']
-
-function parseHash(): TabId {
-  const raw = window.location.hash.replace(/^#/, '')
-  return (TAB_IDS as string[]).includes(raw) ? (raw as TabId) : 'themes'
+function parseHash(): string {
+  return window.location.hash.replace(/^#\/?/, '')
 }
 
 export default function App() {
-  const [tab, setTab] = useState<TabId>(parseHash)
+  const [route, setRoute] = useState<string>(parseHash)
 
   useEffect(() => {
-    const onHashChange = () => setTab(parseHash())
+    const onHashChange = () => setRoute(parseHash())
     window.addEventListener('hashchange', onHashChange)
-    if (!window.location.hash) window.location.hash = 'themes'
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
+  const demo = route ? findDemo(route) : undefined
+
   return (
-    <div className='sg-app'>
-      <header className='sg-header'>
-        <h1>Style Gallery — curated themes, components, and layouts.</h1>
+    <div className='app'>
+      <header className='app__header'>
+        <a className='app__logo' href='#/'>iux</a>
+        <span className='app__tagline'>
+          example sites against an in-browser fake server.
+        </span>
       </header>
-      <nav className='sg-tabs' role='tablist'>
-        {TAB_IDS.map((id) => (
-          <button
-            key={id}
-            type='button'
-            role='tab'
-            aria-selected={tab === id}
-            className={`sg-tab ${tab === id ? 'sg-tab--active' : ''}`}
-            onClick={() => {
-              window.location.hash = id
-            }}
-          >
-            {id}
-          </button>
-        ))}
-      </nav>
-      <main className='sg-main'>
-        {tab === 'themes' && <ThemesTab />}
-        {tab === 'components' && <ComponentsTab />}
-        {tab === 'layouts' && <LayoutsTab />}
+      <main className='app__main'>
+        {route === '' && <Hub />}
+        {route !== '' && demo && <DemoShell demo={demo} />}
+        {route !== '' && !demo && (
+          <div className='not-found'>
+            <p>
+              No demo at <code>#/{route}</code>.{' '}
+              <a href='#/'>back to demos</a>
+            </p>
+          </div>
+        )}
       </main>
     </div>
   )

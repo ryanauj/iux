@@ -3,11 +3,26 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './styles.css'
 
-const root = document.getElementById('root')
-if (!root) throw new Error('root element missing')
+async function startMockServer() {
+  const { worker } = await import('./server/browser')
+  await worker.start({
+    serviceWorker: {
+      url: `${import.meta.env.BASE_URL}mockServiceWorker.js`,
+    },
+    onUnhandledRequest: 'bypass',
+    quiet: true,
+  })
+}
 
-createRoot(root).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+async function bootstrap() {
+  await startMockServer()
+  const root = document.getElementById('root')
+  if (!root) throw new Error('root element missing')
+  createRoot(root).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}
+
+bootstrap()
