@@ -1,0 +1,231 @@
+/*
+ * Card — one component, four functional rungs (static → expandable →
+ * bento-cell → spatial). The contract is the only seam; this CSS only
+ * reads `var(--…)`.
+ *
+ * SPECIAL CHECK: Card must read as a distinct surface even when the
+ * palette flattens elevation to `none`. The structure leans on:
+ *   1. `--color-surface-raised` for the fill (which can equal base, fine),
+ *   2. `--border-width-thick` + `--color-border-default` for an always-
+ *      visible outline (Neubrutalism's defining black 3px),
+ *   3. radius — palettes that zero radius (Neubrutalism) still get the
+ *      hard rectangular silhouette,
+ *   4. `--space-*` padding so it actually has surface area.
+ * Elevation is additive on top of those, never the sole signal.
+ */
+
+.iux-card {
+  --iux-card-bg: var(--color-surface-raised);
+  --iux-card-fg: var(--color-content-primary);
+  --iux-card-border: var(--color-border-default);
+  --iux-card-border-strong: var(--color-border-strong);
+  --iux-card-elevation: var(--elevation-low);
+  --iux-card-elevation-hover: var(--elevation-medium);
+  --iux-card-elevation-active: var(--elevation-low);
+  --iux-card-accent: transparent;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 14rem;
+  padding: var(--space-4);
+  background-color: var(--iux-card-bg);
+  color: var(--iux-card-fg);
+  border-width: var(--border-width-thick);
+  border-style: solid;
+  border-color: var(--iux-card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--iux-card-elevation);
+
+  transition-property: background-color, border-color, box-shadow, transform;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-card__title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--type-heading-line-height);
+  letter-spacing: var(--type-heading-tracking);
+}
+
+.iux-card__subtitle {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  color: var(--color-content-secondary);
+}
+
+.iux-card__body {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
+  letter-spacing: var(--type-body-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-card__footer {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding-block-start: var(--space-2);
+  border-block-start-width: var(--border-width-hairline);
+  border-block-start-style: solid;
+  border-block-start-color: var(--color-border-subtle);
+}
+
+/* ---------- Interactive (clickable / keyboard) ---------- */
+
+.iux-card--interactive {
+  cursor: pointer;
+}
+
+.iux-card--interactive:focus-visible,
+.iux-card.is-focus {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-card--interactive:hover,
+.iux-card.is-hover {
+  border-color: var(--iux-card-border-strong);
+  box-shadow: var(--iux-card-elevation-hover);
+}
+
+.iux-card--interactive:active,
+.iux-card.is-active {
+  box-shadow: var(--iux-card-elevation-active);
+}
+
+/* ---------- Variant: static ----------
+ * No overrides — the base style IS the static card. The thick border keeps
+ * it visible when elevation collapses.
+ */
+
+/* ---------- Variant: expandable ----------
+ * Toggle button reveals a slot. Uses the grid-template-rows trick to
+ * animate height with zero JS measurement. Under reduced motion the
+ * duration collapses to instant via the palette-root override.
+ */
+.iux-card__expander {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-card__expander:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-card__expander:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-card__chevron {
+  transition: transform var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-card__chevron[data-expanded='true'] {
+  transform: rotate(180deg);
+}
+
+.iux-card__expanded-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-card__expanded-wrap[data-expanded='true'] {
+  grid-template-rows: 1fr;
+}
+
+.iux-card__expanded-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.iux-card__expanded-wrap[data-expanded='false'] .iux-card__expanded-inner {
+  visibility: hidden;
+}
+
+/* ---------- Variant: bento ----------
+ * Accent stripe + grid-friendly layout. The stripe lives in a fixed slot
+ * inside the card border so the silhouette stays rectangular under
+ * Neubrutalism / AAA where radius is zeroed.
+ */
+.iux-card--bento {
+  padding-inline-start: var(--space-5);
+}
+
+.iux-card__accent-stripe {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--space-2);
+  background-color: var(--iux-card-accent);
+}
+
+.iux-card--accent-primary { --iux-card-accent: var(--color-intent-primary-bg); }
+.iux-card--accent-neutral { --iux-card-accent: var(--color-intent-neutral-bg); }
+.iux-card--accent-success { --iux-card-accent: var(--color-intent-success-bg); }
+.iux-card--accent-warning { --iux-card-accent: var(--color-intent-warning-bg); }
+.iux-card--accent-danger  { --iux-card-accent: var(--color-intent-danger-bg);  }
+.iux-card--accent-info    { --iux-card-accent: var(--color-intent-info-bg);    }
+
+/* ---------- Variant: spatial / parallax ----------
+ * Tilt is set as two CSS custom properties from JS; the actual transform
+ * lives here so the reduced-motion override can wipe it.
+ */
+.iux-card--spatial {
+  --iux-card-tilt-x: 0deg;
+  --iux-card-tilt-y: 0deg;
+  transform-style: preserve-3d;
+  transform: perspective(40rem)
+    rotateX(var(--iux-card-tilt-x))
+    rotateY(var(--iux-card-tilt-y));
+  transition: transform var(--motion-duration-base) var(--motion-easing-out);
+  will-change: transform;
+}
+
+.iux-card--spatial > * {
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-card--spatial {
+    transform: none;
+  }
+}

@@ -1,0 +1,238 @@
+/*
+ * Button — one component, four functional rungs (solid → neumorphic →
+ * spring → ai). Every value resolves through a semantic token. Variant is
+ * a prop, never a forked component. Visual variation across palettes is
+ * orthogonal: the same CSS reads different values out of the CSS-var pool
+ * the palette root supplies.
+ */
+
+.iux-button {
+  --iux-button-bg: var(--color-intent-primary-bg);
+  --iux-button-bg-hover: var(--color-intent-primary-bg-hover);
+  --iux-button-bg-active: var(--color-intent-primary-bg-active);
+  --iux-button-content: var(--color-intent-primary-content);
+  --iux-button-border: var(--color-intent-primary-border);
+  --iux-button-elevation: var(--elevation-flat);
+  --iux-button-elevation-hover: var(--elevation-low);
+  --iux-button-elevation-active: var(--elevation-flat);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  overflow: hidden;
+
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  min-height: var(--space-7);
+
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+
+  color: var(--iux-button-content);
+  background-color: var(--iux-button-bg);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-button-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--iux-button-elevation);
+
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition-property: background-color, border-color, color, box-shadow, transform;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-button__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  z-index: 1;
+}
+
+.iux-button__icon,
+.iux-button__spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--type-label-size);
+  height: var(--type-label-size);
+}
+
+/* ---------- Intents ---------- */
+
+.iux-button--intent-primary {
+  --iux-button-bg: var(--color-intent-primary-bg);
+  --iux-button-bg-hover: var(--color-intent-primary-bg-hover);
+  --iux-button-bg-active: var(--color-intent-primary-bg-active);
+  --iux-button-content: var(--color-intent-primary-content);
+  --iux-button-border: var(--color-intent-primary-border);
+}
+
+.iux-button--intent-neutral {
+  --iux-button-bg: var(--color-intent-neutral-bg);
+  --iux-button-bg-hover: var(--color-intent-neutral-bg-hover);
+  --iux-button-bg-active: var(--color-intent-neutral-bg-active);
+  --iux-button-content: var(--color-intent-neutral-content);
+  --iux-button-border: var(--color-intent-neutral-border);
+}
+
+.iux-button--intent-success {
+  --iux-button-bg: var(--color-intent-success-bg);
+  --iux-button-bg-hover: var(--color-intent-success-bg-hover);
+  --iux-button-bg-active: var(--color-intent-success-bg-active);
+  --iux-button-content: var(--color-intent-success-content);
+  --iux-button-border: var(--color-intent-success-border);
+}
+
+.iux-button--intent-warning {
+  --iux-button-bg: var(--color-intent-warning-bg);
+  --iux-button-bg-hover: var(--color-intent-warning-bg-hover);
+  --iux-button-bg-active: var(--color-intent-warning-bg-active);
+  --iux-button-content: var(--color-intent-warning-content);
+  --iux-button-border: var(--color-intent-warning-border);
+}
+
+.iux-button--intent-danger {
+  --iux-button-bg: var(--color-intent-danger-bg);
+  --iux-button-bg-hover: var(--color-intent-danger-bg-hover);
+  --iux-button-bg-active: var(--color-intent-danger-bg-active);
+  --iux-button-content: var(--color-intent-danger-content);
+  --iux-button-border: var(--color-intent-danger-border);
+}
+
+.iux-button--intent-info {
+  --iux-button-bg: var(--color-intent-info-bg);
+  --iux-button-bg-hover: var(--color-intent-info-bg-hover);
+  --iux-button-bg-active: var(--color-intent-info-bg-active);
+  --iux-button-content: var(--color-intent-info-content);
+  --iux-button-border: var(--color-intent-info-border);
+}
+
+/* ---------- States (real + locked) ---------- */
+
+.iux-button:hover:not(:disabled),
+.iux-button.is-hover {
+  background-color: var(--iux-button-bg-hover);
+  box-shadow: var(--iux-button-elevation-hover);
+}
+
+.iux-button:active:not(:disabled),
+.iux-button.is-active {
+  background-color: var(--iux-button-bg-active);
+  box-shadow: var(--iux-button-elevation-active);
+}
+
+.iux-button:focus-visible,
+.iux-button.is-focus {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Variant: solid (default; no overrides) ---------- */
+
+/* ---------- Variant: neumorphic ----------
+ * Uses elevation.low for both raised and active. Under palettes where
+ * elevation is `none` (Neubrutalism, AAA), the heavy border + intent fill
+ * still read as a button — that's the contract working as intended.
+ */
+.iux-button--neumorphic {
+  --iux-button-elevation: var(--elevation-low);
+  --iux-button-elevation-hover: var(--elevation-medium);
+  --iux-button-elevation-active: var(--elevation-flat);
+  border-width: var(--border-width-thick);
+}
+
+/* ---------- Variant: spring ----------
+ * Translates on hover/active. The translate magnitude is
+ * `--border-width-thin`, so heavy-border palettes feel proportionally
+ * heavier. Under reduced motion (or AAA) the duration flattens to instant
+ * via the engine-level override, so the position lands without animation.
+ */
+.iux-button--spring {
+  transition-timing-function: var(--motion-easing-spring);
+  transition-duration: var(--motion-duration-base);
+}
+
+.iux-button--spring:hover:not(:disabled),
+.iux-button--spring.is-hover {
+  transform: translateY(calc(var(--border-width-thin) * -1));
+}
+
+.iux-button--spring:active:not(:disabled),
+.iux-button--spring.is-active {
+  transform: translateY(var(--border-width-hairline));
+}
+
+/* ---------- Variant: ai (shimmer affordance) ----------
+ * A pale band sweeps across the surface. The band color is sourced from
+ * `content.inverse` so it inverts with the intent fill. Animation halts
+ * under reduced motion via the engine-level duration flattening *plus*
+ * an explicit `animation: none` so the looping name doesn't keep
+ * triggering re-runs.
+ */
+.iux-button--ai .iux-button__shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 35%,
+    color-mix(in srgb, var(--color-content-inverse) 30%, transparent) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  background-position: -50% 0;
+  animation: iux-button-shimmer var(--motion-duration-slow) linear infinite;
+}
+
+@keyframes iux-button-shimmer {
+  from { background-position: -50% 0; }
+  to   { background-position: 150% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-button--ai .iux-button__shimmer { animation: none; }
+}
+
+/* ---------- Loading spinner ---------- */
+
+.iux-button__spinner {
+  width: var(--type-label-size);
+  height: var(--type-label-size);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--iux-button-content) 35%, transparent);
+  border-top-color: var(--iux-button-content);
+  border-radius: var(--radius-full);
+  animation: iux-button-spin var(--motion-duration-slow) linear infinite;
+}
+
+@keyframes iux-button-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-button__spinner { animation: none; }
+}
