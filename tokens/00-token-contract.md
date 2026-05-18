@@ -14,9 +14,9 @@ The single seam between components and palettes.
    express itself through the contract, the contract changes — not the
    palette.
 3. **No raw values downstream.** No `#ffffff`, no `8px`, no
-   `cubic-bezier(...)`, no `Inter, sans-serif` anywhere outside
-   palettes. Lint should enforce this against `src/components/` and
-   `src/demos/`. (Lint to be added when components land.)
+   `cubic-bezier(...)`, no `Inter, sans-serif` anywhere outside the
+   palette files. Lint should enforce this against the component and
+   demo source trees. (Lint to be added when components land.)
 4. **The contract is the API.** Adding a token is a breaking change for
    palettes. Every palette in `FINALIZED-PALETTES.md` must implement
    every token. There are no optional tokens; there are only tokens
