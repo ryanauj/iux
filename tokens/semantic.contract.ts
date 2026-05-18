@@ -305,3 +305,66 @@ export interface Palette {
   a11y: 'pass' | 'experimental'
   tokens: SemanticTokens
 }
+
+// -----------------------------------------------------------------------------
+// Runtime shape — for the palette validator
+// -----------------------------------------------------------------------------
+
+/**
+ * Runtime mirror of `SemanticTokens` used by `scripts/validate-palettes.ts`.
+ *
+ * The TypeScript types above are the compile-time gate; this constant is the
+ * runtime gate that fails CI when a palette omits a slot (or smuggles one
+ * past `as any`). Keep this in sync with the interfaces — adding a token
+ * means updating both. Leaf arrays list the expected child keys at that path.
+ */
+export const TOKEN_SHAPE = {
+  color: {
+    surface: ['base', 'raised', 'sunken', 'overlay', 'scrim'],
+    content: ['primary', 'secondary', 'muted', 'inverse', 'link'],
+    border: ['subtle', 'default', 'strong', 'focus'],
+    intent: {
+      primary: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+      neutral: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+      success: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+      warning: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+      danger: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+      info: ['bg', 'content', 'border', 'bgHover', 'bgActive'],
+    },
+  },
+  space: ['0', '1', '2', '3', '4', '5', '6', '7', '8'],
+  radius: ['none', 'sm', 'md', 'lg', 'pill', 'full'],
+  borderWidth: ['0', 'hairline', 'thin', 'thick', 'heavy'],
+  elevation: {
+    flat: ['boxShadow'],
+    low: ['boxShadow'],
+    medium: ['boxShadow'],
+    high: ['boxShadow'],
+    overlay: ['boxShadow'],
+  },
+  typography: {
+    family: ['ui', 'display', 'mono'],
+    role: {
+      display: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      title: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      heading: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      subheading: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      body: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      label: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      caption: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+      code: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
+    },
+  },
+  motion: {
+    duration: ['instant', 'fast', 'base', 'slow'],
+    easing: ['standard', 'in', 'out', 'inOut', 'spring'],
+  },
+  effect: {
+    backdropBlur: ['none', 'sm', 'md', 'lg'],
+    focusRing: ['width', 'offset', 'color', 'style'],
+  },
+} as const
+
+export type TokenShapeNode =
+  | readonly string[]
+  | { readonly [key: string]: TokenShapeNode }

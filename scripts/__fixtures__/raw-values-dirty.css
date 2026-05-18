@@ -1,0 +1,11 @@
+/*
+ * Fixture: trips every rule the lint enforces. `scripts/test-gates.ts` runs
+ * the lint on this and expects violations covering all three rule ids.
+ */
+.button {
+  color: #ffffff;
+  background: #0070f3;
+  border: 1px solid #0050b3;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: background 200ms ease-out;
+}
