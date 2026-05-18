@@ -1,0 +1,49 @@
+/* Todo-specific residual styles. Everything else comes from the lib primitives
+   and the active theme. */
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-empty {
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--text-faint);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-item__check {
+  flex: 1;
+}
+
+.todo-item--done .iux-checkbox__label {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+
+.todo-item__remove {
+  opacity: 0;
+  transition: opacity 80ms, color 80ms, background 80ms;
+}
+
+.todo-item:hover .todo-item__remove,
+.todo-item__remove:focus {
+  opacity: 1;
+}

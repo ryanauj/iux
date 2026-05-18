@@ -1,5 +1,7 @@
 import type { ComponentType } from 'react'
 import TodoDemo from './demos/todo'
+import ComponentsDemo from './demos/components'
+import StylesDemo from './demos/styles'
 import { todoApi } from './demos/todo/api'
 
 export interface DemoControls {
@@ -14,10 +16,25 @@ export interface DemoMeta {
   blurb: string
   features: string[]
   Component: ComponentType
-  controls: DemoControls
+  controls?: DemoControls
 }
 
 export const DEMOS: DemoMeta[] = [
+  {
+    id: 'components',
+    name: 'Component library',
+    blurb: 'Every primitive in the shared lib, rendered with its variants and states.',
+    features: ['buttons', 'inputs', 'tabs', 'combobox', 'cards'],
+    Component: ComponentsDemo,
+  },
+  {
+    id: 'styles',
+    name: 'Styles & tokens',
+    blurb:
+      'Browse design tokens — colors, spacing, type — live for the active theme.',
+    features: ['tokens', 'themes', 'live preview'],
+    Component: StylesDemo,
+  },
   {
     id: 'todo',
     name: 'TODO with suggestions',

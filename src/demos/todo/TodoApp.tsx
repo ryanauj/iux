@@ -1,9 +1,23 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import SuggestionInput from './SuggestionInput'
+import {
+  Button,
+  Checkbox,
+  Combobox,
+  IconButton,
+  Stack,
+  Tabs,
+  type TabSpec,
+} from '../../lib'
 import { todoApi } from './api'
 import type { Todo } from './store'
 
 type Filter = 'all' | 'active' | 'completed'
+
+const FILTER_LABEL: Record<Filter, string> = {
+  all: 'all',
+  active: 'active',
+  completed: 'completed',
+}
 
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -79,32 +93,32 @@ export default function TodoApp() {
     return todos
   }, [todos, filter])
 
-  return (
-    <div className='todo'>
-      <SuggestionInput onSubmit={onAdd} disabled={!loaded} />
+  const tabs: TabSpec<Filter>[] = (['all', 'active', 'completed'] as Filter[]).map((f) => ({
+    id: f,
+    label: FILTER_LABEL[f],
+    count: counts[f],
+  }))
 
-      <nav className='todo-filters' role='tablist'>
-        {(['all', 'active', 'completed'] as Filter[]).map((f) => (
-          <button
-            key={f}
-            type='button'
-            role='tab'
-            aria-selected={filter === f}
-            className={`todo-filters__btn ${filter === f ? 'todo-filters__btn--active' : ''}`}
-            onClick={() => setFilter(f)}
-          >
-            {f} <span className='todo-filters__count'>{counts[f]}</span>
-          </button>
-        ))}
-        <button
-          type='button'
-          className='todo-filters__clear'
-          onClick={onClearCompleted}
+  return (
+    <Stack direction='column' gap='lg' className='todo'>
+      <Combobox
+        getSuggestions={todoApi.suggestions}
+        onSubmit={onAdd}
+        placeholder='What needs doing?'
+        disabled={!loaded}
+        helpText='↑↓ to navigate · enter to add · esc to close'
+      />
+
+      <Tabs tabs={tabs} active={filter} onChange={setFilter} ariaLabel='filter todos'>
+        <Button
+          variant='ghost'
+          size='sm'
           disabled={counts.completed === 0}
+          onClick={onClearCompleted}
         >
           clear completed
-        </button>
-      </nav>
+        </Button>
+      </Tabs>
 
       <ul className='todo-list'>
         {!loaded && <li className='todo-empty'>loading…</li>}
@@ -117,25 +131,23 @@ export default function TodoApp() {
         )}
         {visible.map((t) => (
           <li key={t.id} className={`todo-item ${t.done ? 'todo-item--done' : ''}`}>
-            <label className='todo-item__check'>
-              <input
-                type='checkbox'
-                checked={t.done}
-                onChange={() => onToggle(t.id)}
-              />
-              <span>{t.text}</span>
-            </label>
-            <button
-              type='button'
-              className='todo-item__remove'
+            <Checkbox
+              checked={t.done}
+              onChange={() => onToggle(t.id)}
+              label={t.text}
+              labelClassName='todo-item__check'
+            />
+            <IconButton
               aria-label={`Delete "${t.text}"`}
+              variant='danger'
+              className='todo-item__remove'
               onClick={() => onDelete(t.id)}
             >
               ×
-            </button>
+            </IconButton>
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }

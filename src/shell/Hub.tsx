@@ -1,4 +1,5 @@
 import { DEMOS } from '../demos'
+import { Card } from '../lib'
 
 export default function Hub() {
   return (
@@ -14,13 +15,15 @@ export default function Hub() {
         {DEMOS.map((demo) => (
           <li key={demo.id} className='hub__item'>
             <a className='hub__link' href={`#/${demo.id}`}>
-              <h3>{demo.name}</h3>
-              <p>{demo.blurb}</p>
-              <ul className='hub__features'>
-                {demo.features.map((f) => (
-                  <li key={f}>{f}</li>
-                ))}
-              </ul>
+              <Card variant='flat' className='hub__card'>
+                <h3>{demo.name}</h3>
+                <p>{demo.blurb}</p>
+                <ul className='hub__features'>
+                  {demo.features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+              </Card>
             </a>
           </li>
         ))}
