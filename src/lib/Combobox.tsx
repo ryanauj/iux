@@ -1,13 +1,29 @@
-import { useEffect, useId, useRef, useState } from 'react'
-import { todoApi } from './api'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+
+export type SuggestionFetcher = (
+  query: string,
+  signal: AbortSignal,
+) => Promise<string[]>
 
 interface Props {
   onSubmit: (text: string) => void
+  getSuggestions: SuggestionFetcher
   placeholder?: string
+  helpText?: ReactNode
   disabled?: boolean
+  debounceMs?: number
+  className?: string
 }
 
-export default function SuggestionInput({ onSubmit, placeholder, disabled }: Props) {
+export default function Combobox({
+  onSubmit,
+  getSuggestions,
+  placeholder,
+  helpText,
+  disabled,
+  debounceMs = 150,
+  className,
+}: Props) {
   const [value, setValue] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
@@ -22,7 +38,7 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
     setLoading(true)
     const timer = window.setTimeout(async () => {
       try {
-        const result = await todoApi.suggestions(value, controller.signal)
+        const result = await getSuggestions(value, controller.signal)
         setSuggestions(result)
         setFocusIdx((idx) => (idx >= result.length ? -1 : idx))
       } catch {
@@ -30,12 +46,12 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
       } finally {
         setLoading(false)
       }
-    }, 150)
+    }, debounceMs)
     return () => {
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [value, open])
+  }, [value, open, getSuggestions, debounceMs])
 
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
@@ -69,7 +85,8 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
       setFocusIdx((i) => Math.max(-1, i - 1))
     } else if (event.key === 'Enter') {
       event.preventDefault()
-      const picked = focusIdx >= 0 && focusIdx < suggestions.length ? suggestions[focusIdx] : value
+      const picked =
+        focusIdx >= 0 && focusIdx < suggestions.length ? suggestions[focusIdx] : value
       submit(picked)
     } else if (event.key === 'Escape') {
       event.preventDefault()
@@ -79,18 +96,21 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
   }
 
   const showList = open && (loading || suggestions.length > 0)
+  const wrapperClass = ['iux-combobox', className].filter(Boolean).join(' ')
 
   return (
-    <div className='todo-suggest' ref={containerRef}>
+    <div className={wrapperClass} ref={containerRef}>
       <input
         type='text'
-        className='todo-suggest__input'
+        className='iux-combobox__input iux-input'
         role='combobox'
         aria-expanded={showList}
         aria-controls={listboxId}
         aria-autocomplete='list'
-        aria-activedescendant={focusIdx >= 0 ? `${listboxId}-opt-${focusIdx}` : undefined}
-        placeholder={placeholder ?? 'What needs doing?'}
+        aria-activedescendant={
+          focusIdx >= 0 ? `${listboxId}-opt-${focusIdx}` : undefined
+        }
+        placeholder={placeholder}
         value={value}
         onChange={(e) => {
           setValue(e.target.value)
@@ -104,13 +124,9 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
         spellCheck={false}
       />
       {showList && (
-        <ul
-          id={listboxId}
-          className='todo-suggest__list'
-          role='listbox'
-        >
+        <ul id={listboxId} className='iux-combobox__list' role='listbox'>
           {loading && suggestions.length === 0 && (
-            <li className='todo-suggest__hint'>searching…</li>
+            <li className='iux-combobox__hint'>searching…</li>
           )}
           {suggestions.map((text, i) => (
             <li
@@ -118,7 +134,12 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
               key={`${text}:${i}`}
               role='option'
               aria-selected={focusIdx === i}
-              className={`todo-suggest__opt ${focusIdx === i ? 'todo-suggest__opt--focus' : ''}`}
+              className={[
+                'iux-combobox__opt',
+                focusIdx === i && 'iux-combobox__opt--focus',
+              ]
+                .filter(Boolean)
+                .join(' ')}
               onPointerDown={(e) => {
                 e.preventDefault()
                 submit(text)
@@ -130,9 +151,7 @@ export default function SuggestionInput({ onSubmit, placeholder, disabled }: Pro
           ))}
         </ul>
       )}
-      <p className='todo-suggest__help'>
-        ↑↓ to navigate · enter to add · esc to close
-      </p>
+      {helpText && <p className='iux-combobox__help'>{helpText}</p>}
     </div>
   )
 }
@@ -145,7 +164,7 @@ function highlight(text: string, query: string) {
   return (
     <>
       {text.slice(0, idx)}
-      <mark className='todo-suggest__match'>{text.slice(idx, idx + q.length)}</mark>
+      <mark className='iux-combobox__match'>{text.slice(idx, idx + q.length)}</mark>
       {text.slice(idx + q.length)}
     </>
   )

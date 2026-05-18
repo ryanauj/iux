@@ -1,0 +1,138 @@
+.styles-demo__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.styles-demo__intro p {
+  margin: 0;
+  color: var(--text-dim);
+  max-width: 60ch;
+  font-size: 0.85rem;
+}
+
+.styles-demo__section-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.styles-demo__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+
+.styles-demo__swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem !important;
+}
+
+.styles-demo__chip {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  flex-shrink: 0;
+}
+
+.styles-demo__meta {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  min-width: 0;
+}
+
+.styles-demo__meta code {
+  color: var(--text);
+  font-size: 0.72rem;
+  word-break: break-all;
+}
+
+.styles-demo__meta span {
+  color: var(--text-faint);
+  word-break: break-all;
+}
+
+.styles-demo__radius {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.styles-demo__radius-box {
+  width: 64px;
+  height: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+}
+
+.styles-demo__radius code {
+  color: var(--text);
+}
+
+.styles-demo__spaces {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.styles-demo__space-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 80px;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+}
+
+.styles-demo__space-row code {
+  color: var(--text);
+}
+
+.styles-demo__space-bar {
+  height: 8px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.styles-demo__space-row span {
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.styles-demo__type {
+  margin: 0;
+  color: var(--text);
+}
+
+.styles-demo__type code {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  margin-right: 0.5rem;
+}
+
+.styles-demo__type-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.styles-demo__type-values code {
+  color: var(--text);
+  margin-right: 0.5rem;
+}

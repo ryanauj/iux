@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { findDemo } from './demos'
 import Hub from './shell/Hub'
 import DemoShell from './shell/DemoShell'
+import ThemeSelector from './lib/theme/ThemeSelector'
 
 function parseHash(): string {
   return window.location.hash.replace(/^#\/?/, '')
@@ -25,6 +26,9 @@ export default function App() {
         <span className='app__tagline'>
           example sites against an in-browser fake server.
         </span>
+        <div className='app__header-controls'>
+          <ThemeSelector scope='global' />
+        </div>
       </header>
       <main className='app__main'>
         {route === '' && <Hub />}
