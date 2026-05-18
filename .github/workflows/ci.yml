@@ -16,4 +16,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run validate:palettes
+      - run: npm run lint:tokens
+      - run: npm run test:gates
       - run: npm run build

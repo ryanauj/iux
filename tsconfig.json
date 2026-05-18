@@ -14,5 +14,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "tokens", "vite.config.ts"]
+  "include": ["src", "tokens", "palettes", "scripts", "vite.config.ts"]
 }

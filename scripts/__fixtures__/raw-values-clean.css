@@ -1,0 +1,22 @@
+/*
+ * Fixture: every value sourced from a CSS custom property bound to a token.
+ * `scripts/test-gates.ts` runs the lint on this and expects zero violations.
+ */
+.button {
+  color: var(--color-content-inverse);
+  background: var(--color-intent-primary-bg);
+  border: var(--border-width-thin) solid var(--color-intent-primary-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  box-shadow: var(--elevation-low);
+  transition: background var(--motion-duration-fast) var(--motion-easing-out);
+}
+
+.button:hover {
+  background: var(--color-intent-primary-bg-hover);
+}
+
+.button:focus-visible {
+  outline: var(--effect-focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--effect-focus-ring-offset);
+}
