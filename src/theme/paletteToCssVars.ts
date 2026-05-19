@@ -8,9 +8,9 @@ import type { SemanticTokens } from '../../tokens/semantic.contract'
  * property. Component CSS reads only these variables; this is the file
  * that keeps the no-raw-values lint passing downstream.
  *
- * `motionScale` multiplies every `motion.duration.*` value (`0ms` stays
- * `0ms`). Used by the stories harness to slow demo animations to a
- * legible speed without touching palette source.
+ * `motionScale` multiplies every `motion.duration.*` value; zero-duration
+ * slots (e.g. AAA) remain at zero. Used by the stories harness to slow
+ * demo animations to a legible speed without touching palette source.
  */
 function scaleDuration(value: string, scale: number): string {
   if (scale === 1) return value
