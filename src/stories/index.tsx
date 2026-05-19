@@ -19,8 +19,9 @@ import { SidebarStories } from '../components/Sidebar/Sidebar.stories'
 import { EmptyStateStories } from '../components/EmptyState/EmptyState.stories'
 import { LoadingStories } from '../components/Loading/Loading.stories'
 import { TokenFieldStories } from '../components/TokenField/TokenField.stories'
+import { DrawerStories } from '../components/Drawer/Drawer.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -41,6 +42,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'empty', label: 'Empty state', render: () => <EmptyStateStories /> },
   { id: 'loading', label: 'Loading', render: () => <LoadingStories /> },
   { id: 'tokenfield', label: 'Token field', render: () => <TokenFieldStories /> },
+  { id: 'drawer', label: 'Drawer', render: () => <DrawerStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
