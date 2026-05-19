@@ -1,0 +1,231 @@
+/*
+ * Toggle — one component, four functional rungs (switch → saving → segmented
+ * → tristate). Track + thumb is shared between switch and saving; segmented
+ * and tristate render a radiogroup that visually reads as one pill with a
+ * sliding indicator. Every value resolves through a semantic token.
+ */
+
+.iux-toggle {
+  --iux-toggle-track-bg-off: var(--color-intent-neutral-bg);
+  --iux-toggle-track-bg-on: var(--color-intent-primary-bg);
+  --iux-toggle-track-border: var(--color-border-default);
+  --iux-toggle-thumb-bg: var(--color-surface-raised);
+  --iux-toggle-thumb-border: var(--color-border-strong);
+  --iux-toggle-content-on: var(--color-intent-primary-content);
+  --iux-toggle-content-off: var(--color-content-secondary);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+}
+
+.iux-toggle__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-primary);
+  cursor: pointer;
+}
+
+/* ---------- Binary track ---------- */
+
+.iux-toggle__track {
+  --iux-toggle-w: calc(var(--space-7) + var(--space-3));
+  --iux-toggle-h: var(--space-5);
+  position: relative;
+  width: var(--iux-toggle-w);
+  height: var(--iux-toggle-h);
+  background-color: var(--iux-toggle-track-bg-off);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-toggle-track-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  appearance: none;
+  padding: 0;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-toggle.is-on .iux-toggle__track {
+  background-color: var(--iux-toggle-track-bg-on);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-toggle__track:focus-visible,
+.iux-toggle.is-focus .iux-toggle__track {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-toggle__track:hover:not(:disabled),
+.iux-toggle.is-hover .iux-toggle__track {
+  box-shadow: var(--elevation-low);
+}
+
+.iux-toggle.is-disabled .iux-toggle__track,
+.iux-toggle__track:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.iux-toggle__rail {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--space-2);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  letter-spacing: var(--type-caption-tracking);
+  pointer-events: none;
+}
+
+.iux-toggle__rail-label {
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-toggle__rail-label--on {
+  color: var(--iux-toggle-content-on);
+  opacity: 0;
+}
+
+.iux-toggle__rail-label--off {
+  color: var(--iux-toggle-content-off);
+  opacity: 1;
+}
+
+.iux-toggle.is-on .iux-toggle__rail-label--on { opacity: 1; }
+.iux-toggle.is-on .iux-toggle__rail-label--off { opacity: 0; }
+
+/* Skip rail labels on the plain `switch` variant — it's icon-only. */
+.iux-toggle--switch .iux-toggle__rail { display: none; }
+
+.iux-toggle__thumb {
+  --iux-toggle-thumb-d: calc(var(--iux-toggle-h) - var(--space-1) - var(--space-1));
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-start: var(--space-1);
+  width: var(--iux-toggle-thumb-d);
+  height: var(--iux-toggle-thumb-d);
+  background-color: var(--iux-toggle-thumb-bg);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-toggle-thumb-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elevation-low);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: inset-inline-start, transform, background-color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-toggle.is-on .iux-toggle__thumb {
+  inset-inline-start: calc(var(--iux-toggle-w) - var(--iux-toggle-thumb-d) - var(--space-1) - var(--border-width-thin) - var(--border-width-thin));
+}
+
+.iux-toggle__spinner {
+  width: 60%;
+  height: 60%;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--color-content-primary) 25%, transparent);
+  border-top-color: var(--color-content-primary);
+  border-radius: var(--radius-full);
+  animation: iux-toggle-spin var(--motion-duration-slow) linear infinite;
+}
+
+@keyframes iux-toggle-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-toggle__spinner { animation: none; }
+}
+
+.iux-toggle__saving {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+/* ---------- Multi-value (segmented / tristate) ---------- */
+
+.iux-toggle__segments {
+  display: inline-flex;
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1);
+  gap: var(--space-1);
+}
+
+.iux-toggle__segments:focus-within,
+.iux-toggle.is-focus .iux-toggle__segments {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-toggle__segment {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  transition-property: background-color, color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-toggle__segment:hover:not(:disabled),
+.iux-toggle.is-hover .iux-toggle__segment:not(.is-selected) {
+  color: var(--color-content-primary);
+}
+
+.iux-toggle__segment.is-selected {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  box-shadow: var(--elevation-low);
+}
+
+.iux-toggle__segment:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Tristate visually centers the inherit option by giving the middle segment
+ * the neutral fill, so users can see at a glance that "inherit" is the
+ * mid-detent rather than a fully-on or fully-off pick. */
+.iux-toggle--tristate .iux-toggle__segment.is-selected[aria-checked='true'] {
+  background-color: var(--color-intent-primary-bg);
+}
+
+.iux-toggle--tristate .iux-toggle__segments {
+  position: relative;
+}
+
+/* Disabled wrapper opacity affects everything inside. */
+.iux-toggle.is-disabled { cursor: not-allowed; }

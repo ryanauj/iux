@@ -5,14 +5,16 @@ import { ButtonStories } from '../components/Button/Button.stories'
 import { TextInputStories } from '../components/TextInput/TextInput.stories'
 import { CardStories } from '../components/Card/Card.stories'
 import { SelectStories } from '../components/Select/Select.stories'
+import { ToggleStories } from '../components/Toggle/Toggle.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
   { id: 'textinput', label: 'Text input', render: () => <TextInputStories /> },
   { id: 'card', label: 'Card', render: () => <CardStories /> },
   { id: 'select', label: 'Select', render: () => <SelectStories /> },
+  { id: 'toggle', label: 'Toggle', render: () => <ToggleStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
