@@ -9,8 +9,9 @@ import { ToggleStories } from '../components/Toggle/Toggle.stories'
 import { CheckboxStories } from '../components/Checkbox/Checkbox.stories'
 import { SliderStories } from '../components/Slider/Slider.stories'
 import { ModalStories } from '../components/Modal/Modal.stories'
+import { TableStories } from '../components/Table/Table.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -21,6 +22,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'checkbox', label: 'Checkbox', render: () => <CheckboxStories /> },
   { id: 'slider', label: 'Slider', render: () => <SliderStories /> },
   { id: 'modal', label: 'Modal', render: () => <ModalStories /> },
+  { id: 'table', label: 'Table', render: () => <TableStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
