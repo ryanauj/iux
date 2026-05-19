@@ -7,6 +7,15 @@ html, body {
   padding: 0;
 }
 
+html {
+  /*
+   * Mobile safety: prevent any single wide demo from pushing the whole
+   * page sideways. Wide content scrolls inside its own cell (see
+   * .stories__cell below) — never the whole document.
+   */
+  overflow-x: hidden;
+}
+
 body {
   min-height: 100vh;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -202,6 +211,7 @@ body {
   flex-direction: column;
   gap: var(--space-1);
   min-width: 10rem;
+  max-width: 100%;
 }
 
 .stories__cell-label {
@@ -264,5 +274,17 @@ body {
 
   .stories__control {
     flex-basis: 100%;
+  }
+
+  /*
+   * Story files set inline `minWidth: 'XXrem'` (14-40rem) so each demo
+   * gets a readable target width on desktop. On a mobile viewport those
+   * values blow past the screen edge. Collapse them to the available
+   * width so cells shrink to fit; intrinsically wide demo content
+   * scrolls horizontally inside the cell instead of leaking sideways.
+   */
+  .stories__cell {
+    min-width: 0 !important;
+    overflow-x: auto;
   }
 }

@@ -236,7 +236,7 @@ export function Modal(props: ModalProps) {
 
   const dialog = (
     <div
-      className="iux-modal__scrim"
+      className={`iux-modal__scrim${inlineRender ? ' iux-modal__scrim--inline' : ''}`}
       onMouseDown={handleScrimMouseDown}
       role="presentation"
     >

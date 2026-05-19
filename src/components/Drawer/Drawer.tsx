@@ -194,7 +194,7 @@ export function Drawer(props: DrawerProps) {
 
   const dialog = (
     <div
-      className="iux-drawer__scrim"
+      className={`iux-drawer__scrim${inlineRender ? ' iux-drawer__scrim--inline' : ''}`}
       onMouseDown={handleScrimDown}
       role="presentation"
     >

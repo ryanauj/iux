@@ -12,6 +12,16 @@
   animation: iux-drawer-fade var(--motion-duration-base) var(--motion-easing-out);
 }
 
+/*
+ * Stories render the drawer inline (no portal). Anchor to the parent
+ * cell instead of the viewport so the demo doesn't stack over the rest
+ * of the page.
+ */
+.iux-drawer__scrim--inline {
+  position: absolute;
+  z-index: auto;
+}
+
 @keyframes iux-drawer-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -51,6 +61,7 @@
   inset-inline-end: 0;
   height: 100vh;
   width: 24rem;
+  max-width: 100vw;
   border-inline-start-width: var(--border-width-thin);
   border-inline-end: none;
 }
@@ -61,6 +72,7 @@
   inset-inline-start: 0;
   height: 100vh;
   width: 24rem;
+  max-width: 100vw;
   border-inline-end-width: var(--border-width-thin);
   border-inline-start: none;
 }
@@ -86,13 +98,13 @@
   border-start-end-radius: var(--radius-lg);
 }
 
-/* Sizes */
+/* Sizes — viewport-capped so the drawer never exceeds screen width on phones. */
 .iux-drawer--side-right.iux-drawer--size-sm,
-.iux-drawer--side-left.iux-drawer--size-sm { width: 18rem; }
+.iux-drawer--side-left.iux-drawer--size-sm { width: min(18rem, 100vw); }
 .iux-drawer--side-right.iux-drawer--size-md,
-.iux-drawer--side-left.iux-drawer--size-md { width: 24rem; }
+.iux-drawer--side-left.iux-drawer--size-md { width: min(24rem, 100vw); }
 .iux-drawer--side-right.iux-drawer--size-lg,
-.iux-drawer--side-left.iux-drawer--size-lg { width: 36rem; }
+.iux-drawer--side-left.iux-drawer--size-lg { width: min(36rem, 100vw); }
 
 /* ---------- Header / body / footer ---------- */
 
