@@ -1,7 +1,7 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { Pagination, type PaginationVariant } from './Pagination'
 
-const VARIANTS: PaginationVariant[] = ['numbered', 'rich', 'load-more', 'infinite']
+export const VARIANTS: PaginationVariant[] = ['numbered', 'rich', 'load-more', 'infinite']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -99,10 +99,10 @@ function InfiniteStateful() {
   )
 }
 
-export function PaginationStories() {
+export function PaginationStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

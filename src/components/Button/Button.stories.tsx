@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button, type ButtonIntent, type ButtonVariant } from './Button'
 
-const VARIANTS: ButtonVariant[] = ['solid', 'neumorphic', 'spring', 'ai']
+export const VARIANTS: ButtonVariant[] = ['solid', 'neumorphic', 'spring', 'ai']
 const INTENTS: ButtonIntent[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 const STATES = [
   { key: 'default', label: 'default', props: {} },
@@ -21,10 +21,10 @@ function Cell({ label, children }: { label: string; children: ReactNode }) {
   )
 }
 
-export function ButtonStories() {
+export function ButtonStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
 

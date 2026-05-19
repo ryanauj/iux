@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { type ToastItem } from '../Toast/Toast'
 import { StackedToasts, type StackedToastsVariant } from './StackedToasts'
 
-const VARIANTS: StackedToastsVariant[] = ['cap', 'dedupe', 'severity', 'tray']
+export const VARIANTS: StackedToastsVariant[] = ['cap', 'dedupe', 'severity', 'tray']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -70,10 +70,10 @@ function PerVariant({ variant }: { variant: StackedToastsVariant }) {
   )
 }
 
-export function StackedToastsStories() {
+export function StackedToastsStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { DiffView, type DiffViewVariant } from './DiffView'
 
-const VARIANTS: DiffViewVariant[] = ['side-by-side', 'inline', 'chunked', 'three-way']
+export const VARIANTS: DiffViewVariant[] = ['side-by-side', 'inline', 'chunked', 'three-way']
 
 const A = `function greet(name) {
   return "Hello " + name
@@ -36,10 +36,10 @@ function Cell({ label, children }: { label: string; children: ReactNode }) {
   )
 }
 
-export function DiffViewStories() {
+export function DiffViewStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

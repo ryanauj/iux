@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Bento, type BentoCell, type BentoVariant } from './Bento'
 
-const VARIANTS: BentoVariant[] = ['static', 'reflow', 'drag', 'resize']
+export const VARIANTS: BentoVariant[] = ['static', 'reflow', 'drag', 'resize']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -86,10 +86,10 @@ function Chart() {
   )
 }
 
-export function BentoStories() {
+export function BentoStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

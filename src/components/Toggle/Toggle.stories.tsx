@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Toggle, type ToggleVariant } from './Toggle'
 
-const VARIANTS: ToggleVariant[] = ['switch', 'saving', 'segmented', 'tristate']
+export const VARIANTS: ToggleVariant[] = ['switch', 'saving', 'segmented', 'tristate']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -53,10 +53,10 @@ function StatefulTristate() {
   return <Toggle variant="tristate" label="Dark mode" value={v} onValueChange={setV} />
 }
 
-export function ToggleStories() {
+export function ToggleStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

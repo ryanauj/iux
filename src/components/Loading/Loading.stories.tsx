@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Loading, type LoadingVariant } from './Loading'
 
-const VARIANTS: LoadingVariant[] = ['spinner', 'shimmer', 'skeleton', 'optimistic']
+export const VARIANTS: LoadingVariant[] = ['spinner', 'shimmer', 'skeleton', 'optimistic']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -26,10 +26,10 @@ function OptimisticDemo() {
   )
 }
 
-export function LoadingStories() {
+export function LoadingStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

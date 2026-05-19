@@ -86,7 +86,7 @@ const COLS_EDIT: TableColumn<Person>[] = [
   { key: 'salary', header: 'Salary', align: 'end', accessor: r => `$${r.salary.toLocaleString()}`, width: 140 },
 ]
 
-const VARIANTS: TableVariant[] = ['static', 'sortable', 'resizable', 'editable']
+export const VARIANTS: TableVariant[] = ['static', 'sortable', 'resizable', 'editable']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -133,10 +133,10 @@ function EditableStateful() {
   )
 }
 
-export function TableStories() {
+export function TableStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

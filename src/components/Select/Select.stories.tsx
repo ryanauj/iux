@@ -16,7 +16,7 @@ const GROUPED: SelectOption[] = [
   { value: 'fig', label: 'Fig', group: 'Other' },
 ]
 
-const VARIANTS: SelectVariant[] = ['native', 'dropdown', 'combobox', 'async']
+export const VARIANTS: SelectVariant[] = ['native', 'dropdown', 'combobox', 'async']
 const STATES = [
   { key: 'default', label: 'default', props: {} },
   { key: 'hover', label: 'hover', props: { stateLock: 'hover' as const } },
@@ -54,10 +54,10 @@ async function loadCrew(query: string): Promise<SelectOption[]> {
   return STAR_TREK.filter(o => o.label.toLowerCase().includes(q))
 }
 
-export function SelectStories() {
+export function SelectStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
 

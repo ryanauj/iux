@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { OptimisticUndo, useOptimisticUndo, type OptimisticUndoVariant } from './OptimisticUndo'
 
-const VARIANTS: OptimisticUndoVariant[] = ['toast', 'countdown', 'queue', 'log']
+export const VARIANTS: OptimisticUndoVariant[] = ['toast', 'countdown', 'queue', 'log']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -74,10 +74,10 @@ function PerVariant({ variant }: { variant: OptimisticUndoVariant }) {
   )
 }
 
-export function OptimisticUndoStories() {
+export function OptimisticUndoStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

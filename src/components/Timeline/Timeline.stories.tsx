@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Timeline, type TimelineKeyframe, type TimelineTrack, type TimelineVariant } from './Timeline'
 
-const VARIANTS: TimelineVariant[] = ['basic', 'snap', 'multi', 'keyframes']
+export const VARIANTS: TimelineVariant[] = ['basic', 'snap', 'multi', 'keyframes']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -93,10 +93,10 @@ function KeyframesStateful() {
   )
 }
 
-export function TimelineStories() {
+export function TimelineStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

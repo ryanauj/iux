@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { TokenField, type Token, type TokenFieldVariant, type TokenOption } from './TokenField'
 
-const VARIANTS: TokenFieldVariant[] = ['split', 'typeahead', 'grouped', 'structured']
+export const VARIANTS: TokenFieldVariant[] = ['split', 'typeahead', 'grouped', 'structured']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -70,10 +70,10 @@ function StatefulStructured() {
   )
 }
 
-export function TokenFieldStories() {
+export function TokenFieldStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">
