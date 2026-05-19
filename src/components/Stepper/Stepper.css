@@ -1,0 +1,167 @@
+/*
+ * Stepper / Wizard — one component, four functional rungs (linear →
+ * validated → branching → resumable). Strip + panel layout; status is
+ * computed per step (complete / active / error / disabled). Resumable
+ * persists to localStorage and syncs the current step id to a URL hash
+ * so back/forward and refresh restore position.
+ */
+
+.iux-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.iux-stepper__strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.iux-stepper__step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 12rem;
+  flex: 1 1 0;
+}
+
+.iux-stepper__dot {
+  appearance: none;
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-full);
+  width: var(--space-6);
+  height: var(--space-6);
+  font-family: var(--type-label-family);
+  font-weight: var(--type-label-weight);
+  cursor: pointer;
+  flex: none;
+}
+
+.iux-stepper__dot:disabled { cursor: default; }
+
+.iux-stepper__step.is-active .iux-stepper__dot {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-stepper__step.is-complete .iux-stepper__dot {
+  background-color: var(--color-intent-success-bg);
+  color: var(--color-intent-success-content);
+  border-color: var(--color-intent-success-border);
+}
+
+.iux-stepper__step.is-error .iux-stepper__dot {
+  background-color: var(--color-intent-danger-bg);
+  color: var(--color-intent-danger-content);
+  border-color: var(--color-intent-danger-border);
+}
+
+.iux-stepper__step-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.iux-stepper__step-title {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+}
+
+.iux-stepper__step.is-disabled .iux-stepper__step-title {
+  color: var(--color-content-muted);
+}
+
+.iux-stepper__step-description {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-stepper__step-error {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-stepper__connector {
+  display: none;  /* Layout handled by flex spacing; reserved for future stylings. */
+}
+
+/* ---------- Panel ---------- */
+
+.iux-stepper__panel {
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.iux-stepper__panel-title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+}
+
+.iux-stepper__panel-body {
+  font-family: var(--type-body-family);
+}
+
+.iux-stepper__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start-width: var(--border-width-hairline);
+  border-block-start-style: solid;
+  border-block-start-color: var(--color-border-subtle);
+}
+
+.iux-stepper__btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.iux-stepper__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-stepper__btn--ghost {
+  background: transparent;
+  color: var(--color-content-primary);
+  border-color: var(--color-border-default);
+}
+
+.iux-stepper__btn:disabled { opacity: 0.55; cursor: not-allowed; }
