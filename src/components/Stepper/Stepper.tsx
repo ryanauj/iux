@@ -2,9 +2,11 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
+import { useStore } from '../../app/StoreContext'
 import './Stepper.css'
 
 export type StepperVariant = 'linear' | 'validated' | 'branching' | 'resumable'
@@ -49,13 +51,12 @@ export function Stepper({
   ariaLabel = 'Steps',
 }: StepperProps) {
   const isControlled = currentId !== undefined
+  const store = useStore()
   const initialId = useMemo<string>(() => {
     if (defaultCurrentId) return defaultCurrentId
     if (variant === 'resumable' && storageKey && typeof window !== 'undefined') {
       const fromHash = window.location.hash.match(/step=([^&]+)/)?.[1]
       if (fromHash && steps.some(s => s.id === fromHash)) return fromHash
-      const stored = window.localStorage.getItem(`iux:stepper:${storageKey}`)
-      if (stored && steps.some(s => s.id === stored)) return stored
     }
     return steps[0]?.id ?? ''
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,13 +68,31 @@ export function Stepper({
   const currentStep = steps[currentIndex]
 
   // ---------- Resumable storage + URL sync ----------
+  // Read the persisted step exactly once on mount; subsequent step changes
+  // come from the user, not the store. `stepsRef` keeps the latest step list
+  // handy without invalidating this effect when its array identity churns.
+  const stepsRef = useRef(steps)
+  stepsRef.current = steps
+  const loadedFromStoreRef = useRef<boolean>(false)
+  useEffect(() => {
+    if (variant !== 'resumable' || !storageKey || isControlled) return
+    if (loadedFromStoreRef.current) return
+    loadedFromStoreRef.current = true
+    let cancelled = false
+    void store.get<string>(`stepper:${storageKey}`).then(v => {
+      if (cancelled || !v) return
+      if (stepsRef.current.some(s => s.id === v)) setInnerId(v)
+    })
+    return () => { cancelled = true }
+  }, [variant, storageKey, isControlled, store])
+
   useEffect(() => {
     if (variant !== 'resumable' || !storageKey || typeof window === 'undefined') return
-    window.localStorage.setItem(`iux:stepper:${storageKey}`, currentStepId)
+    void store.set(`stepper:${storageKey}`, currentStepId)
     const url = new URL(window.location.href)
     url.hash = `step=${encodeURIComponent(currentStepId)}`
     window.history.replaceState({}, '', url.toString())
-  }, [variant, storageKey, currentStepId])
+  }, [variant, storageKey, currentStepId, store])
 
   useEffect(() => {
     if (variant !== 'resumable' || !storageKey || typeof window === 'undefined') return
