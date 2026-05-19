@@ -1,0 +1,127 @@
+/*
+ * Pagination — one component, four functional rungs (numbered → rich →
+ * load-more → infinite). Numbered/rich render a button strip; load-more
+ * exposes a primary button; infinite watches a sentinel via
+ * IntersectionObserver and surfaces a "back to top" jump button when
+ * the scroller passes a threshold.
+ */
+
+.iux-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+  font-family: var(--type-body-family);
+}
+
+.iux-pagination--infinite,
+.iux-pagination--load-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-pagination__btn {
+  appearance: none;
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  min-width: var(--space-7);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  cursor: pointer;
+  transition-property: background-color, color, border-color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-pagination__btn:hover:not(:disabled) {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-pagination__btn:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-pagination__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-pagination__btn--num.is-current {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-pagination__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-pagination__gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-5);
+  color: var(--color-content-muted);
+}
+
+.iux-pagination__size {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-start: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-pagination__size-select {
+  font: inherit;
+  font-family: var(--type-body-family);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+}
+
+.iux-pagination__count,
+.iux-pagination__loading {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-pagination__sentinel { height: var(--space-1); width: 100%; }
+
+.iux-pagination__top {
+  appearance: none;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  cursor: pointer;
+  box-shadow: var(--elevation-low);
+}
