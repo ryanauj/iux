@@ -1,0 +1,259 @@
+/*
+ * Select — one component, four functional rungs (native → dropdown →
+ * combobox → async). Every value resolves through a semantic token.
+ * The trigger appearance is unified across variants so that the visual
+ * variation under each palette comes from the same surface/border/intent
+ * tokens the rest of the system uses.
+ */
+
+.iux-select {
+  --iux-select-bg: var(--color-surface-sunken);
+  --iux-select-border: var(--color-border-default);
+  --iux-select-border-hover: var(--color-border-strong);
+  --iux-select-border-focus: var(--color-border-focus);
+  --iux-select-content: var(--color-content-primary);
+  --iux-select-placeholder: var(--color-content-muted);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 24rem;
+  font-family: var(--type-body-family);
+  position: relative;
+}
+
+.iux-select__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-primary);
+}
+
+.iux-select__required {
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-select__control {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: var(--iux-select-bg);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-select-border);
+  border-radius: var(--radius-md);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-select__control:hover,
+.iux-select.is-hover .iux-select__control {
+  border-color: var(--iux-select-border-hover);
+}
+
+.iux-select__control:focus-within,
+.iux-select.is-focus .iux-select__control,
+.iux-select.is-open .iux-select__control {
+  border-color: var(--iux-select-border-focus);
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-select__trigger {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
+  color: var(--iux-select-content);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  cursor: pointer;
+  text-align: start;
+}
+
+.iux-select__trigger:disabled,
+.iux-select--disabled .iux-select__trigger {
+  cursor: not-allowed;
+}
+
+.iux-select__input {
+  cursor: text;
+}
+
+.iux-select__value[data-empty='true'] {
+  color: var(--iux-select-placeholder);
+}
+
+.iux-select__native {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none;
+  padding-inline-end: var(--space-6);
+}
+
+.iux-select__caret {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-content-secondary);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-select.is-open .iux-select__caret {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* ---------- Listbox ---------- */
+
+.iux-select__listbox {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-start: calc(100% + var(--space-1));
+  z-index: 20;
+  margin: 0;
+  padding: var(--space-1);
+  list-style: none;
+  max-height: 16rem;
+  overflow-y: auto;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+}
+
+.iux-select__group-heading {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  letter-spacing: var(--type-caption-tracking);
+  color: var(--color-content-secondary);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  text-transform: uppercase;
+}
+
+.iux-select__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.iux-select__option-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.iux-select__option-description {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-select__option.is-active {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-select__option.is-selected {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-select__option.is-selected.is-active {
+  background-color: var(--color-intent-primary-bg-hover);
+}
+
+.iux-select__option.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-select__option--create {
+  color: var(--color-content-link);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-select__check {
+  color: currentColor;
+}
+
+.iux-select__status {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  color: var(--color-content-muted);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+}
+
+/* ---------- Status ---------- */
+
+.iux-select--status-danger {
+  --iux-select-border: var(--color-intent-danger-border);
+  --iux-select-border-hover: var(--color-intent-danger-border);
+  --iux-select-border-focus: var(--color-intent-danger-border);
+}
+
+/* ---------- Hint / error ---------- */
+
+.iux-select__hint,
+.iux-select__error {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  color: var(--color-content-secondary);
+}
+
+.iux-select__error {
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-select--disabled .iux-select__control {
+  opacity: 0.55;
+}
+
+/* ---------- Variant: native ---------- */
+
+/* The styled wrapper supplies the chrome; the underlying <select> renders
+ * its native option list, which inherits OS look. The caret on the right
+ * is purely cosmetic — the OS draws its own — but the alignment matches
+ * the dropdown variant so visual diff across palettes stays meaningful.
+ */
+
+/* ---------- Variant: combobox / async ---------- */
+
+.iux-select--combobox .iux-select__input,
+.iux-select--async .iux-select__input {
+  padding-inline-end: var(--space-6);
+}

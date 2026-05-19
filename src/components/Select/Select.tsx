@@ -1,0 +1,649 @@
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from 'react'
+import './Select.css'
+
+export type SelectVariant = 'native' | 'dropdown' | 'combobox' | 'async'
+
+export interface SelectOption {
+  value: string
+  label: string
+  /** Optional group heading; options in the same group are kept together. */
+  group?: string
+  disabled?: boolean
+  description?: string
+}
+
+export interface SelectProps {
+  /** Functional axis. The same prop, never a forked component. */
+  variant?: SelectVariant
+  value?: string
+  defaultValue?: string
+  onChange?: (value: string) => void
+  options?: SelectOption[]
+  /** Async-only — debounced server search. */
+  loadOptions?: (query: string) => Promise<SelectOption[]>
+  /** Debounce window for `loadOptions`. */
+  debounceMs?: number
+  /** Async-only — allow a "+ Create '...'" tail option. */
+  creatable?: boolean
+  onCreate?: (label: string) => void
+  placeholder?: string
+  label?: string
+  hint?: string
+  /** Inline error message. */
+  error?: string
+  required?: boolean
+  disabled?: boolean
+  /** Custom "no results" copy. */
+  noOptionsMessage?: string
+  /** Custom "loading…" copy for async. */
+  loadingMessage?: string
+  id?: string
+  name?: string
+  className?: string
+  /** Story-only: lock the visual to a pseudo-state. */
+  stateLock?: 'hover' | 'focus' | 'open'
+  /** Story-only: pre-fill the combobox query. */
+  defaultQuery?: string
+}
+
+export interface SelectHandle {
+  focus: () => void
+  open: () => void
+  close: () => void
+}
+
+interface GroupedOptions {
+  group: string | null
+  options: SelectOption[]
+}
+
+function groupOptions(options: SelectOption[]): GroupedOptions[] {
+  const order: (string | null)[] = []
+  const bucket = new Map<string | null, SelectOption[]>()
+  for (const opt of options) {
+    const key = opt.group ?? null
+    if (!bucket.has(key)) {
+      order.push(key)
+      bucket.set(key, [])
+    }
+    bucket.get(key)!.push(opt)
+  }
+  return order.map(group => ({ group, options: bucket.get(group)! }))
+}
+
+function findIndexByValue(options: SelectOption[], value: string | undefined): number {
+  if (value === undefined) return -1
+  return options.findIndex(o => o.value === value)
+}
+
+export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
+  {
+    variant = 'dropdown',
+    value,
+    defaultValue,
+    onChange,
+    options = [],
+    loadOptions,
+    debounceMs = 200,
+    creatable = false,
+    onCreate,
+    placeholder,
+    label,
+    hint,
+    error,
+    required,
+    disabled,
+    noOptionsMessage = 'No results',
+    loadingMessage = 'Loading…',
+    id,
+    name,
+    className,
+    stateLock,
+    defaultQuery = '',
+  },
+  ref,
+) {
+  const fallbackId = useId()
+  const inputId = id ?? fallbackId
+  const listboxId = `${inputId}-listbox`
+
+  const isControlled = value !== undefined
+  const [innerValue, setInnerValue] = useState<string | undefined>(defaultValue)
+  const currentValue = isControlled ? value : innerValue
+
+  const [open, setOpen] = useState<boolean>(stateLock === 'open')
+  const [query, setQuery] = useState<string>(defaultQuery)
+  const [activeIndex, setActiveIndex] = useState<number>(-1)
+
+  // Async state.
+  const [asyncOptions, setAsyncOptions] = useState<SelectOption[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const rootRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      const t = triggerRef.current
+      if (t && typeof (t as HTMLElement).focus === 'function') (t as HTMLElement).focus()
+    },
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+  }))
+
+  // The list of options the listbox should display.
+  const filteredOptions = useMemo<SelectOption[]>(() => {
+    if (variant === 'async') return asyncOptions
+    if (variant === 'combobox') {
+      const q = query.trim().toLowerCase()
+      if (!q) return options
+      return options.filter(o => o.label.toLowerCase().includes(q))
+    }
+    return options
+  }, [variant, options, query, asyncOptions])
+
+  const grouped = useMemo<GroupedOptions[]>(() => groupOptions(filteredOptions), [filteredOptions])
+
+  // Selected label for the trigger display.
+  const selectedOption = useMemo<SelectOption | undefined>(() => {
+    if (currentValue === undefined) return undefined
+    return options.find(o => o.value === currentValue)
+      ?? asyncOptions.find(o => o.value === currentValue)
+  }, [options, asyncOptions, currentValue])
+
+  const displayLabel = selectedOption?.label ?? ''
+
+  // Async debounced search.
+  useEffect(() => {
+    if (variant !== 'async' || !loadOptions || !open) return
+    let cancelled = false
+    setIsLoading(true)
+    const handle = window.setTimeout(async () => {
+      try {
+        const result = await loadOptions(query)
+        if (!cancelled) {
+          setAsyncOptions(result)
+          setIsLoading(false)
+        }
+      } catch {
+        if (!cancelled) {
+          setAsyncOptions([])
+          setIsLoading(false)
+        }
+      }
+    }, debounceMs)
+    return () => {
+      cancelled = true
+      window.clearTimeout(handle)
+    }
+  }, [variant, loadOptions, query, open, debounceMs])
+
+  // Reset active index when the visible list changes.
+  useEffect(() => {
+    if (!open) return
+    if (filteredOptions.length === 0) {
+      setActiveIndex(-1)
+      return
+    }
+    setActiveIndex(prev => {
+      if (prev >= 0 && prev < filteredOptions.length) return prev
+      const fromValue = findIndexByValue(filteredOptions, currentValue)
+      return fromValue >= 0 ? fromValue : 0
+    })
+  }, [open, filteredOptions, currentValue])
+
+  // Click-outside closes the menu (and the locked-open story stays open).
+  useEffect(() => {
+    if (!open || stateLock === 'open') return
+    function handle(e: MouseEvent) {
+      const root = rootRef.current
+      if (root && !root.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [open, stateLock])
+
+  const commitValue = useCallback(
+    (next: string) => {
+      if (!isControlled) setInnerValue(next)
+      onChange?.(next)
+    },
+    [isControlled, onChange],
+  )
+
+  const closeAndReturnFocus = useCallback(() => {
+    if (stateLock === 'open') return
+    setOpen(false)
+    requestAnimationFrame(() => {
+      const t = triggerRef.current
+      if (t && typeof (t as HTMLElement).focus === 'function') (t as HTMLElement).focus()
+    })
+  }, [stateLock])
+
+  const handleSelectOption = useCallback(
+    (opt: SelectOption) => {
+      if (opt.disabled) return
+      commitValue(opt.value)
+      // For combobox/async, sync the displayed query so the chosen label persists.
+      if (variant === 'combobox' || variant === 'async') {
+        setQuery(opt.label)
+      }
+      closeAndReturnFocus()
+    },
+    [commitValue, variant, closeAndReturnFocus],
+  )
+
+  const handleCreate = useCallback(
+    (rawLabel: string) => {
+      const trimmed = rawLabel.trim()
+      if (!trimmed) return
+      onCreate?.(trimmed)
+      const synthetic: SelectOption = { value: trimmed, label: trimmed }
+      if (variant === 'async') setAsyncOptions(prev => [synthetic, ...prev])
+      commitValue(synthetic.value)
+      setQuery(synthetic.label)
+      closeAndReturnFocus()
+    },
+    [variant, onCreate, commitValue, closeAndReturnFocus],
+  )
+
+  const showCreateRow =
+    variant === 'async' &&
+    creatable &&
+    query.trim().length > 0 &&
+    !filteredOptions.some(o => o.label.toLowerCase() === query.trim().toLowerCase())
+
+  const totalRows = filteredOptions.length + (showCreateRow ? 1 : 0)
+  const createRowIndex = showCreateRow ? filteredOptions.length : -1
+
+  const moveActive = useCallback(
+    (delta: number) => {
+      setActiveIndex(prev => {
+        if (totalRows === 0) return -1
+        const start = prev < 0 ? (delta > 0 ? -1 : 0) : prev
+        let next = start + delta
+        if (next < 0) next = totalRows - 1
+        if (next >= totalRows) next = 0
+        // Skip disabled options.
+        const tries = totalRows
+        for (let i = 0; i < tries; i++) {
+          const opt = filteredOptions[next]
+          if (next === createRowIndex) return next
+          if (opt && !opt.disabled) return next
+          next = (next + (delta > 0 ? 1 : -1) + totalRows) % totalRows
+        }
+        return -1
+      })
+    },
+    [filteredOptions, totalRows, createRowIndex],
+  )
+
+  const handleTriggerKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (disabled) return
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault()
+          if (!open) setOpen(true)
+          else moveActive(1)
+          break
+        case 'ArrowUp':
+          event.preventDefault()
+          if (!open) setOpen(true)
+          else moveActive(-1)
+          break
+        case 'Home':
+          if (open) {
+            event.preventDefault()
+            setActiveIndex(0)
+          }
+          break
+        case 'End':
+          if (open) {
+            event.preventDefault()
+            setActiveIndex(totalRows - 1)
+          }
+          break
+        case 'Enter':
+          if (open) {
+            event.preventDefault()
+            if (activeIndex === createRowIndex && createRowIndex >= 0) {
+              handleCreate(query)
+            } else if (activeIndex >= 0 && filteredOptions[activeIndex]) {
+              handleSelectOption(filteredOptions[activeIndex])
+            }
+          } else {
+            event.preventDefault()
+            setOpen(true)
+          }
+          break
+        case ' ':
+          // Space opens dropdown; in combobox/async it's a regular character.
+          if (variant === 'dropdown' && !open) {
+            event.preventDefault()
+            setOpen(true)
+          }
+          break
+        case 'Escape':
+          if (open) {
+            event.preventDefault()
+            closeAndReturnFocus()
+          }
+          break
+        case 'Tab':
+          if (open) setOpen(false)
+          break
+      }
+    },
+    [disabled, open, moveActive, totalRows, activeIndex, createRowIndex, filteredOptions, handleCreate, handleSelectOption, query, variant, closeAndReturnFocus],
+  )
+
+  const handleQueryChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setQuery(event.target.value)
+      if (!open) setOpen(true)
+      // For combobox, clearing the input also clears the current value.
+      if (event.target.value === '' && currentValue !== undefined) {
+        commitValue('')
+      }
+    },
+    [open, currentValue, commitValue],
+  )
+
+  const handleInputFocus = useCallback(() => {
+    setOpen(true)
+  }, [])
+
+  // Trigger ref wiring so the imperative handle can focus whichever element
+  // currently drives the variant.
+  const handleTriggerRef = (node: HTMLInputElement | HTMLButtonElement | null) => {
+    triggerRef.current = node
+  }
+
+  // Visual state.
+  const status: 'danger' | undefined = error ? 'danger' : undefined
+
+  const classes = [
+    'iux-select',
+    `iux-select--${variant}`,
+    status && `iux-select--status-${status}`,
+    disabled && 'iux-select--disabled',
+    open && 'is-open',
+    stateLock === 'focus' && 'is-focus',
+    stateLock === 'hover' && 'is-hover',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  const describedBy = [
+    hint ? `${inputId}-hint` : undefined,
+    error ? `${inputId}-error` : undefined,
+  ]
+    .filter(Boolean)
+    .join(' ') || undefined
+
+  return (
+    <div ref={rootRef} className={classes} data-variant={variant} data-status={status ?? 'none'}>
+      {label && (
+        <label htmlFor={inputId} className="iux-select__label">
+          {label}
+          {required && <span className="iux-select__required" aria-hidden="true"> *</span>}
+        </label>
+      )}
+
+      {variant === 'native' ? (
+        <NativeSelect
+          inputId={inputId}
+          name={name}
+          value={currentValue}
+          placeholder={placeholder}
+          options={options}
+          disabled={disabled}
+          required={required}
+          ariaDescribedBy={describedBy}
+          status={status}
+          onChange={commitValue}
+        />
+      ) : (
+        <div className="iux-select__control">
+          {variant === 'dropdown' ? (
+            <button
+              ref={handleTriggerRef}
+              id={inputId}
+              type="button"
+              className="iux-select__trigger"
+              disabled={disabled}
+              aria-haspopup="listbox"
+              aria-expanded={open}
+              aria-controls={listboxId}
+              aria-required={required || undefined}
+              aria-invalid={status === 'danger' || undefined}
+              aria-describedby={describedBy}
+              aria-activedescendant={open && activeIndex >= 0 ? `${inputId}-opt-${activeIndex}` : undefined}
+              onClick={() => !disabled && setOpen(o => !o)}
+              onKeyDown={handleTriggerKeyDown}
+            >
+              <span className="iux-select__value" data-empty={displayLabel ? undefined : 'true'}>
+                {displayLabel || placeholder || ' '}
+              </span>
+              <Caret />
+            </button>
+          ) : (
+            <input
+              ref={handleTriggerRef}
+              id={inputId}
+              type="text"
+              role="combobox"
+              className="iux-select__trigger iux-select__input"
+              disabled={disabled}
+              required={required}
+              placeholder={placeholder}
+              value={query || (open ? '' : displayLabel)}
+              aria-haspopup="listbox"
+              aria-expanded={open}
+              aria-controls={listboxId}
+              aria-autocomplete="list"
+              aria-invalid={status === 'danger' || undefined}
+              aria-describedby={describedBy}
+              aria-activedescendant={open && activeIndex >= 0 ? `${inputId}-opt-${activeIndex}` : undefined}
+              onChange={handleQueryChange}
+              onFocus={handleInputFocus}
+              onKeyDown={handleTriggerKeyDown}
+              autoComplete="off"
+            />
+          )}
+
+          {(open || stateLock === 'open') && (
+            <ul
+              id={listboxId}
+              className="iux-select__listbox"
+              role="listbox"
+              aria-label={label}
+              tabIndex={-1}
+            >
+              {variant === 'async' && isLoading && (
+                <li className="iux-select__status" role="status" aria-live="polite">
+                  {loadingMessage}
+                </li>
+              )}
+
+              {!isLoading && filteredOptions.length === 0 && !showCreateRow && (
+                <li className="iux-select__status">{noOptionsMessage}</li>
+              )}
+
+              {grouped.map(g => (
+                <GroupRender
+                  key={g.group ?? '__ungrouped'}
+                  group={g}
+                  inputId={inputId}
+                  activeIndex={activeIndex}
+                  selectedValue={currentValue}
+                  onSelect={handleSelectOption}
+                  onHover={setActiveIndex}
+                  filteredOptions={filteredOptions}
+                />
+              ))}
+
+              {showCreateRow && (
+                <li
+                  id={`${inputId}-opt-${createRowIndex}`}
+                  className={[
+                    'iux-select__option',
+                    'iux-select__option--create',
+                    activeIndex === createRowIndex && 'is-active',
+                  ].filter(Boolean).join(' ')}
+                  role="option"
+                  aria-selected={false}
+                  onMouseDown={e => { e.preventDefault(); handleCreate(query) }}
+                  onMouseEnter={() => setActiveIndex(createRowIndex)}
+                >
+                  <span className="iux-select__option-label">+ Create "{query.trim()}"</span>
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {hint && !error && (
+        <span id={`${inputId}-hint`} className="iux-select__hint">{hint}</span>
+      )}
+      {error && (
+        <span id={`${inputId}-error`} className="iux-select__error" role="alert">{error}</span>
+      )}
+    </div>
+  )
+})
+
+interface NativeSelectProps {
+  inputId: string
+  name?: string
+  value?: string
+  placeholder?: string
+  options: SelectOption[]
+  disabled?: boolean
+  required?: boolean
+  ariaDescribedBy?: string
+  status?: 'danger'
+  onChange: (value: string) => void
+}
+
+function NativeSelect({
+  inputId, name, value, placeholder, options, disabled, required, ariaDescribedBy, status, onChange,
+}: NativeSelectProps) {
+  const grouped = useMemo(() => groupOptions(options), [options])
+  return (
+    <div className="iux-select__control">
+      <select
+        id={inputId}
+        name={name}
+        className="iux-select__trigger iux-select__native"
+        disabled={disabled}
+        required={required}
+        value={value ?? ''}
+        aria-invalid={status === 'danger' || undefined}
+        aria-describedby={ariaDescribedBy}
+        onChange={e => onChange(e.target.value)}
+      >
+        {placeholder !== undefined && (
+          <option value="" disabled={required}>{placeholder}</option>
+        )}
+        {grouped.map(g =>
+          g.group ? (
+            <optgroup key={g.group} label={g.group}>
+              {g.options.map(o => (
+                <option key={o.value} value={o.value} disabled={o.disabled}>{o.label}</option>
+              ))}
+            </optgroup>
+          ) : (
+            g.options.map(o => (
+              <option key={o.value} value={o.value} disabled={o.disabled}>{o.label}</option>
+            ))
+          ),
+        )}
+      </select>
+      <Caret />
+    </div>
+  )
+}
+
+interface GroupRenderProps {
+  group: GroupedOptions
+  inputId: string
+  activeIndex: number
+  selectedValue?: string
+  onSelect: (opt: SelectOption) => void
+  onHover: (index: number) => void
+  filteredOptions: SelectOption[]
+}
+
+function GroupRender({
+  group, inputId, activeIndex, selectedValue, onSelect, onHover, filteredOptions,
+}: GroupRenderProps) {
+  return (
+    <>
+      {group.group && (
+        <li className="iux-select__group-heading" role="presentation">{group.group}</li>
+      )}
+      {group.options.map(opt => {
+        const absoluteIndex = filteredOptions.indexOf(opt)
+        const optId = `${inputId}-opt-${absoluteIndex}`
+        const selected = opt.value === selectedValue
+        const active = absoluteIndex === activeIndex
+        return (
+          <li
+            key={opt.value}
+            id={optId}
+            className={[
+              'iux-select__option',
+              opt.disabled && 'is-disabled',
+              selected && 'is-selected',
+              active && 'is-active',
+            ].filter(Boolean).join(' ')}
+            role="option"
+            aria-selected={selected}
+            aria-disabled={opt.disabled || undefined}
+            onMouseDown={e => { e.preventDefault(); onSelect(opt) }}
+            onMouseEnter={() => onHover(absoluteIndex)}
+          >
+            <span className="iux-select__option-label">{opt.label}</span>
+            {opt.description && (
+              <span className="iux-select__option-description">{opt.description}</span>
+            )}
+            {selected && <Check />}
+          </li>
+        )
+      })}
+    </>
+  )
+}
+
+function Caret() {
+  return (
+    <svg className="iux-select__caret" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true">
+      <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function Check() {
+  return (
+    <svg className="iux-select__check" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true">
+      <path d="M3 8.5l3.2 3L13 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}

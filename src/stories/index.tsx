@@ -4,13 +4,15 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import { ButtonStories } from '../components/Button/Button.stories'
 import { TextInputStories } from '../components/TextInput/TextInput.stories'
 import { CardStories } from '../components/Card/Card.stories'
+import { SelectStories } from '../components/Select/Select.stories'
 
-type Component = 'button' | 'textinput' | 'card'
+type Component = 'button' | 'textinput' | 'card' | 'select'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
   { id: 'textinput', label: 'Text input', render: () => <TextInputStories /> },
   { id: 'card', label: 'Card', render: () => <CardStories /> },
+  { id: 'select', label: 'Select', render: () => <SelectStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
