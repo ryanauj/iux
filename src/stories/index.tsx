@@ -16,8 +16,10 @@ import { TooltipStories } from '../components/Tooltip/Tooltip.stories'
 import { PaginationStories } from '../components/Pagination/Pagination.stories'
 import { DatePickerStories } from '../components/DatePicker/DatePicker.stories'
 import { SidebarStories } from '../components/Sidebar/Sidebar.stories'
+import { EmptyStateStories } from '../components/EmptyState/EmptyState.stories'
+import { LoadingStories } from '../components/Loading/Loading.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -35,6 +37,8 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'pagination', label: 'Pagination', render: () => <PaginationStories /> },
   { id: 'datepicker', label: 'Date picker', render: () => <DatePickerStories /> },
   { id: 'sidebar', label: 'Sidebar', render: () => <SidebarStories /> },
+  { id: 'empty', label: 'Empty state', render: () => <EmptyStateStories /> },
+  { id: 'loading', label: 'Loading', render: () => <LoadingStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
