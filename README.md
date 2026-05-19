@@ -5,7 +5,7 @@ variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
 Skeuomorphism, Tron, Editorial, AAA) applied to any of them.
 
-**Live at:** `https://<owner>.github.io/iux/` _(once Pages is enabled)_
+**Live at:** <https://ryanauj.github.io/iux/>
 
 ## Status
 

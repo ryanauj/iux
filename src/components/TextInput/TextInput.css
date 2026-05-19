@@ -1,0 +1,282 @@
+/*
+ * TextInput — one component, four functional rungs (bordered → floating →
+ * live-validate → command). The DOM is the same across variants; CSS
+ * makes them behave differently. Every value resolves through a semantic
+ * token.
+ */
+
+.iux-text-input {
+  --iux-text-input-bg: var(--color-surface-sunken);
+  --iux-text-input-border: var(--color-border-default);
+  --iux-text-input-border-hover: var(--color-border-strong);
+  --iux-text-input-border-focus: var(--color-border-focus);
+  --iux-text-input-content: var(--color-content-primary);
+  --iux-text-input-placeholder: var(--color-content-muted);
+  --iux-text-input-status: transparent;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 24rem;
+  font-family: var(--type-body-family);
+}
+
+.iux-text-input__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-primary);
+}
+
+.iux-text-input__required {
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-text-input__control {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: var(--iux-text-input-bg);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-text-input-border);
+  border-radius: var(--radius-md);
+
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-text-input__control:hover,
+.iux-text-input.is-hover .iux-text-input__control {
+  border-color: var(--iux-text-input-border-hover);
+}
+
+.iux-text-input__control:focus-within,
+.iux-text-input.is-focus .iux-text-input__control {
+  border-color: var(--iux-text-input-border-focus);
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-text-input__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--iux-text-input-content);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
+  letter-spacing: var(--type-body-tracking);
+}
+
+.iux-text-input__input::placeholder {
+  color: var(--iux-text-input-placeholder);
+}
+
+.iux-text-input__leading,
+.iux-text-input__trailing,
+.iux-text-input__status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--space-3);
+  color: var(--color-content-secondary);
+}
+
+.iux-text-input__leading + .iux-text-input__input,
+.iux-text-input__ghost + .iux-text-input__input {
+  padding-inline-start: 0;
+}
+
+.iux-text-input__input:has(+ .iux-text-input__trailing),
+.iux-text-input__input:has(+ .iux-text-input__status-icon) {
+  padding-inline-end: 0;
+}
+
+.iux-text-input__hint,
+.iux-text-input__error,
+.iux-text-input__validation {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  letter-spacing: var(--type-caption-tracking);
+  color: var(--color-content-secondary);
+}
+
+.iux-text-input__error,
+.iux-text-input__validation[data-status='danger'] {
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-text-input__validation[data-status='success'] {
+  color: var(--color-intent-success-bg);
+}
+
+.iux-text-input__validation[data-status='warning'] {
+  color: var(--color-intent-warning-bg);
+}
+
+/* ---------- Status colors at the field level (live-validate, error) ---------- */
+
+.iux-text-input--status-success {
+  --iux-text-input-border: var(--color-intent-success-border);
+  --iux-text-input-border-hover: var(--color-intent-success-border);
+  --iux-text-input-border-focus: var(--color-intent-success-border);
+  --iux-text-input-status: var(--color-intent-success-bg);
+}
+
+.iux-text-input--status-warning {
+  --iux-text-input-border: var(--color-intent-warning-border);
+  --iux-text-input-border-hover: var(--color-intent-warning-border);
+  --iux-text-input-border-focus: var(--color-intent-warning-border);
+  --iux-text-input-status: var(--color-intent-warning-bg);
+}
+
+.iux-text-input--status-danger {
+  --iux-text-input-border: var(--color-intent-danger-border);
+  --iux-text-input-border-hover: var(--color-intent-danger-border);
+  --iux-text-input-border-focus: var(--color-intent-danger-border);
+  --iux-text-input-status: var(--color-intent-danger-bg);
+}
+
+.iux-text-input__status-icon {
+  color: var(--iux-text-input-status);
+}
+
+/* ---------- Disabled / readonly ---------- */
+
+.iux-text-input--disabled .iux-text-input__control {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-text-input--disabled .iux-text-input__input {
+  cursor: not-allowed;
+}
+
+.iux-text-input--readonly .iux-text-input__control {
+  background-color: var(--color-surface-base);
+}
+
+/* ---------- Variant: floating ----------
+ * The label sits on top of the input box. When the input has no content
+ * (placeholder is showing) the label drops down to baseline; on focus or
+ * once filled it floats up. Implemented with :placeholder-shown so no JS
+ * is needed; the component just injects a space placeholder when none
+ * was supplied.
+ */
+.iux-text-input--floating .iux-text-input__control {
+  align-items: stretch;
+}
+
+.iux-text-input--floating .iux-text-input__input {
+  padding-block-start: calc(var(--space-4) + var(--space-1));
+  padding-block-end: var(--space-1);
+}
+
+.iux-text-input__floating-label {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-content-muted);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
+  background-color: var(--iux-text-input-bg);
+  padding-inline: var(--space-1);
+  transition-property: transform, font-size, color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-text-input--floating .iux-text-input__input:focus + .iux-text-input__floating-label,
+.iux-text-input--floating .iux-text-input__input:not(:placeholder-shown) + .iux-text-input__floating-label,
+.iux-text-input--floating.is-filled .iux-text-input__floating-label,
+.iux-text-input--floating.is-focus .iux-text-input__floating-label {
+  transform: translate(calc(var(--space-1) * -1), calc(var(--space-4) * -1));
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  color: var(--iux-text-input-border-focus);
+}
+
+/* When a leading icon is present, push the floating label past it. */
+.iux-text-input--floating .iux-text-input__leading + .iux-text-input__input + .iux-text-input__floating-label {
+  inset-inline-start: var(--space-7);
+}
+
+/* ---------- Variant: command ----------
+ * Bigger field, ghost-text completion. The ghost overlays the input with
+ * a transparent "spacer" matching what the user has typed; the suggestion
+ * remainder sits to its right in muted color and snaps in on Tab.
+ */
+.iux-text-input--command .iux-text-input__control {
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-pill);
+  border-width: var(--border-width-thick);
+}
+
+.iux-text-input--command .iux-text-input__input {
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+}
+
+.iux-text-input--command .iux-text-input__leading {
+  padding-inline-start: var(--space-4);
+  color: var(--color-content-secondary);
+}
+
+.iux-text-input__ghost {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  pointer-events: none;
+  white-space: pre;
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+  line-height: var(--type-subheading-line-height);
+  color: var(--color-content-muted);
+  z-index: 0;
+}
+
+.iux-text-input--command .iux-text-input__leading + .iux-text-input__ghost {
+  inset-inline-start: var(--space-7);
+}
+
+.iux-text-input__ghost-spacer {
+  visibility: hidden;
+}
+
+.iux-text-input__ghost-rest::before {
+  /* Hairline pre-space so the suggestion doesn't kiss the caret. */
+  content: '';
+}
+
+.iux-text-input--command .iux-text-input__input {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}

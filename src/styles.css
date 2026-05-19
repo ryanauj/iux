@@ -1,44 +1,156 @@
-:root {
-  color-scheme: light dark;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  line-height: 1.5;
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: center;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: Canvas;
   color: CanvasText;
 }
 
-.placeholder {
-  max-width: 42rem;
-  padding: 2rem 1.5rem;
+/*
+ * Palette root — every palette's tokens land here as CSS custom
+ * properties. Components below read only these vars.
+ */
+.palette-root {
+  background: var(--color-surface-base);
+  color: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line-height);
+  letter-spacing: var(--type-body-tracking);
 }
 
-.placeholder h1 {
-  margin: 0 0 1rem;
-  font-size: 2.5rem;
-  letter-spacing: -0.02em;
+/*
+ * Engine-level reduced-motion handler.
+ *
+ * The contract says engines honor `prefers-reduced-motion`, not components.
+ * We collapse every per-palette duration to its `instant` value (always
+ * the zero-duration slot by contract) at the palette-root level. Component
+ * CSS keeps reading `--motion-duration-*` and the flattening is transparent.
+ *
+ * AAA already sets every duration to `instant`; this branch covers the
+ * other palettes without per-component code.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .palette-root {
+    --motion-duration-fast: var(--motion-duration-instant);
+    --motion-duration-base: var(--motion-duration-instant);
+    --motion-duration-slow: var(--motion-duration-instant);
+  }
 }
 
-.placeholder p {
-  margin: 0 0 1rem;
+/*
+ * Stories scaffold — the only consumer of the components in this repo.
+ * Sized via space tokens once a palette is mounted; outside any palette
+ * we fall back to standard CSS keywords so the unstyled boot doesn't crash.
+ */
+.stories {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
-.placeholder__status {
-  padding: 0.75rem 1rem;
-  border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
-  border-radius: 6px;
-  background: color-mix(in srgb, CanvasText 4%, transparent);
+.stories__intro {
+  max-width: 60rem;
 }
 
-.placeholder code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.95em;
-  padding: 0.05em 0.3em;
-  border-radius: 3px;
-  background: color-mix(in srgb, CanvasText 8%, transparent);
+.stories__intro h1 {
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-tracking);
+  text-transform: var(--type-display-text-transform);
+  margin: 0 0 var(--space-3);
+}
+
+.stories__intro p {
+  font-family: var(--type-body-family);
+  margin: 0 0 var(--space-3);
+}
+
+.stories__palette {
+  padding: var(--space-5);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.stories__palette-title {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  margin: 0 0 var(--space-4);
+}
+
+.stories__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.stories__row-title {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.stories__cells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.stories__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 10rem;
+}
+
+.stories__cell-label {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.stories__palette-switch {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+}
+
+.stories__palette-switch button {
+  font: inherit;
+  padding: var(--space-2) var(--space-3);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  background: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.stories__palette-switch button[aria-pressed='true'] {
+  background: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
 }
