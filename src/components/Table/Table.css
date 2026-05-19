@@ -1,0 +1,239 @@
+/*
+ * Table — one component, four functional rungs (static → sortable →
+ * resizable → editable). Header is always a real <thead>, body is real
+ * <tr>+<td> so semantics (and screen reader navigation) stay intact.
+ * Virtualization (editable + height) uses spacer rows to preserve scroll
+ * height while only rendering a window of rows.
+ */
+
+.iux-table {
+  --iux-table-row-height: var(--space-7);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.iux-table__scroll {
+  overflow: auto;
+  position: relative;
+}
+
+.iux-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.iux-table__caption {
+  caption-side: top;
+  text-align: start;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-raised);
+}
+
+.iux-table__thead {
+  background-color: var(--color-surface-sunken);
+}
+
+.iux-table--sticky .iux-table__thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background-color: var(--color-surface-sunken);
+}
+
+.iux-table--sticky .iux-table__th--select,
+.iux-table--sticky .iux-table__td--select {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 2;
+  background-color: var(--color-surface-raised);
+}
+
+.iux-table--sticky .iux-table__thead .iux-table__th--select {
+  z-index: 3;
+  background-color: var(--color-surface-sunken);
+}
+
+.iux-table__th,
+.iux-table__td {
+  text-align: start;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-block-end-width: var(--border-width-hairline);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+  vertical-align: middle;
+}
+
+.iux-table__th {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+  position: relative;
+}
+
+.iux-table__th--align-end,
+.iux-table__td--align-end { text-align: end; }
+
+.iux-table__th--align-center,
+.iux-table__td--align-center { text-align: center; }
+
+.iux-table__th--select,
+.iux-table__td--select { width: var(--space-7); text-align: center; }
+
+.iux-table__th-button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-table__th-button:hover { color: var(--color-content-primary); }
+
+.iux-table__th-button:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-table__sort-glyph path[data-arrow='up']   { opacity: 0.4; }
+.iux-table__sort-glyph path[data-arrow='down'] { opacity: 0.4; }
+.iux-table__sort-glyph[data-dir='asc']  path[data-arrow='up']   { opacity: 1; }
+.iux-table__sort-glyph[data-dir='desc'] path[data-arrow='down'] { opacity: 1; }
+
+/* Zebra striping on static rows; selected wins. */
+.iux-table__tbody .iux-table__tr:nth-of-type(odd) {
+  background-color: var(--color-surface-base);
+}
+
+.iux-table__tbody .iux-table__tr:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-table__tbody .iux-table__tr.is-selected {
+  background-color: color-mix(in srgb, var(--color-intent-primary-bg) 14%, transparent);
+}
+
+/* ---------- Resize handle ---------- */
+
+.iux-table__resize-handle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  width: var(--space-2);
+  cursor: col-resize;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+  touch-action: none;
+}
+
+.iux-table__resize-handle:hover,
+.iux-table__resize-handle:active {
+  background-color: var(--color-intent-primary-bg);
+}
+
+/* ---------- Column visibility menu ---------- */
+
+.iux-table__toolbar {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface-sunken);
+  border-block-end-width: var(--border-width-hairline);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+}
+
+.iux-table__visibility-trigger {
+  appearance: none;
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  cursor: pointer;
+}
+
+.iux-table__visibility-menu {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: var(--space-3);
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  z-index: 10;
+  min-width: 12rem;
+}
+
+.iux-table__visibility-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--type-body-size);
+}
+
+/* ---------- Save dot (editable) ---------- */
+
+.iux-table__cell-value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-table__save-dot {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  display: inline-block;
+  flex: none;
+}
+
+.iux-table__save-dot--dirty  { background-color: var(--color-intent-warning-bg); }
+.iux-table__save-dot--saving { background-color: var(--color-intent-info-bg); animation: iux-table-pulse var(--motion-duration-slow) ease-in-out infinite; }
+.iux-table__save-dot--saved  { background-color: var(--color-intent-success-bg); }
+.iux-table__save-dot--error  { background-color: var(--color-intent-danger-bg); }
+
+@keyframes iux-table-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-table__save-dot--saving { animation: none; }
+}

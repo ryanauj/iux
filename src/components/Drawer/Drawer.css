@@ -1,0 +1,233 @@
+/*
+ * Drawer / Sheet — one component, four functional rungs (side → sectioned
+ * → navigable → sheet). Side variant slides from any edge; sheet is a
+ * pinned-bottom resizable surface with snap points and drag-to-dismiss.
+ */
+
+.iux-drawer__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-surface-scrim);
+  z-index: 1000;
+  animation: iux-drawer-fade var(--motion-duration-base) var(--motion-easing-out);
+}
+
+@keyframes iux-drawer-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.iux-drawer {
+  position: absolute;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  box-shadow: var(--elevation-overlay);
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+  animation: iux-drawer-slide var(--motion-duration-base) var(--motion-easing-out);
+}
+
+@keyframes iux-drawer-slide {
+  from { transform: var(--iux-drawer-from, translateX(100%)); }
+  to   { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-drawer__scrim,
+  .iux-drawer { animation: none; }
+}
+
+/* ---------- Sides ---------- */
+
+.iux-drawer--side-right {
+  --iux-drawer-from: translateX(100%);
+  inset-block: 0;
+  inset-inline-end: 0;
+  height: 100vh;
+  width: 24rem;
+  border-inline-start-width: var(--border-width-thin);
+  border-inline-end: none;
+}
+
+.iux-drawer--side-left {
+  --iux-drawer-from: translateX(-100%);
+  inset-block: 0;
+  inset-inline-start: 0;
+  height: 100vh;
+  width: 24rem;
+  border-inline-end-width: var(--border-width-thin);
+  border-inline-start: none;
+}
+
+.iux-drawer--side-top {
+  --iux-drawer-from: translateY(-100%);
+  inset-inline: 0;
+  inset-block-start: 0;
+  width: 100%;
+  height: 16rem;
+  border-block-end-width: var(--border-width-thin);
+}
+
+.iux-drawer--side-bottom,
+.iux-drawer--sheet {
+  --iux-drawer-from: translateY(100%);
+  inset-inline: 0;
+  inset-block-end: 0;
+  width: 100%;
+  height: 16rem;
+  border-block-start-width: var(--border-width-thin);
+  border-start-start-radius: var(--radius-lg);
+  border-start-end-radius: var(--radius-lg);
+}
+
+/* Sizes */
+.iux-drawer--side-right.iux-drawer--size-sm,
+.iux-drawer--side-left.iux-drawer--size-sm { width: 18rem; }
+.iux-drawer--side-right.iux-drawer--size-md,
+.iux-drawer--side-left.iux-drawer--size-md { width: 24rem; }
+.iux-drawer--side-right.iux-drawer--size-lg,
+.iux-drawer--side-left.iux-drawer--size-lg { width: 36rem; }
+
+/* ---------- Header / body / footer ---------- */
+
+.iux-drawer__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+.iux-drawer__header-text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-drawer__title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-drawer__breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-drawer__crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-drawer__back,
+.iux-drawer__close {
+  appearance: none;
+  background: transparent;
+  border: none;
+  width: var(--space-6);
+  height: var(--space-6);
+  font-family: var(--type-body-family);
+  font-size: var(--type-subheading-size);
+  cursor: pointer;
+  color: var(--color-content-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.iux-drawer__back:hover,
+.iux-drawer__close:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+  color: var(--color-content-primary);
+}
+
+.iux-drawer__body {
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.iux-drawer__body--scroll {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.iux-drawer__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.iux-drawer__footer--sticky {
+  position: sticky;
+  inset-block-end: 0;
+  background-color: var(--color-surface-overlay);
+  border-block-start-width: var(--border-width-hairline);
+  border-block-start-style: solid;
+  border-block-start-color: var(--color-border-subtle);
+}
+
+.iux-drawer__btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.iux-drawer__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  border-color: var(--color-intent-primary-border);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-drawer__btn--neutral {
+  background-color: var(--color-intent-neutral-bg);
+  border-color: var(--color-intent-neutral-border);
+  color: var(--color-intent-neutral-content);
+}
+
+/* ---------- Sheet handle ---------- */
+
+.iux-drawer--sheet {
+  transition: height var(--motion-duration-base) var(--motion-easing-spring), transform var(--motion-duration-fast) var(--motion-easing-out);
+}
+
+.iux-drawer__handle {
+  align-self: center;
+  width: var(--space-7);
+  height: var(--space-1);
+  background-color: var(--color-content-muted);
+  border-radius: var(--radius-pill);
+  margin-block: var(--space-2);
+  cursor: grab;
+  touch-action: none;
+}
+
+.iux-drawer__handle:active { cursor: grabbing; }
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-drawer--sheet { transition: none; }
+}

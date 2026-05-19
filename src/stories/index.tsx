@@ -4,13 +4,77 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import { ButtonStories } from '../components/Button/Button.stories'
 import { TextInputStories } from '../components/TextInput/TextInput.stories'
 import { CardStories } from '../components/Card/Card.stories'
+import { SelectStories } from '../components/Select/Select.stories'
+import { ToggleStories } from '../components/Toggle/Toggle.stories'
+import { CheckboxStories } from '../components/Checkbox/Checkbox.stories'
+import { SliderStories } from '../components/Slider/Slider.stories'
+import { ModalStories } from '../components/Modal/Modal.stories'
+import { TableStories } from '../components/Table/Table.stories'
+import { TabsStories } from '../components/Tabs/Tabs.stories'
+import { ToastStories } from '../components/Toast/Toast.stories'
+import { TooltipStories } from '../components/Tooltip/Tooltip.stories'
+import { PaginationStories } from '../components/Pagination/Pagination.stories'
+import { DatePickerStories } from '../components/DatePicker/DatePicker.stories'
+import { SidebarStories } from '../components/Sidebar/Sidebar.stories'
+import { EmptyStateStories } from '../components/EmptyState/EmptyState.stories'
+import { LoadingStories } from '../components/Loading/Loading.stories'
+import { TokenFieldStories } from '../components/TokenField/TokenField.stories'
+import { DrawerStories } from '../components/Drawer/Drawer.stories'
+import { SegmentedStories } from '../components/Segmented/Segmented.stories'
+import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
+import { StackedToastsStories } from '../components/StackedToasts/StackedToasts.stories'
+import { BentoStories } from '../components/Bento/Bento.stories'
+import { VirtualListStories } from '../components/VirtualList/VirtualList.stories'
+import { StepperStories } from '../components/Stepper/Stepper.stories'
+import { CommandPaletteStories } from '../components/CommandPalette/CommandPalette.stories'
+import { OptimisticUndoStories } from '../components/OptimisticUndo/OptimisticUndo.stories'
+import { SpotlightStories } from '../components/Spotlight/Spotlight.stories'
+import { DiffViewStories } from '../components/DiffView/DiffView.stories'
+import { NLBarStories } from '../components/NLBar/NLBar.stories'
+import { PropertyInspectorStories } from '../components/PropertyInspector/PropertyInspector.stories'
+import { PresenceStories } from '../components/Presence/Presence.stories'
+import { TimelineStories } from '../components/Timeline/Timeline.stories'
+import { BezierEditorStories } from '../components/BezierEditor/BezierEditor.stories'
+import { SpatialCanvasStories } from '../components/SpatialCanvas/SpatialCanvas.stories'
 
-type Component = 'button' | 'textinput' | 'card'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence' | 'timeline' | 'bezier' | 'canvas'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
   { id: 'textinput', label: 'Text input', render: () => <TextInputStories /> },
   { id: 'card', label: 'Card', render: () => <CardStories /> },
+  { id: 'select', label: 'Select', render: () => <SelectStories /> },
+  { id: 'toggle', label: 'Toggle', render: () => <ToggleStories /> },
+  { id: 'checkbox', label: 'Checkbox', render: () => <CheckboxStories /> },
+  { id: 'slider', label: 'Slider', render: () => <SliderStories /> },
+  { id: 'modal', label: 'Modal', render: () => <ModalStories /> },
+  { id: 'table', label: 'Table', render: () => <TableStories /> },
+  { id: 'tabs', label: 'Tabs', render: () => <TabsStories /> },
+  { id: 'toast', label: 'Toast', render: () => <ToastStories /> },
+  { id: 'tooltip', label: 'Tooltip', render: () => <TooltipStories /> },
+  { id: 'pagination', label: 'Pagination', render: () => <PaginationStories /> },
+  { id: 'datepicker', label: 'Date picker', render: () => <DatePickerStories /> },
+  { id: 'sidebar', label: 'Sidebar', render: () => <SidebarStories /> },
+  { id: 'empty', label: 'Empty state', render: () => <EmptyStateStories /> },
+  { id: 'loading', label: 'Loading', render: () => <LoadingStories /> },
+  { id: 'tokenfield', label: 'Token field', render: () => <TokenFieldStories /> },
+  { id: 'drawer', label: 'Drawer', render: () => <DrawerStories /> },
+  { id: 'segmented', label: 'Segmented', render: () => <SegmentedStories /> },
+  { id: 'inlineedit', label: 'Inline edit', render: () => <InlineEditStories /> },
+  { id: 'stackedtoasts', label: 'Stacked toasts', render: () => <StackedToastsStories /> },
+  { id: 'bento', label: 'Bento grid', render: () => <BentoStories /> },
+  { id: 'virtuallist', label: 'Virtual list', render: () => <VirtualListStories /> },
+  { id: 'stepper', label: 'Stepper', render: () => <StepperStories /> },
+  { id: 'cmdk', label: 'Command palette', render: () => <CommandPaletteStories /> },
+  { id: 'undo', label: 'Optimistic undo', render: () => <OptimisticUndoStories /> },
+  { id: 'spotlight', label: 'Spotlight', render: () => <SpotlightStories /> },
+  { id: 'diff', label: 'Diff / merge', render: () => <DiffViewStories /> },
+  { id: 'nlbar', label: 'NL input bar', render: () => <NLBarStories /> },
+  { id: 'inspector', label: 'Property inspector', render: () => <PropertyInspectorStories /> },
+  { id: 'presence', label: 'Presence layer', render: () => <PresenceStories /> },
+  { id: 'timeline', label: 'Timeline', render: () => <TimelineStories /> },
+  { id: 'bezier', label: 'Bezier editor', render: () => <BezierEditorStories /> },
+  { id: 'canvas', label: 'Spatial canvas', render: () => <SpatialCanvasStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]

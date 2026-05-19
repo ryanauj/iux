@@ -1,0 +1,150 @@
+/*
+ * Property inspector — one component, four functional rungs (flat →
+ * grouped → multi → constrained). Aside panel of label + control rows;
+ * multi-edit surfaces "Mixed" for fields that differ; constrained variant
+ * lets the host compute per-field disabled + valueOverride from current
+ * values so e.g. auto-width can disable the manual width input.
+ */
+
+.iux-inspector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  min-width: 14rem;
+  max-width: 22rem;
+}
+
+.iux-inspector__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.iux-inspector__title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-inspector__meta {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.iux-inspector__empty {
+  margin: 0;
+  color: var(--color-content-muted);
+  font-style: italic;
+}
+
+.iux-inspector__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-inspector__section-toggle {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-1);
+  padding-inline: 0;
+  cursor: pointer;
+}
+
+.iux-inspector__caret { transition: transform var(--motion-duration-fast) var(--motion-easing-standard); }
+.iux-inspector__caret[data-expanded='false'] { transform: rotate(-90deg); }
+
+.iux-inspector__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-inspector__row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-inspector__row.is-disabled { opacity: 0.6; }
+
+.iux-inspector__row-label {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-inspector__row.is-mixed .iux-inspector__control::placeholder { color: var(--color-content-muted); }
+
+.iux-inspector__control {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  min-width: 0;
+}
+
+.iux-inspector__control:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-inspector__numeric {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-inspector__unit {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.iux-inspector__color {
+  width: var(--space-7);
+  height: var(--space-6);
+  padding: 0;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: transparent;
+}

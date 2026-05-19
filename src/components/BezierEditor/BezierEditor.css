@@ -1,0 +1,154 @@
+/*
+ * Bezier / curve editor — one component, four functional rungs (single →
+ * multi → snap → presets). Anchors and handles render as SVG nodes; drag
+ * gestures are captured at the SVG so they keep tracking outside the
+ * canvas bounds. Vector-effect=non-scaling-stroke keeps stroke widths
+ * constant regardless of the SVG's CSS scaling.
+ */
+
+.iux-bezier {
+  display: flex;
+  gap: var(--space-3);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.iux-bezier__canvas-wrap {
+  flex: none;
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+}
+
+.iux-bezier__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-sm);
+  touch-action: none;
+}
+
+.iux-bezier__grid { color: var(--color-border-subtle); }
+
+.iux-bezier__path {
+  color: var(--color-intent-primary-bg);
+}
+
+.iux-bezier__anchor {
+  fill: var(--color-surface-overlay);
+  stroke: var(--color-content-primary);
+  stroke-width: 0.005;
+  cursor: grab;
+  vector-effect: non-scaling-stroke;
+}
+
+.iux-bezier__anchor.is-smooth { fill: var(--color-intent-primary-bg); }
+.iux-bezier__anchor.is-selected { stroke: var(--color-intent-warning-bg); stroke-width: 0.01; }
+
+.iux-bezier__handle {
+  fill: var(--color-intent-info-bg);
+  cursor: grab;
+}
+
+.iux-bezier__panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.iux-bezier__panel-title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-bezier__row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-bezier__row span { color: var(--color-content-secondary); font-family: var(--type-caption-family); font-size: var(--type-caption-size); }
+
+.iux-bezier__row input {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+}
+
+.iux-bezier__hint {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.iux-bezier__presets ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-bezier__presets button {
+  appearance: none;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  cursor: pointer;
+  text-align: start;
+}
+
+.iux-bezier__presets button:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+.iux-bezier__save {
+  appearance: none;
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-intent-primary-border);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  cursor: pointer;
+}

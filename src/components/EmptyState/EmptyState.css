@@ -1,0 +1,207 @@
+/*
+ * Empty state — one component, four functional rungs (minimal →
+ * illustrated → checklist → generative). Shared frame is a centered
+ * stack; each variant adds slots (illustration, action row, steps,
+ * editable seed fields).
+ */
+
+.iux-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: dashed;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-empty__illustration {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+}
+
+.iux-empty__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-empty__title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+}
+
+.iux-empty__description {
+  margin: 0;
+  color: var(--color-content-secondary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.iux-empty__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.iux-empty__btn {
+  appearance: none;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-md);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  cursor: pointer;
+}
+
+.iux-empty__btn:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-empty__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  border-color: var(--color-intent-primary-border);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-empty__btn--ghost {
+  background: transparent;
+  border-color: var(--color-border-default);
+  color: var(--color-content-primary);
+}
+
+/* ---------- Checklist ---------- */
+
+.iux-empty__progress {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-empty__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 28rem;
+  text-align: start;
+}
+
+.iux-empty__step {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.iux-empty__step.is-done .iux-empty__step-marker {
+  color: var(--color-intent-success-bg);
+}
+
+.iux-empty__step-marker {
+  font-family: var(--type-code-family);
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-muted);
+  width: var(--space-5);
+  text-align: center;
+}
+
+.iux-empty__step-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-empty__step-label {
+  font-weight: var(--type-label-weight);
+}
+
+.iux-empty__step-description {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+/* ---------- Generative ---------- */
+
+.iux-empty__generative {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 28rem;
+}
+
+.iux-empty__caption {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-empty__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.iux-empty__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: start;
+}
+
+.iux-empty__field-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+}
+
+.iux-empty__field-input {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-base);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+}

@@ -1,0 +1,103 @@
+/*
+ * Virtualized list — one component, four functional rungs (fixed →
+ * variable → sections → grid). Padder div carries the full scrollable
+ * height so the native scrollbar reflects total content; rows render
+ * absolutely-positioned inside it within the visible window.
+ */
+
+.iux-vlist {
+  display: flex;
+  gap: var(--space-3);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.iux-vlist__scroll {
+  position: relative;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.iux-vlist__padder {
+  position: relative;
+  width: 100%;
+}
+
+.iux-vlist__row,
+.iux-vlist__grid-cell {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-block-end-width: var(--border-width-hairline);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+  box-sizing: border-box;
+}
+
+.iux-vlist__row--measured {
+  position: absolute;
+  /* Height is auto so the row's content determines it, then measured. */
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+}
+
+.iux-vlist__grid-cell {
+  inset-inline-end: auto;
+}
+
+.iux-vlist__sticky-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-block-end-width: var(--border-width-thin);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-default);
+}
+
+.iux-vlist__section-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 9rem;
+  padding: var(--space-2);
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.iux-vlist__section-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  text-align: start;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-vlist__section-btn:hover { color: var(--color-content-primary); background-color: var(--color-intent-neutral-bg-hover); }
+.iux-vlist__section-btn.is-active { color: var(--color-content-primary); font-weight: var(--type-subheading-weight); }

@@ -1,0 +1,225 @@
+/*
+ * Sidebar — one component, four functional rungs (links → groups → rail
+ * → search). Shared: list of items each rendered as a link or button,
+ * active marker on the inline-start edge. Rail variant collapses to icon-
+ * only and adds a resize handle. Search filters all items live.
+ */
+
+.iux-sidebar {
+  --iux-sidebar-row-h: var(--space-6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+  height: 100%;
+  background-color: var(--color-surface-raised);
+  border-inline-end-width: var(--border-width-thin);
+  border-inline-end-style: solid;
+  border-inline-end-color: var(--color-border-subtle);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  transition: width var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-sidebar.is-collapsed { width: 4rem; }
+
+.iux-sidebar__scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-block: var(--space-3);
+}
+
+.iux-sidebar__section {
+  padding-block-end: var(--space-3);
+}
+
+.iux-sidebar__section-title,
+.iux-sidebar__section-toggle {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--color-content-muted);
+  padding-inline: var(--space-4);
+  margin: 0 0 var(--space-1);
+}
+
+.iux-sidebar__section-toggle {
+  appearance: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: start;
+}
+
+.iux-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-sidebar__item {
+  position: relative;
+}
+
+.iux-sidebar__link {
+  appearance: none;
+  background: transparent;
+  border: none;
+  text-align: start;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  width: 100%;
+  font: inherit;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  border-radius: 0;
+  transition-property: background-color, color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-sidebar__link:hover:not(:disabled) {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-sidebar__link:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: calc(var(--effect-focus-ring-offset) * -1);
+}
+
+.iux-sidebar__item.is-active .iux-sidebar__link {
+  background-color: color-mix(in srgb, var(--color-intent-primary-bg) 14%, transparent);
+  color: var(--color-content-primary);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-sidebar__item.is-active::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  width: var(--border-width-thick);
+  background-color: var(--color-intent-primary-bg);
+  border-radius: var(--radius-pill);
+}
+
+.iux-sidebar__item.is-icon-only .iux-sidebar__link {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.iux-sidebar__item.is-icon-only .iux-sidebar__label {
+  display: none;
+}
+
+.iux-sidebar__item.is-disabled .iux-sidebar__link {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  color: var(--color-content-secondary);
+}
+
+.iux-sidebar__badge {
+  margin-inline-start: auto;
+  background-color: var(--color-intent-neutral-bg);
+  color: var(--color-intent-neutral-content);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  border-radius: var(--radius-pill);
+  padding-block: 0;
+  padding-inline: var(--space-1);
+  min-width: var(--space-5);
+  text-align: center;
+}
+
+.iux-sidebar__collapse-btn {
+  appearance: none;
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: calc(var(--space-3) * -1);
+  z-index: 5;
+  width: var(--space-5);
+  height: var(--space-5);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-full);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.iux-sidebar__resize-handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: var(--space-1);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.iux-sidebar__resize-handle:hover {
+  background-color: var(--color-intent-primary-bg);
+}
+
+.iux-sidebar__search {
+  padding: var(--space-3) var(--space-3) var(--space-2);
+}
+
+.iux-sidebar__search-input {
+  appearance: none;
+  width: 100%;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+}
+
+.iux-sidebar__search-input:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-sidebar__empty {
+  list-style: none;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  color: var(--color-content-muted);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+}

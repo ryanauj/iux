@@ -1,0 +1,186 @@
+/*
+ * Natural-language input bar — one component, four functional rungs
+ * (parsed → editable → execute → disambig). Free text in; a parser the
+ * consumer supplies returns a {action, chips, alternatives?} structure
+ * the component renders as editable chips.
+ */
+
+.iux-nlbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 36rem;
+  font-family: var(--type-body-family);
+}
+
+.iux-nlbar__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-primary);
+}
+
+.iux-nlbar__input {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+}
+
+.iux-nlbar__input:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+  border-color: var(--color-border-focus);
+}
+
+.iux-nlbar__preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.iux-nlbar__action {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-nlbar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.iux-nlbar__chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  background-color: var(--color-intent-neutral-bg);
+  color: var(--color-intent-neutral-content);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-intent-neutral-border);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  cursor: default;
+}
+
+.iux-nlbar__chip--editable { cursor: pointer; }
+.iux-nlbar__chip--editable:hover {
+  border-color: var(--color-intent-primary-border);
+  color: var(--color-content-primary);
+}
+
+.iux-nlbar__chip-key {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  text-transform: uppercase;
+}
+
+.iux-nlbar__chip-value { font-weight: var(--type-label-weight); }
+
+.iux-nlbar__chip-input,
+.iux-nlbar__chip-select {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-focus);
+  border-radius: var(--radius-pill);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+}
+
+.iux-nlbar__alts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-nlbar__alts-label { color: var(--color-content-muted); font-family: var(--type-caption-family); font-size: var(--type-caption-size); }
+
+.iux-nlbar__alt {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.iux-nlbar__alt:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+.iux-nlbar__commit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.iux-nlbar__btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-nlbar__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-nlbar__committed {
+  padding: var(--space-3);
+  background-color: color-mix(in srgb, var(--color-intent-success-bg) 14%, transparent);
+  border-radius: var(--radius-sm);
+  font-family: var(--type-body-family);
+}

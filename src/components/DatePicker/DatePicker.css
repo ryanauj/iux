@@ -1,0 +1,222 @@
+/*
+ * Date picker — one component, four functional rungs (input → calendar →
+ * range → nl). Every variant shares the same field chrome; the calendar
+ * popover is added for calendar / range. NL parses words like "tomorrow
+ * at 9am", "next tue", "in 3 days" before falling back to Date.parse.
+ */
+
+.iux-datepicker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 22rem;
+  font-family: var(--type-body-family);
+  position: relative;
+}
+
+.iux-datepicker__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-primary);
+}
+
+.iux-datepicker__field {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  cursor: text;
+  text-align: start;
+  width: 100%;
+}
+
+.iux-datepicker__trigger { cursor: pointer; }
+
+.iux-datepicker__field:focus,
+.iux-datepicker__field:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+  border-color: var(--color-border-focus);
+}
+
+.iux-datepicker--has-error .iux-datepicker__field {
+  border-color: var(--color-intent-danger-border);
+}
+
+.iux-datepicker__hint,
+.iux-datepicker__error {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-datepicker__error { color: var(--color-intent-danger-bg); }
+
+.iux-datepicker__nl-readout {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  background-color: var(--color-surface-sunken);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Popover ---------- */
+
+.iux-datepicker__popover {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-start: 0;
+  z-index: 50;
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  flex-wrap: wrap;
+}
+
+.iux-datepicker__presets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 9rem;
+  padding-inline-end: var(--space-2);
+  border-inline-end-width: var(--border-width-hairline);
+  border-inline-end-style: solid;
+  border-inline-end-color: var(--color-border-subtle);
+}
+
+.iux-datepicker__preset {
+  appearance: none;
+  background: transparent;
+  border: none;
+  text-align: start;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.iux-datepicker__preset:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+/* ---------- Calendar ---------- */
+
+.iux-datepicker__calendar {
+  min-width: 16rem;
+}
+
+.iux-datepicker__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-block-end: var(--space-2);
+}
+
+.iux-datepicker__nav-btn,
+.iux-datepicker__nav-select,
+.iux-datepicker__nav-year {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  cursor: pointer;
+}
+
+.iux-datepicker__nav-select { flex: 1 1 auto; }
+.iux-datepicker__nav-year   { width: 4.5rem; text-align: center; }
+
+.iux-datepicker__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+  margin-block-end: var(--space-1);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  text-align: center;
+}
+
+.iux-datepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+  outline: none;
+}
+
+.iux-datepicker__day {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: var(--space-7);
+  height: var(--space-6);
+  border-radius: var(--radius-sm);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-datepicker__day:hover:not(:disabled) {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-datepicker__day:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-datepicker__day.is-outside { color: var(--color-content-muted); }
+.iux-datepicker__day.is-today {
+  outline-width: var(--border-width-thin);
+  outline-style: solid;
+  outline-color: var(--color-intent-info-border);
+}
+
+.iux-datepicker__day.is-in-range {
+  background-color: color-mix(in srgb, var(--color-intent-primary-bg) 18%, transparent);
+}
+
+.iux-datepicker__day.is-selected {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-datepicker__day:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -1,0 +1,229 @@
+/*
+ * Modal — one component, four functional rungs (centered → sectioned →
+ * wizard → routed). The same dialog chrome serves every variant; the
+ * differences are in the slots (header / scrollable body / sticky footer)
+ * and the progress strip wizard adds. Every value resolves through a
+ * semantic token.
+ */
+
+.iux-modal__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-surface-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
+  animation: iux-modal-fade var(--motion-duration-base) var(--motion-easing-out);
+}
+
+@keyframes iux-modal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.iux-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  max-height: calc(100vh - var(--space-7));
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-overlay);
+  outline: none;
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+  animation: iux-modal-pop var(--motion-duration-base) var(--motion-easing-spring);
+}
+
+@keyframes iux-modal-pop {
+  from { transform: translateY(var(--space-2)) scale(0.98); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-modal,
+  .iux-modal__scrim {
+    animation: none;
+  }
+}
+
+.iux-modal--size-sm { max-width: 24rem; }
+.iux-modal--size-md { max-width: 32rem; }
+.iux-modal--size-lg { max-width: 48rem; }
+
+/* ---------- Header / body / footer slots ---------- */
+
+.iux-modal__header {
+  padding: var(--space-5) var(--space-5) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-modal__title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--type-heading-line-height);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-modal__description {
+  margin: 0;
+  color: var(--color-content-secondary);
+  font-size: var(--type-body-size);
+}
+
+.iux-modal__body {
+  padding: var(--space-4) var(--space-5);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+}
+
+.iux-modal__body--scroll {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.iux-modal__step-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+  color: var(--color-content-primary);
+}
+
+.iux-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5) var(--space-5);
+}
+
+.iux-modal__footer--sticky {
+  position: sticky;
+  inset-block-end: 0;
+  background-color: var(--color-surface-overlay);
+  border-block-start-width: var(--border-width-hairline);
+  border-block-start-style: solid;
+  border-block-start-color: var(--color-border-subtle);
+}
+
+/* ---------- Buttons ---------- */
+
+.iux-modal__btn {
+  appearance: none;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-md);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  cursor: pointer;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-modal__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-modal__btn:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-modal__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  border-color: var(--color-intent-primary-border);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-modal__btn--primary:hover:not(:disabled) {
+  background-color: var(--color-intent-primary-bg-hover);
+}
+
+.iux-modal__btn--neutral {
+  background-color: var(--color-intent-neutral-bg);
+  border-color: var(--color-intent-neutral-border);
+  color: var(--color-intent-neutral-content);
+}
+
+.iux-modal__btn--neutral:hover:not(:disabled) {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
+
+.iux-modal__btn--danger {
+  background-color: var(--color-intent-danger-bg);
+  border-color: var(--color-intent-danger-border);
+  color: var(--color-intent-danger-content);
+}
+
+.iux-modal__btn--danger:hover:not(:disabled) {
+  background-color: var(--color-intent-danger-bg-hover);
+}
+
+/* ---------- Wizard progress strip ---------- */
+
+.iux-modal__progress {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.iux-modal__progress-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.iux-modal__progress-dot {
+  width: var(--space-5);
+  height: var(--space-5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-full);
+  color: var(--color-content-secondary);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-modal__progress-step.is-complete .iux-modal__progress-dot,
+.iux-modal__progress-step.is-current .iux-modal__progress-dot {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-modal__progress-step.is-current {
+  color: var(--color-content-primary);
+}

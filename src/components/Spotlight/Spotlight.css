@@ -1,0 +1,111 @@
+/*
+ * Spotlight / coachmark overlay — one component, four functional rungs
+ * (single → sequence → anchor-aware → adaptive). The dimming layer is
+ * an SVG with a mask that punches the cutout; the bright ring is a
+ * second stroke drawn over the cutout coords.
+ */
+
+.iux-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  pointer-events: none;
+  color: var(--color-surface-scrim);
+  font-family: var(--type-body-family);
+}
+
+.iux-spotlight__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.iux-spotlight__dim {
+  opacity: 0.9;
+}
+
+.iux-spotlight__ring {
+  color: var(--color-intent-primary-bg);
+}
+
+.iux-spotlight__tip {
+  position: absolute;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  padding: var(--space-3);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  animation: iux-spotlight-pop var(--motion-duration-base) var(--motion-easing-spring);
+}
+
+@keyframes iux-spotlight-pop {
+  from { opacity: 0; transform: translateY(var(--space-1)) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-spotlight__tip { animation: none; }
+}
+
+.iux-spotlight__meta {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--type-label-tracking);
+}
+
+.iux-spotlight__title {
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+  color: var(--color-content-primary);
+}
+
+.iux-spotlight__body {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-spotlight__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+}
+
+.iux-spotlight__btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-spotlight__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-spotlight__btn--ghost {
+  background: transparent;
+  color: var(--color-content-primary);
+  border-color: var(--color-border-default);
+}

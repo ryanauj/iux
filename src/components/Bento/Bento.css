@@ -1,0 +1,82 @@
+/*
+ * Bento grid — one component, four functional rungs (static → reflow →
+ * drag → resize). CSS Grid does the layout; cells declare their span via
+ * `cols`/`rows` (or `prefCols`/`prefRows` in reflow). Drag swaps cells
+ * via document.elementFromPoint on pointer move. Resize snaps to the
+ * nearest legible (cols × rows) preset when listed.
+ */
+
+.iux-bento {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.iux-bento__cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.iux-bento__title {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-bento__content {
+  flex: 1 1 auto;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.iux-bento__cell--draggable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.iux-bento__cell--draggable:active { cursor: grabbing; }
+
+.iux-bento__handle {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-end: var(--space-2);
+  color: var(--color-content-muted);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  pointer-events: none;
+}
+
+.iux-bento__resize {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  width: var(--space-3);
+  height: var(--space-3);
+  cursor: se-resize;
+  background-image: linear-gradient(135deg, transparent 50%, var(--color-content-muted) 50%);
+  background-size: 60% 60%;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  touch-action: none;
+  border-end-end-radius: var(--radius-md);
+}
+
+.iux-bento__resize:hover {
+  background-image: linear-gradient(135deg, transparent 50%, var(--color-content-primary) 50%);
+}
