@@ -1,0 +1,171 @@
+/*
+ * Segmented control — one component, four functional rungs (pill → rich →
+ * animated → overflow). Same radiogroup primitive; variants add icons /
+ * badges, a sliding indicator measured at runtime, or a "more" menu for
+ * out-of-bounds segments.
+ */
+
+.iux-segmented {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+}
+
+.iux-segmented--size-sm { font-size: var(--type-caption-size); }
+.iux-segmented--size-lg { font-size: var(--type-subheading-size); }
+
+.iux-segmented__segment {
+  appearance: none;
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  font: inherit;
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition-property: color, background-color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+  position: relative;
+  z-index: 1;
+}
+
+.iux-segmented__segment:hover:not(:disabled) {
+  color: var(--color-content-primary);
+}
+
+.iux-segmented__segment:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-segmented__segment.is-selected {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-segmented--animated .iux-segmented__segment.is-selected {
+  background-color: transparent;
+  color: var(--color-intent-primary-content);
+}
+
+.iux-segmented__segment:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-segmented__indicator {
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  background-color: var(--color-intent-primary-bg);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--elevation-low);
+  transition-property: transform, width;
+  transition-duration: var(--motion-duration-base);
+  transition-timing-function: var(--motion-easing-spring);
+  z-index: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-segmented__indicator { transition: none; }
+}
+
+.iux-segmented__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iux-segmented__badge {
+  background-color: var(--color-intent-neutral-bg);
+  color: var(--color-intent-neutral-content);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  padding-inline: var(--space-1);
+  min-width: var(--space-5);
+  text-align: center;
+}
+
+.iux-segmented__segment.is-selected .iux-segmented__badge {
+  background-color: color-mix(in srgb, var(--color-intent-primary-content) 16%, transparent);
+  color: var(--color-intent-primary-content);
+}
+
+/* ---------- Overflow ---------- */
+
+.iux-segmented--overflow {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.iux-segmented__more {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding-inline: var(--space-2);
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  display: none;
+  font-size: inherit;
+  margin-inline-start: auto;
+}
+
+.iux-segmented__more[data-visible='true'] { display: inline-flex; }
+
+.iux-segmented__more-menu {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-end: 0;
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  padding: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  z-index: 20;
+}
+
+.iux-segmented__more-item {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font: inherit;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  text-align: start;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-segmented__more-item:hover { background-color: var(--color-intent-neutral-bg-hover); }
