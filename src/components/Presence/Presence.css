@@ -1,0 +1,107 @@
+/*
+ * Presence layer — one component, four functional rungs (avatars →
+ * cursors → selections → chat). All variants honor a per-user color via
+ * the --iux-presence-color custom property the consumer supplies.
+ */
+
+.iux-presence--avatars {
+  display: inline-flex;
+}
+
+.iux-presence__avatars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+}
+
+.iux-presence__avatar {
+  --iux-presence-color: var(--color-intent-neutral-bg);
+  width: var(--space-6);
+  height: var(--space-6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--iux-presence-color);
+  color: var(--color-content-inverse);
+  border-width: var(--border-width-thick);
+  border-style: solid;
+  border-color: var(--color-surface-raised);
+  border-radius: var(--radius-full);
+  margin-inline-start: calc(var(--space-2) * -1);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-presence__avatar:first-child { margin-inline-start: 0; }
+
+.iux-presence__avatar--more {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+}
+
+/* ---------- Cursors / selections / chat (overlay layer) ---------- */
+
+.iux-presence--cursors,
+.iux-presence--selections,
+.iux-presence--chat {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.iux-presence__cursor {
+  --iux-presence-color: var(--color-intent-primary-bg);
+  position: absolute;
+  transform: translate(-2px, -2px);
+  color: var(--iux-presence-color);
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  pointer-events: none;
+  transition: top var(--motion-duration-fast) linear, left var(--motion-duration-fast) linear;
+}
+
+.iux-presence__cursor--self { opacity: 0.7; }
+
+.iux-presence__cursor-icon {
+  flex: none;
+}
+
+.iux-presence__name {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  background-color: var(--iux-presence-color);
+  color: var(--color-content-inverse);
+  padding-block: 0;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.iux-presence__chat {
+  margin-inline-start: var(--space-1);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  box-shadow: var(--elevation-low);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-presence__selection {
+  --iux-presence-color: var(--color-intent-primary-bg);
+  position: absolute;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-presence-color);
+  background-color: color-mix(in srgb, var(--iux-presence-color) 12%, transparent);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
