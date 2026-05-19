@@ -212,6 +212,20 @@ body {
   gap: var(--space-1);
   min-width: 10rem;
   max-width: 100%;
+  /* Anchor inline-rendered overlays (Drawer/Modal stories) here instead
+     of escaping to the viewport. */
+  position: relative;
+}
+
+/*
+ * When an inline-rendered Drawer or Modal opens, the cell becomes its
+ * containing block. Give it a stage-sized surface so the dialog has
+ * somewhere to slide into; without this the cell collapses to the
+ * trigger button and the overlay renders as a sliver.
+ */
+.stories__cell:has(.iux-drawer__scrim--inline),
+.stories__cell:has(.iux-modal__scrim--inline) {
+  min-height: 18rem;
 }
 
 .stories__cell-label {
@@ -278,13 +292,25 @@ body {
 
   /*
    * Story files set inline `minWidth: 'XXrem'` (14-40rem) so each demo
-   * gets a readable target width on desktop. On a mobile viewport those
-   * values blow past the screen edge. Collapse them to the available
-   * width so cells shrink to fit; intrinsically wide demo content
-   * scrolls horizontally inside the cell instead of leaking sideways.
+   * gets a readable target width on desktop. On a phone those values
+   * exceed the viewport — earlier we clamped cells to fit, but that
+   * squished components (diff panes, table columns, timeline tracks)
+   * into unreadable strips. Instead, honor the inline width and let
+   * each row scroll horizontally inside itself; the page never scrolls.
    */
-  .stories__cell {
-    min-width: 0 !important;
+  .stories__cells {
     overflow-x: auto;
+    /* Cells keep their natural inline min-width; without this they'd
+       still try to share the row width and shrink. */
+    flex-wrap: nowrap;
+    /* Visual breathing room so scroll is discoverable. */
+    padding-bottom: var(--space-2);
+  }
+
+  .stories__cell {
+    /* Override the desktop max-width: 100% cap so cells can be wider
+       than the row; row above scrolls to reveal them. */
+    max-width: none;
+    flex-shrink: 0;
   }
 }

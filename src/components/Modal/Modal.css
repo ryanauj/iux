@@ -26,6 +26,17 @@
 .iux-modal__scrim--inline {
   position: absolute;
   z-index: auto;
+  overflow: hidden;
+}
+
+/*
+ * The modal's max-height is `calc(100vh - …)` so the dialog can grow with
+ * the viewport in production. Inline in a story cell that becomes
+ * "viewport-tall" and bleeds past the cell. Cap to the scrim instead.
+ */
+.iux-modal__scrim--inline .iux-modal {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 @keyframes iux-modal-fade {

@@ -29,6 +29,10 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  /* Don't let fixed table-layout squeeze multi-column data into illegible
+     columns on narrow screens. .iux-table__scroll above is overflow:auto,
+     so the table scrolls horizontally inside its own frame. */
+  min-width: 28rem;
 }
 
 .iux-table__caption {
