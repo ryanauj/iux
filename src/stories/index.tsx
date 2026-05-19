@@ -21,8 +21,9 @@ import { LoadingStories } from '../components/Loading/Loading.stories'
 import { TokenFieldStories } from '../components/TokenField/TokenField.stories'
 import { DrawerStories } from '../components/Drawer/Drawer.stories'
 import { SegmentedStories } from '../components/Segmented/Segmented.stories'
+import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -45,6 +46,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'tokenfield', label: 'Token field', render: () => <TokenFieldStories /> },
   { id: 'drawer', label: 'Drawer', render: () => <DrawerStories /> },
   { id: 'segmented', label: 'Segmented', render: () => <SegmentedStories /> },
+  { id: 'inlineedit', label: 'Inline edit', render: () => <InlineEditStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
