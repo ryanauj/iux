@@ -7,8 +7,24 @@ import type { SemanticTokens } from '../../tokens/semantic.contract'
  * easings, shadow strings, type metrics — is emitted as a CSS custom
  * property. Component CSS reads only these variables; this is the file
  * that keeps the no-raw-values lint passing downstream.
+ *
+ * `motionScale` multiplies every `motion.duration.*` value; zero-duration
+ * slots (e.g. AAA) remain at zero. Used by the stories harness to slow
+ * demo animations to a legible speed without touching palette source.
  */
-export function paletteToCssVars(tokens: SemanticTokens): Record<string, string> {
+function scaleDuration(value: string, scale: number): string {
+  if (scale === 1) return value
+  const match = value.match(/^(-?\d*\.?\d+)(ms|s)$/)
+  if (!match) return value
+  const n = Number(match[1])
+  if (n === 0) return value
+  return `${n * scale}${match[2]}`
+}
+
+export function paletteToCssVars(
+  tokens: SemanticTokens,
+  motionScale = 1,
+): Record<string, string> {
   const vars: Record<string, string> = {}
 
   const surfaces = ['base', 'raised', 'sunken', 'overlay', 'scrim'] as const
@@ -76,7 +92,7 @@ export function paletteToCssVars(tokens: SemanticTokens): Record<string, string>
 
   const durKeys = ['instant', 'fast', 'base', 'slow'] as const
   for (const k of durKeys) {
-    vars[`--motion-duration-${k}`] = tokens.motion.duration[k]
+    vars[`--motion-duration-${k}`] = scaleDuration(tokens.motion.duration[k], motionScale)
   }
 
   const easeKeys = ['standard', 'in', 'out', 'inOut', 'spring'] as const

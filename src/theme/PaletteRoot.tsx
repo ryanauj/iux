@@ -7,6 +7,8 @@ interface PaletteRootProps {
   children: ReactNode
   className?: string
   as?: 'div' | 'section' | 'article'
+  /** Multiplier applied to every motion duration token. Defaults to 1×. */
+  motionScale?: number
 }
 
 /**
@@ -14,8 +16,8 @@ interface PaletteRootProps {
  * Components inside read only `var(--...)` references; the palette is the
  * only thing that ever sees raw values.
  */
-export function PaletteRoot({ palette, children, className, as: Tag = 'div' }: PaletteRootProps) {
-  const vars = paletteToCssVars(palette.tokens) as CSSProperties
+export function PaletteRoot({ palette, children, className, as: Tag = 'div', motionScale = 1 }: PaletteRootProps) {
+  const vars = paletteToCssVars(palette.tokens, motionScale) as CSSProperties
   const cls = ['palette-root', className].filter(Boolean).join(' ')
   return (
     <Tag className={cls} style={vars} data-palette={palette.id}>

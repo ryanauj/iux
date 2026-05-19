@@ -81,59 +81,110 @@ const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 type PaletteChoice = 'all' | PaletteId
 
+const MOTION_SCALES = [
+  { value: 1, label: '1× (palette default)' },
+  { value: 2, label: '2× (slower)' },
+  { value: 3, label: '3× (slowest)' },
+  { value: 5, label: '5× (debug)' },
+] as const
+
 export function Stories() {
   const [component, setComponent] = useState<Component>('button')
   const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>('all')
+  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>('flat-classic')
+  const [motionScale, setMotionScale] = useState<number>(2)
+  const [controlsOpen, setControlsOpen] = useState<boolean>(true)
 
   const active = COMPONENTS.find(c => c.id === component)
   const visiblePaletteIds: PaletteId[] =
     paletteChoice === 'all' ? PALETTE_IDS : [paletteChoice]
+  const chromePalette = palettes[chromePaletteId]
+
+  const handlePaletteChange = (next: PaletteChoice) => {
+    setPaletteChoice(next)
+    if (next !== 'all') setChromePaletteId(next)
+  }
 
   return (
-    <PaletteRoot palette={palettes['flat-classic']} as="section">
+    <PaletteRoot palette={chromePalette} as="section" motionScale={motionScale}>
       <main className="stories">
-        <header className="stories__intro">
-          <h1>iux — component stories</h1>
-          <p>
-            Components implemented against the semantic token contract. Every
-            cell below renders the same component code with the same props;
-            only the palette tokens change.
-          </p>
-          <div className="stories__controls">
-            <label className="stories__control">
-              <span className="stories__control-label">Component</span>
-              <select
-                className="stories__control-select"
-                value={component}
-                onChange={e => setComponent(e.target.value as Component)}
-              >
-                {COMPONENTS.map(c => (
-                  <option key={c.id} value={c.id}>{c.label}</option>
-                ))}
-              </select>
-            </label>
-            <label className="stories__control">
-              <span className="stories__control-label">Palette</span>
-              <select
-                className="stories__control-select"
-                value={paletteChoice}
-                onChange={e => setPaletteChoice(e.target.value as PaletteChoice)}
-              >
-                <option value="all">All palettes</option>
-                {PALETTE_IDS.map(id => (
-                  <option key={id} value={id}>
-                    {palettes[id].name} ({palettes[id].engine})
-                  </option>
-                ))}
-              </select>
-            </label>
+        <header className={`stories__header${controlsOpen ? '' : ' stories__header--collapsed'}`}>
+          <div className="stories__header-bar">
+            <h1 className="stories__title">iux — component stories</h1>
+            <button
+              type="button"
+              className="stories__toggle"
+              aria-expanded={controlsOpen}
+              aria-controls="stories-controls"
+              onClick={() => setControlsOpen(o => !o)}
+            >
+              {controlsOpen ? 'Hide controls' : 'Show controls'}
+            </button>
+          </div>
+          <div
+            id="stories-controls"
+            className="stories__header-body"
+            hidden={!controlsOpen}
+          >
+            <p className="stories__intro-copy">
+              Components implemented against the semantic token contract. Every
+              cell below renders the same component code with the same props;
+              only the palette tokens change.
+            </p>
+            <div className="stories__controls">
+              <label className="stories__control">
+                <span className="stories__control-label">Component</span>
+                <select
+                  className="stories__control-select"
+                  value={component}
+                  onChange={e => setComponent(e.target.value as Component)}
+                >
+                  {COMPONENTS.map(c => (
+                    <option key={c.id} value={c.id}>{c.label}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="stories__control">
+                <span className="stories__control-label">Palette</span>
+                <select
+                  className="stories__control-select"
+                  value={paletteChoice}
+                  onChange={e => handlePaletteChange(e.target.value as PaletteChoice)}
+                >
+                  <option value="all">All palettes</option>
+                  {PALETTE_IDS.map(id => (
+                    <option key={id} value={id}>
+                      {palettes[id].name} ({palettes[id].engine})
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="stories__control">
+                <span className="stories__control-label">Motion speed</span>
+                <select
+                  className="stories__control-select"
+                  value={motionScale}
+                  onChange={e => setMotionScale(Number(e.target.value))}
+                >
+                  {MOTION_SCALES.map(s => (
+                    <option key={s.value} value={s.value}>{s.label}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
           </div>
         </header>
 
         {visiblePaletteIds.map(id => {
           const palette = palettes[id]
           return (
-            <PaletteRoot key={id} palette={palette} as="section" className="stories__palette">
+            <PaletteRoot
+              key={id}
+              palette={palette}
+              as="section"
+              className="stories__palette"
+              motionScale={motionScale}
+            >
               <h2 className="stories__palette-title">
                 {palette.name} <small>({palette.engine})</small>
               </h2>
