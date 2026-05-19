@@ -1,0 +1,65 @@
+/*
+ * App shell — minimal chrome that hosts the apps. Outside any palette
+ * boundary, so values fall back to standard CSS keywords; inside, each
+ * app renders under its own PaletteRoot (or its own multi-palette mount,
+ * in the gallery case).
+ */
+
+.iux-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: Canvas;
+  color: CanvasText;
+}
+
+.iux-shell__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid color-mix(in oklab, CanvasText 12%, Canvas);
+  background: Canvas;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.iux-shell__brand {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  color: CanvasText;
+}
+
+.iux-shell__nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.iux-shell__nav-btn {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  color: CanvasText;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.iux-shell__nav-btn:hover {
+  background: color-mix(in oklab, CanvasText 6%, Canvas);
+}
+
+.iux-shell__nav-btn.is-active {
+  background: color-mix(in oklab, CanvasText 10%, Canvas);
+  border-color: color-mix(in oklab, CanvasText 18%, Canvas);
+}
+
+.iux-shell__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+}

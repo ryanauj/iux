@@ -10,8 +10,9 @@
     "typecheck": "tsc --noEmit",
     "validate:palettes": "tsx scripts/validate-palettes.ts",
     "lint:tokens": "tsx scripts/lint-raw-values.ts",
+    "lint:storage": "tsx scripts/lint-storage.ts",
     "test:gates": "tsx scripts/test-gates.ts",
-    "check": "npm run typecheck && npm run validate:palettes && npm run lint:tokens && npm run test:gates"
+    "check": "npm run typecheck && npm run validate:palettes && npm run lint:tokens && npm run lint:storage && npm run test:gates"
   },
   "dependencies": {
     "react": "^18.3.1",

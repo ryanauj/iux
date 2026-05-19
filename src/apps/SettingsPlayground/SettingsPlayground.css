@@ -1,0 +1,373 @@
+/*
+ * Settings playground — composes registry components only. Every value
+ * below reads from a token var (`--space-*`, `--color-*`, …); no raw
+ * hex / ms / px box-shadows leak through.
+ */
+
+.settings-app {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  min-height: 100%;
+  background: var(--color-surface-base);
+  color: var(--color-content-primary);
+}
+
+.settings-app__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-border-subtle);
+  border-bottom-width: var(--border-width-thin);
+}
+
+.settings-app__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.settings-app__title {
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-tracking);
+  text-transform: var(--type-display-text-transform);
+  color: var(--color-content-primary);
+  margin: 0;
+}
+
+.settings-app__caption {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.settings-app__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.settings-app__control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 10rem;
+}
+
+.settings-app__control-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.settings-app__grid {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr) 20rem;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.settings-app__sidebar,
+.settings-app__inspector {
+  position: sticky;
+  top: var(--space-3);
+  max-height: calc(100vh - var(--space-7));
+  overflow: auto;
+  background: var(--color-surface-raised);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-width: var(--border-width-thin);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-app__stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.settings-app__tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-app__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-app__section-label {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  text-transform: var(--type-heading-text-transform);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.settings-app__slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-3);
+}
+
+.settings-app__slot {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "preview label"
+    "preview value";
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-width: var(--border-width-thin);
+  border-radius: var(--radius-sm);
+  text-align: start;
+  cursor: pointer;
+  font: inherit;
+  transition-property: transform, border-color, box-shadow;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+  box-shadow: var(--elevation-flat);
+  min-width: 0;
+}
+
+.settings-app__slot:hover {
+  border-color: var(--color-border-default);
+  box-shadow: var(--elevation-low);
+}
+
+.settings-app__slot:focus-visible {
+  outline-style: solid;
+  outline-color: var(--color-focus-ring);
+  outline-width: var(--effect-focus-ring-width);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.settings-app__slot.is-selected {
+  border-color: var(--color-intent-primary-border);
+  box-shadow: var(--elevation-medium);
+}
+
+.settings-app__preview {
+  grid-area: preview;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  display: inline-block;
+}
+
+.settings-app__preview--lg {
+  width: 6rem;
+  height: 6rem;
+}
+
+.settings-app__slot-label {
+  grid-area: label;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-app__slot-value {
+  grid-area: value;
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-app__motion-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-surface-raised);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-width: var(--border-width-thin);
+  border-radius: var(--radius-sm);
+}
+
+.settings-app__hint {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  margin: 0;
+}
+
+.settings-app__inspector-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+  border-top-width: var(--border-width-hairline);
+}
+
+.settings-app__btn {
+  font: inherit;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-style: solid;
+  border-color: var(--color-intent-primary-border);
+  border-width: var(--border-width-thin);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.settings-app__btn:hover {
+  background: var(--color-intent-primary-bg-hover);
+}
+
+.settings-app__btn:focus-visible {
+  outline-style: solid;
+  outline-color: var(--color-focus-ring);
+  outline-width: var(--effect-focus-ring-width);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.settings-app__btn--ghost {
+  background: transparent;
+  color: var(--color-content-secondary);
+  border-color: var(--color-border-default);
+}
+
+.settings-app__btn--ghost:hover {
+  background: var(--color-surface-raised);
+}
+
+.settings-app__modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-app__modal-preview {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--color-surface-base);
+  border-radius: var(--radius-sm);
+}
+
+.settings-app__modal-dl {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+}
+
+.settings-app__modal-dl dt {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-transform: var(--type-label-text-transform);
+}
+
+.settings-app__modal-dl dd {
+  margin: 0;
+  font-family: var(--type-body-family);
+  word-break: break-all;
+  color: var(--color-content-primary);
+}
+
+.settings-app__modal-dl code {
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  background: var(--color-surface-sunken);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-none);
+}
+
+.settings-app__footer-note {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+  border-top-width: var(--border-width-hairline);
+}
+
+.settings-app__footer-note code {
+  font-family: var(--type-code-family);
+  background: var(--color-surface-sunken);
+  padding: 0 var(--space-1);
+}
+
+@keyframes settingsPulse {
+  from { transform: translateX(-30%); }
+  to   { transform: translateX(120%); }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 64rem) {
+  .settings-app__grid {
+    grid-template-columns: 1fr;
+  }
+  .settings-app__sidebar,
+  .settings-app__inspector {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .settings-app {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+  .settings-app__slot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Honour reduced-motion at the engine level — durations collapse to zero,
+   so this rule only needs to disable the keyframed pulse explicitly. */
+@media (prefers-reduced-motion: reduce) {
+  .settings-app__slot {
+    transition: none;
+  }
+  .settings-app__preview * {
+    animation: none !important;
+  }
+}
