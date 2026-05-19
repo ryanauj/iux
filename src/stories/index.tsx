@@ -30,8 +30,9 @@ import { CommandPaletteStories } from '../components/CommandPalette/CommandPalet
 import { OptimisticUndoStories } from '../components/OptimisticUndo/OptimisticUndo.stories'
 import { SpotlightStories } from '../components/Spotlight/Spotlight.stories'
 import { DiffViewStories } from '../components/DiffView/DiffView.stories'
+import { NLBarStories } from '../components/NLBar/NLBar.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -63,6 +64,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'undo', label: 'Optimistic undo', render: () => <OptimisticUndoStories /> },
   { id: 'spotlight', label: 'Spotlight', render: () => <SpotlightStories /> },
   { id: 'diff', label: 'Diff / merge', render: () => <DiffViewStories /> },
+  { id: 'nlbar', label: 'NL input bar', render: () => <NLBarStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
