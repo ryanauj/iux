@@ -24,8 +24,9 @@ import { SegmentedStories } from '../components/Segmented/Segmented.stories'
 import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
 import { StackedToastsStories } from '../components/StackedToasts/StackedToasts.stories'
 import { BentoStories } from '../components/Bento/Bento.stories'
+import { VirtualListStories } from '../components/VirtualList/VirtualList.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -51,6 +52,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'inlineedit', label: 'Inline edit', render: () => <InlineEditStories /> },
   { id: 'stackedtoasts', label: 'Stacked toasts', render: () => <StackedToastsStories /> },
   { id: 'bento', label: 'Bento grid', render: () => <BentoStories /> },
+  { id: 'virtuallist', label: 'Virtual list', render: () => <VirtualListStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
