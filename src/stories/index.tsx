@@ -79,8 +79,15 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
+type PaletteChoice = 'all' | PaletteId
+
 export function Stories() {
   const [component, setComponent] = useState<Component>('button')
+  const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>('all')
+
+  const active = COMPONENTS.find(c => c.id === component)
+  const visiblePaletteIds: PaletteId[] =
+    paletteChoice === 'all' ? PALETTE_IDS : [paletteChoice]
 
   return (
     <PaletteRoot palette={palettes['flat-classic']} as="section">
@@ -88,27 +95,43 @@ export function Stories() {
         <header className="stories__intro">
           <h1>iux — component stories</h1>
           <p>
-            Three components implemented against the semantic token contract.
-            Every cell below renders the same component code with the same
-            props; only the palette tokens change.
+            Components implemented against the semantic token contract. Every
+            cell below renders the same component code with the same props;
+            only the palette tokens change.
           </p>
-          <nav className="stories__palette-switch" aria-label="Component">
-            {COMPONENTS.map(c => (
-              <button
-                key={c.id}
-                type="button"
-                aria-pressed={component === c.id}
-                onClick={() => setComponent(c.id)}
+          <div className="stories__controls">
+            <label className="stories__control">
+              <span className="stories__control-label">Component</span>
+              <select
+                className="stories__control-select"
+                value={component}
+                onChange={e => setComponent(e.target.value as Component)}
               >
-                {c.label}
-              </button>
-            ))}
-          </nav>
+                {COMPONENTS.map(c => (
+                  <option key={c.id} value={c.id}>{c.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="stories__control">
+              <span className="stories__control-label">Palette</span>
+              <select
+                className="stories__control-select"
+                value={paletteChoice}
+                onChange={e => setPaletteChoice(e.target.value as PaletteChoice)}
+              >
+                <option value="all">All palettes</option>
+                {PALETTE_IDS.map(id => (
+                  <option key={id} value={id}>
+                    {palettes[id].name} ({palettes[id].engine})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </header>
 
-        {PALETTE_IDS.map(id => {
+        {visiblePaletteIds.map(id => {
           const palette = palettes[id]
-          const active = COMPONENTS.find(c => c.id === component)
           return (
             <PaletteRoot key={id} palette={palette} as="section" className="stories__palette">
               <h2 className="stories__palette-title">
