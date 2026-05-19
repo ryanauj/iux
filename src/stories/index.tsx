@@ -33,8 +33,9 @@ import { DiffViewStories } from '../components/DiffView/DiffView.stories'
 import { NLBarStories } from '../components/NLBar/NLBar.stories'
 import { PropertyInspectorStories } from '../components/PropertyInspector/PropertyInspector.stories'
 import { PresenceStories } from '../components/Presence/Presence.stories'
+import { TimelineStories } from '../components/Timeline/Timeline.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence' | 'timeline'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -69,6 +70,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'nlbar', label: 'NL input bar', render: () => <NLBarStories /> },
   { id: 'inspector', label: 'Property inspector', render: () => <PropertyInspectorStories /> },
   { id: 'presence', label: 'Presence layer', render: () => <PresenceStories /> },
+  { id: 'timeline', label: 'Timeline', render: () => <TimelineStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]

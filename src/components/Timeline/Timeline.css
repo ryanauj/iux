@@ -1,0 +1,195 @@
+/*
+ * Timeline scrubber — one component, four functional rungs (basic → snap
+ * → multi → keyframes). Time scrubbing happens on the track via pointer
+ * drag; snap variant adds tick scale + markers; multi adds per-track
+ * mute/solo lanes; keyframes lets each track hold draggable values with
+ * an interpolated curve.
+ */
+
+.iux-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  width: 100%;
+}
+
+.iux-timeline__header {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-timeline__track {
+  position: relative;
+  height: var(--space-5);
+  background-color: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  touch-action: none;
+  cursor: pointer;
+}
+
+.iux-timeline__tick {
+  position: absolute;
+  inset-block: 0;
+  width: var(--border-width-thin);
+  background-color: var(--color-border-default);
+}
+
+.iux-timeline__marker {
+  position: absolute;
+  inset-block: 0;
+  width: var(--border-width-thick);
+  background-color: var(--color-intent-warning-bg);
+  border-radius: var(--radius-sm);
+}
+
+.iux-timeline__playhead {
+  position: absolute;
+  inset-block: calc(var(--space-1) * -1) calc(var(--space-1) * -1);
+  width: var(--border-width-thick);
+  background-color: var(--color-intent-primary-bg);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.iux-timeline__playhead::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -3px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-intent-primary-bg);
+}
+
+/* ---------- Multi-track / keyframes ---------- */
+
+.iux-timeline__multi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-timeline__lanes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-timeline__lane-row {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.iux-timeline__lane-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+  background-color: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  min-height: var(--space-6);
+}
+
+.iux-timeline__lane-swatch {
+  --iux-lane-color: var(--color-intent-primary-bg);
+  width: var(--space-3);
+  height: var(--space-3);
+  background-color: var(--iux-lane-color);
+  border-radius: var(--radius-sm);
+  flex: none;
+}
+
+.iux-timeline__lane-name {
+  flex: 1 1 auto;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+}
+
+.iux-timeline__lane-btn {
+  appearance: none;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  color: var(--color-content-secondary);
+  font: inherit;
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  width: var(--space-5);
+  height: var(--space-5);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-timeline__lane-btn.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-timeline__lane {
+  --iux-lane-color: var(--color-intent-primary-bg);
+  position: relative;
+  height: var(--space-6);
+  background-color: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  touch-action: none;
+  cursor: crosshair;
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--iux-lane-color) 15%, transparent), color-mix(in srgb, var(--iux-lane-color) 35%, transparent));
+}
+
+.iux-timeline__lane--kf { height: var(--space-7); }
+
+.iux-timeline__multi-playhead {
+  position: absolute;
+  inset-block: 0;
+  width: var(--border-width-thick);
+  background-color: var(--color-intent-primary-bg);
+  transform: translateX(-50%);
+  pointer-events: none;
+  margin-inline-start: 15rem; /* lane meta + gap */
+}
+
+.iux-timeline__keyframe {
+  --iux-lane-color: var(--color-intent-primary-bg);
+  position: absolute;
+  width: var(--space-3);
+  height: var(--space-3);
+  background-color: var(--iux-lane-color);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-surface-overlay);
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+  cursor: ns-resize;
+  touch-action: none;
+  box-shadow: var(--elevation-low);
+}
+
+.iux-timeline__curve {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--iux-lane-color);
+  pointer-events: none;
+}
+
+.iux-timeline__hint {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
