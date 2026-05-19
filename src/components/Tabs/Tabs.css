@@ -1,0 +1,214 @@
+/*
+ * Tabs — one component, four functional rungs (basic → rich → overflow →
+ * editable). All variants share the role=tablist + role=tab pattern and
+ * roving-tabindex keyboard nav; differences are slot-level (icon/badge,
+ * overflow chevron, close button + reorder handle).
+ */
+
+.iux-tabs {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--type-body-family);
+}
+
+.iux-tabs__list {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-1);
+  border-block-end-width: var(--border-width-thin);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+  position: relative;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.iux-tabs__list::-webkit-scrollbar { display: none; }
+
+.iux-tabs__tab {
+  appearance: none;
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  border-block-end-width: var(--border-width-thick);
+  border-block-end-style: solid;
+  border-block-end-color: transparent;
+  margin-block-end: calc(var(--border-width-thin) * -1);
+  white-space: nowrap;
+  transition-property: color, border-color, background-color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-tabs__tab:hover:not(:disabled) {
+  color: var(--color-content-primary);
+}
+
+.iux-tabs__tab:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-tabs__tab.is-selected {
+  color: var(--color-content-primary);
+  border-block-end-color: var(--color-intent-primary-bg);
+}
+
+.iux-tabs__tab:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iux-tabs__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iux-tabs__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-5);
+  padding-block: 0;
+  padding-inline: var(--space-1);
+  background-color: var(--color-intent-neutral-bg);
+  color: var(--color-intent-neutral-content);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-tabs__tab.is-selected .iux-tabs__badge {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.iux-tabs__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--color-content-muted);
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-tabs__close:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+  color: var(--color-content-primary);
+}
+
+.iux-tabs__add {
+  appearance: none;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: dashed;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  margin: var(--space-1);
+  padding-inline: var(--space-3);
+  cursor: pointer;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  transition-property: color, border-color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-tabs__add:hover {
+  color: var(--color-content-primary);
+  border-color: var(--color-content-primary);
+}
+
+/* ---------- Overflow / more menu ---------- */
+
+.iux-tabs__more {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding-inline: var(--space-3);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  position: sticky;
+  inset-inline-end: 0;
+  background-color: var(--color-surface-base);
+}
+
+.iux-tabs__more[data-visible='true'] { display: inline-flex; }
+
+.iux-tabs__more-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-overlay);
+  padding: var(--space-1);
+  min-width: 12rem;
+  align-self: flex-end;
+  margin-block-start: var(--space-1);
+}
+
+.iux-tabs__more-item {
+  appearance: none;
+  background: transparent;
+  border: none;
+  text-align: start;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font: inherit;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-tabs__more-item:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+/* ---------- Editable: drag wrapper ---------- */
+
+.iux-tabs__drag-wrap {
+  display: inline-flex;
+  touch-action: none;
+}
+
+/* ---------- Panel ---------- */
+
+.iux-tabs__panel {
+  padding: var(--space-4);
+  outline: none;
+}
+
+.iux-tabs__panel:focus-visible {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: calc(var(--effect-focus-ring-offset) * -1);
+}
