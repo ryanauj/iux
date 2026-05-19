@@ -28,8 +28,9 @@ import { VirtualListStories } from '../components/VirtualList/VirtualList.storie
 import { StepperStories } from '../components/Stepper/Stepper.stories'
 import { CommandPaletteStories } from '../components/CommandPalette/CommandPalette.stories'
 import { OptimisticUndoStories } from '../components/OptimisticUndo/OptimisticUndo.stories'
+import { SpotlightStories } from '../components/Spotlight/Spotlight.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -59,6 +60,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'stepper', label: 'Stepper', render: () => <StepperStories /> },
   { id: 'cmdk', label: 'Command palette', render: () => <CommandPaletteStories /> },
   { id: 'undo', label: 'Optimistic undo', render: () => <OptimisticUndoStories /> },
+  { id: 'spotlight', label: 'Spotlight', render: () => <SpotlightStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
