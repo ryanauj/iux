@@ -1,0 +1,160 @@
+/*
+ * Spatial canvas — one component, four functional rungs (pan → zoom →
+ * objects → collab). Single 2D transform on a layer drives both pan and
+ * zoom; objects render in world coordinates and only the layer's matrix
+ * changes. Minimap projects the world rect into a small fixed surface
+ * and renders a viewport overlay you can click-jump on.
+ */
+
+.iux-canvas {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-canvas__viewport {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  touch-action: none;
+  cursor: grab;
+}
+
+.iux-canvas--pan .iux-canvas__viewport:active,
+.iux-canvas--zoom .iux-canvas__viewport:active { cursor: grabbing; }
+
+.iux-canvas__layer {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  will-change: transform;
+}
+
+.iux-canvas__world {
+  position: relative;
+  background-color: var(--color-surface-base);
+  background-image:
+    linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.iux-canvas__object {
+  --iux-canvas-color: var(--color-intent-primary-bg);
+  position: absolute;
+  background-color: color-mix(in srgb, var(--iux-canvas-color) 22%, transparent);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-canvas-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  box-shadow: var(--elevation-low);
+  user-select: none;
+}
+
+.iux-canvas__object.is-selected {
+  outline-width: var(--border-width-thick);
+  outline-style: solid;
+  outline-color: var(--color-intent-primary-bg);
+  outline-offset: 2px;
+}
+
+.iux-canvas__marquee {
+  position: absolute;
+  border-width: var(--border-width-thin);
+  border-style: dashed;
+  border-color: var(--color-intent-primary-bg);
+  background-color: color-mix(in srgb, var(--color-intent-primary-bg) 8%, transparent);
+  pointer-events: none;
+}
+
+.iux-canvas__remote-cursor {
+  --iux-canvas-color: var(--color-intent-info-bg);
+  position: absolute;
+  color: var(--iux-canvas-color);
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  transform: translate(-2px, -2px);
+}
+
+.iux-canvas__remote-name {
+  background-color: var(--iux-canvas-color);
+  color: var(--color-content-inverse);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.iux-canvas__hud {
+  position: absolute;
+  inset-block-end: var(--space-2);
+  inset-inline-end: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--elevation-low);
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-canvas__hud button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  cursor: pointer;
+}
+
+/* ---------- Minimap ---------- */
+
+.iux-canvas__minimap {
+  position: relative;
+  background-color: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.iux-canvas__minimap-obj {
+  position: absolute;
+  background-color: var(--color-intent-primary-bg);
+  border-radius: var(--radius-sm);
+  opacity: 0.6;
+}
+
+.iux-canvas__minimap-vp {
+  position: absolute;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-intent-warning-bg);
+  pointer-events: none;
+}

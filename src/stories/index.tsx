@@ -35,8 +35,9 @@ import { PropertyInspectorStories } from '../components/PropertyInspector/Proper
 import { PresenceStories } from '../components/Presence/Presence.stories'
 import { TimelineStories } from '../components/Timeline/Timeline.stories'
 import { BezierEditorStories } from '../components/BezierEditor/BezierEditor.stories'
+import { SpatialCanvasStories } from '../components/SpatialCanvas/SpatialCanvas.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence' | 'timeline' | 'bezier'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence' | 'timeline' | 'bezier' | 'canvas'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -73,6 +74,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'presence', label: 'Presence layer', render: () => <PresenceStories /> },
   { id: 'timeline', label: 'Timeline', render: () => <TimelineStories /> },
   { id: 'bezier', label: 'Bezier editor', render: () => <BezierEditorStories /> },
+  { id: 'canvas', label: 'Spatial canvas', render: () => <SpatialCanvasStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
