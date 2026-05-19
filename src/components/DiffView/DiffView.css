@@ -1,0 +1,202 @@
+/*
+ * Diff / merge view — one component, four functional rungs (side-by-side
+ * → inline → chunked → three-way). LCS-based line diff with character-
+ * level highlighting inside paired changed lines.
+ */
+
+.iux-diff {
+  display: flex;
+  gap: var(--space-3);
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  color: var(--color-content-primary);
+}
+
+.iux-diff--inline { display: block; }
+
+.iux-diff__pane {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-2);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.iux-diff__line {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.iux-diff__line--add { background-color: color-mix(in srgb, var(--color-intent-success-bg) 18%, transparent); }
+.iux-diff__line--del { background-color: color-mix(in srgb, var(--color-intent-danger-bg) 18%, transparent); }
+.iux-diff__line--eq  { color: var(--color-content-secondary); }
+
+.iux-diff__gutter {
+  color: var(--color-content-muted);
+  user-select: none;
+  text-align: end;
+}
+
+.iux-diff__char--add { background-color: var(--color-intent-success-bg); color: var(--color-intent-success-content); border-radius: var(--radius-sm); padding-inline: 0; }
+.iux-diff__char--del { background-color: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); border-radius: var(--radius-sm); padding-inline: 0; }
+
+/* ---------- Chunked ---------- */
+
+.iux-diff__chunked {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-diff__chunk {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.iux-diff__chunk--changed { display: flex; }
+
+.iux-diff__chunk-pane {
+  flex: 1 1 auto;
+  margin: 0;
+  padding-block: var(--space-1);
+  display: flex;
+  flex-direction: column;
+}
+
+.iux-diff__chunk-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background-color: var(--color-surface-sunken);
+  border-inline-start-width: var(--border-width-hairline);
+  border-inline-start-style: solid;
+  border-inline-start-color: var(--color-border-subtle);
+}
+
+.iux-diff__chunk-actions button {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-diff__chunk-actions button.is-picked {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-diff__merged {
+  background-color: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+.iux-diff__merged summary {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  cursor: pointer;
+  color: var(--color-content-secondary);
+}
+
+.iux-diff__merged pre {
+  margin: var(--space-2) 0 0;
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ---------- Three-way ---------- */
+
+.iux-diff__threeway {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.iux-diff__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.iux-diff__column-title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+}
+
+.iux-diff__chunk-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-diff__chunk-row.is-picked {
+  outline-width: var(--border-width-thin);
+  outline-style: solid;
+  outline-color: var(--color-intent-primary-bg);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.iux-diff__threeway-pick {
+  appearance: none;
+  align-self: flex-start;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-diff__threeway-pick.is-picked {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}

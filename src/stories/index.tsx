@@ -29,8 +29,9 @@ import { StepperStories } from '../components/Stepper/Stepper.stories'
 import { CommandPaletteStories } from '../components/CommandPalette/CommandPalette.stories'
 import { OptimisticUndoStories } from '../components/OptimisticUndo/OptimisticUndo.stories'
 import { SpotlightStories } from '../components/Spotlight/Spotlight.stories'
+import { DiffViewStories } from '../components/DiffView/DiffView.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk' | 'undo' | 'spotlight' | 'diff'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -61,6 +62,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'cmdk', label: 'Command palette', render: () => <CommandPaletteStories /> },
   { id: 'undo', label: 'Optimistic undo', render: () => <OptimisticUndoStories /> },
   { id: 'spotlight', label: 'Spotlight', render: () => <SpotlightStories /> },
+  { id: 'diff', label: 'Diff / merge', render: () => <DiffViewStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
