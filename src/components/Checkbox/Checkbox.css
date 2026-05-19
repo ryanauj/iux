@@ -1,0 +1,206 @@
+/*
+ * Checkbox — one component, four functional rungs (single → detailed →
+ * tree → group). The square is rendered as a styled span; a hidden native
+ * <input type=checkbox> sits behind it to keep form posting + native
+ * screen-reader handling intact. The check stroke animates via pathLength
+ * + dasharray; reduced motion strips the transition only.
+ */
+
+.iux-checkbox {
+  --iux-checkbox-size: var(--space-5);
+  --iux-checkbox-bg: var(--color-surface-base);
+  --iux-checkbox-bg-checked: var(--color-intent-primary-bg);
+  --iux-checkbox-border: var(--color-border-default);
+  --iux-checkbox-border-strong: var(--color-border-strong);
+  --iux-checkbox-border-focus: var(--color-border-focus);
+  --iux-checkbox-content-checked: var(--color-intent-primary-content);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+}
+
+.iux-checkbox__row {
+  display: inline-grid;
+  grid-template-columns: var(--iux-checkbox-size) 1fr;
+  align-items: start;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+}
+
+.iux-checkbox__row:hover .iux-checkbox__box,
+.iux-checkbox__row.is-hover .iux-checkbox__box {
+  border-color: var(--iux-checkbox-border-strong);
+}
+
+.iux-checkbox__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: var(--iux-checkbox-size);
+  height: var(--iux-checkbox-size);
+  margin: 0;
+}
+
+.iux-checkbox__input:focus-visible + .iux-checkbox__box,
+.iux-checkbox__row.is-focus .iux-checkbox__box {
+  outline-width: var(--effect-focus-ring-width);
+  outline-style: var(--effect-focus-ring-style);
+  outline-color: var(--color-focus-ring);
+  outline-offset: var(--effect-focus-ring-offset);
+}
+
+.iux-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--iux-checkbox-size);
+  height: var(--iux-checkbox-size);
+  background-color: var(--iux-checkbox-bg);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--iux-checkbox-border);
+  border-radius: var(--radius-sm);
+  color: var(--iux-checkbox-content-checked);
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--motion-duration-fast);
+  transition-timing-function: var(--motion-easing-standard);
+}
+
+.iux-checkbox__box[data-state='on'],
+.iux-checkbox__box[data-state='mixed'],
+.iux-checkbox.is-checked .iux-checkbox__box,
+.iux-checkbox.is-indeterminate .iux-checkbox__box {
+  background-color: var(--iux-checkbox-bg-checked);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-checkbox__check {
+  opacity: 0;
+  transform: scale(0.6);
+  transition-property: opacity, transform;
+  transition-duration: var(--motion-duration-base);
+  transition-timing-function: var(--motion-easing-spring);
+}
+
+.iux-checkbox__box[data-state='on'] .iux-checkbox__check,
+.iux-checkbox__box[data-state='mixed'] .iux-checkbox__check,
+.iux-checkbox.is-checked .iux-checkbox__check,
+.iux-checkbox.is-indeterminate .iux-checkbox__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Draw-in: stroke length grows from 0 to full when the check appears.
+ * pathLength=1 normalizes the path so the dash math is portable. */
+.iux-checkbox__box[data-state='on'] .iux-checkbox__check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: iux-checkbox-draw var(--motion-duration-base) var(--motion-easing-out) both;
+}
+
+@keyframes iux-checkbox-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-checkbox__check,
+  .iux-checkbox__box[data-state='on'] .iux-checkbox__check path {
+    animation: none;
+    transition: none;
+  }
+}
+
+.iux-checkbox__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+}
+
+.iux-checkbox__label {
+  font-family: var(--type-body-family);
+  font-weight: var(--type-body-weight);
+  color: var(--color-content-primary);
+}
+
+.iux-checkbox__required {
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-checkbox__description {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-checkbox__error {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-intent-danger-bg);
+}
+
+.iux-checkbox--has-error .iux-checkbox__box {
+  border-color: var(--color-intent-danger-border);
+}
+
+.iux-checkbox--disabled,
+.iux-checkbox--disabled .iux-checkbox__row {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Group + tree layout ---------- */
+
+.iux-checkbox__group-label,
+.iux-checkbox__group-hint {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-checkbox__group-hint {
+  font-weight: var(--type-caption-weight);
+  font-size: var(--type-caption-size);
+  text-transform: none;
+  color: var(--color-content-muted);
+  margin-block-start: var(--space-1);
+}
+
+.iux-checkbox__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-checkbox__tree,
+.iux-checkbox__tree-children {
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-checkbox__tree-children {
+  padding-inline-start: var(--space-5);
+  border-inline-start-width: var(--border-width-hairline);
+  border-inline-start-style: solid;
+  border-inline-start-color: var(--color-border-subtle);
+  margin-inline-start: calc(var(--space-2) + var(--space-1));
+  margin-block-start: var(--space-2);
+  padding-block: var(--space-1);
+}

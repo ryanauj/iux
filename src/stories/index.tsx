@@ -6,8 +6,9 @@ import { TextInputStories } from '../components/TextInput/TextInput.stories'
 import { CardStories } from '../components/Card/Card.stories'
 import { SelectStories } from '../components/Select/Select.stories'
 import { ToggleStories } from '../components/Toggle/Toggle.stories'
+import { CheckboxStories } from '../components/Checkbox/Checkbox.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -15,6 +16,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'card', label: 'Card', render: () => <CardStories /> },
   { id: 'select', label: 'Select', render: () => <SelectStories /> },
   { id: 'toggle', label: 'Toggle', render: () => <ToggleStories /> },
+  { id: 'checkbox', label: 'Checkbox', render: () => <CheckboxStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
