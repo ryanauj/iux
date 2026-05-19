@@ -1,0 +1,102 @@
+/*
+ * Stacked toasts — one component, four functional rungs (cap → dedupe →
+ * severity → tray). Wraps the Toast primitive with stack-level logic
+ * (max cap, deduplication with "+N" counter, severity ordering with
+ * per-intent fade timing, or a collapse-to-tray button).
+ */
+
+.iux-stacked {
+  position: fixed;
+  z-index: 1100;
+  max-width: 26rem;
+  pointer-events: none;
+}
+
+.iux-stacked[data-inline='true'] {
+  position: relative;
+  inset: auto;
+}
+
+.iux-stacked--top-right    { inset-block-start: var(--space-5); inset-inline-end: var(--space-5); }
+.iux-stacked--bottom-right { inset-block-end: var(--space-5);   inset-inline-end: var(--space-5); }
+.iux-stacked--top-center,
+.iux-stacked--bottom-center {
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+.iux-stacked--top-center    { inset-block-start: var(--space-5); }
+.iux-stacked--bottom-center { inset-block-end: var(--space-5); }
+
+.iux-stacked__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: auto;
+}
+
+.iux-stacked__more {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  text-align: center;
+  padding-block: var(--space-1);
+  pointer-events: auto;
+}
+
+/* ---------- Tray variant ---------- */
+
+.iux-stacked__tray-button {
+  appearance: none;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: var(--elevation-medium);
+}
+
+.iux-stacked__tray-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  margin-block-end: var(--space-2);
+  pointer-events: auto;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-stacked__tray-header > span { flex: 1 1 auto; }
+
+.iux-stacked__tray-action {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  cursor: pointer;
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.iux-stacked__tray-action:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+}
