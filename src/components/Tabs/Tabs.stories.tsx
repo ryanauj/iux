@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Tabs, type TabItem, type TabsVariant } from './Tabs'
 
-const VARIANTS: TabsVariant[] = ['basic', 'rich', 'overflow', 'editable']
+export const VARIANTS: TabsVariant[] = ['basic', 'rich', 'overflow', 'editable']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -69,10 +69,10 @@ function ArchiveGlyph() {
   return <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="4" width="12" height="9" rx="1" /><path d="M2 7h12" /><path d="M7 10h2" /></svg>
 }
 
-export function TabsStories() {
+export function TabsStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

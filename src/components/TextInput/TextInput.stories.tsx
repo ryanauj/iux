@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { TextInput, type TextInputVariant, type ValidationResult } from './TextInput'
 
-const VARIANTS: TextInputVariant[] = ['bordered', 'floating', 'validate', 'command']
+export const VARIANTS: TextInputVariant[] = ['bordered', 'floating', 'validate', 'command']
 
 const STATES = [
   { key: 'empty', label: 'empty', props: {} },
@@ -54,10 +54,10 @@ function CommandDemo() {
   )
 }
 
-export function TextInputStories() {
+export function TextInputStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
 

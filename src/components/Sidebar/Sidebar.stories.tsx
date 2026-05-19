@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Sidebar, type SidebarGroup, type SidebarItem, type SidebarVariant } from './Sidebar'
 
-const VARIANTS: SidebarVariant[] = ['links', 'groups', 'rail', 'search']
+export const VARIANTS: SidebarVariant[] = ['links', 'groups', 'rail', 'search']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -140,12 +140,12 @@ function I({ name }: { name: 'home' | 'inbox' | 'people' | 'cog' | 'doc' | 'key'
   }
 }
 
-export function SidebarStories() {
+export function SidebarStories({ variant: variantFilter }: { variant?: string } = {}) {
   const [linksActive, setLinksActive] = useState('home')
   const [groupsActive, setGroupsActive] = useState('inbox')
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

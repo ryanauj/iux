@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Checkbox, type CheckboxOption, type CheckboxTreeNode, type CheckboxVariant } from './Checkbox'
 
-const VARIANTS: CheckboxVariant[] = ['single', 'detailed', 'tree', 'group']
+export const VARIANTS: CheckboxVariant[] = ['single', 'detailed', 'tree', 'group']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -55,10 +55,10 @@ function StatefulGroup() {
   return <Checkbox variant="group" label="Fruit basket" options={OPTIONS} values={vals} onValuesChange={setVals} />
 }
 
-export function CheckboxStories() {
+export function CheckboxStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Modal, type ModalVariant, type WizardStep } from './Modal'
 
-const VARIANTS: ModalVariant[] = ['centered', 'sectioned', 'wizard', 'routed']
+export const VARIANTS: ModalVariant[] = ['centered', 'sectioned', 'wizard', 'routed']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -127,10 +127,10 @@ function RoutedDemo() {
   )
 }
 
-export function ModalStories() {
+export function ModalStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

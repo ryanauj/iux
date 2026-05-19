@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Toast, Toaster, useToastQueue, type ToastItem, type ToastVariant } from './Toast'
 
-const VARIANTS: ToastVariant[] = ['plain', 'action', 'severity', 'progress']
+export const VARIANTS: ToastVariant[] = ['plain', 'action', 'severity', 'progress']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -87,10 +87,10 @@ function Trigger({ label, onClick }: { label: string; onClick: () => void }) {
   )
 }
 
-export function ToastStories() {
+export function ToastStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

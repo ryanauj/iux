@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { BezierEditor, type BezierAnchor, type BezierPreset, type BezierVariant } from './BezierEditor'
 
-const VARIANTS: BezierVariant[] = ['single', 'multi', 'snap', 'presets']
+export const VARIANTS: BezierVariant[] = ['single', 'multi', 'snap', 'presets']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -71,10 +71,10 @@ function PresetsStateful() {
   )
 }
 
-export function BezierEditorStories() {
+export function BezierEditorStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

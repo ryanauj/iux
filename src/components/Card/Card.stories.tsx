@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Card, type CardAccent, type CardVariant } from './Card'
 import { Button } from '../Button/Button'
 
-const VARIANTS: CardVariant[] = ['static', 'expandable', 'bento', 'spatial']
+export const VARIANTS: CardVariant[] = ['static', 'expandable', 'bento', 'spatial']
 
 const STATES = [
   { key: 'default', label: 'default', props: {} },
@@ -85,10 +85,10 @@ function renderStaticCardFor(variant: CardVariant, extraProps: Record<string, un
   )
 }
 
-export function CardStories() {
+export function CardStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
 

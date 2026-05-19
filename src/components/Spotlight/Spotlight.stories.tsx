@@ -1,7 +1,7 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { Spotlight, type SpotlightStep, type SpotlightVariant } from './Spotlight'
 
-const VARIANTS: SpotlightVariant[] = ['single', 'sequence', 'anchor-aware', 'adaptive']
+export const VARIANTS: SpotlightVariant[] = ['single', 'sequence', 'anchor-aware', 'adaptive']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -116,10 +116,10 @@ function AdaptiveDemo() {
   )
 }
 
-export function SpotlightStories() {
+export function SpotlightStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

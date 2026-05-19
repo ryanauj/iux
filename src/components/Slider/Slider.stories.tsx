@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Slider, type SliderVariant } from './Slider'
 
-const VARIANTS: SliderVariant[] = ['single', 'ticks', 'range', 'curve']
+export const VARIANTS: SliderVariant[] = ['single', 'ticks', 'range', 'curve']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -45,10 +45,10 @@ function StatefulCurve() {
   )
 }
 
-export function SliderStories() {
+export function SliderStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

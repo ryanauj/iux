@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Tooltip, type TooltipVariant } from './Tooltip'
 
-const VARIANTS: TooltipVariant[] = ['plain', 'shortcut', 'rich', 'coach']
+export const VARIANTS: TooltipVariant[] = ['plain', 'shortcut', 'rich', 'coach']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -63,10 +63,10 @@ function CoachStateful() {
   )
 }
 
-export function TooltipStories() {
+export function TooltipStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { EmptyState, type EmptyStateVariant } from './EmptyState'
 
-const VARIANTS: EmptyStateVariant[] = ['minimal', 'illustrated', 'checklist', 'generative']
+export const VARIANTS: EmptyStateVariant[] = ['minimal', 'illustrated', 'checklist', 'generative']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -58,10 +58,10 @@ function GenerativeStateful() {
   )
 }
 
-export function EmptyStateStories() {
+export function EmptyStateStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { SpatialCanvas, type CanvasObject, type CanvasVariant, type RemoteCursor } from './SpatialCanvas'
 
-const VARIANTS: CanvasVariant[] = ['pan', 'zoom', 'objects', 'collab']
+export const VARIANTS: CanvasVariant[] = ['pan', 'zoom', 'objects', 'collab']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -69,10 +69,10 @@ function CollabDemo() {
   )
 }
 
-export function SpatialCanvasStories() {
+export function SpatialCanvasStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

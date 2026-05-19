@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { PropertyInspector, type PropertyField, type PropertyInspectorVariant } from './PropertyInspector'
 
-const VARIANTS: PropertyInspectorVariant[] = ['flat', 'grouped', 'multi', 'constrained']
+export const VARIANTS: PropertyInspectorVariant[] = ['flat', 'grouped', 'multi', 'constrained']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -78,10 +78,10 @@ function ConstrainedStateful() {
   )
 }
 
-export function PropertyInspectorStories() {
+export function PropertyInspectorStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

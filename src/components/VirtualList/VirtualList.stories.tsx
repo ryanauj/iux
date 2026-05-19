@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { VirtualList, type VirtualListVariant, type SectionSpec } from './VirtualList'
 
-const VARIANTS: VirtualListVariant[] = ['fixed', 'variable', 'sections', 'grid']
+export const VARIANTS: VirtualListVariant[] = ['fixed', 'variable', 'sections', 'grid']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -34,10 +34,10 @@ const SECTIONS: SectionSpec[] = [
 
 const GRID_ITEMS = Array.from({ length: 1200 }, (_, i) => ({ id: i, label: `Tile ${i + 1}` }))
 
-export function VirtualListStories() {
+export function VirtualListStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

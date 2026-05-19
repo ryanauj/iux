@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Segmented, type SegmentedItem, type SegmentedVariant } from './Segmented'
 
-const VARIANTS: SegmentedVariant[] = ['pill', 'rich', 'animated', 'overflow']
+export const VARIANTS: SegmentedVariant[] = ['pill', 'rich', 'animated', 'overflow']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -54,10 +54,10 @@ function I({ name }: { name: 'list' | 'grid' | 'map' }) {
   }
 }
 
-export function SegmentedStories() {
+export function SegmentedStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">

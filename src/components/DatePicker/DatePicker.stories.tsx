@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { DatePicker, presetLastNDays, presetThisMonth, type DatePickerVariant } from './DatePicker'
 
-const VARIANTS: DatePickerVariant[] = ['input', 'calendar', 'range', 'nl']
+export const VARIANTS: DatePickerVariant[] = ['input', 'calendar', 'range', 'nl']
 
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -49,10 +49,10 @@ function NlStateful() {
   )
 }
 
-export function DatePickerStories() {
+export function DatePickerStories({ variant: variantFilter }: { variant?: string } = {}) {
   return (
     <div className="stories__component">
-      {VARIANTS.map(variant => (
+      {(variantFilter ? VARIANTS.filter(v => v === variantFilter) : VARIANTS).map(variant => (
         <section key={variant} className="stories__row">
           <h3 className="stories__row-title">variant: {variant}</h3>
           <div className="stories__cells">
