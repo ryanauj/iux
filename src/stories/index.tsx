@@ -26,8 +26,9 @@ import { StackedToastsStories } from '../components/StackedToasts/StackedToasts.
 import { BentoStories } from '../components/Bento/Bento.stories'
 import { VirtualListStories } from '../components/VirtualList/VirtualList.stories'
 import { StepperStories } from '../components/Stepper/Stepper.stories'
+import { CommandPaletteStories } from '../components/CommandPalette/CommandPalette.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker' | 'sidebar' | 'empty' | 'loading' | 'tokenfield' | 'drawer' | 'segmented' | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper' | 'cmdk'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -55,6 +56,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'bento', label: 'Bento grid', render: () => <BentoStories /> },
   { id: 'virtuallist', label: 'Virtual list', render: () => <VirtualListStories /> },
   { id: 'stepper', label: 'Stepper', render: () => <StepperStories /> },
+  { id: 'cmdk', label: 'Command palette', render: () => <CommandPaletteStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]

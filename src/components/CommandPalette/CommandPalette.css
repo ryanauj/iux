@@ -1,0 +1,248 @@
+/*
+ * Command palette — one component, four functional rungs (flat → grouped
+ * → wizard → agentic). Modal-style overlay portaled to body, Cmd/Ctrl+K
+ * default hotkey, fuzzy filter, arrow + enter keyboard, optional
+ * multi-step wizard and a natural-language agentic preview mode.
+ */
+
+.iux-cmdk__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-surface-scrim);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-block: 12vh var(--space-5);
+  padding-inline: var(--space-4);
+  z-index: 1200;
+  animation: iux-cmdk-fade var(--motion-duration-base) var(--motion-easing-out);
+}
+
+@keyframes iux-cmdk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.iux-cmdk {
+  position: relative;
+  width: 100%;
+  max-width: 36rem;
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-overlay);
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: iux-cmdk-pop var(--motion-duration-base) var(--motion-easing-spring);
+  font-family: var(--type-body-family);
+}
+
+@keyframes iux-cmdk-pop {
+  from { transform: translateY(var(--space-2)) scale(0.98); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-cmdk__scrim,
+  .iux-cmdk { animation: none; }
+}
+
+.iux-cmdk__input {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-body-weight);
+  background-color: transparent;
+  color: var(--color-content-primary);
+  border: none;
+  outline: none;
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border-block-end-width: var(--border-width-thin);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+}
+
+.iux-cmdk__input::placeholder { color: var(--color-content-muted); }
+
+.iux-cmdk__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-1);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.iux-cmdk__group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.iux-cmdk__group-heading {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  color: var(--color-content-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--type-label-tracking);
+}
+
+.iux-cmdk__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.iux-cmdk__item.is-active { background-color: var(--color-intent-neutral-bg-hover); }
+
+.iux-cmdk__item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  color: var(--color-content-secondary);
+}
+
+.iux-cmdk__item-text { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.iux-cmdk__item-label { font-weight: var(--type-label-weight); }
+.iux-cmdk__item-description { font-size: var(--type-caption-size); color: var(--color-content-secondary); }
+
+.iux-cmdk__kbd {
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+  border-width: var(--border-width-hairline);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-1);
+}
+
+.iux-cmdk__empty {
+  padding-block: var(--space-4);
+  padding-inline: var(--space-4);
+  color: var(--color-content-muted);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+/* ---------- Wizard ---------- */
+
+.iux-cmdk__wizard {
+  display: flex;
+  flex-direction: column;
+}
+
+.iux-cmdk__wizard-header {
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  border-block-end-width: var(--border-width-hairline);
+  border-block-end-style: solid;
+  border-block-end-color: var(--color-border-subtle);
+}
+
+.iux-cmdk__wizard-trail { color: var(--color-content-primary); font-weight: var(--type-label-weight); }
+
+.iux-cmdk__wizard-confirm {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---------- Agentic ---------- */
+
+.iux-cmdk__agentic {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-cmdk__agentic-header {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-transform: var(--type-label-text-transform);
+}
+
+.iux-cmdk__agentic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-cmdk__agentic-list li {
+  background-color: var(--color-surface-sunken);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+  font-family: var(--type-body-family);
+}
+
+.iux-cmdk__agentic-step {
+  display: inline-block;
+  width: var(--space-5);
+  color: var(--color-content-muted);
+  font-family: var(--type-code-family);
+}
+
+.iux-cmdk__agentic-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+}
+
+.iux-cmdk__btn {
+  appearance: none;
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.iux-cmdk__btn--primary {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: var(--color-intent-primary-border);
+}
+
+.iux-cmdk__btn--ghost {
+  background: transparent;
+  color: var(--color-content-primary);
+  border-color: var(--color-border-default);
+}
+
+.iux-cmdk__btn:disabled { opacity: 0.55; cursor: not-allowed; }
