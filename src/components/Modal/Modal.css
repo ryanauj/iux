@@ -18,6 +18,16 @@
   animation: iux-modal-fade var(--motion-duration-base) var(--motion-easing-out);
 }
 
+/*
+ * Stories render the modal inline (no portal) so the demo doesn't take
+ * over the whole page. Anchor the scrim to the parent cell instead of
+ * the viewport — otherwise it escapes and stacks over neighboring demos.
+ */
+.iux-modal__scrim--inline {
+  position: absolute;
+  z-index: auto;
+}
+
 @keyframes iux-modal-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
