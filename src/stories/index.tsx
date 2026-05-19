@@ -11,8 +11,9 @@ import { SliderStories } from '../components/Slider/Slider.stories'
 import { ModalStories } from '../components/Modal/Modal.stories'
 import { TableStories } from '../components/Table/Table.stories'
 import { TabsStories } from '../components/Tabs/Tabs.stories'
+import { ToastStories } from '../components/Toast/Toast.stories'
 
-type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs'
+type Component = 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider' | 'modal' | 'table' | 'tabs' | 'toast'
 
 const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = [
   { id: 'button', label: 'Button', render: () => <ButtonStories /> },
@@ -25,6 +26,7 @@ const COMPONENTS: { id: Component; label: string; render: () => ReactNode }[] = 
   { id: 'modal', label: 'Modal', render: () => <ModalStories /> },
   { id: 'table', label: 'Table', render: () => <TableStories /> },
   { id: 'tabs', label: 'Tabs', render: () => <TabsStories /> },
+  { id: 'toast', label: 'Toast', render: () => <ToastStories /> },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]

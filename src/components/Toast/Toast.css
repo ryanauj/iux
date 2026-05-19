@@ -1,0 +1,152 @@
+/*
+ * Toast — one component, four functional rungs (plain → action → severity
+ * → progress). The Toaster stack manages position, order, and overflow.
+ */
+
+.iux-toast-stack {
+  position: fixed;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: none;
+  max-width: 24rem;
+}
+
+.iux-toast-stack[data-inline='true'] {
+  position: relative;
+  inset: auto;
+}
+
+.iux-toast-stack--top-right    { inset-block-start: var(--space-5); inset-inline-end: var(--space-5); }
+.iux-toast-stack--bottom-right { inset-block-end: var(--space-5);  inset-inline-end: var(--space-5); }
+.iux-toast-stack--top-center {
+  inset-block-start: var(--space-5);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+.iux-toast-stack--bottom-center {
+  inset-block-end: var(--space-5);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.iux-toast {
+  position: relative;
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-3) var(--space-2);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-content-primary);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-inline-start-width: var(--space-1);
+  border-inline-start-color: var(--iux-toast-accent, var(--color-border-default));
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-high);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  overflow: hidden;
+  animation: iux-toast-in var(--motion-duration-base) var(--motion-easing-out);
+}
+
+@keyframes iux-toast-in {
+  from { transform: translateY(calc(var(--space-3) * -1)); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-toast { animation: none; }
+}
+
+.iux-toast--intent-info     { --iux-toast-accent: var(--color-intent-info-bg); }
+.iux-toast--intent-success  { --iux-toast-accent: var(--color-intent-success-bg); }
+.iux-toast--intent-warning  { --iux-toast-accent: var(--color-intent-warning-bg); }
+.iux-toast--intent-danger   { --iux-toast-accent: var(--color-intent-danger-bg); }
+.iux-toast--intent-neutral  { --iux-toast-accent: var(--color-border-default); }
+
+.iux-toast__icon {
+  color: var(--iux-toast-accent);
+}
+
+.iux-toast__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.iux-toast__title {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+.iux-toast__body {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-toast__action {
+  appearance: none;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-link);
+  cursor: pointer;
+}
+
+.iux-toast__action:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+.iux-toast__close {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-muted);
+  cursor: pointer;
+  width: var(--space-5);
+  height: var(--space-5);
+  line-height: 1;
+  border-radius: var(--radius-sm);
+}
+
+.iux-toast__close:hover {
+  background-color: var(--color-intent-neutral-bg-hover);
+  color: var(--color-content-primary);
+}
+
+.iux-toast__progress {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  height: var(--border-width-thick);
+  background-color: var(--iux-toast-accent);
+  transition: width var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-toast--more {
+  display: inline-flex;
+  justify-content: center;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  padding-block: var(--space-2);
+  border-style: dashed;
+}
