@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Twenty named aesthetics. Each is a concrete value-set bound to the
+Twenty-two named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -13,8 +13,8 @@ Legend:
   default sizes; `experimental` = ships with documented contrast or
   motion caveats and is opt-in for production.
 - **Engine**: the rendering family the palette plugs into. Palettes
-  8–10, 11–15, and 16–20 reuse engines from 1–7 to prove the contract
-  holds.
+  8–10, 11–15, 16–20, and 21–22 reuse engines from 1–7 to prove the
+  contract holds.
 
 ---
 
@@ -71,6 +71,21 @@ collapses the lightness/intent space deliberately.
 | 19 | Bauhaus                      | Flat   | pass         | Red / yellow / blue primaries on cream, radius forced to `0` or `9999px`, geometric sans, linear easings — primary shapes only. |
 | 20 | Mall-goth                    | Flat   | experimental | Near-black field, blood-red accent, deep-violet `info`, condensed serif display, tightened `space.*` — crepuscular intent across the board. |
 
+## Group E — editorial registers (same Flat engine, type-density tuning)
+
+Two additional palettes prove the Flat engine carries distinct
+typographic registers under a shared warm-paper / ink-black color
+identity — both differ from Editorial primarily in
+`typography.family.*`, `typography.role.*`, `space.*`, and `radius.*`.
+Elevation stays effectively flat. Where Group D varies the Flat engine
+across period and color, Group E varies it across type density and
+margin within a single editorial color register.
+
+| #  | Palette                 | Engine        | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|---------------|--------------|------------------------------------------------------------------------------------------------|
+| 21 | Newspaper / Broadsheet  | Flat          | pass         | Newsprint cream, serif body in a narrow-column rhythm, stop-the-presses red accent, zero radius, classified-ad density. |
+| 22 | Academic                | Flat          | pass         | LaTeX journal-article aesthetic — Computer Modern serif throughout (ui = display), generous outer margins, footnote-style affordances signaled through `label` (small-caps surrogate) and `caption`. |
+
 ---
 
 ## Notes on a11y tags
@@ -89,7 +104,7 @@ collapses the lightness/intent space deliberately.
 
 ## Engine inventory
 
-Seven engines, twenty palettes:
+Seven engines, twenty-two palettes:
 
 1. Flat
 2. Material
@@ -99,7 +114,7 @@ Seven engines, twenty palettes:
 6. Claymorphism
 7. Skeuomorphism
 
-Engine `Flat` is reused by palettes 1, 9, 10, and 16–20. Engine
+Engine `Flat` is reused by palettes 1, 9, 10, 16–20, and 21–22. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. The token
 contract is the only seam between engine and palette — see
 `tokens/00-token-contract.md`.
