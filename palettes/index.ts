@@ -13,6 +13,11 @@ import { palette as liquidGlassDark } from './liquid-glass-dark'
 import { palette as aeroGlass } from './aero-glass'
 import { palette as frutigerAero } from './frutiger-aero'
 import { palette as cyberpunkNeonNoir } from './cyberpunk-neon-noir'
+import { palette as vaporwave } from './vaporwave'
+import { palette as memphis80s } from './memphis-80s'
+import { palette as swissInternational } from './swiss-international'
+import { palette as bauhaus } from './bauhaus'
+import { palette as mallGoth } from './mall-goth'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -30,6 +35,11 @@ export const palettes = {
   'aero-glass': aeroGlass,
   'frutiger-aero': frutigerAero,
   'cyberpunk-neon-noir': cyberpunkNeonNoir,
+  vaporwave,
+  'memphis-80s': memphis80s,
+  'swiss-international': swissInternational,
+  bauhaus,
+  'mall-goth': mallGoth,
 } as const
 
 export type PaletteId = keyof typeof palettes
