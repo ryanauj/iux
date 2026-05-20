@@ -4,6 +4,7 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import { COMPONENTS, type Component } from '../showcase/components'
 import { PaletteShowcase, type ShowcaseLayout } from '../showcase/PaletteShowcase'
 import '../showcase/showcase.css'
+import { DraggableControls, type ControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -24,6 +25,18 @@ const LAYOUTS: { value: ShowcaseLayout; label: string }[] = [
   { value: 'grid', label: 'Grid — tap-to-expand tiles' },
 ]
 
+const CONTROLS_STYLE_KEY = 'iux-controls-style'
+
+function loadControlsStyle(): ControlsStyle {
+  try {
+    const raw = localStorage.getItem(CONTROLS_STYLE_KEY)
+    if (raw === 'bar' || raw === 'dial' || raw === 'strip') return raw
+  } catch {
+    /* ignore */
+  }
+  return 'bar'
+}
+
 export function Stories() {
   const [viewMode, setViewMode] = useState<ViewMode>('per-component')
   const [component, setComponent] = useState<Component>('button')
@@ -32,9 +45,14 @@ export function Stories() {
   const [layout, setLayout] = useState<ShowcaseLayout>('feed')
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>('flat-classic')
   const [motionScale, setMotionScale] = useState<number>(2)
-  const [controlsOpen, setControlsOpen] = useState<boolean>(true)
   const [variantChoice, setVariantChoice] = useState<VariantChoice>('all')
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
+  const [controlsStyle, setControlsStyleState] = useState<ControlsStyle>(() => loadControlsStyle())
+
+  const setControlsStyle = (next: ControlsStyle) => {
+    setControlsStyleState(next)
+    try { localStorage.setItem(CONTROLS_STYLE_KEY, next) } catch { /* */ }
+  }
 
   const active = COMPONENTS.find(c => c.id === component)
   const visiblePaletteIds: PaletteId[] =
@@ -83,10 +101,87 @@ export function Stories() {
     }
   }, [infoOpen])
 
+  const viewField: Field = {
+    key: 'view',
+    label: 'View',
+    short: 'W',
+    value: viewMode,
+    options: [
+      { value: 'per-component', label: 'Per-component (one × all palettes)' },
+      { value: 'per-palette', label: 'Per-palette (all components × one)' },
+    ],
+    onChange: v => setViewMode(v as ViewMode),
+  }
+
+  const motionField: Field = {
+    key: 'motion',
+    label: 'Motion',
+    short: 'M',
+    value: String(motionScale),
+    options: MOTION_SCALES.map(s => ({ value: String(s.value), label: s.label })),
+    onChange: v => setMotionScale(Number(v)),
+  }
+
+  const fields: Field[] = viewMode === 'per-component'
+    ? [
+        viewField,
+        {
+          key: 'component',
+          label: 'Component',
+          short: 'C',
+          value: component,
+          options: COMPONENTS.map(c => ({ value: c.id, label: c.label })),
+          onChange: v => handleComponentChange(v as Component),
+        },
+        {
+          key: 'variant',
+          label: 'Variant',
+          short: 'V',
+          value: variantChoice,
+          options: [
+            { value: 'all', label: 'All variants' },
+            ...(active?.variants.map(v => ({ value: v, label: v })) ?? []),
+          ],
+          onChange: v => setVariantChoice(v as VariantChoice),
+        },
+        {
+          key: 'palette',
+          label: 'Palette',
+          short: 'P',
+          value: paletteChoice,
+          options: [
+            { value: 'all', label: 'All palettes' },
+            ...PALETTE_IDS.map(id => ({ value: id, label: `${palettes[id].name} (${palettes[id].engine})` })),
+          ],
+          onChange: v => handlePaletteChange(v as PaletteChoice),
+        },
+        motionField,
+      ]
+    : [
+        viewField,
+        {
+          key: 'palette',
+          label: 'Palette',
+          short: 'P',
+          value: showcasePaletteId,
+          options: PALETTE_IDS.map(id => ({ value: id, label: `${palettes[id].name} (${palettes[id].engine})` })),
+          onChange: v => handleShowcasePaletteChange(v as PaletteId),
+        },
+        {
+          key: 'layout',
+          label: 'Layout',
+          short: 'L',
+          value: layout,
+          options: LAYOUTS.map(l => ({ value: l.value, label: l.label })),
+          onChange: v => setLayout(v as ShowcaseLayout),
+        },
+        motionField,
+      ]
+
   return (
     <PaletteRoot palette={chromePalette} as="section" motionScale={motionScale}>
       <main className="stories">
-        <header className={`stories__header${controlsOpen ? '' : ' stories__header--collapsed'}`}>
+        <header className="stories__header stories__header--static">
           <div className="stories__header-bar">
             <h1 className="stories__title">
               iux — component stories
@@ -102,15 +197,6 @@ export function Stories() {
                 i
               </button>
             </h1>
-            <button
-              type="button"
-              className="stories__toggle"
-              aria-expanded={controlsOpen}
-              aria-controls="stories-controls"
-              onClick={() => setControlsOpen(o => !o)}
-            >
-              {controlsOpen ? 'Hide controls' : 'Show controls'}
-            </button>
           </div>
           {infoOpen && (
             <div
@@ -124,118 +210,16 @@ export function Stories() {
               <em> per-component </em> view shows one component across every
               palette; the <em> per-palette </em> view shows every component
               inside one palette, with three responsive layouts to choose
-              from.
+              from. Use the floating controls (drag to reposition) to switch
+              view, component, variant, palette, layout, and motion.
             </div>
           )}
-          <div
-            id="stories-controls"
-            className="stories__header-body"
-            hidden={!controlsOpen}
-          >
-            <div className="stories__controls">
-              <label className="stories__control">
-                <span className="stories__control-label">View</span>
-                <select
-                  className="stories__control-select"
-                  value={viewMode}
-                  onChange={e => setViewMode(e.target.value as ViewMode)}
-                >
-                  <option value="per-component">Per-component (one × all palettes)</option>
-                  <option value="per-palette">Per-palette (all components × one)</option>
-                </select>
-              </label>
-
-              {viewMode === 'per-component' && (
-                <>
-                  <label className="stories__control">
-                    <span className="stories__control-label">Component</span>
-                    <select
-                      className="stories__control-select"
-                      value={component}
-                      onChange={e => handleComponentChange(e.target.value as Component)}
-                    >
-                      {COMPONENTS.map(c => (
-                        <option key={c.id} value={c.id}>{c.label}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="stories__control">
-                    <span className="stories__control-label">Variant</span>
-                    <select
-                      className="stories__control-select"
-                      value={variantChoice}
-                      onChange={e => setVariantChoice(e.target.value as VariantChoice)}
-                    >
-                      <option value="all">All variants</option>
-                      {active?.variants.map(v => (
-                        <option key={v} value={v}>{v}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="stories__control">
-                    <span className="stories__control-label">Palette</span>
-                    <select
-                      className="stories__control-select"
-                      value={paletteChoice}
-                      onChange={e => handlePaletteChange(e.target.value as PaletteChoice)}
-                    >
-                      <option value="all">All palettes</option>
-                      {PALETTE_IDS.map(id => (
-                        <option key={id} value={id}>
-                          {palettes[id].name} ({palettes[id].engine})
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </>
-              )}
-
-              {viewMode === 'per-palette' && (
-                <>
-                  <label className="stories__control">
-                    <span className="stories__control-label">Palette</span>
-                    <select
-                      className="stories__control-select"
-                      value={showcasePaletteId}
-                      onChange={e => handleShowcasePaletteChange(e.target.value as PaletteId)}
-                    >
-                      {PALETTE_IDS.map(id => (
-                        <option key={id} value={id}>
-                          {palettes[id].name} ({palettes[id].engine})
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="stories__control">
-                    <span className="stories__control-label">Layout</span>
-                    <select
-                      className="stories__control-select"
-                      value={layout}
-                      onChange={e => setLayout(e.target.value as ShowcaseLayout)}
-                    >
-                      {LAYOUTS.map(l => (
-                        <option key={l.value} value={l.value}>{l.label}</option>
-                      ))}
-                    </select>
-                  </label>
-                </>
-              )}
-
-              <label className="stories__control">
-                <span className="stories__control-label">Motion speed</span>
-                <select
-                  className="stories__control-select"
-                  value={motionScale}
-                  onChange={e => setMotionScale(Number(e.target.value))}
-                >
-                  {MOTION_SCALES.map(s => (
-                    <option key={s.value} value={s.value}>{s.label}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
         </header>
+        <DraggableControls
+          style={controlsStyle}
+          onStyleChange={setControlsStyle}
+          fields={fields}
+        />
 
         {viewMode === 'per-component' &&
           visiblePaletteIds.map(id => {
