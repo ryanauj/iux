@@ -1,11 +1,11 @@
 # FINALIZED-PALETTES
 
-Ten named aesthetics. Each is a concrete value-set bound to the single
-semantic token contract in `tokens/semantic.contract.ts`. A **palette**
-defines values; an **engine** defines the rendering style (which token
-slots matter, what shape the shadow stack takes, whether `backdropBlur`
-is non-zero, etc.). Two palettes can share an engine and still look
-nothing alike — that is the point.
+Fifteen named aesthetics. Each is a concrete value-set bound to the
+single semantic token contract in `tokens/semantic.contract.ts`. A
+**palette** defines values; an **engine** defines the rendering style
+(which token slots matter, what shape the shadow stack takes, whether
+`backdropBlur` is non-zero, etc.). Two palettes can share an engine and
+still look nothing alike — that is the point.
 
 Legend:
 
@@ -37,6 +37,21 @@ Legend:
 | 9  | Editorial        | Flat          | pass         | Warm paper background, serif display, ink-black body, restrained accent — flat engine reading like a magazine. |
 | 10 | High-Contrast AAA| Flat          | pass         | Pure black on pure white (or inverse), 3px focus rings, no decorative color — constraint as aesthetic, WCAG AAA throughout. |
 
+## Group C — glass registers (same engine, period/brand tuning)
+
+Five additional palettes prove the Glassmorphism engine carries
+distinct visual registers without engine changes — all five differ
+only in `surface.*` alpha, `border.*` tint, `elevation.*` shadow
+recipe, `radius.*`, and `effect.backdropBlur.*` magnitude.
+
+| #  | Palette                 | Engine        | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|---------------|--------------|------------------------------------------------------------------------------------------------|
+| 11 | Liquid Glass (Light)    | Glassmorphism | experimental | Apple WWDC25 register — softer blur, refraction-tinted hairlines, lighter shadows on a cool light base. |
+| 12 | Liquid Glass (Dark)     | Glassmorphism | experimental | Same Apple register inverted to near-black; raised alphas drop to 6–14% so panels still read as glass, not grey. |
+| 13 | Aero Glass              | Glassmorphism | experimental | Windows Vista/7 — saturated blue base, paired top-highlight + bottom-rim insets for the wet gloss, Segoe UI. |
+| 14 | Frutiger Aero           | Glassmorphism | experimental | Y2K aqua-mint base, cloud-white raised, bouncier spring easing, teal shadow — late-2000s optimism. |
+| 15 | Cyberpunk Neon-Noir     | Glassmorphism | experimental | Near-black rainy-window field, magenta + cyan dual-accent borders and glow elevations, glow focus ring. |
+
 ---
 
 ## Notes on a11y tags
@@ -55,7 +70,7 @@ Legend:
 
 ## Engine inventory
 
-Seven engines, ten palettes:
+Seven engines, fifteen palettes:
 
 1. Flat
 2. Material
@@ -66,5 +81,5 @@ Seven engines, ten palettes:
 7. Skeuomorphism
 
 Engine `Flat` is reused by palettes 1, 9, 10. Engine `Glassmorphism` is
-reused by palettes 4 and 8. The token contract is the only seam between
-engine and palette — see `tokens/00-token-contract.md`.
+reused by palettes 4, 8, and 11–15. The token contract is the only
+seam between engine and palette — see `tokens/00-token-contract.md`.
