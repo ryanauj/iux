@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { useStore } from '../../app/StoreContext'
+import { useMemo, useState, type ReactNode } from 'react'
 import './PropertyInspector.css'
 
 export type PropertyInspectorVariant = 'flat' | 'grouped' | 'multi' | 'constrained'
@@ -70,24 +69,20 @@ export function PropertyInspector({
     return order.map(g => ({ name: g, items: buckets.get(g)! }))
   }, [variant, fields])
 
-  const store = useStore()
-  const storageKey = `inspector:${groupKey}:collapsed`
-  const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set<string>())
-
-  useEffect(() => {
-    let cancelled = false
-    void store.get<string[]>(storageKey).then(v => {
-      if (cancelled || !Array.isArray(v)) return
-      setCollapsed(new Set(v))
-    })
-    return () => { cancelled = true }
-  }, [store, storageKey])
+  const [collapsed, setCollapsed] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set<string>()
+    const raw = window.localStorage.getItem(`iux:inspector:${groupKey}`)
+    if (raw) try { return new Set<string>(JSON.parse(raw)) } catch { return new Set() }
+    return new Set()
+  })
 
   const toggleGroup = (g: string) => {
     setCollapsed(prev => {
       const next = new Set(prev)
       if (next.has(g)) next.delete(g); else next.add(g)
-      void store.set<string[]>(storageKey, Array.from(next))
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(`iux:inspector:${groupKey}`, JSON.stringify(Array.from(next)))
+      }
       return next
     })
   }

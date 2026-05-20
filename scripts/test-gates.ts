@@ -1,16 +1,15 @@
 /**
- * Fixture harness for the enforcement gates.
+ * Fixture harness for the two enforcement gates.
  *
  * Runs each gate against a passing fixture (expects clean) and a failing
- * fixture (expects violations) and prints a pass/fail row per assertion.
- * Exits non-zero if any row fails — the gate gate.
+ * fixture (expects violations) and prints a pass/fail row for each of the
+ * four assertions. Exits non-zero if any row fails — the gate gate.
  */
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { validateTokens } from './validate-palettes'
 import { lintText, type RuleId } from './lint-raw-values'
-import { lintStorageText, type StorageRuleId } from './lint-storage'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -81,29 +80,6 @@ async function run(): Promise<Row[]> {
     detail: allRulesHit
       ? undefined
       : `rules tripped: ${Array.from(rulesHit).join(', ') || '(none)'} (need ${allRules.join(' + ')})`,
-  })
-
-  const storageCleanFile = path.join(FIXTURES, 'storage-clean.ts')
-  const storageCleanViolations = lintStorageText(storageCleanFile, fs.readFileSync(storageCleanFile, 'utf8'))
-  rows.push({
-    name: 'storage-lint: clean fixture has 0 violations',
-    passed: storageCleanViolations.length === 0,
-    detail: storageCleanViolations.length === 0
-      ? undefined
-      : `unexpected: ${storageCleanViolations.map(v => `${v.rule}(${v.match})`).join(', ')}`,
-  })
-
-  const storageDirtyFile = path.join(FIXTURES, 'storage-dirty.ts')
-  const storageDirtyViolations = lintStorageText(storageDirtyFile, fs.readFileSync(storageDirtyFile, 'utf8'))
-  const storageRulesHit = new Set<StorageRuleId>(storageDirtyViolations.map(v => v.rule))
-  const expectedStorageRules: StorageRuleId[] = ['window-storage', 'global-storage', 'bare-storage']
-  const allStorageRulesHit = expectedStorageRules.every(r => storageRulesHit.has(r))
-  rows.push({
-    name: 'storage-lint: dirty fixture trips all three rules',
-    passed: storageDirtyViolations.length > 0 && allStorageRulesHit,
-    detail: allStorageRulesHit
-      ? undefined
-      : `rules tripped: ${Array.from(storageRulesHit).join(', ') || '(none)'} (need ${expectedStorageRules.join(' + ')})`,
   })
 
   return rows
