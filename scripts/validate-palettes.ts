@@ -43,6 +43,15 @@ export function validateTokens(
   const errors: LocalError[] = []
   const here = trail.join('.') || '(root)'
 
+  if (shape === null) {
+    if (typeof tokens === 'string') {
+      if (tokens === '') errors.push({ path: here, reason: 'empty' })
+      return errors
+    }
+    errors.push({ path: here, reason: 'wrong-type', detail: `expected string, got ${typeof tokens}` })
+    return errors
+  }
+
   if (Array.isArray(shape)) {
     if (!isPlainObject(tokens)) {
       errors.push({ path: here, reason: 'wrong-type', detail: `expected object, got ${typeof tokens}` })

@@ -106,10 +106,13 @@ export const palette: Palette = {
         inOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
         spring: 'cubic-bezier(0.34, 1.7, 0.64, 1)',
       },
+      decay: '0ms',
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
       focusRing: { width: '3px', offset: '4px', color: '#7c3aed', style: 'solid' },
+      overlay: { image: 'none', size: 'auto', blend: 'normal' },
+      glow: { radius: '0', color: 'transparent', intensity: 0 },
     },
   },
 }

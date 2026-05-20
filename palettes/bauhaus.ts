@@ -111,10 +111,13 @@ export const palette: Palette = {
         inOut: 'linear',
         spring: 'linear',
       },
+      decay: '0ms',
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
       focusRing: { width: '2px', offset: '2px', color: '#e2241a', style: 'solid' },
+      overlay: { image: 'none', size: 'auto', blend: 'normal' },
+      glow: { radius: '0', color: 'transparent', intensity: 0 },
     },
   },
 }

@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Twenty-two named aesthetics. Each is a concrete value-set bound to the
+Twenty-four named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -13,8 +13,8 @@ Legend:
   default sizes; `experimental` = ships with documented contrast or
   motion caveats and is opt-in for production.
 - **Engine**: the rendering family the palette plugs into. Palettes
-  8–10, 11–15, 16–20, and 21–22 reuse engines from 1–7 to prove the
-  contract holds.
+  8–10, 11–15, 16–20, 21–22, and 23–24 reuse / introduce engines
+  alongside 1–7 to prove the contract holds.
 
 ---
 
@@ -86,6 +86,19 @@ margin within a single editorial color register.
 | 21 | Newspaper / Broadsheet  | Flat          | pass         | Newsprint cream, serif body in a narrow-column rhythm, stop-the-presses red accent, zero radius, classified-ad density. |
 | 22 | Academic                | Flat          | pass         | LaTeX journal-article aesthetic — Computer Modern serif throughout (ui = display), generous outer margins, footnote-style affordances signaled through `label` (small-caps surrogate) and `caption`. |
 
+## Group F — CRT phosphor pair (new engine)
+
+Two palettes share the new CRT / Phosphor engine, which exercises
+three contract slots — `effect.overlay`, `effect.glow`, `motion.decay`
+— that every other palette returns as no-ops. The pair proves the
+engine generalizes: swap green ↔ amber by editing only `color.*` and
+`effect.glow.color`.
+
+| #  | Palette                 | Engine         | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|----------------|--------------|------------------------------------------------------------------------------------------------|
+| 23 | CRT / Phosphor (Green)  | CRT / Phosphor | experimental | Green-screen tube — single phosphor color on near-black, scanline overlay, bloom on text, motion that decays past its main duration. |
+| 24 | CRT / Phosphor (Amber)  | CRT / Phosphor | experimental | DEC VT220 amber variant — same engine, single-color swap; intents collapse onto the one phosphor color. |
+
 ---
 
 ## Notes on a11y tags
@@ -104,7 +117,7 @@ margin within a single editorial color register.
 
 ## Engine inventory
 
-Seven engines, twenty-two palettes:
+Eight engines, twenty-four palettes:
 
 1. Flat
 2. Material
@@ -113,8 +126,10 @@ Seven engines, twenty-two palettes:
 5. Neumorphism
 6. Claymorphism
 7. Skeuomorphism
+8. CRT / Phosphor
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, and 21–22. Engine
-`Glassmorphism` is reused by palettes 4, 8, and 11–15. The token
-contract is the only seam between engine and palette — see
+`Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
+`CRT / Phosphor` is reused by palettes 23, 24. The token contract is
+the only seam between engine and palette — see
 `tokens/00-token-contract.md`.

@@ -94,6 +94,9 @@ export function paletteToCssVars(
   for (const k of durKeys) {
     vars[`--motion-duration-${k}`] = scaleDuration(tokens.motion.duration[k], motionScale)
   }
+  // Decay scales with the same motionScale knob so the stories slow-mo
+  // demo lets reviewers see the CRT phosphor trail at human speed.
+  vars['--motion-decay'] = scaleDuration(tokens.motion.decay, motionScale)
 
   const easeKeys = ['standard', 'in', 'out', 'inOut', 'spring'] as const
   for (const k of easeKeys) {
@@ -107,6 +110,14 @@ export function paletteToCssVars(
   vars['--effect-focus-ring-width'] = tokens.effect.focusRing.width
   vars['--effect-focus-ring-offset'] = tokens.effect.focusRing.offset
   vars['--effect-focus-ring-style'] = tokens.effect.focusRing.style
+
+  vars['--effect-overlay-image'] = tokens.effect.overlay.image
+  vars['--effect-overlay-size'] = tokens.effect.overlay.size
+  vars['--effect-overlay-blend'] = tokens.effect.overlay.blend
+
+  vars['--effect-glow-radius'] = tokens.effect.glow.radius
+  vars['--effect-glow-color'] = tokens.effect.glow.color
+  vars['--effect-glow-intensity'] = String(tokens.effect.glow.intensity)
 
   return vars
 }
