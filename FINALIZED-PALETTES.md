@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Fifteen named aesthetics. Each is a concrete value-set bound to the
+Twenty named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -12,8 +12,9 @@ Legend:
 - **A11y**: `pass` = passes WCAG AA for body text & focusable controls at
   default sizes; `experimental` = ships with documented contrast or
   motion caveats and is opt-in for production.
-- **Engine**: the rendering family the palette plugs into. Palettes 8-10
-  reuse engines from 1-7 to prove the contract holds.
+- **Engine**: the rendering family the palette plugs into. Palettes
+  8–10, 11–15, and 16–20 reuse engines from 1–7 to prove the contract
+  holds.
 
 ---
 
@@ -52,6 +53,24 @@ recipe, `radius.*`, and `effect.backdropBlur.*` magnitude.
 | 14 | Frutiger Aero           | Glassmorphism | experimental | Y2K aqua-mint base, cloud-white raised, bouncier spring easing, teal shadow — late-2000s optimism. |
 | 15 | Cyberpunk Neon-Noir     | Glassmorphism | experimental | Near-black rainy-window field, magenta + cyan dual-accent borders and glow elevations, glow focus ring. |
 
+## Group D — flat registers (same engine, period/style tuning)
+
+Five additional palettes prove the Flat engine carries distinct
+period and style registers without engine changes — palettes differ
+only in `color.*`, `radius.*`, `borderWidth.*`, `elevation.*` shadow
+recipe, `space.*` scaling, and `typography.*` family/role choices.
+Palettes 16 and 17 stress decoration and color saturation; palettes
+18 and 19 collapse the color/curve space deliberately; palette 20
+collapses the lightness/intent space deliberately.
+
+| #  | Palette                      | Engine | A11y         | One-line philosophy                                                                            |
+|----|------------------------------|--------|--------------|------------------------------------------------------------------------------------------------|
+| 16 | Vaporwave                    | Flat   | experimental | Magenta/cyan dusk register on a deep night-purple base, glow-paired elevation, serif display + uppercase mono labels. |
+| 17 | 80s Memphis                  | Flat   | experimental | Cream base, primary-color intents, ink-black borders on every slot, hard-offset elevation — Memphis Group confetti vocabulary. |
+| 18 | Swiss / International Style  | Flat   | pass         | White / black / signal red only; zero radius outside `full`; intents collapse to two colors — typographic hierarchy carries the rest. |
+| 19 | Bauhaus                      | Flat   | pass         | Red / yellow / blue primaries on cream, radius forced to `0` or `9999px`, geometric sans, linear easings — primary shapes only. |
+| 20 | Mall-goth                    | Flat   | experimental | Near-black field, blood-red accent, deep-violet `info`, condensed serif display, tightened `space.*` — crepuscular intent across the board. |
+
 ---
 
 ## Notes on a11y tags
@@ -70,7 +89,7 @@ recipe, `radius.*`, and `effect.backdropBlur.*` magnitude.
 
 ## Engine inventory
 
-Seven engines, fifteen palettes:
+Seven engines, twenty palettes:
 
 1. Flat
 2. Material
@@ -80,6 +99,7 @@ Seven engines, fifteen palettes:
 6. Claymorphism
 7. Skeuomorphism
 
-Engine `Flat` is reused by palettes 1, 9, 10. Engine `Glassmorphism` is
-reused by palettes 4, 8, and 11–15. The token contract is the only
-seam between engine and palette — see `tokens/00-token-contract.md`.
+Engine `Flat` is reused by palettes 1, 9, 10, and 16–20. Engine
+`Glassmorphism` is reused by palettes 4, 8, and 11–15. The token
+contract is the only seam between engine and palette — see
+`tokens/00-token-contract.md`.
