@@ -80,6 +80,16 @@ body {
   border-bottom-color: var(--color-border-subtle);
 }
 
+/*
+ * Static (non-sticky) header. Controls now live in the floating
+ * DraggableControls component, so the title header doesn't need to
+ * track scroll — and an unsticky header gives the controls a clean
+ * area to drag over.
+ */
+.stories__header--static {
+  position: static;
+}
+
 .stories__header-bar {
   display: flex;
   align-items: center;
