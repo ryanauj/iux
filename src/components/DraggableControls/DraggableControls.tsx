@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
 import './DraggableControls.css'
 
-export type ControlsStyle = 'bar' | 'dial' | 'strip'
+export type ControlsStyle = 'bar' | 'strip'
 
 export type Field = {
   key: string
@@ -25,7 +25,6 @@ const OPEN_KEY = (s: ControlsStyle) => `iux-controls-open-${s}`
 
 const DEFAULTS: Record<ControlsStyle, Position> = {
   bar: { x: 16, y: 16 },
-  dial: { x: 24, y: 24 },
   strip: { x: 16, y: 96 },
 }
 
@@ -57,13 +56,12 @@ function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
 
 const STYLE_OPTIONS: { value: ControlsStyle; label: string }[] = [
   { value: 'bar', label: 'Bar' },
-  { value: 'dial', label: 'Dial' },
   { value: 'strip', label: 'Strip' },
 ]
 
 export function DraggableControls({ style, onStyleChange, fields }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
-  const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'dial'))
+  const [open, setOpen] = useState<boolean>(() => loadOpen(style, true))
   const containerRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{
     sx: number; sy: number; ox: number; oy: number; pointerId: number; el: Element
@@ -71,7 +69,7 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
 
   useEffect(() => {
     setPos(loadPos(style))
-    setOpen(loadOpen(style, style !== 'dial'))
+    setOpen(loadOpen(style, true))
   }, [style])
 
   useEffect(() => {
@@ -146,17 +144,6 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
     >
       {style === 'bar' && (
         <BarVariant
-          fields={fields}
-          summaries={summaries}
-          open={open}
-          setOpen={setOpen}
-          dragHandlers={dragHandlers}
-          variantStyle={style}
-          onStyleChange={onStyleChange}
-        />
-      )}
-      {style === 'dial' && (
-        <DialVariant
           fields={fields}
           summaries={summaries}
           open={open}
@@ -285,65 +272,25 @@ function BarVariant({ fields, summaries, open, setOpen, dragHandlers, variantSty
   )
 }
 
-/* ===== Variation B: Speed Dial ===== */
-function DialVariant({ fields, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
-  const panelRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const onDocPointer = (e: MouseEvent) => {
-      const t = e.target as Node
-      if (panelRef.current && !panelRef.current.contains(t)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', onDocPointer)
-    return () => document.removeEventListener('mousedown', onDocPointer)
-  }, [open, setOpen])
-
-  return (
-    <div className="ctrl-dial" ref={panelRef}>
-      <button
-        type="button"
-        className={`ctrl-dial__fab${open ? ' ctrl-dial__fab--open' : ''}`}
-        aria-label={open ? 'Close controls. Drag to move.' : `Open controls. Current: ${summaries.join(', ')}. Drag to move.`}
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
-        {...dragHandlers}
-      >
-        <span className="ctrl-dial__fab-icon" aria-hidden="true">{open ? '×' : '◉'}</span>
-      </button>
-      {open && (
-        <div className="ctrl-dial__panel" role="group" aria-label="Demo controls">
-          <div className="ctrl-dial__grid">
-            {fields.map(f => (
-              <label key={f.key} className="ctrl-dial__tile">
-                <span className="ctrl-dial__tile-label">{f.label}</span>
-                <select
-                  className="ctrl-dial__select"
-                  value={f.value}
-                  onChange={e => f.onChange(e.target.value)}
-                >
-                  {f.options.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </label>
-            ))}
-          </div>
-          <div className="ctrl-dial__footer">
-            <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ===== Variation C: Edge Strip ===== */
+/* ===== Variation B: Edge Strip ===== */
 function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
+  const [popoverSide, setPopoverSide] = useState<'left' | 'right'>('right')
   const stripRef = useRef<HTMLDivElement>(null)
+
+  const toggleSlot = (key: string) => {
+    if (activeKey === key) {
+      setActiveKey(null)
+      return
+    }
+    const rect = stripRef.current?.getBoundingClientRect()
+    if (rect) {
+      const spaceRight = window.innerWidth - rect.right
+      const spaceLeft = rect.left
+      setPopoverSide(spaceLeft > spaceRight ? 'left' : 'right')
+    }
+    setActiveKey(key)
+  }
 
   useEffect(() => {
     if (!activeKey) return
@@ -387,13 +334,17 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                     className={`ctrl-strip__icon${isActive ? ' ctrl-strip__icon--active' : ''}`}
                     aria-label={`${f.label}: ${opt?.label ?? f.value}`}
                     aria-expanded={isActive}
-                    onClick={() => setActiveKey(isActive ? null : f.key)}
+                    onClick={() => toggleSlot(f.key)}
                   >
                     <span className="ctrl-strip__icon-short" aria-hidden="true">{f.short}</span>
                     <span className="ctrl-strip__icon-val">{opt?.label ?? f.value}</span>
                   </button>
                   {isActive && (
-                    <div className="ctrl-strip__popover" role="menu" aria-label={f.label}>
+                    <div
+                      className={`ctrl-strip__popover ctrl-strip__popover--${popoverSide}`}
+                      role="menu"
+                      aria-label={f.label}
+                    >
                       <div className="ctrl-strip__popover-title">{f.label}</div>
                       <ul className="ctrl-strip__list">
                         {f.options.map(o => {
