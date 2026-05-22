@@ -26,15 +26,53 @@ body {
 /*
  * Palette root — every palette's tokens land here as CSS custom
  * properties. Components below read only these vars.
+ *
+ * The CRT scanline overlay is painted via `background-image` here, not
+ * in a pseudo-element, so it inherits the surface fill underneath and
+ * doesn't interfere with components' own positioning. Every non-CRT
+ * palette sets `--effect-overlay-image: none`, which makes this rule a
+ * no-op for them.
  */
 .palette-root {
-  background: var(--color-surface-base);
+  background-color: var(--color-surface-base);
+  background-image: var(--effect-overlay-image);
+  background-size: var(--effect-overlay-size);
+  background-attachment: local;
+  background-blend-mode: var(--effect-overlay-blend);
   color: var(--color-content-primary);
   font-family: var(--type-body-family);
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
   line-height: var(--type-body-line-height);
   letter-spacing: var(--type-body-tracking);
+}
+
+/*
+ * Phosphor bloom — text glow comes from the engine, applied at the
+ * palette root and inherited. Non-CRT palettes set
+ * `--effect-glow-color: transparent` and `--effect-glow-radius: 0` so
+ * `text-shadow` resolves to a transparent zero-radius shadow (i.e. nothing).
+ */
+.palette-root {
+  text-shadow: 0 0 var(--effect-glow-radius) var(--effect-glow-color);
+}
+
+/*
+ * CRT cursor / focus trail. Both the focus ring's glow halo and the
+ * "trailing" lingering behavior come from `--motion-decay`. The
+ * `cubic-bezier(0, 0, 0, 1)` easing is what makes a transition decay
+ * (drops to ~0 quickly, then crawls). On non-CRT palettes `--motion-decay`
+ * is the zero-duration token, so this rule's `transition-delay` adds nothing.
+ *
+ * Components opt into the decay regime by reading `--motion-decay` in
+ * their own transitions; this block only sets up the focus halo.
+ */
+.palette-root :focus-visible {
+  box-shadow:
+    0 0 0 var(--effect-focus-ring-width) var(--color-focus-ring),
+    0 0 calc(var(--effect-glow-radius) * 2) var(--color-focus-ring);
+  transition: box-shadow var(--motion-duration-fast) var(--motion-easing-out)
+              var(--motion-decay);
 }
 
 /*
@@ -47,12 +85,47 @@ body {
  *
  * AAA already sets every duration to `instant`; this branch covers the
  * other palettes without per-component code.
+ *
+ * CRT engine: scanline overlay stays (it's decoration, not motion), but
+ * `--motion-decay` collapses to the zero-duration token so the trailing /
+ * lingering behavior stops, and any keyframe pulse on the glow halo is
+ * disabled below.
  */
 @media (prefers-reduced-motion: reduce) {
   .palette-root {
     --motion-duration-fast: var(--motion-duration-instant);
     --motion-duration-base: var(--motion-duration-instant);
     --motion-duration-slow: var(--motion-duration-instant);
+    --motion-decay: var(--motion-duration-instant);
+  }
+
+  .palette-root[data-palette^='crt-phosphor'] :focus-visible {
+    animation: none;
+  }
+}
+
+/*
+ * CRT-only: focus halo pulses gently. Scoped via `data-palette` so other
+ * palettes are unaffected, and the keyframes use the engine's glow tokens
+ * so the green / amber variants get the same animation in their own color.
+ * `--motion-decay` participates in the iteration timing so the pulse
+ * stretches under slower-motion-scale demo settings.
+ */
+.palette-root[data-palette^='crt-phosphor'] :focus-visible {
+  animation: iux-crt-focus-pulse calc(var(--motion-duration-slow) * 4 + var(--motion-decay) * 4)
+             var(--motion-easing-inOut) infinite;
+}
+
+@keyframes iux-crt-focus-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 var(--effect-focus-ring-width) var(--color-focus-ring),
+      0 0 calc(var(--effect-glow-radius) * 2) var(--color-focus-ring);
+  }
+  50% {
+    box-shadow:
+      0 0 0 var(--effect-focus-ring-width) var(--color-focus-ring),
+      0 0 calc(var(--effect-glow-radius) * 4) var(--color-focus-ring);
   }
 }
 

@@ -112,11 +112,16 @@ and weight up. Neubrutalism sets `display` to a heavy condensed face and
 ### `motion.*`
 - `duration.{instant, fast, base, slow}` — CSS time strings.
 - `easing.{standard, in, out, inOut, spring}` — CSS easing strings.
+- `decay` — a single CSS time string. The **trailing duration** appended
+  to state transitions (`transition-delay`). The CRT phosphor engine
+  sets this to `'80ms'` so hovers, focus moves, and toggles linger
+  past their main duration the way a phosphor pixel does. Every other
+  palette sets it to `'0ms'` and the rule becomes a no-op.
 
 `instant` is `'0ms'` and is the value AAA returns from every easing
 slot when the user prefers reduced motion. Engines are responsible for
 honoring `prefers-reduced-motion` at the palette level, not in
-component code.
+component code — including collapsing `decay` to `instant`.
 
 ### `effect.*`
 Cross-cutting visual effects that some engines need.
@@ -128,6 +133,20 @@ Cross-cutting visual effects that some engines need.
   recipe. `style: 'solid' | 'glow' | 'double'`. Tron uses `glow`. AAA
   uses `solid` with `width = borderWidth.thick`. Flat uses `solid`
   with `thin`.
+- `overlay.{image, size, blend}` — an **engine-level decoration**
+  painted on the palette root as a `background-image`. Only the CRT
+  phosphor engine sets `image` to a non-`'none'` value (a scanline
+  gradient stack). The pattern persists under
+  `prefers-reduced-motion` because it is decoration, not motion.
+  Every other palette returns `image: 'none'`, `size: 'auto'`,
+  `blend: 'normal'` — a 3-line no-op.
+- `glow.{radius, color, intensity}` — the **phosphor halo** recipe.
+  Drives the engine-level `text-shadow` on body text and the
+  `box-shadow` halo on `:focus-visible`. CRT palettes set
+  `radius` ≈ `'6px'`, a saturated color, and `intensity` ≈ `0.7`.
+  Every other palette sets `radius: '0'`, `color: 'transparent'`,
+  `intensity: 0` — `text-shadow: 0 0 0 transparent` renders nothing,
+  so the engine CSS is multiplied by zero on every non-CRT palette.
 
 ## Value-type conventions
 
@@ -156,6 +175,7 @@ Each engine differs in which token slots carry the weight:
 | Neumorphism     | `elevation.*` (paired inner+outer)                         | `color.border.*` (deliberately invisible)|
 | Claymorphism    | `radius.lg`, `elevation.*` (doubled), pastels in `color.surface.*` | `effect.backdropBlur`            |
 | Skeuomorphism   | `elevation.*` (real shadows), per-palette texture in `color.surface.*` (via CSS gradients) | `effect.backdropBlur` |
+| CRT / Phosphor  | `effect.overlay.*` (scanlines), `effect.glow.*` (bloom), `motion.decay` (trailing), single-color `color.intent.*` | `effect.backdropBlur`, `color.intent.*` differentiation |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

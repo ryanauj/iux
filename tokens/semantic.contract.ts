@@ -27,6 +27,13 @@ export type CssEasing = string
 /** CSS filter string for backdrop-filter blur (`'blur(8px)'` or `'none'`). */
 export type CssBackdropFilter = string
 
+/**
+ * A CSS `background-image` value applied as an engine-level overlay on the
+ * palette root. `'none'` for engines that don't paint one — only CRT-class
+ * palettes set a non-`'none'` value (scanline gradient).
+ */
+export type CssBackgroundImage = string
+
 /** Value for the CSS `box-shadow` property. May stack multiple, may use `inset`. */
 export interface Shadow {
   boxShadow: string
@@ -221,6 +228,15 @@ export interface DurationScale {
   slow: CssDuration
 }
 
+/**
+ * Trailing duration added to a state transition *after* its main duration
+ * elapses — the CRT phosphor "decay" regime. Most palettes leave this at
+ * `'0ms'`; the CRT engine sets it to ~80ms so that hovers, focus moves,
+ * and toggles fade out instead of snapping. Engines collapse this to `'0ms'`
+ * under `prefers-reduced-motion`.
+ */
+export type DecayDuration = CssDuration
+
 export interface EasingScale {
   standard: CssEasing
   in: CssEasing
@@ -232,6 +248,12 @@ export interface EasingScale {
 export interface MotionTokens {
   duration: DurationScale
   easing: EasingScale
+  /**
+   * Trailing duration the engine appends to state transitions (CRT decay).
+   * `'0ms'` on every palette except the CRT phosphor variants. Engines must
+   * collapse this to `'0ms'` under `prefers-reduced-motion`.
+   */
+  decay: DecayDuration
 }
 
 // -----------------------------------------------------------------------------
@@ -255,9 +277,62 @@ export interface FocusRing {
   style: 'solid' | 'glow' | 'double'
 }
 
+/**
+ * Engine-level overlay painted on the palette root.
+ *
+ * Only CRT-class palettes set this to a non-`'none'` value (a scanline
+ * gradient stack). Every other palette returns `'none'`, which is the
+ * natural no-op when the root applies it as a `background-image`.
+ *
+ * The overlay is treated as decoration: it persists under
+ * `prefers-reduced-motion` (it is not motion) but the engine must not
+ * animate it. CRT palettes that want pulsing scanlines do that via
+ * `effect.glow.*` instead.
+ */
+export interface OverlayEffect {
+  /** `background-image` value applied at the palette root. `'none'` for most palettes. */
+  image: CssBackgroundImage
+  /** `background-size` paired with `image`. `'auto'` is the safe no-op. */
+  size: CssLength
+  /** Composite blend mode against the surface. `'normal'` is the safe no-op. */
+  blend:
+    | 'normal'
+    | 'multiply'
+    | 'screen'
+    | 'overlay'
+    | 'darken'
+    | 'lighten'
+    | 'soft-light'
+    | 'hard-light'
+}
+
+/**
+ * The phosphor-glow recipe. Used by the CRT engine to put a `text-shadow`
+ * halo on body text and a `box-shadow` halo on focus / cursor / accents.
+ *
+ * Every non-CRT palette sets `radius = '0'` and `color = 'transparent'` —
+ * components multiply by zero and the glow vanishes without per-engine
+ * branching.
+ */
+export interface GlowEffect {
+  /** Blur radius for the halo (`text-shadow` / `box-shadow` second value). */
+  radius: CssLength
+  /** Color of the halo. Use `'transparent'` to disable. */
+  color: CssColor
+  /**
+   * Opacity multiplier the engine may use to tune the halo. `0` is the
+   * safe no-op; `1` is full strength. CRT palettes set this to ~0.7.
+   */
+  intensity: number
+}
+
 export interface EffectTokens {
   backdropBlur: BackdropBlurScale
   focusRing: FocusRing
+  /** Engine-level decoration overlay (CRT scanlines). `'none'` elsewhere. */
+  overlay: OverlayEffect
+  /** Phosphor-glow halo recipe. Radius `'0'`, color `'transparent'` elsewhere. */
+  glow: GlowEffect
 }
 
 // -----------------------------------------------------------------------------
@@ -292,6 +367,7 @@ export type Engine =
   | 'neumorphism'
   | 'claymorphism'
   | 'skeuomorphism'
+  | 'crt-phosphor'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -358,13 +434,27 @@ export const TOKEN_SHAPE = {
   motion: {
     duration: ['instant', 'fast', 'base', 'slow'],
     easing: ['standard', 'in', 'out', 'inOut', 'spring'],
+    /**
+     * Primitive-string leaf marker — `motion.decay` is a single CSS time
+     * string, not an object. The validator treats `null` as "expect a
+     * non-empty string at this path."
+     */
+    decay: null,
   },
   effect: {
     backdropBlur: ['none', 'sm', 'md', 'lg'],
     focusRing: ['width', 'offset', 'color', 'style'],
+    overlay: ['image', 'size', 'blend'],
+    glow: ['radius', 'color', 'intensity'],
   },
 } as const
 
+/**
+ * `null` is a primitive-string leaf — the value at this path must be a
+ * non-empty string (e.g. `motion.decay = '80ms'`). Used when a slot
+ * doesn't decompose into named child keys.
+ */
 export type TokenShapeNode =
   | readonly string[]
+  | null
   | { readonly [key: string]: TokenShapeNode }

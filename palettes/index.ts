@@ -20,6 +20,8 @@ import { palette as bauhaus } from './bauhaus'
 import { palette as mallGoth } from './mall-goth'
 import { palette as newspaper } from './newspaper'
 import { palette as academic } from './academic'
+import { palette as crtPhosphorGreen } from './crt-phosphor-green'
+import { palette as crtPhosphorAmber } from './crt-phosphor-amber'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -44,6 +46,8 @@ export const palettes = {
   'mall-goth': mallGoth,
   newspaper,
   academic,
+  'crt-phosphor-green': crtPhosphorGreen,
+  'crt-phosphor-amber': crtPhosphorAmber,
 } as const
 
 export type PaletteId = keyof typeof palettes
