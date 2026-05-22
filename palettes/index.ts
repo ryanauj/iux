@@ -18,6 +18,8 @@ import { palette as memphis80s } from './memphis-80s'
 import { palette as swissInternational } from './swiss-international'
 import { palette as bauhaus } from './bauhaus'
 import { palette as mallGoth } from './mall-goth'
+import { palette as newspaper } from './newspaper'
+import { palette as academic } from './academic'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -40,6 +42,8 @@ export const palettes = {
   'swiss-international': swissInternational,
   bauhaus,
   'mall-goth': mallGoth,
+  newspaper,
+  academic,
 } as const
 
 export type PaletteId = keyof typeof palettes
