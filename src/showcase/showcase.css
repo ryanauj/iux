@@ -404,3 +404,29 @@
     padding: var(--space-3);
   }
 }
+
+/* ============================================================ */
+/* Phone-landscape tweaks                                         */
+/*                                                                */
+/* A phone in landscape clears the 48rem/56rem width breakpoints  */
+/* and gets split into 2–3 cramped columns, even though the       */
+/* available height is tiny. Detect height-constrained landscape  */
+/* (true on phones, not on tablets/laptops) and collapse back to  */
+/* a single column so each component uses the full landscape      */
+/* width.                                                         */
+/* ============================================================ */
+
+@media (orientation: landscape) and (max-height: 32rem) {
+  .showcase {
+    padding: var(--space-3);
+    gap: var(--space-4);
+  }
+
+  .showcase-card {
+    padding: var(--space-3);
+  }
+
+  .showcase-feed { columns: 1; }
+  .showcase-deck { grid-template-columns: 1fr; }
+  .showcase-grid { grid-template-columns: 1fr; }
+}
