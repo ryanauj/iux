@@ -13,6 +13,28 @@
  */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block');
 
+/*
+ * Bundled marker fonts for the Sketch engine:
+ *
+ *   - `Caveat`        — Pablo Impallari & Rodrigo Fuenzalida, SIL OFL 1.1.
+ *                       Brush-marker display face. Used for `display` and
+ *                       `title` roles. Three weights (400/600/700).
+ *   - `Patrick Hand`  — Patrick Wagesreiter, SIL OFL 1.1. Fine-tip
+ *                       handwritten face that stays legible at body size.
+ *                       Used for `ui` / `body` / `label` / `caption` /
+ *                       `subheading` / `heading` / `code` roles.
+ *
+ * Same lazy-load contract as the pixel font: the WOFF is only fetched
+ * when a descendant element actually renders glyphs in these families,
+ * so every other palette pays nothing for the import. To vendor locally,
+ * swap each `@import` for `@font-face` rules pointing at WOFF2 files in
+ * `/public/fonts/`.
+ *
+ * `display=block` — the entire engine aesthetic depends on marker glyphs;
+ * a fallback flash to system sans-serif would look like a render glitch.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=block');
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -196,6 +218,83 @@ body {
  * 4px outset block in `--color-focus-ring` — exactly the affordance the
  * brief calls for. No override needed here.
  */
+
+/*
+ * Sketch / Hand-drawn engine. Scoped via `data-palette` so non-sketch
+ * palettes are completely untouched, exactly the same shape as the CRT
+ * and Pixel-art blocks above.
+ *
+ * The engine has two complementary effects:
+ *
+ *   1. **Wobble via SVG filter.** The palette root applies
+ *      `filter: url(#iux-sketch-wobble)`, defined in `index.html`. The
+ *      filter chains `feTurbulence` (fractal noise) into
+ *      `feDisplacementMap` (offsets each pixel by the noise), so every
+ *      border, glyph outline, focus ring, and shadow stroke gains a
+ *      micro-jitter that reads as "drawn by hand." The displacement
+ *      scale is tuned to ≈ `--stroke-variance` (1.4px for the marker
+ *      palette). The `feGaussianBlur` at the end of the chain provides
+ *      the "marker bleed" — a half-pixel softening on every stroked edge.
+ *
+ *   2. **Cards / overlays use the heavier variant.** Raised surfaces
+ *      (`.iux-card`, modals, drawers, toasts) layer a slightly stronger
+ *      wobble (`#iux-sketch-wobble-strong`) so big rectangles read as
+ *      paper rather than crisp boxes — the underlying root filter still
+ *      applies, but `filter` doesn't cascade through nested filter
+ *      stacking contexts; it overrides.
+ *
+ * **Choice: SVG filter at root vs. rough.js-per-component.** We chose
+ * the SVG-filter route because it stays inside the engine seam — no
+ * component changes required, every existing border / radius / shadow
+ * inherits the hand-drawn feel for free, and the wobble matches across
+ * controls without per-component coordination. The trade-off is that
+ * `filter: url(...)` on `.palette-root` creates a stacking context for
+ * its descendants: `position: fixed` children become anchored to the
+ * filtered ancestor rather than the viewport. The showcase's existing
+ * inline-overlay scoping (see `.stories__cell:has(.iux-modal__scrim--inline)`
+ * above) already handles this — modals and drawers stay scoped to
+ * their cell. A rough.js-style per-component renderer would avoid that
+ * containing-block side effect, but would force every component to opt
+ * in via its own SVG canvas — exactly the "engines redefine slots,
+ * components consume only slots" rule we're trying to keep clean.
+ *
+ * **Radius tokens are advisory.** The palette still sets `radius.sm` /
+ * `radius.md` / `radius.lg`; the displacement filter recasts every
+ * corner as a hand-drawn approximation. A button with `radius: '8px'`
+ * looks more rounded than one with `radius: '0'`, but neither corner is
+ * geometrically circular — both are sketched. This is the engine
+ * working as intended, not a token mismatch.
+ *
+ * **`prefers-reduced-motion`.** The engine paints no decorative motion
+ * (no scanline drift, no glow pulse, no sprite-style loop), so the
+ * reduced-motion block above doesn't need a sketch branch — it already
+ * collapses every per-palette duration to `instant`.
+ */
+.palette-root[data-palette^='sketch'] {
+  filter: url(#iux-sketch-wobble);
+}
+
+/*
+ * Raised surfaces get the heavier wobble. Two reasons:
+ *
+ *   1. Big rectangles (cards, modal panels, drawer panels) are where
+ *      the eye lingers longest; the strong-wobble filter sells the
+ *      "drawn frame" effect at low cost.
+ *   2. The root filter, once a descendant declares its own `filter`,
+ *      doesn't cascade through — applying a different filter to nested
+ *      regions lets us tune intensity by element role without
+ *      JavaScript or component-level branching.
+ *
+ * The selectors target component classes (`iux-card`, `iux-modal__panel`,
+ * etc.) because those are the load-bearing raised surfaces; any other
+ * element inherits the root wobble.
+ */
+.palette-root[data-palette^='sketch'] .iux-card,
+.palette-root[data-palette^='sketch'] .iux-modal__panel,
+.palette-root[data-palette^='sketch'] .iux-drawer__panel,
+.palette-root[data-palette^='sketch'] .iux-toast {
+  filter: url(#iux-sketch-wobble-strong);
+}
 
 /*
  * Stories scaffold — the only consumer of the components in this repo.

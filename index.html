@@ -7,6 +7,90 @@
     <title>iux — UI/UX showcase</title>
   </head>
   <body>
+    <!--
+      Sketch engine — SVG filter defs.
+
+      The Sketch engine (palette: sketch-marker) applies these filters at
+      the palette root via `filter: url(#iux-sketch-wobble)` in
+      src/styles.css. The wobble + bleed pass is defined here, in the
+      document, so CSS can reference it through a stable fragment id —
+      data-URL-encoded filters are unreliable across browsers, and a
+      one-time document-level <defs> island has zero cost when no palette
+      references it.
+
+      `iux-sketch-wobble`        — body / control wobble (~1.4px displacement)
+      `iux-sketch-wobble-strong` — heavier wobble for raised surfaces
+                                   (cards, modals); ~2.4px displacement
+
+      The seed differs between the two so neighbouring shapes don't share
+      an identical jitter pattern (which would read as a global skew, not
+      a hand). `feGaussianBlur` chained after the displacement gives the
+      "marker bleed" — a half-pixel softening on every stroked edge.
+
+      Filters use a generous overflow buffer (x/y: -10%, width/height:
+      120%) so displaced glyphs and offset shadows aren't clipped at the
+      source element's bounds.
+    -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <filter
+          id="iux-sketch-wobble"
+          x="-10%"
+          y="-10%"
+          width="120%"
+          height="120%"
+          color-interpolation-filters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.018"
+            numOctaves="2"
+            seed="3"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="1.4"
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="wobbled"
+          />
+          <feGaussianBlur in="wobbled" stdDeviation="0.35" />
+        </filter>
+        <filter
+          id="iux-sketch-wobble-strong"
+          x="-10%"
+          y="-10%"
+          width="120%"
+          height="120%"
+          color-interpolation-filters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.013"
+            numOctaves="2"
+            seed="7"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="2.4"
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="wobbled"
+          />
+          <feGaussianBlur in="wobbled" stdDeviation="0.45" />
+        </filter>
+      </defs>
+    </svg>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

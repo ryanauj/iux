@@ -86,6 +86,7 @@ export const palette: Palette = {
         display: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
         mono: '"Courier", "Courier New", "Liberation Mono", ui-monospace, monospace',
         pixel: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
+        hand: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4rem',    weight: 700, lineHeight: '1.0',  tracking: '-0.03em' },
@@ -120,6 +121,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

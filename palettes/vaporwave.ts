@@ -84,6 +84,7 @@ export const palette: Palette = {
         display: '"Playfair Display", "Times New Roman", Georgia, serif',
         mono: '"IBM Plex Mono", "Courier New", ui-monospace, SFMono-Regular, monospace',
         pixel: '"Outfit", "Inter", system-ui, -apple-system, sans-serif',
+        hand: '"Outfit", "Inter", system-ui, -apple-system, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4.5rem',  weight: 700, lineHeight: '1.0',  tracking: '-0.02em' },
@@ -118,6 +119,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

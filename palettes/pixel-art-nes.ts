@@ -150,6 +150,7 @@ export const palette: Palette = {
         display: '"Press Start 2P", "VT323", ui-monospace, monospace',
         mono: '"Press Start 2P", "VT323", ui-monospace, monospace',
         pixel: '"Press Start 2P", "VT323", ui-monospace, monospace',
+        hand: '"Press Start 2P", "VT323", ui-monospace, monospace',
       },
       // Press Start 2P is designed at an 8px cell. Sizes here are integer
       // multiples (8, 16, 24, 32...) expressed in rem assuming a 16px root.
@@ -198,6 +199,7 @@ export const palette: Palette = {
       // non-pixel palette returns `'0'`, which the engine CSS treats as
       // "no snap" — i.e. the rule is a no-op there.
       pixelGrid: '8px',
+      strokeVariance: '0',
     },
   },
 }

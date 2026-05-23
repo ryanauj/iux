@@ -206,6 +206,14 @@ export interface TypographyFamilies {
    * and document the OFL license in the palette README.
    */
   pixel: string
+  /**
+   * Hand-drawn / marker-feel stack. Only the Sketch engine routes any
+   * `role.*` through this slot — every other palette aliases this to the
+   * `ui` (sans) stack so the slot isn't load-bearing for them. The Sketch
+   * palette ships `'Caveat'` / `'Patrick Hand'` here and documents the
+   * OFL license in the palette README.
+   */
+  hand: string
 }
 
 export interface TypographyRoles {
@@ -353,6 +361,21 @@ export interface EffectTokens {
    * have already snapped to the grid.
    */
   pixelGrid: CssLength
+  /**
+   * How wobbly the engine's edges feel — a CSS length expressing the
+   * **maximum displacement** an edge may take from its true position.
+   * The Sketch engine sets this to a non-zero value (`'1.4px'`); every
+   * other palette returns `'0'`.
+   *
+   * Components don't read this directly. The Sketch engine references a
+   * fixed-strength SVG turbulence + displacement filter (defined in
+   * `index.html`) at the palette root, tuned to ≈ this value. The slot
+   * exists so future components (a hand-drawn `Chart` axis renderer,
+   * an annotation layer) can scale custom SVG paths to the engine's
+   * variance. Any rule that multiplies / divides this collapses to a
+   * no-op on non-sketch palettes.
+   */
+  strokeVariance: CssLength
 }
 
 // -----------------------------------------------------------------------------
@@ -389,6 +412,7 @@ export type Engine =
   | 'skeuomorphism'
   | 'crt-phosphor'
   | 'pixel-art'
+  | 'sketch'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -440,7 +464,7 @@ export const TOKEN_SHAPE = {
     overlay: ['boxShadow'],
   },
   typography: {
-    family: ['ui', 'display', 'mono', 'pixel'],
+    family: ['ui', 'display', 'mono', 'pixel', 'hand'],
     role: {
       display: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
       title: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
@@ -472,6 +496,12 @@ export const TOKEN_SHAPE = {
      * `'0'` on every non-pixel palette.
      */
     pixelGrid: null,
+    /**
+     * Primitive-string leaf: a CSS length (`'0'`, `'1.4px'`). `'0'` on
+     * every non-sketch palette — the engine CSS that references the
+     * variance does nothing when the value is a zero length.
+     */
+    strokeVariance: null,
   },
 } as const
 

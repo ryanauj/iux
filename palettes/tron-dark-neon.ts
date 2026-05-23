@@ -81,6 +81,7 @@ export const palette: Palette = {
         display: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
         mono: '"Share Tech Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace',
         pixel: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
+        hand: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem', weight: 700, lineHeight: '1.1',  tracking: '0.04em', textTransform: 'uppercase' },
@@ -115,6 +116,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

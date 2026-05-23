@@ -28,6 +28,7 @@ import { palette as pixelArtStardew } from './pixel-art-stardew'
 import { palette as pixelArtPico8 } from './pixel-art-pico8'
 import { palette as pixelArtSnes } from './pixel-art-snes'
 import { palette as pixelArtHyperlight } from './pixel-art-hyperlight'
+import { palette as sketchMarker } from './sketch-marker'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -60,6 +61,7 @@ export const palettes = {
   'pixel-art-pico8': pixelArtPico8,
   'pixel-art-snes': pixelArtSnes,
   'pixel-art-hyperlight': pixelArtHyperlight,
+  'sketch-marker': sketchMarker,
 } as const
 
 export type PaletteId = keyof typeof palettes

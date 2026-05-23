@@ -86,6 +86,7 @@ export const palette: Palette = {
         display: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
         mono: '"Courier", "Courier New", "Liberation Mono", ui-monospace, monospace',
         pixel: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
+        hand: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4rem',    weight: 700, lineHeight: '0.95', tracking: '-0.03em', textTransform: 'uppercase' },
@@ -120,6 +121,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }
