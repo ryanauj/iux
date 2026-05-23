@@ -82,6 +82,7 @@ export const palette: Palette = {
         ui: '"Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif',
         display: '"Optima", "Lucida Bright", Georgia, serif',
         mono: '"Courier New", ui-monospace, SFMono-Regular, monospace',
+        pixel: '"Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',  weight: 700, lineHeight: '1.15', tracking: '0' },
@@ -115,6 +116,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#6b4226', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

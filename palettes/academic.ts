@@ -82,6 +82,7 @@ export const palette: Palette = {
         ui: '"Latin Modern Roman", "Computer Modern Serif", "CMU Serif", Cambria, Georgia, "Times New Roman", serif',
         display: '"Latin Modern Roman", "Computer Modern Serif", "CMU Serif", Cambria, Georgia, "Times New Roman", serif',
         mono: '"Latin Modern Mono", "Computer Modern Typewriter", "CMU Typewriter Text", "IBM Plex Mono", ui-monospace, monospace',
+        pixel: '"Latin Modern Roman", "Computer Modern Serif", "CMU Serif", Cambria, Georgia, "Times New Roman", serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem',  weight: 700, lineHeight: '1.15', tracking: '0' },
@@ -115,6 +116,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#3a4f87', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

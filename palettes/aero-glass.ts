@@ -84,6 +84,7 @@ export const palette: Palette = {
         ui: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
         display: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
         mono: 'Consolas, "Lucida Console", "JetBrains Mono", ui-monospace, monospace',
+        pixel: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',  weight: 300, lineHeight: '1.15', tracking: '-0.005em' },
@@ -117,6 +118,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#7dd3fc', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

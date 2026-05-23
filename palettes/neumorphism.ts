@@ -85,6 +85,7 @@ export const palette: Palette = {
         ui: '"Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         display: '"Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         mono: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+        pixel: '"Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',  weight: 700, lineHeight: '1.15', tracking: '-0.01em' },
@@ -118,6 +119,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '4px', color: '#4c6ef5', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

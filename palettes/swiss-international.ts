@@ -85,6 +85,7 @@ export const palette: Palette = {
         ui: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
         display: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
         mono: '"Courier", "Courier New", "Liberation Mono", ui-monospace, monospace',
+        pixel: '"Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4rem',    weight: 700, lineHeight: '1.0',  tracking: '-0.03em' },
@@ -118,6 +119,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#e30613', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

@@ -74,6 +74,7 @@ export const palette: Palette = {
         ui: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         display: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         mono: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+        pixel: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '3rem',    weight: 800, lineHeight: '1.1', tracking: '0' },
@@ -107,6 +108,7 @@ export const palette: Palette = {
       focusRing: { width: '3px', offset: '2px', color: '#0000ee', style: 'double' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

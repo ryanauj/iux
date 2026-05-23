@@ -86,6 +86,7 @@ export const palette: Palette = {
         ui: '"Frutiger", "Frutiger LT Std", "Myriad Pro", "Lucida Grande", "Helvetica Neue", Arial, sans-serif',
         display: '"Frutiger", "Frutiger LT Std", "Myriad Pro", "Lucida Grande", "Helvetica Neue", Arial, sans-serif',
         mono: '"Andale Mono", "Lucida Console", "JetBrains Mono", ui-monospace, monospace',
+        pixel: '"Frutiger", "Frutiger LT Std", "Myriad Pro", "Lucida Grande", "Helvetica Neue", Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem', weight: 600, lineHeight: '1.1',  tracking: '-0.01em' },
@@ -119,6 +120,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#06b6d4', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

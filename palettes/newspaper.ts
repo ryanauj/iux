@@ -80,6 +80,7 @@ export const palette: Palette = {
         ui: 'Georgia, "Charter", "Times New Roman", "Liberation Serif", serif',
         display: '"Playfair Display", "Bodoni Moda", "Old Standard TT", "Times New Roman", serif',
         mono: '"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+        pixel: 'Georgia, "Charter", "Times New Roman", "Liberation Serif", serif',
       },
       role: {
         display:    { family: 'display', size: '4rem',     weight: 900, lineHeight: '1.0',  tracking: '-0.03em' },
@@ -113,6 +114,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#a01818', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

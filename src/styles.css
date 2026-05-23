@@ -1,3 +1,18 @@
+/*
+ * Bundled pixel font for the Pixel-art engine: Press Start 2P by
+ * CodeMan38, licensed SIL Open Font License 1.1 (open-source,
+ * embedding-safe). Sourced from Google Fonts so the font is loaded
+ * through their CDN; the font file is only fetched if a descendant
+ * element actually renders glyphs in this family, so non-pixel
+ * palettes pay nothing for the import. To vendor the WOFF locally
+ * later, swap this `@import` for a `@font-face` pointing at
+ * `/public/fonts/PressStart2P-Regular.woff2`.
+ *
+ * `display=block` avoids a fallback-flash to a non-pixel system font
+ * (the entire aesthetic depends on bitmap glyphs).
+ */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block');
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -128,6 +143,59 @@ body {
       0 0 calc(var(--effect-glow-radius) * 4) var(--color-focus-ring);
   }
 }
+
+/*
+ * Pixel-art engine. Scoped via `data-palette` so non-pixel palettes are
+ * untouched, exactly the same shape as the CRT block above. The three
+ * things this block does are all engine concerns — components keep
+ * reading the same `--space-*`, `--radius-*`, `--type-*` vars and
+ * happen to render as bitmaps because of what's set here:
+ *
+ *   1. `image-rendering: pixelated` disables bilinear scaling on every
+ *      raster image inside the root (component icons, story thumbnails)
+ *      so resized PNGs keep their crunch.
+ *   2. Font smoothing is forced off. Press Start 2P is a bitmap font;
+ *      anti-aliasing it would fight the whole point.
+ *   3. The phosphor `text-shadow` rule inherited from `.palette-root`
+ *      is reset — pixel sprites don't bleed colour onto adjacent
+ *      pixels, and the Pixel-art palettes already set
+ *      `--effect-glow-radius: 0` so this is belt-and-braces.
+ *
+ * Pixel-art does NOT animate scanlines or run any decorative motion
+ * loops, so the reduced-motion block above doesn't need a pixel-art
+ * branch. The engine's own `motion.easing` is `steps(1, end)` and
+ * `motion.duration.*` is on a per-frame ladder — both feel native
+ * enough that reduced-motion users only see the duration flatten.
+ */
+.palette-root[data-palette^='pixel-art'] {
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+  text-rendering: geometricPrecision;
+  text-shadow: none;
+}
+
+.palette-root[data-palette^='pixel-art'] img,
+.palette-root[data-palette^='pixel-art'] canvas,
+.palette-root[data-palette^='pixel-art'] svg {
+  image-rendering: pixelated;
+}
+
+/*
+ * Engine grid affordance. Components don't consume `--pixel-grid`
+ * directly — the Pixel-art palettes already snap every `space.*` and
+ * `radius.*` token to integer multiples of the grid step. The variable
+ * exists so future grid-aware components (a sprite editor, a tile-map
+ * gallery) can read it; on every other palette `--pixel-grid` is `'0'`
+ * and any rule that multiplies it collapses to a no-op.
+ *
+ * The default `.palette-root :focus-visible` rule above already paints
+ * the pixel-art focus block correctly: `--effect-glow-radius: 0` zeros
+ * the halo layer, and the first `box-shadow` stack becomes a solid
+ * 4px outset block in `--color-focus-ring` — exactly the affordance the
+ * brief calls for. No override needed here.
+ */
 
 /*
  * Stories scaffold — the only consumer of the components in this repo.

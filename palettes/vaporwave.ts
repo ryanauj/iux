@@ -83,6 +83,7 @@ export const palette: Palette = {
         ui: '"Outfit", "Inter", system-ui, -apple-system, sans-serif',
         display: '"Playfair Display", "Times New Roman", Georgia, serif',
         mono: '"IBM Plex Mono", "Courier New", ui-monospace, SFMono-Regular, monospace',
+        pixel: '"Outfit", "Inter", system-ui, -apple-system, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4.5rem',  weight: 700, lineHeight: '1.0',  tracking: '-0.02em' },
@@ -116,6 +117,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '3px', color: '#f472b6', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

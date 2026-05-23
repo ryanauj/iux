@@ -85,6 +85,7 @@ export const palette: Palette = {
         ui: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
         display: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
         mono: '"Courier", "Courier New", "Liberation Mono", ui-monospace, monospace',
+        pixel: '"Futura", "Avenir Next", "Avenir", "Century Gothic", "Helvetica Neue", sans-serif',
       },
       role: {
         display:    { family: 'display', size: '4rem',    weight: 700, lineHeight: '0.95', tracking: '-0.03em', textTransform: 'uppercase' },
@@ -118,6 +119,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#e2241a', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }
