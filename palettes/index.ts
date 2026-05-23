@@ -29,6 +29,8 @@ import { palette as pixelArtPico8 } from './pixel-art-pico8'
 import { palette as pixelArtSnes } from './pixel-art-snes'
 import { palette as pixelArtHyperlight } from './pixel-art-hyperlight'
 import { palette as sketchMarker } from './sketch-marker'
+import { palette as wikipedia } from './wikipedia'
+import { palette as brutalistElegant } from './brutalist-elegant'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -62,6 +64,8 @@ export const palettes = {
   'pixel-art-snes': pixelArtSnes,
   'pixel-art-hyperlight': pixelArtHyperlight,
   'sketch-marker': sketchMarker,
+  wikipedia,
+  'brutalist-elegant': brutalistElegant,
 } as const
 
 export type PaletteId = keyof typeof palettes
