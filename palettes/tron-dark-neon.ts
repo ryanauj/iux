@@ -80,6 +80,7 @@ export const palette: Palette = {
         ui: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
         display: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
         mono: '"Share Tech Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace',
+        pixel: '"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem', weight: 700, lineHeight: '1.1',  tracking: '0.04em', textTransform: 'uppercase' },
@@ -113,6 +114,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#22d3ee', style: 'glow' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

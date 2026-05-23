@@ -85,6 +85,7 @@ export const palette: Palette = {
         ui: '"Space Grotesk", "Inter", system-ui, -apple-system, sans-serif',
         display: '"Archivo Black", "Impact", "Helvetica Neue", Helvetica, Arial, sans-serif',
         mono: '"Courier Prime", "Courier New", ui-monospace, SFMono-Regular, monospace',
+        pixel: '"Space Grotesk", "Inter", system-ui, -apple-system, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '3.25rem', weight: 800, lineHeight: '1.0',  tracking: '-0.02em', textTransform: 'uppercase' },
@@ -118,6 +119,7 @@ export const palette: Palette = {
       focusRing: { width: '3px', offset: '2px', color: '#ffd60a', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

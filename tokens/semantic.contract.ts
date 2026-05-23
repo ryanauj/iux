@@ -198,6 +198,14 @@ export interface TypographyFamilies {
   display: string
   /** Monospace stack — code, tabular data, HUD readouts. */
   mono: string
+  /**
+   * Pixel-art bitmap-style stack. Only the Pixel-art engine routes any
+   * `role.*` through this slot — every other palette aliases this to the
+   * `ui` stack so the slot isn't load-bearing for them and the lint stays
+   * happy. The Pixel-art palettes ship `'Press Start 2P', monospace` here
+   * and document the OFL license in the palette README.
+   */
+  pixel: string
 }
 
 export interface TypographyRoles {
@@ -333,6 +341,18 @@ export interface EffectTokens {
   overlay: OverlayEffect
   /** Phosphor-glow halo recipe. Radius `'0'`, color `'transparent'` elsewhere. */
   glow: GlowEffect
+  /**
+   * Coarse layout step the engine snaps to (Pixel-art's `'4px'` or `'8px'`).
+   * `'0'` on every other palette — a 0-px grid is the same as no snap, and
+   * any rule that multiplies / divides this value collapses to a no-op.
+   *
+   * The Pixel-art engine reads this at the palette root to set
+   * `image-rendering: pixelated` and to anchor space/radius scales to
+   * integer multiples of the step. Components do not read this directly;
+   * they consume `space.*` and `radius.*`, which the Pixel-art palettes
+   * have already snapped to the grid.
+   */
+  pixelGrid: CssLength
 }
 
 // -----------------------------------------------------------------------------
@@ -368,6 +388,7 @@ export type Engine =
   | 'claymorphism'
   | 'skeuomorphism'
   | 'crt-phosphor'
+  | 'pixel-art'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -419,7 +440,7 @@ export const TOKEN_SHAPE = {
     overlay: ['boxShadow'],
   },
   typography: {
-    family: ['ui', 'display', 'mono'],
+    family: ['ui', 'display', 'mono', 'pixel'],
     role: {
       display: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
       title: ['family', 'size', 'weight', 'lineHeight', 'tracking'],
@@ -446,6 +467,11 @@ export const TOKEN_SHAPE = {
     focusRing: ['width', 'offset', 'color', 'style'],
     overlay: ['image', 'size', 'blend'],
     glow: ['radius', 'color', 'intensity'],
+    /**
+     * Primitive-string leaf: a CSS length (`'0'`, `'4px'`, `'8px'`).
+     * `'0'` on every non-pixel palette.
+     */
+    pixelGrid: null,
   },
 } as const
 

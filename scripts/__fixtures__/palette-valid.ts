@@ -55,6 +55,7 @@ export const palette: Palette = {
         ui: 'system-ui, sans-serif',
         display: 'system-ui, sans-serif',
         mono: 'ui-monospace, monospace',
+        pixel: 'system-ui, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',   weight: 700, lineHeight: '1.1', tracking: '-0.02em' },
@@ -83,6 +84,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#1d4ed8', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }

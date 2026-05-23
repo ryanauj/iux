@@ -98,7 +98,11 @@ Glassmorphism's `low` may be a near-invisible 1px inset and rely on
 `backdropBlur` for the depth cue.
 
 ### `typography.*`
-- `family.ui` / `family.display` / `family.mono` — three font stacks.
+- `family.ui` / `family.display` / `family.mono` / `family.pixel` —
+  four font stacks. The `pixel` slot exists for the Pixel-art engine to
+  route bitmap glyphs through every `role.*`; every non-pixel palette
+  aliases this to its `ui` stack so the slot stays defined without being
+  load-bearing for them.
 - `role.{display,title,heading,subheading,body,label,caption,code}` —
   composed text styles. Each role names a `TextStyle`:
   `{ family, size, weight, lineHeight, tracking, textTransform? }`.
@@ -107,7 +111,9 @@ Glassmorphism's `low` may be a near-invisible 1px inset and rely on
 Editorial sets `display` and `heading` to a serif. AAA bumps `body` size
 and weight up. Neubrutalism sets `display` to a heavy condensed face and
 `tracking` tight. Tron sets `code` to a monospace with `textTransform:
-'uppercase'` for HUD-style readouts.
+'uppercase'` for HUD-style readouts. Pixel-art points every role at
+`family.pixel` and sizes them at multiples of the bitmap cell (8, 12,
+16, 24, 32 CSS px).
 
 ### `motion.*`
 - `duration.{instant, fast, base, slow}` — CSS time strings.
@@ -147,6 +153,15 @@ Cross-cutting visual effects that some engines need.
   Every other palette sets `radius: '0'`, `color: 'transparent'`,
   `intensity: 0` — `text-shadow: 0 0 0 transparent` renders nothing,
   so the engine CSS is multiplied by zero on every non-CRT palette.
+- `pixelGrid` — the **pixel-art grid step**, in CSS px. Only the
+  Pixel-art engine sets a non-`'0'` value (`'8px'`); every other
+  palette returns `'0'`, which the engine CSS treats as "no snap" —
+  i.e. the rule is a no-op there. Components don't consume this
+  directly. The Pixel-art palettes have already snapped every
+  `space.*` and `radius.*` value to integer multiples of the step, so
+  any composition lands on pixel boundaries. The slot exists for
+  future grid-aware components (sprite editor, tile-map gallery) and
+  for the engine-root CSS that sets `image-rendering: pixelated`.
 
 ## Value-type conventions
 
@@ -176,6 +191,7 @@ Each engine differs in which token slots carry the weight:
 | Claymorphism    | `radius.lg`, `elevation.*` (doubled), pastels in `color.surface.*` | `effect.backdropBlur`            |
 | Skeuomorphism   | `elevation.*` (real shadows), per-palette texture in `color.surface.*` (via CSS gradients) | `effect.backdropBlur` |
 | CRT / Phosphor  | `effect.overlay.*` (scanlines), `effect.glow.*` (bloom), `motion.decay` (trailing), single-color `color.intent.*` | `effect.backdropBlur`, `color.intent.*` differentiation |
+| Pixel-art       | `effect.pixelGrid` (8px snap), `typography.family.pixel` (bundled bitmap font), `radius.*` (all `'0'`), `motion.easing.*` (`steps(1)` on every slot), hard-offset `elevation.*` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

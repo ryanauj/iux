@@ -3,7 +3,8 @@
 A showcase of UI components and UX flows along a **classic → cutting-edge**
 variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
-Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor) applied to any of them.
+Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art) applied
+to any of them.
 
 **Live at:** <https://ryanauj.github.io/iux/>
 
@@ -126,3 +127,53 @@ documentation follow-up. The fourth is an a11y caveat that earns the
 > focus as an engine-painted halo rather than an `outline-*` recipe,
 > and doesn't lean on `intent.*` color alone for state, it works
 > identically across all 17 palettes.
+
+## Pixel-art engine
+
+The Pixel-art engine (palettes 25–26: NES, Game Boy) is the largest-
+scope addition since CRT. Unlike CRT it doesn't just remap tokens —
+it changes rendering assumptions across the board:
+
+- **Integer-pixel grid.** `effect.pixelGrid` sets the snap step
+  (`'8px'`); every `space.*` and `radius.*` value in the pixel palettes
+  is an integer multiple of that step. Engine-root CSS in
+  `src/styles.css` sets `image-rendering: pixelated` and disables font
+  smoothing on the palette subtree.
+- **Bundled pixel font.** `typography.family.pixel` carries a Press
+  Start 2P stack (SIL OFL 1.1, loaded via Google Fonts `@import` at
+  the top of `src/styles.css`). Every `role.*` in the pixel palettes
+  routes through this slot; every non-pixel palette aliases
+  `family.pixel` to its `ui` stack so the slot isn't load-bearing for
+  them.
+- **No anti-aliased corners.** Every `radius.*` slot — including
+  `pill` and `full` — is `'0'`. Components asking for circles render
+  as squares; that contrast is teaching content (see
+  `palettes/pixel-art-nes.README.md` "What thrives vs degrades").
+- **`steps(1, end)` easings.** Sprites don't ease, they snap. Every
+  `motion.easing.*` slot is `steps(1, end)`; durations tick at NTSC
+  frame multiples (32ms, 64ms, 128ms).
+
+### Components that thrive vs degrade
+
+`palettes/pixel-art-nes.README.md` carries the full list, but the
+short version:
+
+- **Thrive:** Button, Toggle, Checkbox, Stepper, Toast, Modal,
+  Drawer, Tabs, Pagination, Segmented, Bento, Kanban-style Card
+  grids, Table. Anything that composes through `space.*` and reads
+  text through `role.*` lands cleanly on the grid.
+- **Degrade (by design):** Spatial canvas (fractional positions land
+  off-grid), Bezier editor (sub-pixel control points, anti-aliased
+  curve), Slider with continuous fractional positioning, multi-line
+  text at narrow widths (bitmap glyphs at fixed cell widths produce
+  cramped wrapping). These are not bugs to fix — the contrast is the
+  point of shipping the palette.
+
+### `prefers-reduced-motion`
+
+Honored at the engine level (in `src/styles.css`'s existing
+`@media (prefers-reduced-motion: reduce)` block): every per-palette
+duration collapses to `instant`, `--motion-decay` follows. The engine
+paints no decorative motion (no scanline drift, no sprite-style
+animation loop), so there is nothing additional to disable.
+

@@ -22,6 +22,8 @@ import { palette as newspaper } from './newspaper'
 import { palette as academic } from './academic'
 import { palette as crtPhosphorGreen } from './crt-phosphor-green'
 import { palette as crtPhosphorAmber } from './crt-phosphor-amber'
+import { palette as pixelArtNes } from './pixel-art-nes'
+import { palette as pixelArtGameboy } from './pixel-art-gameboy'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -48,6 +50,8 @@ export const palettes = {
   academic,
   'crt-phosphor-green': crtPhosphorGreen,
   'crt-phosphor-amber': crtPhosphorAmber,
+  'pixel-art-nes': pixelArtNes,
+  'pixel-art-gameboy': pixelArtGameboy,
 } as const
 
 export type PaletteId = keyof typeof palettes

@@ -82,6 +82,7 @@ export const palette: Palette = {
         ui: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif',
         display: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif',
         mono: '"SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+        pixel: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem', weight: 700, lineHeight: '1.08', tracking: '-0.022em' },
@@ -115,6 +116,7 @@ export const palette: Palette = {
       focusRing: { width: '2px', offset: '2px', color: '#0ea5e9', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
+      pixelGrid: '0',
     },
   },
 }
