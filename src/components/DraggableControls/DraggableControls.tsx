@@ -89,6 +89,27 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
+  useEffect(() => {
+    const clampToViewport = () => {
+      const el = containerRef.current
+      if (!el) return
+      const w = el.offsetWidth
+      const h = el.offsetHeight
+      setPos(prev => {
+        const nx = clamp(prev.x, 4, Math.max(4, window.innerWidth - w - 4))
+        const ny = clamp(prev.y, 4, Math.max(4, window.innerHeight - h - 4))
+        return nx === prev.x && ny === prev.y ? prev : { x: nx, y: ny }
+      })
+    }
+    clampToViewport()
+    window.addEventListener('resize', clampToViewport)
+    window.addEventListener('orientationchange', clampToViewport)
+    return () => {
+      window.removeEventListener('resize', clampToViewport)
+      window.removeEventListener('orientationchange', clampToViewport)
+    }
+  }, [style, open])
+
   const onDragStart = (e: ReactPointerEvent) => {
     if (e.button !== 0) return
     e.preventDefault()
