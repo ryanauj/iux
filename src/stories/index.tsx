@@ -300,6 +300,7 @@ export function Stories() {
                 i
               </button>
             </h1>
+            <a className="stories__apps-link" href="#/apps">Apps →</a>
           </div>
           {infoOpen && (
             <div
