@@ -30,7 +30,7 @@ const CONTROLS_STYLE_KEY = 'iux-controls-style'
 function loadControlsStyle(): ControlsStyle {
   try {
     const raw = localStorage.getItem(CONTROLS_STYLE_KEY)
-    if (raw === 'bar' || raw === 'dial' || raw === 'strip') return raw
+    if (raw === 'bar' || raw === 'strip') return raw
   } catch {
     /* ignore */
   }
@@ -47,7 +47,7 @@ const URL_PARAM = {
 const DEFAULTS = {
   component: 'button' as Component,
   variant: 'all' as VariantChoice,
-  palette: 'all' as PaletteChoice,
+  palette: 'flat-classic' as PaletteChoice,
   chrome: 'flat-classic' as PaletteId,
 }
 
