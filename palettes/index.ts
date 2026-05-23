@@ -34,6 +34,7 @@ import { palette as brutalistElegant } from './brutalist-elegant'
 import { palette as bloombergTerminal } from './bloomberg-terminal'
 import { palette as midCenturyModern } from './mid-century-modern'
 import { palette as dataDenseLight } from './data-dense-light'
+import { palette as cardstockLayered } from './cardstock-layered'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -72,6 +73,7 @@ export const palettes = {
   'bloomberg-terminal': bloombergTerminal,
   'mid-century-modern': midCenturyModern,
   'data-dense-light': dataDenseLight,
+  'cardstock-layered': cardstockLayered,
 } as const
 
 export type PaletteId = keyof typeof palettes

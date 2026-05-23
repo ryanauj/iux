@@ -177,6 +177,8 @@ export const palette: Palette = {
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '8px',
       strokeVariance: '0',
+      paperEdgeColor: 'transparent',
+      paperEdgeWidth: '0',
     },
   },
 }

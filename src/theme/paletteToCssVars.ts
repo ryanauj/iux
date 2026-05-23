@@ -136,5 +136,14 @@ export function paletteToCssVars(
   // so there's no per-palette branching needed for the wobble behavior.
   vars['--stroke-variance'] = tokens.effect.strokeVariance
 
+  // Cardstock engine cut-edge. `'transparent'` / `'0'` on every other
+  // palette — any engine CSS that references these vars paints nothing
+  // (transparent colour at zero width), so there's no per-palette branching
+  // needed elsewhere. The Cardstock palette also bakes the same values into
+  // its `elevation.*` shadow strings; these vars exist so future paper-aware
+  // components can read the engine's intended cut-edge directly.
+  vars['--paper-edge-color'] = tokens.effect.paperEdgeColor
+  vars['--paper-edge-width'] = tokens.effect.paperEdgeWidth
+
   return vars
 }

@@ -200,6 +200,8 @@ export const palette: Palette = {
       // "no snap" — i.e. the rule is a no-op there.
       pixelGrid: '8px',
       strokeVariance: '0',
+      paperEdgeColor: 'transparent',
+      paperEdgeWidth: '0',
     },
   },
 }
