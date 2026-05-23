@@ -1,17 +1,22 @@
 import type { Palette } from '../tokens/semantic.contract'
 
 /**
- * Pixel-art (Stardew Valley) — the modern cozy-indie register. Warm
- * cream parchment fields, wood-frame borders, harvest-gold accents,
- * crop greens, berry reds. Unlike the NES/Game Boy variants this is
- * not a hardware-locked palette — it's an art-direction register
- * inspired by ConcernedApe's 2016 farm sim and the wider cottagecore
- * indie wave (Eastward, Moonglow Bay, Coral Island).
+ * Pixel-art (Cottagecore) — the warm-pastoral register. Parchment
+ * fields, wood-frame borders, harvest-gold accents, crop greens,
+ * berry reds. The broad cozy-indie pixel idiom that emerged across
+ * the late-2010s and 2020s: farm sims, life sims, illustrated
+ * storybooks, "cottagecore" social media aesthetic — all sharing
+ * the same warm-earth palette without belonging to any one title.
  *
  * Same `pixel-art` engine as NES/Game Boy — square corners, bitmap
  * font, hard offsets, `steps(1, end)` everywhere. The brief that
  * generalised across NTSC and DMG generalises here too: only
  * `color.*` (and a touch of `space.*`) changes.
+ *
+ * Unlike NES and Game Boy this is **not** a hardware-locked palette
+ * — it's an art-direction register. No console gates the colours;
+ * what gates them is the aesthetic. Warmth bias, no pure black,
+ * earthy intents in place of saturated console primaries.
  *
  *   parchment field:  #fef0d4
  *   warm wood frame:  #7a4a1b
@@ -22,8 +27,8 @@ import type { Palette } from '../tokens/semantic.contract'
  *   ink (text):       #3b2615  — warm dark brown, not pure black
  */
 export const palette: Palette = {
-  id: 'pixel-art-stardew',
-  name: 'Pixel Art (Stardew Valley)',
+  id: 'pixel-art-cottagecore',
+  name: 'Pixel Art (Cottagecore)',
   engine: 'pixel-art',
   a11y: 'experimental',
   tokens: {
@@ -48,10 +53,10 @@ export const palette: Palette = {
         strong: '#7a4a1b',
         focus: '#dca830',
       },
-      // Intents map to the farm-sim food chain: green = grow, gold =
-      // harvest, red = berry/forage, blue = water/fishing, brown =
-      // wood/menu. Each one borrows from a recognisable Stardew HUD
-      // element (energy bar gold, health bar red, water can blue).
+      // Intents map to the pastoral palette: green = grow, gold =
+      // harvest, red = berry/forage, blue = water/river, brown =
+      // wood/earth. Each one borrows from a place the warm-earth
+      // pixel idiom routinely uses these hues.
       intent: {
         primary: {
           bg: '#3d6b2c',
@@ -97,10 +102,11 @@ export const palette: Palette = {
         },
       },
     },
-    // SV's UI sits on 16×16 sprite tiles (twice the NES grid). Inline
-    // gaps stay on the 4/8 sub-step so dense components (Steppers,
-    // Pagination) still breathe; block-level gaps lean a half-step
-    // wider than NES so card grids feel like farm plots, not menus.
+    // The cottagecore idiom commonly authors sprites on a 16×16 grid
+    // (twice NES). Inline gaps stay on the 4/8 sub-step so dense
+    // components (Steppers, Pagination) still breathe; block-level
+    // gaps lean a half-step wider than NES so card grids feel like
+    // garden plots rather than console menus.
     space: {
       '0': '0',
       '1': '4px',
@@ -128,8 +134,8 @@ export const palette: Palette = {
       heavy: '4px',
     },
     // Hard offsets in warm wood-brown rather than pure black — the
-    // brown shadow against parchment reads as a carved-frame, which
-    // is exactly how SV's menus paint their bevels.
+    // brown shadow against parchment reads as a carved frame, which
+    // is exactly how cottagecore pixel UIs paint their bevels.
     elevation: {
       flat: { boxShadow: 'none' },
       low: { boxShadow: '2px 2px 0 #7a4a1b' },
@@ -157,7 +163,8 @@ export const palette: Palette = {
       },
     },
     motion: {
-      // SV runs at 60Hz like NES — same per-frame ladder.
+      // Modern indie targets 60 fps — same per-frame ladder as the
+      // hardware variants.
       duration: {
         instant: '0ms',
         fast: '32ms',
