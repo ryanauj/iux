@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Thirty-one named aesthetics. Each is a concrete value-set bound to the
+Thirty-three named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -139,6 +139,27 @@ strokes — picks up the same micro-jitter without per-component code.
 |----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
 | 31 | Hand-drawn (Marker)     | Sketch     | experimental | Notebook-paper field, ink-blue body, red-marker accent, every edge displaced by a root-level SVG filter — marker-feel typography (Caveat / Patrick Hand). |
 
+## Group I — restraint registers (engine configurations, marketing polish removed)
+
+Two palettes pin restraint to two different engines. Each is a tight
+configuration of an existing Group A / Group B palette — they
+deliberately do not invent new engines or new groups of registers. The
+Wikipedia palette is the institutional-reference configuration of
+Editorial: serif `display` + sans `body`, the canonical `#3366cc`
+MediaWiki link blue, white paper, hairline-only `overlay` elevation.
+The Brutalist-elegant palette is the ivory / oxblood configuration of
+Neubrutalism: structure (radius `'0'`, `borderWidth.heavy = 4px`,
+hard-offset `elevation.*` block, linear snap motion) stays exactly as
+the base palette ships; only `color.*`, `typography.family.display`,
+and the `elevation.*` offsets vary. If the brutalist register softens —
+rounds corners, blurs shadows, drops the heavy border — it has drifted
+out of the engine.
+
+| #  | Palette                 | Engine        | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|---------------|--------------|------------------------------------------------------------------------------------------------|
+| 32 | Wikipedia / Institutional | Flat        | pass         | MediaWiki Vector skin in two-token form — serif display, sans body, `#3366cc` link blue, white paper, hairline `overlay` rule, zero marketing polish. |
+| 33 | Brutalist-elegant       | Neubrutalism  | pass         | Ivory / black / oxblood configuration of Neubrutalism — radius `0`, 4px borders, hard-offset block elevation kept verbatim; Bodoni / Didot on `display` does the elegance work. |
+
 ---
 
 ## Notes on a11y tags
@@ -157,7 +178,7 @@ strokes — picks up the same micro-jitter without per-component code.
 
 ## Engine inventory
 
-Ten engines, thirty-one palettes:
+Ten engines, thirty-three palettes:
 
 1. Flat
 2. Material
@@ -170,7 +191,8 @@ Ten engines, thirty-one palettes:
 9. Pixel-art
 10. Sketch
 
-Engine `Flat` is reused by palettes 1, 9, 10, 16–20, and 21–22. Engine
+Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, and 32.
+Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
