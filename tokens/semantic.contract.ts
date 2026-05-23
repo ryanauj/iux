@@ -342,6 +342,33 @@ export interface GlowEffect {
   intensity: number
 }
 
+/**
+ * The **hard ink outline** recipe for the Cel-shaded engine — a solid
+ * dark line drawn around every interactive element and every card edge.
+ * The outline is what makes the engine read as cel-shaded (vs. just
+ * flat): saturated fills are bounded by an always-visible ink stroke,
+ * the same way a cel-animated frame is.
+ *
+ * Only Cel-shaded palettes set non-no-op values (`'#0a0a0a'` / `'3px'`);
+ * every other palette returns `'transparent'` / `'0'`, so any engine
+ * CSS that references the vars paints nothing.
+ *
+ * Components don't read these directly. The engine block in
+ * `src/styles.css` reads them at `.palette-root[data-palette^='cel-shaded']`
+ * to paint a literal `outline:` halo on raised surfaces and interactive
+ * controls — guaranteeing the ink line is present regardless of which
+ * `color.border.*` / `borderWidth.*` value a component happens to read.
+ * The slot pattern matches `paperEdgeColor` / `paperEdgeWidth`: the
+ * engine delivers its visual via a CSS rule on the root, and the slots
+ * record the intent for future components that paint custom SVG paths
+ * (e.g. an annotation layer, a `Divider` drawing an ink rule between
+ * sections) and want to scale to the engine's outline weight.
+ */
+export interface OutlineEffect {
+  color: CssColor
+  width: CssLength
+}
+
 export interface EffectTokens {
   backdropBlur: BackdropBlurScale
   focusRing: FocusRing
@@ -349,6 +376,26 @@ export interface EffectTokens {
   overlay: OverlayEffect
   /** Phosphor-glow halo recipe. Radius `'0'`, color `'transparent'` elsewhere. */
   glow: GlowEffect
+  /**
+   * Hard ink outline recipe. `transparent` / `'0'` on every non-cel-shaded
+   * palette — any engine CSS that references these paints nothing.
+   */
+  outline: OutlineEffect
+  /**
+   * **Shadow style** signal — `'soft'` means the engine paints
+   * gradient / blurred shadows (Material, Cardstock, Sketch, etc.);
+   * `'hard'` means the engine paints two-tone cel-shading where a
+   * single darker shape is offset from the surface with no blur (the
+   * Cel-shaded engine's load-bearing visual). Only Cel-shaded palettes
+   * set `'hard'`; every other palette sets `'soft'`. The slot is an
+   * engine-only signal: components don't branch on it, but the engine
+   * block in `src/styles.css` can read it to decide whether to paint
+   * extra two-tone shading on top of `elevation.*`. The shadow recipe
+   * itself still lives in `elevation.*` — this slot records intent,
+   * the same way `effect.paperEdgeColor` records the cardstock cut-edge
+   * intent that's actually delivered through `elevation.*`.
+   */
+  shadowStyle: 'soft' | 'hard'
   /**
    * Coarse layout step the engine snaps to (Pixel-art's `'4px'` or `'8px'`).
    * `'0'` on every other palette — a 0-px grid is the same as no snap, and
@@ -445,6 +492,7 @@ export type Engine =
   | 'pixel-art'
   | 'sketch'
   | 'cardstock'
+  | 'cel-shaded'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -523,6 +571,19 @@ export const TOKEN_SHAPE = {
     focusRing: ['width', 'offset', 'color', 'style'],
     overlay: ['image', 'size', 'blend'],
     glow: ['radius', 'color', 'intensity'],
+    /**
+     * Cel-shaded hard ink outline recipe. `'transparent'` / `'0'` on
+     * every non-cel-shaded palette — any engine CSS that references
+     * the vars paints nothing.
+     */
+    outline: ['color', 'width'],
+    /**
+     * Primitive-string leaf: `'soft' | 'hard'`. `'soft'` on every
+     * non-cel-shaded palette — the slot is an engine-only signal
+     * documenting whether the engine paints gradient shadows (`soft`)
+     * or two-tone cel-shading (`hard`).
+     */
+    shadowStyle: null,
     /**
      * Primitive-string leaf: a CSS length (`'0'`, `'4px'`, `'8px'`).
      * `'0'` on every non-pixel palette.

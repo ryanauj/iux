@@ -145,5 +145,22 @@ export function paletteToCssVars(
   vars['--paper-edge-color'] = tokens.effect.paperEdgeColor
   vars['--paper-edge-width'] = tokens.effect.paperEdgeWidth
 
+  // Cel-shaded engine outline. `'transparent'` / `'0'` on every other
+  // palette — any engine CSS that references these paints nothing. The
+  // Cel-shaded palettes set the values to a near-black ink and a 2-3px
+  // width; the engine block in `src/styles.css` reads them at
+  // `.palette-root[data-palette^='cel-shaded']` to paint a literal
+  // `outline:` halo on raised surfaces and interactive controls so the
+  // ink line is always present.
+  vars['--outline-color'] = tokens.effect.outline.color
+  vars['--outline-width'] = tokens.effect.outline.width
+
+  // Cel-shaded engine shadow style. `'soft'` on every other palette;
+  // Cel-shaded palettes set `'hard'`. The slot is an engine-only signal
+  // — components don't branch on it — but the engine block in
+  // `src/styles.css` reads it to decide whether to layer extra two-tone
+  // shading on top of `elevation.*`.
+  vars['--shadow-style'] = tokens.effect.shadowStyle
+
   return vars
 }

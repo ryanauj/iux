@@ -4,7 +4,7 @@ A showcase of UI components and UX flows along a **classic → cutting-edge**
 variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
 Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art, Sketch,
-Cardstock) applied to any of them.
+Cardstock, Cel-shaded) applied to any of them.
 
 **Live at:** <https://ryanauj.github.io/iux/>
 
@@ -304,4 +304,150 @@ no card lift animation under reduced motion. The engine paints no
 other decorative motion, so the standard duration-flattening already
 covers the rest. Users with reduced-motion preferences see the same
 layered-paper aesthetic, just without the hover-elevation cue.
+
+## Cel-shaded / Anime engine
+
+The Cel-shaded engine (palettes 38–39: Shonen, Shojo) is the engine
+that inverts the usual "stylized = less usable" assumption. It looks
+the most cartoonish of any engine in the showcase — saturated flat
+fills, heavy display type, hard ink outlines on every interactive
+control — and that's exactly why it scores **well** on usability
+tests. The thing that makes it look cel-animated (the always-present
+ink line that separates character from background) is the same thing
+that makes every click target unambiguous.
+
+The engine exercises three contract slots no previous engine touched:
+
+- `effect.outline.color` and `effect.outline.width` — the hard ink
+  outline recipe. Set to `'#0a0a0a'` / `'3px'` on cel-shaded
+  palettes; `'transparent'` / `'0'` everywhere else. The vars emit
+  as `--outline-color` and `--outline-width`.
+- `effect.shadowStyle` — `'soft' | 'hard'`. Set to `'hard'` on
+  cel-shaded palettes; `'soft'` everywhere else. The slot is an
+  engine-only signal documenting whether the engine paints
+  gradient / blurred shadows or two-tone cel-shading. The var emits
+  as `--shadow-style`.
+
+### How the cel boundary is delivered
+
+Two redundant paths, by design:
+
+- **Through existing token slots.** Every `color.border.*` slot is
+  set to ink (`#0a0a0a`), and `borderWidth.thick` is set to the
+  outline width (`3px`). Components that already read
+  `--border-width-thick` + `--color-border-default` (Card, Modal,
+  Drawer, Toast) render the outline naturally via their own
+  `border:` rule. Buttons consume `--border-width-thin` +
+  `--color-intent-*-border`; every intent's border is also ink, so
+  buttons get the same outline at the thinner weight.
+- **Through the engine block in `src/styles.css`.** The block adds
+  a literal `outline:` halo on a curated list of interactive
+  controls (Button, Toggle, Checkbox, TextInput, Select, Segmented,
+  Tabs, Tooltip, Pagination, Stepper) using `--outline-color` /
+  `--outline-width`. This is the guarantee — even if a future
+  component is added that doesn't read a border token, the engine
+  still paints the ink line on it.
+
+Why two paths? The cel outline is the load-bearing affordance of the
+engine. A single-path delivery would create gaps the moment a
+component swaps which border token it reads; layering both delivers
+the outline through whichever channel the component exposes.
+
+### Two-tone shading via `elevation.*`
+
+Every `elevation.*` slot is a hard-offset block shadow (e.g.
+`3px 3px 0 #0a0a0a` for `low`). One darker shape, hard edge, no blur
+— the CSS equivalent of how a cel-animated frame draws shading as a
+single offset darker region. The ink-black shadow color is
+intentional: a "matching tone but darker" shadow would read as a
+gradient, fighting the cel look.
+
+### Counter-intuitive a11y note
+
+**Cel-shaded scores well on usability tests despite looking the most
+cartoonish.** Three concrete reasons:
+
+1. **Every interactive control has an unambiguous boundary at all
+   times.** The ink outline is on by default, not just on hover or
+   focus. Users can identify every clickable region instantly — no
+   "is this a button or a label" guessing. The outline is the same
+   width and color regardless of intent fill, so the click-target
+   shape is the read.
+2. **Hover / focus changes the outline color, not just the fill.**
+   Most palettes communicate state by darkening the background and
+   trust the contrast change to read. Cel-shaded changes the
+   OUTLINE on focus (shonen-blue / shojo-lavender) — even users
+   with reduced color sensitivity see the boundary change against
+   the surface.
+3. **Elevation stays visible without motion.** The hard-offset
+   block shadow is a static visual; under `prefers-reduced-motion`
+   the hover transitions collapse to instant but the shadow itself
+   is the same. Compare to soft drop shadows (Material), where the
+   elevation *change* on hover is the affordance — reduce motion
+   and the affordance vanishes.
+
+The **Task board** (kanban cards) and **Note outliner** (block-level
+gutter controls) are the canonical test apps for this. Cards under
+cel-shaded read as physical pieces of card stock — the ink outline +
+offset shadow already say "this is above the column," so dragging
+doesn't need to "lift" with motion. Outliner block-level controls
+(toggle done, collapse subtree) get ink outlines from the engine
+block; indentation reads cleanly because the ink line on every bullet
+separates it from the line above, the way a manga panel separates one
+beat from the next.
+
+The "cartoonish = unusable" assumption is wrong because the
+cartoonish thing in cel animation is also the load-bearing
+affordance: the ink outline that separates character from background
+IS the readability cue. Borrow the affordance, you inherit the
+usability.
+
+### Speed-line motif
+
+Available as a decoration utility — `iux-cel-speedlines` paints a
+static diagonal hatch as decoration on any surface; the hover variant
+`iux-cel-speedlines--hover` reveals the hatch on hover. **Default off
+on most surfaces** — the brief is explicit that speed lines should
+be used sparingly, so neither the engine block nor either palette
+paints them automatically. Components opt in by adding the utility
+class to specific elements that want the "this responds" cue.
+
+The hover-revealed variant is disabled under
+`prefers-reduced-motion`; the static variant stays on because it's
+decoration, not motion (mirroring how the CRT scanline overlay is
+treated).
+
+### Components that thrive vs degrade
+
+`palettes/cel-shaded-shonen.README.md` carries the full list, but the
+short version:
+
+- **Thrive:** Card, Modal, Drawer, Toast (the engine's load-bearing
+  surfaces — ink outline + offset shadow is the perfect cel-card
+  affordance), Button, Toggle, Checkbox, Tabs, Segmented,
+  Pagination, Stepper, Tooltip, EmptyState, Sidebar, Bento.
+  Anything that consumes border / elevation tokens and reads text
+  through `role.*` lands cleanly.
+- **Degrade (by design):** Table with dense rows, DiffView with
+  character-level highlight, VirtualList / long scrolling columns
+  (ink boundary on every row is too much line at row density),
+  SpatialCanvas, BezierEditor (fractional-pixel positioning fights
+  the hard ink boundary).
+
+### `prefers-reduced-motion`
+
+Honored at the engine level. The reduced-motion block in
+`src/styles.css`:
+
+1. Collapses every per-palette duration to `instant` (the standard
+   engine-level handler every palette inherits) — no press-bounce,
+   no hover transition.
+2. Disables the hover-revealed speed-line motif. The static
+   speed-line motif stays on because it's decoration, not motion.
+
+The engine paints no other decorative motion, so the standard
+duration-flattening already covers the rest. Users with
+reduced-motion preferences see the same cel-shaded aesthetic — ink
+outlines, two-tone shadows, saturated fills — just with state
+transitions that fire instantly.
 

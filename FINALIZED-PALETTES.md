@@ -197,6 +197,24 @@ as ink on the paper.
 |----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
 | 37 | Cardstock (Layered)     | Cardstock  | experimental | Cream paper field, sage / butter / dusty-rose / slate / cream pastel set, clean modern sans as ink, every raised surface a piece of cut cardstock with a 1px slate-ink rule along bottom/right and a tight close shadow to the layer below. |
 
+## Group L — cel-shaded / anime (new engine)
+
+Two palettes share the new Cel-shaded engine, which exercises three
+contract slots no previous engine touched — `effect.outline.color`,
+`effect.outline.width`, and `effect.shadowStyle`. The pair proves the
+engine generalises the same way the CRT pair (green ↔ amber) and the
+Pixel-art set do: swap `color.*` and the engine still works. The
+engine's load-bearing visual is the always-present ink line on every
+card edge and every interactive control — the affordance cue a cel-
+animated frame uses to separate elements from the background. Shading,
+where it exists, is a single darker shape with a hard edge, painted
+through `elevation.*` as a zero-blur block shadow.
+
+| #  | Palette                 | Engine      | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|-------------|--------------|------------------------------------------------------------------------------------------------|
+| 38 | Cel-shaded (Shonen)     | Cel-shaded  | pass         | Cream paper, vibrant orange / blue / black triad, Archivo Black display, ink outline on every card edge and control, hard-offset block shadows. |
+| 39 | Cel-shaded (Shojo)      | Cel-shaded  | pass         | Cream-pink wash, pink / lavender / pastel-green set, Poppins round-humanist display, same ink outline + block-shadow engine, sentence-case display. |
+
 ---
 
 ## Notes on a11y tags
@@ -215,7 +233,7 @@ as ink on the paper.
 
 ## Engine inventory
 
-Eleven engines, thirty-seven palettes:
+Twelve engines, thirty-nine palettes:
 
 1. Flat
 2. Material
@@ -228,12 +246,13 @@ Eleven engines, thirty-seven palettes:
 9. Pixel-art
 10. Sketch
 11. Cardstock
+12. Cel-shaded
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
-Engine `Cardstock` is anchored by palette 37. The token contract is
-the only seam between engine and palette — see
-`tokens/00-token-contract.md`.
+Engine `Cardstock` is anchored by palette 37. Engine `Cel-shaded` is
+reused by palettes 38 and 39. The token contract is the only seam
+between engine and palette — see `tokens/00-token-contract.md`.

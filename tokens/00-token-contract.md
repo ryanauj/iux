@@ -174,6 +174,26 @@ Cross-cutting visual effects that some engines need.
   recasts every corner as a hand-drawn approximation. The slot exists
   for future components that paint custom SVG paths and want to scale
   them to the engine's variance.
+- `outline.color` / `outline.width` — the **hard ink outline** recipe
+  for the Cel-shaded engine. Only Cel-shaded palettes set non-no-op
+  values (`'#0a0a0a'` / `'3px'`); every other palette returns
+  `'transparent'` / `'0'`, so any engine CSS that references the vars
+  paints nothing. Components don't consume these directly. The
+  Cel-shaded engine reads them at `.palette-root[data-palette^='cel-shaded']`
+  to paint a literal `outline:` halo on raised surfaces and
+  interactive controls — guaranteeing the ink line is present
+  regardless of which `color.border.*` / `borderWidth.*` value a
+  component happens to read. CSS vars emit as `--outline-color` and
+  `--outline-width`, matching the short-name convention used by
+  `--pixel-grid`, `--stroke-variance`, and `--paper-edge-*`.
+- `shadowStyle` — `'soft' | 'hard'`. `'soft'` everywhere except the
+  Cel-shaded engine, which sets `'hard'`. The slot is an engine-only
+  signal — components don't branch on it — documenting whether the
+  engine paints gradient / blurred shadows (`soft`) or two-tone
+  cel-shading (`hard`). The shadow recipe itself still lives in
+  `elevation.*`; this slot records intent the same way
+  `effect.paperEdgeColor` records the cardstock cut-edge intent. CSS
+  var emits as `--shadow-style`.
 - `paperEdgeColor` / `paperEdgeWidth` — the **cardstock cut-edge**
   recipe. Only the Cardstock engine sets non-no-op values
   (`'rgba(45, 53, 67, 0.18)'` / `'1px'`); every other palette returns
@@ -221,6 +241,7 @@ Each engine differs in which token slots carry the weight:
 | Pixel-art       | `effect.pixelGrid` (8px snap), `typography.family.pixel` (bundled bitmap font), `radius.*` (all `'0'`), `motion.easing.*` (`steps(1)` on every slot), hard-offset `elevation.*` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay` |
 | Sketch          | `effect.strokeVariance` (root-level SVG displacement filter), `typography.family.hand` (bundled marker font), `color.border.*` (drawn rather than crisp), `color.intent.*.bg` (slight bleed halo via tuned `box-shadow`) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay`, `effect.pixelGrid` |
 | Cardstock       | `elevation.*` (paired inset cut-edge + tight zero-blur drop shadow per layer), `color.surface.*` (cream / pastel field), `effect.paperEdgeColor`, `effect.paperEdgeWidth` (engine-only signals, baked into elevation strings) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `motion.decay` |
+| Cel-shaded      | `effect.outline.color`, `effect.outline.width` (engine-painted `outline:` halo on interactive controls), `effect.shadowStyle = 'hard'` (engine-only signal), `elevation.*` (hard-offset block shadows for two-tone cel shading), `color.border.*` (all ink), `borderWidth.thick` (the outline width), saturated `color.intent.*`, heavy `typography.role.display` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `motion.decay` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

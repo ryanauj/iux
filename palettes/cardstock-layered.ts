@@ -254,6 +254,8 @@ export const palette: Palette = {
       // without parsing the shadow string.
       paperEdgeColor: 'rgba(45, 53, 67, 0.18)',
       paperEdgeWidth: '1px',
+      outline: { color: 'transparent', width: '0' },
+      shadowStyle: 'soft',
     },
   },
 }

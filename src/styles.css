@@ -329,6 +329,146 @@ body {
 }
 
 /*
+ * Cel-shaded / Anime engine. Scoped via `data-palette` so non-cel-shaded
+ * palettes are completely untouched, exactly the same shape as the CRT /
+ * Pixel-art / Sketch / Cardstock blocks above.
+ *
+ * The engine has two complementary effects:
+ *
+ *   1. **Hard ink outline on every raised surface and interactive
+ *      control.** The palette already sets `color.border.*` to ink and
+ *      `borderWidth.thick` to the outline width, so Card / Modal /
+ *      Drawer / Toast already render with the outline via their own
+ *      `border:` rule. This block adds a literal `outline:` halo on
+ *      controls that read THIN border tokens (Button, TextInput, Select,
+ *      Toggle, Checkbox, Tabs, Segmented, Pagination, Tooltip) so the
+ *      ink line is GUARANTEED present regardless of which border token
+ *      the component happens to consume. The outline is independent of
+ *      `box-shadow` and doesn't push layout — it paints OUTSIDE the
+ *      box so the cel boundary stays exactly at the component edge.
+ *
+ *   2. **Two-tone shading via `elevation.*`.** The cel-shaded palettes
+ *      already bake hard-offset ink-color block shadows (no blur, no
+ *      spread) into every `elevation.*` slot, so components reading
+ *      `--elevation-*` get the two-tone cel shading for free. The
+ *      `--shadow-style: hard` signal is engine-only — no rule branches
+ *      on it today; future components that want to paint custom
+ *      two-tone regions can read it.
+ *
+ * **Why an `outline:` halo and not extra `box-shadow:`.** `outline` is
+ * a non-layout property that paints OUTSIDE the element bounds without
+ * affecting siblings or pushing reflow. Layering a `box-shadow:` ink
+ * stroke would compose with `--elevation-*` (which is ALREADY a hard-
+ * offset block shadow on cel-shaded palettes) and produce a visual
+ * "double stroke." Using `outline:` keeps the cel boundary at the
+ * geometric edge and lets `box-shadow:` carry the two-tone shading
+ * underneath.
+ *
+ * **Focus interaction.** Most components set `outline-width: var(...)`
+ * inside their own `:focus-visible` block. When focus lands, the
+ * component's outline rule overrides the engine's base outline width
+ * with the focus-ring width — and the palette sets the focus color to
+ * a contrasting accent (shonen blue / shojo lavender), so focus reads
+ * as "the ink line changed color and got slightly thicker," which is
+ * the exact affordance a cel-animated interface uses to indicate active
+ * state. No `outline:` conflict — focus simply repaints the same slot.
+ *
+ * **Counter-intuitive a11y note.** Cel-shaded LOOKS the most
+ * cartoonish of the engines, but the always-present ink outline
+ * actually IMPROVES usability: every interactive control has an
+ * unambiguous boundary at all times, hover/focus changes the outline
+ * color (not just the fill), and the two-tone shading on cards keeps
+ * elevation visible even when motion is off. The Task board (kanban
+ * cards) and Note outliner (block-level controls) are the apps this
+ * engine is most useful for — the outlines unambiguously separate
+ * draggable cards from columns, and the gutter affordances on every
+ * outline node read as crisp buttons rather than soft hover regions.
+ * See the README for the full teaching note.
+ */
+.palette-root[data-palette^='cel-shaded'] .iux-button,
+.palette-root[data-palette^='cel-shaded'] .iux-toggle__track,
+.palette-root[data-palette^='cel-shaded'] .iux-checkbox__box,
+.palette-root[data-palette^='cel-shaded'] .iux-text-input__control,
+.palette-root[data-palette^='cel-shaded'] .iux-select__control,
+.palette-root[data-palette^='cel-shaded'] .iux-segmented__segment,
+.palette-root[data-palette^='cel-shaded'] .iux-tabs__tab,
+.palette-root[data-palette^='cel-shaded'] .iux-tooltip__body,
+.palette-root[data-palette^='cel-shaded'] .iux-pagination__btn,
+.palette-root[data-palette^='cel-shaded'] .iux-stepper__step {
+  outline-width: var(--outline-width);
+  outline-style: solid;
+  outline-color: var(--outline-color);
+  outline-offset: 0;
+}
+
+/*
+ * Speed-line motif (decoration token). Default OFF on every surface —
+ * the brief is explicit: speed lines are AVAILABLE as a decoration
+ * token but used SPARINGLY. Surfaces opt in by adding the
+ * `iux-cel-speedlines` utility class; without it the engine paints no
+ * speed lines. The lines themselves are a static repeating-linear-
+ * gradient (no animation) so they never compete with motion-sensitive
+ * users — the diagonal hatch IS the speed-line cue, not a moving sweep.
+ *
+ * Painted with `background-image` on top of whatever fill the element
+ * already has, at low alpha so the hatch reads as a stamped decoration
+ * rather than a replacement for the surface color.
+ *
+ * Hover-only variant (`iux-cel-speedlines--hover`) reveals the hatch
+ * on hover — useful for buttons / cards that want a "this responds"
+ * cue. The hover variant is disabled entirely under
+ * `prefers-reduced-motion` (no surprise hatch appearing on cursor
+ * move). The static variant (`iux-cel-speedlines`) stays on under
+ * reduced motion because it's static decoration.
+ */
+.palette-root[data-palette^='cel-shaded'] .iux-cel-speedlines {
+  background-image: repeating-linear-gradient(
+    -25deg,
+    transparent 0,
+    transparent 6px,
+    rgba(10, 10, 10, 0.10) 6px,
+    rgba(10, 10, 10, 0.10) 8px
+  );
+}
+
+.palette-root[data-palette^='cel-shaded'] .iux-cel-speedlines--hover {
+  background-image: none;
+  transition: background-image var(--motion-duration-fast) var(--motion-easing-out);
+}
+
+.palette-root[data-palette^='cel-shaded'] .iux-cel-speedlines--hover:hover {
+  background-image: repeating-linear-gradient(
+    -25deg,
+    transparent 0,
+    transparent 6px,
+    rgba(10, 10, 10, 0.10) 6px,
+    rgba(10, 10, 10, 0.10) 8px
+  );
+}
+
+/*
+ * Cel-shaded `prefers-reduced-motion` handling.
+ *
+ *   1. The standard duration-flattening (above) already collapses
+ *      every transition to instant — no "bounce" on press, no
+ *      hover-elevation animation.
+ *   2. The hover-revealed speed-line motif is disabled — users with
+ *      reduced-motion preferences don't get a hatch appearing under
+ *      the cursor.
+ *   3. The static speed-line motif stays (it's decoration, not
+ *      motion — like the CRT scanline overlay).
+ *
+ * The engine paints no other decorative motion (no scanline drift, no
+ * glow pulse, no marker wobble), so the existing engine-level
+ * reduced-motion block covers the rest.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .palette-root[data-palette^='cel-shaded'] .iux-cel-speedlines--hover:hover {
+    background-image: none;
+  }
+}
+
+/*
  * Stories scaffold — the only consumer of the components in this repo.
  * Sized via space tokens once a palette is mounted; outside any palette
  * we fall back to standard CSS keywords so the unstyled boot doesn't crash.
