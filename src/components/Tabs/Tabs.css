@@ -102,8 +102,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-4);
-  height: var(--space-4);
+  /*
+   * `--space-4` is ~8-10px — far below a usable touch target. Min 22px
+   * keeps the visual size compact on desktop, then the @media block
+   * below expands to 32px on phones so tapping the X is reliable.
+   */
+  width: max(var(--space-4), 1.375rem);
+  height: max(var(--space-4), 1.375rem);
   border-radius: var(--radius-full);
   color: var(--color-content-muted);
   cursor: pointer;
@@ -211,4 +216,21 @@
   outline-style: var(--effect-focus-ring-style);
   outline-color: var(--color-focus-ring);
   outline-offset: calc(var(--effect-focus-ring-offset) * -1);
+}
+
+/*
+ * Phone-narrow tweaks. Tabs already scroll horizontally inside their
+ * list, so the page never overflows; here we just give touch users a
+ * larger close button and tighten panel padding so a tab body fills
+ * more of the viewport.
+ */
+@media (max-width: 40rem) {
+  .iux-tabs__close {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .iux-tabs__panel {
+    padding: var(--space-3);
+  }
 }

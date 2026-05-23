@@ -148,3 +148,22 @@
   border-radius: var(--radius-sm);
   background: transparent;
 }
+
+/*
+ * Phone-narrow tweaks. The default row uses a 1fr / 1.5fr grid; on a
+ * 375px viewport the label column shrinks to ~7rem and either truncates
+ * or wraps poorly. Stack label-above-control so each control gets the
+ * full width, mirroring the iOS Settings convention.
+ */
+@media (max-width: 40rem) {
+  .iux-inspector {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .iux-inspector__row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: var(--space-1);
+  }
+}

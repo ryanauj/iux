@@ -146,10 +146,23 @@
   position: absolute;
   inset-inline-end: 0;
   inset-block: 0;
+  /*
+   * The visual hit-strip is narrow (`--space-2`) on desktop, but coarse
+   * pointers (touch) need a much wider grab surface. Spread the hit
+   * area sideways with a pseudo-element so we don't shift the visible
+   * column boundary; the @media (pointer: coarse) block below widens
+   * the visible band when no precise pointer is present.
+   */
   width: var(--space-2);
   cursor: col-resize;
   transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
   touch-action: none;
+}
+
+@media (pointer: coarse) {
+  .iux-table__resize-handle {
+    width: var(--space-4);
+  }
 }
 
 .iux-table__resize-handle:hover,
@@ -240,4 +253,24 @@
 
 @media (prefers-reduced-motion: reduce) {
   .iux-table__save-dot--saving { animation: none; }
+}
+
+/*
+ * Phone-narrow tweaks. The table already scrolls horizontally inside
+ * `.iux-table__scroll`, so the page never overflows. On mobile we just
+ * tighten the cell padding (which gives an extra column or two of room
+ * before the scrollbar appears) and shrink the column-visibility menu
+ * so it doesn't run off the right edge.
+ */
+@media (max-width: 40rem) {
+  .iux-table__th,
+  .iux-table__td {
+    padding-inline: var(--space-2);
+  }
+
+  .iux-table__visibility-menu {
+    inset-inline-end: var(--space-2);
+    min-width: 10rem;
+    max-width: calc(100vw - var(--space-4) * 2);
+  }
 }

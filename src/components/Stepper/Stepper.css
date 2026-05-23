@@ -165,3 +165,38 @@
 }
 
 .iux-stepper__btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/*
+ * Phone-narrow tweaks. The default min-width of 12rem per step means a
+ * 3-step wizard demands 36rem of horizontal room and wraps three rows
+ * deep on a 375px iPhone — wasted space and a jagged hierarchy. On
+ * mobile we shrink each step to fit two-up, drop the description so
+ * the title can sit on a single line, and align the action buttons to
+ * fill the row.
+ */
+@media (max-width: 40rem) {
+  .iux-stepper__strip {
+    gap: var(--space-2);
+  }
+
+  .iux-stepper__step {
+    min-width: 0;
+    flex: 1 1 calc(50% - var(--space-2));
+  }
+
+  .iux-stepper__step-description {
+    display: none;
+  }
+
+  .iux-stepper__panel {
+    padding: var(--space-3);
+  }
+
+  .iux-stepper__actions {
+    flex-wrap: wrap;
+  }
+
+  .iux-stepper__btn {
+    flex: 1 1 auto;
+  }
+}

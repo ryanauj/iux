@@ -117,6 +117,15 @@
 .iux-segmented--overflow {
   flex-wrap: nowrap;
   overflow: hidden;
+  /*
+   * `overflow: hidden` only clips the segmented's children — without a
+   * width cap the inline-flex element still grows to its intrinsic
+   * content width and pushes its cell past the viewport on narrow
+   * widths (notably 812px landscape, which sits above the mobile
+   * @media breakpoint). Cap the segmented itself to its container.
+   */
+  max-width: 100%;
+  min-width: 0;
 }
 
 .iux-segmented__more {
@@ -169,3 +178,25 @@
 }
 
 .iux-segmented__more-item:hover { background-color: var(--color-intent-neutral-bg-hover); }
+
+/*
+ * Phone-narrow tweaks. Segmented is intentionally compact; with 4-5
+ * items the row can overflow a 375px viewport even when each label is
+ * short. Allow the row to scroll horizontally inside its own pill so
+ * the page never pushes sideways and every segment stays reachable.
+ */
+@media (max-width: 40rem) {
+  .iux-segmented:not(.iux-segmented--overflow) {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .iux-segmented:not(.iux-segmented--overflow)::-webkit-scrollbar {
+    display: none;
+  }
+
+  .iux-segmented__segment {
+    padding-inline: var(--space-2);
+  }
+}

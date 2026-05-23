@@ -223,3 +223,20 @@
   font-family: var(--type-caption-family);
   font-size: var(--type-caption-size);
 }
+
+/*
+ * Phone-narrow tweaks. The default 16rem (256px) width is reasonable on
+ * a tablet but eats two-thirds of a 375px phone. Shrink to a tighter
+ * fit; consumers that need a true full-width nav on mobile should use
+ * the Drawer instead and host the sidebar inside.
+ */
+@media (max-width: 40rem) {
+  .iux-sidebar {
+    width: 14rem;
+  }
+
+  .iux-sidebar__link {
+    /* Bigger touch row — easier to tap on a phone. */
+    padding-block: var(--space-3);
+  }
+}

@@ -15,6 +15,15 @@
   justify-content: center;
   z-index: 1000;
   padding: var(--space-4);
+  /*
+   * Respect the iPhone safe area so the dialog never tucks behind the
+   * notch / Dynamic Island in landscape, or the home indicator. Padding
+   * grows when env() values are larger than the baseline.
+   */
+  padding-top: max(var(--space-4), env(safe-area-inset-top));
+  padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
   animation: iux-modal-fade var(--motion-duration-base) var(--motion-easing-out);
 }
 
@@ -50,7 +59,13 @@
   flex-direction: column;
   width: 100%;
   max-width: 32rem;
+  /*
+   * `100vh` on iOS Safari ignores the browser chrome — the dialog tucks
+   * its footer off-screen. `100dvh` (dynamic viewport) tracks the actual
+   * visible height, and the fallback covers browsers without dvh support.
+   */
   max-height: calc(100vh - var(--space-7));
+  max-height: calc(100dvh - var(--space-7));
   background-color: var(--color-surface-overlay);
   color: var(--color-content-primary);
   border-width: var(--border-width-thin);
@@ -130,6 +145,7 @@
   justify-content: flex-end;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-5) var(--space-5);
+  flex-wrap: wrap;
 }
 
 .iux-modal__footer--sticky {
@@ -247,4 +263,36 @@
 
 .iux-modal__progress-step.is-current {
   color: var(--color-content-primary);
+}
+
+/*
+ * Phone-narrow tweaks. The scrim already pads to the safe area, so the
+ * dialog stays clear of the notch; here we shrink the internal slot
+ * padding so titles/body/footer aren't crammed into a tiny content
+ * column on a 375px viewport. The wizard progress strip switches to a
+ * compact (dot-only) row when the available width is below the
+ * "full step label" threshold.
+ */
+@media (max-width: 40rem) {
+  .iux-modal__header {
+    padding: var(--space-4) var(--space-4) var(--space-2);
+  }
+
+  .iux-modal__body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .iux-modal__footer {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .iux-modal--size-sm,
+  .iux-modal--size-md,
+  .iux-modal--size-lg {
+    max-width: 100%;
+  }
+
+  .iux-modal__progress-step span:not(.iux-modal__progress-dot) {
+    display: none;
+  }
 }

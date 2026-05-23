@@ -14,6 +14,14 @@
   justify-content: center;
   padding-block: 12vh var(--space-5);
   padding-inline: var(--space-4);
+  /*
+   * Inset by the iPhone safe area so the input doesn't tuck under the
+   * notch on devices with `viewport-fit=cover` (set in index.html).
+   */
+  padding-top: max(12vh, env(safe-area-inset-top));
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
   z-index: 1200;
   animation: iux-cmdk-fade var(--motion-duration-base) var(--motion-easing-out);
 }
@@ -75,7 +83,12 @@
   list-style: none;
   margin: 0;
   padding: var(--space-1);
+  /*
+   * `60vh` ignores iOS Safari's browser chrome and clips the list off
+   * the bottom of the screen. `60dvh` tracks the live viewport.
+   */
   max-height: 60vh;
+  max-height: 60dvh;
   overflow-y: auto;
 }
 
@@ -246,3 +259,31 @@
 }
 
 .iux-cmdk__btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/*
+ * Phone-narrow tweaks. The palette anchors at the top of the viewport;
+ * on small screens we drop the top offset closer to the status bar so
+ * the input + a few items are reachable without scrolling, and shrink
+ * the item touch row's gap so labels aren't compressed under icons.
+ */
+@media (max-width: 40rem) {
+  .iux-cmdk__scrim {
+    padding-block: max(var(--space-4), env(safe-area-inset-top)) var(--space-3);
+    padding-inline: var(--space-3);
+  }
+
+  .iux-cmdk__input {
+    padding-block: var(--space-3);
+    padding-inline: var(--space-3);
+  }
+
+  .iux-cmdk__item {
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2);
+  }
+
+  /* Hide shortcut hints — they're not useful on touch and they steal width. */
+  .iux-cmdk__item .iux-cmdk__kbd {
+    display: none;
+  }
+}

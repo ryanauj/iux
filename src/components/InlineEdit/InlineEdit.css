@@ -11,7 +11,15 @@
   gap: var(--space-1);
   font-family: var(--type-body-family);
   position: relative;
+  /* 12rem (192px) leaves room for an edit input + pencil glyph; on
+     phones we drop the floor so the cell can shrink to its container. */
   min-width: 12rem;
+}
+
+@media (max-width: 40rem) {
+  .iux-inline-edit {
+    min-width: 0;
+  }
 }
 
 .iux-inline-edit__label {
@@ -148,7 +156,14 @@
   box-shadow: var(--elevation-overlay);
   padding: var(--space-3);
   z-index: 20;
-  min-width: 20rem;
+  /*
+   * The popover wants to be ~20rem wide for readability, but it must
+   * never overflow the right edge of the viewport on a 375px phone.
+   * Cap to whichever is smaller — the design intent or the available
+   * room minus a gutter.
+   */
+  min-width: min(20rem, calc(100vw - var(--space-4) * 2));
+  max-width: calc(100vw - var(--space-4) * 2);
 }
 
 .iux-inline-edit__history-current {

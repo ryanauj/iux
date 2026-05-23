@@ -19,7 +19,11 @@
   font-size: var(--type-caption-size);
   padding-block: var(--space-2);
   padding-inline: var(--space-3);
-  max-width: 18rem;
+  /*
+   * Cap to the viewport so a tooltip anchored near the right edge of a
+   * 375px phone can't overflow into a horizontal scrollbar.
+   */
+  max-width: min(18rem, calc(100vw - var(--space-4) * 2));
   pointer-events: auto;
   animation: iux-tooltip-in var(--motion-duration-fast) var(--motion-easing-out);
 }
@@ -74,7 +78,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--space-3);
-  max-width: 22rem;
+  max-width: min(22rem, calc(100vw - var(--space-4) * 2));
   padding: var(--space-3);
 }
 
@@ -92,7 +96,7 @@
 /* ---------- Coach variant: step indicator + actions ---------- */
 
 .iux-tooltip--coach {
-  max-width: 22rem;
+  max-width: min(22rem, calc(100vw - var(--space-4) * 2));
 }
 
 .iux-tooltip__step-meta {
