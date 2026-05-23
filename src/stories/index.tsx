@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { COMPONENTS, type Component } from '../showcase/components'
@@ -37,15 +37,59 @@ function loadControlsStyle(): ControlsStyle {
   return 'bar'
 }
 
+const URL_PARAM = {
+  component: 'component',
+  variant: 'variant',
+  palette: 'palette',
+  chrome: 'chrome',
+} as const
+
+const DEFAULTS = {
+  component: 'button' as Component,
+  variant: 'all' as VariantChoice,
+  palette: 'all' as PaletteChoice,
+  chrome: 'flat-classic' as PaletteId,
+}
+
+const isComponentId = (v: string): v is Component =>
+  COMPONENTS.some(c => c.id === v)
+const isPaletteId = (v: string): v is PaletteId =>
+  (PALETTE_IDS as string[]).includes(v)
+
+type UrlSettings = {
+  component: Component
+  variant: VariantChoice
+  palette: PaletteChoice
+  chrome: PaletteId
+}
+
+function readUrlSettings(): UrlSettings {
+  if (typeof window === 'undefined') return { ...DEFAULTS }
+  const p = new URL(window.location.href).searchParams
+  const componentRaw = p.get(URL_PARAM.component) ?? ''
+  const component = isComponentId(componentRaw) ? componentRaw : DEFAULTS.component
+  const entry = COMPONENTS.find(c => c.id === component)
+  const variantRaw = p.get(URL_PARAM.variant) ?? ''
+  const variant: VariantChoice =
+    variantRaw && entry?.variants.includes(variantRaw) ? variantRaw : DEFAULTS.variant
+  const paletteRaw = p.get(URL_PARAM.palette) ?? ''
+  const palette: PaletteChoice =
+    paletteRaw === 'all' ? 'all' : isPaletteId(paletteRaw) ? paletteRaw : DEFAULTS.palette
+  const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
+  const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
+  return { component, variant, palette, chrome }
+}
+
 export function Stories() {
+  const initial = useMemo(readUrlSettings, [])
   const [viewMode, setViewMode] = useState<ViewMode>('per-component')
-  const [component, setComponent] = useState<Component>('button')
-  const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>('all')
+  const [component, setComponent] = useState<Component>(initial.component)
+  const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>(initial.palette)
   const [showcasePaletteId, setShowcasePaletteId] = useState<PaletteId>('flat-classic')
   const [layout, setLayout] = useState<ShowcaseLayout>('feed')
-  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>('flat-classic')
+  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
   const [motionScale, setMotionScale] = useState<number>(2)
-  const [variantChoice, setVariantChoice] = useState<VariantChoice>('all')
+  const [variantChoice, setVariantChoice] = useState<VariantChoice>(initial.variant)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
   const [controlsStyle, setControlsStyleState] = useState<ControlsStyle>(() => loadControlsStyle())
 
@@ -53,6 +97,34 @@ export function Stories() {
     setControlsStyleState(next)
     try { localStorage.setItem(CONTROLS_STYLE_KEY, next) } catch { /* */ }
   }
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const sync = (key: string, value: string, fallback: string) => {
+      if (value === fallback) url.searchParams.delete(key)
+      else url.searchParams.set(key, value)
+    }
+    sync(URL_PARAM.component, component, DEFAULTS.component)
+    sync(URL_PARAM.variant, variantChoice, DEFAULTS.variant)
+    sync(URL_PARAM.palette, paletteChoice, DEFAULTS.palette)
+    sync(URL_PARAM.chrome, chromePaletteId, DEFAULTS.chrome)
+    const next = url.toString()
+    if (next !== window.location.href) {
+      window.history.replaceState(window.history.state, '', next)
+    }
+  }, [component, variantChoice, paletteChoice, chromePaletteId])
+
+  useEffect(() => {
+    const onPop = () => {
+      const s = readUrlSettings()
+      setComponent(s.component)
+      setVariantChoice(s.variant)
+      setPaletteChoice(s.palette)
+      setChromePaletteId(s.chrome)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
 
   const active = COMPONENTS.find(c => c.id === component)
   const visiblePaletteIds: PaletteId[] =
