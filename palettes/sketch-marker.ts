@@ -223,6 +223,8 @@ export const palette: Palette = {
       strokeVariance: '1.4px',
       paperEdgeColor: 'transparent',
       paperEdgeWidth: '0',
+      outline: { color: 'transparent', width: '0' },
+      shadowStyle: 'soft',
     },
   },
 }

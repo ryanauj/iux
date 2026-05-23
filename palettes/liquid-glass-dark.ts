@@ -121,6 +121,8 @@ export const palette: Palette = {
       strokeVariance: '0',
       paperEdgeColor: 'transparent',
       paperEdgeWidth: '0',
+      outline: { color: 'transparent', width: '0' },
+      shadowStyle: 'soft',
     },
   },
 }
