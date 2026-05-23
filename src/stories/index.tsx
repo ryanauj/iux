@@ -30,11 +30,11 @@ const CONTROLS_STYLE_KEY = 'iux-controls-style'
 function loadControlsStyle(): ControlsStyle {
   try {
     const raw = localStorage.getItem(CONTROLS_STYLE_KEY)
-    if (raw === 'bar' || raw === 'strip') return raw
+    if (raw === 'button' || raw === 'strip') return raw
   } catch {
     /* ignore */
   }
-  return 'bar'
+  return 'button'
 }
 
 const URL_PARAM = {
