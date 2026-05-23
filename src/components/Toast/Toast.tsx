@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Toast.css'
 
 export type ToastVariant = 'plain' | 'action' | 'severity' | 'progress'
@@ -162,7 +163,7 @@ export function Toaster({ toasts, onDismiss, position = 'top-right', severityOrd
 
   if (inlineRender) return node
   if (typeof document === 'undefined') return null
-  return createPortal(node, document.body)
+  return createPortal(node, getPortalTarget())
 }
 
 function IntentGlyph({ intent }: { intent: ToastIntent }) {

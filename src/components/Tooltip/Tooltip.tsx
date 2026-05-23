@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Tooltip.css'
 
 export type TooltipVariant = 'plain' | 'shortcut' | 'rich' | 'coach'
@@ -253,7 +254,7 @@ export function Tooltip({
   return (
     <>
       {triggerEl}
-      {tooltip && typeof document !== 'undefined' && createPortal(tooltip, document.body)}
+      {tooltip && typeof document !== 'undefined' && createPortal(tooltip, getPortalTarget())}
     </>
   )
 }

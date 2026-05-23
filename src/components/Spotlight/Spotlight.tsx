@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Spotlight.css'
 
 export type SpotlightVariant = 'single' | 'sequence' | 'anchor-aware' | 'adaptive'
@@ -214,5 +215,5 @@ export function Spotlight({
   )
 
   if (typeof document === 'undefined') return null
-  return createPortal(overlay, document.body)
+  return createPortal(overlay, getPortalTarget())
 }

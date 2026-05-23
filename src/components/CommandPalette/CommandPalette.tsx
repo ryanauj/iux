@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './CommandPalette.css'
 
 export type CommandPaletteVariant = 'flat' | 'grouped' | 'wizard' | 'agentic'
@@ -322,7 +323,7 @@ export function CommandPalette({
 
   if (inlineRender) return node
   if (typeof document === 'undefined') return null
-  return createPortal(node, document.body)
+  return createPortal(node, getPortalTarget())
 }
 
 interface WizardStepViewProps {
