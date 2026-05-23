@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Modal.css'
 
 export type ModalVariant = 'centered' | 'sectioned' | 'wizard' | 'routed'
@@ -338,7 +339,7 @@ export function Modal(props: ModalProps) {
   )
 
   if (inlineRender) return dialog
-  return createPortal(dialog, document.body)
+  return createPortal(dialog, getPortalTarget())
 }
 
 interface WizardProgressProps {

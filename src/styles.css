@@ -746,4 +746,39 @@ body {
     max-width: none;
     flex-shrink: 0;
   }
+
+  /*
+   * Cells whose demo already scrolls internally (Table, VirtualList) get
+   * pinned to the viewport width instead of overflowing the row. Without
+   * this override, the cell's inline `minWidth: '28rem'` pushes the row's
+   * horizontal scroll past the viewport AND the demo scrolls inside it —
+   * two nested scroll surfaces stacked on the same axis, which on a phone
+   * reads as "this table scrolls forever." `!important` is required to
+   * defeat the inline `style="min-width: …"` set by each story file.
+   */
+  .stories__cell:has(.iux-table),
+  .stories__cell:has(.iux-vlist) {
+    min-width: 0 !important;
+    width: 100%;
+    flex-basis: 100%;
+    flex-shrink: 1;
+  }
+}
+
+/*
+ * Phone-landscape: short, wide viewports (iPhone 13 landscape: 664×390)
+ * clear the `max-width: 40rem` (640px) breakpoint and pick up the desktop
+ * story layout, but the height is tiny. Tables still benefit from fitting
+ * the viewport instead of pushing the row's horizontal scrollbar.
+ * Match against viewport height to detect the landscape phone case
+ * without dragging tablets/laptops in.
+ */
+@media (orientation: landscape) and (max-height: 32rem) {
+  .stories__cell:has(.iux-table),
+  .stories__cell:has(.iux-vlist) {
+    min-width: 0 !important;
+    width: 100%;
+    flex-basis: 100%;
+    flex-shrink: 1;
+  }
 }

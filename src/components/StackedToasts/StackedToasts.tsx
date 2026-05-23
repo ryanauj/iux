@@ -6,6 +6,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { Toast, type ToastIntent, type ToastItem } from '../Toast/Toast'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './StackedToasts.css'
 
 export type StackedToastsVariant = 'cap' | 'dedupe' | 'severity' | 'tray'
@@ -158,5 +159,5 @@ export function StackedToasts({
 
   if (inlineRender) return node
   if (typeof document === 'undefined') return null
-  return createPortal(node, document.body)
+  return createPortal(node, getPortalTarget())
 }

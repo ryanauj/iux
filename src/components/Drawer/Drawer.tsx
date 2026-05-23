@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Drawer.css'
 
 export type DrawerVariant = 'side' | 'sectioned' | 'navigable' | 'sheet'
@@ -281,5 +282,5 @@ export function Drawer(props: DrawerProps) {
   )
 
   if (inlineRender) return dialog
-  return createPortal(dialog, document.body)
+  return createPortal(dialog, getPortalTarget())
 }

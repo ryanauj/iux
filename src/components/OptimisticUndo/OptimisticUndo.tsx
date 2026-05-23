@@ -5,6 +5,7 @@ import {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './OptimisticUndo.css'
 
 export type OptimisticUndoVariant = 'toast' | 'countdown' | 'queue' | 'log'
@@ -149,7 +150,7 @@ export function OptimisticUndo({
 
   if (inlineRender) return stack
   if (typeof document === 'undefined') return null
-  return createPortal(stack, document.body)
+  return createPortal(stack, getPortalTarget())
 }
 
 // Minimal hook that owns the action queue + history.

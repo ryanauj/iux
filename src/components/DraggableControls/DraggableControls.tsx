@@ -30,6 +30,33 @@ const DEFAULTS: Record<ControlsStyle, Position> = {
 
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
 
+/*
+ * On a phone the page header ("iux — component stories") sits at the top
+ * edge — the same corner the desktop default puts the floating button.
+ * The FAB then floats above the title text and chops "iu" off the start.
+ * Drop the FAB to the bottom-right gutter on phone-sized viewports so the
+ * title is clear and the FAB sits in the thumb-reachable zone. The check
+ * uses BOTH width and height so phone landscape (e.g. iPhone 13 at
+ * 664×390 — just over the 640px width breakpoint) is still treated as a
+ * phone. Strip starts mid-left on desktop; on phones we keep it on the
+ * left edge but push it down past the header.
+ */
+function defaultPos(style: ControlsStyle): Position {
+  if (typeof window === 'undefined') return DEFAULTS[style]
+  const isPhone = window.innerWidth <= 640 || window.innerHeight <= 480
+  if (isPhone) {
+    if (style === 'button') {
+      // 3rem button + 16px margin on each side ≈ 64px.
+      return {
+        x: Math.max(16, window.innerWidth - 64),
+        y: Math.max(16, window.innerHeight - 96),
+      }
+    }
+    return { x: 16, y: 72 }
+  }
+  return DEFAULTS[style]
+}
+
 function loadPos(style: ControlsStyle): Position {
   try {
     const raw = localStorage.getItem(POS_KEY(style))
@@ -40,7 +67,7 @@ function loadPos(style: ControlsStyle): Position {
   } catch {
     /* ignore */
   }
-  return DEFAULTS[style]
+  return defaultPos(style)
 }
 
 function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
