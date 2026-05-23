@@ -106,9 +106,10 @@ contract slots — `effect.pixelGrid` and `typography.family.pixel` —
 that every other palette returns as no-ops. The set proves the engine
 generalises across both **hardware-locked** registers (NES, Game Boy,
 SNES — bit-depth dictates the colour ROM) and **art-direction**
-registers (PICO-8's fixed fantasy-console palette, Stardew Valley's
-cottagecore parchment, Hyper Light Drifter's synth-noir). Unlike the
-CRT engine, Pixel-art changes more than decoration: every `space.*`
+registers (PICO-8's fixed fantasy-console palette, a generic
+cottagecore parchment register, Hyper Light Drifter's synth-noir).
+Unlike the CRT engine, Pixel-art changes more than decoration: every
+`space.*`
 and `radius.*` value is forced onto an integer-pixel grid, every
 `motion.easing.*` collapses to `steps(1, end)`, and every `radius.*`
 slot is `'0'` (no anti-aliased corners).
@@ -117,7 +118,7 @@ slot is `'0'` (no anti-aliased corners).
 |----|-------------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
 | 25 | Pixel Art (NES)               | Pixel-art  | experimental | 8-bit console register — NTSC 2C02 swatches on black, bitmap glyphs (Press Start 2P), hard offsets, square corners, steps(1) easings. |
 | 26 | Pixel Art (Game Boy)          | Pixel-art  | experimental | DMG 4-tone green LCD — same engine, single-platform colour swap; intents collapse onto four shades. |
-| 27 | Pixel Art (Stardew Valley)    | Pixel-art  | experimental | Modern cozy-indie — warm parchment fields, wood frames, harvest gold, crop green; intents map to the farm-sim food chain. |
+| 27 | Pixel Art (Cottagecore)       | Pixel-art  | experimental | Generic warm-pastoral indie — parchment fields, wood frames, harvest gold, crop green; earthy intents in place of saturated console primaries. |
 | 28 | Pixel Art (PICO-8)            | Pixel-art  | experimental | Lexaloffle fantasy-console ROM — fixed 16-colour palette, hover/active states swap hue instead of dimming luminance. |
 | 29 | Pixel Art (SNES)              | Pixel-art  | experimental | 16-bit JRPG dialog register — deep-blue window, white inner bevel, gold accent; `overlay` elevation paints the SNES dialog frame. |
 | 30 | Pixel Art (Hyper Light)       | Pixel-art  | experimental | Modern synth-noir indie — indigo field, magenta accent, teal highlight; `high` elevation casts a magenta block to fake the missing glow. |

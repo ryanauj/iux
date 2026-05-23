@@ -24,7 +24,7 @@ import { palette as crtPhosphorGreen } from './crt-phosphor-green'
 import { palette as crtPhosphorAmber } from './crt-phosphor-amber'
 import { palette as pixelArtNes } from './pixel-art-nes'
 import { palette as pixelArtGameboy } from './pixel-art-gameboy'
-import { palette as pixelArtStardew } from './pixel-art-stardew'
+import { palette as pixelArtCottagecore } from './pixel-art-cottagecore'
 import { palette as pixelArtPico8 } from './pixel-art-pico8'
 import { palette as pixelArtSnes } from './pixel-art-snes'
 import { palette as pixelArtHyperlight } from './pixel-art-hyperlight'
@@ -57,7 +57,7 @@ export const palettes = {
   'crt-phosphor-amber': crtPhosphorAmber,
   'pixel-art-nes': pixelArtNes,
   'pixel-art-gameboy': pixelArtGameboy,
-  'pixel-art-stardew': pixelArtStardew,
+  'pixel-art-cottagecore': pixelArtCottagecore,
   'pixel-art-pico8': pixelArtPico8,
   'pixel-art-snes': pixelArtSnes,
   'pixel-art-hyperlight': pixelArtHyperlight,
