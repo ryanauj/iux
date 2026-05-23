@@ -25,47 +25,54 @@ const LAYOUTS: { value: ShowcaseLayout; label: string }[] = [
   { value: 'grid', label: 'Grid — tap-to-expand tiles' },
 ]
 
-const CONTROLS_STYLE_KEY = 'iux-controls-style'
-
-function loadControlsStyle(): ControlsStyle {
-  try {
-    const raw = localStorage.getItem(CONTROLS_STYLE_KEY)
-    if (raw === 'button' || raw === 'strip') return raw
-  } catch {
-    /* ignore */
-  }
-  return 'button'
-}
-
 const URL_PARAM = {
+  view: 'view',
   component: 'component',
   variant: 'variant',
   palette: 'palette',
   chrome: 'chrome',
+  showcasePalette: 'showcase',
+  layout: 'layout',
+  motion: 'motion',
+  controls: 'controls',
 } as const
 
 const DEFAULTS = {
+  view: 'per-component' as ViewMode,
   component: 'button' as Component,
   variant: 'all' as VariantChoice,
   palette: 'flat-classic' as PaletteChoice,
   chrome: 'flat-classic' as PaletteId,
+  showcasePalette: 'flat-classic' as PaletteId,
+  layout: 'feed' as ShowcaseLayout,
+  motion: 2,
+  controls: 'button' as ControlsStyle,
 }
 
 const isComponentId = (v: string): v is Component =>
   COMPONENTS.some(c => c.id === v)
 const isPaletteId = (v: string): v is PaletteId =>
   (PALETTE_IDS as string[]).includes(v)
+const isLayoutId = (v: string): v is ShowcaseLayout =>
+  LAYOUTS.some(l => l.value === v)
 
 type UrlSettings = {
+  view: ViewMode
   component: Component
   variant: VariantChoice
   palette: PaletteChoice
   chrome: PaletteId
+  showcasePalette: PaletteId
+  layout: ShowcaseLayout
+  motion: number
+  controls: ControlsStyle
 }
 
 function readUrlSettings(): UrlSettings {
   if (typeof window === 'undefined') return { ...DEFAULTS }
   const p = new URL(window.location.href).searchParams
+  const viewRaw = p.get(URL_PARAM.view) ?? ''
+  const view: ViewMode = viewRaw === 'per-palette' ? 'per-palette' : DEFAULTS.view
   const componentRaw = p.get(URL_PARAM.component) ?? ''
   const component = isComponentId(componentRaw) ? componentRaw : DEFAULTS.component
   const entry = COMPONENTS.find(c => c.id === component)
@@ -77,26 +84,30 @@ function readUrlSettings(): UrlSettings {
     paletteRaw === 'all' ? 'all' : isPaletteId(paletteRaw) ? paletteRaw : DEFAULTS.palette
   const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
   const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
-  return { component, variant, palette, chrome }
+  const showcaseRaw = p.get(URL_PARAM.showcasePalette) ?? ''
+  const showcasePalette: PaletteId = isPaletteId(showcaseRaw) ? showcaseRaw : DEFAULTS.showcasePalette
+  const layoutRaw = p.get(URL_PARAM.layout) ?? ''
+  const layout: ShowcaseLayout = isLayoutId(layoutRaw) ? layoutRaw : DEFAULTS.layout
+  const motionRaw = Number(p.get(URL_PARAM.motion))
+  const motion: number = MOTION_SCALES.some(s => s.value === motionRaw) ? motionRaw : DEFAULTS.motion
+  const controlsRaw = p.get(URL_PARAM.controls) ?? ''
+  const controls: ControlsStyle =
+    controlsRaw === 'strip' || controlsRaw === 'button' ? controlsRaw : DEFAULTS.controls
+  return { view, component, variant, palette, chrome, showcasePalette, layout, motion, controls }
 }
 
 export function Stories() {
   const initial = useMemo(readUrlSettings, [])
-  const [viewMode, setViewMode] = useState<ViewMode>('per-component')
+  const [viewMode, setViewMode] = useState<ViewMode>(initial.view)
   const [component, setComponent] = useState<Component>(initial.component)
   const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>(initial.palette)
-  const [showcasePaletteId, setShowcasePaletteId] = useState<PaletteId>('flat-classic')
-  const [layout, setLayout] = useState<ShowcaseLayout>('feed')
+  const [showcasePaletteId, setShowcasePaletteId] = useState<PaletteId>(initial.showcasePalette)
+  const [layout, setLayout] = useState<ShowcaseLayout>(initial.layout)
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
-  const [motionScale, setMotionScale] = useState<number>(2)
+  const [motionScale, setMotionScale] = useState<number>(initial.motion)
   const [variantChoice, setVariantChoice] = useState<VariantChoice>(initial.variant)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
-  const [controlsStyle, setControlsStyleState] = useState<ControlsStyle>(() => loadControlsStyle())
-
-  const setControlsStyle = (next: ControlsStyle) => {
-    setControlsStyleState(next)
-    try { localStorage.setItem(CONTROLS_STYLE_KEY, next) } catch { /* */ }
-  }
+  const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -104,23 +115,43 @@ export function Stories() {
       if (value === fallback) url.searchParams.delete(key)
       else url.searchParams.set(key, value)
     }
+    sync(URL_PARAM.view, viewMode, DEFAULTS.view)
     sync(URL_PARAM.component, component, DEFAULTS.component)
     sync(URL_PARAM.variant, variantChoice, DEFAULTS.variant)
     sync(URL_PARAM.palette, paletteChoice, DEFAULTS.palette)
     sync(URL_PARAM.chrome, chromePaletteId, DEFAULTS.chrome)
+    sync(URL_PARAM.showcasePalette, showcasePaletteId, DEFAULTS.showcasePalette)
+    sync(URL_PARAM.layout, layout, DEFAULTS.layout)
+    sync(URL_PARAM.motion, String(motionScale), String(DEFAULTS.motion))
+    sync(URL_PARAM.controls, controlsStyle, DEFAULTS.controls)
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [component, variantChoice, paletteChoice, chromePaletteId])
+  }, [
+    viewMode,
+    component,
+    variantChoice,
+    paletteChoice,
+    chromePaletteId,
+    showcasePaletteId,
+    layout,
+    motionScale,
+    controlsStyle,
+  ])
 
   useEffect(() => {
     const onPop = () => {
       const s = readUrlSettings()
+      setViewMode(s.view)
       setComponent(s.component)
       setVariantChoice(s.variant)
       setPaletteChoice(s.palette)
       setChromePaletteId(s.chrome)
+      setShowcasePaletteId(s.showcasePalette)
+      setLayout(s.layout)
+      setMotionScale(s.motion)
+      setControlsStyle(s.controls)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
