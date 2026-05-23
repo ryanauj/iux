@@ -46,6 +46,26 @@ Actions.
 The Vite `base` is set to `/iux/` to match the repo subpath. Custom
 domain later? Switch `base` to `'/'` in `vite.config.ts`.
 
+## Shareable URLs
+
+Every story-picker setting is reflected in the URL query string, so the
+page restores after reload and any view can be shared by copying the
+location bar. Defaults are omitted from the URL to keep links tidy.
+
+| Param      | Values                                                  | Default        |
+| ---------- | ------------------------------------------------------- | -------------- |
+| `view`     | `per-component`, `per-palette`                          | `per-component`|
+| `component`| any component id (e.g. `button`, `toast`, `modal`)      | `button`       |
+| `variant`  | `all` or a variant of the active component              | `all`          |
+| `palette`  | `all` or a palette id (e.g. `material`, `tron-dark-neon`)| `flat-classic`|
+| `chrome`   | palette id used to paint the page chrome                | `flat-classic` |
+| `showcase` | palette id for the per-palette view                     | `flat-classic` |
+| `layout`   | `feed`, `deck`, `grid` (per-palette layouts)            | `feed`         |
+| `motion`   | `1`, `2`, `3`, `5` (motion-duration multiplier)         | `2`            |
+| `controls` | `button`, `strip` (floating controls style)             | `button`       |
+
+Example: `?view=per-palette&showcase=material&layout=grid&motion=3`
+
 ## Contract gaps revealed by CRT
 
 Adding the CRT / Phosphor engine was the highest-leverage palette
