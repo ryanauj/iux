@@ -200,3 +200,19 @@
   background-color: var(--color-intent-primary-bg);
   color: var(--color-intent-primary-content);
 }
+
+/*
+ * Phone-narrow tweaks. Diff renders code in a mono font; on a 375px
+ * viewport the side-by-side and three-way grids cram 3-4 chars per
+ * column, which is unreadable. Stack panes vertically so each one has
+ * the full width to wrap or scroll its own content.
+ */
+@media (max-width: 40rem) {
+  .iux-diff {
+    flex-direction: column;
+  }
+
+  .iux-diff__threeway {
+    grid-template-columns: 1fr;
+  }
+}

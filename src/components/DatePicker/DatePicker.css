@@ -93,6 +93,12 @@
   border-radius: var(--radius-md);
   box-shadow: var(--elevation-overlay);
   flex-wrap: wrap;
+  /*
+   * Clamp the popover width to the viewport (minus a gutter) so it
+   * can't overflow the right edge of the screen on phones. Inner
+   * sections (presets + calendar) wrap inside this bound.
+   */
+  max-width: calc(100vw - var(--space-4) * 2);
 }
 
 .iux-datepicker__presets {
@@ -179,6 +185,10 @@
   background: transparent;
   border: none;
   padding: 0;
+  /*
+   * Day cells inflate to a full touch target on mobile via the
+   * @media block below. The base values keep the dense desktop layout.
+   */
   width: var(--space-7);
   height: var(--space-6);
   border-radius: var(--radius-sm);
@@ -219,4 +229,41 @@
 .iux-datepicker__day:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+/*
+ * Phone-narrow tweaks. The popover stacks the presets above the
+ * calendar (instead of side-by-side) so neither runs off the screen
+ * edge, and the day cells grow to a real touch-target so tapping a
+ * date is reliable.
+ */
+@media (max-width: 40rem) {
+  .iux-datepicker__popover {
+    flex-direction: column;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    /* Override the side-by-side max-width — we're now stacked. */
+    max-width: 100%;
+  }
+
+  .iux-datepicker__presets {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 0;
+    padding-inline-end: 0;
+    padding-block-end: var(--space-2);
+    border-inline-end: none;
+    border-block-end-width: var(--border-width-hairline);
+    border-block-end-style: solid;
+    border-block-end-color: var(--color-border-subtle);
+  }
+
+  .iux-datepicker__calendar {
+    min-width: 0;
+  }
+
+  .iux-datepicker__day {
+    width: 100%;
+    height: 2.5rem;
+  }
 }

@@ -158,3 +158,19 @@
   border-color: var(--color-intent-warning-bg);
   pointer-events: none;
 }
+
+/*
+ * Phone-narrow tweaks. The default layout pins viewport and minimap
+ * side-by-side; the minimap easily eats half the horizontal room on a
+ * 375px phone. Stack vertically so the viewport keeps the full width,
+ * with the minimap sitting below at its natural intrinsic size.
+ */
+@media (max-width: 40rem) {
+  .iux-canvas {
+    flex-direction: column;
+  }
+
+  .iux-canvas__viewport {
+    width: 100%;
+  }
+}

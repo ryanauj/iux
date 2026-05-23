@@ -101,3 +101,21 @@
 
 .iux-vlist__section-btn:hover { color: var(--color-content-primary); background-color: var(--color-intent-neutral-bg-hover); }
 .iux-vlist__section-btn.is-active { color: var(--color-content-primary); font-weight: var(--type-subheading-weight); }
+
+/*
+ * Phone-narrow tweaks. The section-nav sidebar (sections variant) sits
+ * to the side of the scroll list on desktop; on a 375px viewport that
+ * leaves a sliver for either pane. Stack vertically and collapse the
+ * nav to a horizontal scrolling row of pills.
+ */
+@media (max-width: 40rem) {
+  .iux-vlist {
+    flex-direction: column;
+  }
+
+  .iux-vlist__section-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+}

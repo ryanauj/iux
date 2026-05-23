@@ -193,3 +193,35 @@
   font-size: var(--type-caption-size);
   color: var(--color-content-muted);
 }
+
+/*
+ * Phone-narrow tweaks. The 14rem lane sidebar consumes ~225px out of a
+ * 375px viewport, leaving ~110px for the actual track — unusable. Drop
+ * the meta column to a 6rem strip that just carries the swatch + a
+ * truncated label, and shift the multi-track playhead's left offset to
+ * match.
+ */
+@media (max-width: 40rem) {
+  .iux-timeline__lane-row {
+    grid-template-columns: 6rem 1fr;
+    gap: var(--space-1);
+  }
+
+  .iux-timeline__lane-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .iux-timeline__multi-playhead {
+    margin-inline-start: calc(6rem + var(--space-1));
+  }
+
+  /* Buttons inside the lane meta are mute/solo toggles — bump them to a
+     real touch target. */
+  .iux-timeline__lane-btn {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}

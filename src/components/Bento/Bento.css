@@ -77,6 +77,17 @@
   border-end-end-radius: var(--radius-md);
 }
 
+/*
+ * Coarse pointers (touch) need a larger grab handle. The visible
+ * gradient stays anchored to the corner; we just widen the hit-box.
+ */
+@media (pointer: coarse) {
+  .iux-bento__resize {
+    width: var(--space-5);
+    height: var(--space-5);
+  }
+}
+
 .iux-bento__resize:hover {
   background-image: linear-gradient(135deg, transparent 50%, var(--color-content-primary) 50%);
 }

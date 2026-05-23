@@ -10,7 +10,11 @@
   flex-direction: column;
   gap: var(--space-2);
   pointer-events: none;
-  max-width: 24rem;
+  /*
+   * Clamp to viewport on phones — a 24rem (384px) stack overflows
+   * a 375px iPhone in portrait without this.
+   */
+  max-width: min(24rem, calc(100vw - var(--space-4) * 2));
 }
 
 .iux-toast-stack[data-inline='true'] {
@@ -18,15 +22,27 @@
   inset: auto;
 }
 
-.iux-toast-stack--top-right    { inset-block-start: var(--space-5); inset-inline-end: var(--space-5); }
-.iux-toast-stack--bottom-right { inset-block-end: var(--space-5);  inset-inline-end: var(--space-5); }
+/*
+ * Corner offsets honor the iPhone safe area so toasts never collide
+ * with the notch (top) or the home-indicator strip (bottom). env()
+ * values resolve to 0 on devices without insets, so the max() falls
+ * through to the design token.
+ */
+.iux-toast-stack--top-right    {
+  inset-block-start: max(var(--space-5), env(safe-area-inset-top));
+  inset-inline-end:   max(var(--space-5), env(safe-area-inset-right));
+}
+.iux-toast-stack--bottom-right {
+  inset-block-end:    max(var(--space-5), env(safe-area-inset-bottom));
+  inset-inline-end:   max(var(--space-5), env(safe-area-inset-right));
+}
 .iux-toast-stack--top-center {
-  inset-block-start: var(--space-5);
+  inset-block-start: max(var(--space-5), env(safe-area-inset-top));
   inset-inline-start: 50%;
   transform: translateX(-50%);
 }
 .iux-toast-stack--bottom-center {
-  inset-block-end: var(--space-5);
+  inset-block-end: max(var(--space-5), env(safe-area-inset-bottom));
   inset-inline-start: 50%;
   transform: translateX(-50%);
 }

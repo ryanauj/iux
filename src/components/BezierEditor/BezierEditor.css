@@ -152,3 +152,24 @@
   font-size: var(--type-label-size);
   cursor: pointer;
 }
+
+/*
+ * Phone-narrow tweaks. The default flex-direction: row pinned the
+ * canvas and panel side-by-side, which collapses the canvas to ~140px
+ * on a 375px viewport — too small for meaningful control-point
+ * dragging. Stack vertically so the canvas can use the full width,
+ * then the field panel sits below it.
+ */
+@media (max-width: 40rem) {
+  .iux-bezier {
+    flex-direction: column;
+  }
+
+  .iux-bezier__canvas-wrap {
+    width: 100%;
+  }
+
+  .iux-bezier__row {
+    grid-template-columns: 5rem 1fr;
+  }
+}

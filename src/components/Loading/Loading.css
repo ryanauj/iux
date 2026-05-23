@@ -112,6 +112,18 @@
   border-block-end-color: var(--color-border-subtle);
 }
 
+/*
+ * Phone-narrow: collapse the four-column skeleton row to two columns.
+ * The original 1fr/2fr/3fr/2fr template gives each bar ~70px on a
+ * 375px viewport, which reads as a thin sliver rather than a row of
+ * placeholders.
+ */
+@media (max-width: 40rem) {
+  .iux-loading__skel-row {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
 .iux-loading__skel-avatar-text {
   display: flex;
   align-items: center;

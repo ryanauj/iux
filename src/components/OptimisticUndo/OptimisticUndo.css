@@ -8,7 +8,8 @@
 .iux-undo {
   position: fixed;
   z-index: 1100;
-  max-width: 26rem;
+  /* Clamp to viewport on phones; 26rem (416px) overflows a 375px screen. */
+  max-width: min(26rem, calc(100vw - var(--space-4) * 2));
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -18,10 +19,15 @@
 
 .iux-undo[data-inline='true'] { position: relative; inset: auto; }
 
-.iux-undo--bottom-left   { inset-block-end: var(--space-5); inset-inline-start: var(--space-5); }
-.iux-undo--bottom-right  { inset-block-end: var(--space-5); inset-inline-end: var(--space-5); }
-.iux-undo--top-left      { inset-block-start: var(--space-5); inset-inline-start: var(--space-5); }
-.iux-undo--top-right     { inset-block-start: var(--space-5); inset-inline-end: var(--space-5); }
+/*
+ * Corner offsets honor the iPhone safe area — the undo stack never tucks
+ * behind the notch (top) or the home-indicator strip (bottom). env()
+ * values resolve to 0 on hardware without insets.
+ */
+.iux-undo--bottom-left   { inset-block-end:   max(var(--space-5), env(safe-area-inset-bottom)); inset-inline-start: max(var(--space-5), env(safe-area-inset-left)); }
+.iux-undo--bottom-right  { inset-block-end:   max(var(--space-5), env(safe-area-inset-bottom)); inset-inline-end:   max(var(--space-5), env(safe-area-inset-right)); }
+.iux-undo--top-left      { inset-block-start: max(var(--space-5), env(safe-area-inset-top));    inset-inline-start: max(var(--space-5), env(safe-area-inset-left)); }
+.iux-undo--top-right     { inset-block-start: max(var(--space-5), env(safe-area-inset-top));    inset-inline-end:   max(var(--space-5), env(safe-area-inset-right)); }
 
 .iux-undo__item {
   display: grid;

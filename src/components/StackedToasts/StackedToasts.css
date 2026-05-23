@@ -9,6 +9,12 @@
   position: fixed;
   z-index: 1100;
   max-width: 26rem;
+  /*
+   * On a 375px phone, a 26rem (416px) wide toast would overflow. Clamp
+   * to viewport with a 16px gutter so the toast keeps internal padding
+   * usable.
+   */
+  max-width: min(26rem, calc(100vw - var(--space-4) * 2));
   pointer-events: none;
 }
 
@@ -17,15 +23,27 @@
   inset: auto;
 }
 
-.iux-stacked--top-right    { inset-block-start: var(--space-5); inset-inline-end: var(--space-5); }
-.iux-stacked--bottom-right { inset-block-end: var(--space-5);   inset-inline-end: var(--space-5); }
+/*
+ * Corner offsets use `max(space, env(safe-area-inset-*))` so toasts on
+ * iPhone never tuck behind the notch (top) or the home-indicator swipe
+ * surface (bottom). On devices without insets the env() values resolve
+ * to 0 and the `max()` falls back to the standard token.
+ */
+.iux-stacked--top-right    {
+  inset-block-start: max(var(--space-5), env(safe-area-inset-top));
+  inset-inline-end:   max(var(--space-5), env(safe-area-inset-right));
+}
+.iux-stacked--bottom-right {
+  inset-block-end:    max(var(--space-5), env(safe-area-inset-bottom));
+  inset-inline-end:   max(var(--space-5), env(safe-area-inset-right));
+}
 .iux-stacked--top-center,
 .iux-stacked--bottom-center {
   inset-inline-start: 50%;
   transform: translateX(-50%);
 }
-.iux-stacked--top-center    { inset-block-start: var(--space-5); }
-.iux-stacked--bottom-center { inset-block-end: var(--space-5); }
+.iux-stacked--top-center    { inset-block-start: max(var(--space-5), env(safe-area-inset-top)); }
+.iux-stacked--bottom-center { inset-block-end:   max(var(--space-5), env(safe-area-inset-bottom)); }
 
 .iux-stacked__items {
   display: flex;
