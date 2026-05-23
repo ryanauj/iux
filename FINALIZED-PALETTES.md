@@ -99,21 +99,28 @@ engine generalizes: swap green ↔ amber by editing only `color.*` and
 | 23 | CRT / Phosphor (Green)  | CRT / Phosphor | experimental | Green-screen tube — single phosphor color on near-black, scanline overlay, bloom on text, motion that decays past its main duration. |
 | 24 | CRT / Phosphor (Amber)  | CRT / Phosphor | experimental | DEC VT220 amber variant — same engine, single-color swap; intents collapse onto the one phosphor color. |
 
-## Group G — pixel-art pair (new engine)
+## Group G — pixel-art set (new engine)
 
-Two palettes share the new Pixel-art engine, which exercises two
+Six palettes share the new Pixel-art engine, which exercises two
 contract slots — `effect.pixelGrid` and `typography.family.pixel` —
-that every other palette returns as no-ops. The pair proves the engine
-generalises: swap NES → Game Boy by editing only `color.*` and
-`space.*`. Unlike the CRT engine, Pixel-art changes more than
-decoration: every `space.*` and `radius.*` value is forced onto an
-integer-pixel grid, every `motion.easing.*` collapses to `steps(1,
-end)`, and every `radius.*` slot is `'0'` (no anti-aliased corners).
+that every other palette returns as no-ops. The set proves the engine
+generalises across both **hardware-locked** registers (NES, Game Boy,
+SNES — bit-depth dictates the colour ROM) and **art-direction**
+registers (PICO-8's fixed fantasy-console palette, Stardew Valley's
+cottagecore parchment, Hyper Light Drifter's synth-noir). Unlike the
+CRT engine, Pixel-art changes more than decoration: every `space.*`
+and `radius.*` value is forced onto an integer-pixel grid, every
+`motion.easing.*` collapses to `steps(1, end)`, and every `radius.*`
+slot is `'0'` (no anti-aliased corners).
 
-| #  | Palette                 | Engine     | A11y         | One-line philosophy                                                                            |
-|----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
-| 25 | Pixel Art (NES)         | Pixel-art  | experimental | 8-bit console register — NTSC 2C02 swatches on black, bitmap glyphs (Press Start 2P), hard offsets, square corners, steps(1) easings. |
-| 26 | Pixel Art (Game Boy)    | Pixel-art  | experimental | DMG 4-tone green LCD — same engine, single-platform colour swap; intents collapse onto four shades. |
+| #  | Palette                       | Engine     | A11y         | One-line philosophy                                                                            |
+|----|-------------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
+| 25 | Pixel Art (NES)               | Pixel-art  | experimental | 8-bit console register — NTSC 2C02 swatches on black, bitmap glyphs (Press Start 2P), hard offsets, square corners, steps(1) easings. |
+| 26 | Pixel Art (Game Boy)          | Pixel-art  | experimental | DMG 4-tone green LCD — same engine, single-platform colour swap; intents collapse onto four shades. |
+| 27 | Pixel Art (Stardew Valley)    | Pixel-art  | experimental | Modern cozy-indie — warm parchment fields, wood frames, harvest gold, crop green; intents map to the farm-sim food chain. |
+| 28 | Pixel Art (PICO-8)            | Pixel-art  | experimental | Lexaloffle fantasy-console ROM — fixed 16-colour palette, hover/active states swap hue instead of dimming luminance. |
+| 29 | Pixel Art (SNES)              | Pixel-art  | experimental | 16-bit JRPG dialog register — deep-blue window, white inner bevel, gold accent; `overlay` elevation paints the SNES dialog frame. |
+| 30 | Pixel Art (Hyper Light)       | Pixel-art  | experimental | Modern synth-noir indie — indigo field, magenta accent, teal highlight; `high` elevation casts a magenta block to fake the missing glow. |
 
 ---
 
@@ -133,7 +140,7 @@ end)`, and every `radius.*` slot is `'0'` (no anti-aliased corners).
 
 ## Engine inventory
 
-Nine engines, twenty-six palettes:
+Nine engines, thirty palettes:
 
 1. Flat
 2. Material
@@ -148,5 +155,5 @@ Nine engines, twenty-six palettes:
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, and 21–22. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
-reused by palettes 25, 26. The token contract is the only seam between
+reused by palettes 25–30. The token contract is the only seam between
 engine and palette — see `tokens/00-token-contract.md`.
