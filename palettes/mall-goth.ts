@@ -88,6 +88,7 @@ export const palette: Palette = {
         display: '"Cinzel", "UnifrakturCook", "Bodoni Moda", "Trajan Pro", "Times New Roman", serif',
         mono: '"JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace',
         pixel: '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif',
+        hand: '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '3.75rem', weight: 700, lineHeight: '0.95', tracking: '-0.01em' },
@@ -122,6 +123,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Twenty-six named aesthetics. Each is a concrete value-set bound to the
+Thirty-one named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -122,6 +122,22 @@ slot is `'0'` (no anti-aliased corners).
 | 29 | Pixel Art (SNES)              | Pixel-art  | experimental | 16-bit JRPG dialog register — deep-blue window, white inner bevel, gold accent; `overlay` elevation paints the SNES dialog frame. |
 | 30 | Pixel Art (Hyper Light)       | Pixel-art  | experimental | Modern synth-noir indie — indigo field, magenta accent, teal highlight; `high` elevation casts a magenta block to fake the missing glow. |
 
+## Group H — sketch / hand-drawn (new engine)
+
+One palette anchors the new Sketch engine, which exercises two contract
+slots — `effect.strokeVariance` and `typography.family.hand` — that
+every other palette returns as no-ops. The engine ships with a single
+palette today; the contract is built so a second register (e.g.
+"Hand-drawn / Ink-and-watercolour", "Hand-drawn / Whiteboard") could
+land later by editing only `color.*` and `typography.family.hand`. The
+engine applies an SVG turbulence + displacement filter at the palette
+root, so every edge — borders, glyph outlines, focus rings, shadow
+strokes — picks up the same micro-jitter without per-component code.
+
+| #  | Palette                 | Engine     | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
+| 31 | Hand-drawn (Marker)     | Sketch     | experimental | Notebook-paper field, ink-blue body, red-marker accent, every edge displaced by a root-level SVG filter — marker-feel typography (Caveat / Patrick Hand). |
+
 ---
 
 ## Notes on a11y tags
@@ -140,7 +156,7 @@ slot is `'0'` (no anti-aliased corners).
 
 ## Engine inventory
 
-Nine engines, thirty palettes:
+Ten engines, thirty-one palettes:
 
 1. Flat
 2. Material
@@ -151,9 +167,11 @@ Nine engines, thirty palettes:
 7. Skeuomorphism
 8. CRT / Phosphor
 9. Pixel-art
+10. Sketch
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, and 21–22. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
-reused by palettes 25–30. The token contract is the only seam between
-engine and palette — see `tokens/00-token-contract.md`.
+reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
+The token contract is the only seam between engine and palette — see
+`tokens/00-token-contract.md`.

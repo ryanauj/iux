@@ -74,13 +74,16 @@ export function paletteToCssVars(
     vars[`--elevation-${k}`] = tokens.elevation[k].boxShadow
   }
 
-  const fams = ['ui', 'display', 'mono', 'pixel'] as const
+  const fams = ['ui', 'display', 'mono', 'pixel', 'hand'] as const
   for (const k of fams) {
     vars[`--font-family-${k}`] = tokens.typography.family[k]
   }
   // Brief explicitly names --font-pixel as the family slot the Pixel-art
   // engine routes through; keep it as a stable alias for the family token.
   vars['--font-pixel'] = tokens.typography.family.pixel
+  // Brief explicitly names --font-hand as the family slot the Sketch
+  // engine routes through; same alias pattern.
+  vars['--font-hand'] = tokens.typography.family.hand
 
   const roles = ['display', 'title', 'heading', 'subheading', 'body', 'label', 'caption', 'code'] as const
   for (const r of roles) {
@@ -126,6 +129,12 @@ export function paletteToCssVars(
   // reads `--pixel-grid` does nothing when the value is a zero length, so
   // there's no per-palette branching needed for the snap behavior.
   vars['--pixel-grid'] = tokens.effect.pixelGrid
+
+  // Sketch engine stroke variance. `'0'` on every other palette — the engine
+  // CSS that references `--stroke-variance` (via the fixed-strength SVG
+  // filter at the palette root) does nothing when the value is a zero length,
+  // so there's no per-palette branching needed for the wobble behavior.
+  vars['--stroke-variance'] = tokens.effect.strokeVariance
 
   return vars
 }

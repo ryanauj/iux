@@ -124,6 +124,7 @@ export const palette: Palette = {
         display: '"VT323", "IBM Plex Mono", "Share Tech Mono", "JetBrains Mono", ui-monospace, monospace',
         mono: '"VT323", "IBM Plex Mono", "Share Tech Mono", "JetBrains Mono", ui-monospace, monospace',
         pixel: '"VT323", "IBM Plex Mono", "Share Tech Mono", "JetBrains Mono", ui-monospace, monospace',
+        hand: '"VT323", "IBM Plex Mono", "Share Tech Mono", "JetBrains Mono", ui-monospace, monospace',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',   weight: 400, lineHeight: '1.1', tracking: '0.04em', textTransform: 'uppercase' },
@@ -174,6 +175,7 @@ export const palette: Palette = {
         intensity: 0.7,
       },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

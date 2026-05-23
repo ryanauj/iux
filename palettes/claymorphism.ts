@@ -81,6 +81,7 @@ export const palette: Palette = {
         display: '"Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         mono: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
         pixel: '"Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+        hand: '"Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.75rem', weight: 700, lineHeight: '1.15', tracking: '-0.01em' },
@@ -115,6 +116,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

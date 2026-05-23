@@ -3,8 +3,8 @@
 A showcase of UI components and UX flows along a **classic → cutting-edge**
 variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
-Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art) applied
-to any of them.
+Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art, Sketch)
+applied to any of them.
 
 **Live at:** <https://ryanauj.github.io/iux/>
 
@@ -176,4 +176,66 @@ Honored at the engine level (in `src/styles.css`'s existing
 duration collapses to `instant`, `--motion-decay` follows. The engine
 paints no decorative motion (no scanline drift, no sprite-style
 animation loop), so there is nothing additional to disable.
+
+## Sketch / Hand-drawn engine
+
+The Sketch engine (palette 27: Hand-drawn / Marker) is the second
+engine after Pixel-art that changes more than colour and typography —
+it changes how every edge in the document is rendered:
+
+- **Wobbly borders via SVG filter at root.** A single
+  `feTurbulence` + `feDisplacementMap` filter (defined in
+  `index.html` as `#iux-sketch-wobble`) is applied at
+  `.palette-root[data-palette^='sketch']` in `src/styles.css`. Every
+  border, glyph outline, focus ring, and shadow stroke under the
+  palette picks up the same micro-jitter, so neighbouring controls
+  read as drawn by the same hand. We chose the SVG-filter route over
+  a rough.js-style per-component renderer because the filter stays
+  inside the engine seam — no component changes required. The
+  trade-off (`filter` on the palette root creates a stacking context
+  for `position: fixed` children) is already handled by the
+  showcase's inline-overlay scoping.
+- **Slight color bleed on fills.** The same filter chain ends with a
+  small `feGaussianBlur` (stdDeviation ≈ 0.35) so every edge softens
+  by a half-pixel — the visual equivalent of marker ink seeping into
+  paper fibre. `elevation.*` shadows are tinted toward ink-blue
+  rather than black so cast shadows read as "the page is lifted off
+  notebook paper."
+- **Bundled marker font.** `typography.family.hand` carries a
+  Caveat (display) / Patrick Hand (body) stack (both SIL OFL 1.1,
+  loaded via Google Fonts `@import` at the top of `src/styles.css`).
+  Every non-sketch palette aliases `family.hand` to its `ui` stack so
+  the slot stays defined without being load-bearing.
+- **Radius tokens are advisory.** The palette still sets `radius.sm`
+  / `radius.md` / `radius.lg`; the displacement pass recasts every
+  corner as a hand-drawn approximation. A `radius.md` of `'8px'`
+  reads more rounded than `radius.none`, but neither corner is
+  geometrically circular once the filter runs.
+
+### Components that thrive vs degrade
+
+`palettes/sketch-marker.README.md` carries the full list, but the
+short version:
+
+- **Thrive:** Card, Modal, Drawer, Toast (raised surfaces — the
+  heavier-wobble filter sells the "drawn frame on paper" effect),
+  Button, Toggle, Checkbox, Stepper, Sidebar, Tabs, Segmented,
+  Pagination, EmptyState, Tooltip. Anything that paints a border or
+  reads text through `role.*` lands cleanly under the wobble.
+- **Degrade (by design):** Table with dense rows (adjacent borders
+  read as merged), DiffView with character-level highlight
+  (sub-character jitter), VirtualList (repaint cost per scroll),
+  BezierEditor, SpatialCanvas, Slider with continuous fractional
+  positioning. These are not bugs to fix — the contrast is the point
+  of shipping the palette.
+
+### `prefers-reduced-motion`
+
+Honored at the engine level the same way every other palette is: the
+existing reduced-motion block collapses every duration to `instant`.
+The Sketch engine paints **no decorative motion** — the displacement
+field is static (no scanline drift, no glow pulse), so there is
+nothing additional to disable. Users with reduced-motion preferences
+see the same drawn-edge aesthetic, just with state transitions that
+fire instantly.
 

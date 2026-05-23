@@ -111,6 +111,7 @@ export const palette: Palette = {
         display: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         mono: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
         pixel: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+        hand: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',  weight: 700, lineHeight: '1.1', tracking: '-0.02em' },
@@ -145,6 +146,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

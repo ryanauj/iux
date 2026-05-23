@@ -140,6 +140,7 @@ export const palette: Palette = {
         display: '"Press Start 2P", "VT323", ui-monospace, monospace',
         mono: '"Press Start 2P", "VT323", ui-monospace, monospace',
         pixel: '"Press Start 2P", "VT323", ui-monospace, monospace',
+        hand: '"Press Start 2P", "VT323", ui-monospace, monospace',
       },
       role: {
         display:    { family: 'pixel', size: '2rem',   weight: 400, lineHeight: '1.5', tracking: '0' },
@@ -175,6 +176,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '8px',
+      strokeVariance: '0',
     },
   },
 }

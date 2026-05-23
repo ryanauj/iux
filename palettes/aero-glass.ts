@@ -85,6 +85,7 @@ export const palette: Palette = {
         display: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
         mono: 'Consolas, "Lucida Console", "JetBrains Mono", ui-monospace, monospace',
         pixel: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
+        hand: '"Segoe UI", "Segoe UI Variable", Tahoma, Verdana, sans-serif',
       },
       role: {
         display:    { family: 'display', size: '2.5rem',  weight: 300, lineHeight: '1.15', tracking: '-0.005em' },
@@ -119,6 +120,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
+      strokeVariance: '0',
     },
   },
 }

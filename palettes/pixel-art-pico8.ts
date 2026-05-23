@@ -142,6 +142,7 @@ export const palette: Palette = {
         display: '"Press Start 2P", "VT323", ui-monospace, monospace',
         mono: '"Press Start 2P", "VT323", ui-monospace, monospace',
         pixel: '"Press Start 2P", "VT323", ui-monospace, monospace',
+        hand: '"Press Start 2P", "VT323", ui-monospace, monospace',
       },
       // PICO-8's native font is 3×5 px — far smaller than Press Start
       // 2P at 8px. We compress the role ladder so the visual density
@@ -182,6 +183,7 @@ export const palette: Palette = {
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '8px',
+      strokeVariance: '0',
     },
   },
 }

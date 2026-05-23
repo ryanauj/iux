@@ -98,11 +98,12 @@ Glassmorphism's `low` may be a near-invisible 1px inset and rely on
 `backdropBlur` for the depth cue.
 
 ### `typography.*`
-- `family.ui` / `family.display` / `family.mono` / `family.pixel` —
-  four font stacks. The `pixel` slot exists for the Pixel-art engine to
-  route bitmap glyphs through every `role.*`; every non-pixel palette
-  aliases this to its `ui` stack so the slot stays defined without being
-  load-bearing for them.
+- `family.ui` / `family.display` / `family.mono` / `family.pixel` /
+  `family.hand` — five font stacks. The `pixel` slot exists for the
+  Pixel-art engine to route bitmap glyphs through every `role.*`; the
+  `hand` slot exists for the Sketch engine to route marker-feel glyphs
+  the same way. Every other palette aliases both to its `ui` stack so
+  the slots stay defined without being load-bearing for them.
 - `role.{display,title,heading,subheading,body,label,caption,code}` —
   composed text styles. Each role names a `TextStyle`:
   `{ family, size, weight, lineHeight, tracking, textTransform? }`.
@@ -162,6 +163,17 @@ Cross-cutting visual effects that some engines need.
   any composition lands on pixel boundaries. The slot exists for
   future grid-aware components (sprite editor, tile-map gallery) and
   for the engine-root CSS that sets `image-rendering: pixelated`.
+- `strokeVariance` — the **sketch wobble amount**, in CSS px. Only
+  the Sketch engine sets a non-`'0'` value (`'1.4px'`); every other
+  palette returns `'0'`, which the engine CSS treats as "no wobble" —
+  the rule is a no-op there. Components don't consume this directly.
+  The Sketch engine references a fixed-strength SVG turbulence +
+  displacement filter at the palette root (defined in `index.html`),
+  tuned to ≈ this value. Radius tokens are advisory under the Sketch
+  engine: stated radii pass through, but the displacement filter
+  recasts every corner as a hand-drawn approximation. The slot exists
+  for future components that paint custom SVG paths and want to scale
+  them to the engine's variance.
 
 ## Value-type conventions
 
@@ -192,6 +204,7 @@ Each engine differs in which token slots carry the weight:
 | Skeuomorphism   | `elevation.*` (real shadows), per-palette texture in `color.surface.*` (via CSS gradients) | `effect.backdropBlur` |
 | CRT / Phosphor  | `effect.overlay.*` (scanlines), `effect.glow.*` (bloom), `motion.decay` (trailing), single-color `color.intent.*` | `effect.backdropBlur`, `color.intent.*` differentiation |
 | Pixel-art       | `effect.pixelGrid` (8px snap), `typography.family.pixel` (bundled bitmap font), `radius.*` (all `'0'`), `motion.easing.*` (`steps(1)` on every slot), hard-offset `elevation.*` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay` |
+| Sketch          | `effect.strokeVariance` (root-level SVG displacement filter), `typography.family.hand` (bundled marker font), `color.border.*` (drawn rather than crisp), `color.intent.*.bg` (slight bleed halo via tuned `box-shadow`) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay`, `effect.pixelGrid` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.
