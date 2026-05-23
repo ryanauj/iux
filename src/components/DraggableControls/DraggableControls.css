@@ -247,7 +247,6 @@
 
 .ctrl-strip__popover {
   position: absolute;
-  top: 0;
   min-width: 14rem;
   max-height: 22rem;
   overflow-y: auto;
@@ -260,11 +259,23 @@
 }
 
 .ctrl-strip__popover--right {
+  top: 0;
   left: calc(100% + 6px);
 }
 
 .ctrl-strip__popover--left {
+  top: 0;
   right: calc(100% + 6px);
+}
+
+.ctrl-strip__popover--bottom {
+  top: calc(100% + 6px);
+  left: 0;
+}
+
+.ctrl-strip__popover--top {
+  bottom: calc(100% + 6px);
+  left: 0;
 }
 
 .ctrl-strip__popover-title {

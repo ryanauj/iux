@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import './DraggableControls.css'
 
 export type ControlsStyle = 'bar' | 'strip'
@@ -273,22 +273,28 @@ function BarVariant({ fields, summaries, open, setOpen, dragHandlers, variantSty
 }
 
 /* ===== Variation B: Edge Strip ===== */
+type PopoverSide = 'top' | 'right' | 'bottom' | 'left'
+
 function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
-  const [popoverSide, setPopoverSide] = useState<'left' | 'right'>('right')
+  const [popoverSide, setPopoverSide] = useState<PopoverSide>('right')
   const stripRef = useRef<HTMLDivElement>(null)
 
-  const toggleSlot = (key: string) => {
+  const toggleSlot = (key: string, e: ReactMouseEvent<HTMLButtonElement>) => {
     if (activeKey === key) {
       setActiveKey(null)
       return
     }
-    const rect = stripRef.current?.getBoundingClientRect()
-    if (rect) {
-      const spaceRight = window.innerWidth - rect.right
-      const spaceLeft = rect.left
-      setPopoverSide(spaceLeft > spaceRight ? 'left' : 'right')
+    const rect = e.currentTarget.getBoundingClientRect()
+    const spaces: Record<PopoverSide, number> = {
+      top: rect.top,
+      right: window.innerWidth - rect.right,
+      bottom: window.innerHeight - rect.bottom,
+      left: rect.left,
     }
+    const best = (Object.entries(spaces) as [PopoverSide, number][])
+      .reduce((a, b) => (b[1] > a[1] ? b : a))[0]
+    setPopoverSide(best)
     setActiveKey(key)
   }
 
@@ -334,7 +340,7 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                     className={`ctrl-strip__icon${isActive ? ' ctrl-strip__icon--active' : ''}`}
                     aria-label={`${f.label}: ${opt?.label ?? f.value}`}
                     aria-expanded={isActive}
-                    onClick={() => toggleSlot(f.key)}
+                    onClick={e => toggleSlot(f.key, e)}
                   >
                     <span className="ctrl-strip__icon-short" aria-hidden="true">{f.short}</span>
                     <span className="ctrl-strip__icon-val">{opt?.label ?? f.value}</span>
