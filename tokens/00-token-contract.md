@@ -209,6 +209,44 @@ Cross-cutting visual effects that some engines need.
   re-deriving it from the elevation shadow string. CSS vars emit as
   `--paper-edge-color` and `--paper-edge-width`, matching the short-
   name convention used by `--pixel-grid` and `--stroke-variance`.
+- `atmosphereGradient` — the **animated atmospheric gradient** for
+  the Aurora engine. Only Aurora sets a non-`'none'` value (a stacked
+  multi-radial-gradient of green / purple / teal luminance centers on
+  a deep midnight base); every other palette returns `'none'`, so the
+  engine root paints `background-image: none` there. Components don't
+  consume this directly. The Aurora engine block in `src/styles.css`
+  applies the gradient at `.palette-root[data-palette^='aurora']` and
+  slowly drifts `background-position` over a 48-second loop. Under
+  `prefers-reduced-motion` the animation freezes at an intentionally-
+  composed static position (the designed fallback, not "the moment
+  the animation stopped"). CSS var emits as `--effect-atmosphere-
+  gradient`.
+- `luminanceCenter` — the **per-surface luminance center** for the
+  Aurora engine. A translucent tint the engine paints as a soft outer
+  glow on raised surfaces so they read as brighter regions of the
+  same atmosphere rather than as bounded rectangles. Default = inherit
+  from parent, so nested surfaces pick up the same luminance unless
+  they override the var locally. Only Aurora sets a non-no-op value
+  (a translucent near-white); every other palette returns
+  `'transparent'`, so any engine CSS that references the var paints
+  nothing. Components don't consume this directly. CSS var emits as
+  `--luminance-center`.
+- `surfaceBy` — **how surfaces are demarcated.** `'border'` on every
+  palette except Aurora, which sets `'luminance'`. The slot is an
+  engine-only signal — components don't branch on it — but it records
+  intent: under `'border'` surfaces are bounded rectangles with a
+  visible stroke, under `'luminance'` surfaces read by light density
+  (brighter regions of the same atmosphere) and borders are
+  effectively transparent (set to very low-alpha values that recede
+  behind the luminance centers). The Aurora engine delivers the
+  luminance visual via the engine block in `src/styles.css`; the slot
+  exists as a first-class semantic token so future surface-aware
+  components (a custom `Separator` switching from a hairline rule to
+  a luminance gradient, an annotation layer needing to know whether
+  to draw a hard edge) can read the engine's intended surface model
+  directly. This is the most load-bearing surface-model signal in
+  the contract — a second atmospheric engine could plug into the
+  same slot. CSS var emits as `--surface-by`.
 
 ## Value-type conventions
 
@@ -242,6 +280,7 @@ Each engine differs in which token slots carry the weight:
 | Sketch          | `effect.strokeVariance` (root-level SVG displacement filter), `typography.family.hand` (bundled marker font), `color.border.*` (drawn rather than crisp), `color.intent.*.bg` (slight bleed halo via tuned `box-shadow`) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay`, `effect.pixelGrid` |
 | Cardstock       | `elevation.*` (paired inset cut-edge + tight zero-blur drop shadow per layer), `color.surface.*` (cream / pastel field), `effect.paperEdgeColor`, `effect.paperEdgeWidth` (engine-only signals, baked into elevation strings) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `motion.decay` |
 | Cel-shaded      | `effect.outline.color`, `effect.outline.width` (engine-painted `outline:` halo on interactive controls), `effect.shadowStyle = 'hard'` (engine-only signal), `elevation.*` (hard-offset block shadows for two-tone cel shading), `color.border.*` (all ink), `borderWidth.thick` (the outline width), saturated `color.intent.*`, heavy `typography.role.display` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `motion.decay` |
+| Aurora          | `effect.atmosphereGradient` (engine-painted animated `background-image` at the palette root), `effect.luminanceCenter` (engine-painted soft outer glow on raised surfaces), `effect.surfaceBy = 'luminance'` (engine-only signal), `effect.backdropBlur.lg` (engine-applied on every raised surface), `color.surface.*` (translucent fills), low-alpha `color.border.*`, `elevation.*` (luminance halo stacks) | `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `effect.outline`, `motion.decay` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

@@ -454,6 +454,70 @@ export interface EffectTokens {
    * engine's edge width.
    */
   paperEdgeWidth: CssLength
+  /**
+   * **Atmospheric gradient** for the Aurora engine — a CSS
+   * `background-image` value (stacked radial-gradients or a conic
+   * gradient) painted at the palette root and very slowly animated. The
+   * Aurora palette ships a multi-radial-gradient stack of green / purple /
+   * teal luminance centers on a deep midnight base; every other palette
+   * returns `'none'`, which is the natural no-op when the engine root
+   * applies it as a `background-image`.
+   *
+   * The gradient itself is decoration; the animation is motion. The
+   * Aurora engine block honors `prefers-reduced-motion` by freezing the
+   * drift animation and anchoring the gradient at an intentionally-
+   * composed static position — the static fallback is designed, not
+   * "the moment the animation stopped." Components don't read this
+   * directly; the engine paints it at the palette root.
+   *
+   * CSS var emits as `--effect-atmosphere-gradient`.
+   */
+  atmosphereGradient: CssBackgroundImage
+  /**
+   * **Per-surface luminance center** for the Aurora engine — a
+   * translucent tint that the engine paints as a soft radial glow on
+   * raised surfaces (cards, modal panels, drawer panels) so they read
+   * as brighter regions of the same atmosphere rather than as bounded
+   * rectangles. Default = inherit from parent, so nested surfaces pick
+   * up the same luminance unless they override the var locally.
+   *
+   * Only Aurora sets a non-no-op value (a translucent near-white that
+   * brightens the dark atmosphere underneath). Every other palette
+   * returns `'transparent'`, so any engine CSS that references
+   * `--luminance-center` paints nothing.
+   *
+   * Components don't consume this directly; the engine block in
+   * `src/styles.css` reads it at `.palette-root[data-palette^='aurora']`
+   * to paint a radial glow around raised surfaces and to intensify the
+   * luminance toward interactive elements on hover/focus.
+   *
+   * CSS var emits as `--luminance-center`.
+   */
+  luminanceCenter: CssColor
+  /**
+   * **How surfaces are demarcated.** `'border'` everywhere except Aurora,
+   * which sets `'luminance'`. The slot is an engine-only signal —
+   * components don't branch on it — but it records intent: under
+   * `'border'` surfaces are bounded rectangles with a visible stroke,
+   * under `'luminance'` surfaces read by light density (brighter regions
+   * of the same atmosphere) and borders are effectively transparent.
+   *
+   * The visual delivery happens through `color.border.*` (set to very
+   * low-alpha values under `'luminance'`) and the Aurora engine's own
+   * radial luminance glow on raised surfaces. The slot exists so future
+   * surface-aware components (a custom `Separator` that wants to switch
+   * from a hairline rule to a luminance gradient, an annotation layer
+   * that needs to know whether to draw a hard edge) can read the
+   * engine's intended surface model directly.
+   *
+   * This is the most load-bearing contract addition in the palette
+   * surface group — every palette must declare it, and Aurora is the
+   * only palette using `'luminance'` today. A second atmospheric engine
+   * could plug into the same slot later.
+   *
+   * CSS var emits as `--surface-by`.
+   */
+  surfaceBy: 'border' | 'luminance'
 }
 
 // -----------------------------------------------------------------------------
@@ -493,6 +557,7 @@ export type Engine =
   | 'sketch'
   | 'cardstock'
   | 'cel-shaded'
+  | 'aurora'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -608,6 +673,27 @@ export const TOKEN_SHAPE = {
      * multiplies / divides this collapses to a no-op.
      */
     paperEdgeWidth: null,
+    /**
+     * Primitive-string leaf: a CSS `background-image` value (`'none'`,
+     * a `radial-gradient(...)` stack, a `conic-gradient(...)`). `'none'`
+     * on every non-aurora palette — any engine CSS that references the
+     * gradient paints nothing.
+     */
+    atmosphereGradient: null,
+    /**
+     * Primitive-string leaf: a CSS color string (`'transparent'`,
+     * `'rgba(255, 255, 255, 0.06)'`). `'transparent'` on every non-aurora
+     * palette — any engine CSS that references the luminance center
+     * paints nothing.
+     */
+    luminanceCenter: null,
+    /**
+     * Primitive-string leaf: `'border' | 'luminance'`. `'border'` on
+     * every palette except Aurora, which sets `'luminance'`. The slot
+     * is an engine-only signal documenting whether surfaces are bounded
+     * by a hard stroke (`border`) or by light density (`luminance`).
+     */
+    surfaceBy: null,
   },
 } as const
 

@@ -215,6 +215,34 @@ through `elevation.*` as a zero-blur block shadow.
 | 38 | Cel-shaded (Shonen)     | Cel-shaded  | pass         | Cream paper, vibrant orange / blue / black triad, Archivo Black display, ink outline on every card edge and control, hard-offset block shadows. |
 | 39 | Cel-shaded (Shojo)      | Cel-shaded  | pass         | Cream-pink wash, pink / lavender / pastel-green set, Poppins round-humanist display, same ink outline + block-shadow engine, sentence-case display. |
 
+## Group M — atmospheric / luminance-surface (new engine)
+
+One palette anchors the new Aurora engine, which exercises three
+contract slots no previous engine touched — `effect.atmosphereGradient`,
+`effect.luminanceCenter`, and `effect.surfaceBy`. The engine paints a
+multi-radial-gradient stack of green / purple / teal luminance centers
+on a deep midnight base, very slowly drifting (`background-position`
+keyframes over a 48-second loop), and demarcates raised surfaces by
+LIGHT DENSITY rather than by borders — cards appear as brighter regions
+of the same atmosphere, type is high-luminance near-white with a slight
+chromatic tint that picks up the atmosphere, and interactive elements
+bend the luminance toward themselves on hover / focus. Under
+`prefers-reduced-motion` the drift freezes at an intentionally-composed
+static position — the still composition is designed, not "the moment
+the animation stopped." The contract is built so a second register
+(e.g. "Aurora / Sunrise" with warmer luminance centers, "Aurora / Deep
+Sea" with all-blue centers) could land later by editing only
+`color.*`, `effect.atmosphereGradient`, `effect.luminanceCenter`, and
+`effect.focusRing.color`.
+
+`surfaceBy` is the most load-bearing surface-model signal in the
+contract — every other palette declares `'border'` and Aurora is the
+only palette using `'luminance'` today.
+
+| #  | Palette                 | Engine     | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
+| 40 | Aurora                  | Aurora     | experimental | Deep midnight base, slowly drifting green / purple / teal atmospheric gradient, raised surfaces as luminance lifts rather than bordered rectangles, near-white type with cool chromatic tint, hover/focus intensifies the luminance halo. |
+
 ---
 
 ## Notes on a11y tags
@@ -233,7 +261,7 @@ through `elevation.*` as a zero-blur block shadow.
 
 ## Engine inventory
 
-Twelve engines, thirty-nine palettes:
+Thirteen engines, forty palettes:
 
 1. Flat
 2. Material
@@ -247,6 +275,7 @@ Twelve engines, thirty-nine palettes:
 10. Sketch
 11. Cardstock
 12. Cel-shaded
+13. Aurora
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
@@ -254,5 +283,6 @@ Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
 Engine `Cardstock` is anchored by palette 37. Engine `Cel-shaded` is
-reused by palettes 38 and 39. The token contract is the only seam
-between engine and palette — see `tokens/00-token-contract.md`.
+reused by palettes 38 and 39. Engine `Aurora` is anchored by palette
+40. The token contract is the only seam between engine and palette —
+see `tokens/00-token-contract.md`.

@@ -162,5 +162,37 @@ export function paletteToCssVars(
   // shading on top of `elevation.*`.
   vars['--shadow-style'] = tokens.effect.shadowStyle
 
+  // Aurora engine atmospheric gradient. `'none'` on every other palette
+  // — the engine CSS that paints the background image at the palette
+  // root resolves to `background-image: none`, so non-aurora palettes
+  // pay nothing. The Aurora palette ships a multi-radial-gradient stack
+  // of green / purple / teal luminance centers on a deep midnight base;
+  // the engine block at `.palette-root[data-palette^='aurora']` slowly
+  // drifts the gradient via `background-position` keyframes.
+  vars['--effect-atmosphere-gradient'] = tokens.effect.atmosphereGradient
+
+  // Aurora engine luminance center. `'transparent'` on every other
+  // palette — any engine CSS that references the var paints nothing.
+  // The Aurora palette sets a translucent near-white that the engine
+  // block paints as a soft radial glow around raised surfaces and
+  // intensifies on hover / focus so the luminance bends toward the
+  // interactive element. Because it's emitted as a regular custom
+  // property it inherits down the tree, so nested raised surfaces pick
+  // up the same luminance unless they override it locally — which is
+  // exactly the "per-surface; default = inherit from parent" contract.
+  vars['--luminance-center'] = tokens.effect.luminanceCenter
+
+  // Aurora engine surface-by signal. `'border'` on every palette except
+  // Aurora, which sets `'luminance'`. The slot is an engine-only signal
+  // — components don't branch on it — but it records intent: under
+  // `'border'` surfaces are bounded rectangles, under `'luminance'` they
+  // read by light density. The Aurora engine doesn't actually read this
+  // var in CSS today (the engine block is scoped via `data-palette`),
+  // but it's exposed so future surface-aware components (a Separator
+  // that switches from a hairline to a luminance gradient, an
+  // annotation layer that needs to know whether to draw a hard edge)
+  // can read the engine's intended surface model directly.
+  vars['--surface-by'] = tokens.effect.surfaceBy
+
   return vars
 }
