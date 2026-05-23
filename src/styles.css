@@ -136,6 +136,15 @@ body {
  */
 .stories {
   padding: var(--space-5);
+  /*
+   * On iPhones in landscape, the notch / Dynamic Island sits on one
+   * side of the viewport (we set `viewport-fit=cover` so env() returns
+   * real values rather than 0). Inset the inline padding by the safe
+   * area when it's larger than the baseline so content doesn't crowd
+   * the notch.
+   */
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -357,6 +366,8 @@ body {
 @media (max-width: 40rem) {
   .stories {
     padding: var(--space-3);
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
     gap: var(--space-4);
   }
 
