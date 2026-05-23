@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Thirty-six named aesthetics. Each is a concrete value-set bound to the
+Thirty-seven named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -181,6 +181,22 @@ atomic-age dot field at low alpha; the other two stay `'none'`).
 | 35 | Mid-century modern      | Flat   | pass         | Cream paper, walnut ink, mustard + teal accents, atomic-age dot pattern painted sparingly via the decoration token — Eames-feel restraint. |
 | 36 | Data-dense light        | Flat   | pass         | Near-white field, ink-slate body, desaturated semantic intents, sparkline-ready type scale — Tufte-influenced density without Bloomberg's mono register. |
 
+## Group K — cardstock layered (new engine)
+
+One palette anchors the new Cardstock engine, which exercises two
+contract slots — `effect.paperEdgeColor` and `effect.paperEdgeWidth` —
+that every other palette returns as no-ops (`'transparent'` / `'0'`).
+The engine delivers the "cut paper stack" register through `elevation.*`
+directly: each slot bakes a paired `inset -Npx -Npx 0` (the bottom/
+right cut-edge thickness) and a tight zero-blur drop shadow (the gap
+to the layer below). No glow, no diffuse shadows, no rim lighting —
+cards float above cards quietly. Type is a clean modern sans treated
+as ink on the paper.
+
+| #  | Palette                 | Engine     | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
+| 37 | Cardstock (Layered)     | Cardstock  | experimental | Cream paper field, sage / butter / dusty-rose / slate / cream pastel set, clean modern sans as ink, every raised surface a piece of cut cardstock with a 1px slate-ink rule along bottom/right and a tight close shadow to the layer below. |
+
 ---
 
 ## Notes on a11y tags
@@ -199,7 +215,7 @@ atomic-age dot field at low alpha; the other two stay `'none'`).
 
 ## Engine inventory
 
-Ten engines, thirty-six palettes:
+Eleven engines, thirty-seven palettes:
 
 1. Flat
 2. Material
@@ -211,11 +227,13 @@ Ten engines, thirty-six palettes:
 8. CRT / Phosphor
 9. Pixel-art
 10. Sketch
+11. Cardstock
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
-The token contract is the only seam between engine and palette — see
+Engine `Cardstock` is anchored by palette 37. The token contract is
+the only seam between engine and palette — see
 `tokens/00-token-contract.md`.

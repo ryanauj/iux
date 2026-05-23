@@ -221,6 +221,8 @@ export const palette: Palette = {
       // hand-drawn-aware components (a chart axis, an annotation layer)
       // can scale their own SVG paths to match.
       strokeVariance: '1.4px',
+      paperEdgeColor: 'transparent',
+      paperEdgeWidth: '0',
     },
   },
 }

@@ -297,6 +297,38 @@ body {
 }
 
 /*
+ * Cardstock engine. Scoped via `data-palette` so non-cardstock palettes
+ * are untouched, exactly the same shape as the CRT / Pixel-art / Sketch
+ * blocks above. The block is intentionally thin: the cardstock metaphor
+ * is delivered through the palette's own `elevation.*` tokens, which
+ * bake a paired stack of `inset -Npx -Npx 0` (the cut-edge thickness)
+ * and `0 Mpx 0` (the gap to the layer below). Components keep reading
+ * `--elevation-*` unchanged; the cardstock visual lands for free.
+ *
+ * The `--paper-edge-color` / `--paper-edge-width` vars exposed by the
+ * palette document the engine's intended cut-edge so future paper-aware
+ * components can read it directly without parsing the shadow string.
+ * On every non-cardstock palette those vars resolve to
+ * `transparent` / `0`, so any future rule that references them paints
+ * nothing — no per-palette branching needed.
+ *
+ * `prefers-reduced-motion` is honored by collapsing `--elevation-medium`
+ * and `--elevation-high` back to `--elevation-low`. The hover state on
+ * `iux-card--interactive` (which swaps `--iux-card-elevation` from
+ * `low` to `medium`) still fires under reduced motion, but the shadow
+ * values are now identical, so the visible "lift" disappears. No card
+ * lift animation — exactly what the engine brief asks for. The engine
+ * paints no other decorative motion, so the reduced-motion block above
+ * already covers the rest by flattening durations.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .palette-root[data-palette^='cardstock'] {
+    --elevation-medium: var(--elevation-low);
+    --elevation-high: var(--elevation-low);
+  }
+}
+
+/*
  * Stories scaffold — the only consumer of the components in this repo.
  * Sized via space tokens once a palette is mounted; outside any palette
  * we fall back to standard CSS keywords so the unstyled boot doesn't crash.

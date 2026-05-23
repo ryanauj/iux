@@ -165,6 +165,8 @@ export const palette: Palette = {
       },
       pixelGrid: '0',
       strokeVariance: '0',
+      paperEdgeColor: 'transparent',
+      paperEdgeWidth: '0',
     },
   },
 }

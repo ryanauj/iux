@@ -3,8 +3,8 @@
 A showcase of UI components and UX flows along a **classic → cutting-edge**
 variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
-Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art, Sketch)
-applied to any of them.
+Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art, Sketch,
+Cardstock) applied to any of them.
 
 **Live at:** <https://ryanauj.github.io/iux/>
 
@@ -238,4 +238,70 @@ field is static (no scanline drift, no glow pulse), so there is
 nothing additional to disable. Users with reduced-motion preferences
 see the same drawn-edge aesthetic, just with state transitions that
 fire instantly.
+
+## Cardstock engine
+
+The Cardstock engine (palette 37: Cardstock / Layered) is the
+gentlest of the engine-additions. Unlike Sketch / Pixel-art it doesn't
+change rendering assumptions; the cardstock metaphor is delivered
+through the existing `elevation.*` slot, layered with a new pair of
+engine-only signal tokens:
+
+- **Paired-shadow elevation.** Each `elevation.*` slot is a deliberate
+  stack: an `inset -Npx -Npx 0 rgba(slate, α)` cut-edge along the
+  bottom/right (the "thickness" of the cardstock), plus a `0 Mpx 0
+  rgba(slate, β)` zero-blur close drop shadow (the "gap" to the layer
+  below). No diffuse blooms, no glow, no rim lighting. Cards float
+  above cards quietly. The Cardstock palette tints shadows toward
+  slate ink rather than black so cast shadows don't crush the
+  paper-warm field.
+- **New engine-only tokens.** `effect.paperEdgeColor` /
+  `effect.paperEdgeWidth` exposed as `--paper-edge-color` /
+  `--paper-edge-width`. They document the same cut-edge value baked
+  into `elevation.*`, so future paper-aware components (a custom
+  `Divider` that draws a cut-edge between sections, a `PageBreak` that
+  fakes torn paper) can read the engine's intended edge directly. On
+  every non-cardstock palette they resolve to `'transparent'` / `'0'`,
+  making any future rule that references them a no-op.
+- **Type sits ON the paper.** `typography.family.ui` /
+  `family.display` route to `system-ui` — a clean modern sans treated
+  as ink. No hand-drawn font, no deboss / emboss. Role scale matches
+  Flat / Classic.
+- **`--radius` tokens behave naturally.** Cards can have round
+  corners, like cardstock cut with shears. `radius.sm` / `md` / `lg`
+  are on a real scale (4 / 8 / 14px); `pill` and `full` work the same
+  way they do under Flat.
+
+### Components that thrive vs degrade
+
+`palettes/cardstock-layered.README.md` carries the full list, but the
+short version:
+
+- **Thrive:** Card, Modal, Drawer, Toast (the load-bearing raised
+  surfaces — modal panels in particular read perfectly because the
+  `overlay` elevation slot has the heaviest inset and the longest
+  drop), Button, Toggle, Checkbox, Bento, Sidebar, Tabs, Segmented,
+  Pagination, Stepper, EmptyState, Tooltip. Anything that consumes
+  `--elevation-*` and reads text through `role.*` lands cleanly.
+- **Degrade (by design):** Table with dense rows (each row is a
+  cardstock layer; rendering 20 of them in a column reads as a
+  noisy striped pattern, not a stack of papers), DiffView with
+  character-level highlight (the inset cut-edge overlaps with the
+  highlight), VirtualList / long scrolling columns (same row-density
+  problem), SpatialCanvas, BezierEditor (the spatial register fights
+  the flat paper metaphor). These are not bugs to fix — the contrast
+  is the point of shipping the palette.
+
+### `prefers-reduced-motion`
+
+Honored at the engine level. The reduced-motion block in
+`src/styles.css` adds a Cardstock-specific override that collapses
+`--elevation-medium` and `--elevation-high` back to `--elevation-low`.
+The hover state on `iux-card--interactive` (which swaps
+`--iux-card-elevation` from `low` to `medium`) still fires, but the
+shadow values are now identical, so the visible "lift" disappears —
+no card lift animation under reduced motion. The engine paints no
+other decorative motion, so the standard duration-flattening already
+covers the rest. Users with reduced-motion preferences see the same
+layered-paper aesthetic, just without the hover-elevation cue.
 

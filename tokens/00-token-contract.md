@@ -174,6 +174,21 @@ Cross-cutting visual effects that some engines need.
   recasts every corner as a hand-drawn approximation. The slot exists
   for future components that paint custom SVG paths and want to scale
   them to the engine's variance.
+- `paperEdgeColor` / `paperEdgeWidth` — the **cardstock cut-edge**
+  recipe. Only the Cardstock engine sets non-no-op values
+  (`'rgba(45, 53, 67, 0.18)'` / `'1px'`); every other palette returns
+  `'transparent'` / `'0'`, so any rule that references the vars paints
+  nothing at zero width — the rule is a no-op there. Components don't
+  consume these directly. The Cardstock engine delivers its cut-edge
+  through `elevation.*` directly — each elevation slot bakes a paired
+  `inset -Npx -Npx 0 paperEdgeColor` (the cut-edge thickness) and
+  `0 Mpx 0 …` (the tight gap to the layer below). The slots exist as
+  engine-only signals so future paper-aware components (a custom
+  `Divider` drawing a cut-edge between sections, a `PageBreak` faking
+  torn paper) can read the engine's intended edge directly without
+  re-deriving it from the elevation shadow string. CSS vars emit as
+  `--paper-edge-color` and `--paper-edge-width`, matching the short-
+  name convention used by `--pixel-grid` and `--stroke-variance`.
 
 ## Value-type conventions
 
@@ -205,6 +220,7 @@ Each engine differs in which token slots carry the weight:
 | CRT / Phosphor  | `effect.overlay.*` (scanlines), `effect.glow.*` (bloom), `motion.decay` (trailing), single-color `color.intent.*` | `effect.backdropBlur`, `color.intent.*` differentiation |
 | Pixel-art       | `effect.pixelGrid` (8px snap), `typography.family.pixel` (bundled bitmap font), `radius.*` (all `'0'`), `motion.easing.*` (`steps(1)` on every slot), hard-offset `elevation.*` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay` |
 | Sketch          | `effect.strokeVariance` (root-level SVG displacement filter), `typography.family.hand` (bundled marker font), `color.border.*` (drawn rather than crisp), `color.intent.*.bg` (slight bleed halo via tuned `box-shadow`) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `motion.decay`, `effect.pixelGrid` |
+| Cardstock       | `elevation.*` (paired inset cut-edge + tight zero-blur drop shadow per layer), `color.surface.*` (cream / pastel field), `effect.paperEdgeColor`, `effect.paperEdgeWidth` (engine-only signals, baked into elevation strings) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `motion.decay` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

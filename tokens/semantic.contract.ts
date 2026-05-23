@@ -376,6 +376,37 @@ export interface EffectTokens {
    * no-op on non-sketch palettes.
    */
   strokeVariance: CssLength
+  /**
+   * The **cut-edge color** for the Cardstock engine — a slightly darker
+   * tint painted along the bottom/right of every raised surface to read
+   * as the thickness of a piece of cut cardstock. The Cardstock palette
+   * sets this to a low-alpha ink tint (`rgba(45, 53, 67, 0.18)` or so);
+   * every other palette returns `'transparent'`, so any engine CSS that
+   * references the var paints nothing.
+   *
+   * Components don't read this directly. The Cardstock engine bakes
+   * the same value into its `elevation.*` shadow strings (because the
+   * inset cut-edge is geometrically inseparable from the rest of the
+   * shadow stack), and exposes the slot here so future paper-aware
+   * components (a custom `Divider` that wants to draw a cut-edge between
+   * sections, a `PageBreak` that fakes torn paper) can read the engine's
+   * intended edge color directly. Any rule that references the var
+   * collapses to a no-op on non-cardstock palettes — `transparent` makes
+   * the rule paint nothing.
+   */
+  paperEdgeColor: CssColor
+  /**
+   * The **cut-edge thickness** for the Cardstock engine — a CSS length
+   * matching the inset darker rule width baked into `elevation.*`. The
+   * Cardstock palette sets this to `'1px'` or `'2px'`; every other
+   * palette returns `'0'`, so any engine CSS that multiplies / divides
+   * this collapses to a no-op.
+   *
+   * Components don't read this directly; the slot exists so future
+   * paper-aware components can scale their own cut-edge effect to the
+   * engine's edge width.
+   */
+  paperEdgeWidth: CssLength
 }
 
 // -----------------------------------------------------------------------------
@@ -413,6 +444,7 @@ export type Engine =
   | 'crt-phosphor'
   | 'pixel-art'
   | 'sketch'
+  | 'cardstock'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -502,6 +534,19 @@ export const TOKEN_SHAPE = {
      * variance does nothing when the value is a zero length.
      */
     strokeVariance: null,
+    /**
+     * Primitive-string leaf: a CSS color string (`'transparent'`,
+     * `'rgba(45,53,67,0.18)'`). `'transparent'` on every non-cardstock
+     * palette — any engine CSS that references the cut-edge color paints
+     * nothing.
+     */
+    paperEdgeColor: null,
+    /**
+     * Primitive-string leaf: a CSS length (`'0'`, `'1px'`, `'2px'`).
+     * `'0'` on every non-cardstock palette — any engine CSS that
+     * multiplies / divides this collapses to a no-op.
+     */
+    paperEdgeWidth: null,
   },
 } as const
 
