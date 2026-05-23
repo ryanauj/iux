@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import './DraggableControls.css'
 
-export type ControlsStyle = 'bar' | 'strip'
+export type ControlsStyle = 'button' | 'strip'
 
 export type Field = {
   key: string
@@ -24,7 +24,7 @@ const POS_KEY = (s: ControlsStyle) => `iux-controls-pos-${s}`
 const OPEN_KEY = (s: ControlsStyle) => `iux-controls-open-${s}`
 
 const DEFAULTS: Record<ControlsStyle, Position> = {
-  bar: { x: 16, y: 16 },
+  button: { x: 24, y: 24 },
   strip: { x: 16, y: 96 },
 }
 
@@ -55,13 +55,27 @@ function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
 }
 
 const STYLE_OPTIONS: { value: ControlsStyle; label: string }[] = [
-  { value: 'bar', label: 'Bar' },
+  { value: 'button', label: 'Button' },
   { value: 'strip', label: 'Strip' },
 ]
 
+type VerticalDir = 'up' | 'down'
+type HorizontalDir = 'left' | 'right'
+type Quadrant = `${VerticalDir}-${HorizontalDir}`
+
+function pickQuadrant(rect: DOMRect): Quadrant {
+  const spaceBelow = window.innerHeight - rect.bottom
+  const spaceAbove = rect.top
+  const spaceRight = window.innerWidth - rect.right
+  const spaceLeft = rect.left
+  const v: VerticalDir = spaceBelow >= spaceAbove ? 'down' : 'up'
+  const h: HorizontalDir = spaceRight >= spaceLeft ? 'right' : 'left'
+  return `${v}-${h}`
+}
+
 export function DraggableControls({ style, onStyleChange, fields }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
-  const [open, setOpen] = useState<boolean>(() => loadOpen(style, true))
+  const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'button'))
   const containerRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{
     sx: number; sy: number; ox: number; oy: number; pointerId: number; el: Element
@@ -69,7 +83,7 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
 
   useEffect(() => {
     setPos(loadPos(style))
-    setOpen(loadOpen(style, true))
+    setOpen(loadOpen(style, style !== 'button'))
   }, [style])
 
   useEffect(() => {
@@ -163,8 +177,8 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
       role="region"
       aria-label="Demo controls"
     >
-      {style === 'bar' && (
-        <BarVariant
+      {style === 'button' && (
+        <ButtonVariant
           fields={fields}
           summaries={summaries}
           open={open}
@@ -223,82 +237,110 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
   )
 }
 
-/* ===== Variation A: Compact Bar ===== */
-function BarVariant({ fields, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
-  if (!open) {
-    return (
-      <div className="ctrl-bar ctrl-bar--collapsed">
-        <button
-          type="button"
-          className="ctrl-bar__grip"
-          aria-label="Drag controls"
-          {...dragHandlers}
-        >
-          <span className="ctrl-bar__grip-dots" aria-hidden="true">⋮⋮</span>
-        </button>
-        <button
-          type="button"
-          className="ctrl-bar__chip"
-          onClick={() => setOpen(true)}
-          aria-label={`Expand controls. Current: ${summaries.join(', ')}`}
-        >
-          {summaries.map((s, i) => (
-            <span key={fields[i].key} className="ctrl-bar__chip-item">
-              {i > 0 && <span className="ctrl-bar__chip-sep" aria-hidden="true">·</span>}
-              <span className="ctrl-bar__chip-val">{s}</span>
-            </span>
-          ))}
-        </button>
-      </div>
-    )
+/* ===== Variation A: Floating Button ===== */
+function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
+  const panelRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
+
+  const recomputeQuadrant = () => {
+    const el = triggerRef.current
+    if (!el) return
+    setQuadrant(pickQuadrant(el.getBoundingClientRect()))
   }
+
+  useEffect(() => {
+    if (!open) return
+    recomputeQuadrant()
+    window.addEventListener('resize', recomputeQuadrant)
+    window.addEventListener('orientationchange', recomputeQuadrant)
+    return () => {
+      window.removeEventListener('resize', recomputeQuadrant)
+      window.removeEventListener('orientationchange', recomputeQuadrant)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const onDocPointer = (e: MouseEvent) => {
+      const t = e.target as Node
+      if (
+        panelRef.current && !panelRef.current.contains(t) &&
+        triggerRef.current && !triggerRef.current.contains(t)
+      ) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onDocPointer)
+    return () => document.removeEventListener('mousedown', onDocPointer)
+  }, [open, setOpen])
+
+  const handleClick = () => {
+    if (!open) recomputeQuadrant()
+    setOpen(!open)
+  }
+
   return (
-    <div className="ctrl-bar ctrl-bar--open">
+    <div className="ctrl-button">
       <button
+        ref={triggerRef}
         type="button"
-        className="ctrl-bar__grip"
-        aria-label="Drag controls"
+        className={`ctrl-button__fab${open ? ' ctrl-button__fab--open' : ''}`}
+        aria-label={open ? 'Close controls. Drag to move.' : `Open controls. Current: ${summaries.join(', ')}. Drag to move.`}
+        aria-expanded={open}
+        onClick={handleClick}
         {...dragHandlers}
       >
-        <span className="ctrl-bar__grip-dots" aria-hidden="true">⋮⋮</span>
+        <span className="ctrl-button__fab-icon" aria-hidden="true">{open ? '×' : '◉'}</span>
       </button>
-      <div className="ctrl-bar__fields">
-        {fields.map(f => (
-          <label key={f.key} className="ctrl-bar__field">
-            <span className="ctrl-bar__field-label">{f.label}</span>
-            <select
-              className="ctrl-bar__select"
-              value={f.value}
-              onChange={e => f.onChange(e.target.value)}
-            >
-              {f.options.map(o => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          </label>
-        ))}
-      </div>
-      <div className="ctrl-bar__tail">
-        <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
-        <button
-          type="button"
-          className="ctrl-bar__close"
-          aria-label="Collapse controls"
-          onClick={() => setOpen(false)}
+      {open && (
+        <div
+          ref={panelRef}
+          className={`ctrl-button__panel ctrl-button__panel--${quadrant}`}
+          role="group"
+          aria-label="Demo controls"
         >
-          ×
-        </button>
-      </div>
+          <div className="ctrl-button__grid">
+            {fields.map(f => (
+              <label key={f.key} className="ctrl-button__tile">
+                <span className="ctrl-button__tile-label">{f.label}</span>
+                <select
+                  className="ctrl-button__select"
+                  value={f.value}
+                  onChange={e => f.onChange(e.target.value)}
+                >
+                  {f.options.map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+          <div className="ctrl-button__footer">
+            <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 /* ===== Variation B: Edge Strip ===== */
-type PopoverSide = 'top' | 'right' | 'bottom' | 'left'
+type StripQuadrant = `${HorizontalDir}-${VerticalDir}`
+
+function pickStripQuadrant(rect: DOMRect): StripQuadrant {
+  const spaceRight = window.innerWidth - rect.right
+  const spaceLeft = rect.left
+  const spaceDown = window.innerHeight - rect.top
+  const spaceUp = rect.bottom
+  const h: HorizontalDir = spaceRight >= spaceLeft ? 'right' : 'left'
+  const v: VerticalDir = spaceDown >= spaceUp ? 'down' : 'up'
+  return `${h}-${v}`
+}
 
 function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
-  const [popoverSide, setPopoverSide] = useState<PopoverSide>('right')
+  const [popoverQuadrant, setPopoverQuadrant] = useState<StripQuadrant>('right-down')
   const stripRef = useRef<HTMLDivElement>(null)
 
   const toggleSlot = (key: string, e: ReactMouseEvent<HTMLButtonElement>) => {
@@ -306,16 +348,7 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
       setActiveKey(null)
       return
     }
-    const rect = e.currentTarget.getBoundingClientRect()
-    const spaces: Record<PopoverSide, number> = {
-      top: rect.top,
-      right: window.innerWidth - rect.right,
-      bottom: window.innerHeight - rect.bottom,
-      left: rect.left,
-    }
-    const best = (Object.entries(spaces) as [PopoverSide, number][])
-      .reduce((a, b) => (b[1] > a[1] ? b : a))[0]
-    setPopoverSide(best)
+    setPopoverQuadrant(pickStripQuadrant(e.currentTarget.getBoundingClientRect()))
     setActiveKey(key)
   }
 
@@ -368,7 +401,7 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                   </button>
                   {isActive && (
                     <div
-                      className={`ctrl-strip__popover ctrl-strip__popover--${popoverSide}`}
+                      className={`ctrl-strip__popover ctrl-strip__popover--${popoverQuadrant}`}
                       role="menu"
                       aria-label={f.label}
                     >

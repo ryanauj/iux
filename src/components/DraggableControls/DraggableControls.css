@@ -1,8 +1,10 @@
 /*
- * DraggableControls — three floating, draggable, sticky, collapsible
- * variations. All three use position: fixed so they stay in view as the
+ * DraggableControls — floating, draggable, sticky, collapsible
+ * variants. Both variants use position: fixed so they stay in view as the
  * page scrolls. Drag handles set pointer capture so cursor tracking is
- * smooth across iframes / other elements.
+ * smooth across iframes / other elements. When opened, the menu chooses
+ * which corner (up/down × left/right) to expand toward based on which
+ * direction has the most open space.
  */
 
 .ctrl {
@@ -15,135 +17,118 @@
   -webkit-user-select: none;
 }
 
-/* ===== Variation A: Compact Bar ===== */
+/* ===== Variation A: Floating Button ===== */
 
-.ctrl-bar {
-  display: inline-flex;
-  align-items: stretch;
-  background: var(--color-surface-raised, Canvas);
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  border-radius: var(--radius-full, 999px);
-  box-shadow: var(--elevation-overlay, none);
-  overflow: hidden;
-  max-width: calc(100vw - 32px);
+.ctrl-button {
+  display: inline-block;
+  position: relative;
 }
 
-.ctrl-bar__grip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--space-2, 0.5rem);
-  background: var(--color-surface-sunken, Canvas);
-  border: none;
-  border-right: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-  color: var(--color-content-muted, GrayText);
-  cursor: grab;
-  touch-action: none;
-  font: inherit;
-  font-size: var(--type-caption-size, 0.75rem);
-}
-
-.ctrl-bar__grip:active {
-  cursor: grabbing;
-}
-
-.ctrl-bar__grip-dots {
-  letter-spacing: -0.15em;
-  font-weight: bold;
-}
-
-.ctrl-bar--collapsed .ctrl-bar__chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1, 0.25rem);
-  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
-  background: transparent;
-  border: none;
-  color: inherit;
-  font: inherit;
-  font-size: var(--type-caption-size, 0.75rem);
-  font-weight: var(--type-label-weight, 500);
-  cursor: pointer;
-  max-width: 38rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.ctrl-bar__chip-item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1, 0.25rem);
-}
-
-.ctrl-bar__chip-sep {
-  color: var(--color-content-muted, GrayText);
-  opacity: 0.5;
-}
-
-.ctrl-bar__chip-val {
-  color: var(--color-content-primary, CanvasText);
-}
-
-.ctrl-bar--open .ctrl-bar__fields {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2, 0.5rem);
-  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
-  flex-wrap: wrap;
-  max-width: 50rem;
-}
-
-.ctrl-bar__field {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 7rem;
-}
-
-.ctrl-bar__field-label {
-  font-size: var(--type-caption-size, 0.7rem);
-  color: var(--color-content-muted, GrayText);
-  text-transform: var(--type-label-text-transform, none);
-  letter-spacing: var(--type-label-tracking, 0);
-}
-
-.ctrl-bar__select {
-  font: inherit;
-  font-size: var(--type-caption-size, 0.75rem);
-  padding: 4px 6px;
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  background: var(--color-surface-base, Canvas);
-  color: var(--color-content-primary, CanvasText);
-  border-radius: var(--radius-sm, 4px);
-  cursor: pointer;
-  max-width: 12rem;
-}
-
-.ctrl-bar__tail {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2, 0.5rem);
-  padding: var(--space-2, 0.5rem);
-  border-left: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-  background: var(--color-surface-sunken, Canvas);
-}
-
-.ctrl-bar__close {
-  width: 1.5rem;
-  height: 1.5rem;
+.ctrl-button__fab {
+  width: 3rem;
+  height: 3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
   background: var(--color-surface-raised, Canvas);
-  color: var(--color-content-secondary, GrayText);
+  color: var(--color-content-primary, CanvasText);
   border-radius: var(--radius-full, 999px);
-  cursor: pointer;
+  box-shadow: var(--elevation-overlay, none);
+  cursor: grab;
+  touch-action: none;
   font: inherit;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.ctrl-button__fab:active {
+  cursor: grabbing;
+}
+
+.ctrl-button__fab--open {
+  background: var(--color-accent-base, var(--color-content-primary, CanvasText));
+  color: var(--color-on-accent, var(--color-surface-base, Canvas));
+}
+
+.ctrl-button__fab-icon {
+  display: inline-block;
+}
+
+.ctrl-button__panel {
+  position: absolute;
+  background: var(--color-surface-raised, Canvas);
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: var(--elevation-overlay, none);
+  padding: var(--space-3, 0.75rem);
+  min-width: 22rem;
+  max-width: calc(100vw - 32px);
+  z-index: 1;
+}
+
+.ctrl-button__panel--down-right {
+  top: calc(100% + 0.5rem);
+  left: 0;
+}
+
+.ctrl-button__panel--down-left {
+  top: calc(100% + 0.5rem);
+  right: 0;
+}
+
+.ctrl-button__panel--up-right {
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+}
+
+.ctrl-button__panel--up-left {
+  bottom: calc(100% + 0.5rem);
+  right: 0;
+}
+
+.ctrl-button__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3, 0.75rem);
+}
+
+.ctrl-button__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ctrl-button__tile-label {
+  font-size: var(--type-caption-size, 0.7rem);
+  color: var(--color-content-muted, GrayText);
+  text-transform: var(--type-label-text-transform, none);
+  letter-spacing: var(--type-label-tracking, 0);
+}
+
+.ctrl-button__select {
+  font: inherit;
+  font-size: var(--type-caption-size, 0.8rem);
+  padding: 6px 8px;
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  background: var(--color-surface-base, Canvas);
+  color: var(--color-content-primary, CanvasText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  width: 100%;
+  min-width: 0;
+}
+
+.ctrl-button__footer {
+  margin-top: var(--space-3, 0.75rem);
+  padding-top: var(--space-2, 0.5rem);
+  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+  display: flex;
+  justify-content: center;
 }
 
 /* ===== Variation B: Edge Strip ===== */
@@ -258,24 +243,24 @@
   z-index: 10;
 }
 
-.ctrl-strip__popover--right {
+.ctrl-strip__popover--right-down {
   top: 0;
   left: calc(100% + 6px);
 }
 
-.ctrl-strip__popover--left {
+.ctrl-strip__popover--right-up {
+  bottom: 0;
+  left: calc(100% + 6px);
+}
+
+.ctrl-strip__popover--left-down {
   top: 0;
   right: calc(100% + 6px);
 }
 
-.ctrl-strip__popover--bottom {
-  top: calc(100% + 6px);
-  left: 0;
-}
-
-.ctrl-strip__popover--top {
-  bottom: calc(100% + 6px);
-  left: 0;
+.ctrl-strip__popover--left-up {
+  bottom: 0;
+  right: calc(100% + 6px);
 }
 
 .ctrl-strip__popover-title {
@@ -373,8 +358,8 @@
 /* ===== Mobile ===== */
 
 @media (max-width: 40rem) {
-  .ctrl-bar--open .ctrl-bar__fields {
-    max-width: calc(100vw - 8rem);
+  .ctrl-button__panel {
+    min-width: min(20rem, calc(100vw - 32px));
   }
   .ctrl-strip {
     width: 10rem;
