@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Thirty-three named aesthetics. Each is a concrete value-set bound to the
+Thirty-six named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -160,6 +160,27 @@ out of the engine.
 | 32 | Wikipedia / Institutional | Flat        | pass         | MediaWiki Vector skin in two-token form — serif display, sans body, `#3366cc` link blue, white paper, hairline `overlay` rule, zero marketing polish. |
 | 33 | Brutalist-elegant       | Neubrutalism  | pass         | Ivory / black / oxblood configuration of Neubrutalism — radius `0`, 4px borders, hard-offset block elevation kept verbatim; Bodoni / Didot on `display` does the elegance work. |
 
+## Group J — data-density / mid-century registers (same Flat engine)
+
+Three additional palettes prove the Flat engine carries distinct
+data-density and mid-century registers without engine changes. Palettes
+34 and 36 anchor the density extremes — Bloomberg-style single-phosphor
+on pure black and Tufte-style ink-on-near-white — and palette 35 sits
+between them as the quiet warm-paper register the Eames era taught
+how to draw. All three differ from Flat / Classic only in `color.*`,
+`space.*` (Bloomberg tightens, the other two stay default), `radius.*`,
+`elevation.*` (all three replace soft drop shadows with inset hairline
+frames), `typography.*` (Bloomberg goes full-mono; mid-century picks a
+humanist sans; data-dense scales the type *down* to sparkline-ready
+sizes), and `effect.overlay.image` (mid-century paints a sparse
+atomic-age dot field at low alpha; the other two stay `'none'`).
+
+| #  | Palette                 | Engine | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|--------|--------------|------------------------------------------------------------------------------------------------|
+| 34 | Bloomberg Terminal      | Flat   | experimental | Pure-black field, single-phosphor amber type, mono everywhere, green/red as DATA not decoration — information density as aesthetic. |
+| 35 | Mid-century modern      | Flat   | pass         | Cream paper, walnut ink, mustard + teal accents, atomic-age dot pattern painted sparingly via the decoration token — Eames-feel restraint. |
+| 36 | Data-dense light        | Flat   | pass         | Near-white field, ink-slate body, desaturated semantic intents, sparkline-ready type scale — Tufte-influenced density without Bloomberg's mono register. |
+
 ---
 
 ## Notes on a11y tags
@@ -178,7 +199,7 @@ out of the engine.
 
 ## Engine inventory
 
-Ten engines, thirty-three palettes:
+Ten engines, thirty-six palettes:
 
 1. Flat
 2. Material
@@ -191,8 +212,8 @@ Ten engines, thirty-three palettes:
 9. Pixel-art
 10. Sketch
 
-Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, and 32.
-Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
+Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
+34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.

@@ -31,6 +31,9 @@ import { palette as pixelArtHyperlight } from './pixel-art-hyperlight'
 import { palette as sketchMarker } from './sketch-marker'
 import { palette as wikipedia } from './wikipedia'
 import { palette as brutalistElegant } from './brutalist-elegant'
+import { palette as bloombergTerminal } from './bloomberg-terminal'
+import { palette as midCenturyModern } from './mid-century-modern'
+import { palette as dataDenseLight } from './data-dense-light'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -66,6 +69,9 @@ export const palettes = {
   'sketch-marker': sketchMarker,
   wikipedia,
   'brutalist-elegant': brutalistElegant,
+  'bloomberg-terminal': bloombergTerminal,
+  'mid-century-modern': midCenturyModern,
+  'data-dense-light': dataDenseLight,
 } as const
 
 export type PaletteId = keyof typeof palettes
