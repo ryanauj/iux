@@ -9,9 +9,11 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "validate:palettes": "tsx scripts/validate-palettes.ts",
+    "validate:descriptions": "tsx scripts/validate-descriptions.ts",
     "lint:tokens": "tsx scripts/lint-raw-values.ts",
     "test:gates": "tsx scripts/test-gates.ts",
-    "check": "npm run typecheck && npm run validate:palettes && npm run lint:tokens && npm run test:gates"
+    "gen:style-docs": "tsx scripts/generate-style-docs.ts",
+    "check": "npm run typecheck && npm run validate:palettes && npm run validate:descriptions && npm run lint:tokens && npm run test:gates"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -12,6 +12,7 @@ export function Stories() {
       navLinks={[
         { href: '#/viz', label: 'Visualizations →' },
         { href: '#/apps', label: 'Apps →' },
+        { href: '#/quiz', label: 'Quiz →' },
       ]}
       infoText={
         <>

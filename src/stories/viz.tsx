@@ -12,6 +12,7 @@ export function Viz() {
       navLinks={[
         { href: '#/', label: '← Components' },
         { href: '#/apps', label: 'Apps →' },
+        { href: '#/quiz', label: 'Quiz →' },
       ]}
       infoText={
         <>
