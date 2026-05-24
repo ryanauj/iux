@@ -7,6 +7,12 @@ export interface RunOptions {
   onStep?: (index: number, result: StepResult) => void
   /** Abort signal to cancel mid-run. */
   signal?: AbortSignal
+  /**
+   * Gate awaited after each step finishes, before advancing to the next.
+   * Lets callers drive step-by-step execution (e.g. wait for a "Next" click).
+   * Not awaited after the final step.
+   */
+  awaitContinue?: (index: number) => Promise<void>
 }
 
 const DEFAULT_TIMEOUT_MS = 2000
@@ -23,7 +29,7 @@ export async function runTest(
   root: HTMLElement,
   options: RunOptions = {},
 ): Promise<RunResult> {
-  const { stepDelayMs = 0, onStep, signal } = options
+  const { stepDelayMs = 0, onStep, signal, awaitContinue } = options
   const startedAt = Date.now()
   const results: StepResult[] = test.steps.map(step => ({ step, status: 'pending' }))
 
@@ -57,7 +63,10 @@ export async function runTest(
     }
     onStep?.(i, results[i])
 
-    if (stepDelayMs > 0) await sleep(stepDelayMs)
+    if (i < test.steps.length - 1) {
+      if (awaitContinue) await awaitContinue(i)
+      else if (stepDelayMs > 0) await sleep(stepDelayMs)
+    }
   }
 
   const passed = results.every(r => r.status === 'passed')

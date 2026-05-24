@@ -13,9 +13,13 @@ interface Props {
 export function RunnerViz({ results, runningId, runFor }: Props) {
   const [selectedId, setSelectedId] = useState<string>(INTEGRATION_TESTS[0].id)
   const [stepDelayMs, setStepDelayMs] = useState(300)
+  const [stepped, setStepped] = useState(false)
   const [live, setLive] = useState<StepResult[] | null>(null)
   const [mountKey, setMountKey] = useState(0)
+  const [pausedAt, setPausedAt] = useState<number | null>(null)
   const sandboxRef = useRef<HTMLDivElement>(null)
+  const continueResolverRef = useRef<(() => void) | null>(null)
+  const skipRestRef = useRef(false)
 
   const selected = INTEGRATION_TESTS.find(t => t.id === selectedId)!
 
@@ -23,18 +27,39 @@ export function RunnerViz({ results, runningId, runFor }: Props) {
     setSelectedId(id)
     setMountKey(k => k + 1)
     setLive(null)
+    setPausedAt(null)
+    skipRestRef.current = false
+    continueResolverRef.current = null
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
     if (!sandboxRef.current) return
     const test = INTEGRATION_TESTS.find(t => t.id === id)!
     const stream: StepResult[] = test.steps.map(s => ({ step: s, status: 'pending' as const }))
     setLive([...stream])
+    const runStepped = stepped
     await runFor(id, sandboxRef.current, {
-      stepDelayMs,
+      stepDelayMs: runStepped ? 0 : stepDelayMs,
       onStep: (i, r) => {
         stream[i] = r
         setLive([...stream])
       },
+      awaitContinue: runStepped
+        ? (i) =>
+            new Promise<void>(resolve => {
+              if (skipRestRef.current) {
+                resolve()
+                return
+              }
+              continueResolverRef.current = () => {
+                continueResolverRef.current = null
+                setPausedAt(null)
+                resolve()
+              }
+              setPausedAt(i)
+            })
+        : undefined,
     })
+    setPausedAt(null)
+    continueResolverRef.current = null
   }
 
   const handleRunAll = async () => {
@@ -42,6 +67,15 @@ export function RunnerViz({ results, runningId, runFor }: Props) {
       if (runningId) break
       await handleRun(t.id)
     }
+  }
+
+  const handleNextStep = () => {
+    continueResolverRef.current?.()
+  }
+
+  const handleRunToEnd = () => {
+    skipRestRef.current = true
+    continueResolverRef.current?.()
   }
 
   const stepsToShow: StepResult[] = live ?? (results[selectedId]?.steps ?? selected.steps.map(s => ({ step: s, status: 'pending' as const })))
@@ -53,19 +87,49 @@ export function RunnerViz({ results, runningId, runFor }: Props) {
           <button type="button" className="viz-btn viz-btn--primary" disabled={!!runningId} onClick={handleRunAll}>
             ▶ Run all
           </button>
-          <label className="viz-runner__delay">
-            delay
+          <label className="viz-runner__stepped">
             <input
-              type="range"
-              min={0}
-              max={1000}
-              step={50}
-              value={stepDelayMs}
-              onChange={e => setStepDelayMs(Number(e.target.value))}
+              type="checkbox"
+              checked={stepped}
+              onChange={e => setStepped(e.target.checked)}
               disabled={!!runningId}
             />
-            <span>{stepDelayMs}ms</span>
+            stepped
           </label>
+          {stepped ? (
+            <div className="viz-runner__step-controls">
+              <button
+                type="button"
+                className="viz-btn viz-btn--primary"
+                disabled={pausedAt === null}
+                onClick={handleNextStep}
+              >
+                Next ▸
+              </button>
+              <button
+                type="button"
+                className="viz-btn"
+                disabled={pausedAt === null}
+                onClick={handleRunToEnd}
+              >
+                Run to end
+              </button>
+            </div>
+          ) : (
+            <label className="viz-runner__delay">
+              delay
+              <input
+                type="range"
+                min={0}
+                max={1000}
+                step={50}
+                value={stepDelayMs}
+                onChange={e => setStepDelayMs(Number(e.target.value))}
+                disabled={!!runningId}
+              />
+              <span>{stepDelayMs}ms</span>
+            </label>
+          )}
         </div>
         <ul className="viz-runner__tests">
           {INTEGRATION_TESTS.map(t => {
@@ -110,19 +174,32 @@ export function RunnerViz({ results, runningId, runFor }: Props) {
       </section>
 
       <section className="viz-runner__steps">
-        <h4 className="viz-runner__steps-title">Steps</h4>
+        <h4 className="viz-runner__steps-title">
+          Steps
+          {pausedAt !== null && <span className="viz-runner__paused">paused</span>}
+        </h4>
         <ol>
-          {stepsToShow.map((sr, i) => (
-            <li key={i} className={`viz-step viz-step--${sr.status}`}>
-              <span className="viz-step__num">{i + 1}</span>
-              <span className="viz-step__kind">{sr.step.kind}</span>
-              <span className="viz-step__label">{sr.step.label ?? describeStep(sr.step, i)}</span>
-              {sr.ms !== undefined && sr.status !== 'pending' && (
-                <span className="viz-step__ms">{Math.round(sr.ms)}ms</span>
-              )}
-              {sr.error && <span className="viz-step__error">{sr.error}</span>}
-            </li>
-          ))}
+          {stepsToShow.map((sr, i) => {
+            const isNextUp = pausedAt !== null && i === pausedAt + 1
+            return (
+              <li
+                key={i}
+                className={[
+                  'viz-step',
+                  `viz-step--${sr.status}`,
+                  isNextUp && 'viz-step--next-up',
+                ].filter(Boolean).join(' ')}
+              >
+                <span className="viz-step__num">{i + 1}</span>
+                <span className="viz-step__kind">{sr.step.kind}</span>
+                <span className="viz-step__label">{sr.step.label ?? describeStep(sr.step, i)}</span>
+                {sr.ms !== undefined && sr.status !== 'pending' && (
+                  <span className="viz-step__ms">{Math.round(sr.ms)}ms</span>
+                )}
+                {sr.error && <span className="viz-step__error">{sr.error}</span>}
+              </li>
+            )
+          })}
         </ol>
       </section>
     </div>
