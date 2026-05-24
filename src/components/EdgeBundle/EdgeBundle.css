@@ -1,0 +1,57 @@
+/*
+ * EdgeBundle — Holten-style hierarchical edge bundling: leaves on a
+ * radial outer ring, edges between leaves routed through their
+ * least-common-ancestor path so the bundle ridges follow the tree
+ * structure. Three rungs: simple (no bundling, straight chords) →
+ * bundled (pulled toward LCA — β = 0.82) → directional (bundled,
+ * edges inherit the source leaf's intent so direction reads as color).
+ */
+
+.iux-bundle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-bundle__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-bundle__edge {
+  opacity: 0.5;
+  stroke-width: 1.2;
+}
+
+.iux-bundle__edge--primary { stroke: var(--color-intent-primary-bg); }
+.iux-bundle__edge--info    { stroke: var(--color-intent-info-bg); }
+.iux-bundle__edge--success { stroke: var(--color-intent-success-bg); }
+.iux-bundle__edge--warning { stroke: var(--color-intent-warning-bg); }
+.iux-bundle__edge--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-bundle__edge--neutral { stroke: var(--color-border-default); }
+
+.iux-bundle__leaf circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.25;
+}
+
+.iux-bundle__leaf--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-bundle__leaf--info    circle { fill: var(--color-intent-info-bg); }
+.iux-bundle__leaf--success circle { fill: var(--color-intent-success-bg); }
+.iux-bundle__leaf--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-bundle__leaf--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-bundle__leaf--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-bundle__label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}

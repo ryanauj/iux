@@ -1,0 +1,64 @@
+/*
+ * ChordDiagram — circular flow between segments. Three rungs:
+ * simple (uniform ribbon opacity) → weighted (ribbon opacity scales
+ * with link value) → highlighted (one or more ribbons accented, rest
+ * dimmed). Ribbon intent is inherited from the source segment.
+ */
+
+.iux-chord {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-chord__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-chord__arc path {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-chord__arc--primary path { fill: var(--color-intent-primary-bg); }
+.iux-chord__arc--info path    { fill: var(--color-intent-info-bg); }
+.iux-chord__arc--success path { fill: var(--color-intent-success-bg); }
+.iux-chord__arc--warning path { fill: var(--color-intent-warning-bg); }
+.iux-chord__arc--danger path  { fill: var(--color-intent-danger-bg); }
+.iux-chord__arc--neutral path { fill: var(--color-intent-neutral-bg); }
+
+.iux-chord__ribbon { stroke: none; }
+.iux-chord__ribbon--primary { fill: var(--color-intent-primary-bg); }
+.iux-chord__ribbon--info    { fill: var(--color-intent-info-bg); }
+.iux-chord__ribbon--success { fill: var(--color-intent-success-bg); }
+.iux-chord__ribbon--warning { fill: var(--color-intent-warning-bg); }
+.iux-chord__ribbon--danger  { fill: var(--color-intent-danger-bg); }
+.iux-chord__ribbon--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-chord--simple .iux-chord__ribbon { opacity: 0.45; }
+.iux-chord--weighted .iux-chord__ribbon--lv-1 { opacity: 0.18; }
+.iux-chord--weighted .iux-chord__ribbon--lv-2 { opacity: 0.32; }
+.iux-chord--weighted .iux-chord__ribbon--lv-3 { opacity: 0.5; }
+.iux-chord--weighted .iux-chord__ribbon--lv-4 { opacity: 0.7; }
+
+.iux-chord--highlighted .iux-chord__ribbon { opacity: 0.12; }
+.iux-chord--highlighted .iux-chord__ribbon--accent { opacity: 0.8; }
+
+.iux-chord__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

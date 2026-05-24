@@ -1,0 +1,54 @@
+/*
+ * Sunburst — hierarchy as concentric rings. Each child inherits its
+ * parent's intent and a lighter tint, so the radial drill is readable
+ * even when the labels won't fit. Three rungs: flat (innermost ring
+ * only — a part-of-whole donut by category) → nested (every level
+ * drawn, descendants tinted) → labeled (nested plus arc-following
+ * labels on slices wide enough to read).
+ */
+
+.iux-sun {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-sun__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-sun__slice {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-sun__slice--primary { fill: var(--color-intent-primary-bg); }
+.iux-sun__slice--info    { fill: var(--color-intent-info-bg); }
+.iux-sun__slice--success { fill: var(--color-intent-success-bg); }
+.iux-sun__slice--warning { fill: var(--color-intent-warning-bg); }
+.iux-sun__slice--danger  { fill: var(--color-intent-danger-bg); }
+.iux-sun__slice--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-sun__slice--lv-1 { opacity: 1; }
+.iux-sun__slice--lv-2 { opacity: 0.78; }
+.iux-sun__slice--lv-3 { opacity: 0.6; }
+.iux-sun__slice--lv-4 { opacity: 0.45; }
+
+.iux-sun__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

@@ -1,0 +1,72 @@
+/*
+ * HiveDiagram — every node sits on one of three radial axes, with
+ * `position` driving distance from the center. Edges are quadratic
+ * curves that bend *away* from the center so axes stay readable.
+ * Three rungs: simple (uniform edges) → weighted (stroke encodes
+ * value) → directed (weighted plus arrowheads). The hive plot was
+ * proposed as an antidote to "hairball" force layouts: every node
+ * has a deterministic place driven by its data attributes.
+ */
+
+.iux-hive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-hive__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-hive__axis line {
+  stroke-width: 1.5;
+}
+.iux-hive__axis--primary line { stroke: var(--color-intent-primary-bg); }
+.iux-hive__axis--info    line { stroke: var(--color-intent-info-bg); }
+.iux-hive__axis--success line { stroke: var(--color-intent-success-bg); }
+.iux-hive__axis--warning line { stroke: var(--color-intent-warning-bg); }
+.iux-hive__axis--danger  line { stroke: var(--color-intent-danger-bg); }
+.iux-hive__axis--neutral line { stroke: var(--color-intent-neutral-bg); }
+
+.iux-hive__axis-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+
+.iux-hive__arrow { fill: var(--color-border-strong); }
+
+.iux-hive__edge {
+  opacity: 0.55;
+  fill: none;
+}
+
+.iux-hive__edge--primary { stroke: var(--color-intent-primary-bg); }
+.iux-hive__edge--info    { stroke: var(--color-intent-info-bg); }
+.iux-hive__edge--success { stroke: var(--color-intent-success-bg); }
+.iux-hive__edge--warning { stroke: var(--color-intent-warning-bg); }
+.iux-hive__edge--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-hive__edge--neutral { stroke: var(--color-intent-neutral-bg); }
+
+.iux-hive__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.25;
+}
+
+.iux-hive__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-hive__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-hive__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-hive__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-hive__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-hive__node--neutral circle { fill: var(--color-intent-neutral-bg); }

@@ -1,0 +1,70 @@
+/*
+ * CircularNetwork — every node lives on a single ring, sorted by
+ * group so clusters land adjacent. Edges are quadratic curves bending
+ * toward the center so the path length encodes "distance around the
+ * ring." Three rungs: simple (uniform) → weighted (stroke encodes
+ * value, node radius encodes weight) → directed (arrowheads).
+ */
+
+.iux-circnet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-circnet__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-circnet__guide {
+  fill: none;
+  stroke: var(--color-border-subtle);
+  stroke-dasharray: 2 4;
+}
+
+.iux-circnet__arrow {
+  fill: var(--color-border-strong);
+}
+
+.iux-circnet__edge {
+  opacity: 0.55;
+  fill: none;
+}
+
+.iux-circnet__edge--primary { stroke: var(--color-intent-primary-bg); }
+.iux-circnet__edge--info    { stroke: var(--color-intent-info-bg); }
+.iux-circnet__edge--success { stroke: var(--color-intent-success-bg); }
+.iux-circnet__edge--warning { stroke: var(--color-intent-warning-bg); }
+.iux-circnet__edge--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-circnet__edge--neutral { stroke: var(--color-intent-neutral-bg); }
+
+.iux-circnet__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-circnet__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-circnet__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-circnet__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-circnet__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-circnet__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-circnet__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-circnet__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

@@ -134,13 +134,16 @@ Mirrors components: classic baseline / evolved / showcase.
   views (selection in one viz brushes others), "what changed"
   annotation layer, hand-drawn axis under the Sketch palette.
 
-This iteration ships twenty-two visualizations spanning all three tiers:
+This iteration ships thirty-two visualizations spanning all three tiers:
 
 - **Tier 1.** `Sparkline`, `LineChart`, `Bar`, `Histogram`, `Donut`,
   `Area`, `Lollipop`, `Waffle`, `Gauge`.
 - **Tier 2.** `Scatter`, `CalendarHeatmap`, `StackedArea`, `BoxPlot`,
-  `Treemap`, `Heatmap`, `Radar`, `Funnel`, `Waterfall`, `Hexbin`, `Violin`.
-- **Tier 3.** `Sankey`, `NodeLink`.
+  `Treemap`, `Heatmap`, `Radar`, `Funnel`, `Waterfall`, `Hexbin`,
+  `Violin`, `AdjacencyMatrix`, `ArcDiagram`, `Tree`, `Dendrogram`,
+  `Sunburst`, `CirclePack`.
+- **Tier 3.** `Sankey`, `NodeLink`, `ChordDiagram`, `CircularNetwork`,
+  `HiveDiagram`, `EdgeBundle`.
 
 Remaining declared entries (`SmallMultiples` primitive, `EncodingSwitcher`,
 `LinkedViews`, `AnnotationLayer`, hand-drawn-axis) are implemented in
@@ -668,6 +671,254 @@ multiples of histograms.
 **Palette fit.** **Best — Academic, Material, Aurora.** The
 shape-first encoding wants quiet engines. **Worst —
 Neubrutalism.** The thick black borders dominate the KDE curve.
+
+---
+
+## Graph & network visualizations (this iteration)
+
+Ten encodings that all answer "how are these things connected?" but
+disagree about which question matters most: *who clusters together?*,
+*who flows to whom?*, *where in the tree does this branch live?* The
+network row of the matrix is the same row for all of them; the column
+is what distinguishes them.
+
+### AdjacencyMatrix *(Tier 2)*
+**Purpose.** Network drawn as a matrix: rows and columns are nodes,
+cells are edges. Reads as a sortable table — every cell has a fixed
+home, so dense graphs that would be a hairball in node-link form
+stay legible.
+
+**Data shape.**
+```
+AdjacencyNode = { id, label, group? }
+AdjacencyEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `binary` — cell on/off; reads as a dependency map.
+2. `weighted` — cell tint scales with `value` on a single hue.
+3. `clustered` — rows pre-sorted by `group`, intra-cluster cells
+   tinted by group intent, inter-cluster cells neutral, cluster
+   bands flag the partition.
+
+**Pros & cons.** Sweet spot is 8–60 nodes — past the edge of a
+hairball, well before a treemap is needed. The cliff is asymmetric
+graphs at scale: row-and-column labels both wanting full names
+demand square space the page may not have.
+
+**Palette fit.** **Best — Data-dense, Bloomberg-terminal, Academic.**
+Grid-first engines reward the tabular reading. **Worst —
+Neumorphism, Glassmorphism.** Cell-to-cell contrast collapses.
+
+### ChordDiagram *(Tier 3)*
+**Purpose.** Circular flow between segments — every segment sits on
+the outer ring, every link is a ribbon arcing through the center.
+Reads as "how much of A's traffic goes where," not as a path.
+
+**Data shape.**
+```
+ChordNode = { id, label, intent? }
+ChordLink = { from, to, value, highlight? }
+```
+
+**Variant ladder.**
+1. `simple` — uniform ribbon opacity.
+2. `weighted` — ribbon opacity scales with link value.
+3. `highlighted` — most ribbons dimmed, accent ribbons opaque.
+
+**Pros & cons.** Best for 4–12 segments. Past ~16 the labels collide
+and the ribbons overlap themselves so densely that "compare two
+ribbons" becomes impossible — switch to a Sankey or an
+AdjacencyMatrix.
+
+**Palette fit.** **Best — Material, Bauhaus, Vaporwave.** Saturated
+ribbon fills against a luminous ring. **Worst — Newspaper, Editorial.**
+The flat fills want hue separation the engine doesn't supply.
+
+### ArcDiagram *(Tier 2)*
+**Purpose.** Nodes on a single line, edges as semicircular arcs
+above (or as S-curves between two parallel axes on `bipartite`). The
+linearisation is the value: it turns "who connects to whom" into a
+left-to-right reading.
+
+**Data shape.**
+```
+ArcNode = { id, label, group?, intent? }
+ArcEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `simple` — uniform arcs, nodes sorted by group.
+2. `weighted` — arc stroke encodes value.
+3. `bipartite` — two axes, edges cross between groups; reads as a
+   matching diagram (people ↔ projects).
+
+**Pros & cons.** Reads at 6–30 nodes. Past that the arcs overlap so
+densely that the axis is buried — switch to AdjacencyMatrix or
+EdgeBundle.
+
+**Palette fit.** **Best — Editorial, Mid-century, Swiss.** The line
+is the dominant element; quiet engines reward it. **Worst —
+Brutalist.** Heavy borders dominate the arcs.
+
+### CircularNetwork *(Tier 3)*
+**Purpose.** Every node on a single ring, sorted by group so
+clusters land adjacent; edges bend toward the center as quadratic
+curves. The ring length encodes "distance around the cluster."
+
+**Data shape.**
+```
+CircularNode = { id, label, group?, weight?, intent? }
+CircularEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `simple` — uniform edges.
+2. `weighted` — edge stroke encodes value, node radius encodes
+   `weight`.
+3. `directed` — weighted plus arrowheads.
+
+**Pros & cons.** Use for 8–24 nodes. Past ~30 the chord field gets
+dense enough to require bundling — switch to EdgeBundle.
+
+**Palette fit.** **Best — Memphis, Bauhaus, Material.** Bright group
+fills against the ring. **Worst — Glassmorphism.** Translucency
+collapses the chord layer.
+
+### Tree *(Tier 2)*
+**Purpose.** Strict parent-child hierarchy drawn with right-angle
+links — the org-chart / file-tree reading. The intent ladder cycles
+by depth so the layers are independently legible.
+
+**Data shape.** Recursive `TreeNode = { id, label, intent?, children? }`.
+
+**Variant ladder.**
+1. `vertical` — root at top, depth flows down. Default.
+2. `horizontal` — root at left, labels read along the spine
+   (file-tree mode).
+3. `compact` — smaller padding and node radius for dense trees.
+
+**Pros & cons.** Best up to ~50 nodes. Past that, switch to
+Dendrogram (which packs leaves on one axis) or CirclePack (which
+trades depth for area).
+
+**Palette fit.** **Best — Wikipedia, Academic, Material.** The
+right-angle links read as an explicit hierarchy. **Worst —
+CRT-phosphor.** The scanline overlay interferes with the line work.
+
+### Dendrogram *(Tier 2)*
+**Purpose.** Hierarchical clustering tree with right-angle bracket
+links. Distinct from `Tree` — this is the lab-notebook reading,
+where the *height* of each "ㅁ" bracket is meaningful.
+
+**Data shape.** Recursive `DendrogramNode = { id, label, distance?, intent?, children? }`.
+
+**Variant ladder.**
+1. `cluster` — horizontal, depth on x, leaves on the right.
+2. `radial` — root at center, leaves on the outer ring.
+3. `weighted` — bracket x position reflects merge distance, so the
+   bracket height *is* the distance between subtrees.
+
+**Pros & cons.** Best for 5–80 leaves. Past that, switch to a
+treemap or a CirclePack.
+
+**Palette fit.** **Best — Academic, Wikipedia, Editorial.** Quiet
+type-led engines reward the right-angle line work. **Worst —
+Neubrutalism, Memphis.** The bracket lines fight the engine pattern.
+
+### Sunburst *(Tier 2)*
+**Purpose.** Hierarchy as concentric rings. Each child inherits its
+parent's intent and a lighter tint — descendants read as a family
+even when the labels won't fit.
+
+**Data shape.** Recursive `SunburstNode = { id, label, value?, intent?, children? }`.
+
+**Variant ladder.**
+1. `flat` — innermost ring only, reads as a categorical donut.
+2. `nested` — every level drawn, descendants tinted lighter.
+3. `labeled` — `nested` plus arc-following labels on slices wide
+   enough to read.
+
+**Pros & cons.** Best up to 4 levels and ~40 leaves. Deeper trees
+collapse the outer rings to slivers; switch to CirclePack.
+
+**Palette fit.** **Best — Aurora, Memphis, Material.** Saturated
+intent fills against the luminous ring. **Worst — Brutalist,
+Newspaper.** The radial form fights the type-driven engine.
+
+### CirclePack *(Tier 2)*
+**Purpose.** Hierarchy as nested circles, packed with a deterministic
+front-chain algorithm. Area encodes value at every level; the tree
+shape is implicit in the containment.
+
+**Data shape.** Recursive `CirclePackNode = { id, label, value?, intent?, children? }`.
+
+**Variant ladder.**
+1. `flat` — only leaves filled, parent groups read as outlines.
+2. `nested` — every level filled, inner levels tint lighter.
+3. `labeled` — `nested` plus leaf labels for circles large enough.
+
+**Pros & cons.** Best when leaf values vary widely — the packing
+exaggerates the distribution. The cliff is dense, even-valued data,
+which packs into a chessboard of similar circles; switch to a
+Treemap.
+
+**Palette fit.** **Best — Memphis, Bauhaus, Material.** Saturated
+fills celebrate the shape. **Worst — Newspaper.** Mono ink can't
+separate adjacent circles without strokes.
+
+### HiveDiagram *(Tier 3)*
+**Purpose.** Hive plot — every node sits on one of three radial
+axes, with `position` driving distance from the center. Proposed as
+an antidote to "hairball" force layouts: every node has a
+deterministic place driven by its data attributes.
+
+**Data shape.**
+```
+HiveNode = { id, label, axis, position, intent? }
+HiveEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `simple` — uniform edges.
+2. `weighted` — edge stroke encodes value.
+3. `directed` — weighted plus arrowheads.
+
+**Pros & cons.** Reads at 10–80 nodes — well into the range where a
+force-directed layout would be a hairball. The cliff is data that
+doesn't have three natural axes; don't squeeze a four-axis dataset
+into a three-axis hive.
+
+**Palette fit.** **Best — Data-dense, Bloomberg-terminal,
+Cyberpunk.** Axis-led engines reward the explicit geometry.
+**Worst — Editorial.** Quiet engines underplay the radial scaffold.
+
+### EdgeBundle *(Tier 3)*
+**Purpose.** Holten-style hierarchical edge bundling: leaves on a
+radial outer ring, edges between leaves routed through their
+least-common-ancestor path so the bundle ridges follow the tree
+structure. Turns a hairball into a readable flow map.
+
+**Data shape.**
+```
+EdgeBundleNode (hierarchy) = { id, label, intent?, children? }
+EdgeBundleEdge = { from, to, value? }   // between leaves
+```
+
+**Variant ladder.**
+1. `simple` — raw chord lines; reads as a hairball.
+2. `bundled` — pulled toward LCA path (β ≈ 0.82); ridges form.
+3. `directional` — bundled, edges inherit the source leaf's intent
+   so direction reads as color.
+
+**Pros & cons.** Best for module-dependency graphs and similar
+flat-leaves-in-a-tree data. The hierarchy *must* be meaningful —
+bundling a flat ring of leaves does nothing, since LCA = root for
+every edge.
+
+**Palette fit.** **Best — Material, Tron, Aurora.** Glowing lines
+on a dark surface make the ridges sing. **Worst — Newspaper.**
+Single-ink engines can't differentiate the bundled flows.
 
 ---
 

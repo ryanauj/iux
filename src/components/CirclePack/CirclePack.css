@@ -1,0 +1,66 @@
+/*
+ * CirclePack — hierarchy as nested circles, packed with a deterministic
+ * front-chain algorithm. Three rungs: flat (only leaves filled, parent
+ * groups read as outlines) → nested (every level filled, inner levels
+ * tint lighter) → labeled (nested plus leaf labels for circles large
+ * enough to read).
+ */
+
+.iux-pack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-pack__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-pack__root {
+  stroke: var(--color-border-subtle);
+  stroke-dasharray: 2 4;
+}
+
+.iux-pack__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-pack__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-pack__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-pack__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-pack__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-pack__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-pack__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-pack__node--lv-1 circle { opacity: 1; }
+.iux-pack__node--lv-2 circle { opacity: 0.7; }
+.iux-pack__node--lv-3 circle { opacity: 0.55; }
+.iux-pack__node--lv-4 circle { opacity: 0.4; }
+
+.iux-pack__outline--primary { stroke: var(--color-intent-primary-bg); }
+.iux-pack__outline--info    { stroke: var(--color-intent-info-bg); }
+.iux-pack__outline--success { stroke: var(--color-intent-success-bg); }
+.iux-pack__outline--warning { stroke: var(--color-intent-warning-bg); }
+.iux-pack__outline--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-pack__outline--neutral { stroke: var(--color-intent-neutral-bg); }
+.iux-pack__outline { stroke-width: 1.25; stroke-dasharray: 3 3; opacity: 0.7; }
+
+.iux-pack__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
