@@ -39,6 +39,14 @@ import { palette as celShadedShonen } from './cel-shaded-shonen'
 import { palette as celShadedShojo } from './cel-shaded-shojo'
 import { palette as aurora } from './aurora'
 import { palette as terminalTui } from './terminal-tui'
+import { palette as modernRoyal } from './modern-royal'
+import { palette as scandinavianRoyalModern } from './scandinavian-royal-modern'
+import { palette as marbleRoyalFlat } from './marble-royal-flat'
+import { palette as tokyoDay } from './tokyo-day'
+import { palette as bulletTrainDay } from './bullet-train-day'
+import { palette as metroLight } from './metro-light'
+import { palette as industrialLight } from './industrial-light'
+import { palette as graffitiMarble } from './graffiti-marble'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -82,6 +90,14 @@ export const palettes = {
   'cel-shaded-shojo': celShadedShojo,
   aurora,
   'terminal-tui': terminalTui,
+  'modern-royal': modernRoyal,
+  'scandinavian-royal-modern': scandinavianRoyalModern,
+  'marble-royal-flat': marbleRoyalFlat,
+  'tokyo-day': tokyoDay,
+  'bullet-train-day': bulletTrainDay,
+  'metro-light': metroLight,
+  'industrial-light': industrialLight,
+  'graffiti-marble': graffitiMarble,
 } as const
 
 export type PaletteId = keyof typeof palettes

@@ -1,13 +1,21 @@
 # Style descriptions — index
 
-4 of 41 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
+12 of 49 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
 
 ## Populated
 
 - [Aero Glass](./aero-glass.md) — `glassmorphism`
+- [Bullet Train / Day](./bullet-train-day.md) — `flat`
 - [Flat / Classic](./flat-classic.md) — `flat`
 - [Glassmorphism](./glassmorphism.md) — `glassmorphism`
+- [Graffiti / Marble](./graffiti-marble.md) — `flat`
+- [Industrial / Light](./industrial-light.md) — `flat`
+- [Marble Royal Flat](./marble-royal-flat.md) — `flat`
+- [Metro / Light](./metro-light.md) — `flat`
+- [Modern Royal](./modern-royal.md) — `flat`
 - [Pixel Art (NES)](./pixel-art-nes.md) — `pixel-art`
+- [Scandinavian Royal Modern](./scandinavian-royal-modern.md) — `flat`
+- [Tokyo / Day](./tokyo-day.md) — `flat`
 
 ## Missing
 
