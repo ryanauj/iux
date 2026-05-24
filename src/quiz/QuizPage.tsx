@@ -19,15 +19,11 @@ import {
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
-const SEED_OPTIONS = [1, 2, 3, 7, 42] as const
-
 const URL_PARAM = {
   chrome: 'chrome',
-  seed: 'seed',
   controls: 'controls',
 } as const
 
-const DEFAULT_SEED = 1
 const DEFAULT_CONTROLS: ControlsStyle = 'button'
 
 const isPaletteId = (v: string): v is PaletteId =>
@@ -35,33 +31,28 @@ const isPaletteId = (v: string): v is PaletteId =>
 
 type UrlSettings = {
   chrome: PaletteId
-  seed: number
   controls: ControlsStyle
 }
 
 function readUrlSettings(persistedChrome: PaletteId): UrlSettings {
   if (typeof window === 'undefined') {
-    return { chrome: persistedChrome, seed: DEFAULT_SEED, controls: DEFAULT_CONTROLS }
+    return { chrome: persistedChrome, controls: DEFAULT_CONTROLS }
   }
   const p = new URL(window.location.href).searchParams
   const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
   const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : persistedChrome
-  const seedRaw = Number(p.get(URL_PARAM.seed))
-  const seed =
-    Number.isFinite(seedRaw) && seedRaw > 0 ? Math.floor(seedRaw) : DEFAULT_SEED
   const controlsRaw = p.get(URL_PARAM.controls) ?? ''
   const controls: ControlsStyle =
     controlsRaw === 'strip' || controlsRaw === 'button'
       ? controlsRaw
       : DEFAULT_CONTROLS
-  return { chrome, seed, controls }
+  return { chrome, controls }
 }
 
 export function QuizPage() {
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const initial = useMemo(() => readUrlSettings(readSelectedStyle()), [])
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
-  const [seed, setSeed] = useState<number>(initial.seed)
   const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
   const [infoOpen, setInfoOpen] = useState(false)
   const [navLayout, setNavLayout] = useNavLayout()
@@ -81,6 +72,10 @@ export function QuizPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStyle])
 
+  // Stable random seed for this page mount. Endless mode, so reproducibility
+  // across reloads isn't useful — a fresh seed each load just keeps things lively.
+  const seed = useMemo(() => Math.floor(Math.random() * 0xffffffff) || 1, [])
+
   useEffect(() => {
     const url = new URL(window.location.href)
     const sync = (key: string, value: string, fallback: string) => {
@@ -88,19 +83,17 @@ export function QuizPage() {
       else url.searchParams.set(key, value)
     }
     sync(URL_PARAM.chrome, chromePaletteId, selectedStyle)
-    sync(URL_PARAM.seed, String(seed), String(DEFAULT_SEED))
     sync(URL_PARAM.controls, controlsStyle, DEFAULT_CONTROLS)
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [chromePaletteId, seed, controlsStyle, selectedStyle])
+  }, [chromePaletteId, controlsStyle, selectedStyle])
 
   useEffect(() => {
     const onPop = () => {
       const s = readUrlSettings(readSelectedStyle())
       setChromePaletteId(s.chrome)
-      setSeed(s.seed)
       setControlsStyle(s.controls)
       setSelectedStyle(s.chrome)
     }
@@ -148,15 +141,6 @@ export function QuizPage() {
     },
   }
 
-  const seedField: Field = {
-    key: 'seed',
-    label: 'Seed',
-    short: 'S',
-    value: String(seed),
-    options: SEED_OPTIONS.map(n => ({ value: String(n), label: `Seed ${n}` })),
-    onChange: v => setSeed(Number(v)),
-  }
-
   const navLayoutField: Field = {
     key: 'navLayout',
     label: 'Nav',
@@ -166,12 +150,12 @@ export function QuizPage() {
     onChange: v => setNavLayout(v as NavLayoutId),
   }
 
-  const fields: Field[] = [chromeField, seedField, navLayoutField]
+  const fields: Field[] = [chromeField, navLayoutField]
 
   const brand = (
     <>
       <h1 className="stories__title">
-        iux — style quizzes
+        iux — identify the style
         <button
           ref={infoBtnRef}
           type="button"
@@ -192,14 +176,12 @@ export function QuizPage() {
           aria-label="About this page"
           className="stories__info-popover"
         >
-          Quizzes auto-derived from the typed{' '}
-          <code>StyleDescription</code> per palette. Four question
-          kinds — identify the style, what makes it that style,
-          distinguish lookalikes, and free-recall — drawn from the
-          described palettes. Use Chrome to re-skin the quiz frame
-          and Seed to pick a reproducible deck. See{' '}
-          <code>docs/styles/INDEX.md</code> for the source-of-truth
-          descriptions.
+          Endless practice: a sample is rendered in one of the palettes,
+          and you pick which palette / engine it is. Distractors come
+          from the same engine family when possible, so the question
+          forces you to discriminate within a family (e.g. <em>which</em>{' '}
+          pixel-art palette is this). Stimuli rotate across components,
+          visualizations, and a sample app.
         </div>
       )}
     </>
@@ -219,7 +201,7 @@ export function QuizPage() {
             onStyleChange={setControlsStyle}
             fields={fields}
           />
-          <QuizView seed={seed} totalPalettes={PALETTE_IDS.length} />
+          <QuizView seed={seed} />
         </div>
       </AppShell>
     </PaletteRoot>
