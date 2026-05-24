@@ -12,6 +12,9 @@ import './visualizations/viz.css'
 import { INTEGRATION_TESTS } from './registry'
 import { runTest, type RunOptions } from './runner'
 import type { RunResult } from './types'
+import { AppShell } from '../components/AppShell/AppShell'
+import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
+import { useNavLayout } from '../components/AppShell/navLayouts'
 
 export type VizId = 'cards' | 'matrix' | 'graph' | 'sequence' | 'runner'
 
@@ -99,40 +102,48 @@ export function TestsPage() {
 
   const palette = palettes[DEFAULT_PALETTE]
   const activeHint = VIZ_OPTIONS.find(v => v.value === viz)?.hint
+  const [navLayout] = useNavLayout()
+
+  const brand = (
+    <h1 className="iux-tests__title">iux — integration tests</h1>
+  )
 
   return (
     <PaletteRoot palette={palette} as="section" motionScale={1}>
-      <main className="iux-tests">
-        <header className="iux-tests__header">
-          <div className="iux-tests__title-row">
-            <h1 className="iux-tests__title">iux — integration tests</h1>
-            <a className="stories__apps-link" href="#/">← back to stories</a>
-          </div>
-          <div className="iux-tests__chrome">
-            <Segmented
-              variant="pill"
-              size="md"
-              ariaLabel="Visualization"
-              value={viz}
-              onValueChange={v => setViz(v as VizId)}
-              items={VIZ_OPTIONS.map(o => ({ value: o.value, label: o.label }))}
-            />
-            {activeHint && <p className="iux-tests__hint">{activeHint}</p>}
-          </div>
-        </header>
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId="tests"
+      >
+        <div className="iux-tests">
+          <header className="iux-tests__header">
+            <div className="iux-tests__chrome">
+              <Segmented
+                variant="pill"
+                size="md"
+                ariaLabel="Visualization"
+                value={viz}
+                onValueChange={v => setViz(v as VizId)}
+                items={VIZ_OPTIONS.map(o => ({ value: o.value, label: o.label }))}
+              />
+              {activeHint && <p className="iux-tests__hint">{activeHint}</p>}
+            </div>
+          </header>
 
-        <div className="iux-tests__viz">
-          {viz === 'cards' && <CardsViz results={results} runningId={runningId} runFor={runFor} />}
-          {viz === 'matrix' && <MatrixViz results={results} runningId={runningId} runFor={runFor} />}
-          {viz === 'graph' && <GraphViz results={results} />}
-          {viz === 'sequence' && <SequenceViz results={results} />}
-          {viz === 'runner' && <RunnerViz results={results} runningId={runningId} runFor={runFor} />}
-        </div>
+          <div className="iux-tests__viz">
+            {viz === 'cards' && <CardsViz results={results} runningId={runningId} runFor={runFor} />}
+            {viz === 'matrix' && <MatrixViz results={results} runningId={runningId} runFor={runFor} />}
+            {viz === 'graph' && <GraphViz results={results} />}
+            {viz === 'sequence' && <SequenceViz results={results} />}
+            {viz === 'runner' && <RunnerViz results={results} runningId={runningId} runFor={runFor} />}
+          </div>
 
-        <div ref={autorunRef} className="iux-tests__sandbox iux-tests__sandbox--offscreen" aria-hidden="true">
-          {autorunTest && <div key={autorunTest.id}>{autorunTest.render()}</div>}
+          <div ref={autorunRef} className="iux-tests__sandbox iux-tests__sandbox--offscreen" aria-hidden="true">
+            {autorunTest && <div key={autorunTest.id}>{autorunTest.render()}</div>}
+          </div>
         </div>
-      </main>
+      </AppShell>
     </PaletteRoot>
   )
 }

@@ -1,0 +1,643 @@
+/*
+ * AppShell — ten nav-location variations driving every showcase page.
+ *
+ * The shell wraps the page in a flex/grid frame and pipes the cross-page
+ * nav into the slot for the chosen layout. All visual surfaces read from
+ * the active palette's token contract so the chrome wears the same
+ * palette as the body it frames.
+ *
+ *   .iux-appshell              outer wrapper (one per shell)
+ *   .iux-appshell--<layout>    layout-specific modifier
+ *   .iux-appshell__top         brand bar (always present, sometimes minimal)
+ *   .iux-appshell__nav         "real" inline nav (topbar, sidebar)
+ *   .iux-appshell__dock|drawer|fab|footer|tabbar|rail   nav for non-top layouts
+ *   .iux-appshell__main        content area
+ */
+
+.iux-appshell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ----- shared brand bar ----- */
+
+.iux-appshell__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-5);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
+  background-color: var(--color-surface-base);
+  border-bottom-width: var(--border-width-thin);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.iux-appshell__top--minimal {
+  padding-block: var(--space-2);
+}
+
+.iux-appshell__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.iux-appshell__brand-extra {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.iux-appshell__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- shared inline nav (used by topbar + sidebar) ----- */
+
+.iux-appshell__nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.iux-appshell__nav--top {
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.iux-appshell__nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-appshell__nav-link:hover,
+.iux-appshell__nav-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  border-color: var(--color-border-default);
+  outline: none;
+}
+
+.iux-appshell__nav-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+  border-color: var(--color-intent-primary-base, var(--color-content-primary));
+}
+
+/* ============================================================ */
+/* 1. Topbar — classic horizontal                                */
+/* ============================================================ */
+
+.iux-appshell--topbar .iux-appshell__top {
+  /* Default behavior already supplied by the shared rules above. */
+}
+
+/* ============================================================ */
+/* 2/3. Sidebar — left / right rail                              */
+/* ============================================================ */
+
+.iux-appshell--sidebar {
+  display: grid;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.iux-appshell--sidebar-left  { grid-template-columns: 16rem 1fr; }
+.iux-appshell--sidebar-right { grid-template-columns: 1fr 16rem; }
+
+.iux-appshell--sidebar .iux-appshell__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--color-surface-raised);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.iux-appshell--sidebar-left  .iux-appshell__sidebar {
+  border-right-width: var(--border-width-thin);
+  border-right-style: solid;
+  border-right-color: var(--color-border-subtle);
+}
+
+.iux-appshell--sidebar-right .iux-appshell__sidebar {
+  border-left-width: var(--border-width-thin);
+  border-left-style: solid;
+  border-left-color: var(--color-border-subtle);
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.iux-appshell--sidebar-right .iux-appshell__main {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.iux-appshell__sidebar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-appshell__nav--side {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+
+.iux-appshell__nav-link--side {
+  justify-content: flex-start;
+  border-color: transparent;
+}
+
+.iux-appshell__sidebar-extra {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top-width: var(--border-width-thin);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+}
+
+@media (max-width: 48rem) {
+  .iux-appshell--sidebar {
+    grid-template-columns: 1fr;
+  }
+  .iux-appshell--sidebar .iux-appshell__sidebar {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-left: none;
+    border-bottom-width: var(--border-width-thin);
+    border-bottom-style: solid;
+    border-bottom-color: var(--color-border-subtle);
+  }
+  .iux-appshell--sidebar-right .iux-appshell__sidebar {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .iux-appshell--sidebar-right .iux-appshell__main {
+    grid-row: 1;
+  }
+  .iux-appshell__nav--side {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* ============================================================ */
+/* 4/5. Dock — floating pill                                     */
+/* ============================================================ */
+
+.iux-appshell--dock .iux-appshell__main--dock {
+  /* Make room for the floating dock so content can't hide behind it. */
+}
+.iux-appshell--dock-bottom .iux-appshell__main--dock {
+  padding-bottom: calc(var(--space-5) + 4.5rem);
+}
+.iux-appshell--dock-top .iux-appshell__main--dock {
+  padding-top: var(--space-5);
+}
+
+.iux-appshell__dock {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-pill, 999px);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  box-shadow: 0 var(--space-3) var(--space-6) rgba(0, 0, 0, 0.18);
+  z-index: 20;
+  max-width: calc(100vw - var(--space-4) * 2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.iux-appshell__dock::-webkit-scrollbar {
+  display: none;
+}
+
+.iux-appshell__dock--bottom {
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+}
+.iux-appshell__dock--top {
+  top: calc(var(--space-4) + 3rem);
+}
+
+.iux-appshell__dock-link {
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill, 999px);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--color-content-secondary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-appshell__dock-link:hover,
+.iux-appshell__dock-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.iux-appshell__dock-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+}
+
+/* ============================================================ */
+/* 6. Rail — narrow icon rail, left                              */
+/* ============================================================ */
+
+.iux-appshell--rail {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  min-height: 100vh;
+}
+
+.iux-appshell--rail .iux-appshell__rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--space-3) var(--space-1);
+  gap: var(--space-2);
+  background-color: var(--color-surface-raised);
+  border-right-width: var(--border-width-thin);
+  border-right-style: solid;
+  border-right-color: var(--color-border-subtle);
+}
+
+.iux-appshell__rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-appshell__rail-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: transparent;
+}
+
+.iux-appshell__rail-link:hover,
+.iux-appshell__rail-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  border-color: var(--color-border-subtle);
+  outline: none;
+}
+
+.iux-appshell__rail-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+  border-color: var(--color-intent-primary-base, var(--color-content-primary));
+}
+
+.iux-appshell__rail-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+@media (max-width: 36rem) {
+  .iux-appshell--rail {
+    grid-template-columns: 3rem 1fr;
+  }
+}
+
+/* ============================================================ */
+/* 7. Drawer — hamburger                                         */
+/* ============================================================ */
+
+.iux-appshell__menu-btn {
+  appearance: none;
+  background: transparent;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  color: var(--color-content-primary);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--type-subheading-size);
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.iux-appshell__menu-btn:hover,
+.iux-appshell__menu-btn:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.iux-appshell__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 30;
+}
+
+.iux-appshell__drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(20rem, 85vw);
+  height: 100vh;
+  background-color: var(--color-surface-raised);
+  border-right-width: var(--border-width-thin);
+  border-right-style: solid;
+  border-right-color: var(--color-border-subtle);
+  z-index: 40;
+  padding: var(--space-4);
+  padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transform: translateX(-100%);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+  overflow-y: auto;
+}
+
+.iux-appshell__drawer.is-open {
+  transform: translateX(0);
+}
+
+.iux-appshell__drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-appshell__drawer-link {
+  display: block;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+}
+
+.iux-appshell__drawer-link:hover,
+.iux-appshell__drawer-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.iux-appshell__drawer-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+}
+
+/* ============================================================ */
+/* 8. FAB — floating action button with popout menu              */
+/* ============================================================ */
+
+.iux-appshell--fab .iux-appshell__main--fab {
+  padding-bottom: calc(var(--space-5) + 4.5rem);
+}
+
+.iux-appshell__fab-root {
+  position: fixed;
+  right: max(var(--space-4), env(safe-area-inset-right));
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.iux-appshell__fab-btn {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--radius-full, 999px);
+  border: none;
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 var(--space-2) var(--space-5) rgba(0, 0, 0, 0.24);
+}
+
+.iux-appshell__fab-btn:hover,
+.iux-appshell__fab-btn:focus-visible {
+  outline: none;
+  filter: brightness(1.05);
+}
+
+.iux-appshell__fab-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 var(--space-3) var(--space-6) rgba(0, 0, 0, 0.22);
+  min-width: 12rem;
+}
+
+.iux-appshell__fab-link {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.iux-appshell__fab-link:hover,
+.iux-appshell__fab-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.iux-appshell__fab-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+}
+
+/* ============================================================ */
+/* 9. Footer — anchored bottom bar                               */
+/* ============================================================ */
+
+.iux-appshell--footer .iux-appshell__main--footer {
+  padding-bottom: var(--space-5);
+}
+
+.iux-appshell__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: var(--color-surface-raised);
+  border-top-width: var(--border-width-thin);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+  padding: var(--space-2) var(--space-5);
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+}
+
+.iux-appshell__footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.iux-appshell__footer-link {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.iux-appshell__footer-link:hover,
+.iux-appshell__footer-link:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.iux-appshell__footer-link.is-active {
+  background-color: var(--color-intent-primary-base, var(--color-content-primary));
+  color: var(--color-intent-primary-on, var(--color-surface-base));
+}
+
+/* ============================================================ */
+/* 10. Tabbar — bottom equal-width                               */
+/* ============================================================ */
+
+.iux-appshell--tabbar .iux-appshell__main--tabbar {
+  padding-bottom: calc(var(--space-5) + 3.5rem);
+}
+
+.iux-appshell__tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  background-color: var(--color-surface-raised);
+  border-top-width: var(--border-width-thin);
+  border-top-style: solid;
+  border-top-color: var(--color-border-default);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.iux-appshell__tabbar-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-0, 0);
+  padding: var(--space-2) var(--space-1);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  border-top: var(--border-width-thick, 2px) solid transparent;
+  min-height: 3rem;
+}
+
+.iux-appshell__tabbar-link:hover,
+.iux-appshell__tabbar-link:focus-visible {
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.iux-appshell__tabbar-link.is-active {
+  color: var(--color-intent-primary-base, var(--color-content-primary));
+  border-top-color: var(--color-intent-primary-base, var(--color-content-primary));
+}
+
+/* ============================================================ */
+/* Phone-narrow tweaks                                           */
+/* ============================================================ */
+
+@media (max-width: 40rem) {
+  .iux-appshell__top {
+    padding: var(--space-2) var(--space-3);
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+    gap: var(--space-2);
+  }
+  .iux-appshell__dock {
+    padding: var(--space-1);
+  }
+  .iux-appshell__dock-link {
+    padding: var(--space-2) var(--space-3);
+  }
+}

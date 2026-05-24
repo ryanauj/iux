@@ -1,5 +1,4 @@
 .apps-landing {
-  min-height: 100vh;
   padding: var(--space-6) var(--space-5);
   max-width: 60rem;
   margin: 0 auto;
@@ -83,4 +82,12 @@
 .apps-landing__back:hover {
   color: var(--color-content-primary);
   text-decoration: underline;
+}
+
+.apps-landing__brand-title {
+  margin: 0;
+  font-family: var(--type-display-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-display-tracking);
 }

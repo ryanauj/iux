@@ -9,12 +9,7 @@ export function Viz() {
       kindLabel="visualizations"
       title="iux — visualization stories"
       defaultComponent="sparkline"
-      navLinks={[
-        { href: '#/', label: '← Components' },
-        { href: '#/apps', label: 'Apps →' },
-        { href: '#/quiz', label: 'Quiz →' },
-        { href: '#/doctrine', label: 'Doctrine →' },
-      ]}
+      activeNavId="visualizations"
       infoText={
         <>
           Visualizations rendered against the same semantic token contract

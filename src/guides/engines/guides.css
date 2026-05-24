@@ -13,6 +13,14 @@
   color: var(--color-content-primary);
 }
 
+.iux-engine-guide__brand-title {
+  margin: 0;
+  font-family: var(--type-display-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-display-tracking);
+}
+
 .iux-engine-guide,
 .iux-engines-index {
   max-width: 64rem;

@@ -12,6 +12,13 @@ import {
   DEFAULT_MOTION_SCALE,
   type MotionScale,
 } from '../theme/motionScales'
+import { AppShell } from '../components/AppShell/AppShell'
+import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../components/AppShell/navLayouts'
 import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
@@ -57,6 +64,7 @@ export function DoctrinePage() {
   const [motionScale, setMotionScale] = useState<MotionScale>(initial.motion)
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [infoOpen, setInfoOpen] = useState(false)
+  const [navLayout, setNavLayout] = useNavLayout()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -137,67 +145,78 @@ export function DoctrinePage() {
     onChange: v => setMotionScale(resolveMotionScale(v)),
   }
 
-  const fields: Field[] = [docField, chromeField, motionField]
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+
+  const fields: Field[] = [docField, chromeField, navLayoutField, motionField]
 
   const activePage = DOCTRINE_PAGES.find(p => p.id === doc) ?? DOCTRINE_PAGES[0]
 
+  const brand = (
+    <>
+      <h1 className="stories__title">
+        iux — doctrine
+        <button
+          ref={infoBtnRef}
+          type="button"
+          className="stories__info-btn"
+          aria-label="About this page"
+          aria-expanded={infoOpen}
+          aria-controls="doctrine-info-popover"
+          onClick={() => setInfoOpen(o => !o)}
+        >
+          i
+        </button>
+      </h1>
+      {infoOpen && (
+        <div
+          ref={infoPopRef}
+          id="doctrine-info-popover"
+          role="region"
+          aria-label="About this page"
+          className="stories__info-popover"
+        >
+          UX guidance docs from <code>doctrine/</code> rendered with
+          live demos. Each page pairs the rules from its source
+          markdown with real components; switch the Chrome palette
+          to watch the rules apply (or fail) under different engines.
+          Use Doc to switch pages.
+        </div>
+      )}
+    </>
+  )
+
   return (
     <PaletteRoot palette={palettes[chromePaletteId]} as="section" motionScale={motionScale}>
-      <main className="stories">
-        <header className="stories__header stories__header--static">
-          <div className="stories__header-bar">
-            <h1 className="stories__title">
-              iux — doctrine
-              <button
-                ref={infoBtnRef}
-                type="button"
-                className="stories__info-btn"
-                aria-label="About this page"
-                aria-expanded={infoOpen}
-                aria-controls="doctrine-info-popover"
-                onClick={() => setInfoOpen(o => !o)}
-              >
-                i
-              </button>
-            </h1>
-            <nav className="stories__header-nav" aria-label="Showcase sections">
-              <a className="stories__apps-link" href="#/">← Components</a>
-              <a className="stories__apps-link" href="#/viz">Visualizations →</a>
-              <a className="stories__apps-link" href="#/apps">Apps →</a>
-              <a className="stories__apps-link" href="#/quiz">Quiz →</a>
-            </nav>
-          </div>
-          {infoOpen && (
-            <div
-              ref={infoPopRef}
-              id="doctrine-info-popover"
-              role="region"
-              aria-label="About this page"
-              className="stories__info-popover"
-            >
-              UX guidance docs from <code>doctrine/</code> rendered with
-              live demos. Each page pairs the rules from its source
-              markdown with real components; switch the Chrome palette
-              to watch the rules apply (or fail) under different engines.
-              Use Doc to switch pages.
-            </div>
-          )}
-        </header>
-        <DraggableControls
-          style={controlsStyle}
-          onStyleChange={setControlsStyle}
-          fields={fields}
-        />
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId="doctrine"
+      >
+        <div className="stories">
+          <DraggableControls
+            style={controlsStyle}
+            onStyleChange={setControlsStyle}
+            fields={fields}
+          />
 
-        <PaletteRoot
-          palette={palettes[chromePaletteId]}
-          as="section"
-          className="stories__palette"
-          motionScale={motionScale}
-        >
-          {activePage.render()}
-        </PaletteRoot>
-      </main>
+          <PaletteRoot
+            palette={palettes[chromePaletteId]}
+            as="section"
+            className="stories__palette"
+            motionScale={motionScale}
+          >
+            {activePage.render()}
+          </PaletteRoot>
+        </div>
+      </AppShell>
     </PaletteRoot>
   )
 }

@@ -8,6 +8,13 @@ import {
 } from '../components/DraggableControls/DraggableControls'
 import '../showcase/showcase.css'
 import { QuizView } from './QuizView'
+import { AppShell } from '../components/AppShell/AppShell'
+import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../components/AppShell/navLayouts'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -56,6 +63,7 @@ export function QuizPage() {
   const [seed, setSeed] = useState<number>(initial.seed)
   const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
   const [infoOpen, setInfoOpen] = useState(false)
+  const [navLayout, setNavLayout] = useNavLayout()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -127,60 +135,71 @@ export function QuizPage() {
     onChange: v => setSeed(Number(v)),
   }
 
-  const fields: Field[] = [chromeField, seedField]
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+
+  const fields: Field[] = [chromeField, seedField, navLayoutField]
+
+  const brand = (
+    <>
+      <h1 className="stories__title">
+        iux — style quizzes
+        <button
+          ref={infoBtnRef}
+          type="button"
+          className="stories__info-btn"
+          aria-label="About this page"
+          aria-expanded={infoOpen}
+          aria-controls="quiz-info-popover"
+          onClick={() => setInfoOpen(o => !o)}
+        >
+          i
+        </button>
+      </h1>
+      {infoOpen && (
+        <div
+          ref={infoPopRef}
+          id="quiz-info-popover"
+          role="region"
+          aria-label="About this page"
+          className="stories__info-popover"
+        >
+          Quizzes auto-derived from the typed{' '}
+          <code>StyleDescription</code> per palette. Four question
+          kinds — identify the style, what makes it that style,
+          distinguish lookalikes, and free-recall — drawn from the
+          described palettes. Use Chrome to re-skin the quiz frame
+          and Seed to pick a reproducible deck. See{' '}
+          <code>docs/styles/INDEX.md</code> for the source-of-truth
+          descriptions.
+        </div>
+      )}
+    </>
+  )
 
   return (
     <PaletteRoot palette={palettes[chromePaletteId]} as="section">
-      <main className="stories">
-        <header className="stories__header stories__header--static">
-          <div className="stories__header-bar">
-            <h1 className="stories__title">
-              iux — style quizzes
-              <button
-                ref={infoBtnRef}
-                type="button"
-                className="stories__info-btn"
-                aria-label="About this page"
-                aria-expanded={infoOpen}
-                aria-controls="quiz-info-popover"
-                onClick={() => setInfoOpen(o => !o)}
-              >
-                i
-              </button>
-            </h1>
-            <nav className="stories__header-nav" aria-label="Showcase sections">
-              <a className="stories__apps-link" href="#/">← Components</a>
-              <a className="stories__apps-link" href="#/viz">Visualizations →</a>
-              <a className="stories__apps-link" href="#/apps">Apps →</a>
-              <a className="stories__apps-link" href="#/doctrine">Doctrine →</a>
-            </nav>
-          </div>
-          {infoOpen && (
-            <div
-              ref={infoPopRef}
-              id="quiz-info-popover"
-              role="region"
-              aria-label="About this page"
-              className="stories__info-popover"
-            >
-              Quizzes auto-derived from the typed{' '}
-              <code>StyleDescription</code> per palette. Four question
-              kinds — identify the style, what makes it that style,
-              distinguish lookalikes, and free-recall — drawn from the
-              described palettes. Use Chrome to re-skin the quiz frame
-              and Seed to pick a reproducible deck. See{' '}
-              <code>docs/styles/INDEX.md</code> for the source-of-truth
-              descriptions.
-            </div>
-          )}
-        </header>
-        <DraggableControls
-          style={controlsStyle}
-          onStyleChange={setControlsStyle}
-          fields={fields}
-        />
-        <QuizView seed={seed} totalPalettes={PALETTE_IDS.length} />
-      </main>
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId="quiz"
+      >
+        <div className="stories">
+          <DraggableControls
+            style={controlsStyle}
+            onStyleChange={setControlsStyle}
+            fields={fields}
+          />
+          <QuizView seed={seed} totalPalettes={PALETTE_IDS.length} />
+        </div>
+      </AppShell>
     </PaletteRoot>
   )
 }
