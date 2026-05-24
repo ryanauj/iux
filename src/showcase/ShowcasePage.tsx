@@ -15,6 +15,7 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
+import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -65,13 +66,17 @@ export function ShowcasePage({
   activeNavId,
   infoText,
 }: ShowcasePageProps) {
+  // The chrome / showcase / palette-filter defaults follow the user's
+  // site-wide selected style so navigating between surfaces keeps the
+  // chosen look. URL params still override on a fresh visit.
+  const persistedStyle = readSelectedStyle()
   const DEFAULTS = {
     view: 'per-component' as ViewMode,
     component: defaultComponent,
     variant: 'all' as VariantChoice,
-    palette: 'flat-classic' as PaletteChoice,
-    chrome: 'flat-classic' as PaletteId,
-    showcasePalette: 'flat-classic' as PaletteId,
+    palette: persistedStyle as PaletteChoice,
+    chrome: persistedStyle,
+    showcasePalette: persistedStyle,
     layout: 'feed' as ShowcaseLayout,
     motion: 2,
   }
@@ -131,6 +136,7 @@ export function ShowcasePage({
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [navLayout, setNavLayout] = useNavLayout()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -172,9 +178,11 @@ export function ShowcasePage({
       setShowcasePaletteId(s.showcasePalette)
       setLayout(s.layout)
       setMotionScale(s.motion)
+      setSelectedStyle(s.chrome)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const active = entries.find(c => c.id === component)
@@ -193,13 +201,42 @@ export function ShowcasePage({
 
   const handlePaletteChange = (next: PaletteChoice) => {
     setPaletteChoice(next)
-    if (next !== 'all') setChromePaletteId(next)
+    if (next !== 'all') {
+      setChromePaletteId(next)
+      setSelectedStyle(next)
+    }
   }
 
   const handleShowcasePaletteChange = (next: PaletteId) => {
     setShowcasePaletteId(next)
     setChromePaletteId(next)
+    setSelectedStyle(next)
   }
+
+  // Seed the persisted style from the URL-derived chrome on first mount.
+  // A pasted permalink (`?chrome=vaporwave`) should win over the user's
+  // previous selection, and writing it through here keeps the cross-
+  // surface sync effect below from racing against the URL on load.
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (selectedStyle !== chromePaletteId) setSelectedStyle(chromePaletteId)
+  }
+
+  // Cross-surface sync: when another surface (Apps, Quiz, Engine guides)
+  // updates the persisted style, propagate it into the chrome/showcase
+  // ids here so the user sees the new style immediately on this surface
+  // too. Skip when the local chrome already matches to avoid an extra
+  // render loop.
+  useEffect(() => {
+    if (selectedStyle === chromePaletteId) return
+    setChromePaletteId(selectedStyle)
+    setShowcasePaletteId(selectedStyle)
+    if (paletteChoice !== 'all') setPaletteChoice(selectedStyle)
+    // `paletteChoice` is intentionally excluded — we only react to
+    // external style changes, not to the user re-picking 'all' locally.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStyle])
 
   const infoBtnRef = useRef<HTMLButtonElement>(null)
   const infoPopRef = useRef<HTMLDivElement>(null)

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { palette as flatClassic } from '../../../palettes/flat-classic'
+import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
+import { useSelectedStyle } from '../../lib/persistedStyle'
 import { ENGINE_GUIDES, ENGINE_GUIDE_IDS } from './registry'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
@@ -24,11 +25,12 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
 
 export function EnginesIndex() {
   const [navLayout] = useNavLayout()
+  const [selectedStyle] = useSelectedStyle()
   const brand = (
     <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
   )
   return (
-    <PaletteRoot palette={flatClassic} as="section" className="iux-engine-guide-shell">
+    <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
       <AppShell
         layoutId={navLayout}
         brand={brand}
