@@ -80,9 +80,9 @@ export const description: StyleDescription = {
   ],
   lookalikes: [
     {
-      against: 'bloomberg-terminal',
+      against: 'crt-phosphor-amber',
       differentiator:
-        'Bloomberg Terminal is the dark-workshop register: pure-black field, amber phosphor type, full-mono throughout, green/red as DATA. Industrial / Light is the inversion: warm-paper field, walnut ink, mono ON `family.ui` only (body is sans), safety-orange as the intent. Same vocabulary, opposite field.',
+        'CRT / Phosphor (amber) is the dark-workshop register: near-black field, amber phosphor type with a glow halo, full-mono throughout, scanline overlay. Industrial / Light is the inversion to a light field: warm-paper surfaces, walnut ink, mono on `family.ui` only (body stays sans-readable), safety-orange as the intent, no glow or overlay. Same workshop vocabulary, opposite field — one is "shop floor at night," the other is "shop floor at noon."',
     },
     {
       against: 'data-dense-light',
