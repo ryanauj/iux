@@ -102,6 +102,16 @@
   min-width: 14rem;
 }
 
+.sports-app__pickers {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__pickers .iux-select {
+  min-width: 11rem;
+}
+
 .sports-app__picker-label {
   font-size: var(--type-caption-size);
   color: var(--color-content-secondary);
@@ -938,5 +948,455 @@
 
   .score-card__score {
     font-size: var(--type-subheading-size);
+  }
+}
+
+/* ============================================================
+ * Layout variants
+ *
+ * `.sports-app--<id>` switches between the five hoops-hub layouts.
+ * The default (`--topbar`) uses the existing header/main rules above;
+ * each variant below replaces the chrome around `.sports-app__main`.
+ * ============================================================ */
+
+/* ---------- Sidebar layout ---------- */
+
+.sports-app--sidebar {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+}
+
+.sports-app--sidebar .sports-app__sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sports-app--sidebar .sports-app__sidebar-top,
+.sports-app--sidebar .sports-app__sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sports-app--sidebar .sports-app__sidenav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-app--sidebar .sports-app__sidenav-link {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app--sidebar .sports-app__sidenav-link:hover,
+.sports-app--sidebar .sports-app__sidenav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app--sidebar .sports-app__sidenav-link.is-active {
+  color: var(--color-intent-primary-content);
+  background-color: var(--color-intent-primary-bg);
+}
+
+.sports-app--sidebar .sports-app__pickers {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.sports-app--sidebar .sports-app__pickers .iux-select {
+  min-width: 0;
+  width: 100%;
+}
+
+.sports-app--sidebar .sports-app__exit {
+  justify-content: flex-start;
+}
+
+@media (max-width: 50rem) {
+  .sports-app--sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .sports-app--sidebar .sports-app__sidebar {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  }
+
+  .sports-app--sidebar .sports-app__sidenav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sports-app--sidebar .sports-app__pickers {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sports-app--sidebar .sports-app__pickers .iux-select {
+    width: auto;
+    min-width: 10rem;
+    flex: 1 1 10rem;
+  }
+}
+
+/* ---------- Stadium (hero banner) layout ---------- */
+
+.sports-app--stadium {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sports-app--stadium .sports-app__stadium-banner {
+  padding: var(--space-5);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.sports-app--stadium .sports-app__stadium-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.sports-app--stadium .sports-app__brand {
+  color: var(--color-intent-primary-content);
+  font-size: var(--type-display-size);
+}
+
+.sports-app--stadium .sports-app__brand:hover {
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app--stadium .sports-app__brand-mark {
+  background-color: var(--color-intent-primary-content);
+  color: var(--color-intent-primary-bg);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.18);
+}
+
+.sports-app--stadium .sports-app__exit {
+  color: var(--color-intent-primary-content);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.sports-app--stadium .sports-app__exit:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app--stadium .sports-app__stadium-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-2);
+}
+
+.sports-app--stadium .sports-app__stadium-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  text-decoration: none;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app--stadium .sports-app__stadium-link:hover,
+.sports-app--stadium .sports-app__stadium-link:focus-visible {
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.sports-app--stadium .sports-app__stadium-link.is-active {
+  background-color: var(--color-content-primary);
+  color: var(--color-surface-raised);
+  border-color: var(--color-content-primary);
+}
+
+@media (max-width: 40rem) {
+  .sports-app--stadium .sports-app__stadium-banner {
+    padding: var(--space-3);
+  }
+
+  .sports-app--stadium .sports-app__brand {
+    font-size: var(--type-title-size);
+  }
+
+  .sports-app--stadium .sports-app__stadium-top {
+    margin-bottom: var(--space-3);
+    gap: var(--space-2);
+  }
+}
+
+/* ---------- Dock (floating bottom) layout ---------- */
+
+.sports-app--dock {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sports-app--dock .sports-app__main {
+  /* Make room for the floating dock so content can't hide behind it. */
+  padding-bottom: calc(var(--space-5) + 5rem);
+}
+
+.sports-app__dock {
+  position: fixed;
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+  z-index: 20;
+  max-width: calc(100vw - var(--space-4) * 2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.sports-app__dock::-webkit-scrollbar {
+  display: none;
+}
+
+.sports-app__dock-link {
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  white-space: nowrap;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__dock-link:hover,
+.sports-app__dock-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__dock-link.is-active {
+  color: var(--color-intent-primary-content);
+  background-color: var(--color-intent-primary-bg);
+}
+
+/* ---------- Drawer (hamburger) layout ---------- */
+
+.sports-app--drawer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.sports-app__menu-btn {
+  appearance: none;
+  background: transparent;
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  color: var(--color-content-primary);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--type-subheading-size);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__menu-btn:hover,
+.sports-app__menu-btn:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 30;
+  animation: hoops-scrim-fade-in var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+@keyframes hoops-scrim-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sports-app__drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(20rem, 85vw);
+  height: 100vh;
+  background-color: var(--color-surface-raised);
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
+  z-index: 40;
+  padding: var(--space-4);
+  padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  transform: translateX(-100%);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+  overflow-y: auto;
+}
+
+.sports-app__drawer.is-open {
+  transform: translateX(0);
+}
+
+.sports-app__drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-app__drawer-link {
+  display: block;
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__drawer-link:hover,
+.sports-app__drawer-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__drawer-link.is-active {
+  color: var(--color-intent-primary-content);
+  background-color: var(--color-intent-primary-bg);
+}
+
+.sports-app__drawer-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.sports-app__drawer-bottom .sports-app__pickers {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.sports-app__drawer-bottom .sports-app__pickers .iux-select {
+  min-width: 0;
+  width: 100%;
+}
+
+/* ---------- Mobile: layout-variant tweaks ---------- */
+
+@media (max-width: 40rem) {
+  /* The new pickers wrapper plays the same role on mobile that the old
+     single .sports-app__picker did in the topbar header: take a full
+     row, drop the visible label, and let the two selects share the
+     row. (Sidebar/drawer override this to stack vertically.) */
+  .sports-app--topbar .sports-app__pickers,
+  .sports-app--dock .sports-app__pickers,
+  .sports-app--stadium .sports-app__pickers {
+    order: 4;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .sports-app--topbar .sports-app__pickers .iux-select,
+  .sports-app--dock .sports-app__pickers .iux-select,
+  .sports-app--stadium .sports-app__pickers .iux-select {
+    flex: 1 1 10rem;
+    min-width: 0;
+  }
+
+  .sports-app__pickers .iux-select__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Sidebar collapses to a single column on mobile (handled above by the
+     50rem breakpoint); keep the pickers stacked there so labels stay
+     legible. */
+  .sports-app--sidebar .sports-app__pickers .iux-select__label,
+  .sports-app__drawer .sports-app__pickers .iux-select__label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+  }
+
+  /* Dock layout: make sure the floating dock clears the mobile safe
+     area and stays comfortably tappable. */
+  .sports-app__dock {
+    padding: var(--space-1);
+  }
+
+  .sports-app__dock-link {
+    padding: var(--space-2) var(--space-3);
+    min-height: 2.25rem;
   }
 }
