@@ -36,6 +36,16 @@ import { BezierEditorStories, VARIANTS as BezierEditorVariants } from '../compon
 import { SpatialCanvasStories, VARIANTS as SpatialCanvasVariants } from '../components/SpatialCanvas/SpatialCanvas.stories'
 import { SparklineStories, VARIANTS as SparklineVariants } from '../components/Sparkline/Sparkline.stories'
 import { LineChartStories, VARIANTS as LineChartVariants } from '../components/LineChart/LineChart.stories'
+import { BarStories, VARIANTS as BarVariants } from '../components/Bar/Bar.stories'
+import { HistogramStories, VARIANTS as HistogramVariants } from '../components/Histogram/Histogram.stories'
+import { DonutStories, VARIANTS as DonutVariants } from '../components/Donut/Donut.stories'
+import { AreaStories, VARIANTS as AreaVariants } from '../components/Area/Area.stories'
+import { ScatterStories, VARIANTS as ScatterVariants } from '../components/Scatter/Scatter.stories'
+import { CalendarHeatmapStories, VARIANTS as CalendarHeatmapVariants } from '../components/CalendarHeatmap/CalendarHeatmap.stories'
+import { StackedAreaStories, VARIANTS as StackedAreaVariants } from '../components/StackedArea/StackedArea.stories'
+import { BoxPlotStories, VARIANTS as BoxPlotVariants } from '../components/BoxPlot/BoxPlot.stories'
+import { TreemapStories, VARIANTS as TreemapVariants } from '../components/Treemap/Treemap.stories'
+import { SankeyStories, VARIANTS as SankeyVariants } from '../components/Sankey/Sankey.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -44,7 +54,8 @@ export type Component =
   | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper'
   | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence'
   | 'timeline' | 'bezier' | 'canvas'
-  | 'sparkline' | 'linechart'
+  | 'sparkline' | 'linechart' | 'bar' | 'histogram' | 'donut' | 'area'
+  | 'scatter' | 'calendarheatmap' | 'stackedarea' | 'boxplot' | 'treemap' | 'sankey'
 
 export type Tier = 1 | 2 | 3
 
@@ -103,6 +114,16 @@ export const COMPONENTS: StoryEntry[] = [
 export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'sparkline', label: 'Sparkline', tier: 1, variants: SparklineVariants, render: v => <SparklineStories variant={v} /> },
   { id: 'linechart', label: 'Line chart', tier: 1, variants: LineChartVariants, render: v => <LineChartStories variant={v} /> },
+  { id: 'bar', label: 'Bar chart', tier: 1, variants: BarVariants, render: v => <BarStories variant={v} /> },
+  { id: 'histogram', label: 'Histogram', tier: 1, variants: HistogramVariants, render: v => <HistogramStories variant={v} /> },
+  { id: 'donut', label: 'Donut', tier: 1, variants: DonutVariants, render: v => <DonutStories variant={v} /> },
+  { id: 'area', label: 'Area', tier: 1, variants: AreaVariants, render: v => <AreaStories variant={v} /> },
+  { id: 'scatter', label: 'Scatter', tier: 2, variants: ScatterVariants, render: v => <ScatterStories variant={v} /> },
+  { id: 'calendarheatmap', label: 'Calendar heatmap', tier: 2, variants: CalendarHeatmapVariants, render: v => <CalendarHeatmapStories variant={v} /> },
+  { id: 'stackedarea', label: 'Stacked area', tier: 2, variants: StackedAreaVariants, render: v => <StackedAreaStories variant={v} /> },
+  { id: 'boxplot', label: 'Box plot', tier: 2, variants: BoxPlotVariants, render: v => <BoxPlotStories variant={v} /> },
+  { id: 'treemap', label: 'Treemap', tier: 2, variants: TreemapVariants, render: v => <TreemapStories variant={v} /> },
+  { id: 'sankey', label: 'Sankey', tier: 3, variants: SankeyVariants, render: v => <SankeyStories variant={v} /> },
 ]
 
 /** Convenience: every entry across both registries. Use for global lookups. */

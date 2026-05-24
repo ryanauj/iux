@@ -1,0 +1,81 @@
+/*
+ * CalendarHeatmap — cyclic patterns on a date grid. Three rungs:
+ * month (single calendar block) → year (53-week strip) → streak (year
+ * strip annotated with the longest active streak). Five tint levels
+ * cycle from neutral surface to --color-intent-primary-bg via opacity,
+ * so every palette gets a usable ramp without new tokens.
+ */
+
+.iux-calheat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-calheat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-calheat__title {
+  font-family: var(--type-label-family);
+  color: var(--color-content-primary);
+}
+
+.iux-calheat__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+}
+
+.iux-calheat__dow,
+.iux-calheat__month {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: 10px;
+}
+
+.iux-calheat__cell {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-calheat__cell--l0 { fill: var(--color-surface-base); }
+.iux-calheat__cell--l1 { fill: var(--color-intent-primary-bg); opacity: 0.22; }
+.iux-calheat__cell--l2 { fill: var(--color-intent-primary-bg); opacity: 0.45; }
+.iux-calheat__cell--l3 { fill: var(--color-intent-primary-bg); opacity: 0.72; }
+.iux-calheat__cell--l4 { fill: var(--color-intent-primary-bg); opacity: 1; }
+
+.iux-calheat__cell--out { opacity: 0 !important; }
+
+.iux-calheat__scale {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-calheat__scale-chip {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.iux-calheat__scale-label {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+}

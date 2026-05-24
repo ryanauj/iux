@@ -1,0 +1,56 @@
+/*
+ * Sankey — source-to-destination flow across ordered stages. Three rungs:
+ * simple (ribbons only) → labeled (node labels + totals) → highlighted
+ * (one or more links accented to walk a path through the diagram).
+ * Ribbon intent is inherited from the source node so the palette's
+ * categorical scale carries flow identity.
+ */
+
+.iux-sankey {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-sankey__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-sankey__node--primary rect { fill: var(--color-intent-primary-bg); }
+.iux-sankey__node--info rect    { fill: var(--color-intent-info-bg); }
+.iux-sankey__node--success rect { fill: var(--color-intent-success-bg); }
+.iux-sankey__node--warning rect { fill: var(--color-intent-warning-bg); }
+.iux-sankey__node--danger rect  { fill: var(--color-intent-danger-bg); }
+.iux-sankey__node--neutral rect { fill: var(--color-intent-neutral-bg); }
+
+.iux-sankey__link { opacity: 0.4; stroke: none; }
+.iux-sankey__link--primary { fill: var(--color-intent-primary-bg); }
+.iux-sankey__link--info    { fill: var(--color-intent-info-bg); }
+.iux-sankey__link--success { fill: var(--color-intent-success-bg); }
+.iux-sankey__link--warning { fill: var(--color-intent-warning-bg); }
+.iux-sankey__link--danger  { fill: var(--color-intent-danger-bg); }
+.iux-sankey__link--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-sankey--highlighted .iux-sankey__link { opacity: 0.15; }
+.iux-sankey--highlighted .iux-sankey__link--accent { opacity: 0.75; }
+
+.iux-sankey__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-sankey__label-meta {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}

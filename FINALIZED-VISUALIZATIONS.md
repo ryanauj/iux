@@ -122,10 +122,16 @@ Mirrors components: classic baseline / evolved / showcase.
   views (selection in one viz brushes others), "what changed"
   annotation layer, hand-drawn axis under the Sketch palette.
 
-This iteration ships two Tier 1 visualizations: **Sparkline** and
-**LineChart**. The other Tier 1 entries (Bar, Histogram) and every
-Tier 2/3 entry are declared in this doc and implemented in
-follow-ups.
+This iteration ships twelve visualizations spanning all three tiers:
+
+- **Tier 1.** `Sparkline`, `LineChart`, `Bar`, `Histogram`, `Donut`, `Area`.
+- **Tier 2.** `Scatter`, `CalendarHeatmap`, `StackedArea`, `BoxPlot`, `Treemap`.
+- **Tier 3.** `Sankey`.
+
+Remaining declared entries (`SmallMultiples` primitive, `EncodingSwitcher`,
+`LinkedViews`, `AnnotationLayer`, hand-drawn-axis) are implemented in
+follow-ups — they are composition-of-vizzes work rather than new
+encodings.
 
 ---
 
@@ -254,48 +260,208 @@ status-at-an-event (when annotated).
   spills onto adjacent ticks; this chart wants ≤2 series in this
   palette.
 
-### Bar *(declared, not yet implemented)*
-Purpose: rank or compare across categories. Tier 1, next iteration.
+### Bar
+**Purpose.** Rank or compare across categories.
 
-### Histogram *(declared, not yet implemented)*
-Purpose: show the distribution of a single 1-D numeric variable.
-Tier 1, next iteration.
+**Data shape.** `{ key, label, value, intent? }[]` plus optional `target`.
+
+**Variant ladder.**
+1. `simple` — bars in the input order, vertical or horizontal.
+2. `sorted` — descending sort + per-bar value labels.
+3. `targeted` — sorted + dashed target line; bars tint
+   success/danger by whether they clear the target.
+
+**Pros & cons.** Works for 3–12 categories. Past ~20 categories,
+labels collide on the vertical layout — switch `orientation` to
+horizontal. Stop being a bar chart past ~40; use a treemap.
+
+**Palette fit.** **Best — Neubrutalism, Flat, Bloomberg.** Strong
+fills + heavy borders make ranking instant. **Worst —
+Claymorphism, Neumorphism.** Pastel fills wash bars into the
+surface; the target line vanishes.
+
+### Histogram
+**Purpose.** Distribution of a single 1-D numeric variable.
+
+**Data shape.** `values: number[]` + `bins`.
+
+**Variant ladder.**
+1. `counts` — raw bin counts; mean / median lines overlaid.
+2. `density` — counts normalized by total, comparable across
+   sample sizes.
+3. `cumulative` — empirical CDF; bars rise monotonically to 100%.
+
+**Pros & cons.** Works for ≥50 samples and 8–32 bins. Below that,
+the histogram becomes a bar chart with noise.
+
+**Palette fit.** **Best — Academic, Wikipedia, Data-dense.** The
+single-channel bars need a quiet engine. **Worst — Vaporwave.**
+Bin fills are tinted heavily; mean/median markers compete with the
+gradient backdrop.
+
+### Donut
+**Purpose.** Part-of-whole for ≤4 (works to 6) categorical parts.
+
+**Variant ladder.**
+1. `solid` — pie; no center.
+2. `donut` — center reserved for a total.
+3. `labeled` — in-slice percent label + legend with values.
+
+**Pros & cons.** Pie collapses past ~5 parts. For more, switch to
+`Treemap` or a sorted `Bar`. The Donut center is the slot that
+earns this encoding its keep over a bar chart.
+
+**Palette fit.** **Best — Memphis-80s, Flat, Material.** Loud
+intent fills clarify slices. **Worst — Editorial.** The wedges
+clash with the serif body type; legend dominates the chart.
+
+### Area
+**Purpose.** Trend with the under-curve area carrying emphasis.
+
+**Variant ladder.**
+1. `filled` — zero-baseline tinted fill + stroke.
+2. `baselined` — fill drops to the data minimum, useful when
+   zero is far from the data.
+3. `gradient` — top-to-bottom alpha gradient; aesthetic, lighter
+   ink than `filled`.
+
+**Pros & cons.** Single series only — for multi-series
+composition over time, reach for `StackedArea`. Past ~500 points,
+decimate.
+
+**Palette fit.** **Best — Aurora, Liquid-glass, Frutiger-aero.**
+The gradient variant reads as motion. **Worst — Newspaper, AAA.**
+The high-contrast engine fights the soft fill.
 
 ---
 
-## Tier 2 — evolved visualizations *(declared, not yet implemented)*
+## Tier 2 — evolved visualizations
+
+### Scatter
+**Purpose.** Correlate two continuous variables.
+
+**Variant ladder.**
+1. `dots` — single-series cloud.
+2. `grouped` — per-series intent fill; legend in the header.
+3. `regression` — least-squares fit overlay + equation and R².
+
+**Pros & cons.** Past ~800 points the cloud overplots; jitter or
+swap to a hexbin. Two-dimensional outliers are this encoding's
+job — it's why `Histogram` can't replace it.
+
+**Palette fit.** **Best — Bloomberg, Academic.** Quiet
+backgrounds let the dots breathe. **Worst — Claymorphism.** Dots
+get lost in the pastel field.
 
 ### CalendarHeatmap
 Year-grid of daily values; the canonical cyclic-pattern encoding.
 
-### SmallMultiples (primitive)
-A reusable wrapper that takes any single-series viz and renders one
-panel per dimension of a multi-key dataset.
+**Variant ladder.**
+1. `month` — single calendar block, named weekdays.
+2. `year` — 53-week strip; canonical "GitHub contributions" form.
+3. `streak` — year strip + best-streak readout for binary
+   habits.
+
+**Pros & cons.** Five tint levels via opacity over
+`--color-intent-primary-bg` — every palette gets a usable ramp
+without contract changes. Cliff: past ~3 years the strip stops
+fitting at default cell size.
+
+**Palette fit.** **Best — Bloomberg, Flat, Wikipedia.** Calm
+engines surface the tint ramp. **Worst — Neumorphism, Sketch.**
+Soft surfaces erase the lower tint levels.
 
 ### StackedArea
 Time-series + composition: how the parts of a whole evolve.
 
-### BoxPlot / Violin
-Distribution with quartile and density structure.
+**Variant ladder.**
+1. `stacked` — raw values summed to a total.
+2. `normalized` — 0–100% share over time.
+3. `streamgraph` — symmetric baseline; emphasizes shape over
+   precise comparison.
+
+**Pros & cons.** 2–5 series is the sweet spot. Past 6, individual
+bands become hard to track — switch to small multiples.
+
+**Palette fit.** **Best — Memphis, Aurora, Material.** Distinct
+intent fills make the bands separable. **Worst — Editorial.**
+Limited categorical hue budget; the bands blur.
+
+### BoxPlot
+Distribution with quartile structure.
+
+**Variant ladder.**
+1. `simple` — box (Q1–Q3) + whiskers to data extent + median line.
+2. `outliers` — Tukey 1.5×IQR fences; outliers as discrete dots.
+3. `jitter` — every sample shown as a jittered dot over the box.
+
+**Pros & cons.** Compares ≤8 groups well. Past that, the
+horizontal axis runs out of room — use small multiples of
+histograms. Below n≈30 per group, the quartile estimates wobble.
+
+**Palette fit.** **Best — Academic, Bloomberg.** The median line
+needs a strong content color. **Worst — Claymorphism.** Whisker
+lines disappear into the box fill.
+
+### Treemap
+Hierarchical or many-part composition.
+
+**Variant ladder.**
+1. `flat` — single level; squarified rects sized by value.
+2. `grouped` — one nested level; branch rects fade to header
+   intent under their children.
+3. `labeled` — grouped + per-leaf value labels.
+
+**Pros & cons.** Best when one dimension dominates and ranking
+the small entries doesn't matter. For accurate cross-cell
+comparison, sorted `Bar` wins.
+
+**Palette fit.** **Best — Bauhaus, Memphis, Material.** Saturated
+fills + flat strokes. **Worst — Glassmorphism.** Translucency
+between adjacent rects breaks the part-of-whole illusion.
 
 ---
 
-## Tier 3 — showcase differentiators *(declared, not yet implemented)*
+## Tier 3 — showcase differentiators
 
-### EncodingSwitcher
+### Sankey
+Source-to-destination flow across ordered stages.
+
+**Variant ladder.**
+1. `simple` — ribbons only; node intent inherited from stage.
+2. `labeled` — node labels and totals.
+3. `highlighted` — one or more `link.highlight: true` ribbons
+   carry the accent; the rest fade — used for "walk this path"
+   storytelling.
+
+**Pros & cons.** 2–4 stages, ≤8 nodes per stage. Past that, ribbon
+overplotting becomes unrecoverable; reach for a node-link
+diagram instead. Flow conservation is implicit — outgoing and
+incoming totals at every node must match in the data, or the
+ribbons silently mislead.
+
+**Palette fit.** **Best — Aurora, Vaporwave.** Transparent
+ribbons against gradient surfaces are exactly the look. **Worst —
+Newspaper, AAA.** High contrast amplifies ribbon overlap.
+
+### SmallMultiples (primitive) *(declared, not yet implemented)*
+A reusable wrapper that takes any single-series viz and renders one
+panel per dimension of a multi-key dataset.
+
+### EncodingSwitcher *(declared, not yet implemented)*
 One widget; same data; toggles bar / line / heatmap live. The
-canonical mix-and-match showpiece — only earns its place once at
-least three encodings exist.
+canonical mix-and-match showpiece — now actually possible since
+≥3 encodings ship.
 
-### LinkedViews
+### LinkedViews *(declared, not yet implemented)*
 Brush-and-select in one viz updates every other viz on the page.
 App-level composition; lives in a future dashboard app.
 
-### AnnotationLayer
+### AnnotationLayer *(declared, not yet implemented)*
 "What changed" overlay: a model identifies inflection points and
 labels them. Sits on top of any base encoding.
 
-### Hand-drawn axis
+### Hand-drawn axis *(declared, not yet implemented)*
 When the palette is Sketch, the axis stroke is rendered through the
 `--stroke-variance` filter so ticks wobble like marker on paper.
 Pure palette-driven differentiation.

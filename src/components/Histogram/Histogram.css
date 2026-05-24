@@ -1,0 +1,93 @@
+/*
+ * Histogram — 1-D distribution. Three rungs: counts → density → cumulative.
+ * Bars use --color-intent-info-bg as a neutral "data" channel; mean and
+ * median ride on success/warning intents so palettes that overload color
+ * still render them distinguishably.
+ */
+
+.iux-histogram {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-histogram__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-histogram__axis-line {
+  stroke: var(--color-border-default);
+  stroke-width: 1;
+}
+
+.iux-histogram__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-histogram__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-histogram__bar {
+  fill: var(--color-intent-info-bg);
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-histogram--cumulative .iux-histogram__bar {
+  fill: var(--color-intent-primary-bg);
+  opacity: 0.85;
+}
+
+.iux-histogram__marker {
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+
+.iux-histogram__marker--mean   { stroke: var(--color-intent-warning-bg); }
+.iux-histogram__marker--median { stroke: var(--color-intent-success-bg); }
+
+.iux-histogram__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-histogram__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-histogram__legend-mark {
+  display: inline-block;
+  width: 0.75em;
+  height: 2px;
+  background-color: var(--color-content-secondary);
+}
+
+.iux-histogram__legend-item--mean .iux-histogram__legend-mark   { background-color: var(--color-intent-warning-bg); }
+.iux-histogram__legend-item--median .iux-histogram__legend-mark { background-color: var(--color-intent-success-bg); }
+
+.iux-histogram__legend-meta {
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}

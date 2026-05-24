@@ -1,0 +1,102 @@
+/*
+ * Scatter — correlate two variables. Three rungs: dots → grouped (by
+ * series intent) → regression (least-squares overlay + equation/R²).
+ * Per-series fill comes from the intent palette like every other viz.
+ */
+
+.iux-scatter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-scatter__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-scatter__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-scatter__swatch {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+}
+
+.iux-scatter__legend-item--primary .iux-scatter__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-scatter__legend-item--info .iux-scatter__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-scatter__legend-item--success .iux-scatter__swatch { background-color: var(--color-intent-success-bg); }
+.iux-scatter__legend-item--warning .iux-scatter__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-scatter__legend-item--danger .iux-scatter__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-scatter__legend-item--neutral .iux-scatter__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-scatter__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-scatter__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-scatter__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.iux-scatter__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-scatter__dot { opacity: 0.78; }
+
+.iux-scatter__series--primary .iux-scatter__dot { fill: var(--color-intent-primary-bg); }
+.iux-scatter__series--info    .iux-scatter__dot { fill: var(--color-intent-info-bg); }
+.iux-scatter__series--success .iux-scatter__dot { fill: var(--color-intent-success-bg); }
+.iux-scatter__series--warning .iux-scatter__dot { fill: var(--color-intent-warning-bg); }
+.iux-scatter__series--danger  .iux-scatter__dot { fill: var(--color-intent-danger-bg); }
+.iux-scatter__series--neutral .iux-scatter__dot { fill: var(--color-intent-neutral-bg); }
+
+.iux-scatter__fit {
+  stroke: var(--color-content-primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+  opacity: 0.7;
+}
+
+.iux-scatter__axis-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-scatter__axis-label--y { font-style: italic; }
+
+.iux-scatter__fit-label {
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}

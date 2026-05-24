@@ -1,0 +1,82 @@
+/*
+ * Area — filled trend line. Three rungs: filled (zero-baseline tint) →
+ * baselined (fill drops to data min, useful when zero is far away) →
+ * gradient (top-to-bottom fade). All variants use a single intent for
+ * the fill + stroke; multi-series composition is StackedArea's job.
+ */
+
+.iux-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-area__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-area__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-area__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+.iux-area__baseline  { stroke: var(--color-border-strong); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.6; }
+
+.iux-area__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-area__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-area__stroke { stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+
+.iux-area--primary .iux-area__stroke { stroke: var(--color-intent-primary-bg); }
+.iux-area--info    .iux-area__stroke { stroke: var(--color-intent-info-bg); }
+.iux-area--success .iux-area__stroke { stroke: var(--color-intent-success-bg); }
+.iux-area--warning .iux-area__stroke { stroke: var(--color-intent-warning-bg); }
+.iux-area--danger  .iux-area__stroke { stroke: var(--color-intent-danger-bg); }
+.iux-area--neutral .iux-area__stroke { stroke: var(--color-intent-neutral-bg); }
+
+.iux-area--primary .iux-area__fill { fill: var(--color-intent-primary-bg); opacity: 0.22; }
+.iux-area--info    .iux-area__fill { fill: var(--color-intent-info-bg); opacity: 0.22; }
+.iux-area--success .iux-area__fill { fill: var(--color-intent-success-bg); opacity: 0.22; }
+.iux-area--warning .iux-area__fill { fill: var(--color-intent-warning-bg); opacity: 0.22; }
+.iux-area--danger  .iux-area__fill { fill: var(--color-intent-danger-bg); opacity: 0.22; }
+.iux-area--neutral .iux-area__fill { fill: var(--color-intent-neutral-bg); opacity: 0.22; }
+
+.iux-area--gradient .iux-area__fill { opacity: 1; }
+
+.iux-area--primary .iux-area__grad-top { stop-color: var(--color-intent-primary-bg); stop-opacity: 0.55; }
+.iux-area--info    .iux-area__grad-top { stop-color: var(--color-intent-info-bg); stop-opacity: 0.55; }
+.iux-area--success .iux-area__grad-top { stop-color: var(--color-intent-success-bg); stop-opacity: 0.55; }
+.iux-area--warning .iux-area__grad-top { stop-color: var(--color-intent-warning-bg); stop-opacity: 0.55; }
+.iux-area--danger  .iux-area__grad-top { stop-color: var(--color-intent-danger-bg); stop-opacity: 0.55; }
+.iux-area--neutral .iux-area__grad-top { stop-color: var(--color-intent-neutral-bg); stop-opacity: 0.55; }
+
+.iux-area--primary .iux-area__grad-bot { stop-color: var(--color-intent-primary-bg); stop-opacity: 0; }
+.iux-area--info    .iux-area__grad-bot { stop-color: var(--color-intent-info-bg); stop-opacity: 0; }
+.iux-area--success .iux-area__grad-bot { stop-color: var(--color-intent-success-bg); stop-opacity: 0; }
+.iux-area--warning .iux-area__grad-bot { stop-color: var(--color-intent-warning-bg); stop-opacity: 0; }
+.iux-area--danger  .iux-area__grad-bot { stop-color: var(--color-intent-danger-bg); stop-opacity: 0; }
+.iux-area--neutral .iux-area__grad-bot { stop-color: var(--color-intent-neutral-bg); stop-opacity: 0; }
