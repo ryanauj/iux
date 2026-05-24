@@ -31,7 +31,7 @@ import { palette as pixelArtHyperlight } from './pixel-art-hyperlight'
 import { palette as sketchMarker } from './sketch-marker'
 import { palette as wikipedia } from './wikipedia'
 import { palette as brutalistElegant } from './brutalist-elegant'
-import { palette as bloombergTerminal } from './bloomberg-terminal'
+import { palette as financialTerminal } from './financial-terminal'
 import { palette as midCenturyModern } from './mid-century-modern'
 import { palette as dataDenseLight } from './data-dense-light'
 import { palette as cardstockLayered } from './cardstock-layered'
@@ -74,7 +74,7 @@ export const palettes = {
   'sketch-marker': sketchMarker,
   wikipedia,
   'brutalist-elegant': brutalistElegant,
-  'bloomberg-terminal': bloombergTerminal,
+  'financial-terminal': financialTerminal,
   'mid-century-modern': midCenturyModern,
   'data-dense-light': dataDenseLight,
   'cardstock-layered': cardstockLayered,

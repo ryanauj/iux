@@ -164,22 +164,23 @@ out of the engine.
 
 Three additional palettes prove the Flat engine carries distinct
 data-density and mid-century registers without engine changes. Palettes
-34 and 36 anchor the density extremes — Bloomberg-style single-phosphor
-on pure black and Tufte-style ink-on-near-white — and palette 35 sits
+34 and 36 anchor the density extremes — trading-terminal amber on a
+dark field and Tufte-style ink-on-near-white — and palette 35 sits
 between them as the quiet warm-paper register the Eames era taught
 how to draw. All three differ from Flat / Classic only in `color.*`,
-`space.*` (Bloomberg tightens, the other two stay default), `radius.*`,
-`elevation.*` (all three replace soft drop shadows with inset hairline
-frames), `typography.*` (Bloomberg goes full-mono; mid-century picks a
-humanist sans; data-dense scales the type *down* to sparkline-ready
-sizes), and `effect.overlay.image` (mid-century paints a sparse
-atomic-age dot field at low alpha; the other two stay `'none'`).
+`space.*` (the financial-terminal tightens, the other two stay default),
+`radius.*`, `elevation.*` (all three replace soft drop shadows with
+inset hairline frames), `typography.*` (financial-terminal mixes a sans
+body with mono display / labels / code; mid-century picks a humanist
+sans; data-dense scales the type *down* to sparkline-ready sizes), and
+`effect.overlay.image` (mid-century paints a sparse atomic-age dot field
+at low alpha; the other two stay `'none'`).
 
 | #  | Palette                 | Engine | A11y         | One-line philosophy                                                                            |
 |----|-------------------------|--------|--------------|------------------------------------------------------------------------------------------------|
-| 34 | Bloomberg Terminal      | Flat   | experimental | Pure-black field, single-phosphor amber type, mono everywhere, green/red as DATA not decoration — information density as aesthetic. |
+| 34 | Financial Terminal      | Flat   | experimental | Dark field, trading-amber phosphor, mono display / labels with a sans body for prose, green/red/yellow/cyan intents read as DATA not decoration — generic financial-workstation density. |
 | 35 | Mid-century modern      | Flat   | pass         | Cream paper, walnut ink, mustard + teal accents, atomic-age dot pattern painted sparingly via the decoration token — Eames-feel restraint. |
-| 36 | Data-dense light        | Flat   | pass         | Near-white field, ink-slate body, desaturated semantic intents, sparkline-ready type scale — Tufte-influenced density without Bloomberg's mono register. |
+| 36 | Data-dense light        | Flat   | pass         | Near-white field, ink-slate body, desaturated semantic intents, sparkline-ready type scale — Tufte-influenced density without the financial-terminal's mono / dark register. |
 
 ## Group K — cardstock layered (new engine)
 

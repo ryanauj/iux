@@ -182,9 +182,8 @@ export const palette: Palette = {
     typography: {
       family: {
         // Mono everywhere — the font choice is load-bearing. The engine
-        // ships `IBM Plex Mono` via the existing Google Fonts CDN import
-        // (already loaded in `src/styles.css` for Bloomberg) and chains
-        // through other free monos and OS defaults. `Iosevka Term` leads
+        // chains through `IBM Plex Mono` and other free monos before
+        // falling back to OS monospaced defaults. `Iosevka Term` leads
         // the chain because it's tuned for terminal applications (denser
         // x-height, narrower glyphs) — present locally on developer
         // machines and as a free OFL face anyone can install.

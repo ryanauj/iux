@@ -2,7 +2,7 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Data-dense light — flat engine in a Tufte-influenced data-viz
- * register. Bloomberg Terminal's friendlier cousin: same density
+ * register. Financial Terminal's friendlier cousin: same density
  * stance, but with a cool near-white field, ink-slate body, and
  * desaturated semantic intents that survive on a light surface
  * without shouting.
