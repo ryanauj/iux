@@ -108,6 +108,7 @@ export function GameDetail({ id }: GameDetailProps) {
       {game.quarterScores && (
         <section className="sports-page__section">
           <h2 className="sports-page__section-title">Quarter-by-quarter</h2>
+          <div className="game-detail__qbq">
           <table className="iux-table__table" style={{ width: '100%' }}>
             <thead>
               <tr>
@@ -135,6 +136,7 @@ export function GameDetail({ id }: GameDetailProps) {
               </tr>
             </tbody>
           </table>
+          </div>
         </section>
       )}
 

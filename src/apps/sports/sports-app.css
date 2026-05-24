@@ -15,6 +15,8 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-5);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
   background-color: var(--color-surface-raised);
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
 }
@@ -657,4 +659,284 @@
   border-radius: var(--radius-md);
   border: var(--border-width-thin) solid var(--color-border-subtle);
   overflow: hidden;
+}
+
+/*
+ * Mobile: switch sports tables from `table-layout: fixed` (which
+ * distributes a fixed 28rem `min-width` equally across all columns and
+ * makes 10-col tables like Players/Standings render at ~45px per
+ * column, with text overflowing into adjacent cells) to `auto`. With
+ * `auto` each column sizes to its content, the table grows naturally,
+ * and the existing `.iux-table__scroll` wrapper handles the horizontal
+ * scroll. The 28rem floor is also dropped on mobile so single-column
+ * captions don't reserve dead space at narrow widths.
+ */
+@media (max-width: 40rem) {
+  .sports-app .iux-table__table {
+    table-layout: auto;
+    min-width: 0;
+  }
+
+  .sports-app .iux-table__td,
+  .sports-app .iux-table__th {
+    white-space: nowrap;
+  }
+
+  /* The team chip in roster/standings rows already has internal
+     padding; let player name links collapse to two words on one line
+     by keeping the cell from being squeezed. */
+  .sports-app .iux-table__td a {
+    white-space: nowrap;
+  }
+
+  /* iOS uses momentary overlay scrollbars so the user can't see at
+     rest whether the table extends past the right edge. Force a thin
+     persistent scrollbar on mobile so the horizontal scroll surface is
+     discoverable without swiping first. */
+  .sports-app .iux-table__scroll {
+    scrollbar-width: thin;
+  }
+
+  .sports-app .iux-table__scroll::-webkit-scrollbar {
+    height: 6px;
+    -webkit-appearance: none;
+  }
+
+  .sports-app .iux-table__scroll::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-default);
+    border-radius: var(--radius-pill);
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+/*
+ * Phone-narrow tweaks. The desktop header packs brand + nav + palette
+ * picker + exit on one row and wraps once it runs out of room — on a
+ * phone that wraps into 3-4 ragged rows that eat ~30% of the viewport.
+ * Below 40rem we explicitly stack the header into three predictable
+ * rows: brand+exit, nav (horizontal-scrollable), then the palette
+ * picker. Display titles are clamped to title-size so headlines don't
+ * line-break a player's name into two lines. Detail-page headers
+ * (team/player/game) stack their meta block under the identity block
+ * instead of competing for the right gutter. The featured-games and
+ * teams grids fall back to a single column (already do — auto-fit
+ * minmax(18rem)). Tables keep their internal horizontal scroll; we
+ * surface a faded-right scroll affordance so it's obvious the table
+ * extends past the visible edge.
+ */
+@media (max-width: 40rem) {
+  .sports-app__header {
+    padding: var(--space-2) var(--space-3);
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+    gap: var(--space-2);
+    row-gap: var(--space-2);
+  }
+
+  .sports-app__brand {
+    font-size: var(--type-subheading-size);
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .sports-app__brand-name {
+    /* Allow the long brand name to truncate before pushing the exit
+       link off the row. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Mark keeps its desktop 2em sizing — the parent font is already
+     smaller (subheading-size) so the absolute pill ends up around
+     32-36px, which is the right tap target and still legible. */
+
+  /* Desktop reserves a flex spacer between nav and picker; on mobile
+     each row sits in its own band, so the spacer has nothing to do. */
+  .sports-app__spacer {
+    display: none;
+  }
+
+  .sports-app__exit {
+    order: 2;
+    margin-left: auto;
+    padding: var(--space-2) var(--space-2);
+    /* Bigger touch target — phones use the exit a lot to bounce back to
+       the app picker. */
+    min-height: 2.25rem;
+  }
+
+  .sports-app__nav {
+    order: 3;
+    /* Take the full row, no wrap — overflowing nav links scroll
+       horizontally instead of stacking. */
+    flex: 1 1 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* A negative inline margin lets the scroll surface bleed to the
+       edge of the header so swiping doesn't feel clipped. */
+    margin-inline: calc(var(--space-3) * -1);
+    padding-inline: var(--space-3);
+  }
+
+  .sports-app__nav::-webkit-scrollbar { display: none; }
+
+  .sports-app__nav-link {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: var(--space-2) var(--space-2);
+  }
+
+  .sports-app__picker {
+    order: 4;
+    /* Drop the 14rem desktop floor — phones don't have room. */
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  /* Hide the "Palette" label visually on mobile to recover ~24px of
+     vertical space — the Select keeps its accessible name via the
+     label element (visually-hidden, not removed from the tree). */
+  .sports-app__picker .iux-select__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---------- Page chrome ---------- */
+
+  .sports-app__main {
+    padding: var(--space-3);
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+  }
+
+  .sports-page__title {
+    font-size: var(--type-title-size);
+  }
+
+  .sports-page__subtitle {
+    font-size: var(--type-body-size);
+    margin-bottom: var(--space-4);
+  }
+
+  .sports-page__section {
+    margin-bottom: var(--space-5);
+  }
+
+  .sports-page__section-title {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--type-subheading-size);
+  }
+
+  /* ---------- Detail headers ---------- */
+
+  .team-detail__header,
+  .player-detail__header {
+    padding: var(--space-3);
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .team-detail__title,
+  .player-detail__title {
+    font-size: var(--type-title-size);
+    line-height: 1.1;
+  }
+
+  .team-detail__crest,
+  .player-detail__avatar {
+    width: 3rem;
+    height: 3rem;
+    font-size: var(--type-subheading-size);
+  }
+
+  .team-detail__city,
+  .player-detail__subline {
+    font-size: var(--type-body-size);
+  }
+
+  .team-detail__meta,
+  .player-detail__header .team-detail__meta {
+    margin-left: 0;
+    width: 100%;
+    gap: var(--space-3);
+  }
+
+  .team-detail__meta-item,
+  .player-detail__header .team-detail__meta-item {
+    /* Two-up on phones — 8rem ≈ 128px, fits two columns at 390px and
+       wraps cleanly to one when the value text is long. */
+    flex: 1 1 8rem;
+    min-width: 6rem;
+  }
+
+  /* ---------- Game detail ---------- */
+
+  .game-detail__header {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'away home'
+      'middle middle';
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .game-detail__side:first-child  { grid-area: away; }
+  .game-detail__side:last-child   { grid-area: home; }
+  .game-detail__middle            { grid-area: middle; }
+
+  .game-detail__crest {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: var(--type-subheading-size);
+  }
+
+  .game-detail__team {
+    font-size: var(--type-body-size);
+    font-family: var(--type-heading-family);
+  }
+
+  .game-detail__big-score {
+    font-size: var(--type-display-size);
+  }
+
+  /* The hand-rolled quarter-by-quarter <table> (in GameDetail.tsx) has
+     no scroll wrapper — give it one via the section so it doesn't push
+     the page sideways when the team abbreviations + 4 quarters + total
+     exceed the viewport. */
+  .game-detail__qbq {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Slightly smaller stat tile so two-up fits without crowding. */
+  .player-stat {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .player-stat__value {
+    font-size: var(--type-subheading-size);
+  }
+
+  /* ---------- Inline tweaks ---------- */
+
+  .team-card__name {
+    font-size: var(--type-subheading-size);
+  }
+
+  .score-card__score {
+    font-size: var(--type-subheading-size);
+  }
 }
