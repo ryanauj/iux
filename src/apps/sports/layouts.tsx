@@ -31,7 +31,6 @@ export interface ShellProps {
   brand: ReactNode
   nav: NavItem[]
   route: SportsRoute
-  pickers: ReactNode
   exit: ReactNode
   children: ReactNode
 }
@@ -88,7 +87,6 @@ function TopbarShell(props: ShellProps) {
           <NavLinks nav={props.nav} route={props.route} className="sports-app__nav-link" />
         </nav>
         <span className="sports-app__spacer" />
-        {props.pickers}
         {props.exit}
       </header>
       <main className="sports-app__main">{props.children}</main>
@@ -111,7 +109,6 @@ function SidebarShell(props: ShellProps) {
           </nav>
         </div>
         <div className="sports-app__sidebar-bottom">
-          {props.pickers}
           {props.exit}
         </div>
       </aside>
@@ -127,7 +124,6 @@ function StadiumShell(props: ShellProps) {
         <div className="sports-app__stadium-top">
           {props.brand}
           <span className="sports-app__spacer" />
-          {props.pickers}
           {props.exit}
         </div>
         <nav className="sports-app__stadium-nav" aria-label="Primary">
@@ -149,7 +145,6 @@ function DockShell(props: ShellProps) {
       <header className="sports-app__header sports-app__header--minimal">
         {props.brand}
         <span className="sports-app__spacer" />
-        {props.pickers}
         {props.exit}
       </header>
       <main className="sports-app__main">{props.children}</main>
@@ -212,7 +207,6 @@ function DrawerShell(props: ShellProps) {
             className="sports-app__drawer-link"
           />
         </nav>
-        <div className="sports-app__drawer-bottom">{props.pickers}</div>
       </aside>
       <main className="sports-app__main">{props.children}</main>
     </div>
