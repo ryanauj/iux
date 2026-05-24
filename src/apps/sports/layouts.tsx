@@ -5,6 +5,7 @@ import { PaletteShell } from './shells/palette'
 import { CourtShell } from './shells/court'
 import { TabsShell } from './shells/tabs'
 import { FeedShell } from './shells/feed'
+import { TriptychShell } from './shells/triptych'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -16,7 +17,9 @@ import { FeedShell } from './shells/feed'
  *   - `court` replaces the Home page with an interactive court SVG;
  *   - `tabs` keeps multiple pages open in a tab strip;
  *   - `feed` collapses Home into one chronological stream and rails it
- *     alongside detail pages.
+ *     alongside detail pages;
+ *   - `triptych` shows a three-column list / summary / deep-panel layout
+ *     where the standard route page renders in the right column.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -29,6 +32,7 @@ export const LAYOUT_IDS = [
   'court',
   'tabs',
   'feed',
+  'triptych',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -44,6 +48,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'court', label: 'Court — spatial map' },
   { value: 'tabs', label: 'Tabs — workspace' },
   { value: 'feed', label: 'Feed — timeline stream' },
+  { value: 'triptych', label: 'Triptych — list / summary / detail' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -114,6 +119,8 @@ export function Shell(props: ShellProps) {
       return <TabsShell {...props} />
     case 'feed':
       return <FeedShell {...props} />
+    case 'triptych':
+      return <TriptychShell {...props} />
   }
 }
 
