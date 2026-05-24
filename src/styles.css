@@ -852,6 +852,191 @@ body {
 }
 
 /*
+ * Data viz contrast booster for dark outline palettes.
+ *
+ * Several palettes (terminal-tui, tron-dark-neon, cyberpunk-neon-noir,
+ * bloomberg-terminal, crt-phosphor-amber, crt-phosphor-green) paint
+ * button / badge fills with low-alpha translucent tints so that
+ * interactive controls read as outlined boxes against the dark surface
+ * rather than as filled blocks. That's the right call for the UI
+ * controls — but data viz components consume the same
+ * `--color-intent-*-bg` slot to ink bars, lines, scatter points, donut
+ * slices, and heatmap cells, and a 10%–20%-alpha tint over a near-black
+ * surface renders almost invisible. The user-reported symptom is "viz
+ * is tough to see in terminal."
+ *
+ * The fix scopes a saturated re-mapping of `--color-intent-*-bg` (and
+ * the matching `--color-intent-*-content` for text drawn on top of
+ * those fills, e.g. Donut slice labels, LineChart annotation labels)
+ * to viz container roots only. Because CSS custom properties cascade
+ * to descendants, redefining the var inside a `.iux-{viz}` element
+ * affects only that subtree — buttons, badges, alerts, and other
+ * intent-tinted UI elsewhere on the page keep their original outlined-
+ * box treatment.
+ *
+ * For the four polychromatic palettes the saturated viz color comes
+ * straight from `intent.*.border` (which the palettes already define
+ * as the full-strength version of each intent). Terminal-TUI's `info`
+ * is bumped to a distinct cyan so it doesn't collide with the blue
+ * `primary` in categorical viz; Tron's `neutral` uses an off-cyan
+ * white so it doesn't collide with the cyan-family primary. Bloomberg
+ * leans on its three semantic colors (amber / green / red) and uses
+ * the link-amber for `info` so multi-series viz doesn't go fully mono.
+ *
+ * For the two monochrome CRT phosphor palettes every intent maps to
+ * the single phosphor color at a 6-step opacity ladder built with
+ * `color-mix` so no raw hex appears outside the palette files. This
+ * is the only categorical signal a strictly-monochrome screen can
+ * carry, and it doubles as an ordinal scale for sequential / diverging
+ * viz (Heatmap cells multiply the var-fill by their own opacity step,
+ * so the ramp still works — every cell stays on phosphor hue).
+ *
+ * Adding a new viz component: extend the `:is(...)` selector list with
+ * the component's root class. Adding a new dark palette: add a block
+ * that redefines the six intent-bg / intent-content pairs.
+ */
+.palette-root[data-palette='terminal-tui'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+) {
+  --color-intent-primary-bg: var(--color-intent-primary-border);
+  --color-intent-primary-content: var(--color-content-inverse);
+  /* Cyan instead of the palette's blue `info.border` so info doesn't
+     collide with primary in a multi-series chart. */
+  --color-intent-info-bg: rgb(34, 211, 238);
+  --color-intent-info-content: var(--color-content-inverse);
+  --color-intent-success-bg: var(--color-intent-success-border);
+  --color-intent-success-content: var(--color-content-inverse);
+  --color-intent-warning-bg: var(--color-intent-warning-border);
+  --color-intent-warning-content: var(--color-content-inverse);
+  --color-intent-danger-bg: var(--color-intent-danger-border);
+  --color-intent-danger-content: var(--color-content-inverse);
+  /* Warm-white ink derived from the palette's body-text color so the
+     neutral series reads as the de-saturated baseline against the
+     colorful intents. */
+  --color-intent-neutral-bg: color-mix(in srgb, var(--color-content-primary) 85%, transparent);
+  --color-intent-neutral-content: var(--color-content-inverse);
+}
+
+.palette-root[data-palette='tron-dark-neon'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+) {
+  --color-intent-primary-bg: var(--color-intent-primary-border);
+  --color-intent-primary-content: var(--color-content-inverse);
+  --color-intent-info-bg: var(--color-intent-info-border);
+  --color-intent-info-content: var(--color-content-inverse);
+  --color-intent-success-bg: var(--color-intent-success-border);
+  --color-intent-success-content: var(--color-content-inverse);
+  --color-intent-warning-bg: var(--color-intent-warning-border);
+  --color-intent-warning-content: var(--color-content-inverse);
+  --color-intent-danger-bg: var(--color-intent-danger-border);
+  --color-intent-danger-content: var(--color-content-inverse);
+  /* Off-cyan slate-white so neutral doesn't collide with the cyan-
+     family primary / info. */
+  --color-intent-neutral-bg: rgba(226, 232, 240, 0.82);
+  --color-intent-neutral-content: var(--color-content-inverse);
+}
+
+.palette-root[data-palette='cyberpunk-neon-noir'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+) {
+  --color-intent-primary-bg: var(--color-intent-primary-border);
+  --color-intent-primary-content: var(--color-content-inverse);
+  --color-intent-info-bg: var(--color-intent-info-border);
+  --color-intent-info-content: var(--color-content-inverse);
+  --color-intent-success-bg: var(--color-intent-success-border);
+  --color-intent-success-content: var(--color-content-inverse);
+  --color-intent-warning-bg: var(--color-intent-warning-border);
+  --color-intent-warning-content: var(--color-content-inverse);
+  --color-intent-danger-bg: var(--color-intent-danger-border);
+  --color-intent-danger-content: var(--color-content-inverse);
+  --color-intent-neutral-bg: color-mix(in srgb, var(--color-content-primary) 82%, transparent);
+  --color-intent-neutral-content: var(--color-content-inverse);
+}
+
+.palette-root[data-palette='bloomberg-terminal'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+) {
+  --color-intent-primary-bg: var(--color-intent-primary-border);
+  --color-intent-primary-content: var(--color-content-inverse);
+  /* The palette's `info.border` is a translucent amber that disappears
+     on the pure-black surface; the link slot carries a lighter amber
+     that gives info a distinct ink against primary/warning. */
+  --color-intent-info-bg: var(--color-content-link);
+  --color-intent-info-content: var(--color-content-inverse);
+  --color-intent-success-bg: var(--color-intent-success-border);
+  --color-intent-success-content: var(--color-content-inverse);
+  --color-intent-warning-bg: var(--color-intent-warning-border);
+  --color-intent-warning-content: var(--color-content-inverse);
+  --color-intent-danger-bg: var(--color-intent-danger-border);
+  --color-intent-danger-content: var(--color-content-inverse);
+  /* Muted amber so neutral stays on the bloomberg amber-family but
+     reads as the de-saturated baseline. */
+  --color-intent-neutral-bg: color-mix(in srgb, var(--color-content-primary) 55%, transparent);
+  --color-intent-neutral-content: var(--color-content-inverse);
+}
+
+.palette-root[data-palette='crt-phosphor-amber'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+),
+.palette-root[data-palette='crt-phosphor-green'] :is(
+  .iux-adjmatrix, .iux-arc, .iux-area, .iux-bar, .iux-boxplot,
+  .iux-bundle, .iux-calheat, .iux-chord, .iux-circnet, .iux-dendro,
+  .iux-donut, .iux-funnel, .iux-gauge, .iux-heatmap, .iux-hexbin,
+  .iux-histogram, .iux-hive, .iux-linechart, .iux-lollipop, .iux-nlbar,
+  .iux-nodelink, .iux-pack, .iux-radar, .iux-sankey, .iux-scatter,
+  .iux-sparkline, .iux-stackedarea, .iux-sun, .iux-timeline,
+  .iux-treemap, .iux-violin, .iux-waffle, .iux-waterfall
+) {
+  /* Every intent maps to the single phosphor color (which the palette
+     emits as `--color-content-primary`) at a 6-step opacity ladder.
+     The phosphor hue stays invariant — that's the engine's promise —
+     and the alpha steps double as both categorical and ordinal signals
+     for the chart. */
+  --color-intent-primary-bg: var(--color-content-primary);
+  --color-intent-primary-content: var(--color-content-inverse);
+  --color-intent-info-bg: color-mix(in srgb, var(--color-content-primary) 78%, transparent);
+  --color-intent-info-content: var(--color-content-inverse);
+  --color-intent-success-bg: color-mix(in srgb, var(--color-content-primary) 92%, transparent);
+  --color-intent-success-content: var(--color-content-inverse);
+  --color-intent-warning-bg: color-mix(in srgb, var(--color-content-primary) 66%, transparent);
+  --color-intent-warning-content: var(--color-content-inverse);
+  --color-intent-danger-bg: color-mix(in srgb, var(--color-content-primary) 54%, transparent);
+  --color-intent-danger-content: var(--color-content-inverse);
+  --color-intent-neutral-bg: color-mix(in srgb, var(--color-content-primary) 42%, transparent);
+  --color-intent-neutral-content: var(--color-content-inverse);
+}
+
+/*
  * Stories scaffold — the only consumer of the components in this repo.
  * Sized via space tokens once a palette is mounted; outside any palette
  * we fall back to standard CSS keywords so the unstyled boot doesn't crash.
