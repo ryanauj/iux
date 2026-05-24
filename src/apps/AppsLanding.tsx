@@ -1,7 +1,17 @@
-import { palettes } from '../../palettes'
+import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { Card } from '../components/Card/Card'
 import { Link } from './Link'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../components/DraggableControls/DraggableControls'
+import {
+  MOTION_FIELD_OPTIONS,
+  resolveMotionScale,
+} from '../theme/motionScales'
+import { replaceParams, type HashLocation } from './router'
 import './apps.css'
 
 interface AppEntry {
@@ -22,11 +32,55 @@ const APPS: AppEntry[] = [
   },
 ]
 
-export function AppsLanding() {
-  // Landing uses the default palette as its chrome, regardless of any earlier
-  // app the user was browsing.
+const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
+const DEFAULT_LANDING_PALETTE: PaletteId = 'flat-classic'
+
+interface AppsLandingProps {
+  location: HashLocation
+}
+
+export function AppsLanding({ location }: AppsLandingProps) {
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
+
+  const paletteParam = location.params.get('palette')
+  const paletteId: PaletteId =
+    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
+      ? (paletteParam as PaletteId)
+      : DEFAULT_LANDING_PALETTE
+  const palette = palettes[paletteId]
+  const motionScale = resolveMotionScale(location.params.get('motion'))
+
+  const handlePaletteChange = (next: string) => {
+    replaceParams({ palette: next === DEFAULT_LANDING_PALETTE ? undefined : next })
+  }
+  const handleMotionChange = (next: string) => {
+    replaceParams({ motion: next === '2' ? undefined : next })
+  }
+
+  const fields: Field[] = [
+    {
+      key: 'palette',
+      label: 'Palette',
+      short: 'P',
+      value: paletteId,
+      options: PALETTE_IDS.map(id => ({
+        value: id,
+        label: `${palettes[id].name} (${palettes[id].engine})`,
+      })),
+      onChange: handlePaletteChange,
+    },
+    {
+      key: 'motion',
+      label: 'Motion',
+      short: 'M',
+      value: String(motionScale),
+      options: MOTION_FIELD_OPTIONS.map(o => ({ ...o })),
+      onChange: handleMotionChange,
+    },
+  ]
+
   return (
-    <PaletteRoot palette={palettes['flat-classic']} as="section">
+    <PaletteRoot palette={palette} as="section" motionScale={motionScale}>
       <div className="apps-landing">
         <Link to="/" className="apps-landing__back">← Back to component showcase</Link>
         <header className="apps-landing__header">
@@ -50,6 +104,11 @@ export function AppsLanding() {
           ))}
         </div>
       </div>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={fields}
+      />
     </PaletteRoot>
   )
 }

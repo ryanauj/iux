@@ -16,8 +16,8 @@ export function AppsRouter({ location }: AppsRouterProps) {
   // segments[0] === 'apps'; segments[1] is the app id.
   const appId = segments[1]
 
-  if (!appId) return <AppsLanding />
+  if (!appId) return <AppsLanding location={location} />
   if (appId === 'sports') return <SportsApp location={location} />
 
-  return <AppsLanding />
+  return <AppsLanding location={location} />
 }
