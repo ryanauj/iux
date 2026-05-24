@@ -5,6 +5,13 @@ import { Select, type SelectOption } from '../../components/Select/Select'
 import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchSportsRoute, sportsRoutes, type SportsRoute } from './routes'
+import {
+  DEFAULT_LAYOUT,
+  LAYOUT_OPTIONS,
+  Shell,
+  resolveLayoutId,
+  type NavItem,
+} from './layouts'
 import { Home } from './pages/Home'
 import { Teams } from './pages/Teams'
 import { TeamDetail } from './pages/TeamDetail'
@@ -21,13 +28,6 @@ const DEFAULT_PALETTE: PaletteId = 'flat-classic'
 
 interface SportsAppProps {
   location: HashLocation
-}
-
-interface NavItem {
-  to: string
-  label: string
-  /** Predicate against the current `SportsRoute` to decide active state. */
-  isActive: (route: SportsRoute) => boolean
 }
 
 const NAV: NavItem[] = [
@@ -62,47 +62,59 @@ export function SportsApp({ location }: SportsAppProps) {
     replaceParams({ palette: next === DEFAULT_PALETTE ? undefined : next })
   }
 
+  // Layout lives entirely in the URL hash query as `?layout=<id>`. The
+  // router treats `layout` as a sticky param, so every `Link` carries it
+  // forward across navigation; the dropdown writes to the URL with
+  // `replaceParams` (omit when the default is chosen so URLs stay clean).
+  const layoutId = resolveLayoutId(location.params.get('layout'))
+
+  const handleLayoutChange = (next: string) => {
+    const id = resolveLayoutId(next)
+    replaceParams({ layout: id === DEFAULT_LAYOUT ? undefined : id })
+  }
+
+  const brand = (
+    <Link to={sportsRoutes.home()} className="sports-app__brand">
+      <span className="sports-app__brand-mark" aria-hidden="true">NBA</span>
+      <span className="sports-app__brand-name">Hoops Hub</span>
+    </Link>
+  )
+
+  const pickers = (
+    <div className="sports-app__pickers">
+      <Select
+        variant="dropdown"
+        label="Layout"
+        value={layoutId}
+        options={LAYOUT_OPTIONS}
+        onChange={handleLayoutChange}
+      />
+      <Select
+        variant="dropdown"
+        label="Palette"
+        value={paletteId}
+        options={paletteOptions}
+        onChange={handlePaletteChange}
+      />
+    </div>
+  )
+
+  const exit = (
+    <Link to="/apps" className="sports-app__exit">← Apps</Link>
+  )
+
   return (
     <PaletteRoot palette={palette} as="section">
-      <div className="sports-app">
-        <header className="sports-app__header">
-          <Link to={sportsRoutes.home()} className="sports-app__brand">
-            <span className="sports-app__brand-mark" aria-hidden="true">NBA</span>
-            <span className="sports-app__brand-name">Hoops Hub</span>
-          </Link>
-          <nav className="sports-app__nav" aria-label="Primary">
-            {NAV.map(item => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={
-                  item.isActive(route)
-                    ? 'sports-app__nav-link is-active'
-                    : 'sports-app__nav-link'
-                }
-                aria-current={item.isActive(route) ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <span className="sports-app__spacer" />
-          <div className="sports-app__picker">
-            <Select
-              variant="dropdown"
-              label="Palette"
-              value={paletteId}
-              options={paletteOptions}
-              onChange={handlePaletteChange}
-            />
-          </div>
-          <Link to="/apps" className="sports-app__exit">← Apps</Link>
-        </header>
-
-        <main className="sports-app__main">
-          <RouteContent route={route} />
-        </main>
-      </div>
+      <Shell
+        layoutId={layoutId}
+        brand={brand}
+        nav={NAV}
+        route={route}
+        pickers={pickers}
+        exit={exit}
+      >
+        <RouteContent route={route} />
+      </Shell>
     </PaletteRoot>
   )
 }

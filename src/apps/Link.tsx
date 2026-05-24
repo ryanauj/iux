@@ -1,5 +1,5 @@
 import { useCallback, type AnchorHTMLAttributes, type MouseEvent } from 'react'
-import { navigate } from './router'
+import { getStickyParams, navigate } from './router'
 
 interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> {
   /** Path to navigate to (`/apps/sports/teams/lakers`). Becomes `#<path>` in the URL. */
@@ -28,12 +28,14 @@ export function Link({ to, params, onClick, children, ...rest }: LinkProps) {
     [to, params, onClick],
   )
 
-  const qs = params
-    ? Object.entries(params)
-        .filter(([, v]) => v !== undefined && v !== '')
-        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
-        .join('&')
-    : ''
+  // Mirror navigate()'s sticky-param merging so the rendered href (used
+  // by middle-click and the browser's hover preview) matches the URL the
+  // router will actually produce.
+  const merged: Record<string, string | undefined> = { ...getStickyParams(), ...(params ?? {}) }
+  const qs = Object.entries(merged)
+    .filter(([, v]) => v !== undefined && v !== '')
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+    .join('&')
 
   const href = `#${to}${qs ? `?${qs}` : ''}`
 
