@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
+import { useSelectedStyle } from '../../lib/persistedStyle'
 import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchSportsRoute, sportsRoutes, type SportsRoute } from './routes'
@@ -33,7 +34,6 @@ import { NotFound } from './pages/NotFound'
 import './sports-app.css'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
-const DEFAULT_PALETTE: PaletteId = 'flat-classic'
 
 interface SportsAppProps {
   location: HashLocation
@@ -49,6 +49,7 @@ const NAV: NavItem[] = [
 
 export function SportsApp({ location }: SportsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
 
   // Drop the `apps/sports` prefix and pass the remainder to the route matcher.
   const route = useMemo(() => {
@@ -56,16 +57,30 @@ export function SportsApp({ location }: SportsAppProps) {
     return matchSportsRoute(segs.slice(2))
   }, [location.path])
 
+  // URL wins on a fresh visit (pasted permalink); the site-wide
+  // persisted style is the fallback so navigating in from anywhere
+  // else on the site keeps the chosen look.
   const paletteParam = location.params.get('palette')
   const paletteId: PaletteId =
     paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
       ? (paletteParam as PaletteId)
-      : DEFAULT_PALETTE
+      : selectedStyle
   const palette = palettes[paletteId]
   const motionScale = resolveMotionScale(location.params.get('motion'))
 
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (paletteParam && paletteId !== selectedStyle) {
+      setSelectedStyle(paletteId)
+    }
+  }
+
   const handlePaletteChange = (next: string) => {
-    replaceParams({ palette: next === DEFAULT_PALETTE ? undefined : next })
+    if ((PALETTE_IDS as string[]).includes(next)) {
+      setSelectedStyle(next as PaletteId)
+    }
+    replaceParams({ palette: next })
   }
 
   // Layout lives entirely in the URL hash query as `?layout=<id>`. The

@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { palette as flatClassic } from '../../../palettes/flat-classic'
+import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { Stepper, type StepperStep } from '../../components/Stepper/Stepper'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
 import { useNavLayout } from '../../components/AppShell/navLayouts'
+import { useSelectedStyle } from '../../lib/persistedStyle'
 import type { EngineGuideMeta } from './types'
 import './guides.css'
 
@@ -15,6 +16,7 @@ interface EngineGuideProps {
 
 export function EngineGuide({ guide }: EngineGuideProps) {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [selectedStyle] = useSelectedStyle()
   const requestedStep = searchParams.get('step')
   const fallbackId = guide.steps[0]?.id ?? ''
   const currentId = guide.steps.some(s => s.id === requestedStep)
@@ -64,7 +66,7 @@ export function EngineGuide({ guide }: EngineGuideProps) {
   )
 
   return (
-    <PaletteRoot palette={flatClassic} as="section" className="iux-engine-guide-shell">
+    <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
       <AppShell
         layoutId={navLayout}
         brand={brand}

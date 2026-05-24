@@ -6,6 +6,7 @@ import {
   type ControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
+import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import '../showcase/showcase.css'
 import { QuizView } from './QuizView'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -26,11 +27,8 @@ const URL_PARAM = {
   controls: 'controls',
 } as const
 
-const DEFAULTS = {
-  chrome: 'flat-classic' as PaletteId,
-  seed: 1,
-  controls: 'button' as ControlsStyle,
-}
+const DEFAULT_SEED = 1
+const DEFAULT_CONTROLS: ControlsStyle = 'button'
 
 const isPaletteId = (v: string): v is PaletteId =>
   (PALETTE_IDS as string[]).includes(v)
@@ -41,29 +39,47 @@ type UrlSettings = {
   controls: ControlsStyle
 }
 
-function readUrlSettings(): UrlSettings {
-  if (typeof window === 'undefined') return { ...DEFAULTS }
+function readUrlSettings(persistedChrome: PaletteId): UrlSettings {
+  if (typeof window === 'undefined') {
+    return { chrome: persistedChrome, seed: DEFAULT_SEED, controls: DEFAULT_CONTROLS }
+  }
   const p = new URL(window.location.href).searchParams
   const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
-  const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
+  const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : persistedChrome
   const seedRaw = Number(p.get(URL_PARAM.seed))
   const seed =
-    Number.isFinite(seedRaw) && seedRaw > 0 ? Math.floor(seedRaw) : DEFAULTS.seed
+    Number.isFinite(seedRaw) && seedRaw > 0 ? Math.floor(seedRaw) : DEFAULT_SEED
   const controlsRaw = p.get(URL_PARAM.controls) ?? ''
   const controls: ControlsStyle =
     controlsRaw === 'strip' || controlsRaw === 'button'
       ? controlsRaw
-      : DEFAULTS.controls
+      : DEFAULT_CONTROLS
   return { chrome, seed, controls }
 }
 
 export function QuizPage() {
-  const initial = useMemo(readUrlSettings, [])
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
+  const initial = useMemo(() => readUrlSettings(readSelectedStyle()), [])
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
   const [seed, setSeed] = useState<number>(initial.seed)
   const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
   const [infoOpen, setInfoOpen] = useState(false)
   const [navLayout, setNavLayout] = useNavLayout()
+
+  // Mirror the URL-derived chrome into the persisted store on first mount
+  // so a pasted permalink (`?chrome=vaporwave`) wins over the user's
+  // previous selection without the cross-surface sync effect racing it.
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (selectedStyle !== chromePaletteId) setSelectedStyle(chromePaletteId)
+  }
+
+  // When another surface updates the persisted style, follow it here too.
+  useEffect(() => {
+    if (selectedStyle !== chromePaletteId) setChromePaletteId(selectedStyle)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStyle])
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -71,24 +87,26 @@ export function QuizPage() {
       if (value === fallback) url.searchParams.delete(key)
       else url.searchParams.set(key, value)
     }
-    sync(URL_PARAM.chrome, chromePaletteId, DEFAULTS.chrome)
-    sync(URL_PARAM.seed, String(seed), String(DEFAULTS.seed))
-    sync(URL_PARAM.controls, controlsStyle, DEFAULTS.controls)
+    sync(URL_PARAM.chrome, chromePaletteId, selectedStyle)
+    sync(URL_PARAM.seed, String(seed), String(DEFAULT_SEED))
+    sync(URL_PARAM.controls, controlsStyle, DEFAULT_CONTROLS)
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [chromePaletteId, seed, controlsStyle])
+  }, [chromePaletteId, seed, controlsStyle, selectedStyle])
 
   useEffect(() => {
     const onPop = () => {
-      const s = readUrlSettings()
+      const s = readUrlSettings(readSelectedStyle())
       setChromePaletteId(s.chrome)
       setSeed(s.seed)
       setControlsStyle(s.controls)
+      setSelectedStyle(s.chrome)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const infoBtnRef = useRef<HTMLButtonElement>(null)
@@ -123,7 +141,11 @@ export function QuizPage() {
       value: id,
       label: `${palettes[id].name} (${palettes[id].engine})`,
     })),
-    onChange: v => setChromePaletteId(v as PaletteId),
+    onChange: v => {
+      const next = v as PaletteId
+      setChromePaletteId(next)
+      setSelectedStyle(next)
+    },
   }
 
   const seedField: Field = {
