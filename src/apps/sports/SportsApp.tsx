@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { Select, type SelectOption } from '../../components/Select/Select'
@@ -6,12 +6,10 @@ import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchSportsRoute, sportsRoutes, type SportsRoute } from './routes'
 import {
-  LAYOUT_IDS,
+  DEFAULT_LAYOUT,
   LAYOUT_OPTIONS,
   Shell,
-  readStoredLayout,
-  writeStoredLayout,
-  type LayoutId,
+  resolveLayoutId,
   type NavItem,
 } from './layouts'
 import { Home } from './pages/Home'
@@ -64,26 +62,15 @@ export function SportsApp({ location }: SportsAppProps) {
     replaceParams({ palette: next === DEFAULT_PALETTE ? undefined : next })
   }
 
-  // Layout state — persisted in localStorage so the choice survives both
-  // in-app navigation (where Links drop query params) and full reloads.
-  // A `?layout=` query param, if present and valid, overrides the stored
-  // value and updates storage so the URL stays shareable.
-  const [layoutId, setLayoutId] = useState<LayoutId>(() => readStoredLayout())
-  const layoutParam = location.params.get('layout')
-  useEffect(() => {
-    if (!layoutParam) return
-    if (!(LAYOUT_IDS as readonly string[]).includes(layoutParam)) return
-    const next = layoutParam as LayoutId
-    if (next === layoutId) return
-    setLayoutId(next)
-    writeStoredLayout(next)
-  }, [layoutParam, layoutId])
+  // Layout lives entirely in the URL hash query as `?layout=<id>`. The
+  // router treats `layout` as a sticky param, so every `Link` carries it
+  // forward across navigation; the dropdown writes to the URL with
+  // `replaceParams` (omit when the default is chosen so URLs stay clean).
+  const layoutId = resolveLayoutId(location.params.get('layout'))
 
   const handleLayoutChange = (next: string) => {
-    if (!(LAYOUT_IDS as readonly string[]).includes(next)) return
-    const id = next as LayoutId
-    setLayoutId(id)
-    writeStoredLayout(id)
+    const id = resolveLayoutId(next)
+    replaceParams({ layout: id === DEFAULT_LAYOUT ? undefined : id })
   }
 
   const brand = (

@@ -15,26 +15,9 @@ export const LAYOUT_OPTIONS = [
   { value: 'drawer', label: 'Drawer — hamburger' },
 ]
 
-const LAYOUT_STORAGE_KEY = 'hoops-hub.layout'
-
-export function readStoredLayout(): LayoutId {
-  if (typeof window === 'undefined') return DEFAULT_LAYOUT
-  try {
-    const v = window.localStorage.getItem(LAYOUT_STORAGE_KEY)
-    if (v && (LAYOUT_IDS as readonly string[]).includes(v)) return v as LayoutId
-  } catch {
-    /* ignore — Safari private mode, etc. */
-  }
+export function resolveLayoutId(raw: string | null | undefined): LayoutId {
+  if (raw && (LAYOUT_IDS as readonly string[]).includes(raw)) return raw as LayoutId
   return DEFAULT_LAYOUT
-}
-
-export function writeStoredLayout(id: LayoutId): void {
-  if (typeof window === 'undefined') return
-  try {
-    window.localStorage.setItem(LAYOUT_STORAGE_KEY, id)
-  } catch {
-    /* ignore */
-  }
 }
 
 export interface NavItem {
