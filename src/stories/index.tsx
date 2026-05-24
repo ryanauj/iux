@@ -13,6 +13,7 @@ export function Stories() {
         { href: '#/viz', label: 'Visualizations →' },
         { href: '#/apps', label: 'Apps →' },
         { href: '#/quiz', label: 'Quiz →' },
+        { href: '#/tests', label: 'Integration tests →' },
       ]}
       infoText={
         <>
