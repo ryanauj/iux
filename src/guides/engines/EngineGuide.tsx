@@ -3,6 +3,9 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { palette as flatClassic } from '../../../palettes/flat-classic'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { Stepper, type StepperStep } from '../../components/Stepper/Stepper'
+import { AppShell } from '../../components/AppShell/AppShell'
+import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
+import { useNavLayout } from '../../components/AppShell/navLayouts'
 import type { EngineGuideMeta } from './types'
 import './guides.css'
 
@@ -55,41 +58,53 @@ export function EngineGuide({ guide }: EngineGuideProps) {
     [guide.steps, guide.demoPalette],
   )
 
+  const [navLayout] = useNavLayout()
+  const brand = (
+    <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
+  )
+
   return (
     <PaletteRoot palette={flatClassic} as="section" className="iux-engine-guide-shell">
-      <main className="iux-engine-guide">
-        <nav className="iux-engine-guide__crumbs" aria-label="Breadcrumb">
-          <Link to="/" className="iux-engine-guide__crumb">Stories</Link>
-          <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>
-          <Link to="/engines" className="iux-engine-guide__crumb">Engines</Link>
-          <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>
-          <span className="iux-engine-guide__crumb iux-engine-guide__crumb--current" aria-current="page">
-            {guide.name}
-          </span>
-        </nav>
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId="engines"
+      >
+        <main className="iux-engine-guide">
+          <nav className="iux-engine-guide__crumbs" aria-label="Breadcrumb">
+            <Link to="/" className="iux-engine-guide__crumb">Stories</Link>
+            <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>
+            <Link to="/engines" className="iux-engine-guide__crumb">Engines</Link>
+            <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>
+            <span className="iux-engine-guide__crumb iux-engine-guide__crumb--current" aria-current="page">
+              {guide.name}
+            </span>
+          </nav>
 
-        <header className="iux-engine-guide__header">
-          <p className="iux-engine-guide__eyebrow">Rendering engine · walkthrough</p>
-          <h1 className="iux-engine-guide__title">{guide.name}</h1>
-          <p className="iux-engine-guide__summary">{guide.summary}</p>
-          <p className="iux-engine-guide__demo-meta">
-            Demo palette: <strong>{guide.demoPalette.name}</strong>
-            {' · '}
-            <Link to={`/?palette=${guide.demoPalette.id}&view=per-palette`}>
-              Open in Stories →
-            </Link>
-          </p>
-        </header>
+          <header className="iux-engine-guide__header">
+            <p className="iux-engine-guide__eyebrow">Rendering engine · walkthrough</p>
+            <h1 className="iux-engine-guide__title">{guide.name}</h1>
+            <p className="iux-engine-guide__summary">{guide.summary}</p>
+            <p className="iux-engine-guide__demo-meta">
+              Demo palette: <strong>{guide.demoPalette.name}</strong>
+              {' · '}
+              <Link to={`/?palette=${guide.demoPalette.id}&view=per-palette`}>
+                Open in Stories →
+              </Link>
+            </p>
+          </header>
 
-        <Stepper
-          variant="linear"
-          steps={stepperSteps}
-          currentId={currentId}
-          onCurrentChange={handleStepChange}
-          ariaLabel={`${guide.name} engine walkthrough`}
-          className="iux-engine-guide__stepper"
-        />
-      </main>
+          <Stepper
+            variant="linear"
+            steps={stepperSteps}
+            currentId={currentId}
+            onCurrentChange={handleStepChange}
+            ariaLabel={`${guide.name} engine walkthrough`}
+            className="iux-engine-guide__stepper"
+          />
+        </main>
+      </AppShell>
     </PaletteRoot>
   )
 }

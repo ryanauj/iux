@@ -9,13 +9,7 @@ export function Stories() {
       kindLabel="components"
       title="iux — component stories"
       defaultComponent="button"
-      navLinks={[
-        { href: '#/viz', label: 'Visualizations →' },
-        { href: '#/apps', label: 'Apps →' },
-        { href: '#/quiz', label: 'Quiz →' },
-        { href: '#/tests', label: 'Integration tests →' },
-        { href: '#/doctrine', label: 'Doctrine →' },
-      ]}
+      activeNavId="components"
       infoText={
         <>
           Components implemented against the semantic token contract. The

@@ -8,6 +8,13 @@ import './showcase.css'
 import { DraggableControls, useControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
 import { MOTION_SCALES } from '../theme/motionScales'
 import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
+import { AppShell } from '../components/AppShell/AppShell'
+import { APP_SHELL_NAV, type AppShellNavId } from '../components/AppShell/navLinks'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../components/AppShell/navLayouts'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -32,11 +39,6 @@ const URL_PARAM = {
   motion: 'motion',
 } as const
 
-export interface ShowcasePageNavLink {
-  href: string
-  label: string
-}
-
 export interface ShowcasePageProps {
   /** Stories rendered by this showcase. */
   entries: StoryEntry[]
@@ -48,8 +50,8 @@ export interface ShowcasePageProps {
   title: string
   /** Default selected story id when the URL has no `component=` param. */
   defaultComponent: Component
-  /** Cross-navigation links rendered to the right of the title. */
-  navLinks: ShowcasePageNavLink[]
+  /** Which cross-page nav entry should be marked current. */
+  activeNavId: AppShellNavId
   /** Info popover body. */
   infoText: ReactNode
 }
@@ -60,7 +62,7 @@ export function ShowcasePage({
   kindLabel,
   title,
   defaultComponent,
-  navLinks,
+  activeNavId,
   infoText,
 }: ShowcasePageProps) {
   const DEFAULTS = {
@@ -128,6 +130,7 @@ export function ShowcasePage({
   const [variantChoice, setVariantChoice] = useState<VariantChoice>(initial.variant)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
   const [controlsStyle, setControlsStyle] = useControlsStyle()
+  const [navLayout, setNavLayout] = useNavLayout()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -242,6 +245,15 @@ export function ShowcasePage({
     onChange: v => setMotionScale(Number(v)),
   }
 
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+
   const fields: Field[] = viewMode === 'per-component'
     ? [
         viewField,
@@ -275,6 +287,7 @@ export function ShowcasePage({
           ],
           onChange: v => handlePaletteChange(v as PaletteChoice),
         },
+        navLayoutField,
         motionField,
       ]
     : [
@@ -295,89 +308,91 @@ export function ShowcasePage({
           options: LAYOUTS.map(l => ({ value: l.value, label: l.label })),
           onChange: v => setLayout(v as ShowcaseLayout),
         },
+        navLayoutField,
         motionField,
       ]
 
+  const brand = (
+    <>
+      <h1 className="stories__title">
+        {title}
+        <button
+          ref={infoBtnRef}
+          type="button"
+          className="stories__info-btn"
+          aria-label="About this page"
+          aria-expanded={infoOpen}
+          aria-controls="stories-info-popover"
+          onClick={() => setInfoOpen(o => !o)}
+        >
+          i
+        </button>
+      </h1>
+      {infoOpen && (
+        <div
+          ref={infoPopRef}
+          id="stories-info-popover"
+          role="region"
+          aria-label="About this page"
+          className="stories__info-popover"
+        >
+          {infoText}
+        </div>
+      )}
+    </>
+  )
+
   return (
     <PaletteRoot palette={chromePalette} as="section" motionScale={motionScale}>
-      <main className="stories">
-        <header className="stories__header stories__header--static">
-          <div className="stories__header-bar">
-            <h1 className="stories__title">
-              {title}
-              <button
-                ref={infoBtnRef}
-                type="button"
-                className="stories__info-btn"
-                aria-label="About this page"
-                aria-expanded={infoOpen}
-                aria-controls="stories-info-popover"
-                onClick={() => setInfoOpen(o => !o)}
-              >
-                i
-              </button>
-            </h1>
-            <nav className="stories__header-nav" aria-label="Showcase sections">
-              {navLinks.map(link => (
-                <a key={link.href} className="stories__apps-link" href={link.href}>
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-          {infoOpen && (
-            <div
-              ref={infoPopRef}
-              id="stories-info-popover"
-              role="region"
-              aria-label="About this page"
-              className="stories__info-popover"
-            >
-              {infoText}
-            </div>
-          )}
-        </header>
-        <DraggableControls
-          style={controlsStyle}
-          onStyleChange={setControlsStyle}
-          fields={fields}
-        />
-
-        {viewMode === 'per-component' &&
-          visiblePaletteIds.map(id => {
-            const palette = palettes[id]
-            const engineGuideAvailable = (ENGINE_GUIDE_IDS as readonly string[]).includes(palette.engine)
-            return (
-              <PaletteRoot
-                key={id}
-                palette={palette}
-                as="section"
-                className="stories__palette"
-                motionScale={motionScale}
-              >
-                <h2 className="stories__palette-title">
-                  {palette.name} <small>({palette.engine})</small>
-                  {engineGuideAvailable && (
-                    <Link to={`/engines/${palette.engine}`} className="stories__engine-link">
-                      How does {palette.engine} work? →
-                    </Link>
-                  )}
-                </h2>
-                {active?.render(activeVariant)}
-              </PaletteRoot>
-            )
-          })}
-
-        {viewMode === 'per-palette' && (
-          <PaletteShowcase
-            palette={palettes[showcasePaletteId]}
-            layout={layout}
-            motionScale={motionScale}
-            entries={entries}
-            kindLabel={kindLabel}
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId={activeNavId}
+      >
+        <div className="stories">
+          <DraggableControls
+            style={controlsStyle}
+            onStyleChange={setControlsStyle}
+            fields={fields}
           />
-        )}
-      </main>
+
+          {viewMode === 'per-component' &&
+            visiblePaletteIds.map(id => {
+              const palette = palettes[id]
+              const engineGuideAvailable = (ENGINE_GUIDE_IDS as readonly string[]).includes(palette.engine)
+              return (
+                <PaletteRoot
+                  key={id}
+                  palette={palette}
+                  as="section"
+                  className="stories__palette"
+                  motionScale={motionScale}
+                >
+                  <h2 className="stories__palette-title">
+                    {palette.name} <small>({palette.engine})</small>
+                    {engineGuideAvailable && (
+                      <Link to={`/engines/${palette.engine}`} className="stories__engine-link">
+                        How does {palette.engine} work? →
+                      </Link>
+                    )}
+                  </h2>
+                  {active?.render(activeVariant)}
+                </PaletteRoot>
+              )
+            })}
+
+          {viewMode === 'per-palette' && (
+            <PaletteShowcase
+              palette={palettes[showcasePaletteId]}
+              layout={layout}
+              motionScale={motionScale}
+              entries={entries}
+              kindLabel={kindLabel}
+            />
+          )}
+        </div>
+      </AppShell>
     </PaletteRoot>
   )
 }

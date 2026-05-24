@@ -12,6 +12,13 @@ import {
   resolveMotionScale,
 } from '../theme/motionScales'
 import { replaceParams, type HashLocation } from './router'
+import { AppShell } from '../components/AppShell/AppShell'
+import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../components/AppShell/navLayouts'
 import './apps.css'
 
 interface AppEntry {
@@ -41,6 +48,7 @@ interface AppsLandingProps {
 
 export function AppsLanding({ location }: AppsLandingProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
+  const [navLayout, setNavLayout] = useNavLayout()
 
   const paletteParam = location.params.get('palette')
   const paletteId: PaletteId =
@@ -70,6 +78,14 @@ export function AppsLanding({ location }: AppsLandingProps) {
       onChange: handlePaletteChange,
     },
     {
+      key: 'navLayout',
+      label: 'Nav',
+      short: 'N',
+      value: navLayout,
+      options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+      onChange: v => setNavLayout(v as NavLayoutId),
+    },
+    {
       key: 'motion',
       label: 'Motion',
       short: 'M',
@@ -79,31 +95,41 @@ export function AppsLanding({ location }: AppsLandingProps) {
     },
   ]
 
+  const brand = (
+    <h1 className="apps-landing__brand-title">iux — apps</h1>
+  )
+
   return (
     <PaletteRoot palette={palette} as="section" motionScale={motionScale}>
-      <div className="apps-landing">
-        <Link to="/" className="apps-landing__back">← Back to component showcase</Link>
-        <header className="apps-landing__header">
-          <h1 className="apps-landing__title">Apps</h1>
-          <p className="apps-landing__subtitle">
-            Small standalone apps built on the same component library and
-            palette contract as the showcase. Each one ships with its own
-            in-app palette picker.
-          </p>
-        </header>
-        <div className="apps-landing__grid">
-          {APPS.map(app => (
-            <Card key={app.id} variant="static">
-              <Link to={app.href} className="app-tile">
-                <span className="app-tile__icon" aria-hidden="true">{app.iconText}</span>
-                <span className="app-tile__name">{app.name}</span>
-                <span className="app-tile__tagline">{app.tagline}</span>
-                <span className="app-tile__cta">Open app →</span>
-              </Link>
-            </Card>
-          ))}
+      <AppShell
+        layoutId={navLayout}
+        brand={brand}
+        nav={APP_SHELL_NAV}
+        activeId="apps"
+      >
+        <div className="apps-landing">
+          <header className="apps-landing__header">
+            <h2 className="apps-landing__title">Apps</h2>
+            <p className="apps-landing__subtitle">
+              Small standalone apps built on the same component library and
+              palette contract as the showcase. Each one ships with its own
+              in-app palette picker.
+            </p>
+          </header>
+          <div className="apps-landing__grid">
+            {APPS.map(app => (
+              <Card key={app.id} variant="static">
+                <Link to={app.href} className="app-tile">
+                  <span className="app-tile__icon" aria-hidden="true">{app.iconText}</span>
+                  <span className="app-tile__name">{app.name}</span>
+                  <span className="app-tile__tagline">{app.tagline}</span>
+                  <span className="app-tile__cta">Open app →</span>
+                </Link>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
+      </AppShell>
       <DraggableControls
         style={controlsStyle}
         onStyleChange={setControlsStyle}
