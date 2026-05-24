@@ -33,7 +33,7 @@ export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'components',     href: '#/',         label: 'Components',     short: 'Co' },
   { id: 'visualizations', href: '#/viz',      label: 'Visualizations', short: 'Vi' },
   { id: 'apps',           href: '#/apps',     label: 'Apps',           short: 'Ap' },
-  { id: 'quiz',           href: '#/quiz',     label: 'Quiz',           short: 'Qu' },
+  { id: 'quiz',           href: '#/quiz',     label: 'Identify',       short: 'Id' },
   { id: 'doctrine',       href: '#/doctrine', label: 'Doctrine',       short: 'Do' },
   { id: 'tests',          href: '#/tests',    label: 'Tests',          short: 'Te' },
   { id: 'engines',        href: '/engines',   label: 'Engines',        short: 'En' },
