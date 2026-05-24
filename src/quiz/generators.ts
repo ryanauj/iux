@@ -139,7 +139,7 @@ function generateLookalike(
       : { left: choice.against, right: target },
     differentiator: choice.differentiator,
     correctSide: leftIsTarget ? 'left' : 'right',
-    prompt: `Which side is ${palettes[target].name}? — "${choice.differentiator}"`,
+    prompt: `Which side is ${palettes[target].name}?`,
   }
 }
 

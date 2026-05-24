@@ -14,9 +14,21 @@ interface Props {
   entries: StoryEntry[]
   /** Plural noun for the meta line, e.g. "components" or "visualizations". */
   kindLabel: string
+  /**
+   * When false, the palette name/engine header is omitted. The quiz uses this
+   * so the stimulus doesn't reveal the answer.
+   */
+  showHeader?: boolean
 }
 
-export function PaletteShowcase({ palette, layout, motionScale = 1, entries, kindLabel }: Props) {
+export function PaletteShowcase({
+  palette,
+  layout,
+  motionScale = 1,
+  entries,
+  kindLabel,
+  showHeader = true,
+}: Props) {
   const engineGuideAvailable = (ENGINE_GUIDE_IDS as readonly string[]).includes(palette.engine)
   return (
     <PaletteRoot
@@ -25,22 +37,24 @@ export function PaletteShowcase({ palette, layout, motionScale = 1, entries, kin
       className="showcase"
       motionScale={motionScale}
     >
-      <header className="showcase__head">
-        <h2 className="showcase__head-title">
-          {palette.name} <small>({palette.engine})</small>
-        </h2>
-        <p className="showcase__head-meta">
-          {entries.length} {kindLabel} · layout: {layout}
-          {engineGuideAvailable && (
-            <>
-              {' · '}
-              <Link to={`/engines/${palette.engine}`} className="showcase__head-link">
-                Learn how the {palette.engine} engine works →
-              </Link>
-            </>
-          )}
-        </p>
-      </header>
+      {showHeader && (
+        <header className="showcase__head">
+          <h2 className="showcase__head-title">
+            {palette.name} <small>({palette.engine})</small>
+          </h2>
+          <p className="showcase__head-meta">
+            {entries.length} {kindLabel} · layout: {layout}
+            {engineGuideAvailable && (
+              <>
+                {' · '}
+                <Link to={`/engines/${palette.engine}`} className="showcase__head-link">
+                  Learn how the {palette.engine} engine works →
+                </Link>
+              </>
+            )}
+          </p>
+        </header>
+      )}
       {layout === 'feed' && <FeedLayout entries={entries} />}
       {layout === 'deck' && <DeckLayout entries={entries} />}
       {layout === 'grid' && <GridLayout entries={entries} />}

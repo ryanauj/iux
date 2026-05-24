@@ -33,7 +33,7 @@ export interface LookalikeQuestion {
   against: PaletteId
   /** `'target'` on the left, `'against'` on the right (deterministic per question). */
   layout: { left: PaletteId; right: PaletteId }
-  /** The `Lookalike.differentiator` text quoted in the prompt. */
+  /** The `Lookalike.differentiator` text shown as feedback after answering. */
   differentiator: string
   /** Which side is the target — the user must pick this. */
   correctSide: 'left' | 'right'
