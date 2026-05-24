@@ -81,7 +81,10 @@ export function navigate(path: string, params?: Record<string, string | undefine
 export function replaceParams(params: Record<string, string | undefined>): void {
   if (typeof window === 'undefined') return
   const current = readHash()
-  const next = buildHash(current.path || '/', params)
+  // Caller-supplied params win; sticky params backfill the rest so updating
+  // one picker (palette/layout/motion) doesn't strip its siblings.
+  const merged: Record<string, string | undefined> = { ...getStickyParams(), ...params }
+  const next = buildHash(current.path || '/', merged)
   if (window.location.hash !== next) {
     const url = `${window.location.pathname}${window.location.search}${next}`
     window.history.replaceState(window.history.state, '', url)
