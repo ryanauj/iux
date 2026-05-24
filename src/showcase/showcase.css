@@ -43,6 +43,27 @@
   margin: 0;
 }
 
+/* Section divider between the COMPONENTS and VISUALIZATIONS groups
+   inside each layout. Keeps both registries visible without losing
+   the per-layout chrome. */
+.showcase__section-heading {
+  font-family: var(--type-subheading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight);
+  letter-spacing: var(--type-subheading-tracking);
+  text-transform: var(--type-subheading-text-transform);
+  color: var(--color-content-secondary);
+  margin: 0;
+  padding-block: var(--space-2);
+  border-top-width: var(--border-width-thin);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+}
+.showcase__section-heading:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
 /* ----- shared card chrome ----- */
 
 .showcase-card {

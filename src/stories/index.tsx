@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
-import { COMPONENTS, type Component } from '../showcase/components'
+import { COMPONENTS, VISUALIZATIONS, ALL_ENTRIES, type Component } from '../showcase/components'
 import { PaletteShowcase, type ShowcaseLayout } from '../showcase/PaletteShowcase'
 import '../showcase/showcase.css'
 import { DraggableControls, type ControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
@@ -50,7 +50,7 @@ const DEFAULTS = {
 }
 
 const isComponentId = (v: string): v is Component =>
-  COMPONENTS.some(c => c.id === v)
+  ALL_ENTRIES.some(c => c.id === v)
 const isPaletteId = (v: string): v is PaletteId =>
   (PALETTE_IDS as string[]).includes(v)
 const isLayoutId = (v: string): v is ShowcaseLayout =>
@@ -75,7 +75,7 @@ function readUrlSettings(): UrlSettings {
   const view: ViewMode = viewRaw === 'per-palette' ? 'per-palette' : DEFAULTS.view
   const componentRaw = p.get(URL_PARAM.component) ?? ''
   const component = isComponentId(componentRaw) ? componentRaw : DEFAULTS.component
-  const entry = COMPONENTS.find(c => c.id === component)
+  const entry = ALL_ENTRIES.find(c => c.id === component)
   const variantRaw = p.get(URL_PARAM.variant) ?? ''
   const variant: VariantChoice =
     variantRaw && entry?.variants.includes(variantRaw) ? variantRaw : DEFAULTS.variant
@@ -157,7 +157,7 @@ export function Stories() {
     return () => window.removeEventListener('popstate', onPop)
   }, [])
 
-  const active = COMPONENTS.find(c => c.id === component)
+  const active = ALL_ENTRIES.find(c => c.id === component)
   const visiblePaletteIds: PaletteId[] =
     paletteChoice === 'all' ? PALETTE_IDS : [paletteChoice]
   const chromePalette = palettes[chromePaletteId]
@@ -233,7 +233,10 @@ export function Stories() {
           label: 'Component',
           short: 'C',
           value: component,
-          options: COMPONENTS.map(c => ({ value: c.id, label: c.label })),
+          options: [
+            ...COMPONENTS.map(c => ({ value: c.id, label: c.label })),
+            ...VISUALIZATIONS.map(c => ({ value: c.id, label: `Viz · ${c.label}` })),
+          ],
           onChange: v => handleComponentChange(v as Component),
         },
         {

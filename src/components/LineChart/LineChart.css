@@ -1,0 +1,247 @@
+/*
+ * LineChart — one component, four functional rungs (static → hover →
+ * multiples → annotated). Per-series color comes from the existing
+ * intent token slots; palettes drive the categorical scale entirely
+ * through `--color-intent-{primary|info|success|warning|danger|neutral}-bg`.
+ * The chart adds no new token slots in this iteration.
+ */
+
+.iux-linechart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-linechart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-linechart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-linechart__swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-content-secondary);
+}
+
+.iux-linechart__legend-item--primary .iux-linechart__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-linechart__legend-item--info .iux-linechart__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-linechart__legend-item--success .iux-linechart__swatch { background-color: var(--color-intent-success-bg); }
+.iux-linechart__legend-item--warning .iux-linechart__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-linechart__legend-item--danger .iux-linechart__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-linechart__legend-item--neutral .iux-linechart__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-linechart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-linechart__axis-line,
+.iux-linechart__tick {
+  stroke: var(--color-border-default);
+  stroke-width: 1;
+}
+
+.iux-linechart__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-linechart__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-linechart__line {
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.iux-linechart__line--primary { stroke: var(--color-intent-primary-bg); }
+.iux-linechart__line--info    { stroke: var(--color-intent-info-bg); }
+.iux-linechart__line--success { stroke: var(--color-intent-success-bg); }
+.iux-linechart__line--warning { stroke: var(--color-intent-warning-bg); }
+.iux-linechart__line--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-linechart__line--neutral { stroke: var(--color-intent-neutral-bg); }
+
+.iux-linechart__crosshair line {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+  opacity: 0.8;
+}
+
+.iux-linechart__hover-dot {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+.iux-linechart__hover-dot--primary { fill: var(--color-intent-primary-bg); }
+.iux-linechart__hover-dot--info    { fill: var(--color-intent-info-bg); }
+.iux-linechart__hover-dot--success { fill: var(--color-intent-success-bg); }
+.iux-linechart__hover-dot--warning { fill: var(--color-intent-warning-bg); }
+.iux-linechart__hover-dot--danger  { fill: var(--color-intent-danger-bg); }
+.iux-linechart__hover-dot--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-linechart__readout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background-color: var(--color-surface-overlay);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-linechart__readout-t {
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+}
+
+.iux-linechart__readout-rows {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+}
+
+.iux-linechart__readout-row {
+  display: contents;
+}
+
+.iux-linechart__readout-row .iux-linechart__swatch {
+  margin-inline-end: var(--space-1);
+  vertical-align: -0.05em;
+}
+
+.iux-linechart__readout-row--primary .iux-linechart__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-linechart__readout-row--info .iux-linechart__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-linechart__readout-row--success .iux-linechart__swatch { background-color: var(--color-intent-success-bg); }
+.iux-linechart__readout-row--warning .iux-linechart__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-linechart__readout-row--danger .iux-linechart__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-linechart__readout-row--neutral .iux-linechart__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-linechart__readout-label {
+  color: var(--color-content-secondary);
+  font-family: var(--type-body-family);
+}
+
+.iux-linechart__readout-value {
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+/* ---- Annotations (rung 4) ---- */
+
+.iux-linechart__band {
+  fill: var(--color-intent-warning-bg);
+  opacity: 0.08;
+}
+
+.iux-linechart__annotation line {
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.7;
+}
+.iux-linechart__annotation rect {
+  opacity: 0.9;
+}
+.iux-linechart__annotation text {
+  font-family: var(--type-label-family);
+  font-size: 10px;
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+}
+
+.iux-linechart__annotation--primary line { stroke: var(--color-intent-primary-bg); }
+.iux-linechart__annotation--primary rect { fill: var(--color-intent-primary-bg); }
+.iux-linechart__annotation--primary text { fill: var(--color-intent-primary-content); }
+.iux-linechart__annotation--info line { stroke: var(--color-intent-info-bg); }
+.iux-linechart__annotation--info rect { fill: var(--color-intent-info-bg); }
+.iux-linechart__annotation--info text { fill: var(--color-intent-info-content); }
+.iux-linechart__annotation--success line { stroke: var(--color-intent-success-bg); }
+.iux-linechart__annotation--success rect { fill: var(--color-intent-success-bg); }
+.iux-linechart__annotation--success text { fill: var(--color-intent-success-content); }
+.iux-linechart__annotation--warning line { stroke: var(--color-intent-warning-bg); }
+.iux-linechart__annotation--warning rect { fill: var(--color-intent-warning-bg); }
+.iux-linechart__annotation--warning text { fill: var(--color-intent-warning-content); }
+.iux-linechart__annotation--danger line { stroke: var(--color-intent-danger-bg); }
+.iux-linechart__annotation--danger rect { fill: var(--color-intent-danger-bg); }
+.iux-linechart__annotation--danger text { fill: var(--color-intent-danger-content); }
+.iux-linechart__annotation--neutral line { stroke: var(--color-intent-neutral-bg); }
+.iux-linechart__annotation--neutral rect { fill: var(--color-intent-neutral-bg); }
+.iux-linechart__annotation--neutral text { fill: var(--color-intent-neutral-content); }
+
+/* ---- Small multiples (rung 3) ---- */
+
+.iux-linechart--multiples-grid {
+  gap: var(--space-2);
+}
+
+.iux-linechart__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.iux-linechart__panel-head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+.iux-linechart__panel-head--primary .iux-linechart__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-linechart__panel-head--info .iux-linechart__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-linechart__panel-head--success .iux-linechart__swatch { background-color: var(--color-intent-success-bg); }
+.iux-linechart__panel-head--warning .iux-linechart__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-linechart__panel-head--danger .iux-linechart__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-linechart__panel-head--neutral .iux-linechart__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-linechart__panel-label {
+  font-weight: var(--type-label-weight);
+}
+
+.iux-linechart__brush {
+  fill: var(--color-intent-info-bg);
+  opacity: 0.18;
+  stroke: var(--color-intent-info-bg);
+  stroke-width: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iux-linechart__line { transition: none; }
+}

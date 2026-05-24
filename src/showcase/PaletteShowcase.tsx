@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { Palette } from '../../tokens/semantic.contract'
 import { PaletteRoot } from '../theme/PaletteRoot'
-import { COMPONENTS, type StoryEntry, type Tier } from './components'
+import { COMPONENTS, VISUALIZATIONS, type StoryEntry, type Tier } from './components'
 
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
 
@@ -24,14 +24,39 @@ export function PaletteShowcase({ palette, layout, motionScale = 1 }: Props) {
           {palette.name} <small>({palette.engine})</small>
         </h2>
         <p className="showcase__head-meta">
-          {COMPONENTS.length} components · layout: {layout}
+          {COMPONENTS.length} components · {VISUALIZATIONS.length} visualizations · layout: {layout}
         </p>
       </header>
-      {layout === 'feed' && <FeedLayout entries={COMPONENTS} />}
-      {layout === 'deck' && <DeckLayout entries={COMPONENTS} />}
-      {layout === 'grid' && <GridLayout entries={COMPONENTS} />}
+      {layout === 'feed' && (
+        <>
+          <SectionHeading>Components</SectionHeading>
+          <FeedLayout entries={COMPONENTS} />
+          <SectionHeading>Visualizations</SectionHeading>
+          <FeedLayout entries={VISUALIZATIONS} />
+        </>
+      )}
+      {layout === 'deck' && (
+        <>
+          <SectionHeading>Components</SectionHeading>
+          <DeckLayout entries={COMPONENTS} />
+          <SectionHeading>Visualizations</SectionHeading>
+          <DeckLayout entries={VISUALIZATIONS} />
+        </>
+      )}
+      {layout === 'grid' && (
+        <>
+          <SectionHeading>Components</SectionHeading>
+          <GridLayout entries={COMPONENTS} />
+          <SectionHeading>Visualizations</SectionHeading>
+          <GridLayout entries={VISUALIZATIONS} />
+        </>
+      )}
     </PaletteRoot>
   )
+}
+
+function SectionHeading({ children }: { children: ReactNode }) {
+  return <h3 className="showcase__section-heading">{children}</h3>
 }
 
 function TierBadge({ tier }: { tier: Tier }) {
