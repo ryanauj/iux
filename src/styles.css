@@ -402,6 +402,50 @@ body {
 }
 
 /*
+ * Outline-room patches.
+ *
+ * `outline:` paints OUTSIDE the border-box and is clipped by any
+ * ancestor with a non-`visible` overflow value. Several scroll
+ * containers in this repo set `overflow-x: auto` to let wide content
+ * scroll inline — per spec that promotes `overflow-y` from `visible`
+ * to `auto`, so the ink outline gets scissored on every side of every
+ * child. Non-cel-shaded palettes don't notice because their borders
+ * live inside the box; cel-shaded does because its outline lives
+ * outside.
+ *
+ * For each clipping ancestor we add inline/block padding equal to
+ * `--outline-width`, scoped to cel-shaded palettes so the layout of
+ * every other palette is untouched. The padding is added inside the
+ * scroll container so the outline fits within the now-larger content
+ * area before the clip edge, while ancestors and the container's own
+ * border stay in place.
+ *
+ * Containers patched:
+ *   - `.iux-tabs__list`       — the tablist scroller (always present)
+ *   - `.stories__cells`       — scaffold row scroller (mobile media)
+ *   - `.showcase-card__demo`  — per-component demo cell in showcase
+ *   - `.showcase-deck__track` — swipeable variant deck in showcase
+ */
+.palette-root[data-palette^='cel-shaded'] .iux-tabs__list {
+  padding: var(--outline-width);
+}
+
+.palette-root[data-palette^='cel-shaded'] .showcase-card__demo {
+  padding-block: var(--outline-width);
+  padding-inline: var(--outline-width);
+}
+
+.palette-root[data-palette^='cel-shaded'] .showcase-deck__track {
+  padding-inline: var(--outline-width);
+}
+
+@media (max-width: 40rem) {
+  .palette-root[data-palette^='cel-shaded'] .stories__cells {
+    padding-inline: var(--outline-width);
+  }
+}
+
+/*
  * Speed-line motif (decoration token). Default OFF on every surface —
  * the brief is explicit: speed lines are AVAILABLE as a decoration
  * token but used SPARINGLY. Surfaces opt in by adding the
