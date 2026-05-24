@@ -11,7 +11,7 @@ Cardstock, Cel-shaded, Aurora, Terminal-TUI) applied to any of them.
 ## Status
 
 Spec phase. The repo currently ships a placeholder landing page and
-three source-of-truth documents that constrain everything downstream:
+four source-of-truth documents that constrain everything downstream:
 
 - [`FINALIZED-PALETTES.md`](./FINALIZED-PALETTES.md) — the 10 named
   palettes mapped to 7 rendering engines, with a11y tags.
@@ -22,6 +22,16 @@ three source-of-truth documents that constrain everything downstream:
   single seam between components and palettes. Components consume only
   these slots; palettes redefine only these slots; no raw values
   downstream.
+- [`doctrine/`](./doctrine/) — UX guidance that sits above the
+  catalogs: layout & grid theory
+  ([`00-layout.md`](./doctrine/00-layout.md)), when-to-use
+  disambiguation between similar primitives
+  ([`01-component-selection.md`](./doctrine/01-component-selection.md)),
+  the intent → composition pipeline
+  ([`02-app-composition.md`](./doctrine/02-app-composition.md)), and
+  parity rules for exposing the same action through visual,
+  command-palette, and natural-language interfaces
+  ([`03-modalities.md`](./doctrine/03-modalities.md)).
 
 Component and palette implementations land in future sessions.
 
