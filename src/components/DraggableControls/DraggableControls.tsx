@@ -1,7 +1,28 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import { usePersistedPref } from '../../lib/usePersistedPref'
 import './DraggableControls.css'
 
 export type ControlsStyle = 'button' | 'strip'
+
+const CONTROLS_STYLE_KEY = 'iux-controls-style'
+const DEFAULT_CONTROLS_STYLE: ControlsStyle = 'button'
+
+const isControlsStyle = (raw: string): raw is ControlsStyle =>
+  raw === 'button' || raw === 'strip'
+
+/**
+ * Shared user preference for the floating controls' style (Button FAB vs
+ * Edge Strip). Backed by localStorage so the choice survives navigation
+ * between the showcase pages and the standalone apps, and stays in sync
+ * across every mounted DraggableControls in the same tab.
+ */
+export function useControlsStyle() {
+  return usePersistedPref<ControlsStyle>(
+    CONTROLS_STYLE_KEY,
+    DEFAULT_CONTROLS_STYLE,
+    isControlsStyle,
+  )
+}
 
 export type Field = {
   key: string

@@ -4,20 +4,14 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import type { Component, StoryEntry } from './components'
 import { PaletteShowcase, type ShowcaseLayout } from './PaletteShowcase'
 import './showcase.css'
-import { DraggableControls, type ControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
+import { DraggableControls, useControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
+import { MOTION_SCALES } from '../theme/motionScales'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 type ViewMode = 'per-component' | 'per-palette'
 type PaletteChoice = 'all' | PaletteId
 type VariantChoice = 'all' | string
-
-const MOTION_SCALES = [
-  { value: 1, label: '1× (palette default)' },
-  { value: 2, label: '2× (slower)' },
-  { value: 3, label: '3× (slowest)' },
-  { value: 5, label: '5× (debug)' },
-] as const
 
 const LAYOUTS: { value: ShowcaseLayout; label: string }[] = [
   { value: 'feed', label: 'Feed — stacked masonry' },
@@ -34,7 +28,6 @@ const URL_PARAM = {
   showcasePalette: 'showcase',
   layout: 'layout',
   motion: 'motion',
-  controls: 'controls',
 } as const
 
 export interface ShowcasePageNavLink {
@@ -77,7 +70,6 @@ export function ShowcasePage({
     showcasePalette: 'flat-classic' as PaletteId,
     layout: 'feed' as ShowcaseLayout,
     motion: 2,
-    controls: 'button' as ControlsStyle,
   }
 
   const isComponentId = (v: string): v is Component =>
@@ -96,7 +88,6 @@ export function ShowcasePage({
     showcasePalette: PaletteId
     layout: ShowcaseLayout
     motion: number
-    controls: ControlsStyle
   }
 
   const readUrlSettings = (): UrlSettings => {
@@ -121,10 +112,7 @@ export function ShowcasePage({
     const layout: ShowcaseLayout = isLayoutId(layoutRaw) ? layoutRaw : DEFAULTS.layout
     const motionRaw = Number(p.get(URL_PARAM.motion))
     const motion: number = MOTION_SCALES.some(s => s.value === motionRaw) ? motionRaw : DEFAULTS.motion
-    const controlsRaw = p.get(URL_PARAM.controls) ?? ''
-    const controls: ControlsStyle =
-      controlsRaw === 'strip' || controlsRaw === 'button' ? controlsRaw : DEFAULTS.controls
-    return { view, component, variant, palette, chrome, showcasePalette, layout, motion, controls }
+    return { view, component, variant, palette, chrome, showcasePalette, layout, motion }
   }
 
   const initial = useMemo(readUrlSettings, [])
@@ -137,7 +125,7 @@ export function ShowcasePage({
   const [motionScale, setMotionScale] = useState<number>(initial.motion)
   const [variantChoice, setVariantChoice] = useState<VariantChoice>(initial.variant)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
-  const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -153,7 +141,6 @@ export function ShowcasePage({
     sync(URL_PARAM.showcasePalette, showcasePaletteId, DEFAULTS.showcasePalette)
     sync(URL_PARAM.layout, layout, DEFAULTS.layout)
     sync(URL_PARAM.motion, String(motionScale), String(DEFAULTS.motion))
-    sync(URL_PARAM.controls, controlsStyle, DEFAULTS.controls)
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
@@ -167,7 +154,6 @@ export function ShowcasePage({
     showcasePaletteId,
     layout,
     motionScale,
-    controlsStyle,
   ])
 
   useEffect(() => {
@@ -181,7 +167,6 @@ export function ShowcasePage({
       setShowcasePaletteId(s.showcasePalette)
       setLayout(s.layout)
       setMotionScale(s.motion)
-      setControlsStyle(s.controls)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)

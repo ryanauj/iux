@@ -45,12 +45,12 @@ export function buildHash(path: string, params?: Record<string, string | undefin
 
 /**
  * Hash query params whose value should survive navigation through
- * `Link`/`navigate()`. These represent user preferences (the chosen
- * Hoops-Hub layout, for now) that would otherwise be dropped every
- * time a Link rebuilds the hash with only its own params. Callers can
- * still clear a sticky key by passing it explicitly as `undefined`.
+ * `Link`/`navigate()`. These represent user preferences (chosen layout,
+ * palette, motion scale) that would otherwise be dropped every time a
+ * Link rebuilds the hash with only its own params. Callers can still
+ * clear a sticky key by passing it explicitly as `undefined`.
  */
-const STICKY_PARAMS = ['layout'] as const
+const STICKY_PARAMS = ['layout', 'palette', 'motion'] as const
 
 /** Read the current values of any sticky params from the URL hash. */
 export function getStickyParams(): Record<string, string> {

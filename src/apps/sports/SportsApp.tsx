@@ -12,6 +12,16 @@ import {
   resolveLayoutId,
   type NavItem,
 } from './layouts'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
+import {
+  DEFAULT_MOTION_SCALE,
+  MOTION_FIELD_OPTIONS,
+  resolveMotionScale,
+} from '../../theme/motionScales'
 import { Home } from './pages/Home'
 import { Teams } from './pages/Teams'
 import { TeamDetail } from './pages/TeamDetail'
@@ -39,6 +49,8 @@ const NAV: NavItem[] = [
 ]
 
 export function SportsApp({ location }: SportsAppProps) {
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
+
   // Drop the `apps/sports` prefix and pass the remainder to the route matcher.
   const route = useMemo(() => {
     const segs = pathSegments(location.path)
@@ -51,6 +63,7 @@ export function SportsApp({ location }: SportsAppProps) {
       ? (paletteParam as PaletteId)
       : DEFAULT_PALETTE
   const palette = palettes[paletteId]
+  const motionScale = resolveMotionScale(location.params.get('motion'))
 
   const paletteOptions: SelectOption[] = PALETTE_IDS.map(id => ({
     value: id,
@@ -72,6 +85,42 @@ export function SportsApp({ location }: SportsAppProps) {
     const id = resolveLayoutId(next)
     replaceParams({ layout: id === DEFAULT_LAYOUT ? undefined : id })
   }
+
+  const handleMotionChange = (next: string) => {
+    replaceParams({
+      motion: Number(next) === DEFAULT_MOTION_SCALE ? undefined : next,
+    })
+  }
+
+  const floatingFields: Field[] = [
+    {
+      key: 'palette',
+      label: 'Palette',
+      short: 'P',
+      value: paletteId,
+      options: PALETTE_IDS.map(id => ({
+        value: id,
+        label: `${palettes[id].name} (${palettes[id].engine})`,
+      })),
+      onChange: handlePaletteChange,
+    },
+    {
+      key: 'layout',
+      label: 'Layout',
+      short: 'L',
+      value: layoutId,
+      options: LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+      onChange: handleLayoutChange,
+    },
+    {
+      key: 'motion',
+      label: 'Motion',
+      short: 'M',
+      value: String(motionScale),
+      options: MOTION_FIELD_OPTIONS.map(o => ({ ...o })),
+      onChange: handleMotionChange,
+    },
+  ]
 
   const brand = (
     <Link to={sportsRoutes.home()} className="sports-app__brand">
@@ -104,7 +153,7 @@ export function SportsApp({ location }: SportsAppProps) {
   )
 
   return (
-    <PaletteRoot palette={palette} as="section">
+    <PaletteRoot palette={palette} as="section" motionScale={motionScale}>
       <Shell
         layoutId={layoutId}
         brand={brand}
@@ -115,6 +164,11 @@ export function SportsApp({ location }: SportsAppProps) {
       >
         <RouteContent route={route} />
       </Shell>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={floatingFields}
+      />
     </PaletteRoot>
   )
 }
