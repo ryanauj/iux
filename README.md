@@ -28,15 +28,15 @@ Component and palette implementations land in future sessions.
 ## Develop locally
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Other scripts:
 
-- `npm run typecheck` — strict TypeScript check (covers `src/` and `tokens/`)
-- `npm run build` — production build into `dist/`
-- `npm run preview` — serve the production build locally
+- `pnpm run typecheck` — strict TypeScript check (covers `src/` and `tokens/`)
+- `pnpm run build` — production build into `dist/`
+- `pnpm run preview` — serve the production build locally
 
 ## Deploy
 

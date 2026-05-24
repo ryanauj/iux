@@ -1,7 +1,7 @@
 /**
  * Style-doc generator — emits one `docs/styles/<id>.md` per populated
  * `palettes/<id>.description.ts`, plus `docs/styles/INDEX.md` listing
- * populated + missing palettes. Run via `npm run gen:style-docs`.
+ * populated + missing palettes. Run via `pnpm run gen:style-docs`.
  *
  * The generated docs are committed to the repo so external projects can
  * link to a stable URL. Each doc appends the existing
@@ -134,7 +134,7 @@ function renderDoc(desc: StyleDescription): string {
   lines.push('---')
   lines.push('')
   lines.push(
-    `_Generated from \`palettes/${desc.paletteId}.description.ts\` — do not edit by hand. Run \`npm run gen:style-docs\` to regenerate._`,
+    `_Generated from \`palettes/${desc.paletteId}.description.ts\` — do not edit by hand. Run \`pnpm run gen:style-docs\` to regenerate._`,
   )
   return lines.join('\n') + '\n'
 }
