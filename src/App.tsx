@@ -7,6 +7,7 @@ import { AppsRouter } from './apps/AppsRouter'
 import { EnginesIndex } from './guides/engines'
 import { EngineGuide } from './guides/engines/EngineGuide'
 import { ENGINE_GUIDES, type EngineGuideId } from './guides/engines/registry'
+import { TestsPage } from './tests/TestsPage'
 
 function HomeRoute() {
   const location = useHashLocation()
@@ -18,6 +19,9 @@ function HomeRoute() {
   }
   if (location.path === '/quiz' || location.path.startsWith('/quiz/')) {
     return <Quiz />
+  }
+  if (location.path === '/tests' || location.path.startsWith('/tests/')) {
+    return <TestsPage />
   }
   return <Stories />
 }
