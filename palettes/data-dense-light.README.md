@@ -1,6 +1,6 @@
 # Data-dense light
 
-Flat engine in a Tufte-influenced data-viz register. Bloomberg
+Flat engine in a Tufte-influenced data-viz register. Financial
 Terminal's friendlier cousin: the same density stance, but with a cool
 near-white field, ink-slate body, and desaturated semantic intents that
 survive on a light surface without shouting. The aesthetic instruction

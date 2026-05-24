@@ -40,7 +40,7 @@
 - Hand-drawn (Marker) — `sketch`
 - Wikipedia / Institutional — `flat`
 - Brutalist-elegant — `neubrutalism`
-- Bloomberg Terminal — `flat`
+- Financial Terminal — `flat`
 - Mid-century modern — `flat`
 - Data-dense light — `flat`
 - Cardstock (Layered) — `cardstock`

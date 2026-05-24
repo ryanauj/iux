@@ -29,7 +29,7 @@ the cardinality past which it stops scaling.
 This is not a chart library. Visualizations here are hand-rolled SVG
 built against the contract, the same way `BezierEditor` and
 `SpatialCanvas` are. No external chart dependencies. Palette identity
-drives 100% of the visual character — a Bloomberg-terminal line chart
+drives 100% of the visual character — a Financial-terminal line chart
 and an Editorial line chart share zero hardcoded values.
 
 ---
@@ -209,7 +209,7 @@ form), compare-to-self (delta form).
   pixels collide and the trend goes flat.
 
 **Palette fit.**
-- **Best — Bloomberg-terminal, Data-dense, High-Contrast AAA.** The
+- **Best — Financial-terminal, Data-dense, High-Contrast AAA.** The
   big number consumes `--type-display-*` and the delta consumes
   `--type-code-*`; palettes that ship tabular monospace numerals
   here win twice.
@@ -259,7 +259,7 @@ status-at-an-event (when annotated).
   polyline wants decimation; past ~3000 it needs canvas, not SVG.
 
 **Palette fit.**
-- **Best — Bloomberg-terminal, Data-dense.** Single-accent line on
+- **Best — Financial-terminal, Data-dense.** Single-accent line on
   a high-contrast field; `--color-intent-primary-bg` reads as a
   phosphor trace, mono axis labels via `--type-code-family`.
 - **Best — Editorial.** Serif annotation flags on warm paper read
@@ -292,7 +292,7 @@ status-at-an-event (when annotated).
 labels collide on the vertical layout — switch `orientation` to
 horizontal. Stop being a bar chart past ~40; use a treemap.
 
-**Palette fit.** **Best — Neubrutalism, Flat, Bloomberg.** Strong
+**Palette fit.** **Best — Neubrutalism, Flat, Financial-terminal.** Strong
 fills + heavy borders make ranking instant. **Worst —
 Claymorphism, Neumorphism.** Pastel fills wash bars into the
 surface; the target line vanishes.
@@ -366,7 +366,7 @@ The high-contrast engine fights the soft fill.
 swap to a hexbin. Two-dimensional outliers are this encoding's
 job — it's why `Histogram` can't replace it.
 
-**Palette fit.** **Best — Bloomberg, Academic.** Quiet
+**Palette fit.** **Best — Financial-terminal, Academic.** Quiet
 backgrounds let the dots breathe. **Worst — Claymorphism.** Dots
 get lost in the pastel field.
 
@@ -384,7 +384,7 @@ Year-grid of daily values; the canonical cyclic-pattern encoding.
 without contract changes. Cliff: past ~3 years the strip stops
 fitting at default cell size.
 
-**Palette fit.** **Best — Bloomberg, Flat, Wikipedia.** Calm
+**Palette fit.** **Best — Financial-terminal, Flat, Wikipedia.** Calm
 engines surface the tint ramp. **Worst — Neumorphism, Sketch.**
 Soft surfaces erase the lower tint levels.
 
@@ -416,7 +416,7 @@ Distribution with quartile structure.
 horizontal axis runs out of room — use small multiples of
 histograms. Below n≈30 per group, the quartile estimates wobble.
 
-**Palette fit.** **Best — Academic, Bloomberg.** The median line
+**Palette fit.** **Best — Academic, Financial-terminal.** The median line
 needs a strong content color. **Worst — Claymorphism.** Whisker
 lines disappear into the box fill.
 
@@ -572,7 +572,7 @@ slots. Sweet spot is 5–20 rows × 5–20 cols. Past ~30 in either
 direction, cell labels stop fitting — use the `sparse` variant or
 reduce to a hexbin.
 
-**Palette fit.** **Best — Wikipedia, Bloomberg, Academic.** Quiet
+**Palette fit.** **Best — Wikipedia, Financial-terminal, Academic.** Quiet
 engines surface the ramp. **Worst — Neumorphism, Sketch.** Soft
 surfaces collapse the low tiers.
 
@@ -629,7 +629,7 @@ connector network starts to dominate. Positive = success intent,
 negative = danger intent, subtotals = primary; never reverse this
 convention.
 
-**Palette fit.** **Best — Bloomberg, Editorial, Data-dense.**
+**Palette fit.** **Best — Financial-terminal, Editorial, Data-dense.**
 Financial-report engines. **Worst — Vaporwave, Memphis.** The
 loud engines wash out the signed convention.
 
@@ -649,7 +649,7 @@ loud engines wash out the signed convention.
 you want a true 2D KDE. Same tint ladder as `CalendarHeatmap` so
 every palette gets the ramp free.
 
-**Palette fit.** **Best — Bloomberg, Aurora, Data-dense.** Calm
+**Palette fit.** **Best — Financial-terminal, Aurora, Data-dense.** Calm
 backgrounds let the ramp breathe. **Worst — Claymorphism.** The
 pastel field eats the lower tiers.
 
@@ -948,7 +948,7 @@ Pure palette-driven differentiation.
 
 ## Palette-fit guidance (across all visualizations)
 
-- **High-density palettes** (Bloomberg-terminal, Data-dense, AAA,
+- **High-density palettes** (Financial-terminal, Data-dense, AAA,
   Flat, Academic) — every viz reads. These are the reference
   palettes against which legibility is judged.
 - **Editorial / Wikipedia / Mid-century** — excel at sparse,
@@ -977,7 +977,7 @@ and badges — which means every palette already supplies them.
 
 When a third visualization needs more than six categorical hues
 *without* semantic meaning (a true non-semantic categorical ramp,
-as Bloomberg-terminal's amber sequence or Vaporwave's magenta→cyan
+as Financial-terminal's amber sequence or Vaporwave's magenta→cyan
 gradient suggests), the next iteration adds a focused `data.*`
 section to `tokens/semantic.contract.ts`:
 
