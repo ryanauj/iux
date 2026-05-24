@@ -74,8 +74,15 @@ location bar. Defaults are omitted from the URL to keep links tidy.
 | `layout`   | `feed`, `deck`, `grid` (per-palette layouts)            | `feed`         |
 | `motion`   | `1`, `2`, `3`, `5` (motion-duration multiplier)         | `2`            |
 | `controls` | `button`, `strip` (floating controls style)             | `button`       |
+| `doc`      | `layout`, `selection`, `composition`, `modalities` (only on `#/doctrine`) | `layout` |
 
 Example: `?view=per-palette&showcase=material&layout=grid&motion=3`
+
+Doctrine example: `?chrome=neumorphism&doc=composition#/doctrine` —
+opens the App-composition doctrine page and paints it (and its live
+demos) under the Neumorphism palette. Use the Doc field in the
+floating controls to switch between Layout, Selection, Composition,
+and Modalities.
 
 ## Contract gaps revealed by CRT
 

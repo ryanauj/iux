@@ -2,6 +2,7 @@ import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { Stories } from './stories'
 import { Viz } from './stories/viz'
 import { Quiz } from './stories/quiz'
+import { Doctrine } from './stories/doctrine'
 import { useHashLocation } from './apps/router'
 import { AppsRouter } from './apps/AppsRouter'
 import { EnginesIndex } from './guides/engines'
@@ -22,6 +23,9 @@ function HomeRoute() {
   }
   if (location.path === '/tests' || location.path.startsWith('/tests/')) {
     return <TestsPage />
+  }
+  if (location.path === '/doctrine' || location.path.startsWith('/doctrine/')) {
+    return <Doctrine />
   }
   return <Stories />
 }

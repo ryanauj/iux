@@ -1,0 +1,200 @@
+/*
+ * Doctrine page chrome.
+ *
+ * Each doctrine page is rendered inside the active palette (the showcase
+ * chrome already wraps the route), so every prose surface and demo
+ * frame reads from contract tokens — never raw values.
+ *
+ * Layout: a single column with a prose-width cap. Demos break out of
+ * the cap when they need room (Bento, side-by-side comparisons).
+ */
+
+.doctrine {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-5);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.doctrine__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  border-bottom-width: var(--border-width-thin);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-border-subtle);
+}
+
+.doctrine__eyebrow {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.doctrine__title {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+  margin: 0;
+}
+
+.doctrine__lede {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  margin: 0;
+  max-width: 48rem;
+}
+
+.doctrine__source {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.doctrine__source a {
+  color: var(--color-content-link, var(--color-content-primary));
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--border-width-thin);
+  text-underline-offset: 0.2em;
+}
+
+.doctrine__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.doctrine__section-title {
+  font-family: var(--type-subheading-family, var(--type-heading-family));
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-subheading-weight, var(--type-heading-weight));
+  letter-spacing: var(--type-subheading-tracking, var(--type-heading-tracking));
+  color: var(--color-content-primary);
+  margin: 0;
+}
+
+.doctrine__prose {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  margin: 0;
+  max-width: 48rem;
+}
+
+.doctrine__prose code {
+  font-family: var(--type-code-family, var(--type-body-family));
+  font-size: 0.9em;
+  padding: 0.05em 0.3em;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.doctrine__callout {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-sunken);
+  border-left-width: var(--border-width-thick, var(--border-width-thin));
+  border-left-style: solid;
+  border-left-color: var(--color-intent-warning-border, var(--color-border-strong, var(--color-border-default)));
+  border-radius: var(--radius-sm);
+  margin: 0;
+  max-width: 48rem;
+}
+
+.doctrine__callout-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-intent-warning-border, var(--color-content-secondary));
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+.doctrine__demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.doctrine__demo-caption {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  margin: 0;
+}
+
+.doctrine__demo-frame {
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+
+.doctrine__split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--space-3);
+}
+
+.doctrine__split > .doctrine__demo {
+  min-width: 0;
+}
+
+.doctrine__pipeline {
+  font-family: var(--type-code-family, var(--type-body-family));
+  font-size: var(--type-body-size);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  margin: 0;
+  color: var(--color-content-primary);
+}
+
+.doctrine__cross {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.doctrine__cross a {
+  color: var(--color-content-link, var(--color-content-primary));
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--border-width-thin);
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 720px) {
+  .doctrine {
+    padding: var(--space-4);
+  }
+  .doctrine__split {
+    grid-template-columns: 1fr;
+  }
+}
