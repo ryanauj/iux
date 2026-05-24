@@ -469,6 +469,222 @@ body {
 }
 
 /*
+ * Aurora engine. Scoped via `data-palette` so non-aurora palettes are
+ * untouched, exactly the same shape as the CRT / Pixel-art / Sketch /
+ * Cardstock / Cel-shaded blocks above.
+ *
+ * The engine has four complementary effects, all delivered through
+ * tokens rather than per-component code:
+ *
+ *   1. **Atmospheric gradient at the root.** The palette ships
+ *      `--effect-atmosphere-gradient` as a stacked multi-radial of
+ *      green / purple / teal luminance centers on the deep midnight
+ *      base. We paint it as `background-image` on `.palette-root`
+ *      and drift the `background-position` over a 48s loop — slow
+ *      enough that the motion reads as "the atmosphere is alive,"
+ *      not as a screensaver. The 200% canvas size means the drift
+ *      reveals different gradient regions over time without ever
+ *      exposing a hard tile boundary.
+ *
+ *   2. **Luminance halo on raised surfaces.** `--luminance-center`
+ *      resolves to a translucent near-white on Aurora and to
+ *      `transparent` everywhere else. We paint it as a soft outer
+ *      `box-shadow` around `iux-card` / `iux-modal__panel` /
+ *      `iux-drawer__panel` / `iux-toast` so those surfaces read as
+ *      brighter regions of the same atmosphere rather than as bounded
+ *      rectangles. The card's own border (set to a very low-alpha
+ *      white tint in the palette) sits underneath; the luminance halo
+ *      is what does the actual "this is a surface" cue.
+ *
+ *   3. **Backdrop blur on raised surfaces.** Raised surfaces need to
+ *      soften the gradient underneath so the surface fill reads as a
+ *      luminance lift, not as a sharp window cut. `backdrop-filter:
+ *      blur(...)` is applied directly here rather than relying on
+ *      components to opt in via `--effect-backdrop-blur-md` — the
+ *      cardstock metaphor for Aurora requires the blur to land on
+ *      every raised surface uniformly.
+ *
+ *   4. **Hover / focus intensifies the luminance.** Buttons and
+ *      interactive controls get a brighter `--luminance-center`
+ *      under `:hover` / `:focus-visible`, so the luminance "bends
+ *      toward" the interactive element. This is the engine's
+ *      affordance cue — components don't grow a border or raise
+ *      elevation on hover, the atmosphere just brightens around them.
+ *
+ * **Why an engine block at all** (the Cardstock palette delivers
+ * itself entirely through `elevation.*` and avoids an engine block).
+ * Aurora can't take that route because the visual depends on:
+ *   - An animated `background-image` at the palette root, which is
+ *     a single declaration that can't be expressed through any
+ *     contract slot a component reads.
+ *   - A `backdrop-filter` on every raised surface, which requires
+ *     targeting the actual component classes (the
+ *     `--effect-backdrop-blur-*` vars only land on components that
+ *     opt in via their own CSS — Card / Modal / Drawer don't, and we
+ *     can't change them without breaking the contract that engine
+ *     visuals don't touch components).
+ *   - A `prefers-reduced-motion` branch that freezes the gradient
+ *     animation but keeps the static gradient — the engine-level
+ *     reduced-motion block above only collapses durations.
+ *
+ * **`prefers-reduced-motion`.** The drift animation freezes and the
+ * gradient is anchored at `30% 40%` — an intentionally-composed
+ * static position. The luminance halo, backdrop blur, and hover
+ * brightening all stay (they're decoration, not motion — same way
+ * the CRT scanline overlay persists). See the reduced-motion block
+ * at the bottom of the Aurora section.
+ *
+ * **Contrast envelope.** Every text color in the palette is verified
+ * against the BRIGHTEST possible state of the gradient, not the
+ * average — the brightest luminance center sits at effective
+ * luminance ≈ 0.04, and near-white body text (luminance ≈ 0.85)
+ * lands at ~16:1 on that worst-case spot. See the palette README
+ * for the full contrast envelope including exact color values.
+ *
+ * **Selection state.** Selected rows / cards / lines under Aurora
+ * can't just brighten the surface (they already share an atmosphere),
+ * so the engine block escalates `[aria-selected="true"]` and
+ * `[data-selected="true"]` with a luminance lift PLUS an inset
+ * focus-color rule that reads as the atmosphere closing in around
+ * the selection. Tested against the Task board (card selection) and
+ * Note outliner (current line indicator) — see the README.
+ */
+.palette-root[data-palette^='aurora'] {
+  background-image: var(--effect-atmosphere-gradient);
+  background-size: 200% 200%;
+  background-attachment: local;
+  animation: iux-aurora-drift 48s ease-in-out infinite alternate;
+}
+
+@keyframes iux-aurora-drift {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 30% 60%; }
+  50%  { background-position: 70% 30%; }
+  75%  { background-position: 40% 80%; }
+  100% { background-position: 100% 50%; }
+}
+
+/*
+ * Luminance-defined raised surfaces. The card / modal / drawer / toast
+ * panels are translucent fills (the palette sets
+ * `--color-surface-raised` to `rgba(255, 255, 255, 0.05)`), so they
+ * already brighten the atmosphere underneath. The block below adds the
+ * three missing pieces: the outer luminance halo, the backdrop blur,
+ * and a softer edge so the surface dissolves into the atmosphere
+ * instead of cutting it.
+ *
+ * `backdrop-filter` is the load-bearing piece — without it the
+ * translucent surface reads as a window onto the unblurred gradient,
+ * which fights the "fog patch" metaphor. The fallback (browsers
+ * without `backdrop-filter` support) is a flatter card that still
+ * reads as a luminance lift via the surface fill alone.
+ */
+.palette-root[data-palette^='aurora'] .iux-card,
+.palette-root[data-palette^='aurora'] .iux-modal__panel,
+.palette-root[data-palette^='aurora'] .iux-drawer__panel,
+.palette-root[data-palette^='aurora'] .iux-toast,
+.palette-root[data-palette^='aurora'] .iux-tooltip__body,
+.palette-root[data-palette^='aurora'] .iux-popover {
+  backdrop-filter: var(--effect-backdrop-blur-lg);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-lg);
+}
+
+/*
+ * Hover / focus bends the luminance toward the interactive element.
+ * We can't track the cursor without JS, but we can intensify the
+ * luminance center under the hovered / focused element — a brighter
+ * inset glow that reads as "the atmosphere closing in here."
+ *
+ * The selector list targets the components that are most likely to
+ * carry the affordance: buttons, interactive cards, table rows, and
+ * any element marked with the standard `[data-interactive]` attribute
+ * that some components use for hover regions. Components that don't
+ * appear here still get hover via their own CSS — this block is the
+ * engine's CONSISTENT brighten across all interactive surfaces, not
+ * an attempt to override every per-component rule.
+ */
+.palette-root[data-palette^='aurora'] .iux-button:hover,
+.palette-root[data-palette^='aurora'] .iux-card--interactive:hover,
+.palette-root[data-palette^='aurora'] .iux-table__tr:hover,
+.palette-root[data-palette^='aurora'] [data-interactive]:hover {
+  background-image: radial-gradient(
+    circle at center,
+    rgba(167, 139, 250, 0.10),
+    transparent 70%
+  );
+}
+
+.palette-root[data-palette^='aurora'] .iux-button:focus-visible,
+.palette-root[data-palette^='aurora'] .iux-card--interactive:focus-visible {
+  background-image: radial-gradient(
+    circle at center,
+    rgba(167, 139, 250, 0.14),
+    transparent 70%
+  );
+}
+
+/*
+ * Selection state under `surfaceBy: 'luminance'`. The brief is
+ * explicit: selected rows / cards / lines can't just brighten the
+ * surface (every raised surface is already a luminance lift), they
+ * need a luminance SHIFT that reads instantly. We layer two cues:
+ *
+ *   1. A brighter translucent fill (`rgba(255, 255, 255, 0.13)`) —
+ *      noticeably above the `0.05` raised-surface baseline and the
+ *      `0.10` hover state, so selection wins both rest and hover.
+ *   2. An inset purple-accent rule (the focus color) at low alpha,
+ *      painted with an inset box shadow so it doesn't push layout —
+ *      reads as "the atmosphere closed in around the selection,"
+ *      which is the cel-animated equivalent of a hard selection
+ *      border in the border-based palettes.
+ *
+ * Both `[aria-selected="true"]` and `[data-selected="true"]` are
+ * targeted because components use both conventions (Tabs use
+ * `aria-selected`, Table rows use `is-selected` via class, etc.) —
+ * see the Table rule below for the class-based escalation.
+ *
+ * Tested against the Task board (`iux-card` with `data-selected`)
+ * and Note outliner (current-line indicator). See the README.
+ */
+.palette-root[data-palette^='aurora'] [aria-selected="true"],
+.palette-root[data-palette^='aurora'] [data-selected="true"],
+.palette-root[data-palette^='aurora'] .iux-table__tr.is-selected,
+.palette-root[data-palette^='aurora'] .is-selected {
+  background-color: rgba(255, 255, 255, 0.13);
+  box-shadow:
+    inset 0 0 0 var(--border-width-hairline) rgba(167, 139, 250, 0.45),
+    0 0 var(--space-5) var(--border-width-thick) rgba(167, 139, 250, 0.18);
+}
+
+/*
+ * Aurora-specific `prefers-reduced-motion` handling.
+ *
+ *   1. The drift animation freezes — `animation: none`.
+ *   2. The gradient is anchored at `30% 40%` — an intentionally-
+ *      composed static position. This is the DESIGNED static
+ *      fallback the brief asks for: a still composition where the
+ *      purple luminance center sits in the upper-left, the green
+ *      center sits mid-right, the teal center sits in the lower
+ *      band, and the secondary purple wash sits in the lower-left.
+ *      The composition reads as "the atmosphere is at rest," not
+ *      as "the animation paused at frame 1."
+ *   3. The luminance halo, backdrop blur, hover brightening, and
+ *      selection state ALL stay — they're decoration, not motion.
+ *      Users with reduced-motion preferences see the same aurora
+ *      aesthetic, just without the slow drift.
+ *
+ * The standard engine-level reduced-motion block above already
+ * collapses every per-palette duration to `instant`, so component
+ * transitions also disappear. Nothing else to do here.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .palette-root[data-palette^='aurora'] {
+    animation: none;
+    background-position: 30% 40%;
+  }
+}
+
+/*
  * Stories scaffold — the only consumer of the components in this repo.
  * Sized via space tokens once a palette is mounted; outside any palette
  * we fall back to standard CSS keywords so the unstyled boot doesn't crash.

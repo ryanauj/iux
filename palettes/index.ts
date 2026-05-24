@@ -37,6 +37,7 @@ import { palette as dataDenseLight } from './data-dense-light'
 import { palette as cardstockLayered } from './cardstock-layered'
 import { palette as celShadedShonen } from './cel-shaded-shonen'
 import { palette as celShadedShojo } from './cel-shaded-shojo'
+import { palette as aurora } from './aurora'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -78,6 +79,7 @@ export const palettes = {
   'cardstock-layered': cardstockLayered,
   'cel-shaded-shonen': celShadedShonen,
   'cel-shaded-shojo': celShadedShojo,
+  aurora,
 } as const
 
 export type PaletteId = keyof typeof palettes

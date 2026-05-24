@@ -184,6 +184,14 @@ export const palette: Palette = {
       paperEdgeWidth: '0',
       outline: { color: 'transparent', width: '0' },
       shadowStyle: 'soft',
+      // Aurora engine no-op signals. `atmosphereGradient: 'none'` and
+      // `luminanceCenter: 'transparent'` mean the engine CSS that paints
+      // the gradient and luminance glow at `.palette-root[data-palette^='aurora']`
+      // doesn't paint here. `surfaceBy: 'border'` records that this palette
+      // demarcates surfaces with a stroke (the default), not with light density.
+      atmosphereGradient: 'none',
+      luminanceCenter: 'transparent',
+      surfaceBy: 'border',
     },
   },
 }

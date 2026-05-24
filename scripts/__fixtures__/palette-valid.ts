@@ -91,6 +91,9 @@ export const palette: Palette = {
       paperEdgeWidth: '0',
       outline: { color: 'transparent', width: '0' },
       shadowStyle: 'soft',
+      atmosphereGradient: 'none',
+      luminanceCenter: 'transparent',
+      surfaceBy: 'border',
     },
   },
 }
