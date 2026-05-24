@@ -1,0 +1,137 @@
+/*
+ * Sparkline — scalar in the context of its recent history. Four
+ * functional rungs (glyph → labeled → delta → targeted). The polyline
+ * uses `currentColor` so the palette's intent-primary tint flows
+ * through CSS without per-engine branching, the same pattern as
+ * BezierEditor.
+ */
+
+.iux-sparkline {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-sparkline__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.iux-sparkline__label {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  letter-spacing: var(--type-caption-tracking);
+  text-transform: var(--type-caption-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-sparkline__values {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.iux-sparkline__number {
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-tracking);
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-sparkline__unit {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin-inline-start: var(--space-1);
+}
+
+.iux-sparkline__delta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  font-variant-numeric: tabular-nums;
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.iux-sparkline__delta--success {
+  color: var(--color-intent-success-content);
+  background-color: var(--color-intent-success-bg);
+}
+.iux-sparkline__delta--danger {
+  color: var(--color-intent-danger-content);
+  background-color: var(--color-intent-danger-bg);
+}
+.iux-sparkline__delta--neutral {
+  color: var(--color-intent-neutral-content);
+  background-color: var(--color-intent-neutral-bg);
+}
+
+.iux-sparkline__delta-pct {
+  opacity: 0.8;
+}
+
+.iux-sparkline__pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-pill);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+}
+
+.iux-sparkline__pill--success {
+  color: var(--color-intent-success-content);
+  background-color: var(--color-intent-success-bg);
+  border-color: var(--color-intent-success-border);
+}
+.iux-sparkline__pill--danger {
+  color: var(--color-intent-danger-content);
+  background-color: var(--color-intent-danger-bg);
+  border-color: var(--color-intent-danger-border);
+}
+
+.iux-sparkline__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--color-intent-primary-bg);
+}
+
+.iux-sparkline__path {
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.iux-sparkline__target {
+  stroke: var(--color-content-secondary);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  opacity: 0.7;
+}
+
+.iux-sparkline__dot {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+.iux-sparkline__dot--min { fill: var(--color-intent-danger-bg); }
+.iux-sparkline__dot--max { fill: var(--color-intent-success-bg); }

@@ -34,6 +34,8 @@ import { PresenceStories, VARIANTS as PresenceVariants } from '../components/Pre
 import { TimelineStories, VARIANTS as TimelineVariants } from '../components/Timeline/Timeline.stories'
 import { BezierEditorStories, VARIANTS as BezierEditorVariants } from '../components/BezierEditor/BezierEditor.stories'
 import { SpatialCanvasStories, VARIANTS as SpatialCanvasVariants } from '../components/SpatialCanvas/SpatialCanvas.stories'
+import { SparklineStories, VARIANTS as SparklineVariants } from '../components/Sparkline/Sparkline.stories'
+import { LineChartStories, VARIANTS as LineChartVariants } from '../components/LineChart/LineChart.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -42,6 +44,7 @@ export type Component =
   | 'inlineedit' | 'stackedtoasts' | 'bento' | 'virtuallist' | 'stepper'
   | 'cmdk' | 'undo' | 'spotlight' | 'diff' | 'nlbar' | 'inspector' | 'presence'
   | 'timeline' | 'bezier' | 'canvas'
+  | 'sparkline' | 'linechart'
 
 export type Tier = 1 | 2 | 3
 
@@ -90,3 +93,17 @@ export const COMPONENTS: StoryEntry[] = [
   { id: 'bezier', label: 'Bezier editor', tier: 3, variants: BezierEditorVariants, render: v => <BezierEditorStories variant={v} /> },
   { id: 'canvas', label: 'Spatial canvas', tier: 3, variants: SpatialCanvasVariants, render: v => <SpatialCanvasStories variant={v} /> },
 ]
+
+/**
+ * Parallel registry to COMPONENTS. Visualizations sit alongside components
+ * as a separate dimension — see FINALIZED-VISUALIZATIONS.md. Both registries
+ * share the StoryEntry shape so the showcase view modes iterate them
+ * uniformly; the per-palette layouts render them as distinct groups.
+ */
+export const VISUALIZATIONS: StoryEntry[] = [
+  { id: 'sparkline', label: 'Sparkline', tier: 1, variants: SparklineVariants, render: v => <SparklineStories variant={v} /> },
+  { id: 'linechart', label: 'Line chart', tier: 1, variants: LineChartVariants, render: v => <LineChartStories variant={v} /> },
+]
+
+/** Convenience: every entry across both registries. Use for global lookups. */
+export const ALL_ENTRIES: StoryEntry[] = [...COMPONENTS, ...VISUALIZATIONS]
