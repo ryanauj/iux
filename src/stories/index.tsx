@@ -14,6 +14,7 @@ export function Stories() {
         { href: '#/apps', label: 'Apps →' },
         { href: '#/quiz', label: 'Quiz →' },
         { href: '#/tests', label: 'Integration tests →' },
+        { href: '#/doctrine', label: 'Doctrine →' },
       ]}
       infoText={
         <>

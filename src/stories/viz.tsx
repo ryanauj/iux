@@ -13,6 +13,7 @@ export function Viz() {
         { href: '#/', label: '← Components' },
         { href: '#/apps', label: 'Apps →' },
         { href: '#/quiz', label: 'Quiz →' },
+        { href: '#/doctrine', label: 'Doctrine →' },
       ]}
       infoText={
         <>

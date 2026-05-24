@@ -3,26 +3,31 @@ import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
-  type ControlsStyle,
+  useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
+import {
+  MOTION_FIELD_OPTIONS,
+  resolveMotionScale,
+  DEFAULT_MOTION_SCALE,
+  type MotionScale,
+} from '../theme/motionScales'
+import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
-import { QuizView } from './QuizView'
+import './doctrine.css'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
-const SEED_OPTIONS = [1, 2, 3, 7, 42] as const
-
 const URL_PARAM = {
   chrome: 'chrome',
-  seed: 'seed',
-  controls: 'controls',
+  doc: 'doc',
+  motion: 'motion',
 } as const
 
 const DEFAULTS = {
   chrome: 'flat-classic' as PaletteId,
-  seed: 1,
-  controls: 'button' as ControlsStyle,
+  doc: 'layout' as DoctrineId,
+  motion: DEFAULT_MOTION_SCALE,
 }
 
 const isPaletteId = (v: string): v is PaletteId =>
@@ -30,8 +35,8 @@ const isPaletteId = (v: string): v is PaletteId =>
 
 type UrlSettings = {
   chrome: PaletteId
-  seed: number
-  controls: ControlsStyle
+  doc: DoctrineId
+  motion: MotionScale
 }
 
 function readUrlSettings(): UrlSettings {
@@ -39,22 +44,18 @@ function readUrlSettings(): UrlSettings {
   const p = new URL(window.location.href).searchParams
   const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
   const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
-  const seedRaw = Number(p.get(URL_PARAM.seed))
-  const seed =
-    Number.isFinite(seedRaw) && seedRaw > 0 ? Math.floor(seedRaw) : DEFAULTS.seed
-  const controlsRaw = p.get(URL_PARAM.controls) ?? ''
-  const controls: ControlsStyle =
-    controlsRaw === 'strip' || controlsRaw === 'button'
-      ? controlsRaw
-      : DEFAULTS.controls
-  return { chrome, seed, controls }
+  const docRaw = p.get(URL_PARAM.doc) ?? ''
+  const doc: DoctrineId = isDoctrineId(docRaw) ? docRaw : DEFAULTS.doc
+  const motion = resolveMotionScale(p.get(URL_PARAM.motion))
+  return { chrome, doc, motion }
 }
 
-export function QuizPage() {
+export function DoctrinePage() {
   const initial = useMemo(readUrlSettings, [])
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
-  const [seed, setSeed] = useState<number>(initial.seed)
-  const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
+  const [doc, setDoc] = useState<DoctrineId>(initial.doc)
+  const [motionScale, setMotionScale] = useState<MotionScale>(initial.motion)
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [infoOpen, setInfoOpen] = useState(false)
 
   useEffect(() => {
@@ -64,20 +65,20 @@ export function QuizPage() {
       else url.searchParams.set(key, value)
     }
     sync(URL_PARAM.chrome, chromePaletteId, DEFAULTS.chrome)
-    sync(URL_PARAM.seed, String(seed), String(DEFAULTS.seed))
-    sync(URL_PARAM.controls, controlsStyle, DEFAULTS.controls)
+    sync(URL_PARAM.doc, doc, DEFAULTS.doc)
+    sync(URL_PARAM.motion, String(motionScale), String(DEFAULTS.motion))
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [chromePaletteId, seed, controlsStyle])
+  }, [chromePaletteId, doc, motionScale])
 
   useEffect(() => {
     const onPop = () => {
       const s = readUrlSettings()
       setChromePaletteId(s.chrome)
-      setSeed(s.seed)
-      setControlsStyle(s.controls)
+      setDoc(s.doc)
+      setMotionScale(s.motion)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
@@ -106,6 +107,15 @@ export function QuizPage() {
     }
   }, [infoOpen])
 
+  const docField: Field = {
+    key: 'doc',
+    label: 'Doc',
+    short: 'D',
+    value: doc,
+    options: DOCTRINE_PAGES.map(p => ({ value: p.id, label: p.label })),
+    onChange: v => setDoc(v as DoctrineId),
+  }
+
   const chromeField: Field = {
     key: 'chrome',
     label: 'Chrome',
@@ -118,31 +128,33 @@ export function QuizPage() {
     onChange: v => setChromePaletteId(v as PaletteId),
   }
 
-  const seedField: Field = {
-    key: 'seed',
-    label: 'Seed',
-    short: 'S',
-    value: String(seed),
-    options: SEED_OPTIONS.map(n => ({ value: String(n), label: `Seed ${n}` })),
-    onChange: v => setSeed(Number(v)),
+  const motionField: Field = {
+    key: 'motion',
+    label: 'Motion',
+    short: 'M',
+    value: String(motionScale),
+    options: MOTION_FIELD_OPTIONS,
+    onChange: v => setMotionScale(resolveMotionScale(v)),
   }
 
-  const fields: Field[] = [chromeField, seedField]
+  const fields: Field[] = [docField, chromeField, motionField]
+
+  const activePage = DOCTRINE_PAGES.find(p => p.id === doc) ?? DOCTRINE_PAGES[0]
 
   return (
-    <PaletteRoot palette={palettes[chromePaletteId]} as="section">
+    <PaletteRoot palette={palettes[chromePaletteId]} as="section" motionScale={motionScale}>
       <main className="stories">
         <header className="stories__header stories__header--static">
           <div className="stories__header-bar">
             <h1 className="stories__title">
-              iux — style quizzes
+              iux — doctrine
               <button
                 ref={infoBtnRef}
                 type="button"
                 className="stories__info-btn"
                 aria-label="About this page"
                 aria-expanded={infoOpen}
-                aria-controls="quiz-info-popover"
+                aria-controls="doctrine-info-popover"
                 onClick={() => setInfoOpen(o => !o)}
               >
                 i
@@ -152,25 +164,22 @@ export function QuizPage() {
               <a className="stories__apps-link" href="#/">← Components</a>
               <a className="stories__apps-link" href="#/viz">Visualizations →</a>
               <a className="stories__apps-link" href="#/apps">Apps →</a>
-              <a className="stories__apps-link" href="#/doctrine">Doctrine →</a>
+              <a className="stories__apps-link" href="#/quiz">Quiz →</a>
             </nav>
           </div>
           {infoOpen && (
             <div
               ref={infoPopRef}
-              id="quiz-info-popover"
+              id="doctrine-info-popover"
               role="region"
               aria-label="About this page"
               className="stories__info-popover"
             >
-              Quizzes auto-derived from the typed{' '}
-              <code>StyleDescription</code> per palette. Four question
-              kinds — identify the style, what makes it that style,
-              distinguish lookalikes, and free-recall — drawn from the
-              described palettes. Use Chrome to re-skin the quiz frame
-              and Seed to pick a reproducible deck. See{' '}
-              <code>docs/styles/INDEX.md</code> for the source-of-truth
-              descriptions.
+              UX guidance docs from <code>doctrine/</code> rendered with
+              live demos. Each page pairs the rules from its source
+              markdown with real components; switch the Chrome palette
+              to watch the rules apply (or fail) under different engines.
+              Use Doc to switch pages.
             </div>
           )}
         </header>
@@ -179,7 +188,15 @@ export function QuizPage() {
           onStyleChange={setControlsStyle}
           fields={fields}
         />
-        <QuizView seed={seed} totalPalettes={PALETTE_IDS.length} />
+
+        <PaletteRoot
+          palette={palettes[chromePaletteId]}
+          as="section"
+          className="stories__palette"
+          motionScale={motionScale}
+        >
+          {activePage.render()}
+        </PaletteRoot>
       </main>
     </PaletteRoot>
   )
