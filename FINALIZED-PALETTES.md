@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Forty-one named aesthetics. Each is a concrete value-set bound to the
+Forty-nine named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -280,6 +280,66 @@ Other engines decorate; Terminal-TUI redefines.
 |----|-------------------------|---------------|--------------|------------------------------------------------------------------------------------------------|
 | 41 | Terminal / TUI          | Terminal-TUI  | experimental | Warm-white-on-near-black, monospace throughout, layout snapped to integer character cells, box-drawing-character borders on raised surfaces, semantic color (red / amber / green / blue) reserved strictly for state. |
 
+## Group P — royal register set (Flat engine, regalia palette)
+
+Three palettes pin three different angles on regalia to the Flat
+engine, sharing one regal accent vocabulary (deep aubergine field,
+antique gold, deep navy) and a Cormorant Garamond display serif. They
+differ only in `color.surface.*` lightness, which slot carries the
+gold (`intent.primary` in Modern Royal, `border.subtle` in Scandinavian
+Royal Modern, `intent.primary` again in Marble Royal Flat), and
+`effect.overlay.image` (none on the first two, a procedural marble
+texture on the third). The set is the first proof that the Flat engine
+carries a "regalia" register the way Group D proves it carries
+Memphis / Swiss / Bauhaus, and Marble Royal Flat is the first palette
+to use `effect.overlay.image` for a photographic surface texture
+(previously only Mid-century modern's atomic-dot field exercised the
+slot, and that was a pattern, not a stone).
+
+| #  | Palette                       | Engine | A11y         | One-line philosophy                                                                                                                |
+|----|-------------------------------|--------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 42 | Modern Royal                  | Flat   | pass         | Deep aubergine field, antique-gold accent, modern geometric sans body over a Cormorant display — regal colour stripped of ornament, opaque surfaces, soft drop shadows. |
+| 43 | Scandinavian Royal Modern     | Flat   | pass         | Chalk-white / bleached-oak field, single deep-navy regal accent, generous whitespace, humanist sans body — Nordic restraint applied to royal colour; gold demoted to a hairline rule. |
+| 44 | Marble Royal Flat             | Flat   | experimental | Cool Carrara-marble paper field via a procedural `effect.overlay.image` (five stacked radial gradients), gold-vein accent, Trajan-feel display caps — gallery-plinth register. |
+
+## Group Q — day-transit set (Flat engine, signage colour systems)
+
+Three palettes share a daytime city-infrastructure brief — JIS signage
+colour (Tokyo / Day), JR-East Shinkansen livery (Bullet Train / Day),
+and the NYC MTA / Tokyo Metro / London Underground line-colour palette
+(Metro / Light) — but solve different problems. All three keep
+`surface.base` near white and reserve colour for state. The set
+exercises the first asymmetric `radius.lg` in the showcase
+(`"16px 16px 4px 4px"` on Bullet Train / Day for directional pill
+shape), the first long-ease-out `motion.easing.standard` (`cubic-bezier(0.05, 0.7, 0.1, 1)` on the same palette), and the first Flat palette to
+commit to a single-family Helvetica stack everywhere (Metro / Light).
+
+| #  | Palette          | Engine | A11y | One-line philosophy                                                                                                                |
+|----|------------------|--------|------|------------------------------------------------------------------------------------------------------------------------------------|
+| 45 | Tokyo / Day      | Flat   | pass | White field, JR-East green + JIS signal red / yellow + JR blue as the semantic triad, condensed gothic display, tight 4 px grid — Shibuya-crossing intensity at noon. |
+| 46 | Bullet Train / Day | Flat | pass | Pale-sky-blue field, deep-navy primary, signal-yellow focus, asymmetric `radius.lg` (`16px 16px 4px 4px`) for forward motion, long ease-out motion — Shinkansen N700 livery in UI form. |
+| 47 | Metro / Light    | Flat   | pass | Near-white field, hairline track-rule borders, NYC-subway line-colour palette as `intent.*`, Helvetica throughout, pill-shaped station tags — Vignelli 1970 transit-map register. |
+
+## Group R — workshop / street pair (Flat engine, opposing registers)
+
+Two palettes pin two opposing workshop / street registers to the Flat
+engine. Industrial / Light is the inversion exercise — take the
+dark-workshop aesthetic of CRT / Phosphor and Bloomberg Terminal and
+prove the language survives on a warm-paper light field (warm-paper
+surfaces, steel-grey neutrals, safety-orange accent, IBM Plex Mono on
+`family.ui`). Graffiti / Marble is the deliberately confrontational
+pairing — the marble overlay from Group P (Marble Royal Flat) reused
+verbatim under fluorescent magenta + lime spray-paint intents and a
+Permanent Marker display. It ships `experimental` because the
+fluorescent accents only pass AA against BLACK inverse content (not
+white) — the palette pins `intent.*.content` to black throughout, and
+the README documents the contrast trap as the teaching example.
+
+| #  | Palette            | Engine | A11y         | One-line philosophy                                                                                                                |
+|----|--------------------|--------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 48 | Industrial / Light | Flat   | pass         | Warm-paper field, steel-grey + concrete-grey neutrals, safety-orange `intent.primary`, IBM Plex Mono on `family.ui` so labels carry measurement-drawing density — workshop register inverted to a light field. |
+| 49 | Graffiti / Marble  | Flat   | experimental | Carrara-marble field via the shared procedural `effect.overlay.image`, fluorescent magenta + lime intents with BLACK inverse content (not white), Permanent Marker display — gallery register intentionally vandalised. |
+
 ---
 
 ## Notes on a11y tags
@@ -298,7 +358,7 @@ Other engines decorate; Terminal-TUI redefines.
 
 ## Engine inventory
 
-Fourteen engines, forty-one palettes:
+Fourteen engines, forty-nine palettes:
 
 1. Flat
 2. Material
@@ -315,8 +375,8 @@ Fourteen engines, forty-one palettes:
 13. Aurora
 14. Terminal-TUI
 
-Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
-34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
+Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32,
+34–36, and 42–49. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
 `Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
 `CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
