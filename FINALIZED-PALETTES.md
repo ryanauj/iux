@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Thirty-seven named aesthetics. Each is a concrete value-set bound to the
+Forty-one named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -243,6 +243,43 @@ only palette using `'luminance'` today.
 |----|-------------------------|------------|--------------|------------------------------------------------------------------------------------------------|
 | 40 | Aurora                  | Aurora     | experimental | Deep midnight base, slowly drifting green / purple / teal atmospheric gradient, raised surfaces as luminance lifts rather than bordered rectangles, near-white type with cool chromatic tint, hover/focus intensifies the luminance halo. |
 
+## Group N — terminal / character-grid (new engine)
+
+One palette anchors the new Terminal-TUI engine, which exercises three
+contract slots no previous engine touched — `effect.gridUnitX`,
+`effect.gridUnitY`, and `effect.borderStyle`. The engine treats the
+character cell (`1ch` wide, `1lh` tall) as the unit of layout:
+component padding, gaps, and corner-glyph positions all snap to
+integer character cells. The load-bearing addition is `borderStyle`:
+under `'character'` (set only by Terminal-TUI; every other palette
+declares `'css'`), raised surfaces (Card, Modal, Table) hide their
+CSS border and paint a box-drawing-character outline (`┌─┐│└─┘`).
+Components consume the token via container style queries
+(`@container palette style(--border-style: character)`), so the engine
+seam is the token itself — not a `data-palette` attribute. Monochrome
+warm-white base with semantic-color text only (red errors, amber
+warnings, green success, blue links); the entire engine refuses
+decorative color. The contract is built so a second register
+(e.g. "Terminal / DOS-blue" with `#0000aa` panels, "Terminal /
+VT100-green" with phosphor body type) could land later by editing
+only `color.*` and `typography.family.*`.
+
+`borderStyle` is the most invasive contract addition since
+`surfaceBy = 'luminance'` shipped with Aurora — every other palette
+must declare `'css'` to opt out, and three components (Card, Modal,
+Table) gained a `@container` block to switch their rendering. That's
+the cost of an engine that redefines the unit of layout itself;
+absorbing it in the same session that ships the engine is the honest
+path.
+
+The teaching note for this engine is the headline of the whole
+project: **design tokens can redefine the unit of layout itself.**
+Other engines decorate; Terminal-TUI redefines.
+
+| #  | Palette                 | Engine        | A11y         | One-line philosophy                                                                            |
+|----|-------------------------|---------------|--------------|------------------------------------------------------------------------------------------------|
+| 41 | Terminal / TUI          | Terminal-TUI  | experimental | Warm-white-on-near-black, monospace throughout, layout snapped to integer character cells, box-drawing-character borders on raised surfaces, semantic color (red / amber / green / blue) reserved strictly for state. |
+
 ---
 
 ## Notes on a11y tags
@@ -261,7 +298,7 @@ only palette using `'luminance'` today.
 
 ## Engine inventory
 
-Thirteen engines, forty palettes:
+Fourteen engines, forty-one palettes:
 
 1. Flat
 2. Material
@@ -276,6 +313,7 @@ Thirteen engines, forty palettes:
 11. Cardstock
 12. Cel-shaded
 13. Aurora
+14. Terminal-TUI
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 34–36. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
@@ -284,5 +322,6 @@ Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32, and
 reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
 Engine `Cardstock` is anchored by palette 37. Engine `Cel-shaded` is
 reused by palettes 38 and 39. Engine `Aurora` is anchored by palette
-40. The token contract is the only seam between engine and palette —
-see `tokens/00-token-contract.md`.
+40. Engine `Terminal-TUI` is anchored by palette 41. The token
+contract is the only seam between engine and palette — see
+`tokens/00-token-contract.md`.

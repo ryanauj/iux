@@ -273,6 +273,56 @@
  * compact (dot-only) row when the available width is below the
  * "full step label" threshold.
  */
+/* ---------- Character-border corners (Terminal-TUI) ----------
+ *
+ * Same pattern as Card — see Card.css for the full note. The modal
+ * panel is `position: relative` thanks to its block-level placement
+ * inside the scrim, so absolutely-positioned corner spans anchor to
+ * the dialog's edges. Under `'character'` mode the standard CSS border
+ * collapses to transparent and the four corner glyphs + four CSS edge
+ * lines compose into a box-drawing outline that consumes a cell.
+ */
+.iux-modal__corner {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: 1;
+  color: var(--color-border-default);
+}
+
+.iux-modal__corner--tl { inset-block-start: 0; inset-inline-start: 0; }
+.iux-modal__corner--tr { inset-block-start: 0; inset-inline-end: 0; }
+.iux-modal__corner--bl { inset-block-end: 0; inset-inline-start: 0; }
+.iux-modal__corner--br { inset-block-end: 0; inset-inline-end: 0; }
+
+@container palette style(--border-style: character) {
+  .iux-modal {
+    border-color: transparent;
+    /*
+     * The standard dialog `border-radius: var(--radius-lg)` would
+     * round off the corner glyph cells under TUI. The TUI palette
+     * already ships `radius.lg = '0'`, so this is belt-and-braces —
+     * but explicit `0` keeps the rule self-evident if anyone composes
+     * the modal under a non-TUI palette that has set `--border-style:
+     * character` via a custom theme.
+     */
+    border-radius: 0;
+    /*
+     * Modal animation (`iux-modal-pop`) translates the dialog 1ch
+     * upward and scales it slightly. Under TUI we kill the scale
+     * (which would put glyphs on non-integer pixel boundaries) and
+     * keep only the translate, expressed in character cells.
+     */
+    animation: none;
+  }
+  .iux-modal__corner {
+    display: block;
+  }
+}
+
 @media (max-width: 40rem) {
   .iux-modal__header {
     padding: var(--space-4) var(--space-4) var(--space-2);

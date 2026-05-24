@@ -257,6 +257,18 @@ export function Table<T>(props: TableProps<T>) {
 
   return (
     <div className={classes}>
+      {/*
+       * Character-border corners (Terminal-TUI engine). See Card / Modal
+       * for the pattern note: always rendered, hidden by default,
+       * revealed under `@container palette style(--border-style:
+       * character)`. The table outline ends up reading like a `top` /
+       * `htop` panel: single-character grid separators on every column
+       * + row boundary, corner glyphs at the four edges.
+       */}
+      <span className="iux-table__corner iux-table__corner--tl" aria-hidden="true">┌</span>
+      <span className="iux-table__corner iux-table__corner--tr" aria-hidden="true">┐</span>
+      <span className="iux-table__corner iux-table__corner--bl" aria-hidden="true">└</span>
+      <span className="iux-table__corner iux-table__corner--br" aria-hidden="true">┘</span>
       {hasResize && (
         <div className="iux-table__toolbar">
           <button

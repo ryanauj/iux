@@ -4,7 +4,7 @@ A showcase of UI components and UX flows along a **classic → cutting-edge**
 variant axis, with any of a set of named visual **palettes** (Flat,
 Material, Neubrutalism, Glassmorphism, Neumorphism, Claymorphism,
 Skeuomorphism, Tron, Editorial, AAA, CRT / Phosphor, Pixel-art, Sketch,
-Cardstock, Cel-shaded) applied to any of them.
+Cardstock, Cel-shaded, Aurora, Terminal-TUI) applied to any of them.
 
 **Live at:** <https://ryanauj.github.io/iux/>
 
@@ -451,3 +451,129 @@ reduced-motion preferences see the same cel-shaded aesthetic — ink
 outlines, two-tone shadows, saturated fills — just with state
 transitions that fire instantly.
 
+
+
+## Terminal-TUI engine
+
+The Terminal-TUI engine (palette 41: Terminal / TUI) is the most
+architecturally distinctive engine in iux — it treats the character
+grid as a design token. Layout snaps to integer character cells
+(`1ch` wide, `1lh` tall), raised surfaces paint their outlines as
+real box-drawing characters (`┌─┐│└─┘`) instead of CSS borders, and
+monochrome warm-white is the rule with semantic color (red errors,
+amber warnings, green success, blue links) reserved strictly for
+state. The engine shares DNA with CRT / Phosphor — same mono-on-dark
+roots — but solves a different problem: CRT is nostalgic
+(scanlines, glow, phosphor decay), TUI is functional (cells,
+characters, density).
+
+The engine exercises three contract slots no previous engine
+touched:
+
+- `effect.gridUnitX` and `effect.gridUnitY` — the character-cell
+  grid units. Set to `'1ch'` / `'1lh'` on TUI; `'0'` everywhere
+  else (any rule that multiplies / divides them collapses to a
+  no-op on non-TUI palettes). Emit as `--grid-unit-x` and
+  `--grid-unit-y`.
+- `effect.borderStyle` — `'css' | 'character'`. Set to
+  `'character'` on TUI; `'css'` on every other palette. **The
+  most load-bearing contract addition in the engine.** Components
+  read it via container style queries
+  (`@container palette style(--border-style: character)`) to
+  switch from CSS borders to box-drawing-character outlines.
+  Forcing every palette to declare its rendering mode (`'css'`
+  is the explicit opt-out) makes the slot's absence audit-able.
+  Emits as `--border-style`.
+
+### The teaching note
+
+**Design tokens can redefine the unit of layout itself.** Most
+palettes re-tune existing slots: `space.*` widens (Editorial),
+`radius.*` snaps to zero (Neubrutalism), `elevation.*` collapses
+(Flat / Classic). Terminal-TUI changes which UNIT a component
+composes against. The same `space.*` scale, but expressed in `ch`
+and `lh` rather than `px`. The same `border:` rule, but rendered
+through `┌─┐│└─┘` rather than through a CSS stroke. That's what the
+contract was built for — and it's the headline lesson of the whole
+project.
+
+### How the character border is delivered
+
+Two pieces work together:
+
+1. **Component markup gains four corner glyph spans.** Card, Modal,
+   and Table each render four `<span class="iux-X__corner …"
+   aria-hidden="true">` elements containing the literal corner
+   characters `┌` / `┐` / `└` / `┘`. They're rendered on every
+   palette but hidden by default (`display: none`).
+2. **Component CSS branches on `--border-style` via a `@container`
+   style query.** Inside Card.css / Modal.css / Table.css, a block
+   reads:
+   ```css
+   @container palette style(--border-style: character) {
+     .iux-X { border-color: transparent; border-radius: 0; }
+     .iux-X__corner { display: block; }
+   }
+   ```
+   The `palette` container is declared on `.palette-root` in
+   `src/styles.css`. Under TUI the standard CSS border becomes
+   transparent and the four corner glyphs become visible; the four
+   1px CSS edge lines that remain align with the corners because
+   `─` / `│` render as 1px lines in any modern monospace face.
+
+This delivery pattern keeps the engine inside the contract seam:
+the token `--border-style: character` is the **trigger**, the
+component CSS is the **renderer**, and the engine block in
+`src/styles.css` provides the **environment** (the named
+`container-name: palette` declaration, plus an `ss01` /
+`calt` font-feature pin that tightens box-drawing alignment in
+the bundled monos).
+
+### Components that thrive vs degrade vs are excluded
+
+`palettes/terminal-tui.README.md` carries the full list, but the
+short version:
+
+- **Thrive:** Card, Modal, Table (the components that received
+  character rendering this session — Expense log and Note outliner
+  apps will look astonishing here), Button, Toggle, Checkbox,
+  Tabs, Segmented, Pagination, Stepper, Tooltip, EmptyState,
+  Sidebar, Bento, Toast. Anything composing through standard
+  `space.*` / `border.*` / `intent.*` lands cleanly on the cell
+  grid.
+- **Degrade gracefully (by design):** Habit / streak tracker — the
+  calendar heat-map grid IS character-grid-shaped, lucky alignment;
+  the intensity gradient collapses to "filled vs not" under TUI's
+  monochrome-with-semantic-color rule, but the structure is intact.
+  Recipe runner and Settings playground both work but trade some
+  visual polish for density.
+- **Excluded (graceful "not supported" message):** Diagram /
+  Spatial canvas. The component renders fractional-pixel positions
+  with bezier-curve edges; the character grid can't express either
+  without ASCII-art approximations that fight every other
+  affordance. The engine block paints a graceful
+  `┌─ TUI not supported … ─┐` overlay scoped to
+  `.iux-spatial-canvas` rather than force-rendering. Not every
+  engine has to work everywhere — the contract gives us a clean
+  way to declare it.
+
+### Browser support
+
+The character-border rendering depends on **CSS container style
+queries** (`@container <name> style(--var: <value>)`), supported in
+Chrome 111+ (March 2023), Safari 18+ (Sep 2024), Firefox 128+
+(Jul 2024). On older browsers the `@container style()` block is
+ignored and the TUI palette falls back to its standard CSS-border
+rendering — still mono-on-dark-on-grid, just without the
+box-drawing corners.
+
+### `prefers-reduced-motion`
+
+Trivial under TUI. The engine paints no decorative motion (no
+scanline drift, no glow pulse, no atmospheric gradient, no card
+lift, no marker wobble). The existing engine-level reduced-motion
+block in `src/styles.css` already covers component state
+transitions by collapsing every per-palette duration to `instant`.
+Users with reduced-motion preferences see the same character-grid
+aesthetic without any visual difference except the state-transition
+speed.
