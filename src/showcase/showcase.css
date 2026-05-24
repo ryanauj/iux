@@ -64,6 +64,15 @@
   padding-top: 0;
 }
 
+.showcase__head-link {
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.showcase__head-link:hover {
+  text-decoration: underline;
+}
+
 /* ----- shared card chrome ----- */
 
 .showcase-card {

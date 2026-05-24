@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Palette } from '../../tokens/semantic.contract'
 import { PaletteRoot } from '../theme/PaletteRoot'
+import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
 import type { StoryEntry, Tier } from './components'
 
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
@@ -15,6 +17,7 @@ interface Props {
 }
 
 export function PaletteShowcase({ palette, layout, motionScale = 1, entries, kindLabel }: Props) {
+  const engineGuideAvailable = (ENGINE_GUIDE_IDS as readonly string[]).includes(palette.engine)
   return (
     <PaletteRoot
       palette={palette}
@@ -28,6 +31,14 @@ export function PaletteShowcase({ palette, layout, motionScale = 1, entries, kin
         </h2>
         <p className="showcase__head-meta">
           {entries.length} {kindLabel} · layout: {layout}
+          {engineGuideAvailable && (
+            <>
+              {' · '}
+              <Link to={`/engines/${palette.engine}`} className="showcase__head-link">
+                Learn how the {palette.engine} engine works →
+              </Link>
+            </>
+          )}
         </p>
       </header>
       {layout === 'feed' && <FeedLayout entries={entries} />}
