@@ -105,8 +105,8 @@ reproduces the exact shell + palette + motion.
 
 ### Shell variants
 
-Eight shells ship today. The first five are pure chrome around the
-standard page set; the last three reshape how content composes.
+Nine shells ship today. The first five are pure chrome around the
+standard page set; the last four reshape how content composes.
 
 | `layout=` | Shape | What it changes |
 | --------- | ----- | --------------- |
@@ -118,6 +118,7 @@ standard page set; the last three reshape how content composes.
 | `palette` | Minimal chrome + global ⌘K / `/` command bar across teams, players, games. Pages still render below. | Replaces the menu with a query surface; pages unchanged |
 | `court` | Top nav + interactive SVG basketball court on Home. Tapping court regions routes to filtered/related views. | Replaces the Home page with a spatial map; other routes render standard pages |
 | `tabs` | Workspace-style tab strip across the top. Each visited route becomes a tab; tabs persist via `?tabs=`. | Multiple pages stay open at once; closing the active tab navigates to a neighbor |
+| `feed` | Single chronological vertical stream of entity cards (live → today's finals → today's upcoming → season leaders) with Status / Conference / Team filter chips. On non-home routes the feed collapses into a left rail and the page renders to the right. | Replaces the Home page's five-section split with one timeline; other routes get the feed as a sidebar alongside the standard page |
 
 Adding a new shell:
 
