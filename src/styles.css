@@ -924,6 +924,14 @@ body {
   color: var(--color-content-primary);
 }
 
+.stories__header-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .stories__apps-link {
   font-family: var(--type-label-family);
   font-size: var(--type-label-size);
