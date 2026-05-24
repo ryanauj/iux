@@ -147,20 +147,41 @@ export function Tooltip({
     setPosition({ top: top + window.scrollY, left: left + window.scrollX, side })
   }, [isOpen, side, content, title])
 
+  // Dismiss the tooltip when a touch lands outside the trigger or tooltip — gives
+  // touch users a way to close, since hover-leave never fires.
+  useEffect(() => {
+    if (!isOpen) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType !== 'touch') return
+      const target = e.target as Node | null
+      if (!target) return
+      if (triggerRef.current?.contains(target)) return
+      if (tipRef.current?.contains(target)) return
+      setPinned(false)
+      setOpenState(false)
+    }
+    window.addEventListener('pointerdown', onPointerDown, true)
+    return () => window.removeEventListener('pointerdown', onPointerDown, true)
+  }, [isOpen, setOpenState])
+
   // ---------- Inject event handlers on the trigger ----------
   if (!isValidElement(children)) {
     throw new Error('Tooltip requires a single React element child')
   }
 
   const triggerProps = {
-    onMouseEnter: (e: React.MouseEvent) => {
-      const orig = (children.props as { onMouseEnter?: (e: React.MouseEvent) => void }).onMouseEnter
+    onPointerEnter: (e: React.PointerEvent) => {
+      const orig = (children.props as { onPointerEnter?: (e: React.PointerEvent) => void }).onPointerEnter
       orig?.(e)
+      // Touch enter fires on tap-down but is followed immediately by leave on tap-up;
+      // for touch we rely on the click handler below instead.
+      if (e.pointerType === 'touch') return
       show()
     },
-    onMouseLeave: (e: React.MouseEvent) => {
-      const orig = (children.props as { onMouseLeave?: (e: React.MouseEvent) => void }).onMouseLeave
+    onPointerLeave: (e: React.PointerEvent) => {
+      const orig = (children.props as { onPointerLeave?: (e: React.PointerEvent) => void }).onPointerLeave
       orig?.(e)
+      if (e.pointerType === 'touch') return
       hide()
     },
     onFocus: (e: React.FocusEvent) => {
@@ -173,17 +194,26 @@ export function Tooltip({
       orig?.(e)
       hide()
     },
-    onClick: pinnable
-      ? (e: React.MouseEvent) => {
-          const orig = (children.props as { onClick?: (e: React.MouseEvent) => void }).onClick
-          orig?.(e)
-          setPinned(p => {
-            const next = !p
-            if (next) setOpenState(true)
-            return next
-          })
-        }
-      : (children.props as { onClick?: (e: React.MouseEvent) => void }).onClick,
+    onClick: (e: React.MouseEvent) => {
+      const orig = (children.props as { onClick?: (e: React.MouseEvent) => void }).onClick
+      orig?.(e)
+      if (pinnable) {
+        setPinned(p => {
+          const next = !p
+          if (next) setOpenState(true)
+          return next
+        })
+        return
+      }
+      // Non-pinnable: on touch a click is the only way to surface the tooltip,
+      // so toggle visibility. Desktop already handles this via hover/focus.
+      const nativeType = (e.nativeEvent as PointerEvent | MouseEvent | undefined)
+      const pointerType = (nativeType && 'pointerType' in nativeType) ? nativeType.pointerType : ''
+      if (pointerType === 'touch') {
+        if (isOpen) setOpenState(false)
+        else show()
+      }
+    },
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node
       const childRef = (children as ReactElement & { ref?: unknown }).ref

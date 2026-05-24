@@ -84,9 +84,14 @@ export function SpatialCanvas({
     | { kind: 'pan'; startX: number; startY: number; tx: number; ty: number }
     | { kind: 'marquee'; startX: number; startY: number; addToSel: boolean }
     | { kind: 'object'; ids: string[]; startX: number; startY: number; startObjs: CanvasObject[] }
+    | { kind: 'pinch'; startDist: number; startScale: number; startCx: number; startCy: number; startTx: number; startTy: number }
     | null
   >(null)
+  // Active pointers on the viewport — used to detect two-finger pinch on touch.
+  const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map())
   const [marquee, setMarquee] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+
+  const canZoom = variant === 'zoom' || variant === 'objects' || variant === 'collab'
 
   const screenToWorld = (clientX: number, clientY: number): { x: number; y: number } => {
     const el = viewportRef.current
@@ -98,6 +103,25 @@ export function SpatialCanvas({
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     event.preventDefault()
     ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
+    pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+
+    // Two-finger pinch — supersedes whatever single-finger gesture was in flight.
+    if (canZoom && pointersRef.current.size >= 2) {
+      const [p0, p1] = Array.from(pointersRef.current.values()).slice(0, 2)
+      const startDist = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1
+      dragRef.current = {
+        kind: 'pinch',
+        startDist,
+        startScale: transform.scale,
+        startCx: (p0.x + p1.x) / 2,
+        startCy: (p0.y + p1.y) / 2,
+        startTx: transform.x,
+        startTy: transform.y,
+      }
+      setMarquee(null)
+      return
+    }
+
     const target = event.target as HTMLElement
     const objId = target.closest<HTMLElement>('[data-canvas-obj-id]')?.dataset.canvasObjId
 
@@ -140,8 +164,32 @@ export function SpatialCanvas({
   }
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (pointersRef.current.has(event.pointerId)) {
+      pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+    }
     const d = dragRef.current
     if (!d) return
+    if (d.kind === 'pinch') {
+      if (pointersRef.current.size < 2) return
+      const [p0, p1] = Array.from(pointersRef.current.values()).slice(0, 2)
+      const dist = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1
+      const cx = (p0.x + p1.x) / 2
+      const cy = (p0.y + p1.y) / 2
+      const el = viewportRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const nextScale = Math.max(0.25, Math.min(4, d.startScale * (dist / d.startDist)))
+      // World point under the initial pinch midpoint stays under the live midpoint
+      // (combines zoom toward midpoint with two-finger pan).
+      const wx = (d.startCx - rect.left - d.startTx) / d.startScale
+      const wy = (d.startCy - rect.top - d.startTy) / d.startScale
+      setTransform({
+        scale: nextScale,
+        x: cx - rect.left - wx * nextScale,
+        y: cy - rect.top - wy * nextScale,
+      })
+      return
+    }
     if (d.kind === 'pan') {
       setTransform(t => ({ ...t, x: d.tx + (event.clientX - d.startX), y: d.ty + (event.clientY - d.startY) }))
     } else if (d.kind === 'marquee') {
@@ -160,8 +208,14 @@ export function SpatialCanvas({
     }
   }
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(event.pointerId)
     const d = dragRef.current
+    if (d?.kind === 'pinch') {
+      // End the pinch gesture even if one finger remains; user re-engages with a fresh press.
+      dragRef.current = null
+      return
+    }
     if (d?.kind === 'marquee' && marquee) {
       const hit = new Set<string>()
       for (const o of objects) {
