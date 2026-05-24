@@ -94,33 +94,35 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3, 0.75rem);
+  align-items: start;
 }
 
-.ctrl-button__tile {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+/*
+ * Each grid cell hosts a Select component. Override its 24rem cap so
+ * the trigger fills the column, and shrink its label to the compact
+ * caption look the panel had before the Select swap.
+ */
+.ctrl-button__tile.iux-select {
+  max-width: none;
 }
 
-.ctrl-button__tile-label {
+.ctrl-button__tile .iux-select__label {
+  font-family: var(--type-caption-family, inherit);
   font-size: var(--type-caption-size, 0.7rem);
+  font-weight: var(--type-caption-weight, 400);
   color: var(--color-content-muted, GrayText);
-  text-transform: var(--type-label-text-transform, none);
-  letter-spacing: var(--type-label-tracking, 0);
 }
 
-.ctrl-button__select {
-  font: inherit;
-  font-size: var(--type-caption-size, 0.8rem);
-  padding: 6px 8px;
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  background: var(--color-surface-base, Canvas);
-  color: var(--color-content-primary, CanvasText);
-  border-radius: var(--radius-sm, 4px);
-  cursor: pointer;
-  width: 100%;
-  min-width: 0;
+/*
+ * Inside a half-width grid column the trigger can't accommodate long
+ * option labels (e.g. "Per-component (one × all palettes)") on one
+ * line. Truncate instead of wrapping so the tile height stays uniform.
+ */
+.ctrl-button__tile .iux-select__value,
+.ctrl-button__tile .iux-select__input {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ctrl-button__footer {
@@ -269,6 +271,32 @@
   text-transform: var(--type-label-text-transform, uppercase);
   letter-spacing: var(--type-label-tracking, 0.05em);
   padding: 0 var(--space-2, 0.5rem) var(--space-1, 0.25rem);
+}
+
+.ctrl-strip__popover-search {
+  width: 100%;
+  font: inherit;
+  font-size: var(--type-caption-size, 0.8rem);
+  padding: 6px var(--space-2, 0.5rem);
+  margin-bottom: var(--space-1, 0.25rem);
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  background: var(--color-surface-sunken, Canvas);
+  color: var(--color-content-primary, CanvasText);
+  border-radius: var(--radius-sm, 4px);
+  box-sizing: border-box;
+}
+
+.ctrl-strip__popover-search:focus {
+  outline: var(--effect-focus-ring-width, 2px) var(--effect-focus-ring-style, solid) var(--color-focus-ring, currentColor);
+  outline-offset: var(--effect-focus-ring-offset, 1px);
+  border-color: var(--color-border-focus, currentColor);
+}
+
+.ctrl-strip__popover-empty {
+  padding: var(--space-2, 0.5rem);
+  color: var(--color-content-muted, GrayText);
+  font-size: var(--type-caption-size, 0.8rem);
+  text-align: center;
 }
 
 .ctrl-strip__list {

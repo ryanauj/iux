@@ -1,6 +1,14 @@
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
+import { Select } from '../Select/Select'
 import './DraggableControls.css'
+
+/**
+ * Threshold at which an in-popover search input is shown (Strip variant).
+ * Below this, the list fits comfortably without filtering; above it, long
+ * lists like the palette catalogue (40+) benefit from typing to narrow.
+ */
+const SEARCHABLE_THRESHOLD = 6
 
 export type ControlsStyle = 'button' | 'strip'
 
@@ -350,24 +358,87 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
         >
           <div className="ctrl-button__grid">
             {fields.map(f => (
-              <label key={f.key} className="ctrl-button__tile">
-                <span className="ctrl-button__tile-label">{f.label}</span>
-                <select
-                  className="ctrl-button__select"
-                  value={f.value}
-                  onChange={e => f.onChange(e.target.value)}
-                >
-                  {f.options.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </label>
+              <Select
+                key={f.key}
+                className="ctrl-button__tile"
+                label={f.label}
+                variant={f.options.length >= SEARCHABLE_THRESHOLD ? 'combobox' : 'dropdown'}
+                value={f.value}
+                options={f.options}
+                onChange={next => { if (next) f.onChange(next) }}
+              />
             ))}
           </div>
           <div className="ctrl-button__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
           </div>
         </div>
+      )}
+    </div>
+  )
+}
+
+interface StripPopoverProps {
+  field: Field
+  quadrant: StripQuadrant
+  onSelect: (value: string) => void
+}
+
+function StripPopover({ field, quadrant, onSelect }: StripPopoverProps) {
+  const [query, setQuery] = useState('')
+  const searchable = field.options.length >= SEARCHABLE_THRESHOLD
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (searchable) inputRef.current?.focus()
+  }, [searchable])
+
+  const filtered = useMemo(() => {
+    if (!searchable) return field.options
+    const q = query.trim().toLowerCase()
+    if (!q) return field.options
+    return field.options.filter(o => o.label.toLowerCase().includes(q))
+  }, [searchable, query, field.options])
+
+  return (
+    <div
+      className={`ctrl-strip__popover ctrl-strip__popover--${quadrant}`}
+      role="menu"
+      aria-label={field.label}
+    >
+      <div className="ctrl-strip__popover-title">{field.label}</div>
+      {searchable && (
+        <input
+          ref={inputRef}
+          type="text"
+          className="ctrl-strip__popover-search"
+          placeholder={`Filter ${field.options.length} options…`}
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          aria-label={`Filter ${field.label} options`}
+        />
+      )}
+      {filtered.length === 0 ? (
+        <div className="ctrl-strip__popover-empty">No matches</div>
+      ) : (
+        <ul className="ctrl-strip__list">
+          {filtered.map(o => {
+            const selected = o.value === field.value
+            return (
+              <li key={o.value}>
+                <button
+                  type="button"
+                  role="menuitemradio"
+                  aria-checked={selected}
+                  className={`ctrl-strip__list-item${selected ? ' ctrl-strip__list-item--selected' : ''}`}
+                  onClick={() => onSelect(o.value)}
+                >
+                  {o.label}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
       )}
     </div>
   )
@@ -448,34 +519,14 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                     <span className="ctrl-strip__icon-val">{opt?.label ?? f.value}</span>
                   </button>
                   {isActive && (
-                    <div
-                      className={`ctrl-strip__popover ctrl-strip__popover--${popoverQuadrant}`}
-                      role="menu"
-                      aria-label={f.label}
-                    >
-                      <div className="ctrl-strip__popover-title">{f.label}</div>
-                      <ul className="ctrl-strip__list">
-                        {f.options.map(o => {
-                          const selected = o.value === f.value
-                          return (
-                            <li key={o.value}>
-                              <button
-                                type="button"
-                                role="menuitemradio"
-                                aria-checked={selected}
-                                className={`ctrl-strip__list-item${selected ? ' ctrl-strip__list-item--selected' : ''}`}
-                                onClick={() => {
-                                  f.onChange(o.value)
-                                  setActiveKey(null)
-                                }}
-                              >
-                                {o.label}
-                              </button>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </div>
+                    <StripPopover
+                      field={f}
+                      quadrant={popoverQuadrant}
+                      onSelect={value => {
+                        f.onChange(value)
+                        setActiveKey(null)
+                      }}
+                    />
                   )}
                 </div>
               )
