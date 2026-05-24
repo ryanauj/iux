@@ -4,9 +4,11 @@ import {
   useEffect,
   useId,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ChangeEvent,
   type KeyboardEvent,
 } from 'react'
@@ -132,6 +134,18 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
 
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
+  const controlRef = useRef<HTMLDivElement>(null)
+
+  /*
+   * Listbox position is computed from the trigger's viewport rect and
+   * applied via inline styles so the menu can use position: fixed to
+   * escape any ancestor `overflow: hidden | auto | scroll`. Without this
+   * the listbox is clipped when the Select is rendered inside scrollable
+   * containers (e.g. the DraggableControls panel on mobile, where the
+   * panel caps its own height with overflow-y: auto). Recomputed on
+   * scroll / resize / orientation change while open.
+   */
+  const [menuPos, setMenuPos] = useState<CSSProperties | null>(null)
 
   useImperativeHandle(ref, () => ({
     focus: () => {
@@ -215,6 +229,64 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
     document.addEventListener('mousedown', handle)
     return () => document.removeEventListener('mousedown', handle)
   }, [open, stateLock])
+
+  /*
+   * Compute the listbox's fixed-position coordinates from the control's
+   * viewport rect. Picks drop direction based on which side has more
+   * room, and caps max-height to the available space so long lists stay
+   * scrollable within the viewport rather than running off-screen.
+   */
+  const computeMenuPos = useCallback(() => {
+    const control = controlRef.current
+    if (!control) return
+    const rect = control.getBoundingClientRect()
+    const gap = 4
+    const margin = 8
+    const spaceBelow = window.innerHeight - rect.bottom - margin
+    const spaceAbove = rect.top - margin
+    const preferDown = spaceBelow >= 200 || spaceBelow >= spaceAbove
+    const maxHeight = Math.max(160, preferDown ? spaceBelow : spaceAbove)
+    setMenuPos(
+      preferDown
+        ? {
+            position: 'fixed',
+            left: rect.left,
+            top: rect.bottom + gap,
+            width: rect.width,
+            maxHeight,
+          }
+        : {
+            position: 'fixed',
+            left: rect.left,
+            bottom: window.innerHeight - rect.top + gap,
+            width: rect.width,
+            maxHeight,
+          },
+    )
+  }, [])
+
+  const menuVisible = open || stateLock === 'open'
+
+  useLayoutEffect(() => {
+    if (!menuVisible) {
+      setMenuPos(null)
+      return
+    }
+    computeMenuPos()
+  }, [menuVisible, computeMenuPos])
+
+  useEffect(() => {
+    if (!menuVisible) return
+    const onChange = () => computeMenuPos()
+    window.addEventListener('resize', onChange)
+    window.addEventListener('orientationchange', onChange)
+    window.addEventListener('scroll', onChange, true)
+    return () => {
+      window.removeEventListener('resize', onChange)
+      window.removeEventListener('orientationchange', onChange)
+      window.removeEventListener('scroll', onChange, true)
+    }
+  }, [menuVisible, computeMenuPos])
 
   const commitValue = useCallback(
     (next: string) => {
@@ -419,7 +491,7 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
           onChange={commitValue}
         />
       ) : (
-        <div className="iux-select__control">
+        <div ref={controlRef} className="iux-select__control">
           {variant === 'dropdown' ? (
             <button
               ref={handleTriggerRef}
@@ -474,6 +546,7 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
               role="listbox"
               aria-label={label}
               tabIndex={-1}
+              style={menuPos ?? undefined}
             >
               {variant === 'async' && isLoading && (
                 <li className="iux-select__status" role="status" aria-live="polite">
