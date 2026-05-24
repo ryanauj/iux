@@ -1,0 +1,53 @@
+/*
+ * Tree — strict parent-child hierarchy drawn with right-angle links
+ * (the "org chart" or "file tree" reading). Three rungs: vertical
+ * (root at top) → horizontal (root at left, labels read along the
+ * spine) → compact (smaller padding and node radius for dense trees).
+ * Node intent cycles by depth so the layers are independently legible.
+ */
+
+.iux-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-tree__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-tree__edge {
+  stroke: var(--color-border-default);
+  opacity: 0.55;
+}
+
+.iux-tree__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-tree__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-tree__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-tree__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-tree__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-tree__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-tree__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-tree__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

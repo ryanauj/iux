@@ -1,0 +1,62 @@
+/*
+ * ArcDiagram — nodes on a straight axis, edges drawn as semicircles
+ * above (or as S-curves between two axes on `bipartite`). Three rungs:
+ * simple (uniform arcs) → weighted (arc stroke encodes value) →
+ * bipartite (two axes, edges cross between groups; reads as a
+ * matching / membership diagram).
+ */
+
+.iux-arc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-arc__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-arc__axis {
+  stroke: var(--color-border-subtle);
+  stroke-dasharray: 2 3;
+  fill: none;
+}
+
+.iux-arc__edge {
+  opacity: 0.55;
+  fill: none;
+}
+
+.iux-arc__edge--primary { stroke: var(--color-intent-primary-bg); }
+.iux-arc__edge--info    { stroke: var(--color-intent-info-bg); }
+.iux-arc__edge--success { stroke: var(--color-intent-success-bg); }
+.iux-arc__edge--warning { stroke: var(--color-intent-warning-bg); }
+.iux-arc__edge--danger  { stroke: var(--color-intent-danger-bg); }
+.iux-arc__edge--neutral { stroke: var(--color-intent-neutral-bg); }
+
+.iux-arc__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-arc__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-arc__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-arc__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-arc__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-arc__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-arc__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-arc__label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}

@@ -1,0 +1,54 @@
+/*
+ * Dendrogram — hierarchical clustering as a tree with right-angle
+ * "bracket" links (the lab notebook reading) instead of the
+ * organisation-chart slant of `Tree`. Three rungs: cluster (horizontal,
+ * uniform depth spacing) → radial (root at center, leaves on the
+ * outer ring) → weighted (parent x reflects merge distance, so the
+ * height of each "ㅁ" bracket *is* the distance between subtrees).
+ */
+
+.iux-dendro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-dendro__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-dendro__link {
+  stroke: var(--color-border-default);
+  opacity: 0.7;
+}
+
+.iux-dendro__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.25;
+}
+
+.iux-dendro__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-dendro__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-dendro__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-dendro__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-dendro__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-dendro__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-dendro__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

@@ -56,6 +56,16 @@ import { WaterfallStories, VARIANTS as WaterfallVariants } from '../components/W
 import { HexbinStories, VARIANTS as HexbinVariants } from '../components/Hexbin/Hexbin.stories'
 import { ViolinStories, VARIANTS as ViolinVariants } from '../components/Violin/Violin.stories'
 import { NodeLinkStories, VARIANTS as NodeLinkVariants } from '../components/NodeLink/NodeLink.stories'
+import { AdjacencyMatrixStories, VARIANTS as AdjacencyMatrixVariants } from '../components/AdjacencyMatrix/AdjacencyMatrix.stories'
+import { ChordDiagramStories, VARIANTS as ChordDiagramVariants } from '../components/ChordDiagram/ChordDiagram.stories'
+import { ArcDiagramStories, VARIANTS as ArcDiagramVariants } from '../components/ArcDiagram/ArcDiagram.stories'
+import { CircularNetworkStories, VARIANTS as CircularNetworkVariants } from '../components/CircularNetwork/CircularNetwork.stories'
+import { TreeStories, VARIANTS as TreeVariants } from '../components/Tree/Tree.stories'
+import { DendrogramStories, VARIANTS as DendrogramVariants } from '../components/Dendrogram/Dendrogram.stories'
+import { SunburstStories, VARIANTS as SunburstVariants } from '../components/Sunburst/Sunburst.stories'
+import { CirclePackStories, VARIANTS as CirclePackVariants } from '../components/CirclePack/CirclePack.stories'
+import { HiveDiagramStories, VARIANTS as HiveDiagramVariants } from '../components/HiveDiagram/HiveDiagram.stories'
+import { EdgeBundleStories, VARIANTS as EdgeBundleVariants } from '../components/EdgeBundle/EdgeBundle.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -68,6 +78,8 @@ export type Component =
   | 'scatter' | 'calendarheatmap' | 'stackedarea' | 'boxplot' | 'treemap' | 'sankey'
   | 'lollipop' | 'waffle' | 'gauge' | 'heatmap' | 'radar' | 'funnel'
   | 'waterfall' | 'hexbin' | 'violin' | 'nodelink'
+  | 'adjmatrix' | 'chord' | 'arcdiagram' | 'circnet' | 'tree'
+  | 'dendrogram' | 'sunburst' | 'circlepack' | 'hive' | 'edgebundle'
 
 export type Tier = 1 | 2 | 3
 
@@ -146,6 +158,16 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'hexbin', label: 'Hexbin', tier: 2, variants: HexbinVariants, render: v => <HexbinStories variant={v} /> },
   { id: 'violin', label: 'Violin', tier: 2, variants: ViolinVariants, render: v => <ViolinStories variant={v} /> },
   { id: 'nodelink', label: 'Node link', tier: 3, variants: NodeLinkVariants, render: v => <NodeLinkStories variant={v} /> },
+  { id: 'adjmatrix', label: 'Adjacency matrix', tier: 2, variants: AdjacencyMatrixVariants, render: v => <AdjacencyMatrixStories variant={v} /> },
+  { id: 'chord', label: 'Chord diagram', tier: 3, variants: ChordDiagramVariants, render: v => <ChordDiagramStories variant={v} /> },
+  { id: 'arcdiagram', label: 'Arc diagram', tier: 2, variants: ArcDiagramVariants, render: v => <ArcDiagramStories variant={v} /> },
+  { id: 'circnet', label: 'Circular network', tier: 3, variants: CircularNetworkVariants, render: v => <CircularNetworkStories variant={v} /> },
+  { id: 'tree', label: 'Tree', tier: 2, variants: TreeVariants, render: v => <TreeStories variant={v} /> },
+  { id: 'dendrogram', label: 'Dendrogram', tier: 2, variants: DendrogramVariants, render: v => <DendrogramStories variant={v} /> },
+  { id: 'sunburst', label: 'Sunburst', tier: 2, variants: SunburstVariants, render: v => <SunburstStories variant={v} /> },
+  { id: 'circlepack', label: 'Circle pack', tier: 2, variants: CirclePackVariants, render: v => <CirclePackStories variant={v} /> },
+  { id: 'hive', label: 'Hive diagram', tier: 3, variants: HiveDiagramVariants, render: v => <HiveDiagramStories variant={v} /> },
+  { id: 'edgebundle', label: 'Edge bundle', tier: 3, variants: EdgeBundleVariants, render: v => <EdgeBundleStories variant={v} /> },
 ]
 
 /** Convenience: every entry across both registries. Use for global lookups. */

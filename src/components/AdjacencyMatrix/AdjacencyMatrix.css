@@ -1,0 +1,69 @@
+/*
+ * AdjacencyMatrix — a graph drawn as a matrix: rows & columns are nodes,
+ * cells are edges. Three rungs: binary (cell on/off) → weighted (cell
+ * tint scales with value, single hue) → clustered (rows sorted by group,
+ * intra-cluster cells tinted by group intent, inter-cluster cells
+ * neutral; cluster bands flag the partition).
+ */
+
+.iux-adjmatrix {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-adjmatrix__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-adjmatrix__cell--empty {
+  fill: var(--color-surface-sunken);
+}
+
+.iux-adjmatrix__cell {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-adjmatrix__cell--primary { fill: var(--color-intent-primary-bg); }
+.iux-adjmatrix__cell--info    { fill: var(--color-intent-info-bg); }
+.iux-adjmatrix__cell--success { fill: var(--color-intent-success-bg); }
+.iux-adjmatrix__cell--warning { fill: var(--color-intent-warning-bg); }
+.iux-adjmatrix__cell--danger  { fill: var(--color-intent-danger-bg); }
+.iux-adjmatrix__cell--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-adjmatrix__cell--lv-1 { opacity: 0.3; }
+.iux-adjmatrix__cell--lv-2 { opacity: 0.55; }
+.iux-adjmatrix__cell--lv-3 { opacity: 0.8; }
+.iux-adjmatrix__cell--lv-4 { opacity: 1; }
+
+.iux-adjmatrix__rowlabel,
+.iux-adjmatrix__collabel {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-adjmatrix__rowlabel--primary, .iux-adjmatrix__collabel--primary { fill: var(--color-intent-primary-bg); }
+.iux-adjmatrix__rowlabel--info,    .iux-adjmatrix__collabel--info    { fill: var(--color-intent-info-bg); }
+.iux-adjmatrix__rowlabel--success, .iux-adjmatrix__collabel--success { fill: var(--color-intent-success-bg); }
+.iux-adjmatrix__rowlabel--warning, .iux-adjmatrix__collabel--warning { fill: var(--color-intent-warning-bg); }
+.iux-adjmatrix__rowlabel--danger,  .iux-adjmatrix__collabel--danger  { fill: var(--color-intent-danger-bg); }
+.iux-adjmatrix__rowlabel--neutral, .iux-adjmatrix__collabel--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-adjmatrix__band--primary rect { fill: var(--color-intent-primary-bg); }
+.iux-adjmatrix__band--info rect    { fill: var(--color-intent-info-bg); }
+.iux-adjmatrix__band--success rect { fill: var(--color-intent-success-bg); }
+.iux-adjmatrix__band--warning rect { fill: var(--color-intent-warning-bg); }
+.iux-adjmatrix__band--danger rect  { fill: var(--color-intent-danger-bg); }
+.iux-adjmatrix__band--neutral rect { fill: var(--color-intent-neutral-bg); }
