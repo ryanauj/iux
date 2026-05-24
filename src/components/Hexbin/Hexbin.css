@@ -1,0 +1,82 @@
+/*
+ * Hexbin — correlate two variables at high point counts where Scatter
+ * over-plots. Three rungs: density (single-hue ramp, fixed hex size) →
+ * count (per-bin count printed inside the hex) → sized (hex radius
+ * proportional to count; reads as a "sunflower" of density). Same
+ * tint ladder as CalendarHeatmap — every palette gets the ramp free.
+ */
+
+.iux-hexbin {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-hexbin__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-hexbin__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-hexbin__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.iux-hexbin__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-hexbin__bin {
+  stroke: var(--color-surface-raised);
+  stroke-width: 0.75;
+}
+
+.iux-hexbin__bin--l0 { fill: transparent; }
+.iux-hexbin__bin--l1 { fill: var(--color-intent-primary-bg); opacity: 0.28; }
+.iux-hexbin__bin--l2 { fill: var(--color-intent-primary-bg); opacity: 0.52; }
+.iux-hexbin__bin--l3 { fill: var(--color-intent-primary-bg); opacity: 0.78; }
+.iux-hexbin__bin--l4 { fill: var(--color-intent-primary-bg); opacity: 1; }
+
+.iux-hexbin__bin-label {
+  font-family: var(--type-code-family);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--color-content-primary);
+  pointer-events: none;
+}
+
+.iux-hexbin__bin-label--l3,
+.iux-hexbin__bin-label--l4 { fill: var(--color-content-inverse); }
+
+.iux-hexbin__axis-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-hexbin__axis-label {
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-hexbin__axis-label--meta {
+  color: var(--color-content-muted);
+}

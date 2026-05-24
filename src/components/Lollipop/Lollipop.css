@@ -1,0 +1,108 @@
+/*
+ * Lollipop — rank/compare with less ink than a bar chart. Three rungs:
+ * sticks (raw order, dots only) → ranked (descending + value labels) →
+ * paired (two dots per row, current vs. previous). The dot is the
+ * value carrier; the stick is just a guide back to the zero axis.
+ */
+
+.iux-lollipop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-lollipop__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-lollipop__axis-line {
+  stroke: var(--color-border-default);
+  stroke-width: 1;
+}
+
+.iux-lollipop__category {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-lollipop__value {
+  fill: var(--color-content-primary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--type-label-weight);
+}
+
+.iux-lollipop__stick {
+  stroke: var(--color-border-default);
+  stroke-width: 1.25;
+}
+
+.iux-lollipop__stick--compare {
+  stroke: var(--color-border-subtle);
+  stroke-dasharray: 2 3;
+}
+
+.iux-lollipop__dot {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-lollipop__dot--compare {
+  fill: var(--color-surface-raised);
+  stroke-width: 1.75;
+}
+
+.iux-lollipop__row--primary .iux-lollipop__dot { fill: var(--color-intent-primary-bg); }
+.iux-lollipop__row--info    .iux-lollipop__dot { fill: var(--color-intent-info-bg); }
+.iux-lollipop__row--success .iux-lollipop__dot { fill: var(--color-intent-success-bg); }
+.iux-lollipop__row--warning .iux-lollipop__dot { fill: var(--color-intent-warning-bg); }
+.iux-lollipop__row--danger  .iux-lollipop__dot { fill: var(--color-intent-danger-bg); }
+.iux-lollipop__row--neutral .iux-lollipop__dot { fill: var(--color-intent-neutral-bg); }
+
+.iux-lollipop__row--primary .iux-lollipop__dot--compare { stroke: var(--color-intent-primary-bg); }
+.iux-lollipop__row--info    .iux-lollipop__dot--compare { stroke: var(--color-intent-info-bg); }
+.iux-lollipop__row--success .iux-lollipop__dot--compare { stroke: var(--color-intent-success-bg); }
+.iux-lollipop__row--warning .iux-lollipop__dot--compare { stroke: var(--color-intent-warning-bg); }
+.iux-lollipop__row--danger  .iux-lollipop__dot--compare { stroke: var(--color-intent-danger-bg); }
+.iux-lollipop__row--neutral .iux-lollipop__dot--compare { stroke: var(--color-intent-neutral-bg); }
+
+.iux-lollipop__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-lollipop__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-lollipop__legend-dot {
+  display: inline-block;
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  background-color: var(--color-intent-primary-bg);
+}
+
+.iux-lollipop__legend-dot--compare {
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-intent-primary-bg);
+}

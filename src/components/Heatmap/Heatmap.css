@@ -1,0 +1,78 @@
+/*
+ * Heatmap — matrix of cells colored by intensity. Three rungs:
+ * continuous (single-hue ramp by absolute value) → diverging (two-hue
+ * ramp around a center, success on the positive side, danger on the
+ * negative) → sparse (only show the top tiers; everything else fades).
+ * Tints ride on intent backgrounds via opacity so every palette
+ * supplies a usable ramp without contract changes.
+ */
+
+.iux-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-heatmap__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+}
+
+.iux-heatmap__row-label,
+.iux-heatmap__col-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-heatmap__col-label { fill: var(--color-content-primary); }
+
+.iux-heatmap__cell {
+  stroke: var(--color-surface-raised);
+  stroke-width: 0.5;
+}
+
+.iux-heatmap__cell--missing { fill: var(--color-surface-sunken); opacity: 0.4; }
+
+.iux-heatmap__cell--l0 { fill: var(--color-surface-base); }
+.iux-heatmap__cell--l1 { fill: var(--color-intent-primary-bg); opacity: 0.22; }
+.iux-heatmap__cell--l2 { fill: var(--color-intent-primary-bg); opacity: 0.48; }
+.iux-heatmap__cell--l3 { fill: var(--color-intent-primary-bg); opacity: 0.74; }
+.iux-heatmap__cell--l4 { fill: var(--color-intent-primary-bg); opacity: 1; }
+
+.iux-heatmap__cell--pos.iux-heatmap__cell--l1 { fill: var(--color-intent-success-bg); opacity: 0.25; }
+.iux-heatmap__cell--pos.iux-heatmap__cell--l2 { fill: var(--color-intent-success-bg); opacity: 0.5; }
+.iux-heatmap__cell--pos.iux-heatmap__cell--l3 { fill: var(--color-intent-success-bg); opacity: 0.78; }
+.iux-heatmap__cell--pos.iux-heatmap__cell--l4 { fill: var(--color-intent-success-bg); opacity: 1; }
+
+.iux-heatmap__cell--neg.iux-heatmap__cell--l1 { fill: var(--color-intent-danger-bg); opacity: 0.25; }
+.iux-heatmap__cell--neg.iux-heatmap__cell--l2 { fill: var(--color-intent-danger-bg); opacity: 0.5; }
+.iux-heatmap__cell--neg.iux-heatmap__cell--l3 { fill: var(--color-intent-danger-bg); opacity: 0.78; }
+.iux-heatmap__cell--neg.iux-heatmap__cell--l4 { fill: var(--color-intent-danger-bg); opacity: 1; }
+
+.iux-heatmap__cell--zero { fill: var(--color-surface-sunken); }
+
+.iux-heatmap--sparse .iux-heatmap__cell--l0,
+.iux-heatmap--sparse .iux-heatmap__cell--l1 { opacity: 0.08; }
+.iux-heatmap--sparse .iux-heatmap__cell--l2 { opacity: 0.2; }
+
+.iux-heatmap__cell-label {
+  font-family: var(--type-code-family);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  fill: var(--color-content-primary);
+}
+
+.iux-heatmap__cell-label--l3,
+.iux-heatmap__cell-label--l4 { fill: var(--color-content-inverse); }

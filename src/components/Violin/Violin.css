@@ -1,0 +1,72 @@
+/*
+ * Violin — distribution shape via gaussian KDE. Three rungs: simple
+ * (the mirrored violin alone) → withBox (Q1/median/Q3 box overlaid for
+ * precise readout) → split (paired half-violins per category, useful
+ * for A/B comparisons). Each violin is normalized per series so shape
+ * comparisons are about distribution, not raw n.
+ */
+
+.iux-violin {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-violin__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-violin__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-violin__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-violin__tick-label,
+.iux-violin__label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-violin__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+}
+
+.iux-violin__shape {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+  fill-opacity: 0.7;
+}
+
+.iux-violin__series--primary .iux-violin__shape { fill: var(--color-intent-primary-bg); }
+.iux-violin__series--info    .iux-violin__shape { fill: var(--color-intent-info-bg); }
+.iux-violin__series--success .iux-violin__shape { fill: var(--color-intent-success-bg); }
+.iux-violin__series--warning .iux-violin__shape { fill: var(--color-intent-warning-bg); }
+.iux-violin__series--danger  .iux-violin__shape { fill: var(--color-intent-danger-bg); }
+.iux-violin__series--neutral .iux-violin__shape { fill: var(--color-intent-neutral-bg); }
+
+.iux-violin__box {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-content-primary);
+  stroke-width: 1;
+  opacity: 0.92;
+}
+
+.iux-violin__median { stroke: var(--color-content-primary); stroke-width: 2; }
+
+.iux-violin__whisker { stroke: var(--color-border-strong); stroke-width: 1; }
