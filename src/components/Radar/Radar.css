@@ -1,0 +1,104 @@
+/*
+ * Radar — multi-variable comparison on a polygon. Three rungs: filled
+ * (one series, translucent fill) → multiple (≤4 series, legend, lower
+ * alpha so overlap stays readable) → rings (concentric reference rings
+ * are labeled with their value). Axes radiate clockwise from 12 o'clock.
+ */
+
+.iux-radar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-radar__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.iux-radar__ring {
+  fill: none;
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.iux-radar__ring--outer {
+  stroke: var(--color-border-default);
+  opacity: 1;
+}
+
+.iux-radar__spoke {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-radar__poly {
+  stroke-width: 2;
+  fill-opacity: 0.25;
+}
+
+.iux-radar--multiple .iux-radar__poly { fill-opacity: 0.16; }
+
+.iux-radar__series--primary .iux-radar__poly { fill: var(--color-intent-primary-bg); stroke: var(--color-intent-primary-bg); }
+.iux-radar__series--info    .iux-radar__poly { fill: var(--color-intent-info-bg); stroke: var(--color-intent-info-bg); }
+.iux-radar__series--success .iux-radar__poly { fill: var(--color-intent-success-bg); stroke: var(--color-intent-success-bg); }
+.iux-radar__series--warning .iux-radar__poly { fill: var(--color-intent-warning-bg); stroke: var(--color-intent-warning-bg); }
+.iux-radar__series--danger  .iux-radar__poly { fill: var(--color-intent-danger-bg); stroke: var(--color-intent-danger-bg); }
+.iux-radar__series--neutral .iux-radar__poly { fill: var(--color-intent-neutral-bg); stroke: var(--color-intent-neutral-bg); }
+
+.iux-radar__dot { stroke: var(--color-surface-raised); stroke-width: 1.25; }
+.iux-radar__series--primary .iux-radar__dot { fill: var(--color-intent-primary-bg); }
+.iux-radar__series--info    .iux-radar__dot { fill: var(--color-intent-info-bg); }
+.iux-radar__series--success .iux-radar__dot { fill: var(--color-intent-success-bg); }
+.iux-radar__series--warning .iux-radar__dot { fill: var(--color-intent-warning-bg); }
+.iux-radar__series--danger  .iux-radar__dot { fill: var(--color-intent-danger-bg); }
+.iux-radar__series--neutral .iux-radar__dot { fill: var(--color-intent-neutral-bg); }
+
+.iux-radar__axis-label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-radar__ring-label {
+  fill: var(--color-content-muted);
+  font-family: var(--type-code-family);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-radar__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-radar__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-radar__swatch {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: var(--radius-sm);
+}
+
+.iux-radar__legend-item--primary .iux-radar__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-radar__legend-item--info    .iux-radar__swatch { background-color: var(--color-intent-info-bg); }
+.iux-radar__legend-item--success .iux-radar__swatch { background-color: var(--color-intent-success-bg); }
+.iux-radar__legend-item--warning .iux-radar__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-radar__legend-item--danger  .iux-radar__swatch { background-color: var(--color-intent-danger-bg); }
+.iux-radar__legend-item--neutral .iux-radar__swatch { background-color: var(--color-intent-neutral-bg); }

@@ -1,0 +1,58 @@
+/*
+ * NodeLink — relationships as a graph. Three rungs: simple (uniform
+ * edges, single-color per group) → weighted (edge thickness encodes
+ * the link value) → directed (weighted + arrowheads). Layout is a
+ * deterministic relax-from-groups pass — no animation, no randomness,
+ * stable across renders for any input.
+ */
+
+.iux-nodelink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-nodelink__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-nodelink__edge {
+  stroke: var(--color-border-default);
+  opacity: 0.6;
+  fill: none;
+}
+
+.iux-nodelink__arrow {
+  fill: var(--color-border-strong);
+}
+
+.iux-nodelink__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-nodelink__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-nodelink__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-nodelink__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-nodelink__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-nodelink__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-nodelink__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-nodelink__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

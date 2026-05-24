@@ -46,6 +46,16 @@ import { StackedAreaStories, VARIANTS as StackedAreaVariants } from '../componen
 import { BoxPlotStories, VARIANTS as BoxPlotVariants } from '../components/BoxPlot/BoxPlot.stories'
 import { TreemapStories, VARIANTS as TreemapVariants } from '../components/Treemap/Treemap.stories'
 import { SankeyStories, VARIANTS as SankeyVariants } from '../components/Sankey/Sankey.stories'
+import { LollipopStories, VARIANTS as LollipopVariants } from '../components/Lollipop/Lollipop.stories'
+import { WaffleStories, VARIANTS as WaffleVariants } from '../components/Waffle/Waffle.stories'
+import { GaugeStories, VARIANTS as GaugeVariants } from '../components/Gauge/Gauge.stories'
+import { HeatmapStories, VARIANTS as HeatmapVariants } from '../components/Heatmap/Heatmap.stories'
+import { RadarStories, VARIANTS as RadarVariants } from '../components/Radar/Radar.stories'
+import { FunnelStories, VARIANTS as FunnelVariants } from '../components/Funnel/Funnel.stories'
+import { WaterfallStories, VARIANTS as WaterfallVariants } from '../components/Waterfall/Waterfall.stories'
+import { HexbinStories, VARIANTS as HexbinVariants } from '../components/Hexbin/Hexbin.stories'
+import { ViolinStories, VARIANTS as ViolinVariants } from '../components/Violin/Violin.stories'
+import { NodeLinkStories, VARIANTS as NodeLinkVariants } from '../components/NodeLink/NodeLink.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -56,6 +66,8 @@ export type Component =
   | 'timeline' | 'bezier' | 'canvas'
   | 'sparkline' | 'linechart' | 'bar' | 'histogram' | 'donut' | 'area'
   | 'scatter' | 'calendarheatmap' | 'stackedarea' | 'boxplot' | 'treemap' | 'sankey'
+  | 'lollipop' | 'waffle' | 'gauge' | 'heatmap' | 'radar' | 'funnel'
+  | 'waterfall' | 'hexbin' | 'violin' | 'nodelink'
 
 export type Tier = 1 | 2 | 3
 
@@ -124,6 +136,16 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'boxplot', label: 'Box plot', tier: 2, variants: BoxPlotVariants, render: v => <BoxPlotStories variant={v} /> },
   { id: 'treemap', label: 'Treemap', tier: 2, variants: TreemapVariants, render: v => <TreemapStories variant={v} /> },
   { id: 'sankey', label: 'Sankey', tier: 3, variants: SankeyVariants, render: v => <SankeyStories variant={v} /> },
+  { id: 'lollipop', label: 'Lollipop', tier: 1, variants: LollipopVariants, render: v => <LollipopStories variant={v} /> },
+  { id: 'waffle', label: 'Waffle', tier: 1, variants: WaffleVariants, render: v => <WaffleStories variant={v} /> },
+  { id: 'gauge', label: 'Gauge', tier: 1, variants: GaugeVariants, render: v => <GaugeStories variant={v} /> },
+  { id: 'heatmap', label: 'Heatmap', tier: 2, variants: HeatmapVariants, render: v => <HeatmapStories variant={v} /> },
+  { id: 'radar', label: 'Radar', tier: 2, variants: RadarVariants, render: v => <RadarStories variant={v} /> },
+  { id: 'funnel', label: 'Funnel', tier: 2, variants: FunnelVariants, render: v => <FunnelStories variant={v} /> },
+  { id: 'waterfall', label: 'Waterfall', tier: 2, variants: WaterfallVariants, render: v => <WaterfallStories variant={v} /> },
+  { id: 'hexbin', label: 'Hexbin', tier: 2, variants: HexbinVariants, render: v => <HexbinStories variant={v} /> },
+  { id: 'violin', label: 'Violin', tier: 2, variants: ViolinVariants, render: v => <ViolinStories variant={v} /> },
+  { id: 'nodelink', label: 'Node link', tier: 3, variants: NodeLinkVariants, render: v => <NodeLinkStories variant={v} /> },
 ]
 
 /** Convenience: every entry across both registries. Use for global lookups. */

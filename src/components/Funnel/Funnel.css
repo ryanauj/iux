@@ -1,0 +1,73 @@
+/*
+ * Funnel — conversion through ordered stages. Three rungs: stages
+ * (left-anchored bars, width = share of stage one) → dropoff (a faded
+ * trailing bar shows what fell out between stages, with the
+ * step-conversion rate labelled) → mirrored (classic centred funnel
+ * silhouette). Color cycles through intent slots per stage.
+ */
+
+.iux-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-funnel__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-funnel__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+}
+
+.iux-funnel__value {
+  fill: var(--color-content-primary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--type-label-weight);
+}
+
+.iux-funnel__meta {
+  fill: var(--color-content-secondary);
+  font-weight: 400;
+}
+
+.iux-funnel__rate {
+  fill: var(--color-content-muted);
+  font-family: var(--type-code-family);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-funnel__bar {
+  stroke: var(--color-border-subtle);
+  stroke-width: 0.75;
+}
+
+.iux-funnel__row--primary .iux-funnel__bar { fill: var(--color-intent-primary-bg); }
+.iux-funnel__row--info    .iux-funnel__bar { fill: var(--color-intent-info-bg); }
+.iux-funnel__row--success .iux-funnel__bar { fill: var(--color-intent-success-bg); }
+.iux-funnel__row--warning .iux-funnel__bar { fill: var(--color-intent-warning-bg); }
+.iux-funnel__row--danger  .iux-funnel__bar { fill: var(--color-intent-danger-bg); }
+.iux-funnel__row--neutral .iux-funnel__bar { fill: var(--color-intent-neutral-bg); }
+
+.iux-funnel__drop {
+  fill: var(--color-intent-danger-bg);
+  opacity: 0.22;
+  stroke: var(--color-intent-danger-bg);
+  stroke-opacity: 0.4;
+  stroke-width: 0.75;
+  stroke-dasharray: 3 2;
+}

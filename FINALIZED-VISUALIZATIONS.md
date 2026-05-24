@@ -70,6 +70,18 @@ Rows are data shapes; columns are visual encodings. Cell marks:
 | network            | ✗ | ✗ | ✗ | ✗ | ✗ | ~ | ~ | ✗ | ✓ | ~ | ✗ |
 | flow               | ✗ | ~ | ~ | ~ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
 | calendar / cyclic  | ~ | ~ | ~ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| multi-variable     | ✗ | ✗ | ~ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| two-categorical    | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| signed/cumulative  | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+Additional encodings that earned their own column in the iteration below
+— lollipop (rank with less ink than bar), waffle (part-of-whole as a
+fixed grid), gauge (status-vs-target), heatmap-matrix (two-categorical),
+radar (multi-variable per entity), funnel and waterfall (signed flows),
+hexbin (correlate at high cardinality), violin (distribution shape),
+node-link (network) — extend the matrix along the same axes. Each one
+ships with the canonical row it answers best and the rows it
+**should not** be used for.
 
 The matrix is opinionated. A scalar drawn as a single bar (`~`)
 sometimes works — a horizontal progress-vs-target bar is a legitimate
@@ -122,11 +134,13 @@ Mirrors components: classic baseline / evolved / showcase.
   views (selection in one viz brushes others), "what changed"
   annotation layer, hand-drawn axis under the Sketch palette.
 
-This iteration ships twelve visualizations spanning all three tiers:
+This iteration ships twenty-two visualizations spanning all three tiers:
 
-- **Tier 1.** `Sparkline`, `LineChart`, `Bar`, `Histogram`, `Donut`, `Area`.
-- **Tier 2.** `Scatter`, `CalendarHeatmap`, `StackedArea`, `BoxPlot`, `Treemap`.
-- **Tier 3.** `Sankey`.
+- **Tier 1.** `Sparkline`, `LineChart`, `Bar`, `Histogram`, `Donut`,
+  `Area`, `Lollipop`, `Waffle`, `Gauge`.
+- **Tier 2.** `Scatter`, `CalendarHeatmap`, `StackedArea`, `BoxPlot`,
+  `Treemap`, `Heatmap`, `Radar`, `Funnel`, `Waterfall`, `Hexbin`, `Violin`.
+- **Tier 3.** `Sankey`, `NodeLink`.
 
 Remaining declared entries (`SmallMultiples` primitive, `EncodingSwitcher`,
 `LinkedViews`, `AnnotationLayer`, hand-drawn-axis) are implemented in
@@ -443,6 +457,219 @@ ribbons silently mislead.
 **Palette fit.** **Best — Aurora, Vaporwave.** Transparent
 ribbons against gradient surfaces are exactly the look. **Worst —
 Newspaper, AAA.** High contrast amplifies ribbon overlap.
+
+### NodeLink
+Relationships drawn as a graph: nodes positioned by a deterministic
+relax-from-groups pass (no animation, no randomness — stable across
+renders), edges drawn between them.
+
+**Data shape.**
+```
+GraphNode = { id, label, group?, intent?, weight?, x?, y? }
+GraphEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `simple` — uniform edges, one fill per group via the intent ramp.
+2. `weighted` — edge thickness encodes `value`; node radius encodes
+   `weight`. Reads as a service-call topology.
+3. `directed` — `weighted` plus arrowheads on every edge.
+
+**Pros & cons.** Sweet spot is 6–20 nodes and ≤40 edges. Past ~30
+nodes the relaxer can't avoid edge crossings without a real
+force-directed simulator. Pre-position with `x`/`y` (both in [0, 1])
+when domain knowledge beats relaxation.
+
+**Palette fit.** **Best — Bauhaus, Memphis, Material.** Saturated
+group fills make clusters obvious. **Worst — Glassmorphism.** The
+translucent surfaces collapse edge / node contrast.
+
+---
+
+## Additional visualizations (this iteration)
+
+These extend the three-tier framework rather than the matrix axes;
+each one is a different *encoding* of an existing data shape that
+the original matrix called out as a near-miss.
+
+### Lollipop *(Tier 1)*
+**Purpose.** Rank or compare across categories with less ink than a
+bar chart. The dot is the value; the stick is just a guide back to
+zero.
+
+**Variant ladder.**
+1. `sticks` — bare dot-and-stick in input order.
+2. `ranked` — descending sort + per-row value label.
+3. `paired` — two dots per row (current vs previous); the previous
+   value is rendered as a ring so the eye reads the current one
+   first.
+
+**Pros & cons.** Works for 4–20 categories. Past ~20 the dots cluster
+and the sticks dominate; switch to a sorted `Bar` or a `Treemap`.
+
+**Palette fit.** **Best — Editorial, Wikipedia, Mid-century.** Quiet
+engines that reward the smaller ink-load. **Worst — Neumorphism.**
+The dot and the surface blur together at low contrast.
+
+### Waffle *(Tier 1)*
+**Purpose.** Part-of-whole at a fixed grid — every cell is "one of
+N" so percentages read as discrete counts, not areas.
+
+**Variant ladder.**
+1. `dots` — round cells; reads as a pictograph.
+2. `blocks` — soft-cornered squares; reads tabular, packs denser.
+3. `icons` — ring-and-dot pictographs; reads as people, units,
+   tickets.
+
+**Pros & cons.** Cells assigned by largest-remainder so the matrix
+sums exactly to N×N for any input distribution. Best for ≤6 parts.
+Past that, adjacent intent fills become hard to distinguish at a
+glance — pick a `Donut` or a sorted `Bar`.
+
+**Palette fit.** **Best — Memphis, Flat, Material.** Saturated
+intent fills against the raised surface. **Worst — Glassmorphism.**
+Translucency between adjacent cells erases the count.
+
+### Gauge *(Tier 1)*
+**Purpose.** Status against a target on a radial dial — the
+information density is low on purpose, this is a one-glance KPI tile.
+
+**Variant ladder.**
+1. `arc` — single value swept on a 270° arc; optional dashed target
+   notch.
+2. `zones` — success / warning / danger bands; the value-needle
+   inherits the zone color so the *meaning* of "where it landed"
+   becomes the message.
+3. `full` — closed circle; reads as a progress ring.
+
+**Pros & cons.** Use for one value at a time. Never use as a
+comparison tool — humans can't compare angles accurately. Color is
+semantic: let the `--color-intent-*` tokens speak.
+
+**Palette fit.** **Best — Skeuomorphism, Material, Cardstock.** The
+dial as a literal object; the engine sells it. **Worst — Brutalist,
+AAA.** The radial form fights the type-driven engines.
+
+### Heatmap *(Tier 2)*
+**Purpose.** Two-categorical matrix coloured by intensity. Distinct
+from `CalendarHeatmap`, which is time-on-time; this one is
+category-on-category.
+
+**Variant ladder.**
+1. `continuous` — single-hue ramp by absolute value; cell labels
+   inline at the larger sizes.
+2. `diverging` — two-hue ramp around a center (defaults to 0);
+   success on positive, danger on negative — canonical correlation
+   matrix.
+3. `sparse` — only the top tiers ink up; everything else fades.
+   Reads as "show me the peaks".
+
+**Pros & cons.** Five tint levels via opacity over the intent
+slots. Sweet spot is 5–20 rows × 5–20 cols. Past ~30 in either
+direction, cell labels stop fitting — use the `sparse` variant or
+reduce to a hexbin.
+
+**Palette fit.** **Best — Wikipedia, Bloomberg, Academic.** Quiet
+engines surface the ramp. **Worst — Neumorphism, Sketch.** Soft
+surfaces collapse the low tiers.
+
+### Radar *(Tier 2)*
+**Purpose.** Compare entities across 3–8 shared dimensions.
+
+**Variant ladder.**
+1. `filled` — single polygon, translucent fill.
+2. `multiple` — ≤4 overlaid polygons with a legend; alpha drops so
+   overlap stays readable.
+3. `rings` — concentric reference rings get value labels (the
+   "honest" radar — fixes the angle-area bias).
+
+**Pros & cons.** Works for 3–8 axes and 1–4 series. More than 4
+series and the polygons overplot; switch to small multiples of
+radars or a sorted bar per axis.
+
+**Palette fit.** **Best — Memphis, Aurora, Material.** Strong
+categorical hues separate the overlapping polygons. **Worst —
+Editorial.** The serif/quiet engines don't have the categorical
+contrast budget for overlap.
+
+### Funnel *(Tier 2)*
+**Purpose.** Conversion through ordered stages — what fraction of
+stage 1 reaches stage N.
+
+**Variant ladder.**
+1. `stages` — left-anchored bars, width = share of stage 1.
+2. `dropoff` — adds a faded trailing bar that shows what fell out
+   between stages, with the step-conversion rate labelled.
+3. `mirrored` — the classic centred funnel silhouette.
+
+**Pros & cons.** 3–7 stages is the sweet spot. Past that, the bars
+collapse and read as noise — break into multiple funnels by
+segment. Order matters semantically; do not sort.
+
+**Palette fit.** **Best — Material, Flat, Memphis.** Strong stage
+intents. **Worst — Newspaper, AAA.** The high-contrast engines
+amplify the drop-off band into a competing chart.
+
+### Waterfall *(Tier 2)*
+**Purpose.** Running total broken into signed contributions
+(gain/loss → checkpoint → gain/loss → final).
+
+**Variant ladder.**
+1. `simple` — gains green, losses red, dashed connectors between
+   bars.
+2. `signed` — same with explicit ± value labels.
+3. `subtotals` — marked steps span from zero (read as totals); use
+   for P&L bridges and budget reconciliations.
+
+**Pros & cons.** 4–12 steps. Past that the bars get skinny and the
+connector network starts to dominate. Positive = success intent,
+negative = danger intent, subtotals = primary; never reverse this
+convention.
+
+**Palette fit.** **Best — Bloomberg, Editorial, Data-dense.**
+Financial-report engines. **Worst — Vaporwave, Memphis.** The
+loud engines wash out the signed convention.
+
+### Hexbin *(Tier 2)*
+**Purpose.** Correlate two variables at high cardinality where
+`Scatter` over-plots.
+
+**Variant ladder.**
+1. `density` — single-hue ramp, fixed hex size; reads as a heatmap
+   of the scatter cloud.
+2. `count` — per-bin count printed inside the hex.
+3. `sized` — hex radius proportional to count; reads as a
+   "sunflower" of density.
+
+**Pros & cons.** Best from ~300 points up to ~10k. Below that, use
+`Scatter` directly; above that the bins themselves over-plot and
+you want a true 2D KDE. Same tint ladder as `CalendarHeatmap` so
+every palette gets the ramp free.
+
+**Palette fit.** **Best — Bloomberg, Aurora, Data-dense.** Calm
+backgrounds let the ramp breathe. **Worst — Claymorphism.** The
+pastel field eats the lower tiers.
+
+### Violin *(Tier 2)*
+**Purpose.** Distribution shape; the encoding `BoxPlot` *doesn't*
+give you. Symmetric KDE per series.
+
+**Variant ladder.**
+1. `simple` — mirrored violin alone.
+2. `withBox` — Q1/median/Q3 box overlaid for precise readouts; the
+   "best of both worlds" pairing.
+3. `split` — paired half-violins per category, useful for A/B
+   comparisons where space is precious.
+
+**Pros & cons.** Needs n ≥ ~80 per series for the KDE to stop
+wobbling. Compares ≤6 groups well; past that, switch to small
+multiples of histograms.
+
+**Palette fit.** **Best — Academic, Material, Aurora.** The
+shape-first encoding wants quiet engines. **Worst —
+Neubrutalism.** The thick black borders dominate the KDE curve.
+
+---
 
 ### SmallMultiples (primitive) *(declared, not yet implemented)*
 A reusable wrapper that takes any single-series viz and renders one

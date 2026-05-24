@@ -1,0 +1,90 @@
+/*
+ * Waffle — part-of-whole on a fixed grid (default 10×10 = 100 cells).
+ * Three rungs: dots (round) → blocks (rounded squares) → icons (a
+ * ring-and-dot pictograph). Cells are assigned by largest-remainder so
+ * the matrix sums exactly to N×N for any input distribution.
+ */
+
+.iux-waffle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-waffle__caption {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-secondary);
+}
+
+.iux-waffle__svg {
+  display: block;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+}
+
+.iux-waffle__cell {
+  stroke: var(--color-surface-raised);
+  stroke-width: 0.5;
+}
+
+.iux-waffle__cell--empty { fill: var(--color-surface-sunken); opacity: 0.6; }
+
+.iux-waffle__cell--primary { fill: var(--color-intent-primary-bg); }
+.iux-waffle__cell--info    { fill: var(--color-intent-info-bg); }
+.iux-waffle__cell--success { fill: var(--color-intent-success-bg); }
+.iux-waffle__cell--warning { fill: var(--color-intent-warning-bg); }
+.iux-waffle__cell--danger  { fill: var(--color-intent-danger-bg); }
+.iux-waffle__cell--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-waffle__cell-inner { fill: var(--color-surface-raised); }
+
+.iux-waffle__legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-waffle__legend-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 12rem;
+}
+
+.iux-waffle__swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: var(--radius-sm);
+}
+
+.iux-waffle__legend-item--primary .iux-waffle__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-waffle__legend-item--info    .iux-waffle__swatch { background-color: var(--color-intent-info-bg); }
+.iux-waffle__legend-item--success .iux-waffle__swatch { background-color: var(--color-intent-success-bg); }
+.iux-waffle__legend-item--warning .iux-waffle__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-waffle__legend-item--danger  .iux-waffle__swatch { background-color: var(--color-intent-danger-bg); }
+.iux-waffle__legend-item--neutral .iux-waffle__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-waffle__legend-label { color: var(--color-content-primary); }
+
+.iux-waffle__legend-value {
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}
