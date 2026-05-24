@@ -325,11 +325,19 @@ function SingleChart({
         {showAnnotations && annotations!.map((a, i) => {
           const x = xs(a.t)
           const intent = a.intent ?? 'warning'
+          const labelHeight = 14
+          const labelY = PAD.top - 2
+          const padX = 4
+          const labelWidth = Math.max(12, a.label.length * 6.5 + padX * 2)
+          // Flag to the right of the vertical line; flip to the left if it would overflow the plot area.
+          let labelX = x - 2
+          if (labelX + labelWidth > width - PAD.right) labelX = x + 2 - labelWidth
+          if (labelX < PAD.left) labelX = PAD.left
           return (
             <g key={`ann-${i}`} className={`iux-linechart__annotation iux-linechart__annotation--${intent}`}>
               <line x1={x} x2={x} y1={PAD.top} y2={height - PAD.bottom} vectorEffect="non-scaling-stroke" />
-              <rect x={x - 2} y={PAD.top - 2} width={Math.max(8, a.label.length * 5.5 + 8)} height={14} rx={2} />
-              <text x={x + 2} y={PAD.top + 5} dominantBaseline="hanging">{a.label}</text>
+              <rect x={labelX} y={labelY} width={labelWidth} height={labelHeight} rx={2} />
+              <text x={labelX + padX} y={labelY + labelHeight / 2} dominantBaseline="central">{a.label}</text>
             </g>
           )
         })}
