@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { Select, type SelectOption } from '../../components/Select/Select'
 import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchSportsRoute, sportsRoutes, type SportsRoute } from './routes'
@@ -65,12 +64,6 @@ export function SportsApp({ location }: SportsAppProps) {
   const palette = palettes[paletteId]
   const motionScale = resolveMotionScale(location.params.get('motion'))
 
-  const paletteOptions: SelectOption[] = PALETTE_IDS.map(id => ({
-    value: id,
-    label: palettes[id].name,
-    group: palettes[id].engine,
-  }))
-
   const handlePaletteChange = (next: string) => {
     replaceParams({ palette: next === DEFAULT_PALETTE ? undefined : next })
   }
@@ -129,25 +122,6 @@ export function SportsApp({ location }: SportsAppProps) {
     </Link>
   )
 
-  const pickers = (
-    <div className="sports-app__pickers">
-      <Select
-        variant="dropdown"
-        label="Layout"
-        value={layoutId}
-        options={LAYOUT_OPTIONS}
-        onChange={handleLayoutChange}
-      />
-      <Select
-        variant="dropdown"
-        label="Palette"
-        value={paletteId}
-        options={paletteOptions}
-        onChange={handlePaletteChange}
-      />
-    </div>
-  )
-
   const exit = (
     <Link to="/apps" className="sports-app__exit">← Apps</Link>
   )
@@ -159,7 +133,6 @@ export function SportsApp({ location }: SportsAppProps) {
         brand={brand}
         nav={NAV}
         route={route}
-        pickers={pickers}
         exit={exit}
       >
         <RouteContent route={route} />
