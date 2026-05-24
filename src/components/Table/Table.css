@@ -255,6 +255,45 @@
   .iux-table__save-dot--saving { animation: none; }
 }
 
+/* ---------- Character-border corners (Terminal-TUI) ----------
+ *
+ * Same pattern as Card / Modal. The Table root has `position: relative`
+ * already (line 21), so the absolutely-positioned corner spans anchor
+ * to the frame edges. Under TUI the standard CSS border collapses to
+ * transparent and the four corner glyphs + four CSS edge lines
+ * compose into a box-drawing outline.
+ *
+ * `overflow: hidden` on `.iux-table` means the corner glyphs paint
+ * inside the rounded clip — which is fine because TUI sets every
+ * radius to `0`, so the clip is rectangular.
+ */
+.iux-table__corner {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: 1;
+  color: var(--color-border-default);
+}
+
+.iux-table__corner--tl { inset-block-start: 0; inset-inline-start: 0; }
+.iux-table__corner--tr { inset-block-start: 0; inset-inline-end: 0; }
+.iux-table__corner--bl { inset-block-end: 0; inset-inline-start: 0; }
+.iux-table__corner--br { inset-block-end: 0; inset-inline-end: 0; }
+
+@container palette style(--border-style: character) {
+  .iux-table {
+    border-color: transparent;
+    border-radius: 0;
+  }
+  .iux-table__corner {
+    display: block;
+  }
+}
+
 /*
  * Phone-narrow tweaks. The table already scrolls horizontally inside
  * `.iux-table__scroll`, so the page never overflows. On mobile we just

@@ -235,3 +235,74 @@
     transform: none;
   }
 }
+
+/* ---------- Character-border corners (Terminal-TUI) ----------
+ *
+ * The Card consumes the `--border-style` contract token. Under the default
+ * `'css'` mode (every palette except Terminal-TUI) the four corner glyph
+ * spans are hidden and the standard CSS border carries the outline. Under
+ * `'character'` mode the corners flip to visible and the CSS border-color
+ * collapses to transparent — the four corner glyphs at the corners plus
+ * the four 1px CSS edge lines between them compose into a complete box-
+ * drawing outline (`┌─┐│└─┘`) that consumes a real character cell.
+ *
+ * Hidden by default so non-TUI palettes pay nothing for the markup.
+ * Spans are positioned absolutely so they sit on the card's corners
+ * regardless of internal padding; `font-family` is the inherited
+ * monospace (TUI palette pins every family slot to mono, so this picks
+ * up cleanly).
+ */
+.iux-card__corner {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: 1;
+  color: var(--color-border-default);
+}
+
+.iux-card__corner--tl { inset-block-start: 0; inset-inline-start: 0; }
+.iux-card__corner--tr { inset-block-start: 0; inset-inline-end: 0; }
+.iux-card__corner--bl { inset-block-end: 0; inset-inline-start: 0; }
+.iux-card__corner--br { inset-block-end: 0; inset-inline-end: 0; }
+
+/*
+ * Container style query against the `--border-style` token (set on the
+ * `.palette-root` container — see `src/styles.css` for the
+ * `container-name: palette` declaration). Under TUI the card hides its
+ * CSS border-color and reveals the four corner glyphs.
+ *
+ * Browser support: Chrome 111+, Safari 18+, Firefox 128+. Browsers
+ * without container-style-query support ignore this block and the card
+ * falls back to its standard CSS-border rendering. The TUI palette
+ * still reads as mono-on-dark, just without the box-drawing corners.
+ */
+@container palette style(--border-style: character) {
+  .iux-card {
+    border-color: transparent;
+  }
+  .iux-card__corner {
+    display: block;
+  }
+  .iux-card--interactive:focus-visible,
+  .iux-card.is-focus {
+    /*
+     * Focus is communicated by re-coloring the corner glyphs and edge
+     * border, not by an outset outline — outlines paint OUTSIDE the
+     * cell grid and break the character-aligned layout. The corners
+     * pick up `--color-focus-ring` via a sibling rule below.
+     */
+    outline: none;
+    border-color: var(--color-focus-ring);
+  }
+  .iux-card--interactive:focus-visible .iux-card__corner,
+  .iux-card.is-focus .iux-card__corner {
+    color: var(--color-focus-ring);
+  }
+  .iux-card--interactive:hover .iux-card__corner,
+  .iux-card.is-hover .iux-card__corner {
+    color: var(--color-border-strong);
+  }
+}

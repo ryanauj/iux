@@ -149,6 +149,20 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
       aria-label={interactive ? ariaLabel : undefined}
       aria-labelledby={!interactive && title ? headingId : undefined}
     >
+      {/*
+       * Character-border corners (Terminal-TUI engine). Always rendered;
+       * `display: none` by default. The `@container palette style(--border-style:
+       * character)` block in Card.css flips them to `display: block` and hides
+       * the standard CSS border so the four corner glyphs + the four CSS edge
+       * lines compose into a complete box-drawing outline. Aria-hidden because
+       * the glyphs are decorative chrome — the card's accessible name comes
+       * from its `title` / `ariaLabel`.
+       */}
+      <span className="iux-card__corner iux-card__corner--tl" aria-hidden="true">┌</span>
+      <span className="iux-card__corner iux-card__corner--tr" aria-hidden="true">┐</span>
+      <span className="iux-card__corner iux-card__corner--bl" aria-hidden="true">└</span>
+      <span className="iux-card__corner iux-card__corner--br" aria-hidden="true">┘</span>
+
       {accent && variant === 'bento' && (
         <span className="iux-card__accent-stripe" aria-hidden="true" />
       )}

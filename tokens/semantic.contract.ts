@@ -518,6 +518,55 @@ export interface EffectTokens {
    * CSS var emits as `--surface-by`.
    */
   surfaceBy: 'border' | 'luminance'
+  /**
+   * **Horizontal grid unit** the Terminal-TUI engine snaps to. `'1ch'` on
+   * TUI; `'0'` on every other palette. The slot exists so the engine can
+   * pin component layout to integer character cells — padding, gaps, and
+   * border widths all round to the nearest `--grid-unit-x`. On non-TUI
+   * palettes the value is the zero-length no-op: any rule that
+   * multiplies / divides this value collapses to a no-op and the
+   * standard space-token scale carries the layout.
+   *
+   * Defining the slot on every palette is the discipline check — the
+   * contract says every palette must declare every slot, and forcing
+   * even Flat / Material / Aurora to opt out (`'0'`) makes the absence
+   * audit-able. A second character-grid engine (vt100 register, terminal
+   * banking) could plug into the same slot later.
+   *
+   * CSS var emits as `--grid-unit-x`.
+   */
+  gridUnitX: CssLength
+  /**
+   * **Vertical grid unit** the Terminal-TUI engine snaps to. `'1lh'` on
+   * TUI; `'0'` on every other palette. Same shape as `gridUnitX`: the
+   * engine uses it to pin row heights and vertical padding to integer
+   * line cells; non-TUI palettes treat it as the zero-length no-op.
+   *
+   * CSS var emits as `--grid-unit-y`.
+   */
+  gridUnitY: CssLength
+  /**
+   * **Border-rendering mode** — `'css'` everywhere except Terminal-TUI,
+   * which sets `'character'`. Under `'css'` borders render as standard
+   * CSS strokes (the implicit behavior of every palette before this
+   * slot existed). Under `'character'` raised surfaces (Card, Modal,
+   * Table panels) hide their CSS border and paint the box outline using
+   * actual box-drawing characters (`┌─┐│└─┘`), consuming a real
+   * character cell. The token is the load-bearing seam: components read
+   * it via container style queries (`@container palette style(...)`) to
+   * switch their rendering, and the engine block in `src/styles.css`
+   * pins the monospace font that makes the characters render at
+   * cell-perfect width.
+   *
+   * The token forces every palette to declare its rendering mode
+   * (`'css'`) even when it would otherwise have no opinion — exactly
+   * the discipline the brief calls out as "the most load-bearing"
+   * addition. A second character-grid engine (an explicit vt100 / DOS
+   * register) could plug into the same slot later.
+   *
+   * CSS var emits as `--border-style`.
+   */
+  borderStyle: 'css' | 'character'
 }
 
 // -----------------------------------------------------------------------------
@@ -558,6 +607,7 @@ export type Engine =
   | 'cardstock'
   | 'cel-shaded'
   | 'aurora'
+  | 'terminal-tui'
 
 /**
  * Palette metadata wrapper. The values themselves live in `tokens` and must
@@ -694,6 +744,26 @@ export const TOKEN_SHAPE = {
      * by a hard stroke (`border`) or by light density (`luminance`).
      */
     surfaceBy: null,
+    /**
+     * Primitive-string leaf: a CSS length (`'0'`, `'1ch'`). `'0'` on
+     * every non-TUI palette — the engine CSS that multiplies / divides
+     * this value collapses to a no-op there. The Terminal-TUI palette
+     * sets `'1ch'` so component layout snaps to integer character cells.
+     */
+    gridUnitX: null,
+    /**
+     * Primitive-string leaf: a CSS length (`'0'`, `'1lh'`). Same shape
+     * as `gridUnitX` for the vertical axis. `'0'` on every non-TUI
+     * palette; `'1lh'` on TUI.
+     */
+    gridUnitY: null,
+    /**
+     * Primitive-string leaf: `'css' | 'character'`. `'css'` on every
+     * palette except Terminal-TUI, which sets `'character'`. Under
+     * `'character'` raised surfaces (Card / Modal / Table) hide their
+     * CSS border and paint a box-drawing-character outline instead.
+     */
+    borderStyle: null,
   },
 } as const
 

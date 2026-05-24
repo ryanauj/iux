@@ -202,6 +202,9 @@ export const palette: Palette = {
       atmosphereGradient: 'none',
       luminanceCenter: 'transparent',
       surfaceBy: 'border',
+      gridUnitX: '0',
+      gridUnitY: '0',
+      borderStyle: 'css',
     },
   },
 }

@@ -252,6 +252,16 @@ export function Modal(props: ModalProps) {
         tabIndex={-1}
         onKeyDown={handleKeyDown}
       >
+        {/*
+         * Character-border corners (Terminal-TUI engine). See Card for the
+         * full pattern note — same approach here: always rendered,
+         * `display: none` by default, revealed under
+         * `@container palette style(--border-style: character)`.
+         */}
+        <span className="iux-modal__corner iux-modal__corner--tl" aria-hidden="true">┌</span>
+        <span className="iux-modal__corner iux-modal__corner--tr" aria-hidden="true">┐</span>
+        <span className="iux-modal__corner iux-modal__corner--bl" aria-hidden="true">└</span>
+        <span className="iux-modal__corner iux-modal__corner--br" aria-hidden="true">┘</span>
         {variant === 'wizard' && steps ? (
           <>
             <header className="iux-modal__header">

@@ -336,6 +336,9 @@ export const palette: Palette = {
       // branch on it, but the engine block in `src/styles.css` paints
       // the luminance glow that delivers the visual.
       surfaceBy: 'luminance',
+      gridUnitX: '0',
+      gridUnitY: '0',
+      borderStyle: 'css',
     },
   },
 }

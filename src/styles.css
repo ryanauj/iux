@@ -82,6 +82,17 @@ body {
   font-weight: var(--type-body-weight);
   line-height: var(--type-body-line-height);
   letter-spacing: var(--type-body-tracking);
+  /*
+   * Named CSS container so descendant components can branch on custom-
+   * property values via `@container palette style(--foo: bar) { ... }`.
+   * Today only the Terminal-TUI engine uses this — Card, Modal, and
+   * Table read `--border-style: character` via a style-query block to
+   * switch from CSS borders to box-drawing-character outlines. The
+   * container declaration is engine-agnostic; any future engine that
+   * wants components to branch on a token value plugs into the same
+   * `palette` container name.
+   */
+  container-name: palette;
 }
 
 /*
@@ -510,6 +521,98 @@ body {
   .palette-root[data-palette^='cel-shaded'] .iux-cel-speedlines--hover:hover {
     background-image: none;
   }
+}
+
+/*
+ * Terminal-TUI engine. Scoped via `data-palette` so non-TUI palettes are
+ * untouched, the same shape as the CRT / Pixel-art / Sketch / Cardstock /
+ * Cel-shaded / Aurora blocks above. The engine has three concerns,
+ * each delivered through a token or a thin engine rule:
+ *
+ *   1. **Character-cell grid.** Component layout snaps to integer cells
+ *      via the `--grid-unit-x` (`1ch`) / `--grid-unit-y` (`1lh`) tokens.
+ *      The palette has already sized `space.*` in `ch` units, so most
+ *      composition lands on half-cell boundaries without engine help.
+ *      Below we add a small CSS pin: the palette root forces
+ *      `font-feature-settings` to enable contextual alternates ("ss01")
+ *      where the font supports them, which gives sharper box-drawing
+ *      glyph alignment in IBM Plex Mono / Iosevka and is a no-op on
+ *      other monos. Components don't read these vars directly.
+ *
+ *   2. **Box-drawing character borders.** The load-bearing piece.
+ *      Components (Card, Modal, Table) consume the `--border-style:
+ *      character` token via container style queries on the `palette`
+ *      container declared above. Inside each component's own CSS, the
+ *      `@container palette style(--border-style: character) { ... }`
+ *      block hides the CSS border and reveals four corner glyph
+ *      `<span>`s rendered in the inherited monospace font. The four
+ *      corners + four 1px CSS edge lines compose into a complete
+ *      box-drawing outline — visually seamless because `─` / `│`
+ *      render as 1px lines in any modern monospace face.
+ *
+ *      We do NOT scope the character-rendering rule via `data-palette`
+ *      here because the contract token (`--border-style`) IS the seam.
+ *      Future palettes can plug into the same rendering by setting
+ *      `--border-style: character` (e.g. a DOS-blue or VT100 register
+ *      could share the engine without any new CSS).
+ *
+ *   3. **Diagram canvas — graceful "TUI is not supported."** The
+ *      Spatial canvas is fundamentally a pixel-based, fractional-
+ *      position medium. Rather than force-render a broken canvas, the
+ *      engine paints a graceful explanation overlay scoped to
+ *      `data-palette='terminal-tui' .iux-canvas`. The exclusion
+ *      is documented in the palette README — not every engine has to
+ *      work everywhere, and the contract gives us a clean way to
+ *      declare it.
+ *
+ * **`prefers-reduced-motion`.** Trivial under TUI. The engine paints
+ * no decorative motion (no scanline drift, no glow pulse, no atmosphere
+ * gradient, no card lift, no marker wobble), so the existing engine-
+ * level reduced-motion block already covers the rest by collapsing
+ * every per-palette duration to `instant`.
+ */
+.palette-root[data-palette='terminal-tui'] {
+  /*
+   * Enable monospace stylistic-set 1 where the font supports it
+   * (Iosevka / IBM Plex Mono / Fira Code all expose tighter box-
+   * drawing alignment under ss01). No-op on monos without the
+   * feature; cheap to declare.
+   */
+  font-feature-settings: 'ss01' on, 'calt' on;
+}
+
+/*
+ * Diagram canvas — "TUI is not supported for this app."
+ *
+ * The Spatial canvas renders nodes at fractional pixel positions with
+ * curved bezier edges; rendering arbitrary curves on a 1ch × 1lh grid
+ * produces ASCII-art approximations that fight every other affordance.
+ * Rather than force-render, we paint a centered graceful message and
+ * keep the canvas backdrop dim. Users who want to interact with a
+ * diagram switch palettes; the message names the constraint directly.
+ *
+ * The selector targets the existing Spatial canvas component class.
+ * If the component isn't present on a given app, the rule is inert.
+ */
+.palette-root[data-palette='terminal-tui'] .iux-canvas {
+  position: relative;
+}
+
+.palette-root[data-palette='terminal-tui'] .iux-canvas::after {
+  content: '┌─ TUI not supported for this canvas ─┐\A│ swap palettes to interact          │\A└────────────────────────────────────┘';
+  white-space: pre;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+  background-color: var(--color-surface-base);
+  pointer-events: none;
+  z-index: 2;
 }
 
 /*

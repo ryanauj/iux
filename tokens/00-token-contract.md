@@ -231,6 +231,34 @@ Cross-cutting visual effects that some engines need.
   `'transparent'`, so any engine CSS that references the var paints
   nothing. Components don't consume this directly. CSS var emits as
   `--luminance-center`.
+- `gridUnitX` / `gridUnitY` — the **character-cell grid units** for the
+  Terminal-TUI engine. Only the TUI palette sets non-`'0'` values
+  (`'1ch'` / `'1lh'`); every other palette returns `'0'`, so any rule
+  that multiplies / divides them collapses to a no-op. Components don't
+  read them directly today — the TUI palette has already expressed
+  `space.*` in `ch` units so composition lands on half-cell boundaries
+  for free. The slots exist for future grid-aware components (a custom
+  `Grid` that locks rows to integer cells, an ASCII-canvas overlay) and
+  to force every palette to declare its grid unit even when the answer
+  is "I don't have one." CSS vars emit as `--grid-unit-x` and
+  `--grid-unit-y`.
+- `borderStyle` — **how borders render.** `'css'` on every palette
+  except Terminal-TUI, which sets `'character'`. Under `'css'` the
+  component paints its outline through the standard CSS `border:` /
+  `border-color: …` rules (the implicit behavior of every palette
+  before this slot existed). Under `'character'` raised surfaces (Card,
+  Modal, Table) hide their CSS border and paint a box-drawing-character
+  outline (`┌─┐│└─┘`) via four corner glyph `<span>`s + four CSS edge
+  lines composed at integer character cells. Components read the token
+  via container style queries (`@container palette style(--border-style:
+  character) { ... }` against the named `palette` container declared on
+  `.palette-root`). This is the **most load-bearing contract addition
+  since `surfaceBy`** — it touches component code (Card, Modal, Table
+  each gained a corner-glyph markup section and a container-query
+  rule), and forcing every palette to declare its rendering mode
+  (`'css'`) makes that opt-out audit-able. A second character-grid
+  engine (DOS-blue register, VT100-green register) could plug into the
+  same slot later. CSS var emits as `--border-style`.
 - `surfaceBy` — **how surfaces are demarcated.** `'border'` on every
   palette except Aurora, which sets `'luminance'`. The slot is an
   engine-only signal — components don't branch on it — but it records
@@ -281,6 +309,7 @@ Each engine differs in which token slots carry the weight:
 | Cardstock       | `elevation.*` (paired inset cut-edge + tight zero-blur drop shadow per layer), `color.surface.*` (cream / pastel field), `effect.paperEdgeColor`, `effect.paperEdgeWidth` (engine-only signals, baked into elevation strings) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `motion.decay` |
 | Cel-shaded      | `effect.outline.color`, `effect.outline.width` (engine-painted `outline:` halo on interactive controls), `effect.shadowStyle = 'hard'` (engine-only signal), `elevation.*` (hard-offset block shadows for two-tone cel shading), `color.border.*` (all ink), `borderWidth.thick` (the outline width), saturated `color.intent.*`, heavy `typography.role.display` | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `motion.decay` |
 | Aurora          | `effect.atmosphereGradient` (engine-painted animated `background-image` at the palette root), `effect.luminanceCenter` (engine-painted soft outer glow on raised surfaces), `effect.surfaceBy = 'luminance'` (engine-only signal), `effect.backdropBlur.lg` (engine-applied on every raised surface), `color.surface.*` (translucent fills), low-alpha `color.border.*`, `elevation.*` (luminance halo stacks) | `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `effect.outline`, `motion.decay` |
+| Terminal-TUI    | `effect.gridUnitX = '1ch'`, `effect.gridUnitY = '1lh'` (component layout snaps to integer character cells), `effect.borderStyle = 'character'` (Card / Modal / Table render box-drawing-character outlines via container style queries), `typography.family.*` (every family slot routes to monospace), `color.content.*` + `color.intent.*` (monochrome warm-white base, semantic color reserved for state), `space.*` (`ch`-anchored), `radius.*` (all `'0'`), `elevation.*` (all `'none'` — terminals don't layer) | `effect.backdropBlur`, `effect.overlay`, `effect.glow`, `effect.pixelGrid`, `effect.strokeVariance`, `effect.paperEdgeColor`, `effect.paperEdgeWidth`, `effect.outline`, `effect.atmosphereGradient`, `effect.luminanceCenter`, `motion.decay` |
 
 Group B palettes (Tron, Editorial, AAA) inherit the heavy/no-op shape
 of their underlying engine and only retune the values.

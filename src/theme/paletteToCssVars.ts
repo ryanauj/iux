@@ -194,5 +194,18 @@ export function paletteToCssVars(
   // can read the engine's intended surface model directly.
   vars['--surface-by'] = tokens.effect.surfaceBy
 
+  // Terminal-TUI engine grid units. `'0'` on every non-TUI palette — any
+  // engine CSS that multiplies / divides these values collapses to a no-op.
+  // The TUI palette sets `gridUnitX = '1ch'` and `gridUnitY = '1lh'` so
+  // padding, gaps, and border widths snap to integer character cells.
+  vars['--grid-unit-x'] = tokens.effect.gridUnitX
+  vars['--grid-unit-y'] = tokens.effect.gridUnitY
+
+  // Terminal-TUI engine border-rendering mode. `'css'` on every non-TUI
+  // palette; `'character'` on TUI. Components (Card, Modal, Table) read
+  // this via `@container palette style(--border-style: character)` to
+  // switch from CSS borders to box-drawing-character outlines.
+  vars['--border-style'] = tokens.effect.borderStyle
+
   return vars
 }

@@ -38,6 +38,7 @@ import { palette as cardstockLayered } from './cardstock-layered'
 import { palette as celShadedShonen } from './cel-shaded-shonen'
 import { palette as celShadedShojo } from './cel-shaded-shojo'
 import { palette as aurora } from './aurora'
+import { palette as terminalTui } from './terminal-tui'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -80,6 +81,7 @@ export const palettes = {
   'cel-shaded-shonen': celShadedShonen,
   'cel-shaded-shojo': celShadedShojo,
   aurora,
+  'terminal-tui': terminalTui,
 } as const
 
 export type PaletteId = keyof typeof palettes
