@@ -151,6 +151,7 @@ function Stimulus({ palette }: { palette: PaletteId }) {
           layout="grid"
           entries={COMPONENTS}
           kindLabel="components"
+          showHeader={false}
         />
       </div>
     </div>
