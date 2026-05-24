@@ -102,7 +102,13 @@ function listPaletteFiles(): string[] {
   if (!fs.existsSync(PALETTES_DIR)) return []
   return fs
     .readdirSync(PALETTES_DIR)
-    .filter(name => name.endsWith('.ts') && name !== 'index.ts')
+    .filter(
+      name =>
+        name.endsWith('.ts') &&
+        name !== 'index.ts' &&
+        name !== 'descriptions.ts' &&
+        !name.endsWith('.description.ts'),
+    )
     .map(name => path.join(PALETTES_DIR, name))
     .sort()
 }
