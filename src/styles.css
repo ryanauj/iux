@@ -61,6 +61,26 @@ body {
 }
 
 /*
+ * Mobile Safari zooms the viewport on focus whenever a form control's
+ * computed font-size is below 16px. Many palettes set body text below
+ * that threshold (down to 0.5rem in the pixel engine), so without this
+ * floor the page jumps every time the user taps an input. `max(16px, 1em)`
+ * resolves `1em` against the parent's font-size — so palettes whose body
+ * size is already ≥16px keep their intended scale, while smaller ones get
+ * lifted just enough to suppress the zoom. `!important` is required to
+ * win against per-component class selectors (`.iux-text-input__input`
+ * etc.) that set `font-size: var(--type-body-size)`; this is a viewport-
+ * safety override, not a typographic choice.
+ */
+@media (max-width: 768px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):not([type='file']):not([type='submit']):not([type='button']):not([type='reset']),
+  textarea,
+  select {
+    font-size: max(16px, 1em) !important;
+  }
+}
+
+/*
  * Palette root — every palette's tokens land here as CSS custom
  * properties. Components below read only these vars.
  *
