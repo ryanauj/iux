@@ -60,7 +60,15 @@
 
 .ctrl-button__panel {
   position: absolute;
-  background: var(--color-surface-raised, Canvas);
+  /*
+   * surface-overlay + backdrop blur match the Select listbox so glassy
+   * palettes still get a perceivable card on top of busy content beneath
+   * (otherwise the showcase buttons bleed through and the panel reads
+   * as a floating list of triggers with no container).
+   */
+  background: var(--color-surface-overlay, var(--color-surface-raised, Canvas));
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
   border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
   border-radius: var(--radius-md, 8px);
   box-shadow: var(--elevation-overlay, none);
@@ -237,7 +245,16 @@
   min-width: 14rem;
   max-height: 22rem;
   overflow-y: auto;
-  background: var(--color-surface-raised, Canvas);
+  /*
+   * Use the surface-overlay token (matches the Select listbox) so glassy
+   * palettes still get a slightly opaque card on top of the page. The
+   * backdrop blur reinforces the layer separation on the same palettes
+   * — without it, a transparent surface stacked over the strip icons
+   * underneath reads as overlapping text on small screens.
+   */
+  background: var(--color-surface-overlay, var(--color-surface-raised, Canvas));
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
   border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
   border-radius: var(--radius-md, 8px);
   box-shadow: var(--elevation-overlay, none);
@@ -383,13 +400,67 @@
   color: var(--color-surface-base, Canvas);
 }
 
-/* ===== Mobile ===== */
+/* ===== Mobile =====
+ *
+ * On phone widths the two main hazards are (a) the FAB panel's 2-column
+ * grid pushing tiles past the viewport edge, and (b) the strip popover
+ * being positioned right-of (or left-of) a 10rem strip — strip + 6px gap
+ * + 14rem popover ≈ 24rem, which doesn't fit on a 23rem-wide phone.
+ *
+ * The panel collapses to a single column so each Select trigger and its
+ * listbox can use the full available width — long palette labels like
+ * "Cyberpunk Neon Noir (gradient-luminescent)" otherwise truncate to the
+ * point of being unreadable. The strip popover detaches and re-anchors
+ * as a fixed, viewport-margined overlay so it always fits regardless of
+ * which side the strip is on.
+ */
 
 @media (max-width: 40rem) {
   .ctrl-button__panel {
-    min-width: min(20rem, calc(100vw - 32px));
+    min-width: min(18rem, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
   }
+
+  .ctrl-button__grid {
+    grid-template-columns: 1fr;
+  }
+
   .ctrl-strip {
     width: 10rem;
+  }
+
+  /*
+   * Override all four quadrant positions with a viewport-anchored
+   * overlay. The doubled `.ctrl-strip__popover` class lifts specificity
+   * above the unprefixed variant rules above so we don't need !important.
+   *
+   * Anchored near the top of the viewport so the on-screen keyboard
+   * (which the search input may summon) pushes nothing important
+   * out of view — the list scrolls inside the popover instead.
+   */
+  .ctrl-strip__popover.ctrl-strip__popover--right-down,
+  .ctrl-strip__popover.ctrl-strip__popover--right-up,
+  .ctrl-strip__popover.ctrl-strip__popover--left-down,
+  .ctrl-strip__popover.ctrl-strip__popover--left-up {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    bottom: auto;
+    min-width: 0;
+    max-width: none;
+    max-height: min(70vh, calc(100vh - 32px));
+  }
+
+  /* Larger tap targets for list rows. */
+  .ctrl-strip__list-item {
+    padding: 10px var(--space-2, 0.5rem);
+    font-size: var(--type-body-size, 0.9rem);
+  }
+
+  .ctrl-strip__popover-search {
+    padding: 10px var(--space-2, 0.5rem);
   }
 }
