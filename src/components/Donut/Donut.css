@@ -1,0 +1,110 @@
+/*
+ * Donut — part-of-whole for ≤4 parts (works to 6, gets noisy past that).
+ * Three rungs: solid (pie) → donut (center reserved for total) → labeled
+ * (in-slice percent + legend with values). Slice fills cycle the six
+ * intent slots — same scale as bars and line series.
+ */
+
+.iux-donut {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-donut__chart-wrap {
+  flex-shrink: 0;
+}
+
+.iux-donut__svg {
+  display: block;
+}
+
+.iux-donut__slice {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.iux-donut__slice--primary { fill: var(--color-intent-primary-bg); }
+.iux-donut__slice--info    { fill: var(--color-intent-info-bg); }
+.iux-donut__slice--success { fill: var(--color-intent-success-bg); }
+.iux-donut__slice--warning { fill: var(--color-intent-warning-bg); }
+.iux-donut__slice--danger  { fill: var(--color-intent-danger-bg); }
+.iux-donut__slice--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-donut__slice-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-donut__slice-label--primary { fill: var(--color-intent-primary-content); }
+.iux-donut__slice-label--info    { fill: var(--color-intent-info-content); }
+.iux-donut__slice-label--success { fill: var(--color-intent-success-content); }
+.iux-donut__slice-label--warning { fill: var(--color-intent-warning-content); }
+.iux-donut__slice-label--danger  { fill: var(--color-intent-danger-content); }
+.iux-donut__slice-label--neutral { fill: var(--color-intent-neutral-content); }
+
+.iux-donut__total {
+  fill: var(--color-content-primary);
+  font-family: var(--type-display-family);
+  font-size: var(--type-h3-size);
+  font-weight: var(--type-display-weight);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-donut__caption {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+}
+
+.iux-donut__legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  min-width: 10rem;
+}
+
+.iux-donut__legend-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iux-donut__swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: var(--radius-sm);
+}
+
+.iux-donut__legend-item--primary .iux-donut__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-donut__legend-item--info .iux-donut__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-donut__legend-item--success .iux-donut__swatch { background-color: var(--color-intent-success-bg); }
+.iux-donut__legend-item--warning .iux-donut__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-donut__legend-item--danger .iux-donut__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-donut__legend-item--neutral .iux-donut__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-donut__legend-label {
+  color: var(--color-content-primary);
+}
+
+.iux-donut__legend-value {
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}

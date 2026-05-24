@@ -1,0 +1,83 @@
+/*
+ * StackedArea — composition of a whole over time. Three rungs: stacked
+ * (raw totals) → normalized (0–100% shares) → streamgraph (symmetric
+ * baseline). Band fills come from the intent palette; bands always
+ * stroke on the surface so palettes with low contrast still separate.
+ */
+
+.iux-stackedarea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-stackedarea__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-stackedarea__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-stackedarea__swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: var(--radius-sm);
+}
+
+.iux-stackedarea__legend-item--primary .iux-stackedarea__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-stackedarea__legend-item--info .iux-stackedarea__swatch    { background-color: var(--color-intent-info-bg); }
+.iux-stackedarea__legend-item--success .iux-stackedarea__swatch { background-color: var(--color-intent-success-bg); }
+.iux-stackedarea__legend-item--warning .iux-stackedarea__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-stackedarea__legend-item--danger .iux-stackedarea__swatch  { background-color: var(--color-intent-danger-bg); }
+.iux-stackedarea__legend-item--neutral .iux-stackedarea__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-stackedarea__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-stackedarea__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-stackedarea__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-stackedarea__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-stackedarea__band {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+  opacity: 0.92;
+}
+
+.iux-stackedarea__band--primary { fill: var(--color-intent-primary-bg); }
+.iux-stackedarea__band--info    { fill: var(--color-intent-info-bg); }
+.iux-stackedarea__band--success { fill: var(--color-intent-success-bg); }
+.iux-stackedarea__band--warning { fill: var(--color-intent-warning-bg); }
+.iux-stackedarea__band--danger  { fill: var(--color-intent-danger-bg); }
+.iux-stackedarea__band--neutral { fill: var(--color-intent-neutral-bg); }

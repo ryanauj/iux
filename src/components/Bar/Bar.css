@@ -1,0 +1,74 @@
+/*
+ * Bar — rank/compare across categories. Three rungs: simple (raw order)
+ * → sorted (descending + value labels) → targeted (sorted + target line,
+ * bars tint by over/under). Series tint comes from intent tokens so
+ * every palette gets the categorical scale for free.
+ */
+
+.iux-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-bar__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-bar__axis-line {
+  stroke: var(--color-border-default);
+  stroke-width: 1;
+}
+
+.iux-bar__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-bar__tick-label,
+.iux-bar__category,
+.iux-bar__value {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-bar__category {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+}
+
+.iux-bar__value {
+  fill: var(--color-content-primary);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-bar__rect {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+}
+
+.iux-bar__row--primary .iux-bar__rect { fill: var(--color-intent-primary-bg); }
+.iux-bar__row--info .iux-bar__rect    { fill: var(--color-intent-info-bg); }
+.iux-bar__row--success .iux-bar__rect { fill: var(--color-intent-success-bg); }
+.iux-bar__row--warning .iux-bar__rect { fill: var(--color-intent-warning-bg); }
+.iux-bar__row--danger .iux-bar__rect  { fill: var(--color-intent-danger-bg); }
+.iux-bar__row--neutral .iux-bar__rect { fill: var(--color-intent-neutral-bg); }
+
+.iux-bar__target {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}

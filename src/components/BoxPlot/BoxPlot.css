@@ -1,0 +1,83 @@
+/*
+ * BoxPlot — distribution with quartile structure. Three rungs: simple
+ * (box + whiskers) → outliers (Tukey 1.5×IQR fences, outlier dots) →
+ * jitter (per-sample dots overlaid on the box). Box fill uses the
+ * series intent; the median line and whiskers ride on border tokens so
+ * they remain legible against the fill.
+ */
+
+.iux-boxplot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-boxplot__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-boxplot__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-boxplot__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-boxplot__tick-label,
+.iux-boxplot__label,
+.iux-boxplot__n {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-boxplot__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+}
+
+.iux-boxplot__box {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+  opacity: 0.85;
+}
+
+.iux-boxplot__series--primary .iux-boxplot__box { fill: var(--color-intent-primary-bg); }
+.iux-boxplot__series--info    .iux-boxplot__box { fill: var(--color-intent-info-bg); }
+.iux-boxplot__series--success .iux-boxplot__box { fill: var(--color-intent-success-bg); }
+.iux-boxplot__series--warning .iux-boxplot__box { fill: var(--color-intent-warning-bg); }
+.iux-boxplot__series--danger  .iux-boxplot__box { fill: var(--color-intent-danger-bg); }
+.iux-boxplot__series--neutral .iux-boxplot__box { fill: var(--color-intent-neutral-bg); }
+
+.iux-boxplot__whisker,
+.iux-boxplot__whisker-cap {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.25;
+}
+
+.iux-boxplot__median {
+  stroke: var(--color-content-primary);
+  stroke-width: 2;
+}
+
+.iux-boxplot__outlier {
+  fill: var(--color-intent-danger-bg);
+  opacity: 0.85;
+}
+
+.iux-boxplot__jitter {
+  fill: var(--color-content-primary);
+  opacity: 0.35;
+}

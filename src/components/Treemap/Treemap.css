@@ -1,0 +1,69 @@
+/*
+ * Treemap — hierarchical or many-part composition. Three rungs: flat
+ * (single level, value-sized rects) → grouped (one nested level with
+ * branch headers) → labeled (grouped + per-leaf value). Squarified
+ * layout; branch headers ride on opacity to keep the same intent for
+ * parent and children, so palettes get visual hierarchy for free.
+ */
+
+.iux-treemap {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-treemap__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-treemap__rect {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-treemap__cell--primary .iux-treemap__rect { fill: var(--color-intent-primary-bg); }
+.iux-treemap__cell--info .iux-treemap__rect    { fill: var(--color-intent-info-bg); }
+.iux-treemap__cell--success .iux-treemap__rect { fill: var(--color-intent-success-bg); }
+.iux-treemap__cell--warning .iux-treemap__rect { fill: var(--color-intent-warning-bg); }
+.iux-treemap__cell--danger .iux-treemap__rect  { fill: var(--color-intent-danger-bg); }
+.iux-treemap__cell--neutral .iux-treemap__rect { fill: var(--color-intent-neutral-bg); }
+
+.iux-treemap__cell--branch .iux-treemap__rect { opacity: 0.55; }
+.iux-treemap__cell--leaf .iux-treemap__rect   { opacity: 0.92; }
+
+.iux-treemap__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+}
+
+.iux-treemap__value {
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-treemap__cell--primary .iux-treemap__label,
+.iux-treemap__cell--primary .iux-treemap__value { fill: var(--color-intent-primary-content); }
+.iux-treemap__cell--info .iux-treemap__label,
+.iux-treemap__cell--info .iux-treemap__value    { fill: var(--color-intent-info-content); }
+.iux-treemap__cell--success .iux-treemap__label,
+.iux-treemap__cell--success .iux-treemap__value { fill: var(--color-intent-success-content); }
+.iux-treemap__cell--warning .iux-treemap__label,
+.iux-treemap__cell--warning .iux-treemap__value { fill: var(--color-intent-warning-content); }
+.iux-treemap__cell--danger .iux-treemap__label,
+.iux-treemap__cell--danger .iux-treemap__value  { fill: var(--color-intent-danger-content); }
+.iux-treemap__cell--neutral .iux-treemap__label,
+.iux-treemap__cell--neutral .iux-treemap__value { fill: var(--color-intent-neutral-content); }
+
+.iux-treemap__cell--branch .iux-treemap__label {
+  fill: var(--color-content-primary);
+}
