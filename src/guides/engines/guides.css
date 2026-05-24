@@ -1,0 +1,335 @@
+/*
+ * Engine walkthrough guides — chrome and demo helpers.
+ *
+ * `.iux-engine-guide-shell` is the outer PaletteRoot. Chrome (header, crumbs,
+ * Stepper) reads tokens from this root. Each step's demo lives inside its own
+ * nested PaletteRoot bound to the guide's `demoPalette` so engine-specific
+ * effects (blur, glow, scanlines) only apply to the demo, not to the prose.
+ */
+
+.iux-engine-guide-shell {
+  min-height: 100vh;
+  background: var(--color-surface-base);
+  color: var(--color-content-primary);
+}
+
+.iux-engine-guide,
+.iux-engines-index {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ----- breadcrumbs ----- */
+
+.iux-engine-guide__crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+}
+
+.iux-engine-guide__crumb {
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.iux-engine-guide__crumb:hover {
+  text-decoration: underline;
+}
+
+.iux-engine-guide__crumb--current {
+  color: var(--color-content-secondary);
+  cursor: default;
+}
+
+.iux-engine-guide__crumb-sep {
+  color: var(--color-content-muted);
+}
+
+/* ----- header ----- */
+
+.iux-engine-guide__header,
+.iux-engines-index__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-engine-guide__eyebrow {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.iux-engine-guide__title {
+  margin: 0;
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-engine-guide__summary {
+  margin: 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-secondary);
+  max-width: 48rem;
+}
+
+.iux-engine-guide__demo-meta {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.iux-engine-guide__demo-meta a {
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.iux-engine-guide__demo-meta a:hover {
+  text-decoration: underline;
+}
+
+/* ----- step layout ----- */
+
+.iux-engine-guide__stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.iux-engine-guide__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+@media (min-width: 56rem) {
+  .iux-engine-guide__step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.iux-engine-guide__step-body {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.iux-engine-guide__step-body p {
+  margin: 0;
+}
+
+.iux-engine-guide__step-body code {
+  font-family: var(--type-code-family);
+  font-size: var(--type-code-size);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-1);
+  color: var(--color-content-primary);
+}
+
+/* ----- demo frame ----- */
+
+.iux-engine-guide__demo {
+  background: var(--color-surface-base);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ----- demo helpers (per-engine demos share these utility classes) ----- */
+
+.iux-engine-demo__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.iux-engine-demo__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.iux-engine-demo__cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.iux-engine-demo__caption {
+  margin: 0;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  color: var(--color-content-secondary);
+}
+
+.iux-engine-demo__caption code {
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-1);
+  color: var(--color-content-primary);
+}
+
+.iux-engine-demo__swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-3);
+}
+
+.iux-engine-demo__swatch {
+  aspect-ratio: 3 / 2;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  align-items: flex-end;
+}
+
+.iux-engine-demo__swatch-label {
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-primary);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-1);
+}
+
+.iux-engine-demo__bordered {
+  border-style: solid;
+  border-width: var(--border-width-thin);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  transition: border-color var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-engine-demo__bordered p {
+  margin: 0;
+}
+
+.iux-engine-demo__elevation-card {
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  transition: box-shadow var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.iux-engine-demo__elevation-card p {
+  margin: 0;
+}
+
+.iux-engine-demo__nested {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ----- engines index landing ----- */
+
+.iux-engines-index__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+.iux-engines-index__item {
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 9rem;
+}
+
+.iux-engines-index__item.is-pending {
+  background: var(--color-surface-sunken);
+  color: var(--color-content-muted);
+}
+
+.iux-engines-index__link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+}
+
+.iux-engines-index__name {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-engines-index__teaser {
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  color: var(--color-content-secondary);
+  flex: 1;
+}
+
+.iux-engines-index__cta {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+}
+
+.iux-engines-index__item.is-available:hover {
+  border-color: var(--color-border-strong);
+}

@@ -1000,6 +1000,22 @@ body {
   font-weight: var(--type-heading-weight);
   letter-spacing: var(--type-heading-tracking);
   margin: 0 0 var(--space-4);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.stories__engine-link {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.stories__engine-link:hover {
+  text-decoration: underline;
 }
 
 .stories__row {

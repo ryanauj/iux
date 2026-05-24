@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import type { Component, StoryEntry } from './components'
@@ -6,6 +7,7 @@ import { PaletteShowcase, type ShowcaseLayout } from './PaletteShowcase'
 import './showcase.css'
 import { DraggableControls, useControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
 import { MOTION_SCALES } from '../theme/motionScales'
+import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -344,6 +346,7 @@ export function ShowcasePage({
         {viewMode === 'per-component' &&
           visiblePaletteIds.map(id => {
             const palette = palettes[id]
+            const engineGuideAvailable = (ENGINE_GUIDE_IDS as readonly string[]).includes(palette.engine)
             return (
               <PaletteRoot
                 key={id}
@@ -354,6 +357,11 @@ export function ShowcasePage({
               >
                 <h2 className="stories__palette-title">
                   {palette.name} <small>({palette.engine})</small>
+                  {engineGuideAvailable && (
+                    <Link to={`/engines/${palette.engine}`} className="stories__engine-link">
+                      How does {palette.engine} work? →
+                    </Link>
+                  )}
                 </h2>
                 {active?.render(activeVariant)}
               </PaletteRoot>
