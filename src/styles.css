@@ -821,6 +821,24 @@ body {
   color: var(--color-content-primary);
 }
 
+.stories__apps-link {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-link);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+}
+
+.stories__apps-link:hover {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border-default);
+}
+
 .stories__info-popover {
   margin-top: var(--space-3);
   padding: var(--space-3);
