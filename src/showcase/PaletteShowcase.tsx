@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Palette } from '../../tokens/semantic.contract'
 import { PaletteRoot } from '../theme/PaletteRoot'
-import { COMPONENTS, VISUALIZATIONS, type StoryEntry, type Tier } from './components'
+import type { StoryEntry, Tier } from './components'
 
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
 
@@ -9,9 +9,12 @@ interface Props {
   palette: Palette
   layout: ShowcaseLayout
   motionScale?: number
+  entries: StoryEntry[]
+  /** Plural noun for the meta line, e.g. "components" or "visualizations". */
+  kindLabel: string
 }
 
-export function PaletteShowcase({ palette, layout, motionScale = 1 }: Props) {
+export function PaletteShowcase({ palette, layout, motionScale = 1, entries, kindLabel }: Props) {
   return (
     <PaletteRoot
       palette={palette}
@@ -24,39 +27,14 @@ export function PaletteShowcase({ palette, layout, motionScale = 1 }: Props) {
           {palette.name} <small>({palette.engine})</small>
         </h2>
         <p className="showcase__head-meta">
-          {COMPONENTS.length} components · {VISUALIZATIONS.length} visualizations · layout: {layout}
+          {entries.length} {kindLabel} · layout: {layout}
         </p>
       </header>
-      {layout === 'feed' && (
-        <>
-          <SectionHeading>Components</SectionHeading>
-          <FeedLayout entries={COMPONENTS} />
-          <SectionHeading>Visualizations</SectionHeading>
-          <FeedLayout entries={VISUALIZATIONS} />
-        </>
-      )}
-      {layout === 'deck' && (
-        <>
-          <SectionHeading>Components</SectionHeading>
-          <DeckLayout entries={COMPONENTS} />
-          <SectionHeading>Visualizations</SectionHeading>
-          <DeckLayout entries={VISUALIZATIONS} />
-        </>
-      )}
-      {layout === 'grid' && (
-        <>
-          <SectionHeading>Components</SectionHeading>
-          <GridLayout entries={COMPONENTS} />
-          <SectionHeading>Visualizations</SectionHeading>
-          <GridLayout entries={VISUALIZATIONS} />
-        </>
-      )}
+      {layout === 'feed' && <FeedLayout entries={entries} />}
+      {layout === 'deck' && <DeckLayout entries={entries} />}
+      {layout === 'grid' && <GridLayout entries={entries} />}
     </PaletteRoot>
   )
-}
-
-function SectionHeading({ children }: { children: ReactNode }) {
-  return <h3 className="showcase__section-heading">{children}</h3>
 }
 
 function TierBadge({ tier }: { tier: Tier }) {
