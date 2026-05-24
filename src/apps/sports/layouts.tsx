@@ -4,6 +4,7 @@ import { type SportsRoute } from './routes'
 import { PaletteShell } from './shells/palette'
 import { CourtShell } from './shells/court'
 import { TabsShell } from './shells/tabs'
+import { FeedShell } from './shells/feed'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -13,7 +14,9 @@ import { TabsShell } from './shells/tabs'
  * reshape how content composes:
  *   - `palette` adds a global command-bar above the standard pages;
  *   - `court` replaces the Home page with an interactive court SVG;
- *   - `tabs` keeps multiple pages open in a tab strip.
+ *   - `tabs` keeps multiple pages open in a tab strip;
+ *   - `feed` collapses Home into one chronological stream and rails it
+ *     alongside detail pages.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -25,6 +28,7 @@ export const LAYOUT_IDS = [
   'palette',
   'court',
   'tabs',
+  'feed',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -39,6 +43,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'palette', label: 'Palette — command bar' },
   { value: 'court', label: 'Court — spatial map' },
   { value: 'tabs', label: 'Tabs — workspace' },
+  { value: 'feed', label: 'Feed — timeline stream' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -107,6 +112,8 @@ export function Shell(props: ShellProps) {
       return <CourtShell {...props} />
     case 'tabs':
       return <TabsShell {...props} />
+    case 'feed':
+      return <FeedShell {...props} />
   }
 }
 

@@ -1670,3 +1670,419 @@
     max-width: 7rem;
   }
 }
+
+/* ============================================================
+ * Feed layout — single chronological stream of entity cards.
+ * ============================================================ */
+
+.sports-app--feed {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sports-app__header--feed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__feed-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__feed-nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  background-color: var(--color-surface-sunken);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__feed-nav-link:hover,
+.sports-app__feed-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.sports-app__feed-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app__main--feed {
+  max-width: 42rem;
+}
+
+.sports-app__feed-split {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(20rem, 24rem) 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+
+.sports-app__feed-rail {
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-raised);
+  padding: var(--space-4);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+}
+
+.sports-app__main--feed-detail {
+  padding: var(--space-5);
+  max-width: none;
+  margin: 0;
+}
+
+.sports-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sports-feed__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.sports-feed__chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.sports-feed__chip {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-feed__chip:hover,
+.sports-feed__chip:focus-visible {
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.sports-feed__chip.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-feed__team-select {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-feed__team-select select {
+  appearance: none;
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+}
+
+.sports-feed__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sports-feed__item {
+  position: relative;
+}
+
+/* Vertical timeline rail running through every card. */
+.sports-feed__item::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem;
+  top: 1.5rem;
+  bottom: -0.75rem;
+  width: var(--border-width-thin);
+  background-color: var(--color-border-subtle);
+}
+
+.sports-feed__item:last-child::before {
+  display: none;
+}
+
+.sports-feed__entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  padding-left: var(--space-5);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-feed__entry:hover,
+.sports-feed__entry:focus-visible {
+  border-color: var(--color-border-default);
+  outline: none;
+}
+
+/* Timeline dot, sized to match the rail position above. */
+.sports-feed__entry::before {
+  content: '';
+  position: absolute;
+  left: 0.3rem;
+  top: 1.1rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border-default);
+  border: var(--border-width-thin) solid var(--color-surface-raised);
+}
+
+.sports-feed__entry--live::before {
+  background-color: var(--color-intent-danger-bg);
+}
+
+.sports-feed__entry--upcoming::before {
+  background-color: var(--color-content-link);
+}
+
+.sports-feed__entry--leader::before {
+  background-color: var(--color-intent-primary-bg);
+}
+
+.sports-feed__entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-feed__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+}
+
+.sports-feed__badge--live {
+  background-color: var(--color-intent-danger-bg);
+  color: var(--color-intent-danger-content);
+}
+
+.sports-feed__badge--upcoming {
+  background-color: transparent;
+  color: var(--color-content-link);
+  border: var(--border-width-thin) solid var(--color-content-link);
+}
+
+.sports-feed__badge--leader {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-feed__date {
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-feed__matchup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-feed__team {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  color: var(--color-content-primary);
+}
+
+.sports-feed__team.is-loser {
+  color: var(--color-content-secondary);
+}
+
+.sports-feed__team.is-winner {
+  font-weight: 700;
+}
+
+.sports-feed__team-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: var(--radius-pill);
+  color: white;
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.sports-feed__team-name {
+  font-family: var(--type-label-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-feed__score {
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-feed__footnote {
+  margin: 0;
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  border-top: var(--border-width-hairline) solid var(--color-border-subtle);
+  padding-top: var(--space-2);
+}
+
+.sports-feed__leader {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-feed__leader-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--radius-pill);
+  color: white;
+  font-family: var(--type-display-family);
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+}
+
+.sports-feed__leader-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sports-feed__leader-name {
+  font-weight: 600;
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.sports-feed__leader-meta {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-feed__leader-stat {
+  font-family: var(--type-display-family);
+  font-size: var(--type-title-size);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.sports-feed__empty {
+  padding: var(--space-4);
+  border: var(--border-width-thin) dashed var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: var(--color-content-secondary);
+  font-size: var(--type-caption-size);
+}
+
+/* Mobile + narrow-rail collapse: stack rail above content, hide
+   timeline rail when the column is tight. */
+@media (max-width: 60rem) {
+  .sports-app__feed-split {
+    grid-template-columns: 1fr;
+  }
+
+  .sports-app__feed-rail {
+    position: relative;
+    max-height: none;
+    border-right: none;
+    border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  }
+}
+
+@media (max-width: 40rem) {
+  .sports-app__main--feed,
+  .sports-app__main--feed-detail {
+    padding: var(--space-3);
+  }
+
+  .sports-app__feed-rail {
+    padding: var(--space-3);
+  }
+
+  .sports-feed__filters {
+    gap: var(--space-2);
+  }
+
+  .sports-feed__entry {
+    padding: var(--space-3);
+    padding-left: var(--space-4);
+  }
+
+  .sports-feed__item::before {
+    left: 0.4rem;
+  }
+
+  .sports-feed__entry::before {
+    left: 0.15rem;
+  }
+
+  .sports-feed__leader-stat,
+  .sports-feed__score {
+    font-size: var(--type-subheading-size);
+  }
+}
