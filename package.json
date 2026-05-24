@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,7 +14,7 @@
     "lint:tokens": "tsx scripts/lint-raw-values.ts",
     "test:gates": "tsx scripts/test-gates.ts",
     "gen:style-docs": "tsx scripts/generate-style-docs.ts",
-    "check": "npm run typecheck && npm run validate:palettes && npm run validate:descriptions && npm run lint:tokens && npm run test:gates"
+    "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run test:gates"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -28,5 +29,10 @@
     "tsx": "^4.22.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

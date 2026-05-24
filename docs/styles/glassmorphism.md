@@ -99,4 +99,4 @@ under overlays. Intent backgrounds compensate by going to near-opaque
 
 ---
 
-_Generated from `palettes/glassmorphism.description.ts` — do not edit by hand. Run `npm run gen:style-docs` to regenerate._
+_Generated from `palettes/glassmorphism.description.ts` — do not edit by hand. Run `pnpm run gen:style-docs` to regenerate._

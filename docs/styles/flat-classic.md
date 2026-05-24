@@ -85,4 +85,4 @@ white `inverse` content sitting on them.
 
 ---
 
-_Generated from `palettes/flat-classic.description.ts` — do not edit by hand. Run `npm run gen:style-docs` to regenerate._
+_Generated from `palettes/flat-classic.description.ts` — do not edit by hand. Run `pnpm run gen:style-docs` to regenerate._
