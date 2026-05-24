@@ -243,7 +243,14 @@
 .ctrl-strip__popover {
   position: absolute;
   min-width: 14rem;
-  max-height: 22rem;
+  /*
+   * Grow to fill the viewport space available from the slot anchor —
+   * StripPopover sets `--popover-max-height` from the slot's bounding
+   * rect at open time so long lists (40+ palettes) don't get clipped to
+   * a fixed ~22rem cap with awkward inner scroll. The 22rem fallback
+   * preserves the previous look if the variable isn't set.
+   */
+  max-height: var(--popover-max-height, 22rem);
   overflow-y: auto;
   /*
    * Use the surface-overlay token (matches the Select listbox) so glassy

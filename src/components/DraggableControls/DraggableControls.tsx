@@ -381,10 +381,11 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
 interface StripPopoverProps {
   field: Field
   quadrant: StripQuadrant
+  slotRect: DOMRect | null
   onSelect: (value: string) => void
 }
 
-function StripPopover({ field, quadrant, onSelect }: StripPopoverProps) {
+function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps) {
   const [query, setQuery] = useState('')
   const searchable = field.options.length >= SEARCHABLE_THRESHOLD
   const inputRef = useRef<HTMLInputElement>(null)
@@ -400,9 +401,26 @@ function StripPopover({ field, quadrant, onSelect }: StripPopoverProps) {
     return field.options.filter(o => o.label.toLowerCase().includes(q))
   }, [searchable, query, field.options])
 
+  /*
+   * Grow max-height to fill the viewport space available from the slot
+   * anchor instead of capping at a fixed ~22rem. Without this, long lists
+   * (e.g. the 40+ palette catalogue) get clipped and force an awkward
+   * inner scroll even when there's plenty of room on screen. The CSS
+   * custom property keeps the mobile media-query override authoritative.
+   */
+  const dynamicStyle = useMemo<CSSProperties>(() => {
+    if (!slotRect) return {}
+    const margin = 16
+    const available = quadrant.endsWith('down')
+      ? window.innerHeight - slotRect.top - margin
+      : slotRect.bottom - margin
+    return { '--popover-max-height': `${Math.max(160, Math.round(available))}px` } as CSSProperties
+  }, [slotRect, quadrant])
+
   return (
     <div
       className={`ctrl-strip__popover ctrl-strip__popover--${quadrant}`}
+      style={dynamicStyle}
       role="menu"
       aria-label={field.label}
     >
@@ -460,6 +478,7 @@ function pickStripQuadrant(rect: DOMRect): StripQuadrant {
 function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
   const [popoverQuadrant, setPopoverQuadrant] = useState<StripQuadrant>('right-down')
+  const [slotRect, setSlotRect] = useState<DOMRect | null>(null)
   const stripRef = useRef<HTMLDivElement>(null)
 
   const toggleSlot = (key: string, e: ReactMouseEvent<HTMLButtonElement>) => {
@@ -467,7 +486,9 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
       setActiveKey(null)
       return
     }
-    setPopoverQuadrant(pickStripQuadrant(e.currentTarget.getBoundingClientRect()))
+    const rect = e.currentTarget.getBoundingClientRect()
+    setPopoverQuadrant(pickStripQuadrant(rect))
+    setSlotRect(rect)
     setActiveKey(key)
   }
 
@@ -522,6 +543,7 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                     <StripPopover
                       field={f}
                       quadrant={popoverQuadrant}
+                      slotRect={slotRect}
                       onSelect={value => {
                         f.onChange(value)
                         setActiveKey(null)
