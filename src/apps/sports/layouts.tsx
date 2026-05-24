@@ -1,8 +1,31 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
 import { type SportsRoute } from './routes'
+import { PaletteShell } from './shells/palette'
+import { CourtShell } from './shells/court'
+import { TabsShell } from './shells/tabs'
 
-export const LAYOUT_IDS = ['topbar', 'sidebar', 'stadium', 'dock', 'drawer'] as const
+/**
+ * Layout = the **shell** that wraps the app: brand, navigation, and where
+ * page content lands. Most layouts only restyle the chrome (topbar,
+ * sidebar, stadium, dock, drawer) and pass the route's page through
+ * untouched as `children`. A few are bigger paradigm shifts that also
+ * reshape how content composes:
+ *   - `palette` adds a global command-bar above the standard pages;
+ *   - `court` replaces the Home page with an interactive court SVG;
+ *   - `tabs` keeps multiple pages open in a tab strip.
+ * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
+ */
+export const LAYOUT_IDS = [
+  'topbar',
+  'sidebar',
+  'stadium',
+  'dock',
+  'drawer',
+  'palette',
+  'court',
+  'tabs',
+] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
 export const DEFAULT_LAYOUT: LayoutId = 'topbar'
@@ -13,6 +36,9 @@ export const LAYOUT_OPTIONS = [
   { value: 'stadium', label: 'Stadium — hero banner' },
   { value: 'dock', label: 'Dock — floating bottom' },
   { value: 'drawer', label: 'Drawer — hamburger' },
+  { value: 'palette', label: 'Palette — command bar' },
+  { value: 'court', label: 'Court — spatial map' },
+  { value: 'tabs', label: 'Tabs — workspace' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -75,6 +101,12 @@ export function Shell(props: ShellProps) {
       return <DockShell {...props} />
     case 'drawer':
       return <DrawerShell {...props} />
+    case 'palette':
+      return <PaletteShell {...props} />
+    case 'court':
+      return <CourtShell {...props} />
+    case 'tabs':
+      return <TabsShell {...props} />
   }
 }
 

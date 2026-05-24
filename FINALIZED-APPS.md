@@ -75,6 +75,62 @@ local `PaletteRoot` boundary scoped to the app. The choice persists
 in the URL (`?palette=tron-dark-neon`) so a shared link reproduces
 the exact look.
 
+### Shell vs content
+
+The sports app pulls apart two responsibilities that most React apps
+fuse:
+
+- **Content** is what a route produces — the pages in
+  `src/apps/sports/pages/` (`Home`, `Teams`, `TeamDetail`, `Players`,
+  `PlayerDetail`, `Games`, `GameDetail`, `Standings`). A page reads
+  the URL, looks up data, and renders a result. It has no opinion
+  about where on the screen it appears, how the user got there, or
+  what navigation surrounds it.
+- **Shell** is the chrome the content lives inside — brand, exit,
+  navigation surface, optional global widgets (search, tabs, court
+  map). The shell decides *how* the user moves between pages and
+  *where* the page renders, but does not produce page content itself.
+
+The split lives in `layouts.tsx`. Every shell implements
+`ShellProps` — `{ layoutId, brand, nav, route, exit, children }` —
+and the page is passed through as `children`. Most shells are pure
+chrome and forward `children` untouched; a few are bigger paradigm
+shifts that also reshape composition (see "court" and "tabs" below).
+
+Switching shells never re-fetches data, re-shapes the route table,
+or rewrites a page. It only swaps the surrounding chrome. The shell
+the user has chosen lives in the URL as `?layout=<id>` and is a
+sticky param (preserved across every `Link`), so a shared link
+reproduces the exact shell + palette + motion.
+
+### Shell variants
+
+Eight shells ship today. The first five are pure chrome around the
+standard page set; the last three reshape how content composes.
+
+| `layout=` | Shape | What it changes |
+| --------- | ----- | --------------- |
+| `topbar` (default) | Top nav, body below | Chrome only |
+| `sidebar` | Left rail, body to the right | Chrome only |
+| `stadium` | Hero banner with nav tiles, body below | Chrome only |
+| `dock` | Floating bottom dock, body fills | Chrome only |
+| `drawer` | Hamburger → off-canvas nav, body fills | Chrome only |
+| `palette` | Minimal chrome + global ⌘K / `/` command bar across teams, players, games. Pages still render below. | Replaces the menu with a query surface; pages unchanged |
+| `court` | Top nav + interactive SVG basketball court on Home. Tapping court regions routes to filtered/related views. | Replaces the Home page with a spatial map; other routes render standard pages |
+| `tabs` | Workspace-style tab strip across the top. Each visited route becomes a tab; tabs persist via `?tabs=`. | Multiple pages stay open at once; closing the active tab navigates to a neighbor |
+
+Adding a new shell:
+
+1. Build a component matching `ShellProps` in `src/apps/sports/shells/`.
+2. Add its id to `LAYOUT_IDS` and an entry to `LAYOUT_OPTIONS` in
+   `src/apps/sports/layouts.tsx`.
+3. Dispatch it in `Shell()` and add scoped CSS to `sports-app.css`
+   under a `.sports-app--<id>` namespace.
+
+If the shell introduces new sticky URL state (the `tabs` shell does,
+via `?tabs=`), add the key to `STICKY_PARAMS` in
+`src/apps/router.ts` so it survives `Link` navigation.
+
 ---
 
 ## Cross-cutting notes
