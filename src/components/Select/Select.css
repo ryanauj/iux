@@ -125,11 +125,15 @@
 /* ---------- Listbox ---------- */
 
 .iux-select__listbox {
-  position: absolute;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  inset-block-start: calc(100% + var(--space-1));
-  z-index: 20;
+  /*
+   * Fixed positioning lets the menu escape any ancestor with
+   * overflow: hidden | auto | scroll (e.g. the DraggableControls panel
+   * on mobile). Coordinates are set inline by the component from the
+   * trigger's viewport rect, with a fallback below for the SSR/no-JS
+   * first paint.
+   */
+  position: fixed;
+  z-index: 1000;
   margin: 0;
   padding: var(--space-1);
   list-style: none;
