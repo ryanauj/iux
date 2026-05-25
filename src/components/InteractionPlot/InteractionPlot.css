@@ -1,0 +1,90 @@
+/*
+ * InteractionPlot — predicted Y vs the focal predictor, one line per
+ * level of a moderating variable. Parallel lines = no interaction;
+ * fanned or crossing lines = an interaction worth interpreting. The
+ * `bands` rung adds CIs so the reader can decide if the spread is
+ * real or sampling noise.
+ */
+
+.iux-inter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-inter__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-inter__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-inter__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.iux-inter__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-inter__line { fill: none; stroke-width: 2; }
+.iux-inter__line--thin { stroke-width: 1.25; opacity: 0.75; }
+
+.iux-inter__band { opacity: 0.16; }
+
+.iux-inter__line--primary, .iux-inter__endpoint--primary { stroke: var(--color-intent-primary-bg); fill: var(--color-intent-primary-bg); }
+.iux-inter__line--info,    .iux-inter__endpoint--info    { stroke: var(--color-intent-info-bg);    fill: var(--color-intent-info-bg); }
+.iux-inter__line--success, .iux-inter__endpoint--success { stroke: var(--color-intent-success-bg); fill: var(--color-intent-success-bg); }
+.iux-inter__line--warning, .iux-inter__endpoint--warning { stroke: var(--color-intent-warning-bg); fill: var(--color-intent-warning-bg); }
+.iux-inter__line--danger,  .iux-inter__endpoint--danger  { stroke: var(--color-intent-danger-bg);  fill: var(--color-intent-danger-bg); }
+.iux-inter__line--neutral, .iux-inter__endpoint--neutral { stroke: var(--color-intent-neutral-bg); fill: var(--color-intent-neutral-bg); }
+
+.iux-inter__band--primary { fill: var(--color-intent-primary-bg); }
+.iux-inter__band--info    { fill: var(--color-intent-info-bg); }
+.iux-inter__band--success { fill: var(--color-intent-success-bg); }
+.iux-inter__band--warning { fill: var(--color-intent-warning-bg); }
+.iux-inter__band--danger  { fill: var(--color-intent-danger-bg); }
+.iux-inter__band--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-inter__line {
+  /* Stroke colour is set by the per-intent rule above, so reset fill to none. */
+}
+.iux-inter__endpoint { stroke: var(--color-surface-raised); stroke-width: 1.5; }
+
+.iux-inter__legend {
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-weight-strong);
+}
+
+.iux-inter__legend--primary { fill: var(--color-intent-primary-bg); }
+.iux-inter__legend--info    { fill: var(--color-intent-info-bg); }
+.iux-inter__legend--success { fill: var(--color-intent-success-bg); }
+.iux-inter__legend--warning { fill: var(--color-intent-warning-bg); }
+.iux-inter__legend--danger  { fill: var(--color-intent-danger-bg); }
+.iux-inter__legend--neutral { fill: var(--color-intent-neutral-bg); }
+
+.iux-inter__axis-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-inter__axis-label--y { font-style: italic; }

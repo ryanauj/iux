@@ -1,0 +1,87 @@
+/*
+ * RegressionSurface — fitted ŷ over a (x₁, x₂) grid. Contour rung
+ * draws isolines, heat rung shades the raster, overlay rung lays the
+ * observed sample over the surface so reader can see where the model
+ * is well-supported and where it's extrapolation.
+ */
+
+.iux-regsurf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-regsurf__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-regsurf__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-regsurf__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-regsurf__cell { stroke: none; }
+.iux-regsurf__contour { fill: none; stroke-width: 1.25; opacity: 0.75; }
+.iux-regsurf__contour--0 { opacity: 0.35; }
+.iux-regsurf__contour--1 { opacity: 0.5; }
+.iux-regsurf__contour--2 { opacity: 0.7; }
+.iux-regsurf__contour--3 { opacity: 0.85; }
+.iux-regsurf__contour--4 { opacity: 1; stroke-width: 1.5; }
+
+.iux-regsurf__contour-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.iux-regsurf__point {
+  fill: var(--color-content-primary);
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+  opacity: 0.85;
+}
+
+.iux-regsurf--primary .iux-regsurf__cell    { fill: var(--color-intent-primary-bg); }
+.iux-regsurf--primary .iux-regsurf__contour { stroke: var(--color-intent-primary-bg); }
+
+.iux-regsurf--info .iux-regsurf__cell    { fill: var(--color-intent-info-bg); }
+.iux-regsurf--info .iux-regsurf__contour { stroke: var(--color-intent-info-bg); }
+
+.iux-regsurf--success .iux-regsurf__cell    { fill: var(--color-intent-success-bg); }
+.iux-regsurf--success .iux-regsurf__contour { stroke: var(--color-intent-success-bg); }
+
+.iux-regsurf--warning .iux-regsurf__cell    { fill: var(--color-intent-warning-bg); }
+.iux-regsurf--warning .iux-regsurf__contour { stroke: var(--color-intent-warning-bg); }
+
+.iux-regsurf--danger .iux-regsurf__cell    { fill: var(--color-intent-danger-bg); }
+.iux-regsurf--danger .iux-regsurf__contour { stroke: var(--color-intent-danger-bg); }
+
+.iux-regsurf--neutral .iux-regsurf__cell    { fill: var(--color-intent-neutral-bg); }
+.iux-regsurf--neutral .iux-regsurf__contour { stroke: var(--color-intent-neutral-bg); }
+
+.iux-regsurf__axis-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-regsurf__axis-label--y { font-style: italic; }
+.iux-regsurf__range { font-family: var(--type-code-family); font-variant-numeric: tabular-nums; }
