@@ -13,10 +13,13 @@ import type { Palette } from '../tokens/semantic.contract'
  *     recessed against the cream field. Borders are a 1 px hairline
  *     `#d6d2c8` rule — the colour of a printed engineering drawing's
  *     hairline grid.
- *   - `intent.primary.bg` is safety orange `#ff6a00` — the workshop
- *     hi-vis colour, the only saturated chromatic accent in the palette.
- *     `intent.warning` reuses safety orange one step darker so the two
- *     intents don't read identical when stacked.
+ *   - `intent.primary.bg` is deep safety orange `#b64800` — the workshop
+ *     hi-vis colour pulled down two steps so white inverse text reads at
+ *     WCAG UI contrast on the saturated fill. The hue still carries the
+ *     hi-vis register; `content.link` and `border.focus` keep the bright
+ *     `#ff6a00` so the accent colour still announces itself outside of
+ *     button surfaces. `intent.warning` reuses the brighter safety orange
+ *     so the two intents don't read identical when stacked.
  *   - `typography.family.ui` is IBM Plex Mono — mono labels with
  *     measurement-drawing density. `family.body` is Inter for long-form
  *     text where the mono would slow reading. `family.display` is
@@ -63,7 +66,7 @@ export const palette: Palette = {
         focus: '#ff6a00',
       },
       intent: {
-        primary: { bg: '#ff6a00', content: '#ffffff', border: '#d45600', bgHover: '#e85d00', bgActive: '#b64800' },
+        primary: { bg: '#b64800', content: '#ffffff', border: '#a04000', bgHover: '#a04000', bgActive: '#843600' },
         neutral: { bg: '#e8e4da', content: '#2a2620', border: '#d6d2c8', bgHover: '#d6d2c8', bgActive: '#bdb8aa' },
         success: { bg: '#1f7a3a', content: '#ffffff', border: '#175c2c', bgHover: '#175c2c', bgActive: '#0f4220' },
         warning: { bg: '#d45600', content: '#ffffff', border: '#a84400', bgHover: '#b64800', bgActive: '#8a3700' },

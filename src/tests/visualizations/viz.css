@@ -100,9 +100,9 @@
   color: var(--color-content-secondary);
   white-space: nowrap;
 }
-.viz-pill--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-text); border-color: transparent; }
-.viz-pill--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-text); border-color: transparent; }
-.viz-pill--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-text); border-color: transparent; }
+.viz-pill--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-content); border-color: transparent; }
+.viz-pill--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); border-color: transparent; }
+.viz-pill--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-content); border-color: transparent; }
 .viz-pill--idle { color: var(--color-content-muted); }
 
 .viz-btn {
@@ -119,7 +119,7 @@
 .viz-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .viz-btn--primary {
   background: var(--color-intent-primary-bg);
-  color: var(--color-intent-primary-text);
+  color: var(--color-intent-primary-content);
   border-color: transparent;
 }
 .viz-btn--mini { padding: 0 var(--space-2); font-size: var(--type-caption-size); }
@@ -138,9 +138,9 @@
   line-height: 1.4;
 }
 .viz-step--pending { color: var(--color-content-muted); }
-.viz-step--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-text); }
-.viz-step--passed { color: var(--color-intent-success-text); }
-.viz-step--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-text); }
+.viz-step--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-content); }
+.viz-step--passed { color: var(--color-intent-success-content); }
+.viz-step--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); }
 .viz-step__num { text-align: right; opacity: 0.7; }
 .viz-step__kind {
   font-family: var(--type-mono-family, monospace);
@@ -278,16 +278,16 @@
 .viz-matrix__row-head { text-align: left; background: var(--color-surface-sunken); color: var(--color-content-secondary); }
 .viz-matrix__cell { color: var(--color-content-muted); }
 .viz-matrix__cell--idle { background: var(--color-surface-sunken); color: var(--color-content-secondary); }
-.viz-matrix__cell--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-text); }
-.viz-matrix__cell--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-text); }
-.viz-matrix__cell--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-text); }
+.viz-matrix__cell--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-content); }
+.viz-matrix__cell--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); }
+.viz-matrix__cell--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-content); }
 .viz-matrix__cell--highlight {
   outline: 2px solid var(--color-intent-primary-bg);
   outline-offset: -2px;
 }
 .viz-matrix__table tbody tr.is-selected .viz-matrix__row-head {
   background: var(--color-intent-primary-bg);
-  color: var(--color-intent-primary-text);
+  color: var(--color-intent-primary-content);
 }
 .viz-matrix__spinner { animation: viz-pulse 0.8s linear infinite; display: inline-block; }
 @keyframes viz-pulse {
@@ -512,7 +512,7 @@
   padding: 0 var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--color-intent-info-bg);
-  color: var(--color-intent-info-text);
+  color: var(--color-intent-info-content);
   font-size: 0.85em;
   letter-spacing: 0.04em;
   animation: viz-pulse 1.4s linear infinite;

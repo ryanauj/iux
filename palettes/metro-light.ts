@@ -21,8 +21,11 @@ import type { Palette } from '../tokens/semantic.contract'
  *     (`#00933c` — 4/5/6 line), orange (`#ff6319` — B/D/F/M line),
  *     yellow (`#fccc0a` — N/Q/R/W line), purple (`#b933ad` — 7 line).
  *     `intent.primary.bg` is the red; `intent.info` is the blue;
- *     `intent.success` is the green; `intent.warning` is the orange;
- *     `intent.danger` reuses red one step darker (`#c8201a`).
+ *     `intent.success` is the green; `intent.warning` is the orange
+ *     pulled down to `#b6420c` so white inverse text reads at WCAG UI
+ *     contrast — the brighter B/D/F/M line orange survives in the JSDoc
+ *     reference but the painted fill carries the deeper shade; `intent.danger`
+ *     reuses red one step darker (`#c8201a`).
  *   - `radius.lg` keeps `'10px'` for cards; `radius.pill` (`'999px'`)
  *     is the one most palettes return as `'999px'` already and Metro
  *     exercises through station-tag chips. Nothing palette-specific
@@ -68,7 +71,7 @@ export const palette: Palette = {
         primary: { bg: '#ee352e', content: '#ffffff', border: '#c8201a', bgHover: '#d62a25', bgActive: '#a81814' },
         neutral: { bg: '#f4f4f4', content: '#0a0a0a', border: '#e6e6e6', bgHover: '#e6e6e6', bgActive: '#cccccc' },
         success: { bg: '#00933c', content: '#ffffff', border: '#007530', bgHover: '#007530', bgActive: '#005c24' },
-        warning: { bg: '#ff6319', content: '#ffffff', border: '#d44e10', bgHover: '#e85714', bgActive: '#b6420c' },
+        warning: { bg: '#b6420c', content: '#ffffff', border: '#9c3808', bgHover: '#9c3808', bgActive: '#823006' },
         danger:  { bg: '#c8201a', content: '#ffffff', border: '#a81814', bgHover: '#a81814', bgActive: '#8a120e' },
         info:    { bg: '#0039a6', content: '#ffffff', border: '#002a7c', bgHover: '#002a7c', bgActive: '#001e5a' },
       },

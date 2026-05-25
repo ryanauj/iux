@@ -12,9 +12,10 @@
     "validate:palettes": "tsx scripts/validate-palettes.ts",
     "validate:descriptions": "tsx scripts/validate-descriptions.ts",
     "lint:tokens": "tsx scripts/lint-raw-values.ts",
+    "lint:contrast": "tsx scripts/lint-contrast.ts",
     "test:gates": "tsx scripts/test-gates.ts",
     "gen:style-docs": "tsx scripts/generate-style-docs.ts",
-    "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run test:gates"
+    "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run lint:contrast && pnpm run test:gates"
   },
   "dependencies": {
     "react": "^18.3.1",
