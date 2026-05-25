@@ -1,0 +1,89 @@
+/*
+ * PartialRegression — added-variable / partial-regression plots. Each
+ * facet shows residuals of Y vs residuals of one predictor (each after
+ * regressing out every other predictor). The slope of the fitted line
+ * is exactly that predictor's multiple-regression coefficient, so the
+ * facets *are* the model — one frame per β.
+ */
+
+.iux-partreg {
+  display: grid;
+  gap: var(--space-3);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-partreg__facet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+}
+
+.iux-partreg__facet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--type-caption-size);
+}
+
+.iux-partreg__facet-label {
+  color: var(--color-content-primary);
+  font-weight: var(--type-weight-strong);
+}
+
+.iux-partreg__facet-beta {
+  color: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-partreg__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.iux-partreg__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+.iux-partreg__zero {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-partreg__dot { opacity: 0.78; }
+
+.iux-partreg__facet--primary .iux-partreg__dot { fill: var(--color-intent-primary-bg); }
+.iux-partreg__facet--info    .iux-partreg__dot { fill: var(--color-intent-info-bg); }
+.iux-partreg__facet--success .iux-partreg__dot { fill: var(--color-intent-success-bg); }
+.iux-partreg__facet--warning .iux-partreg__dot { fill: var(--color-intent-warning-bg); }
+.iux-partreg__facet--danger  .iux-partreg__dot { fill: var(--color-intent-danger-bg); }
+.iux-partreg__facet--neutral .iux-partreg__dot { fill: var(--color-intent-neutral-bg); }
+
+.iux-partreg__fit {
+  stroke: var(--color-content-primary);
+  stroke-width: 1.5;
+  opacity: 0.85;
+}
+
+.iux-partreg__slope {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+  font-style: italic;
+}
+
+.iux-partreg__axis-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}

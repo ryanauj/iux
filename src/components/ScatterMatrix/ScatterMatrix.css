@@ -1,0 +1,67 @@
+/*
+ * ScatterMatrix (SPLOM) — small-multiples grid of all pairwise
+ * scatters between predictors, with marginal histograms on the
+ * diagonal. The `pairs` rung adds a Pearson correlation read-out in
+ * the upper triangle so colinear pairs read at a glance.
+ */
+
+.iux-splom {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-splom__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-splom__cell {
+  fill: transparent;
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+}
+
+.iux-splom__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-weight-strong);
+}
+
+.iux-splom__dot { opacity: 0.7; }
+.iux-splom__hist { opacity: 0.45; }
+
+.iux-splom__corr {
+  fill: var(--color-content-primary);
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-splom__corr--pos { fill: var(--color-intent-success-bg); }
+.iux-splom__corr--neg { fill: var(--color-intent-danger-bg); }
+
+.iux-splom--primary .iux-splom__dot { fill: var(--color-intent-primary-bg); }
+.iux-splom--primary .iux-splom__hist { fill: var(--color-intent-primary-bg); }
+
+.iux-splom--info .iux-splom__dot { fill: var(--color-intent-info-bg); }
+.iux-splom--info .iux-splom__hist { fill: var(--color-intent-info-bg); }
+
+.iux-splom--success .iux-splom__dot { fill: var(--color-intent-success-bg); }
+.iux-splom--success .iux-splom__hist { fill: var(--color-intent-success-bg); }
+
+.iux-splom--warning .iux-splom__dot { fill: var(--color-intent-warning-bg); }
+.iux-splom--warning .iux-splom__hist { fill: var(--color-intent-warning-bg); }
+
+.iux-splom--danger .iux-splom__dot { fill: var(--color-intent-danger-bg); }
+.iux-splom--danger .iux-splom__hist { fill: var(--color-intent-danger-bg); }
+
+.iux-splom--neutral .iux-splom__dot { fill: var(--color-intent-neutral-bg); }
+.iux-splom--neutral .iux-splom__hist { fill: var(--color-intent-neutral-bg); }

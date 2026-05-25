@@ -1,0 +1,75 @@
+/*
+ * ObservedPredicted — the single most direct read of model fit: how
+ * close the cloud hugs the 45° identity line, where it bends off it,
+ * and how big the perpendicular gaps are. The `errors` rung draws
+ * each gap as a vertical segment so the residual size is literal.
+ */
+
+.iux-obspred {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-obspred__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-obspred__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-obspred__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.iux-obspred__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-obspred__identity {
+  stroke: var(--color-content-secondary);
+  stroke-width: 1.25;
+  stroke-dasharray: 4 3;
+  opacity: 0.75;
+}
+
+.iux-obspred__error {
+  stroke: var(--color-border-default);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.iux-obspred__dot { opacity: 0.82; }
+
+.iux-obspred--primary .iux-obspred__dot { fill: var(--color-intent-primary-bg); }
+.iux-obspred--info    .iux-obspred__dot { fill: var(--color-intent-info-bg); }
+.iux-obspred--success .iux-obspred__dot { fill: var(--color-intent-success-bg); }
+.iux-obspred--warning .iux-obspred__dot { fill: var(--color-intent-warning-bg); }
+.iux-obspred--danger  .iux-obspred__dot { fill: var(--color-intent-danger-bg); }
+.iux-obspred--neutral .iux-obspred__dot { fill: var(--color-intent-neutral-bg); }
+
+.iux-obspred__axis-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-obspred__axis-label--y { font-style: italic; }
+.iux-obspred__metrics { font-family: var(--type-code-family); font-variant-numeric: tabular-nums; color: var(--color-content-primary); }

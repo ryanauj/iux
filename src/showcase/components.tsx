@@ -76,6 +76,16 @@ import { QQPlotStories, VARIANTS as QQPlotVariants } from '../components/QQPlot/
 import { EcdfPlotStories, VARIANTS as EcdfPlotVariants } from '../components/EcdfPlot/EcdfPlot.stories'
 import { ConfidenceBandStories, VARIANTS as ConfidenceBandVariants } from '../components/ConfidenceBand/ConfidenceBand.stories'
 import { RidgePlotStories, VARIANTS as RidgePlotVariants } from '../components/RidgePlot/RidgePlot.stories'
+import { CoefficientPlotStories, VARIANTS as CoefficientPlotVariants } from '../components/CoefficientPlot/CoefficientPlot.stories'
+import { PartialDependenceStories, VARIANTS as PartialDependenceVariants } from '../components/PartialDependence/PartialDependence.stories'
+import { PartialRegressionStories, VARIANTS as PartialRegressionVariants } from '../components/PartialRegression/PartialRegression.stories'
+import { ResidualPlotStories, VARIANTS as ResidualPlotVariants } from '../components/ResidualPlot/ResidualPlot.stories'
+import { ObservedPredictedStories, VARIANTS as ObservedPredictedVariants } from '../components/ObservedPredicted/ObservedPredicted.stories'
+import { ScatterMatrixStories, VARIANTS as ScatterMatrixVariants } from '../components/ScatterMatrix/ScatterMatrix.stories'
+import { RegressionSurfaceStories, VARIANTS as RegressionSurfaceVariants } from '../components/RegressionSurface/RegressionSurface.stories'
+import { LeveragePlotStories, VARIANTS as LeveragePlotVariants } from '../components/LeveragePlot/LeveragePlot.stories'
+import { InteractionPlotStories, VARIANTS as InteractionPlotVariants } from '../components/InteractionPlot/InteractionPlot.stories'
+import { CoefficientPathStories, VARIANTS as CoefficientPathVariants } from '../components/CoefficientPath/CoefficientPath.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -92,6 +102,8 @@ export type Component =
   | 'dendrogram' | 'sunburst' | 'circlepack' | 'hive' | 'edgebundle'
   | 'icicle' | 'indenttree' | 'radialtree' | 'forcecluster' | 'daglayered'
   | 'density' | 'qq' | 'ecdf' | 'confband' | 'ridge'
+  | 'coefplot' | 'partdep' | 'partreg' | 'residplot'
+  | 'obspred' | 'splom' | 'regsurf' | 'leverage' | 'interaction' | 'coefpath'
 
 export type Tier = 1 | 2 | 3
 
@@ -190,6 +202,16 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'ecdf', label: 'ECDF', tier: 2, variants: EcdfPlotVariants, render: v => <EcdfPlotStories variant={v} /> },
   { id: 'confband', label: 'Confidence band', tier: 2, variants: ConfidenceBandVariants, render: v => <ConfidenceBandStories variant={v} /> },
   { id: 'ridge', label: 'Ridge plot', tier: 3, variants: RidgePlotVariants, render: v => <RidgePlotStories variant={v} /> },
+  { id: 'coefplot',    label: 'Coefficient plot',     tier: 2, variants: CoefficientPlotVariants,    render: v => <CoefficientPlotStories variant={v} /> },
+  { id: 'partdep',     label: 'Partial dependence',   tier: 2, variants: PartialDependenceVariants,  render: v => <PartialDependenceStories variant={v} /> },
+  { id: 'partreg',     label: 'Partial regression',   tier: 3, variants: PartialRegressionVariants,  render: v => <PartialRegressionStories variant={v} /> },
+  { id: 'residplot',   label: 'Residual plot',        tier: 2, variants: ResidualPlotVariants,       render: v => <ResidualPlotStories variant={v} /> },
+  { id: 'obspred',     label: 'Observed vs predicted',tier: 2, variants: ObservedPredictedVariants,  render: v => <ObservedPredictedStories variant={v} /> },
+  { id: 'splom',       label: 'Scatterplot matrix',   tier: 3, variants: ScatterMatrixVariants,      render: v => <ScatterMatrixStories variant={v} /> },
+  { id: 'regsurf',     label: 'Regression surface',   tier: 3, variants: RegressionSurfaceVariants,  render: v => <RegressionSurfaceStories variant={v} /> },
+  { id: 'leverage',    label: 'Leverage plot',        tier: 3, variants: LeveragePlotVariants,       render: v => <LeveragePlotStories variant={v} /> },
+  { id: 'interaction', label: 'Interaction plot',     tier: 2, variants: InteractionPlotVariants,    render: v => <InteractionPlotStories variant={v} /> },
+  { id: 'coefpath',    label: 'Coefficient path',     tier: 3, variants: CoefficientPathVariants,    render: v => <CoefficientPathStories variant={v} /> },
 ]
 
 /** Convenience: every entry across both registries. Use for global lookups. */
