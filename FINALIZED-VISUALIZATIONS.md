@@ -134,16 +134,18 @@ Mirrors components: classic baseline / evolved / showcase.
   views (selection in one viz brushes others), "what changed"
   annotation layer, hand-drawn axis under the Sketch palette.
 
-This iteration ships thirty-two visualizations spanning all three tiers:
+This iteration ships forty-two visualizations spanning all three tiers:
 
 - **Tier 1.** `Sparkline`, `LineChart`, `Bar`, `Histogram`, `Donut`,
-  `Area`, `Lollipop`, `Waffle`, `Gauge`.
+  `Area`, `Lollipop`, `Waffle`, `Gauge`, `IndentTree`.
 - **Tier 2.** `Scatter`, `CalendarHeatmap`, `StackedArea`, `BoxPlot`,
   `Treemap`, `Heatmap`, `Radar`, `Funnel`, `Waterfall`, `Hexbin`,
   `Violin`, `AdjacencyMatrix`, `ArcDiagram`, `Tree`, `Dendrogram`,
-  `Sunburst`, `CirclePack`.
+  `Sunburst`, `CirclePack`, `Icicle`, `RadialTree`, `DensityPlot`,
+  `QQPlot`, `EcdfPlot`, `ConfidenceBand`.
 - **Tier 3.** `Sankey`, `NodeLink`, `ChordDiagram`, `CircularNetwork`,
-  `HiveDiagram`, `EdgeBundle`.
+  `HiveDiagram`, `EdgeBundle`, `ForceCluster`, `DagLayered`,
+  `RidgePlot`.
 
 Remaining declared entries (`SmallMultiples` primitive, `EncodingSwitcher`,
 `LinkedViews`, `AnnotationLayer`, hand-drawn-axis) are implemented in
@@ -919,6 +921,246 @@ every edge.
 **Palette fit.** **Best — Material, Tron, Aurora.** Glowing lines
 on a dark surface make the ridges sing. **Worst — Newspaper.**
 Single-ink engines can't differentiate the bundled flows.
+
+### Icicle *(Tier 2)*
+**Purpose.** Hierarchy as rectangular layered partitions — the
+flame-chart cousin of `Sunburst`. Each depth gets a horizontal
+stripe (or a vertical column under `right`); width within a stripe
+encodes value. `flame` flips the depth direction so the root sits at
+the bottom, the canonical CPU-profiler reading.
+
+**Data shape.** Recursive `IcicleNode = { id, label, value?, intent?, children? }`.
+
+**Variant ladder.**
+1. `down` — root at the top, children sweep down. Org-budget read.
+2. `right` — root at the left; reads as a flattened tree where the
+   label fits inside the cell.
+3. `flame` — root at the bottom, the classic profiler waterfall.
+
+**Pros & cons.** Sweet spot is 3–5 levels and ≤40 leaves at the
+widest level. Past that, leaf cells collapse to slivers — switch to
+`Treemap` for value-by-area without the depth column, or `Sunburst`
+for the radial read.
+
+**Palette fit.** **Best — Material, Bauhaus, Data-dense.** Strong
+intent fills carry the layered tints. **Worst — Sketch.** Pencil
+strokes blur cell-to-cell separation.
+
+### IndentTree *(Tier 1)*
+**Purpose.** Hierarchy as an indented text list — the `tree(1)` /
+file-explorer reading, but rendered as live DOM so labels select and
+wrap cleanly. Distinct from `Tree` (SVG org chart) because the form
+is *type-led*, not geometry-led.
+
+**Data shape.** Recursive `IndentTreeNode = { id, label, intent?, meta?, weight?, children? }`.
+
+**Variant ladder.**
+1. `plain` — whitespace indent only.
+2. `guides` — ASCII-style `├── │ └──` guides drawn as DOM border
+   pseudo-elements, never glyphs.
+3. `meta` — `guides` plus a right-aligned weight bar and value
+   column. Reads as `du -sh` / size-on-disk.
+
+**Pros & cons.** Works for hundreds of rows since rendering is
+linear DOM. The cliff is wide hierarchies where the right column
+runs out of horizontal room — pop to `Tree` (geometry) or `Icicle`
+(area-encoded).
+
+**Palette fit.** **Best — Wikipedia, Editorial, Terminal.**
+Type-driven engines reward the line-by-line reading. **Worst —
+Memphis, Bauhaus.** Loud geometry engines undercut the quiet text
+hierarchy.
+
+### RadialTree *(Tier 2)*
+**Purpose.** Strict parent-child hierarchy emanating from a center
+node. Differs from `Sunburst` (slice areas) and radial `Dendrogram`
+(right-angle brackets) — `RadialTree` draws the *edges* themselves
+between depth rings.
+
+**Data shape.** Recursive `RadialTreeNode = { id, label, intent?, children? }`.
+
+**Variant ladder.**
+1. `straight` — line segments between depths; fastest to scan.
+2. `curved` — quadratic sweep through a midpoint; reads as a smoother
+   dataviz piece.
+3. `compact` — smaller nodes plus a guide ring on the outer radius;
+   useful for ≤80 leaves.
+
+**Pros & cons.** Best from 8–80 leaves. Past that, leaf labels overlap
+on the rim and a `Dendrogram` radial (which lays labels along the
+ring) reads better.
+
+**Palette fit.** **Best — Aurora, Memphis, Material.** Saturated
+intent fills against the radial scaffold. **Worst — Newspaper.**
+Mono-ink can't separate the depth tints.
+
+### ForceCluster *(Tier 3)*
+**Purpose.** Node-link with convex hulls drawn around each cluster.
+The hulls are the figure; the graph is the ground. Reads as a
+concept map / social-graph cluster diagram.
+
+**Data shape.**
+```
+ForceNode = { id, label, group, weight? }
+ForceEdge = { from, to, value? }
+```
+
+**Variant ladder.**
+1. `hull` — translucent outlined hulls only.
+2. `shaded` — filled hulls at low opacity; the "concept map" read.
+3. `labeled` — shaded plus a cluster name centered on the group.
+
+**Pros & cons.** Best for 10–40 nodes split across 3–6 clusters.
+Past that, hulls overlap each other and the eye loses which cluster
+owns which area — switch to `AdjacencyMatrix` with cluster
+ordering. Layout is a deterministic seeded relaxation — no
+animation, stable across renders.
+
+**Palette fit.** **Best — Memphis, Aurora, Material.** Saturated
+hulls and clear intent fills separate cleanly. **Worst —
+Glassmorphism.** Translucent surfaces wipe out hull contrast.
+
+### DagLayered *(Tier 3)*
+**Purpose.** Directed acyclic graph drawn in Sugiyama-style layers.
+Longest-path layer assignment, then a barycenter pass within each
+layer to minimize edge crossings. Reads as a build/data pipeline.
+
+**Data shape.**
+```
+DagNode = { id, label, intent? }
+DagEdge = { from, to, value?, highlight? }
+```
+
+**Variant ladder.**
+1. `vertical` — layers stacked top → bottom, the CI-pipeline read.
+2. `horizontal` — layers flow left → right, the Airflow / ETL read.
+3. `highlighted` — one critical path lit at full opacity; the rest
+   dimmed. Reads as "the path that matters" on a noisy DAG.
+
+**Pros & cons.** Sweet spot is 6–30 nodes and ≤5 layers. Past that,
+layers get tall and the edge bundle in between turns into spaghetti
+— switch to `Sankey` (if every node is a stage) or to `NodeLink`
+(if the graph isn't really layered).
+
+**Palette fit.** **Best — Material, Data-dense, Wikipedia.** The
+explicit layers reward grid-first engines. **Worst — Sketch.** The
+deterministic geometry fights the hand-drawn aesthetic.
+
+### DensityPlot *(Tier 2)*
+**Purpose.** Continuous gaussian KDE over a 1-D variable — the
+smooth cousin of `Histogram`. Different question than `Violin`: this
+reads "what shape is the distribution?" rather than "how do groups
+compare?".
+
+**Data shape.** `DensitySeries = { id, label, values: number[], intent? }`.
+
+**Variant ladder.**
+1. `single` — one filled curve. Histogram-replacement read.
+2. `multiple` — overlaid line curves only; no fill so overlap stays
+   legible.
+3. `filled` — overlaid translucent fills, the "compare two
+   distributions" set piece.
+
+**Pros & cons.** Needs n ≥ ~80 per series for the KDE to stop
+wobbling. Bandwidth: Silverman's rule of thumb. Compares ≤4 series
+well; past that, switch to `RidgePlot` (each series in its own row).
+
+**Palette fit.** **Best — Aurora, Memphis, Material.** Strong
+categorical hues separate overlapping curves. **Worst —
+Brutalist.** Heavy borders dominate the smooth curves.
+
+### QQPlot *(Tier 2)*
+**Purpose.** Quantile-quantile plot — does the sample come from
+the reference distribution? Points fall on `y = x` when they agree;
+departures from the line are the message.
+
+**Data shape.** `sample: number[]` and (for `sampleVsSample`) `reference: number[]`.
+
+**Variant ladder.**
+1. `normal` — sample standardized against a normal reference. The
+   canonical "is this normal?" read.
+2. `sampleVsSample` — two samples' quantiles against each other.
+   The A/B distribution comparison.
+3. `banded` — normal Q-Q with a 95% pointwise envelope so departures
+   from the line get context.
+
+**Pros & cons.** Best for n ≥ ~50. Heavy tails are visible at both
+ends; skew shows as a curved arc; bimodality as an S. Don't use as a
+hypothesis test on its own — pair with the relevant statistic.
+
+**Palette fit.** **Best — Academic, Wikipedia, Data-dense.** Quiet
+type-led engines reward the dot grid. **Worst — Vaporwave.** The
+saturated background fights the precision-read.
+
+### EcdfPlot *(Tier 2)*
+**Purpose.** Empirical CDF as a step function rising from 0 to 1.
+Reads as "at what value does X% of the data land?" — the SLO
+question, by construction.
+
+**Data shape.** `EcdfSeries = { id, label, values: number[], intent? }`.
+
+**Variant ladder.**
+1. `single` — one step curve.
+2. `multiple` — overlaid steps. Kolmogorov-Smirnov-by-eye read.
+3. `percentiles` — single series with p50/p90/p95/p99 guides drawn
+   through the curve. The SLO-tracking read.
+
+**Pros & cons.** No binning artifacts, unlike `Histogram`/cumulative.
+The cliff is large n where the step density renders as a thick line
+— switch to `DensityPlot` if shape is the question, or
+`CalendarHeatmap` if "when" is the question.
+
+**Palette fit.** **Best — Financial-terminal, Wikipedia, Academic.**
+Step lines need calm backgrounds. **Worst — Memphis, Vaporwave.**
+The decorative engines wash out the percentile markers.
+
+### ConfidenceBand *(Tier 2)*
+**Purpose.** Central line with a shaded uncertainty interval.
+Distinct from a `LineChart` with error bars — the band is continuous
+and reads as "where could the true value live?"
+
+**Data shape.** `ConfidencePoint = { t, y, lo, hi, lo50?, hi50? }`,
+grouped into `ConfidenceSeries`.
+
+**Variant ladder.**
+1. `band` — single outer interval. 95% CI / forecast cone.
+2. `ribbon` — nested 50% inner band inside the 95% outer band. The
+   Bank-of-England fanchart read.
+3. `compare` — ≥2 series with their bands overlaid. Crossings tell
+   the eye where signals diverge significantly.
+
+**Pros & cons.** An optional `splitT` draws the observed/forecast
+partition so the eye knows where the model takes over. Don't shade
+asymmetric intervals as if they were symmetric — the band edges
+must come from the data.
+
+**Palette fit.** **Best — Financial-terminal, Editorial, Aurora.**
+Calm engines let the band breathe. **Worst — Brutalist, Newspaper.**
+High-contrast engines amplify the band edges into a competing
+chart.
+
+### RidgePlot *(Tier 3)*
+**Purpose.** Stacked KDE ridges, one per series — the "joyplot".
+Series order is the story; the eye walks top-to-bottom and reads
+the distribution shifting.
+
+**Data shape.** `RidgeSeries[]`, rendered top-to-bottom in the order
+given. Sort by what you want the eye to walk; do not sort alphabetically.
+
+**Variant ladder.**
+1. `lines` — silhouette only, reads as topographic line drawing.
+2. `filled` — translucent fills under each ridge; the canonical
+   joyplot.
+3. `normalized` — per-series peak normalization, so shape is the
+   message and sample-size differences disappear from the heights.
+
+**Pros & cons.** Best for 4–12 series. Past that, the overlap budget
+breaks down — switch to small multiples of `DensityPlot`. Each ridge
+needs n ≥ ~80 to stop wobbling.
+
+**Palette fit.** **Best — Aurora, Vaporwave, Material.** Glowing
+ridges over a calm surface — the canonical look. **Worst —
+Brutalist.** Heavy borders dominate the smooth ridges.
 
 ---
 

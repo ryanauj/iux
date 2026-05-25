@@ -1,0 +1,66 @@
+/*
+ * RidgePlot — stacked KDE ridges, one per series. Three rungs: lines
+ * (silhouette only — read as a topographic line drawing) → filled
+ * (translucent fills under each ridge, the "joyplot" canonical) →
+ * normalized (per-series peak normalization, so shape is the message
+ * and n disappears from the height). Series order is the story; do
+ * not sort alphabetically — sort by what you want the eye to walk.
+ */
+
+.iux-ridge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-ridge__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-ridge__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-ridge__baseline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.iux-ridge__tick-label,
+.iux-ridge__label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-ridge__label {
+  font-family: var(--type-body-family);
+  fill: var(--color-content-primary);
+}
+
+.iux-ridge__line { stroke-width: 1.5; }
+
+.iux-ridge__fill { fill-opacity: 0.55; stroke: none; }
+
+.iux-ridge__row--primary .iux-ridge__line { stroke: var(--color-intent-primary-bg); }
+.iux-ridge__row--info    .iux-ridge__line { stroke: var(--color-intent-info-bg); }
+.iux-ridge__row--success .iux-ridge__line { stroke: var(--color-intent-success-bg); }
+.iux-ridge__row--warning .iux-ridge__line { stroke: var(--color-intent-warning-bg); }
+.iux-ridge__row--danger  .iux-ridge__line { stroke: var(--color-intent-danger-bg); }
+.iux-ridge__row--neutral .iux-ridge__line { stroke: var(--color-intent-neutral-bg); }
+
+.iux-ridge__row--primary .iux-ridge__fill { fill: var(--color-intent-primary-bg); }
+.iux-ridge__row--info    .iux-ridge__fill { fill: var(--color-intent-info-bg); }
+.iux-ridge__row--success .iux-ridge__fill { fill: var(--color-intent-success-bg); }
+.iux-ridge__row--warning .iux-ridge__fill { fill: var(--color-intent-warning-bg); }
+.iux-ridge__row--danger  .iux-ridge__fill { fill: var(--color-intent-danger-bg); }
+.iux-ridge__row--neutral .iux-ridge__fill { fill: var(--color-intent-neutral-bg); }

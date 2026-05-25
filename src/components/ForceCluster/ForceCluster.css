@@ -1,0 +1,93 @@
+/*
+ * ForceCluster — node-link with convex hulls around each cluster.
+ * Three rungs: hull (translucent outline only — reads as soft
+ * bubbles) → shaded (filled hull at low opacity, the "concept map"
+ * reading) → labeled (shaded plus cluster name centered on the
+ * group). Edges between groups are dimmed so the cluster structure
+ * stays the dominant figure.
+ */
+
+.iux-forcecluster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-forcecluster__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-forcecluster__hull {
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.55;
+}
+
+.iux-forcecluster--shaded .iux-forcecluster__hull,
+.iux-forcecluster--labeled .iux-forcecluster__hull {
+  fill-opacity: 0.16;
+  opacity: 0.8;
+}
+
+.iux-forcecluster__hull--primary { stroke: var(--color-intent-primary-bg); fill: var(--color-intent-primary-bg); }
+.iux-forcecluster__hull--info    { stroke: var(--color-intent-info-bg);    fill: var(--color-intent-info-bg); }
+.iux-forcecluster__hull--success { stroke: var(--color-intent-success-bg); fill: var(--color-intent-success-bg); }
+.iux-forcecluster__hull--warning { stroke: var(--color-intent-warning-bg); fill: var(--color-intent-warning-bg); }
+.iux-forcecluster__hull--danger  { stroke: var(--color-intent-danger-bg);  fill: var(--color-intent-danger-bg); }
+.iux-forcecluster__hull--neutral { stroke: var(--color-intent-neutral-bg); fill: var(--color-intent-neutral-bg); }
+
+.iux-forcecluster__edge {
+  stroke: var(--color-border-default);
+  fill: none;
+}
+
+.iux-forcecluster__edge--intra { opacity: 0.7; }
+.iux-forcecluster__edge--inter { opacity: 0.32; stroke-dasharray: 3 3; }
+
+.iux-forcecluster__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-forcecluster__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-forcecluster__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-forcecluster__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-forcecluster__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-forcecluster__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-forcecluster__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-forcecluster__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.iux-forcecluster__group-label {
+  font-family: var(--type-display-family, var(--type-body-family));
+  font-size: var(--type-body-size);
+  font-weight: var(--type-weight-strong, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.iux-forcecluster__group-label--primary { fill: var(--color-intent-primary-bg); }
+.iux-forcecluster__group-label--info    { fill: var(--color-intent-info-bg); }
+.iux-forcecluster__group-label--success { fill: var(--color-intent-success-bg); }
+.iux-forcecluster__group-label--warning { fill: var(--color-intent-warning-bg); }
+.iux-forcecluster__group-label--danger  { fill: var(--color-intent-danger-bg); }
+.iux-forcecluster__group-label--neutral { fill: var(--color-intent-neutral-bg); }

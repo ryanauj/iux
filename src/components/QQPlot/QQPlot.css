@@ -1,0 +1,71 @@
+/*
+ * QQPlot — quantile-quantile plot. Three rungs: normal (sample
+ * standardized against a normal reference line; the canonical "is this
+ * normal?" read) → sampleVsSample (two samples' quantiles against each
+ * other, the A/B distribution comparison) → banded (normal Q-Q with a
+ * 95% pointwise envelope so departure from the line gets context).
+ * Points fall on the diagonal when distributions agree.
+ */
+
+.iux-qq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-qq__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-qq__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-qq__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-qq__refline {
+  stroke: var(--color-content-secondary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.75;
+}
+
+.iux-qq__band {
+  fill: var(--color-content-secondary);
+  fill-opacity: 0.12;
+  stroke: none;
+}
+
+.iux-qq__tick-label,
+.iux-qq__axis-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-qq__axis-label {
+  font-family: var(--type-caption-family);
+  opacity: 0.85;
+}
+
+.iux-qq__dot { stroke: var(--color-surface-raised); stroke-width: 0.75; }
+
+.iux-qq__dot--primary { fill: var(--color-intent-primary-bg); }
+.iux-qq__dot--info    { fill: var(--color-intent-info-bg); }
+.iux-qq__dot--success { fill: var(--color-intent-success-bg); }
+.iux-qq__dot--warning { fill: var(--color-intent-warning-bg); }
+.iux-qq__dot--danger  { fill: var(--color-intent-danger-bg); }
+.iux-qq__dot--neutral { fill: var(--color-intent-neutral-bg); }

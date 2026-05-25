@@ -1,0 +1,101 @@
+/*
+ * DensityPlot — gaussian KDE curves over a continuous 1-D variable.
+ * Three rungs: single (one filled curve, the "histogram-replacement"
+ * read) → multiple (overlaid line curves, opacity drop for overlap
+ * tolerance) → filled (overlaid translucent fills, the "compare two
+ * distributions" set piece). Bandwidth: Silverman's rule of thumb;
+ * resolution defaults to 96 evaluation points.
+ */
+
+.iux-density {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-density__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-density__axis-line { stroke: var(--color-border-default); stroke-width: 1; }
+
+.iux-density__gridline {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.7;
+}
+
+.iux-density__tick-label {
+  fill: var(--color-content-secondary);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-density__line { stroke-width: 2; }
+
+.iux-density__area { fill-opacity: 0.45; }
+
+.iux-density--multiple .iux-density__area { fill-opacity: 0; }
+.iux-density--filled .iux-density__area { fill-opacity: 0.32; }
+
+.iux-density__series--primary .iux-density__line { stroke: var(--color-intent-primary-bg); }
+.iux-density__series--info    .iux-density__line { stroke: var(--color-intent-info-bg); }
+.iux-density__series--success .iux-density__line { stroke: var(--color-intent-success-bg); }
+.iux-density__series--warning .iux-density__line { stroke: var(--color-intent-warning-bg); }
+.iux-density__series--danger  .iux-density__line { stroke: var(--color-intent-danger-bg); }
+.iux-density__series--neutral .iux-density__line { stroke: var(--color-intent-neutral-bg); }
+
+.iux-density__series--primary .iux-density__area { fill: var(--color-intent-primary-bg); }
+.iux-density__series--info    .iux-density__area { fill: var(--color-intent-info-bg); }
+.iux-density__series--success .iux-density__area { fill: var(--color-intent-success-bg); }
+.iux-density__series--warning .iux-density__area { fill: var(--color-intent-warning-bg); }
+.iux-density__series--danger  .iux-density__area { fill: var(--color-intent-danger-bg); }
+.iux-density__series--neutral .iux-density__area { fill: var(--color-intent-neutral-bg); }
+
+.iux-density__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.iux-density__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iux-density__swatch {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  background-color: var(--color-content-secondary);
+}
+
+.iux-density__legend-item--primary .iux-density__swatch { background-color: var(--color-intent-primary-bg); }
+.iux-density__legend-item--info    .iux-density__swatch { background-color: var(--color-intent-info-bg); }
+.iux-density__legend-item--success .iux-density__swatch { background-color: var(--color-intent-success-bg); }
+.iux-density__legend-item--warning .iux-density__swatch { background-color: var(--color-intent-warning-bg); }
+.iux-density__legend-item--danger  .iux-density__swatch { background-color: var(--color-intent-danger-bg); }
+.iux-density__legend-item--neutral .iux-density__swatch { background-color: var(--color-intent-neutral-bg); }
+
+.iux-density__meta {
+  margin-left: var(--space-1);
+  font-family: var(--type-code-family);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}

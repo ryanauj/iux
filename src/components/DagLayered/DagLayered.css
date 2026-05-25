@@ -1,0 +1,83 @@
+/*
+ * DagLayered — directed acyclic graph drawn in Sugiyama-style layers.
+ * Three rungs: vertical (root layers at top, common build/data pipeline
+ * reading) → horizontal (layers flow left → right, the airflow / etl
+ * reading) → highlighted (one critical path lit; the rest dimmed).
+ * Within each layer a barycenter sort runs to reduce crossings.
+ */
+
+.iux-daglayered {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-daglayered__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-daglayered__edge {
+  stroke: var(--color-border-default);
+  opacity: 0.55;
+}
+
+.iux-daglayered__edge--on {
+  stroke: var(--color-intent-primary-bg);
+  opacity: 0.95;
+}
+
+.iux-daglayered__edge--off {
+  opacity: 0.18;
+}
+
+.iux-daglayered__arrow {
+  fill: var(--color-border-strong);
+}
+
+.iux-daglayered__node rect {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-daglayered__node--primary rect { fill: var(--color-intent-primary-bg); }
+.iux-daglayered__node--info    rect { fill: var(--color-intent-info-bg); }
+.iux-daglayered__node--success rect { fill: var(--color-intent-success-bg); }
+.iux-daglayered__node--warning rect { fill: var(--color-intent-warning-bg); }
+.iux-daglayered__node--danger  rect { fill: var(--color-intent-danger-bg); }
+.iux-daglayered__node--neutral rect { fill: var(--color-intent-neutral-bg); }
+
+.iux-daglayered__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-weight-strong, 600);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.iux-daglayered__node--primary .iux-daglayered__label { fill: var(--color-intent-primary-content); }
+.iux-daglayered__node--info    .iux-daglayered__label { fill: var(--color-intent-info-content); }
+.iux-daglayered__node--success .iux-daglayered__label { fill: var(--color-intent-success-content); }
+.iux-daglayered__node--warning .iux-daglayered__label { fill: var(--color-intent-warning-content); }
+.iux-daglayered__node--danger  .iux-daglayered__label { fill: var(--color-intent-danger-content); }
+.iux-daglayered__node--neutral .iux-daglayered__label { fill: var(--color-intent-neutral-content); }
+
+.iux-daglayered__node--primary .iux-daglayered__label,
+.iux-daglayered__node--info    .iux-daglayered__label,
+.iux-daglayered__node--success .iux-daglayered__label,
+.iux-daglayered__node--warning .iux-daglayered__label,
+.iux-daglayered__node--danger  .iux-daglayered__label,
+.iux-daglayered__node--neutral .iux-daglayered__label {
+  stroke: none;
+}

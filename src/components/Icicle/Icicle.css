@@ -1,0 +1,54 @@
+/*
+ * Icicle — hierarchy as rectangular layered partitions. Reads as the
+ * flame-chart cousin of Sunburst: every level is a horizontal stripe
+ * (or vertical column on `right`); width within a stripe encodes value.
+ * `flame` flips the depth direction so the root sits at the bottom —
+ * the canonical CPU-profiler reading.
+ */
+
+.iux-icicle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-icicle__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-icicle__rect {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.iux-icicle__cell--primary .iux-icicle__rect { fill: var(--color-intent-primary-bg); }
+.iux-icicle__cell--info    .iux-icicle__rect { fill: var(--color-intent-info-bg); }
+.iux-icicle__cell--success .iux-icicle__rect { fill: var(--color-intent-success-bg); }
+.iux-icicle__cell--warning .iux-icicle__rect { fill: var(--color-intent-warning-bg); }
+.iux-icicle__cell--danger  .iux-icicle__rect { fill: var(--color-intent-danger-bg); }
+.iux-icicle__cell--neutral .iux-icicle__rect { fill: var(--color-intent-neutral-bg); }
+
+.iux-icicle__cell--lv-1 .iux-icicle__rect { opacity: 1; }
+.iux-icicle__cell--lv-2 .iux-icicle__rect { opacity: 0.82; }
+.iux-icicle__cell--lv-3 .iux-icicle__rect { opacity: 0.66; }
+.iux-icicle__cell--lv-4 .iux-icicle__rect { opacity: 0.52; }
+
+.iux-icicle__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
