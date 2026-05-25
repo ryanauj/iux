@@ -11,12 +11,13 @@ import type { Palette } from '../tokens/semantic.contract'
  *     cooler than Flat / Classic's `#f4f5f7`. Borders are hairline
  *     `#e0e0e0` rules — the colour of a printed signage backplate.
  *   - Intents take their colours from the JIS signage system and JR-East
- *     line palette: JR-East green (`#00b04f`) carries `intent.primary`
+ *     line palette: deep JR-East green (`#007c38`) carries `intent.primary`
  *     and `intent.success` — Tokyo's transit signage conflates "go" and
- *     "primary"; JR-East blue (`#0084c8`) carries `intent.info`; JIS
- *     signal red (`#c8102e`) carries `intent.danger`; JIS signal yellow
- *     (`#ffd400`) carries `intent.warning`. Every saturated intent ships
- *     with white inverse content.
+ *     "primary", and the deeper green keeps white inverse text readable
+ *     at WCAG UI contrast; JR-East blue (`#0084c8`) carries `intent.info`;
+ *     JIS signal red (`#c8102e`) carries `intent.danger`; JIS signal
+ *     yellow (`#ffd400`) carries `intent.warning`. Every saturated intent
+ *     ships with white inverse content.
  *   - `space.*` is snapped to a 4 px grid throughout (`1: '4px'`,
  *     `2: '8px'`, ... `8: '64px'`) — the same as Flat / Classic at the
  *     low end, but every step lands on an integer multiple of 4 with no
@@ -61,9 +62,9 @@ export const palette: Palette = {
         focus: '#0084c8',
       },
       intent: {
-        primary: { bg: '#00b04f', content: '#ffffff', border: '#008c3f', bgHover: '#009c46', bgActive: '#007c38' },
+        primary: { bg: '#007c38', content: '#ffffff', border: '#006a2f', bgHover: '#006a2f', bgActive: '#005224' },
         neutral: { bg: '#f0f0f0', content: '#1a1a1a', border: '#e0e0e0', bgHover: '#e0e0e0', bgActive: '#c8c8c8' },
-        success: { bg: '#00b04f', content: '#ffffff', border: '#008c3f', bgHover: '#009c46', bgActive: '#007c38' },
+        success: { bg: '#007c38', content: '#ffffff', border: '#006a2f', bgHover: '#006a2f', bgActive: '#005224' },
         warning: { bg: '#ffd400', content: '#1a1a1a', border: '#d4af00', bgHover: '#ebc200', bgActive: '#c4a300' },
         danger:  { bg: '#c8102e', content: '#ffffff', border: '#a40d26', bgHover: '#b00e29', bgActive: '#8a0b20' },
         info:    { bg: '#0084c8', content: '#ffffff', border: '#006ba4', bgHover: '#0074b0', bgActive: '#005a8a' },
