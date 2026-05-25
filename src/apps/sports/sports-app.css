@@ -4584,7 +4584,7 @@
   width: 2.4rem;
   height: 2.4rem;
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: white;
   font-family: var(--type-display-family);
   font-size: 0.75rem;
   font-weight: 700;
@@ -4633,7 +4633,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: white;
   font-family: var(--type-display-family);
   font-size: 0.65rem;
   font-weight: 700;
@@ -4762,7 +4762,7 @@
   width: 1.6rem;
   height: 1.6rem;
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: white;
   font-family: var(--type-display-family);
   font-size: 0.55rem;
   font-weight: 700;
