@@ -6,6 +6,7 @@ import { CourtShell } from './shells/court'
 import { TabsShell } from './shells/tabs'
 import { FeedShell } from './shells/feed'
 import { TriptychShell } from './shells/triptych'
+import { BentoShell } from './shells/bento'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -19,7 +20,9 @@ import { TriptychShell } from './shells/triptych'
  *   - `feed` collapses Home into one chronological stream and rails it
  *     alongside detail pages;
  *   - `triptych` shows a three-column list / summary / deep-panel layout
- *     where the standard route page renders in the right column.
+ *     where the standard route page renders in the right column;
+ *   - `bento` replaces Home with a configurable grid of widget tiles that
+ *     expand into modals over the standard pages.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -33,6 +36,7 @@ export const LAYOUT_IDS = [
   'tabs',
   'feed',
   'triptych',
+  'bento',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -49,6 +53,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'tabs', label: 'Tabs — workspace' },
   { value: 'feed', label: 'Feed — timeline stream' },
   { value: 'triptych', label: 'Triptych — list / summary / detail' },
+  { value: 'bento', label: 'Bento — configurable dashboard' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -121,6 +126,8 @@ export function Shell(props: ShellProps) {
       return <FeedShell {...props} />
     case 'triptych':
       return <TriptychShell {...props} />
+    case 'bento':
+      return <BentoShell {...props} />
   }
 }
 
