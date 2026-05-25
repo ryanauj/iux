@@ -2,6 +2,9 @@ import { flatGuide } from './flat'
 import { materialGuide } from './material'
 import { neubrutalismGuide } from './neubrutalism'
 import { glassmorphismGuide } from './glassmorphism'
+import { neumorphismGuide } from './neumorphism'
+import { claymorphismGuide } from './claymorphism'
+import { skeuomorphismGuide } from './skeuomorphism'
 import type { EngineGuideMeta } from './types'
 
 export const ENGINE_GUIDES = {
@@ -9,6 +12,9 @@ export const ENGINE_GUIDES = {
   material: materialGuide,
   neubrutalism: neubrutalismGuide,
   glassmorphism: glassmorphismGuide,
+  neumorphism: neumorphismGuide,
+  claymorphism: claymorphismGuide,
+  skeuomorphism: skeuomorphismGuide,
 } satisfies Record<string, EngineGuideMeta>
 
 export type EngineGuideId = keyof typeof ENGINE_GUIDES
