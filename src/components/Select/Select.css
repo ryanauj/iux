@@ -126,11 +126,12 @@
 
 .iux-select__listbox {
   /*
-   * Fixed positioning lets the menu escape any ancestor with
-   * overflow: hidden | auto | scroll (e.g. the DraggableControls panel
-   * on mobile). Coordinates are set inline by the component from the
-   * trigger's viewport rect, with a fallback below for the SSR/no-JS
-   * first paint.
+   * The element is portaled to document.body so its `position: fixed`
+   * coordinates are always interpreted relative to the viewport — an
+   * ancestor with `transform`, `filter`, or `backdrop-filter` would
+   * otherwise establish a containing block and break the trigger-anchored
+   * math (e.g. the DraggableControls panel uses backdrop-blur). Coordinates
+   * are set inline by the component from the trigger's viewport rect.
    */
   position: fixed;
   z-index: 1000;

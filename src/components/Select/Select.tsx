@@ -12,6 +12,7 @@ import {
   type ChangeEvent,
   type KeyboardEvent,
 } from 'react'
+import { createPortal } from 'react-dom'
 import './Select.css'
 
 export type SelectVariant = 'native' | 'dropdown' | 'combobox' | 'async'
@@ -135,15 +136,20 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
   const controlRef = useRef<HTMLDivElement>(null)
+  const listboxRef = useRef<HTMLUListElement>(null)
 
   /*
    * Listbox position is computed from the trigger's viewport rect and
-   * applied via inline styles so the menu can use position: fixed to
-   * escape any ancestor `overflow: hidden | auto | scroll`. Without this
-   * the listbox is clipped when the Select is rendered inside scrollable
-   * containers (e.g. the DraggableControls panel on mobile, where the
-   * panel caps its own height with overflow-y: auto). Recomputed on
-   * scroll / resize / orientation change while open.
+   * applied via inline styles. The listbox itself is portaled to
+   * document.body so that `position: fixed` is interpreted relative to
+   * the viewport — any ancestor with `transform`, `filter`, or
+   * `backdrop-filter` (e.g. the DraggableControls panel, which uses
+   * backdrop-blur) would otherwise establish a containing block and make
+   * fixed coordinates relative to that ancestor instead of the viewport,
+   * leaving the menu offset by hundreds of pixels and overlapping the
+   * trigger. The portal also dodges any `overflow: hidden | auto | scroll`
+   * clip in the ancestor chain. Recomputed on scroll / resize / orientation
+   * / visualViewport change while open.
    */
   const [menuPos, setMenuPos] = useState<CSSProperties | null>(null)
 
@@ -218,13 +224,18 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
   }, [open, filteredOptions, currentValue])
 
   // Click-outside closes the menu (and the locked-open story stays open).
+  // The listbox is portaled to document.body, so it lives outside rootRef;
+  // include listboxRef in the contains check so clicks on the listbox
+  // (e.g. on its scrollbar or padding) don't fall through as "outside".
   useEffect(() => {
     if (!open || stateLock === 'open') return
     function handle(e: MouseEvent) {
+      const target = e.target as Node
       const root = rootRef.current
-      if (root && !root.contains(e.target as Node)) {
-        setOpen(false)
-      }
+      const list = listboxRef.current
+      if (root && root.contains(target)) return
+      if (list && list.contains(target)) return
+      setOpen(false)
     }
     document.addEventListener('mousedown', handle)
     return () => document.removeEventListener('mousedown', handle)
@@ -235,6 +246,18 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
    * viewport rect. Picks drop direction based on which side has more
    * room, and caps max-height to the available space so long lists stay
    * scrollable within the viewport rather than running off-screen.
+   *
+   * Uses `visualViewport` (when available) for the available-space math so
+   * the on-screen keyboard on mobile is treated as missing screen — without
+   * this, `window.innerHeight` reports the full layout viewport even when
+   * the keyboard is up, and the listbox opens into space that's actually
+   * covered by the keyboard (or, with a typeable trigger, overlaps the
+   * input itself once iOS scrolls the focused input above the keyboard).
+   *
+   * Combobox/async are also biased toward opening DOWN: the trigger IS the
+   * search input, so flipping the listbox above it puts the freshly typed
+   * query behind the results and reads as the listbox covering the search
+   * box. We only flip up when there's truly almost no room below.
    */
   const computeMenuPos = useCallback(() => {
     const control = controlRef.current
@@ -242,10 +265,25 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
     const rect = control.getBoundingClientRect()
     const gap = 4
     const margin = 8
-    const spaceBelow = window.innerHeight - rect.bottom - margin
-    const spaceAbove = rect.top - margin
-    const preferDown = spaceBelow >= 200 || spaceBelow >= spaceAbove
-    const maxHeight = Math.max(160, preferDown ? spaceBelow : spaceAbove)
+
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null
+    const viewTop = vv ? vv.offsetTop : 0
+    const viewBottom = vv ? vv.offsetTop + vv.height : window.innerHeight
+
+    const spaceBelow = viewBottom - rect.bottom - margin
+    const spaceAbove = rect.top - viewTop - margin
+
+    const isTypeable = variant === 'combobox' || variant === 'async'
+    const preferDown = isTypeable
+      ? spaceBelow >= 120 || spaceBelow >= spaceAbove
+      : spaceBelow >= 200 || spaceBelow >= spaceAbove
+
+    // Clamp to the actually-available space so the listbox stays inside the
+    // visible viewport (above any soft keyboard). The 120px floor keeps the
+    // listbox usable when space is tight — its inner scroll handles overflow.
+    const available = preferDown ? spaceBelow : spaceAbove
+    const maxHeight = Math.max(120, Math.min(available, 400))
+
     setMenuPos(
       preferDown
         ? {
@@ -263,7 +301,7 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
             maxHeight,
           },
     )
-  }, [])
+  }, [variant])
 
   const menuVisible = open || stateLock === 'open'
 
@@ -275,16 +313,33 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
     computeMenuPos()
   }, [menuVisible, computeMenuPos])
 
+  // Recompute when the filtered list changes (combobox/async): the listbox
+  // height shrinks/grows, and if iOS is in the middle of scrolling the
+  // focused input above the keyboard, the rect may not have settled yet.
+  useLayoutEffect(() => {
+    if (!menuVisible) return
+    computeMenuPos()
+  }, [menuVisible, filteredOptions, computeMenuPos])
+
   useEffect(() => {
     if (!menuVisible) return
     const onChange = () => computeMenuPos()
     window.addEventListener('resize', onChange)
     window.addEventListener('orientationchange', onChange)
     window.addEventListener('scroll', onChange, true)
+    const vv = window.visualViewport
+    if (vv) {
+      vv.addEventListener('resize', onChange)
+      vv.addEventListener('scroll', onChange)
+    }
     return () => {
       window.removeEventListener('resize', onChange)
       window.removeEventListener('orientationchange', onChange)
       window.removeEventListener('scroll', onChange, true)
+      if (vv) {
+        vv.removeEventListener('resize', onChange)
+        vv.removeEventListener('scroll', onChange)
+      }
     }
   }, [menuVisible, computeMenuPos])
 
@@ -539,8 +594,9 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
             />
           )}
 
-          {(open || stateLock === 'open') && (
+          {(open || stateLock === 'open') && typeof document !== 'undefined' && createPortal(
             <ul
+              ref={listboxRef}
               id={listboxId}
               className="iux-select__listbox"
               role="listbox"
@@ -587,7 +643,8 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
                   <span className="iux-select__option-label">+ Create "{query.trim()}"</span>
                 </li>
               )}
-            </ul>
+            </ul>,
+            document.body,
           )}
         </div>
       )}
