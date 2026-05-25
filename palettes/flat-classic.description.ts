@@ -93,4 +93,17 @@ export const description: StyleDescription = {
     'Dark-mode-only content (this palette is light-only; pair with `liquid-glass-dark` or a dark register for dark needs)',
   ],
   recallAliases: ['flat', 'flat classic', 'flat / classic', 'flat design', 'classic'],
+  plain: {
+    tagline:
+      'The everyday look of modern websites — solid colours, one bright accent, gentle shadows under cards.',
+    summary:
+      "Flat / Classic is the most familiar palette here — the one most modern websites and apps use without thinking. The page is a very pale grey, cards on top are plain white, and a single saturated blue is reserved for the important button, the focused element, and any link. A whisper of shadow under cards is the only hint of depth. It's deliberately the baseline against which every other palette here looks distinctive.",
+    lookingLike: [
+      'Solid, opaque panels (nothing see-through)',
+      "One bright blue used for the main button, links, and focus rings",
+      "A soft, gentle shadow under cards — never a hard offset or glow",
+      "The system font of whatever device you're on (San Francisco on Mac, Segoe on Windows)",
+      'A thin focus ring around whatever the keyboard is currently on',
+    ],
+  },
 }

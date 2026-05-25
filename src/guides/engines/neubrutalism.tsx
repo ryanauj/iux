@@ -203,12 +203,35 @@ export const neubrutalismGuide: EngineGuideMeta = {
   name: 'Neubrutalism',
   summary:
     "The stroke does everything. Zero radius, zero shadow, near-black 4px borders, clashing primary fills with black ink, and motion that snaps to grid in under a tenth of a second with linear easing. Where flat uses three border tokens to softly indicate hierarchy, Neubrutalism uses one heavy stroke and asks the colour to do the rest. The whole engine is a refusal of polish.",
+  plainSummary:
+    "Neubrutalism is loud and deliberately unpolished. Cards have sharp corners (no rounding), no shadows at all, and are wrapped in a thick black outline. Buttons are bright clashing colours — magenta, lime, neon yellow — with black text. State changes snap instantly. It looks like a poster, not an app, and that's the point.",
+  plainTeaser:
+    "Loud and unpolished — sharp corners, thick black outlines, clashing bright colours.",
   demoPalette: neubrutalism,
   steps: [
     {
       id: 'philosophy',
       title: 'Philosophy',
       description: 'No shadow, no curve, no gradient.',
+      plainTitle: 'The big idea',
+      plainBody: (
+        <>
+          <p>
+            Neubrutalism asks the opposite question to flat. Flat says
+            "how little decoration can we use?" Neubrutalism says
+            "what if we strip out <em>every</em> softening trick at
+            once?" No rounded corners, no shadows, no smooth animations
+            — just hard rectangles and a thick black line around
+            everything.
+          </p>
+          <p>
+            It isn't trying to be ugly. It's trying to look <em>made</em>,
+            like a hand-lettered poster instead of a polished app. The
+            confidence comes from showing the bones of the thing
+            instead of dressing them up.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -235,6 +258,19 @@ export const neubrutalismGuide: EngineGuideMeta = {
       id: 'surfaces',
       title: 'Surfaces',
       description: 'Cream page, white sheets, no alpha.',
+      plainTitle: 'Surfaces (the panels)',
+      plainBody: (
+        <>
+          <p>
+            The page is a warm cream colour — that's where the
+            personality lives. Everything on top of it — cards, menus,
+            dialogs — is plain white. They're all the same white, and
+            none of them are see-through. The engine doesn't bother
+            tinting them to show which is "higher" — that job belongs
+            to the borders.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -257,6 +293,24 @@ export const neubrutalismGuide: EngineGuideMeta = {
       id: 'borders',
       title: 'Borders',
       description: 'One colour, four thicknesses.',
+      plainTitle: 'Borders do everything',
+      plainBody: (
+        <>
+          <p>
+            The black outline is the whole personality. Where other
+            styles use shadows or rounded edges to give hierarchy,
+            Neubrutalism uses thickness. A thin line is a divider; a
+            thicker line is an input; the thickest one wraps cards and
+            buttons.
+          </p>
+          <p>
+            And the colour never softens. Other styles fade their
+            lines to grey when something is less important — this one
+            refuses. All the lines are the same near-black; only the
+            thickness changes.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -282,6 +336,24 @@ export const neubrutalismGuide: EngineGuideMeta = {
       id: 'elevation',
       title: 'Elevation',
       description: 'Every rung is none.',
+      plainTitle: 'No shadows at all',
+      plainBody: (
+        <>
+          <p>
+            Nothing in Neubrutalism casts a shadow. Drag the slider —
+            the card doesn't move. The engine refuses to fake depth.
+            That thick black border around the card is doing the same
+            job a shadow would in flat or Material: telling you where
+            the card ends.
+          </p>
+          <p>
+            A close cousin of this look adds a single "sticker peel"
+            shadow — a hard black square offset down and to the right,
+            with no blur. This palette skips even that. Just borders
+            and colour, nothing else.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -309,6 +381,22 @@ export const neubrutalismGuide: EngineGuideMeta = {
       id: 'motion',
       title: 'Motion',
       description: 'Snap-to-grid, linear, no easing.',
+      plainTitle: 'Snap, not glide',
+      plainBody: (
+        <>
+          <p>
+            State changes happen in under a tenth of a second, all in
+            one constant speed — no slow-in, no slow-out, no spring.
+            Hover a button and the colour change is so quick it reads
+            as a snap rather than a fade.
+          </p>
+          <p>
+            Toggle motion off in the demo and you can barely tell the
+            difference, because there was almost nothing to remove.
+            Flat softens its transitions; Neubrutalism abolishes them.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -332,6 +420,25 @@ export const neubrutalismGuide: EngineGuideMeta = {
       id: 'intent',
       title: 'Focus & intent',
       description: 'Vibrant fills, black ink, magenta focus.',
+      plainTitle: 'Button colours that clash on purpose',
+      plainBody: (
+        <>
+          <p>
+            Six button colours, all loud: magenta, lime, neon yellow,
+            hot red, sky blue, and plain white. Every one of them has
+            black text on top, not white. The high-saturation
+            background does the affirmative work; white text would
+            soften it.
+          </p>
+          <p>
+            Keyboard focus is a fat magenta ring drawn flush against
+            the button's black border — no gap between them. You
+            cannot miss it, which is part of the point. The engine
+            refuses polite, restrained focus rings like every other
+            decoration.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>

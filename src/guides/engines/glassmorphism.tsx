@@ -234,12 +234,35 @@ export const glassmorphismGuide: EngineGuideMeta = {
   name: 'Glassmorphism',
   summary:
     "Alpha plus blur. Surfaces are low-alpha whites sitting over a saturated host; borders are hairline whites that read as the rim of frosted glass; elevation pairs an inset highlight on the top edge with an outer soft cast shadow. Where flat is opaque-and-honest, Glassmorphism is translucent-and-atmospheric. The engine's a11y is marked experimental for a reason — the contrast you ship is whatever shows through.",
+  plainSummary:
+    "Glassmorphism makes panels look like frosted glass. They're slightly see-through, with what's behind them blurred so the colour bleeds through softly. The page underneath is a saturated colour (the engine needs that — clear glass on white would be invisible). A thin bright rim along each panel's edge sells the illusion of a real piece of glass sitting on top of the page.",
+  plainTeaser:
+    "Frosted glass — slightly see-through panels with a blurry, colourful page showing through.",
   demoPalette: glassmorphism,
   steps: [
     {
       id: 'philosophy',
       title: 'Philosophy',
       description: 'Translucent panels over a host you control.',
+      plainTitle: 'The big idea',
+      plainBody: (
+        <>
+          <p>
+            Glassmorphism is built on a single trick: every panel
+            above the page is partly see-through, and what shows
+            through is blurred. That's what makes a card look like a
+            piece of frosted glass instead of just a translucent
+            rectangle.
+          </p>
+          <p>
+            There's one more requirement — the page underneath has to
+            be a saturated colour. The whole illusion depends on
+            colour bleeding through. Put this engine over plain grey
+            and the glass disappears. That's why the demos here all
+            paint a colourful background inside their frame.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -266,6 +289,25 @@ export const glassmorphismGuide: EngineGuideMeta = {
       id: 'surfaces',
       title: 'Surfaces',
       description: 'Low-alpha whites against a saturated host.',
+      plainTitle: 'Surfaces (the glass panels)',
+      plainBody: (
+        <>
+          <p>
+            The page is a deep indigo — that's the only solid colour
+            in the engine, and it owns the room. Every panel above it
+            (cards, menus, dialogs) is a faint white film, between
+            roughly 10% and 25% opaque. They're see-through enough
+            that the indigo bleeds up through them.
+          </p>
+          <p>
+            Pop-up dialogs paint a darker veil under themselves, too —
+            because the glass panel on its own can't guarantee you'll
+            be able to read the text over whatever shows through. The
+            engine basically says "if you're going to be see-through,
+            you'd better dim what's behind you first."
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -289,6 +331,23 @@ export const glassmorphismGuide: EngineGuideMeta = {
       id: 'borders',
       title: 'Borders',
       description: 'Hairline whites — the rim of the glass.',
+      plainTitle: 'The bright rim',
+      plainBody: (
+        <>
+          <p>
+            A see-through panel without an edge would just dissolve
+            into the page. So Glassmorphism draws a thin <em>white</em>
+            line around every panel — that line is the rim of the
+            glass, the catch of light along its edge. Without it, you
+            wouldn't know where the panel stops.
+          </p>
+          <p>
+            Three brightnesses of rim: barely visible, normal, and a
+            stronger one when the panel needs to read first. They're
+            never coloured — always a faint white catch of light.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -310,6 +369,24 @@ export const glassmorphismGuide: EngineGuideMeta = {
       id: 'elevation',
       title: 'Elevation',
       description: 'Inset highlight + outer cast shadow, paired.',
+      plainTitle: 'Why it looks like real glass',
+      plainBody: (
+        <>
+          <p>
+            Lifting a glass panel uses two shadows working together. A
+            faint white sheen runs along the panel's top edge — that's
+            light catching the wet top of the glass. A soft, dark
+            shadow sits underneath — that's the shadow the glass casts
+            onto the page below it.
+          </p>
+          <p>
+            Both grow together as the panel rises. Drop just the
+            shadow and it looks like paper. Drop just the highlight
+            and it looks like a hole cut into the page. Real glass
+            needs both, and that's the engine's whole recipe.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -334,6 +411,22 @@ export const glassmorphismGuide: EngineGuideMeta = {
       id: 'motion',
       title: 'Motion',
       description: 'Wide band, spring-leaning easing.',
+      plainTitle: 'Motion (longer, glassier)',
+      plainBody: (
+        <>
+          <p>
+            Animations are noticeably longer than flat's or Material's
+            — roughly a quarter to a half second. That extra time lets
+            panel-opens feel like sheets of glass sliding into place
+            rather than just appearing.
+          </p>
+          <p>
+            The blur itself can animate too: a panel can fade in with
+            its blur ramping up at the same time, so the room behind
+            it goes from sharp to frosted as it arrives.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -359,6 +452,27 @@ export const glassmorphismGuide: EngineGuideMeta = {
       id: 'intent',
       title: 'Focus & intent',
       description: 'Near-opaque intents, glass neutral, pale focus.',
+      plainTitle: 'Buttons and keyboard focus',
+      plainBody: (
+        <>
+          <p>
+            Most of the buttons cheat a little. The primary, success,
+            warning, danger and info buttons go almost-fully-opaque so
+            their text stays readable no matter what's bleeding
+            through the page behind them. Only the neutral button
+            stays truly glassy — and it's also the one most likely to
+            look wrong on the wrong background.
+          </p>
+          <p>
+            Keyboard focus is a pale blue ring instead of a loud
+            high-contrast one — the engine wants focus to feel like
+            part of the same calm glass family, not like an alarm.
+            (That's also why the engine flags its accessibility as
+            experimental: when readability depends on what's behind
+            the panel, you can't promise it.)
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>

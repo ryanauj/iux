@@ -7,8 +7,52 @@ import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
 import { useNavLayout } from '../../components/AppShell/navLayouts'
 import { useSelectedStyle } from '../../lib/persistedStyle'
+import { useDocMode } from '../../lib/useDocMode'
+import { DocModeToggle } from '../../components/DocModeToggle/DocModeToggle'
+import { descriptions } from '../../../palettes/descriptions'
+import type { StyleDescription } from '../../../tokens/style-description.contract'
+import type { DocMode } from '../../lib/useDocMode'
 import type { EngineGuideMeta } from './types'
 import './guides.css'
+
+interface PalettePanelProps {
+  description: StyleDescription
+  paletteName: string
+  mode: DocMode
+}
+
+function PalettePanel({ description, paletteName, mode }: PalettePanelProps) {
+  if (mode === 'plain' && description.plain) {
+    const { tagline, summary, lookingLike } = description.plain
+    return (
+      <section className="iux-palette-panel" aria-label={`About ${paletteName}`}>
+        <p className="iux-palette-panel__eyebrow">About this palette · plain English</p>
+        <h2 className="iux-palette-panel__title">{paletteName}</h2>
+        <p className="iux-palette-panel__tagline">{tagline}</p>
+        <p className="iux-palette-panel__summary">{summary}</p>
+        {lookingLike && lookingLike.length > 0 && (
+          <>
+            <p className="iux-palette-panel__list-heading">What to look for</p>
+            <ul className="iux-palette-panel__list">
+              {lookingLike.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+    )
+  }
+
+  return (
+    <section className="iux-palette-panel" aria-label={`About ${paletteName}`}>
+      <p className="iux-palette-panel__eyebrow">About this palette</p>
+      <h2 className="iux-palette-panel__title">{paletteName}</h2>
+      <p className="iux-palette-panel__tagline">{description.tagline}</p>
+      <p className="iux-palette-panel__summary">{description.summary}</p>
+    </section>
+  )
+}
 
 interface EngineGuideProps {
   guide: EngineGuideMeta
@@ -17,11 +61,13 @@ interface EngineGuideProps {
 export function EngineGuide({ guide }: EngineGuideProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedStyle] = useSelectedStyle()
+  const [docMode, setDocMode] = useDocMode()
   const requestedStep = searchParams.get('step')
   const fallbackId = guide.steps[0]?.id ?? ''
   const currentId = guide.steps.some(s => s.id === requestedStep)
     ? (requestedStep as string)
     : fallbackId
+  const demoDescription = descriptions[guide.demoPalette.id as keyof typeof descriptions]
 
   const handleStepChange = useCallback(
     (id: string) => {
@@ -42,11 +88,13 @@ export function EngineGuide({ guide }: EngineGuideProps) {
     () =>
       guide.steps.map(s => ({
         id: s.id,
-        title: s.title,
-        description: s.description,
+        title: docMode === 'plain' && s.plainTitle ? s.plainTitle : s.title,
+        description: docMode === 'plain' ? undefined : s.description,
         content: (
           <div className="iux-engine-guide__step">
-            <div className="iux-engine-guide__step-body">{s.body}</div>
+            <div className="iux-engine-guide__step-body">
+              {docMode === 'plain' ? (s.plainBody ?? s.body) : s.body}
+            </div>
             <PaletteRoot
               palette={guide.demoPalette}
               as="section"
@@ -57,7 +105,7 @@ export function EngineGuide({ guide }: EngineGuideProps) {
           </div>
         ),
       })),
-    [guide.steps, guide.demoPalette],
+    [guide.steps, guide.demoPalette, docMode],
   )
 
   const [navLayout] = useNavLayout()
@@ -85,9 +133,14 @@ export function EngineGuide({ guide }: EngineGuideProps) {
           </nav>
 
           <header className="iux-engine-guide__header">
-            <p className="iux-engine-guide__eyebrow">Rendering engine · walkthrough</p>
+            <div className="iux-engine-guide__header-top">
+              <p className="iux-engine-guide__eyebrow">Rendering engine · walkthrough</p>
+              <DocModeToggle value={docMode} onChange={setDocMode} />
+            </div>
             <h1 className="iux-engine-guide__title">{guide.name}</h1>
-            <p className="iux-engine-guide__summary">{guide.summary}</p>
+            <p className="iux-engine-guide__summary">
+              {docMode === 'plain' ? (guide.plainSummary ?? guide.summary) : guide.summary}
+            </p>
             <p className="iux-engine-guide__demo-meta">
               Demo palette: <strong>{guide.demoPalette.name}</strong>
               {' · '}
@@ -96,6 +149,14 @@ export function EngineGuide({ guide }: EngineGuideProps) {
               </Link>
             </p>
           </header>
+
+          {demoDescription && (
+            <PalettePanel
+              description={demoDescription}
+              paletteName={guide.demoPalette.name}
+              mode={docMode}
+            />
+          )}
 
           <Stepper
             variant="linear"
