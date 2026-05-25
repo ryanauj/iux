@@ -289,7 +289,7 @@ function NetworkMode({
               textAnchor="middle"
               dy="0.32em"
               fontSize={11}
-              fill={isSelected ? 'var(--color-intent-primary-text)' : 'var(--color-content-primary)'}
+              fill={isSelected ? 'var(--color-intent-primary-content)' : 'var(--color-content-primary)'}
             >
               {n.id}
             </text>
