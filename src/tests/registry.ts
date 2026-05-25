@@ -14,6 +14,14 @@ import { tabsTests } from './definitions/tabs'
 import { toastTests } from './definitions/toast'
 import { paginationTests } from './definitions/pagination'
 import { emptyStateTests } from './definitions/empty-state'
+import { selectTests } from './definitions/select'
+import { tooltipTests } from './definitions/tooltip'
+import { datePickerTests } from './definitions/date-picker'
+import { sidebarTests } from './definitions/sidebar'
+import { loadingTests } from './definitions/loading'
+import { tableTests } from './definitions/table'
+import { tokenFieldTests } from './definitions/token-field'
+import { drawerTests } from './definitions/drawer'
 import type { IntegrationTest } from './types'
 
 // ABOUTME: Ordered master list of all integration tests — composition flows first (form-submit, modal-with-form, command-palette) then per-component ladder-rung suites — read by the runner, TestsViz, and CoverageViz.
@@ -34,6 +42,14 @@ export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
   ...toastTests,
   ...paginationTests,
   ...emptyStateTests,
+  ...selectTests,
+  ...tooltipTests,
+  ...datePickerTests,
+  ...sidebarTests,
+  ...loadingTests,
+  ...tableTests,
+  ...tokenFieldTests,
+  ...drawerTests,
 ]
 
 // ABOUTME: Look up a single test by its id string, returning undefined when not found; used by CoverageViz and the autorun loop.
