@@ -9,6 +9,7 @@ import { TriptychShell } from './shells/triptych'
 import { BentoShell } from './shells/bento'
 import { MagazineShell } from './shells/magazine'
 import { DeckShell } from './shells/deck'
+import { GraphShell } from './shells/graph'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -29,7 +30,10 @@ import { DeckShell } from './shells/deck'
  *     hero, pull-quote stat, leaderboard, "Inside the East" feature) and
  *     widens the type scale on other routes;
  *   - `deck` replaces Home with a full-bleed card swipe over teams /
- *     players / games stacks, driven by arrow keys and touch swipes.
+ *     players / games stacks, driven by arrow keys and touch swipes;
+ *   - `graph` replaces Home with a force-directed network of teams,
+ *     players, and games — hover to highlight connections, click to
+ *     navigate, filter chips to show / hide node kinds.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -46,6 +50,7 @@ export const LAYOUT_IDS = [
   'bento',
   'magazine',
   'deck',
+  'graph',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -65,6 +70,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'bento', label: 'Bento — configurable dashboard' },
   { value: 'magazine', label: 'Magazine — editorial cover' },
   { value: 'deck', label: 'Deck — card swipe' },
+  { value: 'graph', label: 'Graph — force-directed network' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -143,6 +149,8 @@ export function Shell(props: ShellProps) {
       return <MagazineShell {...props} />
     case 'deck':
       return <DeckShell {...props} />
+    case 'graph':
+      return <GraphShell {...props} />
   }
 }
 

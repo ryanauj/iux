@@ -105,8 +105,8 @@ reproduces the exact shell + palette + motion.
 
 ### Shell variants
 
-Thirteen shells ship today. The first five are pure chrome around the
-standard page set; the last eight reshape how content composes.
+Fourteen shells ship today. The first five are pure chrome around the
+standard page set; the last nine reshape how content composes.
 
 | `layout=` | Shape | What it changes |
 | --------- | ----- | --------------- |
@@ -123,6 +123,7 @@ standard page set; the last eight reshape how content composes.
 | `bento` | Configurable widget dashboard on Home: live scoreboard, PPG leaders, mini standings, schedule strip, top-team spotlight. A Customize toggle reveals per-tile hide / move-left / move-right controls; hidden widgets show in a tray for re-adding. Clicking a tile expands its section's standard page in a modal; each tile also has a `Link` to the same page. Widget order + visibility is sticky via `?bento=<id,id,…>` (omitted when the default order is intact). Other routes render standard pages below the same minimal nav. | Replaces the Home page with a user-arranged tile grid; modal expansion keeps the standard pages one click away; other routes are chrome-only |
 | `magazine` | Editorial cover on Home: masthead + "Game of the Night" hero (live game if any, else tonight's biggest matchup, else most recent final), a pull-quote stat from the PPG leader, a three-column "By the Numbers" leaderboard (scoring / rebounding / playmaking), and an "Inside the East" feature spread (two-column prose with drop-cap + standings sidebar). A sticky in-page section nav scrolls between cover / pull-quote / leaderboard / feature via `scrollIntoView`, deliberately avoiding the route hash. Other routes render the standard page below the same nav with a slightly wider type scale. | Replaces the Home page with a magazine cover spread; other routes forward content with a wider type scale, no new sticky URL state |
 | `deck` | Full-bleed card swipe on Home: one team / player / game card at a time inside a three-stack deck. Horizontal arrow keys / touch swipe advance within the active stack (alphabetical teams → top scorers → most recent games); vertical keys / swipes cycle stacks. A stack tab strip up top, a counter + prev / next arrows below, and a footer hint round out the surface. Each card has links into the standard detail pages. Position is sticky via `?deck=<stack>.<index>` (omitted when on the first team card). On detail routes the deck collapses into a small "Back to deck" breadcrumb with the stack name + counter, and the standard page renders below. | Replaces the Home page with a one-card-at-a-time browser; other routes forward content with a deck breadcrumb on top |
+| `graph` | Force-directed network on Home: every team, player, and game is a node; edges connect players + games to the teams they belong to. Layout is a plain iterative spring relaxation (no D3) seeded with radial positions and cached at module level so it doesn't re-run on remount. Hovering or focusing a node highlights it and its neighbors, dimming the rest of the graph; a floating tooltip names the focused node and offers an "Open →" link. Clicking a node navigates straight into that team / player / game's detail page. Three legend chips (Teams / Players / Games) toggle node-kind visibility; the active filter is sticky via `?graph=<kinds>` (omitted when all three are on). Other routes render the standard page below the same minimal nav. | Replaces the Home page with an interactive network browser; other routes forward content untouched |
 
 Adding a new shell:
 
@@ -133,9 +134,9 @@ Adding a new shell:
    under a `.sports-app--<id>` namespace.
 
 If the shell introduces new sticky URL state (the `tabs`, `triptych`,
-`bento`, and `deck` shells do, via `?tabs=`, `?tri=`, `?bento=`, and
-`?deck=`), add the key to `STICKY_PARAMS` in `src/apps/router.ts` so it
-survives `Link` navigation.
+`bento`, `deck`, and `graph` shells do, via `?tabs=`, `?tri=`, `?bento=`,
+`?deck=`, and `?graph=`), add the key to `STICKY_PARAMS` in
+`src/apps/router.ts` so it survives `Link` navigation.
 
 ---
 
