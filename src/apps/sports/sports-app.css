@@ -4171,3 +4171,238 @@
     font-size: var(--type-body-size);
   }
 }
+
+/* =========================================================================
+ * Graph shell — force-directed network of teams, players, games on Home.
+ * ========================================================================= */
+
+.sports-app--graph .sports-app__header--graph {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__graph-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__graph-nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__graph-nav-link:hover,
+.sports-app__graph-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__graph-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-graph {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sports-graph__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sports-graph__chip {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  opacity: 0.55;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-graph__chip:hover,
+.sports-graph__chip:focus-visible {
+  outline: none;
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+}
+
+.sports-graph__chip.is-on {
+  opacity: 1;
+  color: var(--color-content-primary);
+}
+
+.sports-graph__chip-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background-color: var(--color-content-secondary);
+}
+
+.sports-graph__chip-dot--team { background-color: var(--color-intent-primary-bg); }
+.sports-graph__chip-dot--player { background-color: var(--color-intent-success-bg); }
+.sports-graph__chip-dot--game { background-color: var(--color-intent-warning-bg); }
+
+.sports-graph__chip-count {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-caption-size);
+  opacity: 0.7;
+}
+
+.sports-graph__stage {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+.sports-graph__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 560;
+}
+
+.sports-graph__edge {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    stroke var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-graph__edge.is-dim {
+  opacity: 0.15;
+}
+
+.sports-graph__node {
+  cursor: pointer;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-graph__node:focus-visible {
+  outline: none;
+}
+
+.sports-graph__node:focus-visible .sports-graph__node-disk {
+  stroke: var(--color-content-link);
+  stroke-width: 3;
+}
+
+.sports-graph__node-disk {
+  stroke: var(--color-surface-default);
+  stroke-width: 2;
+  transition: stroke-width var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-emphasized);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.sports-graph__node--player .sports-graph__node-disk {
+  fill-opacity: 0.85;
+}
+
+.sports-graph__node--game .sports-graph__node-disk {
+  stroke-dasharray: 3 2;
+  stroke: var(--color-content-secondary);
+}
+
+.sports-graph__node.is-active .sports-graph__node-disk {
+  stroke: var(--color-content-link);
+  stroke-width: 3;
+}
+
+.sports-graph__node.is-dim {
+  opacity: 0.18;
+}
+
+.sports-graph__node-mark {
+  fill: white;
+  font-family: var(--type-display-family);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sports-graph__tooltip {
+  position: absolute;
+  left: var(--space-3);
+  bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+  box-shadow: var(--shadow-md);
+  max-width: calc(100% - var(--space-6));
+  pointer-events: auto;
+}
+
+.sports-graph__tooltip-kind {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.sports-graph__tooltip-label {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sports-graph__tooltip-open {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sports-graph__tooltip-open:hover,
+.sports-graph__tooltip-open:focus-visible {
+  text-decoration: underline;
+}
+
+.sports-graph__hint {
+  margin: 0;
+  text-align: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  color: var(--color-content-secondary);
+}
