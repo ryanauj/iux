@@ -161,8 +161,22 @@
 }
 
 /* ====================================================================== */
-/*                              Cards viz                                 */
+/*                              Tests viz                                 */
+/*  Card grid with an inline step storyboard (or compact rows). Combines  */
+/*  the old Cards + Sequence views.                                       */
 /* ====================================================================== */
+
+.viz-tests {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.viz-tests__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
 
 .viz-cards {
   display: grid;
@@ -193,6 +207,10 @@
   gap: var(--space-2);
   align-items: center;
 }
+.viz-card__stepcount {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
 .viz-card__steps {
   list-style: none;
   margin: 0;
@@ -205,27 +223,9 @@
 }
 
 /* ====================================================================== */
-/*                              Matrix viz                                */
+/*                  Coverage viz — Table mode (matrix)                    */
 /* ====================================================================== */
 
-.viz-matrix {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-.viz-matrix__toolbar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
-.viz-matrix__legend {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--type-caption-size);
-  color: var(--color-content-secondary);
-}
 .viz-matrix__legend-dot {
   display: inline-block;
   width: 12px;
@@ -281,6 +281,14 @@
 .viz-matrix__cell--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-text); }
 .viz-matrix__cell--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-text); }
 .viz-matrix__cell--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-text); }
+.viz-matrix__cell--highlight {
+  outline: 2px solid var(--color-intent-primary-bg);
+  outline-offset: -2px;
+}
+.viz-matrix__table tbody tr.is-selected .viz-matrix__row-head {
+  background: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-text);
+}
 .viz-matrix__spinner { animation: viz-pulse 0.8s linear infinite; display: inline-block; }
 @keyframes viz-pulse {
   0%, 100% { opacity: 1; }
@@ -288,34 +296,85 @@
 }
 
 /* ====================================================================== */
-/*                              Graph viz                                 */
+/*           Coverage viz — Network mode (graph) + shared chrome          */
 /* ====================================================================== */
 
-.viz-graph {
+.viz-coverage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.viz-coverage__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.viz-coverage__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin-left: auto;
+}
+.viz-coverage__body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 260px;
   gap: var(--space-4);
   align-items: start;
 }
+.viz-coverage__stage {
+  min-width: 0;
+}
+.viz-coverage__side {
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+.viz-coverage__side h3 {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--type-caption-size);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-content-muted);
+}
+.viz-coverage__tests {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.viz-coverage__test {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--type-caption-size);
+  background: var(--color-surface-sunken);
+  border-left: 3px solid var(--color-border-default);
+}
+.viz-coverage__test-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.viz-coverage__test--passed { border-left-color: var(--color-intent-success-bg); }
+.viz-coverage__test--failed { border-left-color: var(--color-intent-danger-bg); }
+.viz-coverage__test--running { border-left-color: var(--color-intent-info-bg); }
+
 .viz-graph__svg {
   width: 100%;
   height: auto;
   background: var(--color-surface-sunken);
   border: var(--border-width-thin) solid var(--color-border-subtle);
   border-radius: var(--radius-md);
-}
-.viz-graph__side {
-  padding: var(--space-4);
-  background: var(--color-surface-raised);
-  border: var(--border-width-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-}
-.viz-graph__side h3 {
-  margin: 0 0 var(--space-2) 0;
-  font-size: var(--type-caption-size);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-content-muted);
 }
 .viz-graph__label {
   font-family: var(--type-mono-family, monospace);
@@ -327,23 +386,6 @@
   color: var(--color-content-secondary);
   font-size: var(--type-caption-size);
 }
-.viz-graph__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-.viz-graph__test {
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
-  font-size: var(--type-caption-size);
-  background: var(--color-surface-sunken);
-  border-left: 3px solid var(--color-border-default);
-}
-.viz-graph__test--passed { border-left-color: var(--color-intent-success-bg); }
-.viz-graph__test--failed { border-left-color: var(--color-intent-danger-bg); }
 .viz-graph__hint {
   margin: 0;
   font-size: var(--type-caption-size);
@@ -352,20 +394,9 @@
 }
 
 /* ====================================================================== */
-/*                            Sequence viz                                */
+/*                Storyboard step strip (used inside Tests cards)         */
 /* ====================================================================== */
 
-.viz-sequence {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-.viz-sequence__head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
-}
 .viz-sequence__strip {
   list-style: none;
   margin: 0;
@@ -550,7 +581,7 @@
   .viz-runner {
     grid-template-columns: minmax(0, 1fr);
   }
-  .viz-graph {
+  .viz-coverage__body {
     grid-template-columns: minmax(0, 1fr);
   }
 }
