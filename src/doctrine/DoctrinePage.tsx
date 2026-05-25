@@ -19,6 +19,7 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
+import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
@@ -31,12 +32,6 @@ const URL_PARAM = {
   motion: 'motion',
 } as const
 
-const DEFAULTS = {
-  chrome: 'flat-classic' as PaletteId,
-  doc: 'layout' as DoctrineId,
-  motion: DEFAULT_MOTION_SCALE,
-}
-
 const isPaletteId = (v: string): v is PaletteId =>
   (PALETTE_IDS as string[]).includes(v)
 
@@ -46,18 +41,28 @@ type UrlSettings = {
   motion: MotionScale
 }
 
-function readUrlSettings(): UrlSettings {
-  if (typeof window === 'undefined') return { ...DEFAULTS }
-  const p = new URL(window.location.href).searchParams
-  const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
-  const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
-  const docRaw = p.get(URL_PARAM.doc) ?? ''
-  const doc: DoctrineId = isDoctrineId(docRaw) ? docRaw : DEFAULTS.doc
-  const motion = resolveMotionScale(p.get(URL_PARAM.motion))
-  return { chrome, doc, motion }
-}
-
 export function DoctrinePage() {
+  // Site-wide selected style is the fallback chrome on a fresh visit,
+  // so navigating in from Stories / Apps / Quiz / Engine guides keeps
+  // the look. A URL `chrome=` param still wins (pasted permalink).
+  const persistedStyle = readSelectedStyle()
+  const DEFAULTS = {
+    chrome: persistedStyle,
+    doc: 'layout' as DoctrineId,
+    motion: DEFAULT_MOTION_SCALE,
+  }
+
+  const readUrlSettings = (): UrlSettings => {
+    if (typeof window === 'undefined') return { ...DEFAULTS }
+    const p = new URL(window.location.href).searchParams
+    const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
+    const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
+    const docRaw = p.get(URL_PARAM.doc) ?? ''
+    const doc: DoctrineId = isDoctrineId(docRaw) ? docRaw : DEFAULTS.doc
+    const motion = resolveMotionScale(p.get(URL_PARAM.motion))
+    return { chrome, doc, motion }
+  }
+
   const initial = useMemo(readUrlSettings, [])
   const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
   const [doc, setDoc] = useState<DoctrineId>(initial.doc)
@@ -65,6 +70,7 @@ export function DoctrinePage() {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [infoOpen, setInfoOpen] = useState(false)
   const [navLayout, setNavLayout] = useNavLayout()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -87,10 +93,29 @@ export function DoctrinePage() {
       setChromePaletteId(s.chrome)
       setDoc(s.doc)
       setMotionScale(s.motion)
+      setSelectedStyle(s.chrome)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Seed the persisted style from the URL-derived chrome on first
+  // mount so a pasted `?chrome=...` wins over the user's previous
+  // selection, and the cross-surface sync effect below doesn't race
+  // against the URL on load.
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (selectedStyle !== chromePaletteId) setSelectedStyle(chromePaletteId)
+  }
+
+  // Cross-surface sync: when another surface updates the persisted
+  // style, follow it here so the doctrine chrome stays in lockstep.
+  useEffect(() => {
+    if (selectedStyle === chromePaletteId) return
+    setChromePaletteId(selectedStyle)
+  }, [selectedStyle, chromePaletteId])
 
   const infoBtnRef = useRef<HTMLButtonElement>(null)
   const infoPopRef = useRef<HTMLDivElement>(null)
@@ -133,7 +158,11 @@ export function DoctrinePage() {
       value: id,
       label: `${palettes[id].name} (${palettes[id].engine})`,
     })),
-    onChange: v => setChromePaletteId(v as PaletteId),
+    onChange: v => {
+      const next = v as PaletteId
+      setChromePaletteId(next)
+      setSelectedStyle(next)
+    },
   }
 
   const motionField: Field = {
