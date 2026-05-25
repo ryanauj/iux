@@ -13,6 +13,7 @@ import {
   type KeyboardEvent,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { getPortalTarget } from '../../theme/portalTarget'
 import './Select.css'
 
 export type SelectVariant = 'native' | 'dropdown' | 'combobox' | 'async'
@@ -140,16 +141,21 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
 
   /*
    * Listbox position is computed from the trigger's viewport rect and
-   * applied via inline styles. The listbox itself is portaled to
-   * document.body so that `position: fixed` is interpreted relative to
-   * the viewport — any ancestor with `transform`, `filter`, or
-   * `backdrop-filter` (e.g. the DraggableControls panel, which uses
-   * backdrop-blur) would otherwise establish a containing block and make
-   * fixed coordinates relative to that ancestor instead of the viewport,
+   * applied via inline styles. The listbox itself is portaled to the
+   * chrome `.palette-root` (via getPortalTarget) so that `position: fixed`
+   * is interpreted relative to the viewport — any ancestor with `transform`,
+   * `filter`, or `backdrop-filter` (e.g. the DraggableControls panel, which
+   * uses backdrop-blur) would otherwise establish a containing block and
+   * make fixed coordinates relative to that ancestor instead of the viewport,
    * leaving the menu offset by hundreds of pixels and overlapping the
-   * trigger. The portal also dodges any `overflow: hidden | auto | scroll`
-   * clip in the ancestor chain. Recomputed on scroll / resize / orientation
-   * / visualViewport change while open.
+   * trigger. We portal to the palette root rather than document.body so the
+   * menu still inherits the active palette's CSS-var scope — portaling to
+   * document.body would render the listbox with `var(--color-surface-overlay)`
+   * and friends resolving to their bare fallbacks (transparent / unset), so
+   * the menu would look unstyled and the content behind would bleed through.
+   * The portal also dodges any `overflow: hidden | auto | scroll` clip in
+   * the ancestor chain. Recomputed on scroll / resize / orientation /
+   * visualViewport change while open.
    */
   const [menuPos, setMenuPos] = useState<CSSProperties | null>(null)
 
@@ -254,10 +260,10 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
    * covered by the keyboard (or, with a typeable trigger, overlaps the
    * input itself once iOS scrolls the focused input above the keyboard).
    *
-   * Combobox/async are also biased toward opening DOWN: the trigger IS the
-   * search input, so flipping the listbox above it puts the freshly typed
-   * query behind the results and reads as the listbox covering the search
-   * box. We only flip up when there's truly almost no room below.
+   * Combobox/async always open DOWN: the trigger IS the active search input
+   * and the user is typing into it, so flipping the listbox above the trigger
+   * — which would cover the input the user is looking at — is never the right
+   * call. The listbox's internal `overflow-y: auto` handles cramped cases.
    */
   const computeMenuPos = useCallback(() => {
     const control = controlRef.current
@@ -274,8 +280,10 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
     const spaceAbove = rect.top - viewTop - margin
 
     const isTypeable = variant === 'combobox' || variant === 'async'
+    // Typeable variants never flip up — the listbox would cover the search
+    // input the user is actively typing into.
     const preferDown = isTypeable
-      ? spaceBelow >= 120 || spaceBelow >= spaceAbove
+      ? true
       : spaceBelow >= 200 || spaceBelow >= spaceAbove
 
     // Clamp to the actually-available space so the listbox stays inside the
@@ -644,7 +652,7 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
                 </li>
               )}
             </ul>,
-            document.body,
+            getPortalTarget(),
           )}
         </div>
       )}
