@@ -21,17 +21,63 @@ import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
 
 export type DoctrineId = 'layout' | 'selection' | 'composition' | 'modalities'
 
+export type DoctrineNav = (id: DoctrineId) => void
+
 export type DoctrinePage = {
   id: DoctrineId
   label: string
   eyebrow: string
   title: string
   source: string
-  render: () => ReactNode
+  render: (nav: DoctrineNav) => ReactNode
 }
 
 const GITHUB_BASE = 'https://github.com/ryanauj/iux/blob/main/doctrine'
 const REPO_BASE = 'https://github.com/ryanauj/iux/blob/main'
+
+function DocLink({
+  to,
+  nav,
+  children,
+}: {
+  to: DoctrineId
+  nav: DoctrineNav
+  children: ReactNode
+}) {
+  return (
+    <a
+      href={`?doc=${to}#/doctrine`}
+      onClick={e => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+        e.preventDefault()
+        nav(to)
+      }}
+    >
+      {children}
+    </a>
+  )
+}
+
+function PrevNext({ nav, prev, next }: { nav: DoctrineNav; prev?: DoctrineId; next?: DoctrineId }) {
+  const prevPage = prev ? DOCTRINE_PAGES.find(p => p.id === prev) : null
+  const nextPage = next ? DOCTRINE_PAGES.find(p => p.id === next) : null
+  return (
+    <nav className="doctrine__prevnext" aria-label="Doctrine pages">
+      {prevPage ? (
+        <DocLink to={prevPage.id} nav={nav}>
+          <span className="doctrine__prevnext-dir">← Previous</span>
+          <span className="doctrine__prevnext-label">{prevPage.label}</span>
+        </DocLink>
+      ) : <span />}
+      {nextPage ? (
+        <DocLink to={nextPage.id} nav={nav}>
+          <span className="doctrine__prevnext-dir">Next →</span>
+          <span className="doctrine__prevnext-label">{nextPage.label}</span>
+        </DocLink>
+      ) : <span />}
+    </nav>
+  )
+}
 
 function Source({ file }: { file: string }) {
   return (
@@ -91,7 +137,7 @@ function Rules({ items }: { items: ReactNode[] }) {
   )
 }
 
-function LayoutPage() {
+function LayoutPage({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -207,14 +253,16 @@ function LayoutPage() {
       </Section>
 
       <Cross>
-        Next: <a href={`${GITHUB_BASE}/01-component-selection.md`} target="_blank" rel="noreferrer">component selection</a>{' '}
+        Next: <DocLink to="selection" nav={nav}>component selection</DocLink>{' '}
         — which primitive carries a given intent, and the failure mode of picking wrong.
       </Cross>
+
+      <PrevNext nav={nav} next="selection" />
     </article>
   )
 }
 
-function SelectionPage() {
+function SelectionPage({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -419,11 +467,13 @@ function SelectionPage() {
         full, EmptyState vs Coachmark vs Tooltip onboarding cases, and
         the counterexamples drawn from each showcase app).
       </Cross>
+
+      <PrevNext nav={nav} prev="layout" next="composition" />
     </article>
   )
 }
 
-function CompositionPage() {
+function CompositionPage({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -534,7 +584,7 @@ function CompositionPage() {
           for "nothing here yet"; Toast rung 4 for async progress, paired
           with Optimistic-undo (Tier 3) for any destructive action; Modal
           rung 1 only for true interruptions. Read{' '}
-          <a href={`${GITHUB_BASE}/01-component-selection.md`} target="_blank" rel="noreferrer">01-component-selection.md</a>{' '}
+          <DocLink to="selection" nav={nav}>component selection</DocLink>{' '}
           before reaching for a heavier primitive than the rung-1 default.
         </Prose>
         <Demo caption="EmptyState · checklist — the lightest 'nothing here yet' default">
@@ -561,11 +611,13 @@ function CompositionPage() {
         <a href={`${REPO_BASE}/FINALIZED-APPS.md`} target="_blank" rel="noreferrer">FINALIZED-APPS.md</a>{' '}
         — each is a walked instance of this pipeline.
       </Cross>
+
+      <PrevNext nav={nav} prev="selection" next="modalities" />
     </article>
   )
 }
 
-function ModalitiesPage() {
+function ModalitiesPage({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -692,15 +744,17 @@ function ModalitiesPage() {
         of the counterexamples live in{' '}
         <a href={`${GITHUB_BASE}/03-modalities.md`} target="_blank" rel="noreferrer">03-modalities.md</a>.
       </Cross>
+
+      <PrevNext nav={nav} prev="composition" />
     </article>
   )
 }
 
 export const DOCTRINE_PAGES: DoctrinePage[] = [
-  { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: () => <LayoutPage /> },
-  { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: () => <SelectionPage /> },
-  { id: 'composition', label: 'App composition', eyebrow: 'Doctrine · 02', title: 'App composition', source: '02-app-composition.md', render: () => <CompositionPage /> },
-  { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: () => <ModalitiesPage /> },
+  { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: nav => <LayoutPage nav={nav} /> },
+  { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: nav => <SelectionPage nav={nav} /> },
+  { id: 'composition', label: 'App composition', eyebrow: 'Doctrine · 02', title: 'App composition', source: '02-app-composition.md', render: nav => <CompositionPage nav={nav} /> },
+  { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: nav => <ModalitiesPage nav={nav} /> },
 ]
 
 export const isDoctrineId = (v: string): v is DoctrineId =>

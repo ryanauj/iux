@@ -222,6 +222,54 @@
   text-underline-offset: 0.2em;
 }
 
+.doctrine__prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-4);
+  border-top-width: var(--border-width-thin);
+  border-top-style: solid;
+  border-top-color: var(--color-border-subtle);
+}
+
+.doctrine__prevnext > a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-content-primary);
+}
+
+.doctrine__prevnext > a:hover {
+  border-color: var(--color-border-strong, var(--color-border-default));
+}
+
+.doctrine__prevnext > a:last-child {
+  text-align: right;
+}
+
+.doctrine__prevnext-dir {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-secondary);
+}
+
+.doctrine__prevnext-label {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
 @media (max-width: 720px) {
   .doctrine {
     padding: var(--space-4);
