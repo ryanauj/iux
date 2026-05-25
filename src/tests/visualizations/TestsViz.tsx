@@ -313,8 +313,17 @@ function TestCard({
   const stepsToShow: StepResult[] =
     focused && live ? live : (result?.steps ?? test.steps.map(s => ({ step: s, status: 'pending' as const })))
 
+  const articleRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    if (!focused) return
+    articleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [focused])
+
   return (
-    <article className={`viz-card showcase-card${focused ? ' viz-card--focused' : ''}`}>
+    <article
+      ref={articleRef}
+      className={`viz-card showcase-card${focused ? ' viz-card--focused' : ''}`}
+    >
       <header className="viz-card__head">
         <h3 className="viz-card__title showcase-card__title">{test.name}</h3>
         <StatusPill status={status} />
