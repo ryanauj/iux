@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Forty-nine named aesthetics. Each is a concrete value-set bound to the
+Fifty-nine named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -341,6 +341,86 @@ the README documents the contrast trap as the teaching example.
 | 48 | Industrial / Light | Flat   | pass         | Warm-paper field, steel-grey + concrete-grey neutrals, safety-orange `intent.primary`, IBM Plex Mono on `family.ui` so labels carry measurement-drawing density — workshop register inverted to a light field. |
 | 49 | Graffiti / Marble  | Flat   | experimental | Carrara-marble field via the shared procedural `effect.overlay.image`, fluorescent magenta + lime intents with BLACK inverse content (not white), Permanent Marker display — gallery register intentionally vandalised. |
 
+## Group S — print-production trio (Flat engine, print-process registers)
+
+Three palettes pin three different print-production processes to the
+Flat engine. All three keep `surface.base` near the colour of the paper
+the process actually used — cream stock for Risograph and Letterpress,
+deep Prussian blue for cyanotype Blueprint — and reserve `intent.*` for
+the ink colours each process produced in a single pass. Risograph is
+the third palette to exercise `effect.overlay.image` (after Mid-century
+modern's atomic-dot field and Marble Royal Flat's gallery texture) —
+the load-bearing engine move is a 4 px tiled halftone-dot screen.
+Letterpress is the first palette in the showcase whose `intent.*.bg`
+fills are **debossed** (paired inset shadows in `elevation.*` reading
+as metal type pushing ink into paper). Blueprint inverts the
+Industrial / Light register: same mono-label IBM Plex Mono on `family.ui`,
+but on a deep Prussian-blue field with cyan-white line work and
+annotation yellow for callouts.
+
+| #  | Palette       | Engine | A11y         | One-line philosophy                                                                                                                |
+|----|---------------|--------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 50 | Risograph     | Flat   | experimental | Cream paper field, fluorescent-pink + electric-blue duotone intents, a 4 px halftone-dot screen tiled across the palette root via `effect.overlay.image`, hard-offset elevation tinted toward the duotone pink — duplicator-print register on the Flat engine. |
+| 51 | Letterpress   | Flat   | pass         | Cream rag-paper field, deep ink-black primary with press-room red / bottle green / mustard / ink-blue as the second-ink set, **debossed** `intent.*.bg` fills via paired inset shadows in `elevation.*`, Caslon display throughout — metal type pressed into paper. |
+| 52 | Blueprint     | Flat   | pass         | Deep Prussian-blue field, cyan-white line work, IBM Plex Mono on `family.ui`, Architects Daughter on `family.hand` for callouts, annotation yellow as `intent.primary` + focus ring — cyanotype-print register on the Flat engine. |
+
+## Group T — designer / movement trio (Flat engine, named-movement registers)
+
+Three palettes pin three different design movements to the Flat engine.
+All three pull from named historical references rather than from
+abstract aesthetics: the Ulm Hochschule + Braun industrial-design school
+(Dieter Rams), the 1920s ornament-and-symmetry register (Art Deco /
+Gatsby), and the medieval cathedral-window register (Cathedral / Stained
+Glass). The set varies the engine across two axes that no previous
+Flat group did: Dieter Rams is the structural sibling of Swiss /
+International with warmer neutrals; Art Deco extends the Modern Royal
+dark-field-plus-gold register with a different historical accent; and
+Cathedral / Stained Glass is the first palette where `border.*` carries
+visual load comparable to `intent.*` (the lead came is the geometry,
+the colour is the light coming through).
+
+| #  | Palette                       | Engine | A11y         | One-line philosophy                                                                                                                |
+|----|-------------------------------|--------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 53 | Dieter Rams / Braun           | Flat   | pass         | Cool warm-grey field, off-white raised surfaces, single Braun-orange `intent.primary` accent, single-family Helvetica throughout, generous whitespace, hairline-rule `elevation.low` — Ulm "less but better" on the Flat engine. |
+| 54 | Art Deco / Gatsby             | Flat   | pass         | Deep teal-black field, champagne-gold accent, Poiret One / Limelight display serif at uppercase tracking, soft drop shadows tinted toward teal-black — 1920s poster register on the Flat engine. |
+| 55 | Cathedral / Stained Glass     | Flat   | experimental | Lead-black field, saturated amethyst / cobalt / emerald / amber / ruby jewel-tone intents, heavy lead `border.*` (`borderWidth.thick = 3px`), Cinzel display caps — gothic-window register where the lead is the load-bearing geometry. |
+
+## Group U — climate / regional trio (Flat engine, place registers)
+
+Three palettes pin three different climate-and-region registers to the
+Flat engine. All three reserve `intent.*` for colours pulled from the
+landscape rather than from a brand: Palm Springs terracotta + pool
+turquoise (Desert Modernism), forest leaf-green + solar amber + sky
+cyan (Solarpunk), and Royal Navy hull paint + polished brass + signal
+red (Heritage Maritime). The set proves the Flat engine carries three
+distinct *places* with the same colour-slot vocabulary, the same way
+Group P proves it carries three angles on regalia and Group Q proves
+it carries three signage colour systems.
+
+| #  | Palette              | Engine | A11y | One-line philosophy                                                                                                                |
+|----|----------------------|--------|------|------------------------------------------------------------------------------------------------------------------------------------|
+| 56 | Desert Modernism     | Flat   | pass | Sun-baked cream field, desert-terracotta `intent.primary`, pool-turquoise `intent.info`, palm-shade green `intent.success`, Futura PT display — Palm Springs mid-century register on the Mid-century-modern engine sibling. |
+| 57 | Solarpunk            | Flat   | pass | Sun-bleached cream field, leaf-green `intent.primary`, deep solar-amber `intent.warning`, sky-cyan `intent.info`, Quicksand humanist-rounded display, widened `radius.*` for organic shapes — eco-utopian register. |
+| 58 | Heritage Maritime    | Flat   | pass | Bone-white field, deep-navy `intent.primary`, polished-brass `intent.warning`, signal-red `intent.danger` + focus ring, Roboto Slab brass-plaque display — chandlery / yacht-trim register on the Flat engine. |
+
+## Group W — Sketch second register (Sketch engine, brushwork variant)
+
+One palette extends the Sketch engine with a second non-Western register.
+Hand-drawn / Marker (palette 31) anchored the engine with notebook-paper
+felt-tip vocabulary; Zen / Sumi-e tunes the engine's edge-variance
+amplitude **down** (`effect.strokeVariance` from `'1.4px'` to `'1.0px'`)
+to match brush-stroke wobble against marker squeak, swaps the felt-tip
+display stack (Caveat) for a brush-script display stack (Ma Shan Zheng /
+Yuji Mai), and applies the same monochromatic + single-seal-red intent
+discipline that traditional sumi-e composition uses. The pair proves the
+Sketch engine generalises across non-Western brushwork the same way the
+Pixel-art engine generalises across non-console art (PICO-8,
+Cottagecore).
+
+| #  | Palette          | Engine  | A11y         | One-line philosophy                                                                                                                |
+|----|------------------|---------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 59 | Zen / Sumi-e     | Sketch  | experimental | Unbleached rice-paper field, brush-black `intent.primary`, single seal-vermilion `intent.danger` + focus ring + link, Ma Shan Zheng / Yuji Mai brush-script display, `effect.strokeVariance` tuned to `'1.0px'` (vs marker's `'1.4px'`), widened `space.*` for negative-space (`ma`) composition — East-Asian brush-and-ink register on the Sketch engine. |
+
 ---
 
 ## Notes on a11y tags
@@ -359,7 +439,7 @@ the README documents the contrast trap as the teaching example.
 
 ## Engine inventory
 
-Fourteen engines, forty-nine palettes:
+Fourteen engines, fifty-nine palettes:
 
 1. Flat
 2. Material
@@ -377,12 +457,14 @@ Fourteen engines, forty-nine palettes:
 14. Terminal-TUI
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32,
-34–36, and 42–49. Engine `Neubrutalism` is reused by palettes 3 and 33. Engine
-`Glassmorphism` is reused by palettes 4, 8, and 11–15. Engine
-`CRT / Phosphor` is reused by palettes 23, 24. Engine `Pixel-art` is
-reused by palettes 25–30. Engine `Sketch` is anchored by palette 31.
-Engine `Cardstock` is anchored by palette 37. Engine `Cel-shaded` is
-reused by palettes 38 and 39. Engine `Aurora` is anchored by palette
-40. Engine `Terminal-TUI` is anchored by palette 41. The token
-contract is the only seam between engine and palette — see
+34–36, 42–49, and 50–58. Engine `Neubrutalism` is reused by palettes
+3 and 33. Engine `Glassmorphism` is reused by palettes 4, 8, and 11–15.
+Engine `CRT / Phosphor` is reused by palettes 23, 24. Engine
+`Pixel-art` is reused by palettes 25–30. Engine `Sketch` is reused by
+palettes 31 and 59 (the first cross-cultural register-pair on the
+Sketch engine — felt-tip marker ↔ East-Asian brush). Engine
+`Cardstock` is anchored by palette 37. Engine `Cel-shaded` is reused
+by palettes 38 and 39. Engine `Aurora` is anchored by palette 40.
+Engine `Terminal-TUI` is anchored by palette 41. The token contract
+is the only seam between engine and palette — see
 `tokens/00-token-contract.md`.

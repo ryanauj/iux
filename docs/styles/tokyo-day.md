@@ -31,7 +31,7 @@ JIS Z 9101 (Japanese Industrial Standard for safety colours, 1979) and the JR-Ea
 
 | Path | Value | Note |
 |---|---|---|
-| `color.intent.primary.bg` | `#00b04f` | JR-East green `#00b04f` — shared with `intent.success.bg`. The "primary = go" conflation is the register's signature. |
+| `color.intent.primary.bg` | `#007c38` | JR-East green `#00b04f` — shared with `intent.success.bg`. The "primary = go" conflation is the register's signature. |
 | `color.intent.danger.bg` | `#c8102e` | JIS signal red `#c8102e` — the public-domain Japanese signage standard, not a generic CSS red. |
 | `color.intent.warning.bg` | `#ffd400` | JIS signal yellow `#ffd400` with near-black `content` (yellow + white falls below AA). |
 | `typography.family.display` | `"Barlow Condensed", "Oswald", "Roboto Condensed", "Helvetica Neue Condensed", "Arial Narrow", sans-serif` | Barlow Condensed — the condensed gothic signage register. |
