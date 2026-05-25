@@ -71,7 +71,7 @@ export function ShowcasePage({
   // chosen look. URL params still override on a fresh visit.
   const persistedStyle = readSelectedStyle()
   const DEFAULTS = {
-    view: 'per-component' as ViewMode,
+    view: 'per-palette' as ViewMode,
     component: defaultComponent,
     variant: 'all' as VariantChoice,
     palette: persistedStyle as PaletteChoice,
@@ -103,7 +103,8 @@ export function ShowcasePage({
     if (typeof window === 'undefined') return { ...DEFAULTS }
     const p = new URL(window.location.href).searchParams
     const viewRaw = p.get(URL_PARAM.view) ?? ''
-    const view: ViewMode = viewRaw === 'per-palette' ? 'per-palette' : DEFAULTS.view
+    const view: ViewMode =
+      viewRaw === 'per-palette' || viewRaw === 'per-component' ? viewRaw : DEFAULTS.view
     const componentRaw = p.get(URL_PARAM.component) ?? ''
     const component = isComponentId(componentRaw) ? componentRaw : DEFAULTS.component
     const entry = entries.find(c => c.id === component)
