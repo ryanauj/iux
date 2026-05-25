@@ -10,9 +10,9 @@ import './guides.css'
 
 const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'flat',         name: 'Flat',         available: true },
-  { id: 'material',     name: 'Material',     available: false },
-  { id: 'neubrutalism', name: 'Neubrutalism', available: false },
-  { id: 'glassmorphism',name: 'Glassmorphism',available: false },
+  { id: 'material',     name: 'Material',     available: true },
+  { id: 'neubrutalism', name: 'Neubrutalism', available: true },
+  { id: 'glassmorphism',name: 'Glassmorphism',available: true },
   { id: 'neumorphism',  name: 'Neumorphism',  available: false },
   { id: 'claymorphism', name: 'Claymorphism', available: false },
   { id: 'skeuomorphism',name: 'Skeuomorphism',available: false },
@@ -21,6 +21,8 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'sketch',       name: 'Sketch',       available: false },
   { id: 'cardstock',    name: 'Cardstock',    available: false },
   { id: 'cel-shaded',   name: 'Cel-shaded',   available: false },
+  { id: 'aurora',       name: 'Aurora',       available: false },
+  { id: 'terminal-tui', name: 'Terminal / TUI', available: false },
 ]
 
 export function EnginesIndex() {
