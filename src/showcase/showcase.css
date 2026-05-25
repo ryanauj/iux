@@ -121,9 +121,9 @@
   white-space: nowrap;
 }
 
-.showcase__tier--1 { color: var(--color-intent-info-content, var(--color-content-primary)); }
-.showcase__tier--2 { color: var(--color-intent-warning-content, var(--color-content-primary)); }
-.showcase__tier--3 { color: var(--color-intent-success-content, var(--color-content-primary)); }
+.showcase__tier--1 { color: var(--color-intent-info-bg, var(--color-content-primary)); }
+.showcase__tier--2 { color: var(--color-intent-warning-bg, var(--color-content-primary)); }
+.showcase__tier--3 { color: var(--color-intent-success-bg, var(--color-content-primary)); }
 
 .showcase-card__chips {
   display: flex;
