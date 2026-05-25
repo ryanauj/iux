@@ -1,0 +1,166 @@
+/*
+ * IndentTree — hierarchy as an indented text list. Three rungs: plain
+ * (whitespace indent, no rules) → guides (ASCII-style ├── │ └── runs
+ * drawn as DOM borders) → meta (`guides` plus a right-aligned weight
+ * bar and value column, reads as a `du -sh` / size-on-disk listing).
+ * DOM-first rather than SVG so labels select and wrap cleanly.
+ */
+
+.iux-indenttree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-code-family);
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-3);
+}
+
+.iux-indenttree__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.iux-indenttree__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-caption-size);
+  line-height: 1.6;
+  min-height: 1.6em;
+  white-space: nowrap;
+}
+
+.iux-indenttree__indent {
+  display: inline-flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  height: 1.6em;
+}
+
+.iux-indenttree__guide {
+  display: inline-block;
+  width: 1.25em;
+  position: relative;
+}
+
+.iux-indenttree__guide--blank { /* empty */ }
+
+.iux-indenttree__guide--pipe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-left: var(--border-width-thin) solid var(--color-border-default);
+  opacity: 0.5;
+  left: 0.45em;
+}
+
+.iux-indenttree__guide--tee::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-left: var(--border-width-thin) solid var(--color-border-default);
+  opacity: 0.5;
+  left: 0.45em;
+}
+
+.iux-indenttree__guide--tee::after,
+.iux-indenttree__guide--elbow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0.45em;
+  right: 0;
+  border-top: var(--border-width-thin) solid var(--color-border-default);
+  opacity: 0.5;
+}
+
+.iux-indenttree__guide--elbow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 50%;
+  left: 0.45em;
+  border-left: var(--border-width-thin) solid var(--color-border-default);
+  opacity: 0.5;
+}
+
+.iux-indenttree__bullet {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 1px;
+}
+
+.iux-indenttree__row--primary .iux-indenttree__bullet { background-color: var(--color-intent-primary-bg); }
+.iux-indenttree__row--info    .iux-indenttree__bullet { background-color: var(--color-intent-info-bg); }
+.iux-indenttree__row--success .iux-indenttree__bullet { background-color: var(--color-intent-success-bg); }
+.iux-indenttree__row--warning .iux-indenttree__bullet { background-color: var(--color-intent-warning-bg); }
+.iux-indenttree__row--danger  .iux-indenttree__bullet { background-color: var(--color-intent-danger-bg); }
+.iux-indenttree__row--neutral .iux-indenttree__bullet { background-color: var(--color-intent-neutral-bg); }
+
+.iux-indenttree__bullet--leaf {
+  border-radius: 50%;
+  width: 0.4em;
+  height: 0.4em;
+  margin: 0 0.1em;
+}
+
+.iux-indenttree__label {
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-primary);
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iux-indenttree__row--root .iux-indenttree__label {
+  font-weight: var(--type-weight-strong, 600);
+}
+
+.iux-indenttree__bar {
+  margin-left: auto;
+  display: inline-block;
+  width: 80px;
+  height: 0.5em;
+  background-color: var(--color-border-subtle);
+  border-radius: var(--radius-xs, 2px);
+  overflow: hidden;
+}
+
+.iux-indenttree__bar-fill {
+  display: block;
+  height: 100%;
+  background-color: var(--color-content-secondary);
+  opacity: 0.6;
+}
+
+.iux-indenttree__row--primary .iux-indenttree__bar-fill { background-color: var(--color-intent-primary-bg); }
+.iux-indenttree__row--info    .iux-indenttree__bar-fill { background-color: var(--color-intent-info-bg); }
+.iux-indenttree__row--success .iux-indenttree__bar-fill { background-color: var(--color-intent-success-bg); }
+.iux-indenttree__row--warning .iux-indenttree__bar-fill { background-color: var(--color-intent-warning-bg); }
+.iux-indenttree__row--danger  .iux-indenttree__bar-fill { background-color: var(--color-intent-danger-bg); }
+.iux-indenttree__row--neutral .iux-indenttree__bar-fill { background-color: var(--color-intent-neutral-bg); }
+
+.iux-indenttree__meta {
+  margin-left: var(--space-2);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-secondary);
+  min-width: 4em;
+  text-align: right;
+}
+
+.iux-indenttree--plain .iux-indenttree__bar { display: none; }
+.iux-indenttree--guides .iux-indenttree__bar { display: none; }

@@ -1,0 +1,60 @@
+/*
+ * RadialTree — hierarchy emanating from a center node. Three rungs:
+ * straight (line segments between depths, fast to scan) → curved
+ * (quadratic sweep through a midpoint, reads as a smoother dataviz)
+ * → compact (smaller nodes plus a ring guide; useful for ≤80 leaves).
+ * Distinct from Sunburst (slices) and Dendrogram-radial (brackets):
+ * RadialTree draws the edges themselves, not the area swept.
+ */
+
+.iux-radialtree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--type-body-family);
+  color: var(--color-content-primary);
+}
+
+.iux-radialtree__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.iux-radialtree__edge {
+  stroke: var(--color-border-default);
+  opacity: 0.55;
+}
+
+.iux-radialtree__ring {
+  stroke: var(--color-border-subtle);
+  stroke-dasharray: 2 4;
+  opacity: 0.7;
+}
+
+.iux-radialtree__node circle {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1.5;
+}
+
+.iux-radialtree__node--primary circle { fill: var(--color-intent-primary-bg); }
+.iux-radialtree__node--info    circle { fill: var(--color-intent-info-bg); }
+.iux-radialtree__node--success circle { fill: var(--color-intent-success-bg); }
+.iux-radialtree__node--warning circle { fill: var(--color-intent-warning-bg); }
+.iux-radialtree__node--danger  circle { fill: var(--color-intent-danger-bg); }
+.iux-radialtree__node--neutral circle { fill: var(--color-intent-neutral-bg); }
+
+.iux-radialtree__label {
+  fill: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  paint-order: stroke;
+  stroke: var(--color-surface-raised);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}

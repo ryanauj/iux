@@ -66,6 +66,16 @@ import { SunburstStories, VARIANTS as SunburstVariants } from '../components/Sun
 import { CirclePackStories, VARIANTS as CirclePackVariants } from '../components/CirclePack/CirclePack.stories'
 import { HiveDiagramStories, VARIANTS as HiveDiagramVariants } from '../components/HiveDiagram/HiveDiagram.stories'
 import { EdgeBundleStories, VARIANTS as EdgeBundleVariants } from '../components/EdgeBundle/EdgeBundle.stories'
+import { IcicleStories, VARIANTS as IcicleVariants } from '../components/Icicle/Icicle.stories'
+import { IndentTreeStories, VARIANTS as IndentTreeVariants } from '../components/IndentTree/IndentTree.stories'
+import { RadialTreeStories, VARIANTS as RadialTreeVariants } from '../components/RadialTree/RadialTree.stories'
+import { ForceClusterStories, VARIANTS as ForceClusterVariants } from '../components/ForceCluster/ForceCluster.stories'
+import { DagLayeredStories, VARIANTS as DagLayeredVariants } from '../components/DagLayered/DagLayered.stories'
+import { DensityPlotStories, VARIANTS as DensityPlotVariants } from '../components/DensityPlot/DensityPlot.stories'
+import { QQPlotStories, VARIANTS as QQPlotVariants } from '../components/QQPlot/QQPlot.stories'
+import { EcdfPlotStories, VARIANTS as EcdfPlotVariants } from '../components/EcdfPlot/EcdfPlot.stories'
+import { ConfidenceBandStories, VARIANTS as ConfidenceBandVariants } from '../components/ConfidenceBand/ConfidenceBand.stories'
+import { RidgePlotStories, VARIANTS as RidgePlotVariants } from '../components/RidgePlot/RidgePlot.stories'
 
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
@@ -80,6 +90,8 @@ export type Component =
   | 'waterfall' | 'hexbin' | 'violin' | 'nodelink'
   | 'adjmatrix' | 'chord' | 'arcdiagram' | 'circnet' | 'tree'
   | 'dendrogram' | 'sunburst' | 'circlepack' | 'hive' | 'edgebundle'
+  | 'icicle' | 'indenttree' | 'radialtree' | 'forcecluster' | 'daglayered'
+  | 'density' | 'qq' | 'ecdf' | 'confband' | 'ridge'
 
 export type Tier = 1 | 2 | 3
 
@@ -168,6 +180,16 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'circlepack', label: 'Circle pack', tier: 2, variants: CirclePackVariants, render: v => <CirclePackStories variant={v} /> },
   { id: 'hive', label: 'Hive diagram', tier: 3, variants: HiveDiagramVariants, render: v => <HiveDiagramStories variant={v} /> },
   { id: 'edgebundle', label: 'Edge bundle', tier: 3, variants: EdgeBundleVariants, render: v => <EdgeBundleStories variant={v} /> },
+  { id: 'icicle', label: 'Icicle', tier: 2, variants: IcicleVariants, render: v => <IcicleStories variant={v} /> },
+  { id: 'indenttree', label: 'Indent tree', tier: 1, variants: IndentTreeVariants, render: v => <IndentTreeStories variant={v} /> },
+  { id: 'radialtree', label: 'Radial tree', tier: 2, variants: RadialTreeVariants, render: v => <RadialTreeStories variant={v} /> },
+  { id: 'forcecluster', label: 'Force cluster', tier: 3, variants: ForceClusterVariants, render: v => <ForceClusterStories variant={v} /> },
+  { id: 'daglayered', label: 'Layered DAG', tier: 3, variants: DagLayeredVariants, render: v => <DagLayeredStories variant={v} /> },
+  { id: 'density', label: 'Density plot', tier: 2, variants: DensityPlotVariants, render: v => <DensityPlotStories variant={v} /> },
+  { id: 'qq', label: 'Q-Q plot', tier: 2, variants: QQPlotVariants, render: v => <QQPlotStories variant={v} /> },
+  { id: 'ecdf', label: 'ECDF', tier: 2, variants: EcdfPlotVariants, render: v => <EcdfPlotStories variant={v} /> },
+  { id: 'confband', label: 'Confidence band', tier: 2, variants: ConfidenceBandVariants, render: v => <ConfidenceBandStories variant={v} /> },
+  { id: 'ridge', label: 'Ridge plot', tier: 3, variants: RidgePlotVariants, render: v => <RidgePlotStories variant={v} /> },
 ]
 
 /** Convenience: every entry across both registries. Use for global lookups. */
