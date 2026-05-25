@@ -2086,3 +2086,461 @@
     font-size: var(--type-subheading-size);
   }
 }
+
+/* ============================================================
+ * Triptych layout — list | summary | deep-panel.
+ *
+ * Three persistent columns. Clicking in col-1 swaps col-2 (a
+ * summary card built from the shell); clicking in col-2 fills
+ * col-3 via normal `<Link>` navigation, so the standard page
+ * renders there and direct deep links still work.
+ * ============================================================ */
+
+.sports-app--triptych {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sports-app__header--triptych {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__triptych-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__triptych-nav-link {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__triptych-nav-link:hover,
+.sports-app__triptych-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__triptych-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-triptych {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(15rem, 18rem) minmax(20rem, 24rem) 1fr;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.sports-triptych__col {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  background-color: var(--color-surface-default);
+}
+
+.sports-triptych__col--list {
+  background-color: var(--color-surface-raised);
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+}
+
+.sports-triptych__col--summary {
+  background-color: var(--color-surface-default);
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
+  padding: var(--space-5);
+}
+
+.sports-triptych__col--deep {
+  padding: var(--space-5);
+}
+
+.sports-triptych__sections {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+  position: sticky;
+  top: 0;
+  background-color: var(--color-surface-raised);
+  z-index: 1;
+}
+
+.sports-triptych__section {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex: 1 1 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-triptych__section:hover,
+.sports-triptych__section:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-triptych__section.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-triptych__items {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-triptych__item {
+  appearance: none;
+  background: transparent;
+  border: var(--border-width-thin) solid transparent;
+  cursor: pointer;
+  width: 100%;
+  text-align: start;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: var(--space-2);
+  row-gap: 2px;
+  align-items: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-content-primary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-triptych__item:hover,
+.sports-triptych__item:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-triptych__item.is-active {
+  background-color: var(--color-intent-primary-bg);
+  border-color: var(--color-intent-primary-content);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-triptych__item-swatch {
+  grid-row: 1 / span 2;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radius-pill);
+  align-self: center;
+}
+
+.sports-triptych__item-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sports-triptych__item-meta {
+  grid-column: 2 / -1;
+  font-size: var(--type-caption-size);
+  color: inherit;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-triptych__item.is-active .sports-triptych__item-meta {
+  opacity: 0.85;
+}
+
+.sports-triptych__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 32rem;
+}
+
+.sports-triptych__summary-head {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  padding-inline-start: var(--space-4);
+  border-inline-start: 4px solid var(--color-border-default);
+  background-color: var(--color-surface-raised);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.sports-triptych__crest {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: var(--type-label-size);
+  flex: 0 0 auto;
+}
+
+.sports-triptych__summary-kicker {
+  display: block;
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sports-triptych__summary-name {
+  margin: 2px 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+}
+
+.sports-triptych__summary-meta {
+  display: block;
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-triptych__summary-meta-link {
+  color: var(--color-content-link);
+  text-decoration: none;
+  font-size: var(--type-caption-size);
+}
+
+.sports-triptych__summary-meta-link:hover {
+  text-decoration: underline;
+}
+
+.sports-triptych__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.sports-triptych__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.sports-triptych__stat-label {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sports-triptych__stat-value {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}
+
+.sports-triptych__sub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sports-triptych__sub-title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sports-triptych__sub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-triptych__sub-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  color: var(--color-content-primary);
+  text-decoration: none;
+  font-size: var(--type-label-size);
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-triptych__sub-link:hover,
+.sports-triptych__sub-link:focus-visible {
+  border-color: var(--color-border-default);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-triptych__sub-meta {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-triptych__sub-empty {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  padding: var(--space-2) var(--space-3);
+}
+
+.sports-triptych__game-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-triptych__game-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  color: var(--color-content-primary);
+  text-decoration: none;
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-triptych__game-row:hover,
+.sports-triptych__game-row:focus-visible {
+  border-color: var(--color-border-default);
+  outline: none;
+}
+
+.sports-triptych__game-mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  flex: 0 0 auto;
+}
+
+.sports-triptych__game-name {
+  flex: 1 1 auto;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+}
+
+.sports-triptych__game-score {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}
+
+.sports-triptych__open {
+  display: inline-block;
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  text-decoration: none;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+}
+
+.sports-triptych__open:hover,
+.sports-triptych__open:focus-visible {
+  opacity: 0.9;
+  outline: none;
+}
+
+.sports-triptych__empty {
+  color: var(--color-content-secondary);
+  font-size: var(--type-caption-size);
+  padding: var(--space-4);
+  border: var(--border-width-thin) dashed var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+/* Collapse to a stack on narrow viewports: the list rides above
+   the summary, which rides above the deep panel. */
+@media (max-width: 70rem) {
+  .sports-triptych {
+    grid-template-columns: minmax(14rem, 18rem) 1fr;
+  }
+  .sports-triptych__col--deep {
+    grid-column: 1 / -1;
+    border-top: var(--border-width-thin) solid var(--color-border-subtle);
+  }
+}
+
+@media (max-width: 48rem) {
+  .sports-triptych {
+    grid-template-columns: 1fr;
+  }
+  .sports-triptych__col--list,
+  .sports-triptych__col--summary {
+    border-right: none;
+    border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  }
+  .sports-triptych__col--summary {
+    padding: var(--space-3);
+  }
+  .sports-triptych__col--deep {
+    padding: var(--space-3);
+  }
+  .sports-triptych__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

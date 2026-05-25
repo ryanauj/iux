@@ -105,8 +105,8 @@ reproduces the exact shell + palette + motion.
 
 ### Shell variants
 
-Nine shells ship today. The first five are pure chrome around the
-standard page set; the last four reshape how content composes.
+Ten shells ship today. The first five are pure chrome around the
+standard page set; the last five reshape how content composes.
 
 | `layout=` | Shape | What it changes |
 | --------- | ----- | --------------- |
@@ -119,6 +119,7 @@ standard page set; the last four reshape how content composes.
 | `court` | Top nav + interactive SVG basketball court on Home. Tapping court regions routes to filtered/related views. | Replaces the Home page with a spatial map; other routes render standard pages |
 | `tabs` | Workspace-style tab strip across the top. Each visited route becomes a tab; tabs persist via `?tabs=`. | Multiple pages stay open at once; closing the active tab navigates to a neighbor |
 | `feed` | Single chronological vertical stream of entity cards (live → today's finals → today's upcoming → season leaders) with Status / Conference / Team filter chips. On non-home routes the feed collapses into a left rail and the page renders to the right. | Replaces the Home page's five-section split with one timeline; other routes get the feed as a sidebar alongside the standard page |
+| `triptych` | Three persistent columns: a section-switched list (teams / players / games) on the left, a summary card for the selected entity in the middle, and the standard route page on the right. Clicking the list swaps only the summary; clicking the summary's links navigates and fills the right column. List section is sticky via `?tri=`; the selection inside the list is shell state that re-seeds from the route on deep links. | Replaces every page with a list / summary / detail browser, but the right column still hosts the standard page so direct links work |
 
 Adding a new shell:
 

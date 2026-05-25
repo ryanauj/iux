@@ -50,7 +50,7 @@ export function buildHash(path: string, params?: Record<string, string | undefin
  * Link rebuilds the hash with only its own params. Callers can still
  * clear a sticky key by passing it explicitly as `undefined`.
  */
-const STICKY_PARAMS = ['layout', 'palette', 'motion', 'tabs'] as const
+const STICKY_PARAMS = ['layout', 'palette', 'motion', 'tabs', 'tri'] as const
 
 /** Read the current values of any sticky params from the URL hash. */
 export function getStickyParams(): Record<string, string> {
