@@ -338,6 +338,71 @@
   gap: var(--space-4);
 }
 
+/* ----- crt-phosphor-specific: scanline + phosphor host wrapper ----- */
+
+/*
+ * The engine paints `--effect-overlay-image` (the scanline gradient) at the
+ * palette root, but the demo frame's `background: var(--color-surface-base)`
+ * shorthand resets background-image to none. This helper re-paints both, so
+ * demos nested under it show the scanline laid across the field and the
+ * phosphor glow on top of body text. Inset stroke + outer glow come from
+ * `elevation.medium`, which is the engine's signature recipe.
+ */
+.iux-engine-demo__crt-host {
+  position: relative;
+  background-color: var(--color-surface-base);
+  background-image: var(--effect-overlay-image);
+  background-blend-mode: var(--effect-overlay-blend);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: var(--elevation-medium);
+  text-shadow: 0 0 var(--effect-glow-radius) var(--effect-glow-color);
+}
+
+/* ----- pixel-art-specific: pixel-grid host wrapper ----- */
+
+/*
+ * Paints a faint integer-pixel grid using the engine's `--pixel-grid` step
+ * (8px on every pixel-art palette; `'0'` everywhere else, which collapses
+ * both gradient stacks to no-ops). The ink colour uses the engine's own
+ * `--color-content-primary` via `color-mix` so the grid lands on the
+ * darkest shade no matter which pixel-art register the demo runs on.
+ */
+.iux-engine-demo__pixel-host {
+  background-color: var(--color-surface-base);
+  background-image:
+    repeating-linear-gradient(to right,
+      color-mix(in srgb, var(--color-content-primary) 14%, transparent) 0 1px,
+      transparent 1px var(--pixel-grid)),
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-content-primary) 14%, transparent) 0 1px,
+      transparent 1px var(--pixel-grid));
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ----- terminal-tui-specific: character-grid host wrapper ----- */
+
+/*
+ * Terminal-TUI's elevation slot collapses to `none` on every rung — the
+ * engine refuses lift entirely. Borders carry hierarchy instead. This host
+ * gives nested demos a `palette` container scope so Card / Modal corner
+ * glyphs reveal under `@container palette style(--border-style: character)`,
+ * and pins padding/gap to whole character cells via `--grid-unit-y`.
+ */
+.iux-engine-demo__tui-host {
+  background: var(--color-surface-base);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-unit-y, var(--space-3));
+}
+
 /* ----- engines index landing ----- */
 
 .iux-engines-index__list {
