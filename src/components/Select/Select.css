@@ -126,12 +126,17 @@
 
 .iux-select__listbox {
   /*
-   * The element is portaled to document.body so its `position: fixed`
-   * coordinates are always interpreted relative to the viewport — an
-   * ancestor with `transform`, `filter`, or `backdrop-filter` would
-   * otherwise establish a containing block and break the trigger-anchored
-   * math (e.g. the DraggableControls panel uses backdrop-blur). Coordinates
-   * are set inline by the component from the trigger's viewport rect.
+   * The element is portaled to the chrome `.palette-root` so its
+   * `position: fixed` coordinates are interpreted relative to the viewport
+   * (the chrome root spans the viewport and doesn't establish a containing
+   * block of its own on default palettes) — any ancestor with `transform`,
+   * `filter`, or `backdrop-filter` would otherwise break the trigger-
+   * anchored math (e.g. the DraggableControls panel uses backdrop-blur).
+   * Portaling to the palette root instead of `document.body` keeps the
+   * listbox inside the palette's CSS-var scope so `--color-surface-overlay`
+   * etc. resolve to the active palette's tokens instead of their bare
+   * fallbacks. Coordinates are set inline by the component from the
+   * trigger's viewport rect.
    */
   position: fixed;
   z-index: 1000;
