@@ -114,7 +114,7 @@ async function executeStep(step: Step, root: HTMLElement): Promise<void> {
       return
     }
     case 'assertVisible': {
-      const el = root.querySelector(step.selector)
+      const el = scopedQuery(root, step.selector)
       if (!el) throw new Error(`Expected visible: ${step.selector}`)
       return
     }
@@ -127,22 +127,50 @@ async function executeStep(step: Step, root: HTMLElement): Promise<void> {
       return
     }
     case 'assertCount': {
-      const count = root.querySelectorAll(step.selector).length
+      const count = scopedQueryAll(root, step.selector).length
       if (count !== step.count) {
         throw new Error(`Expected ${step.count} of ${step.selector}, got ${count}`)
       }
       return
     }
     case 'assertGone': {
-      const el = root.querySelector(step.selector)
+      const el = scopedQuery(root, step.selector)
       if (el) throw new Error(`Expected gone: ${step.selector}`)
       return
     }
   }
 }
 
+/**
+ * Many overlays (Modal, CommandPalette, Toast — and importantly Select /
+ * Tooltip / DatePicker which have no `inlineRender` escape hatch) portal
+ * their content to the first `.palette-root` in the document so they sit
+ * inside the active palette's CSS-var scope. That portal target is the
+ * page's outer palette-root, which is an *ancestor* of the test sandbox,
+ * so the portaled subtree is a sibling-cousin of the sandbox and isn't
+ * reachable via `root.querySelector`.
+ *
+ * `scopedQuery` first looks inside the sandbox, then falls back to the
+ * portal target, filtering out anything that's still inside `root`
+ * (those matches would have come back from the first query already).
+ */
+function scopedQuery<T extends Element>(root: HTMLElement, selector: string): T | null {
+  return scopedQueryAll<T>(root, selector)[0] ?? null
+}
+
+function scopedQueryAll<T extends Element>(root: HTMLElement, selector: string): T[] {
+  const inRoot = Array.from(root.querySelectorAll<T>(selector))
+  if (typeof document === 'undefined') return inRoot
+  const portal = document.querySelector('.palette-root')
+  if (!portal || portal === root || root.contains(portal)) return inRoot
+  const portaled = Array.from(portal.querySelectorAll<T>(selector)).filter(
+    c => !root.contains(c),
+  )
+  return [...inRoot, ...portaled]
+}
+
 function mustFind<T extends Element>(root: HTMLElement, selector: string): T {
-  const el = root.querySelector<T>(selector)
+  const el = scopedQuery<T>(root, selector)
   if (!el) throw new Error(`Element not found: ${selector}`)
   return el
 }
