@@ -34,16 +34,16 @@ Industrial / workshop design vocabulary — printed engineering drawings, ISO 58
 | Path | Value | Note |
 |---|---|---|
 | `typography.family.ui` | `"IBM Plex Mono", "JetBrains Mono", "Berkeley Mono", "Courier Prime", ui-monospace, monospace` | IBM Plex Mono — labels and forms render in mono. The load-bearing typography move. |
-| `color.intent.primary.bg` | `#ff6a00` | Safety orange `#ff6a00` — the only saturated chromatic intent. Doubles as `border.focus` and `content.link`. |
+| `color.intent.primary.bg` | `#b64800` | Safety orange `#ff6a00` — the only saturated chromatic intent. Doubles as `border.focus` and `content.link`. |
 | `elevation.low.boxShadow` | `0 0 0 1px #d6d2c8` | `0 0 0 1px #d6d2c8` — printed-paper hairline rule, no penumbra. |
 | `color.surface.base` | `#fbf8f1` | Warm paper `#fbf8f1` — never pure white. The cream undertone reads as printed drawing. |
 | `radius.sm` | `0` | `0` — the sharp-corner workshop language. `radius.lg` collapses to `4px`. |
 
 ## Often confused with
 
-### vs [Bloomberg Terminal](./bloomberg-terminal.md)
+### vs [CRT / Phosphor (Amber)](./crt-phosphor-amber.md)
 
-Bloomberg Terminal is the dark-workshop register: pure-black field, amber phosphor type, full-mono throughout, green/red as DATA. Industrial / Light is the inversion: warm-paper field, walnut ink, mono ON `family.ui` only (body is sans), safety-orange as the intent. Same vocabulary, opposite field.
+CRT / Phosphor (amber) is the dark-workshop register: near-black field, amber phosphor type with a glow halo, full-mono throughout, scanline overlay. Industrial / Light is the inversion to a light field: warm-paper surfaces, walnut ink, mono on `family.ui` only (body stays sans-readable), safety-orange as the intent, no glow or overlay. Same workshop vocabulary, opposite field — one is "shop floor at night," the other is "shop floor at noon."
 
 ### vs [Data-dense light](./data-dense-light.md)
 

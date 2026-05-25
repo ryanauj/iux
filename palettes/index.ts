@@ -47,6 +47,16 @@ import { palette as bulletTrainDay } from './bullet-train-day'
 import { palette as metroLight } from './metro-light'
 import { palette as industrialLight } from './industrial-light'
 import { palette as graffitiMarble } from './graffiti-marble'
+import { palette as risograph } from './risograph'
+import { palette as letterpress } from './letterpress'
+import { palette as blueprint } from './blueprint'
+import { palette as dieterRams } from './dieter-rams'
+import { palette as artDeco } from './art-deco'
+import { palette as stainedGlass } from './stained-glass'
+import { palette as desertModernism } from './desert-modernism'
+import { palette as solarpunk } from './solarpunk'
+import { palette as heritageMaritime } from './heritage-maritime'
+import { palette as zenSumie } from './zen-sumie'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -98,6 +108,16 @@ export const palettes = {
   'metro-light': metroLight,
   'industrial-light': industrialLight,
   'graffiti-marble': graffitiMarble,
+  risograph,
+  letterpress,
+  blueprint,
+  'dieter-rams': dieterRams,
+  'art-deco': artDeco,
+  'stained-glass': stainedGlass,
+  'desert-modernism': desertModernism,
+  solarpunk,
+  'heritage-maritime': heritageMaritime,
+  'zen-sumie': zenSumie,
 } as const
 
 export type PaletteId = keyof typeof palettes

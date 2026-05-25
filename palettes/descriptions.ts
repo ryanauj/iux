@@ -20,6 +20,16 @@ import { description as bulletTrainDay } from './bullet-train-day.description'
 import { description as metroLight } from './metro-light.description'
 import { description as industrialLight } from './industrial-light.description'
 import { description as graffitiMarble } from './graffiti-marble.description'
+import { description as risograph } from './risograph.description'
+import { description as letterpress } from './letterpress.description'
+import { description as blueprint } from './blueprint.description'
+import { description as dieterRams } from './dieter-rams.description'
+import { description as artDeco } from './art-deco.description'
+import { description as stainedGlass } from './stained-glass.description'
+import { description as desertModernism } from './desert-modernism.description'
+import { description as solarpunk } from './solarpunk.description'
+import { description as heritageMaritime } from './heritage-maritime.description'
+import { description as zenSumie } from './zen-sumie.description'
 
 export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'flat-classic': flatClassic,
@@ -34,6 +44,16 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'metro-light': metroLight,
   'industrial-light': industrialLight,
   'graffiti-marble': graffitiMarble,
+  risograph,
+  letterpress,
+  blueprint,
+  'dieter-rams': dieterRams,
+  'art-deco': artDeco,
+  'stained-glass': stainedGlass,
+  'desert-modernism': desertModernism,
+  solarpunk,
+  'heritage-maritime': heritageMaritime,
+  'zen-sumie': zenSumie,
 }
 
 export type DescribedPaletteId = keyof typeof descriptions

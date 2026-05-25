@@ -1,21 +1,31 @@
 # Style descriptions — index
 
-12 of 49 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
+22 of 59 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
 
 ## Populated
 
 - [Aero Glass](./aero-glass.md) — `glassmorphism`
+- [Art Deco / Gatsby](./art-deco.md) — `flat`
+- [Blueprint](./blueprint.md) — `flat`
 - [Bullet Train / Day](./bullet-train-day.md) — `flat`
+- [Desert Modernism](./desert-modernism.md) — `flat`
+- [Dieter Rams / Braun](./dieter-rams.md) — `flat`
 - [Flat / Classic](./flat-classic.md) — `flat`
 - [Glassmorphism](./glassmorphism.md) — `glassmorphism`
 - [Graffiti / Marble](./graffiti-marble.md) — `flat`
+- [Heritage Maritime](./heritage-maritime.md) — `flat`
 - [Industrial / Light](./industrial-light.md) — `flat`
+- [Letterpress](./letterpress.md) — `flat`
 - [Marble Royal Flat](./marble-royal-flat.md) — `flat`
 - [Metro / Light](./metro-light.md) — `flat`
 - [Modern Royal](./modern-royal.md) — `flat`
 - [Pixel Art (NES)](./pixel-art-nes.md) — `pixel-art`
+- [Risograph](./risograph.md) — `flat`
 - [Scandinavian Royal Modern](./scandinavian-royal-modern.md) — `flat`
+- [Solarpunk](./solarpunk.md) — `flat`
+- [Cathedral / Stained Glass](./stained-glass.md) — `flat`
 - [Tokyo / Day](./tokyo-day.md) — `flat`
+- [Zen / Sumi-e](./zen-sumie.md) — `sketch`
 
 ## Missing
 
