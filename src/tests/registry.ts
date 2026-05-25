@@ -1,12 +1,24 @@
 import { commandPaletteFilter } from './definitions/command-palette'
 import { formSubmitToast } from './definitions/form-submit-toast'
 import { modalWithForm } from './definitions/modal-with-form'
+import { buttonTests } from './definitions/button'
+import { textInputTests } from './definitions/text-input'
+import { toggleTests } from './definitions/toggle'
+import { checkboxTests } from './definitions/checkbox'
+import { sliderTests } from './definitions/slider'
 import type { IntegrationTest } from './types'
 
 export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
+  // Composition tests (multi-component flows)
   formSubmitToast,
   modalWithForm,
   commandPaletteFilter,
+  // Per-component, per-ladder-rung tests
+  ...buttonTests,
+  ...textInputTests,
+  ...toggleTests,
+  ...checkboxTests,
+  ...sliderTests,
 ]
 
 export function findTest(id: string): IntegrationTest | undefined {
