@@ -5,6 +5,9 @@ import { glassmorphismGuide } from './glassmorphism'
 import { neumorphismGuide } from './neumorphism'
 import { claymorphismGuide } from './claymorphism'
 import { skeuomorphismGuide } from './skeuomorphism'
+import { crtPhosphorGuide } from './crt-phosphor'
+import { pixelArtGuide } from './pixel-art'
+import { terminalTuiGuide } from './terminal-tui'
 import type { EngineGuideMeta } from './types'
 
 export const ENGINE_GUIDES = {
@@ -15,6 +18,9 @@ export const ENGINE_GUIDES = {
   neumorphism: neumorphismGuide,
   claymorphism: claymorphismGuide,
   skeuomorphism: skeuomorphismGuide,
+  'crt-phosphor': crtPhosphorGuide,
+  'pixel-art': pixelArtGuide,
+  'terminal-tui': terminalTuiGuide,
 } satisfies Record<string, EngineGuideMeta>
 
 export type EngineGuideId = keyof typeof ENGINE_GUIDES

@@ -18,13 +18,13 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'neumorphism',  name: 'Neumorphism',  available: true },
   { id: 'claymorphism', name: 'Claymorphism', available: true },
   { id: 'skeuomorphism',name: 'Skeuomorphism',available: true },
-  { id: 'crt-phosphor', name: 'CRT / Phosphor', available: false },
-  { id: 'pixel-art',    name: 'Pixel-art',    available: false },
+  { id: 'crt-phosphor', name: 'CRT / Phosphor', available: true },
+  { id: 'pixel-art',    name: 'Pixel-art',    available: true },
   { id: 'sketch',       name: 'Sketch',       available: false },
   { id: 'cardstock',    name: 'Cardstock',    available: false },
   { id: 'cel-shaded',   name: 'Cel-shaded',   available: false },
   { id: 'aurora',       name: 'Aurora',       available: false },
-  { id: 'terminal-tui', name: 'Terminal / TUI', available: false },
+  { id: 'terminal-tui', name: 'Terminal / TUI', available: true },
 ]
 
 export function EnginesIndex() {
