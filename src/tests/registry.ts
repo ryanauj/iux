@@ -6,6 +6,12 @@ import { textInputTests } from './definitions/text-input'
 import { toggleTests } from './definitions/toggle'
 import { checkboxTests } from './definitions/checkbox'
 import { sliderTests } from './definitions/slider'
+import { cardTests } from './definitions/card'
+import { modalTests } from './definitions/modal'
+import { tabsTests } from './definitions/tabs'
+import { toastTests } from './definitions/toast'
+import { paginationTests } from './definitions/pagination'
+import { emptyStateTests } from './definitions/empty-state'
 import type { IntegrationTest } from './types'
 
 export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
@@ -19,6 +25,12 @@ export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
   ...toggleTests,
   ...checkboxTests,
   ...sliderTests,
+  ...cardTests,
+  ...modalTests,
+  ...tabsTests,
+  ...toastTests,
+  ...paginationTests,
+  ...emptyStateTests,
 ]
 
 export function findTest(id: string): IntegrationTest | undefined {
