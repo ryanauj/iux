@@ -351,6 +351,56 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
     }
   }, [menuVisible, computeMenuPos])
 
+  /*
+   * rAF tracker that continuously polls the trigger rect (and visualViewport
+   * offset/height) while the menu is open. Event-based recomputation alone
+   * isn't enough on mobile: when the soft keyboard appears, iOS animates the
+   * visual viewport over a couple hundred milliseconds AND may auto-scroll
+   * the focused input above it. `visualViewport.resize/scroll` and `window.scroll` fire at
+   * the START of that transition, so `computeMenuPos` reads a rect that
+   * hasn't settled yet and the portaled listbox ends up covering the input.
+   * Polling per-frame catches the trailing settle, and the early-return when
+   * nothing changed keeps the cost negligible.
+   */
+  useEffect(() => {
+    if (!menuVisible) return
+    let raf = 0
+    let prevTop = Number.NaN
+    let prevLeft = Number.NaN
+    let prevWidth = Number.NaN
+    let prevHeight = Number.NaN
+    let prevVvTop = Number.NaN
+    let prevVvHeight = Number.NaN
+    const tick = () => {
+      const control = controlRef.current
+      if (control) {
+        const r = control.getBoundingClientRect()
+        const vv = window.visualViewport
+        const vvTop = vv ? vv.offsetTop : 0
+        const vvHeight = vv ? vv.height : window.innerHeight
+        if (
+          r.top !== prevTop ||
+          r.left !== prevLeft ||
+          r.width !== prevWidth ||
+          r.height !== prevHeight ||
+          vvTop !== prevVvTop ||
+          vvHeight !== prevVvHeight
+        ) {
+          prevTop = r.top
+          prevLeft = r.left
+          prevWidth = r.width
+          prevHeight = r.height
+          prevVvTop = vvTop
+          prevVvHeight = vvHeight
+          computeMenuPos()
+        }
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [menuVisible, computeMenuPos])
+
   const commitValue = useCallback(
     (next: string) => {
       if (!isControlled) setInnerValue(next)
