@@ -10,7 +10,6 @@ import {
 } from '../components/DraggableControls/DraggableControls'
 import { useSelectedStyle } from '../lib/persistedStyle'
 import { CoverageViz } from './visualizations/CoverageViz'
-import { RunnerViz } from './visualizations/RunnerViz'
 import { TestsViz } from './visualizations/TestsViz'
 import './visualizations/viz.css'
 import { INTEGRATION_TESTS } from './registry'
@@ -20,7 +19,7 @@ import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import { useNavLayout } from '../components/AppShell/navLayouts'
 
-export type VizId = 'tests' | 'coverage' | 'runner'
+export type VizId = 'tests' | 'coverage'
 
 export type RunFor = (
   id: string,
@@ -29,9 +28,8 @@ export type RunFor = (
 ) => Promise<RunResult | undefined>
 
 const VIZ_OPTIONS: { value: VizId; label: string; hint: string }[] = [
-  { value: 'tests', label: 'Tests', hint: 'Browse tests as cards with inline step storyboards — run individually or all at once' },
+  { value: 'tests', label: 'Tests', hint: 'Browse tests as cards — click Run to expand a card into a live workbench with sandbox and stepped playback' },
   { value: 'coverage', label: 'Coverage', hint: 'See which components each test exercises, as a table or as a network graph' },
-  { value: 'runner', label: 'Runner', hint: 'Watch tests execute live with a visible sandbox and stepped playback' },
 ]
 
 const VIZ_VALUES: VizId[] = VIZ_OPTIONS.map(v => v.value)
@@ -85,7 +83,7 @@ export function TestsPage() {
 
   // Each viz mounts the test composition into its own DOM ref and then asks
   // TestsPage to drive a run against that ref. This keeps run state shared
-  // while letting RunnerViz keep its sandbox visible for step-by-step display.
+  // while letting the focused-card workbench keep its sandbox visible.
   const runFor: RunFor = useCallback(async (id, mountEl, opts) => {
     const test = INTEGRATION_TESTS.find(t => t.id === id)
     if (!test) return undefined
@@ -179,7 +177,6 @@ export function TestsPage() {
           <div className="iux-tests__viz">
             {viz === 'tests' && <TestsViz results={results} runningId={runningId} runFor={runFor} />}
             {viz === 'coverage' && <CoverageViz results={results} runningId={runningId} runFor={runFor} />}
-            {viz === 'runner' && <RunnerViz results={results} runningId={runningId} runFor={runFor} />}
           </div>
 
           <div ref={autorunRef} className="iux-tests__sandbox iux-tests__sandbox--offscreen" aria-hidden="true">
