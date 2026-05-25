@@ -3,6 +3,12 @@ import { palettes, type PaletteId } from '../../palettes'
 import { readHash, replaceParams, useHashLocation } from '../apps/router'
 import { Segmented } from '../components/Segmented/Segmented'
 import { PaletteRoot } from '../theme/PaletteRoot'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../components/DraggableControls/DraggableControls'
+import { useSelectedStyle } from '../lib/persistedStyle'
 import { CoverageViz } from './visualizations/CoverageViz'
 import { RunnerViz } from './visualizations/RunnerViz'
 import { TestsViz } from './visualizations/TestsViz'
@@ -30,7 +36,7 @@ const VIZ_OPTIONS: { value: VizId; label: string; hint: string }[] = [
 
 const VIZ_VALUES: VizId[] = VIZ_OPTIONS.map(v => v.value)
 const DEFAULT_VIZ: VizId = 'tests'
-const DEFAULT_PALETTE: PaletteId = 'flat-classic'
+const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
 
@@ -43,10 +49,39 @@ export function TestsPage() {
 
   const [results, setResults] = useState<Record<string, RunResult>>({})
   const [runningId, setRunningId] = useState<string | null>(null)
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
+
+  // URL wins on a fresh visit (pasted permalink); the site-wide
+  // persisted style is the fallback so navigating in from Stories /
+  // Apps / Quiz / Engine guides keeps the same look without depending
+  // on the hash carrying `?palette=`.
+  const paletteParam = location.params.get('palette')
+  const paletteId: PaletteId =
+    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
+      ? (paletteParam as PaletteId)
+      : selectedStyle
+
+  // Seed the persisted store from the URL on first mount so a pasted
+  // permalink wins over the user's previous selection.
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (paletteParam && paletteId !== selectedStyle) {
+      setSelectedStyle(paletteId)
+    }
+  }
 
   const setViz = useCallback((next: VizId) => {
     replaceParams({ viz: next === DEFAULT_VIZ ? undefined : next })
   }, [])
+
+  const handlePaletteChange = (next: string) => {
+    if ((PALETTE_IDS as string[]).includes(next)) {
+      setSelectedStyle(next as PaletteId)
+    }
+    replaceParams({ palette: next })
+  }
 
   // Each viz mounts the test composition into its own DOM ref and then asks
   // TestsPage to drive a run against that ref. This keeps run state shared
@@ -96,9 +131,23 @@ export function TestsPage() {
     ? INTEGRATION_TESTS.find(t => t.id === autorunTestId)
     : null
 
-  const palette = palettes[DEFAULT_PALETTE]
+  const palette = palettes[paletteId]
   const activeHint = VIZ_OPTIONS.find(v => v.value === viz)?.hint
   const [navLayout] = useNavLayout()
+
+  const fields: Field[] = [
+    {
+      key: 'palette',
+      label: 'Palette',
+      short: 'P',
+      value: paletteId,
+      options: PALETTE_IDS.map(id => ({
+        value: id,
+        label: `${palettes[id].name} (${palettes[id].engine})`,
+      })),
+      onChange: handlePaletteChange,
+    },
+  ]
 
   const brand = (
     <h1 className="iux-tests__title">iux — integration tests</h1>
@@ -138,6 +187,11 @@ export function TestsPage() {
           </div>
         </div>
       </AppShell>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={fields}
+      />
     </PaletteRoot>
   )
 }
