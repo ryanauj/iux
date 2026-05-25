@@ -3,11 +3,9 @@ import { palettes, type PaletteId } from '../../palettes'
 import { readHash, replaceParams, useHashLocation } from '../apps/router'
 import { Segmented } from '../components/Segmented/Segmented'
 import { PaletteRoot } from '../theme/PaletteRoot'
-import { CardsViz } from './visualizations/CardsViz'
-import { GraphViz } from './visualizations/GraphViz'
-import { MatrixViz } from './visualizations/MatrixViz'
+import { CoverageViz } from './visualizations/CoverageViz'
 import { RunnerViz } from './visualizations/RunnerViz'
-import { SequenceViz } from './visualizations/SequenceViz'
+import { TestsViz } from './visualizations/TestsViz'
 import './visualizations/viz.css'
 import { INTEGRATION_TESTS } from './registry'
 import { runTest, type RunOptions } from './runner'
@@ -16,7 +14,7 @@ import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import { useNavLayout } from '../components/AppShell/navLayouts'
 
-export type VizId = 'cards' | 'matrix' | 'graph' | 'sequence' | 'runner'
+export type VizId = 'tests' | 'coverage' | 'runner'
 
 export type RunFor = (
   id: string,
@@ -25,15 +23,13 @@ export type RunFor = (
 ) => Promise<RunResult | undefined>
 
 const VIZ_OPTIONS: { value: VizId; label: string; hint: string }[] = [
-  { value: 'cards', label: 'Cards', hint: 'Browse tests as cards with run buttons' },
-  { value: 'matrix', label: 'Matrix', hint: 'Coverage heatmap: components × tests' },
-  { value: 'graph', label: 'Graph', hint: 'Component co-usage network' },
-  { value: 'sequence', label: 'Sequence', hint: 'Step-by-step storyboards' },
-  { value: 'runner', label: 'Runner', hint: 'Watch tests execute live' },
+  { value: 'tests', label: 'Tests', hint: 'Browse tests as cards with inline step storyboards — run individually or all at once' },
+  { value: 'coverage', label: 'Coverage', hint: 'See which components each test exercises, as a table or as a network graph' },
+  { value: 'runner', label: 'Runner', hint: 'Watch tests execute live with a visible sandbox and stepped playback' },
 ]
 
 const VIZ_VALUES: VizId[] = VIZ_OPTIONS.map(v => v.value)
-const DEFAULT_VIZ: VizId = 'cards'
+const DEFAULT_VIZ: VizId = 'tests'
 const DEFAULT_PALETTE: PaletteId = 'flat-classic'
 
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
@@ -132,10 +128,8 @@ export function TestsPage() {
           </header>
 
           <div className="iux-tests__viz">
-            {viz === 'cards' && <CardsViz results={results} runningId={runningId} runFor={runFor} />}
-            {viz === 'matrix' && <MatrixViz results={results} runningId={runningId} runFor={runFor} />}
-            {viz === 'graph' && <GraphViz results={results} />}
-            {viz === 'sequence' && <SequenceViz results={results} />}
+            {viz === 'tests' && <TestsViz results={results} runningId={runningId} runFor={runFor} />}
+            {viz === 'coverage' && <CoverageViz results={results} runningId={runningId} runFor={runFor} />}
             {viz === 'runner' && <RunnerViz results={results} runningId={runningId} runFor={runFor} />}
           </div>
 

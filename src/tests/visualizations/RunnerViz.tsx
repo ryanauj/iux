@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { INTEGRATION_TESTS } from '../registry'
 import type { RunFor } from '../TestsPage'
 import type { RunResult, StepResult } from '../types'
-import { describeStep } from './CardsViz'
+import { describeStep } from './step-format'
 
 interface Props {
   results: Record<string, RunResult>
@@ -192,7 +192,7 @@ export function RunnerViz({ results, runningId, runFor }: Props) {
               >
                 <span className="viz-step__num">{i + 1}</span>
                 <span className="viz-step__kind">{sr.step.kind}</span>
-                <span className="viz-step__label">{sr.step.label ?? describeStep(sr.step, i)}</span>
+                <span className="viz-step__label">{sr.step.label ?? describeStep(sr.step)}</span>
                 {sr.ms !== undefined && sr.status !== 'pending' && (
                   <span className="viz-step__ms">{Math.round(sr.ms)}ms</span>
                 )}
