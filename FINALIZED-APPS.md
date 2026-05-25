@@ -105,8 +105,8 @@ reproduces the exact shell + palette + motion.
 
 ### Shell variants
 
-Ten shells ship today. The first five are pure chrome around the
-standard page set; the last five reshape how content composes.
+Eleven shells ship today. The first five are pure chrome around the
+standard page set; the last six reshape how content composes.
 
 | `layout=` | Shape | What it changes |
 | --------- | ----- | --------------- |
@@ -120,6 +120,7 @@ standard page set; the last five reshape how content composes.
 | `tabs` | Workspace-style tab strip across the top. Each visited route becomes a tab; tabs persist via `?tabs=`. | Multiple pages stay open at once; closing the active tab navigates to a neighbor |
 | `feed` | Single chronological vertical stream of entity cards (live → today's finals → today's upcoming → season leaders) with Status / Conference / Team filter chips. On non-home routes the feed collapses into a left rail and the page renders to the right. | Replaces the Home page's five-section split with one timeline; other routes get the feed as a sidebar alongside the standard page |
 | `triptych` | Three persistent columns: a section-switched list (teams / players / games) on the left, a summary card for the selected entity in the middle, and the standard route page on the right. Clicking the list swaps only the summary; clicking the summary's links navigates and fills the right column. List section is sticky via `?tri=`; the selection inside the list is shell state that re-seeds from the route on deep links. | Replaces every page with a list / summary / detail browser, but the right column still hosts the standard page so direct links work |
+| `bento` | Configurable widget dashboard on Home: live scoreboard, PPG leaders, mini standings, schedule strip, top-team spotlight. A Customize toggle reveals per-tile hide / move-left / move-right controls; hidden widgets show in a tray for re-adding. Clicking a tile expands its section's standard page in a modal; each tile also has a `Link` to the same page. Widget order + visibility is sticky via `?bento=<id,id,…>` (omitted when the default order is intact). Other routes render standard pages below the same minimal nav. | Replaces the Home page with a user-arranged tile grid; modal expansion keeps the standard pages one click away; other routes are chrome-only |
 
 Adding a new shell:
 
@@ -129,9 +130,10 @@ Adding a new shell:
 3. Dispatch it in `Shell()` and add scoped CSS to `sports-app.css`
    under a `.sports-app--<id>` namespace.
 
-If the shell introduces new sticky URL state (the `tabs` shell does,
-via `?tabs=`), add the key to `STICKY_PARAMS` in
-`src/apps/router.ts` so it survives `Link` navigation.
+If the shell introduces new sticky URL state (the `tabs`, `triptych`,
+and `bento` shells do, via `?tabs=`, `?tri=`, and `?bento=`), add the
+key to `STICKY_PARAMS` in `src/apps/router.ts` so it survives `Link`
+navigation.
 
 ---
 

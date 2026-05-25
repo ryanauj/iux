@@ -2544,3 +2544,511 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------- Bento shell ----------
+ *
+ * Home becomes a configurable widget grid; other routes render the
+ * standard page below the same minimal top nav. Tile bodies are
+ * buttons that open the section's standard page in a modal.
+ */
+
+.sports-app--bento .sports-app__header--bento {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__bento-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__bento-nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__bento-nav-link:hover,
+.sports-app__bento-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__bento-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app__main--bento {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: none;
+}
+
+.sports-bento__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.sports-bento__toolbar-actions {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.sports-bento__edit-btn,
+.sports-bento__reset-btn {
+  appearance: none;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-bento__edit-btn:hover,
+.sports-bento__edit-btn:focus-visible,
+.sports-bento__reset-btn:hover,
+.sports-bento__reset-btn:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-bento__edit-btn.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: transparent;
+}
+
+.sports-bento__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-auto-rows: minmax(13rem, auto);
+  gap: var(--space-4);
+}
+
+.sports-bento__tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  min-height: 0;
+}
+
+.sports-bento__tile.is-editing {
+  border-style: dashed;
+  border-color: var(--color-border-default);
+}
+
+.sports-bento__tile--live {
+  grid-column: span 2;
+}
+
+.sports-bento__tile--standings {
+  grid-column: span 2;
+}
+
+.sports-bento__tile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.sports-bento__tile-title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sports-bento__expand {
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--color-content-secondary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.sports-bento__expand:hover,
+.sports-bento__expand:focus-visible {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  outline: none;
+}
+
+.sports-bento__tile-body-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  padding: 0;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  border-radius: var(--radius-md);
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-bento__tile-body-btn:hover,
+.sports-bento__tile-body-btn:focus-visible {
+  outline: none;
+  opacity: 0.92;
+}
+
+.sports-bento__tile-foot {
+  margin-top: auto;
+}
+
+.sports-bento__tile-link {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.sports-bento__tile-link:hover {
+  text-decoration: underline;
+}
+
+.sports-bento__edit-controls {
+  display: flex;
+  gap: var(--space-1);
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.sports-bento__edit-controls button {
+  appearance: none;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+  font-size: var(--type-caption-size);
+  font-family: var(--type-label-family);
+}
+
+.sports-bento__edit-controls button:hover:not(:disabled),
+.sports-bento__edit-controls button:focus-visible {
+  border-color: var(--color-border-default);
+  outline: none;
+}
+
+.sports-bento__edit-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sports-bento__empty {
+  margin: 0;
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  padding: var(--space-3);
+  border: var(--border-width-thin) dashed var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.sports-bento__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
+  color: white;
+  font-weight: 700;
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  flex: 0 0 auto;
+}
+
+.sports-bento__mark--sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.65rem;
+}
+
+.sports-bento__live {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  position: relative;
+}
+
+.sports-bento__pulse {
+  grid-column: 1 / -1;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-intent-danger-bg, var(--color-intent-primary-bg));
+  box-shadow: 0 0 0 0 currentColor;
+  animation: sports-bento-pulse var(--motion-duration-slow, 600ms)
+    var(--motion-easing-standard) infinite alternate;
+}
+
+@keyframes sports-bento-pulse {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+.sports-bento__live-clock {
+  grid-column: 1 / -1;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: calc(-1 * var(--space-1));
+}
+
+.sports-bento__live-row {
+  display: contents;
+}
+
+.sports-bento__live-name {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+}
+
+.sports-bento__live-score {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}
+
+.sports-bento__leaders {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-bento__leader {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  font-size: var(--type-label-size);
+}
+
+.sports-bento__leader-rank {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-bento__leader-name {
+  font-family: var(--type-label-family);
+  font-weight: 600;
+  color: var(--color-content-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sports-bento__leader-stat {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-label-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}
+
+.sports-bento__standings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.sports-bento__standings-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-bento__standings-conf {
+  margin: 0 0 var(--space-1) 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sports-bento__standings-row {
+  display: grid;
+  grid-template-columns: 1.25rem 1.5rem 1fr;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--type-caption-size);
+}
+
+.sports-bento__standings-rec {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-content-primary);
+}
+
+.sports-bento__schedule {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-bento__sched-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+  font-size: var(--type-label-size);
+}
+
+.sports-bento__sched-row:last-child {
+  border-bottom: none;
+}
+
+.sports-bento__sched-date {
+  color: var(--color-content-secondary);
+  font-size: var(--type-caption-size);
+}
+
+.sports-bento__sched-match {
+  font-family: var(--type-label-family);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sports-bento__spotlight {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.sports-bento__crest {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: var(--type-label-size);
+  flex: 0 0 auto;
+}
+
+.sports-bento__spotlight-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sports-bento__spotlight-name {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-heading-weight);
+  color: var(--color-content-primary);
+}
+
+.sports-bento__spotlight-meta {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-bento__spotlight-stats {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-bento__tray {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width-thin) dashed var(--color-border-subtle);
+}
+
+.sports-bento__tray-title {
+  margin: 0 0 var(--space-2) 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sports-bento__tray-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sports-bento__tray-chip {
+  appearance: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+}
+
+.sports-bento__tray-chip:hover,
+.sports-bento__tray-chip:focus-visible {
+  background-color: var(--color-surface-default);
+  outline: none;
+}
+
+@media (max-width: 56rem) {
+  .sports-bento__tile--live,
+  .sports-bento__tile--standings {
+    grid-column: span 1;
+  }
+}
