@@ -10,6 +10,7 @@ import { BentoShell } from './shells/bento'
 import { MagazineShell } from './shells/magazine'
 import { DeckShell } from './shells/deck'
 import { GraphShell } from './shells/graph'
+import { ChatShell } from './shells/chat'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -33,7 +34,10 @@ import { GraphShell } from './shells/graph'
  *     players / games stacks, driven by arrow keys and touch swipes;
  *   - `graph` replaces Home with a force-directed network of teams,
  *     players, and games — hover to highlight connections, click to
- *     navigate, filter chips to show / hide node kinds.
+ *     navigate, filter chips to show / hide node kinds;
+ *   - `chat` replaces Home with a conversational interface — type or
+ *     pick suggested chips, responses render as inline entity cards
+ *     with click-through routing, scrollback persists for the session.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -51,6 +55,7 @@ export const LAYOUT_IDS = [
   'magazine',
   'deck',
   'graph',
+  'chat',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -71,6 +76,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'magazine', label: 'Magazine — editorial cover' },
   { value: 'deck', label: 'Deck — card swipe' },
   { value: 'graph', label: 'Graph — force-directed network' },
+  { value: 'chat', label: 'Chat — conversational' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -151,6 +157,8 @@ export function Shell(props: ShellProps) {
       return <DeckShell {...props} />
     case 'graph':
       return <GraphShell {...props} />
+    case 'chat':
+      return <ChatShell {...props} />
   }
 }
 

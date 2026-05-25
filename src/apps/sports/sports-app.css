@@ -4406,3 +4406,582 @@
   letter-spacing: 0.04em;
   color: var(--color-content-secondary);
 }
+
+/* ---------- Chat shell ---------- */
+
+.sports-app--chat .sports-app__header--chat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__chat-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__chat-nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__chat-nav-link:hover,
+.sports-app__chat-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__chat-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app__main--chat {
+  max-width: 56rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* Anchor the chat to the available viewport so the log scrolls
+     internally and the composer stays pinned at the bottom. */
+  height: calc(100vh - 4rem);
+  padding-bottom: var(--space-3);
+}
+
+.sports-app__main--chat-detail {
+  max-width: 80rem;
+}
+
+.sports-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: var(--space-3);
+}
+
+.sports-chat__crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  text-decoration: none;
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-chat__crumb:hover,
+.sports-chat__crumb:focus-visible {
+  background-color: var(--color-surface-raised);
+  outline: none;
+}
+
+.sports-chat__log {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-chat__msg {
+  display: flex;
+}
+
+.sports-chat__msg--user {
+  justify-content: flex-end;
+}
+
+.sports-chat__msg--bot {
+  justify-content: flex-start;
+}
+
+.sports-chat__bubble {
+  max-width: min(36rem, 88%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+  box-shadow: var(--shadow-sm, none);
+}
+
+.sports-chat__msg--user .sports-chat__bubble {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: transparent;
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.sports-chat__msg--bot .sports-chat__bubble {
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.sports-chat__text {
+  margin: 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+}
+
+.sports-chat__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sports-chat__entity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-default);
+  border-left: 4px solid var(--color-border-subtle);
+  text-decoration: none;
+  color: var(--color-content-primary);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-chat__entity:hover,
+.sports-chat__entity:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-chat__entity--game {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.sports-chat__entity-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-family: var(--type-display-family);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.sports-chat__entity-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sports-chat__entity-title {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-heading-weight);
+  color: var(--color-content-primary);
+}
+
+.sports-chat__entity-meta {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__game-status {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__game-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-chat__game-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-family: var(--type-display-family);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.sports-chat__game-name {
+  flex: 1 1 auto;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+}
+
+.sports-chat__game-score {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-subheading-size);
+  font-weight: 700;
+  color: var(--color-content-primary);
+}
+
+.sports-chat__leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background-color: var(--color-surface-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+}
+
+.sports-chat__lb-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--color-content-primary);
+}
+
+.sports-chat__lb-row:hover,
+.sports-chat__lb-row:focus-visible {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-chat__lb-rank {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__lb-name {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-chat__lb-value {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-subheading-size);
+  font-weight: 700;
+}
+
+.sports-chat__standings {
+  background-color: var(--color-surface-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.sports-chat__standings-head {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+  padding: var(--space-1) 0 var(--space-2);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-chat__standings-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sports-chat__standings-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-chat__standings-rank {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__standings-team {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  text-decoration: none;
+  color: var(--color-content-primary);
+}
+
+.sports-chat__standings-team:hover,
+.sports-chat__standings-team:focus-visible {
+  color: var(--color-content-link);
+  outline: none;
+}
+
+.sports-chat__standings-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-family: var(--type-display-family);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.sports-chat__standings-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sports-chat__standings-record,
+.sports-chat__standings-pct {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__compare {
+  background-color: var(--color-surface-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sports-chat__compare-head {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: var(--space-2);
+}
+
+.sports-chat__compare-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+  text-decoration: none;
+  color: var(--color-content-primary);
+  font-family: var(--type-heading-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-heading-weight);
+  background-color: var(--color-surface-sunken);
+}
+
+.sports-chat__compare-name:hover,
+.sports-chat__compare-name:focus-visible {
+  background-color: var(--color-surface-raised);
+  outline: none;
+}
+
+.sports-chat__compare-team {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.sports-chat__compare-table th,
+.sports-chat__compare-table td {
+  padding: var(--space-1) var(--space-2);
+  text-align: center;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-chat__compare-table th {
+  text-align: left;
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.sports-chat__compare-table td.is-best {
+  font-weight: 700;
+  color: var(--color-intent-success-content, var(--color-content-link));
+}
+
+.sports-chat__followups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.sports-chat__chip {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-chat__chip:hover,
+.sports-chat__chip:focus-visible {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: transparent;
+  outline: none;
+}
+
+.sports-chat__msg--user .sports-chat__chip {
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-secondary);
+}
+
+.sports-chat__composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-chat__quickchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.sports-chat__chip--quick {
+  background-color: var(--color-surface-sunken);
+}
+
+.sports-chat__input-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.sports-chat__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-default);
+  color: var(--color-content-primary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-chat__input:focus-visible {
+  outline: none;
+  border-color: var(--color-content-link);
+}
+
+.sports-chat__send {
+  appearance: none;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight, 600);
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-chat__send:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.sports-chat__reset {
+  appearance: none;
+  cursor: pointer;
+  width: 2.2rem;
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-default);
+  color: var(--color-content-secondary);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+}
+
+.sports-chat__reset:hover,
+.sports-chat__reset:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .sports-app__main--chat {
+    height: auto;
+    min-height: calc(100vh - 4rem);
+  }
+
+  .sports-chat__entity-mark {
+    width: 2rem;
+    height: 2rem;
+  }
+}
