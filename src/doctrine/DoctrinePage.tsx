@@ -242,7 +242,7 @@ export function DoctrinePage() {
             className="stories__palette"
             motionScale={motionScale}
           >
-            {activePage.render()}
+            {activePage.render(setDoc)}
           </PaletteRoot>
         </div>
       </AppShell>
