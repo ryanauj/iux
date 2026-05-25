@@ -3662,3 +3662,512 @@
     font-size: calc(var(--type-display-size) * 1.6);
   }
 }
+
+/* ---------- Deck shell ----------
+ *
+ * Home becomes a full-bleed card stack: one team / player / game card at
+ * a time. Horizontal arrow keys / swipe advances within the active stack;
+ * vertical switches stacks. Detail routes collapse the deck into a
+ * breadcrumb and render the standard page below.
+ */
+
+.sports-app--deck .sports-app__header--deck {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-app__deck-nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.sports-app__deck-nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-app__deck-nav-link:hover,
+.sports-app__deck-nav-link:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-app__deck-nav-link.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+
+.sports-app__main--deck {
+  display: flex;
+  flex-direction: column;
+  max-width: 64rem;
+}
+
+.sports-app__main--deck-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---- Deck surface ---- */
+
+.sports-deck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 100%;
+  touch-action: pan-y;
+}
+
+.sports-deck__stacks {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.sports-deck__stack {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-deck__stack:hover,
+.sports-deck__stack:focus-visible {
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-deck__stack.is-active {
+  background-color: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+  border-color: transparent;
+}
+
+.sports-deck__stack-count {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-caption-size);
+  opacity: 0.7;
+}
+
+.sports-deck__stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: 26rem;
+}
+
+.sports-deck__empty {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+}
+
+/* ---- Card ---- */
+
+.sports-deck__card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width-thick) solid var(--color-border-subtle);
+  box-shadow: var(--shadow-md);
+  animation: sports-deck-in var(--motion-duration-medium) var(--motion-easing-emphasized);
+}
+
+@keyframes sports-deck-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sports-deck__card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sports-deck__card-head--game {
+  justify-content: center;
+  text-align: center;
+}
+
+.sports-deck__crest {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--type-display-family);
+  font-weight: 700;
+  font-size: var(--type-subheading-size);
+  letter-spacing: 0.04em;
+}
+
+.sports-deck__card-titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.sports-deck__kicker {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.sports-deck__title {
+  margin: 0;
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  line-height: 1.1;
+  color: var(--color-content-primary);
+}
+
+.sports-deck__subtitle {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-deck__subtitle-link {
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.sports-deck__subtitle-link:hover,
+.sports-deck__subtitle-link:focus-visible {
+  text-decoration: underline;
+}
+
+/* ---- Stats grid ---- */
+
+.sports-deck__stats {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.sports-deck__stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-sunken);
+  text-align: center;
+}
+
+.sports-deck__stat-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.sports-deck__stat-value {
+  font-family: var(--type-display-family);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-primary);
+}
+
+/* ---- Card sections ---- */
+
+.sports-deck__card-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sports-deck__section-title {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.sports-deck__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sports-deck__row-empty {
+  color: var(--color-content-secondary);
+  font-size: var(--type-caption-size);
+}
+
+.sports-deck__row {
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-deck__row:last-child {
+  border-bottom: none;
+}
+
+.sports-deck__row-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  color: var(--color-content-primary);
+  text-decoration: none;
+}
+
+.sports-deck__row-link:hover,
+.sports-deck__row-link:focus-visible {
+  color: var(--color-content-link);
+  outline: none;
+}
+
+.sports-deck__row-name {
+  font-family: var(--type-body-family);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sports-deck__row-meta {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Game card matchup ---- */
+
+.sports-deck__matchup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sports-deck__matchup-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border-inline-start: var(--border-width-thick) solid var(--color-border-subtle);
+  background-color: var(--color-surface-sunken);
+  text-decoration: none;
+}
+
+.sports-deck__matchup-row:hover,
+.sports-deck__matchup-row:focus-visible {
+  background-color: var(--color-surface-default);
+  outline: none;
+}
+
+.sports-deck__mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--type-display-family);
+  font-weight: 700;
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+}
+
+.sports-deck__matchup-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sports-deck__matchup-city {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.sports-deck__matchup-team {
+  font-family: var(--type-heading-family);
+  color: var(--color-content-primary);
+}
+
+.sports-deck__matchup-score {
+  font-family: var(--type-display-family);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-display-size);
+  color: var(--color-content-primary);
+}
+
+/* ---- Card footer ---- */
+
+.sports-deck__card-foot {
+  margin-top: auto;
+}
+
+.sports-deck__open {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.sports-deck__open:hover,
+.sports-deck__open:focus-visible {
+  text-decoration: underline;
+}
+
+/* ---- Controls ---- */
+
+.sports-deck__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.sports-deck__arrow {
+  appearance: none;
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background-color: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sports-deck__arrow:hover:not(:disabled),
+.sports-deck__arrow:focus-visible:not(:disabled) {
+  background-color: var(--color-surface-sunken);
+  outline: none;
+}
+
+.sports-deck__arrow:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sports-deck__arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sports-deck__counter {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--type-body-size);
+  color: var(--color-content-secondary);
+  min-width: 5rem;
+  text-align: center;
+}
+
+.sports-deck__hint {
+  margin: 0;
+  text-align: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  color: var(--color-content-secondary);
+}
+
+/* ---- Detail-route breadcrumb ---- */
+
+.sports-deck__crumb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sports-deck__crumb-back {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-link);
+  text-decoration: none;
+}
+
+.sports-deck__crumb-back:hover,
+.sports-deck__crumb-back:focus-visible {
+  text-decoration: underline;
+}
+
+.sports-deck__crumb-meta {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 56rem) {
+  .sports-deck__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .sports-deck__title {
+    font-size: calc(var(--type-display-size) * 0.85);
+  }
+  .sports-deck__crest {
+    width: 3rem;
+    height: 3rem;
+    font-size: var(--type-body-size);
+  }
+}

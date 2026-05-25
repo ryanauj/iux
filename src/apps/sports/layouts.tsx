@@ -8,6 +8,7 @@ import { FeedShell } from './shells/feed'
 import { TriptychShell } from './shells/triptych'
 import { BentoShell } from './shells/bento'
 import { MagazineShell } from './shells/magazine'
+import { DeckShell } from './shells/deck'
 
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
@@ -26,7 +27,9 @@ import { MagazineShell } from './shells/magazine'
  *     expand into modals over the standard pages;
  *   - `magazine` replaces Home with an editorial cover (game-of-the-night
  *     hero, pull-quote stat, leaderboard, "Inside the East" feature) and
- *     widens the type scale on other routes.
+ *     widens the type scale on other routes;
+ *   - `deck` replaces Home with a full-bleed card swipe over teams /
+ *     players / games stacks, driven by arrow keys and touch swipes.
  * See FINALIZED-APPS.md → "Shell vs content" for the full breakdown.
  */
 export const LAYOUT_IDS = [
@@ -42,6 +45,7 @@ export const LAYOUT_IDS = [
   'triptych',
   'bento',
   'magazine',
+  'deck',
 ] as const
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
@@ -60,6 +64,7 @@ export const LAYOUT_OPTIONS = [
   { value: 'triptych', label: 'Triptych — list / summary / detail' },
   { value: 'bento', label: 'Bento — configurable dashboard' },
   { value: 'magazine', label: 'Magazine — editorial cover' },
+  { value: 'deck', label: 'Deck — card swipe' },
 ]
 
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
@@ -136,6 +141,8 @@ export function Shell(props: ShellProps) {
       return <BentoShell {...props} />
     case 'magazine':
       return <MagazineShell {...props} />
+    case 'deck':
+      return <DeckShell {...props} />
   }
 }
 
