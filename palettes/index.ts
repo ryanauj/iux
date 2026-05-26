@@ -57,6 +57,16 @@ import { palette as desertModernism } from './desert-modernism'
 import { palette as solarpunk } from './solarpunk'
 import { palette as heritageMaritime } from './heritage-maritime'
 import { palette as zenSumie } from './zen-sumie'
+import { palette as nordicFrost } from './nordic-frost'
+import { palette as sageStudio } from './sage-studio'
+import { palette as linearWorkspace } from './linear-workspace'
+import { palette as vercelGeist } from './vercel-geist'
+import { palette as softPastel } from './soft-pastel'
+import { palette as lavenderDawn } from './lavender-dawn'
+import { palette as stoneModern } from './stone-modern'
+import { palette as coastalModern } from './coastal-modern'
+import { palette as citrusSpark } from './citrus-spark'
+import { palette as mochaLatte } from './mocha-latte'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -118,6 +128,16 @@ export const palettes = {
   solarpunk,
   'heritage-maritime': heritageMaritime,
   'zen-sumie': zenSumie,
+  'nordic-frost': nordicFrost,
+  'sage-studio': sageStudio,
+  'linear-workspace': linearWorkspace,
+  'vercel-geist': vercelGeist,
+  'soft-pastel': softPastel,
+  'lavender-dawn': lavenderDawn,
+  'stone-modern': stoneModern,
+  'coastal-modern': coastalModern,
+  'citrus-spark': citrusSpark,
+  'mocha-latte': mochaLatte,
 } as const
 
 export type PaletteId = keyof typeof palettes
