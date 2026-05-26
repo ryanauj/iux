@@ -1,6 +1,6 @@
 # FINALIZED-PALETTES
 
-Fifty-nine named aesthetics. Each is a concrete value-set bound to the
+Sixty-nine named aesthetics. Each is a concrete value-set bound to the
 single semantic token contract in `tokens/semantic.contract.ts`. A
 **palette** defines values; an **engine** defines the rendering style
 (which token slots matter, what shape the shadow stack takes, whether
@@ -421,6 +421,45 @@ Cottagecore).
 |----|------------------|---------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
 | 59 | Zen / Sumi-e     | Sketch  | experimental | Unbleached rice-paper field, brush-black `intent.primary`, single seal-vermilion `intent.danger` + focus ring + link, Ma Shan Zheng / Yuji Mai brush-script display, `effect.strokeVariance` tuned to `'1.0px'` (vs marker's `'1.4px'`), widened `space.*` for negative-space (`ma`) composition — East-Asian brush-and-ink register on the Sketch engine. |
 
+## Group X — modern-light register set (Flat engine, contemporary tonal pairings)
+
+Ten palettes pin ten contemporary modern-light registers to the Flat
+engine. All ten keep `surface.base` light (most near white, several with
+a faint chromatic tint that grounds the rest of the palette), and reserve
+`intent.*` for the brand-feel accents that distinguish the register.
+The set is the largest Flat-engine register family in the showcase, and
+it proves the engine carries the contemporary SaaS / wellness /
+dev-tool / café aesthetic without inventing new engines or new contract
+slots. Palettes pair off as warm/cool cousins inside the group:
+**Sage Studio ↔ Lavender Dawn** share warm body type, generous radii,
+and one deep tonal primary against a barely-tinted pale field; **Stone
+Modern ↔ Mocha Latte** share warm-paper fields but split on display
+typography (single-family grotesque vs. transitional serif); **Nordic
+Frost ↔ Coastal Modern** both build the field on a cool chromatic tint
+but differ on which water (arctic ice vs. tropical foam) the palette
+references; **Linear Workspace ↔ Vercel Geist** both anchor the
+modern-dev-tool lane but split on whether primary is brand-coloured
+(Linear indigo) or pure black (Vercel slab). **Citrus Spark** is the
+first palette in the showcase whose `intent.primary` carries **dark
+inverse content** rather than white — yellow buttons can't carry white
+text legibly, so the palette routes around it through the contract slot
+that exists for exactly this case. **Soft Pastel** is the group's
+intentional `experimental` register: it documents the contrast trap
+that every pastel-friendly app eventually hits.
+
+| #  | Palette            | Engine | A11y         | One-line philosophy                                                                                                                |
+|----|--------------------|--------|--------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 60 | Nordic Frost       | Flat   | pass         | Glacier-ice field with a 2-3% cyan tint, deep arctic-navy primary, pine-forest success, brushed-copper warning, winter-berry danger — the cooler-than-paper Nordic register on the Flat engine. |
+| 61 | Sage Studio        | Flat   | pass         | Bone-paper field with a 2-3% yellow undertone, deep-sage primary, terracotta warning, matcha success differentiated from primary by hue not luminance, Fraunces transitional-serif display — modern botanical / wellness-brand register. |
+| 62 | Linear Workspace   | Flat   | pass         | Cool off-white field, Linear-indigo `#5e6ad2` primary, Inter throughout, 14 px body for productivity-tool density, 1 px hairline-ring elevations — the modern SaaS calm-productivity register. |
+| 63 | Vercel Geist       | Flat   | pass         | Pure-white field with hairline `#eaeaea` rings demarcating every surface, pure-black slab primary, canonical `#0070f3` Vercel blue as `intent.info`, Geist Sans throughout — modern dev-tool / shadcn register. |
+| 64 | Soft Pastel        | Flat   | experimental | Cream-pink field, deep-rose primary with white inverse at the AA-UI edge, peach warning with **deep-plum** inverse content (the lighter intent routes around white's contrast limit), generous radii — friendly modern app register, ships as the teaching example for the pastel contrast trap. |
+| 65 | Lavender Dawn      | Flat   | pass         | Pale-lavender field with a 3-4% violet tint, deep plum-violet `#5c3d8a` primary, warm-amber warning paired against the cool-violet primary, Manrope humanist sans throughout — calm modern purple register. |
+| 66 | Stone Modern       | Flat   | pass         | Warm-stone field, charcoal-brown primary promoted from the body-text colour, single rust-orange `intent.warning` as the only saturated accent, Söhne grotesque throughout with uppercase-tracked labels — modern-minimalist retail register. |
+| 67 | Coastal Modern     | Flat   | pass         | Sea-foam field with a 2-3% cyan-green tint, deep-teal primary (also `intent.info`), sunset-rust warning + coral-red danger as the warm complement to the cool primary, Nunito rounded-humanist display + Inter body — Hamptons / Tulum modern coastal register. |
+| 68 | Citrus Spark       | Flat   | pass         | Bright off-white field with a 1% yellow undertone, citrus-yellow `intent.primary` with **dark inverse content** (the first palette in the showcase to route primary around yellow's white-text contrast limit), Space Grotesk display + Inter body — energetic D2C-brand register. |
+| 69 | Mocha Latte        | Flat   | pass         | Oat-cream field with a 4-5% yellow-warm undertone, mocha-brown primary, cinnamon warning + matcha success + cool slate-blue info as the warm/cool state-contrast move, Recoleta serif display — modern third-wave café register. |
+
 ---
 
 ## Notes on a11y tags
@@ -439,7 +478,7 @@ Cottagecore).
 
 ## Engine inventory
 
-Fourteen engines, fifty-nine palettes:
+Fourteen engines, sixty-nine palettes:
 
 1. Flat
 2. Material
@@ -457,7 +496,7 @@ Fourteen engines, fifty-nine palettes:
 14. Terminal-TUI
 
 Engine `Flat` is reused by palettes 1, 9, 10, 16–20, 21–22, 32,
-34–36, 42–49, and 50–58. Engine `Neubrutalism` is reused by palettes
+34–36, 42–49, 50–58, and 60–69. Engine `Neubrutalism` is reused by palettes
 3 and 33. Engine `Glassmorphism` is reused by palettes 4, 8, and 11–15.
 Engine `CRT / Phosphor` is reused by palettes 23, 24. Engine
 `Pixel-art` is reused by palettes 25–30. Engine `Sketch` is reused by
