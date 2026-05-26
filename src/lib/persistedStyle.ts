@@ -1,4 +1,5 @@
 import { palettes, type PaletteId } from '../../palettes'
+import type { Field } from '../components/DraggableControls/DraggableControls'
 import { usePersistedPref } from './usePersistedPref'
 
 export const SELECTED_STYLE_KEY = 'iux-selected-style'
@@ -46,4 +47,29 @@ export function readSelectedStyle(): PaletteId {
     /* ignore */
   }
   return DEFAULT_SELECTED_STYLE
+}
+
+/**
+ * Build the canonical "chrome" Field for `DraggableControls`. Tagged
+ * with `kind: 'palette'` so both DraggableControls variants substitute
+ * the dedicated `PalettePicker` (with tag search, pinned/active groups,
+ * inline arrows) instead of the generic `Select` / `StripPopover`. The
+ * `options` array is intentionally empty — PalettePicker reads the full
+ * registry itself — so call sites no longer need to map `PALETTE_IDS`.
+ */
+export function buildPaletteField(
+  value: PaletteId,
+  onChange: (next: PaletteId) => void,
+): Field {
+  return {
+    kind: 'palette',
+    key: 'chrome',
+    label: 'Chrome',
+    short: 'C',
+    value,
+    options: [],
+    onChange: next => {
+      if (isPaletteId(next)) onChange(next)
+    },
+  }
 }

@@ -19,7 +19,7 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
-import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
@@ -149,21 +149,10 @@ export function DoctrinePage() {
     onChange: v => setDoc(v as DoctrineId),
   }
 
-  const chromeField: Field = {
-    key: 'chrome',
-    label: 'Chrome',
-    short: 'P',
-    value: chromePaletteId,
-    options: PALETTE_IDS.map(id => ({
-      value: id,
-      label: `${palettes[id].name} (${palettes[id].engine})`,
-    })),
-    onChange: v => {
-      const next = v as PaletteId
-      setChromePaletteId(next)
-      setSelectedStyle(next)
-    },
-  }
+  const chromeField: Field = buildPaletteField(chromePaletteId, next => {
+    setChromePaletteId(next)
+    setSelectedStyle(next)
+  })
 
   const motionField: Field = {
     key: 'motion',

@@ -6,7 +6,7 @@ import {
   type ControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
-import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import '../showcase/showcase.css'
 import { QuizView } from './QuizView'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -125,21 +125,10 @@ export function QuizPage() {
     }
   }, [infoOpen])
 
-  const chromeField: Field = {
-    key: 'chrome',
-    label: 'Chrome',
-    short: 'P',
-    value: chromePaletteId,
-    options: PALETTE_IDS.map(id => ({
-      value: id,
-      label: `${palettes[id].name} (${palettes[id].engine})`,
-    })),
-    onChange: v => {
-      const next = v as PaletteId
-      setChromePaletteId(next)
-      setSelectedStyle(next)
-    },
-  }
+  const chromeField: Field = buildPaletteField(chromePaletteId, next => {
+    setChromePaletteId(next)
+    setSelectedStyle(next)
+  })
 
   const navLayoutField: Field = {
     key: 'navLayout',

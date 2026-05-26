@@ -1,18 +1,5 @@
 import { useEffect, useState } from 'react'
-
-type Listener = (value: string) => void
-
-/**
- * In-memory subscribers keyed by storage key. Lets multiple React tree
- * instances (e.g. a floating picker mounted on both the showcase and an
- * app shell) stay in sync within the same tab without round-tripping
- * through the storage event, which only fires across tabs.
- */
-const listeners = new Map<string, Set<Listener>>()
-
-function notify(key: string, value: string) {
-  listeners.get(key)?.forEach(l => l(value))
-}
+import { notify, subscribe } from './_persistedShared'
 
 /**
  * localStorage-backed React state with cross-instance sync. Returns the
@@ -37,21 +24,17 @@ export function usePersistedPref<T extends string>(
   })
 
   useEffect(() => {
-    const listener: Listener = raw => {
+    const unsubscribe = subscribe(key, raw => {
       if (validate(raw)) setValue(raw)
-    }
-    let bucket = listeners.get(key)
-    if (!bucket) {
-      bucket = new Set()
-      listeners.set(key, bucket)
-    }
-    bucket.add(listener)
+    })
     const onStorage = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) listener(e.newValue)
+      if (e.key === key && e.newValue !== null && validate(e.newValue)) {
+        setValue(e.newValue)
+      }
     }
     window.addEventListener('storage', onStorage)
     return () => {
-      bucket!.delete(listener)
+      unsubscribe()
       window.removeEventListener('storage', onStorage)
     }
     // `validate` is treated as stable; callers should pass a module-level

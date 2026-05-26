@@ -8,7 +8,7 @@ import {
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
-import { useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, useSelectedStyle } from '../lib/persistedStyle'
 import { CoverageViz } from './visualizations/CoverageViz'
 import { TestsViz } from './visualizations/TestsViz'
 import './visualizations/viz.css'
@@ -134,17 +134,7 @@ export function TestsPage() {
   const [navLayout] = useNavLayout()
 
   const fields: Field[] = [
-    {
-      key: 'palette',
-      label: 'Palette',
-      short: 'P',
-      value: paletteId,
-      options: PALETTE_IDS.map(id => ({
-        value: id,
-        label: `${palettes[id].name} (${palettes[id].engine})`,
-      })),
-      onChange: handlePaletteChange,
-    },
+    buildPaletteField(paletteId, handlePaletteChange),
   ]
 
   const brand = (

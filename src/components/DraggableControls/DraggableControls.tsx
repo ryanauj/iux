@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
+import { PalettePicker } from '../PalettePicker/PalettePicker'
 import { Select } from '../Select/Select'
 import './DraggableControls.css'
 
@@ -39,6 +40,14 @@ export type Field = {
   value: string
   options: { value: string; label: string }[]
   onChange: (next: string) => void
+  /**
+   * Optional marker that swaps the generic Select / StripPopover for a
+   * dedicated picker. `'palette'` substitutes `PalettePicker`, which
+   * handles tag search, pinned / active groups, inline arrow cycling,
+   * and custom-group management. The full palette registry is read by
+   * the picker itself, so `options` can be empty for palette fields.
+   */
+  kind?: 'palette'
 }
 
 type Position = { x: number; y: number }
@@ -357,17 +366,21 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           aria-label="Demo controls"
         >
           <div className="ctrl-button__grid">
-            {fields.map(f => (
-              <Select
-                key={f.key}
-                className="ctrl-button__tile"
-                label={f.label}
-                variant={f.options.length >= SEARCHABLE_THRESHOLD ? 'combobox' : 'dropdown'}
-                value={f.value}
-                options={f.options}
-                onChange={next => { if (next) f.onChange(next) }}
-              />
-            ))}
+            {fields.map(f =>
+              f.kind === 'palette' ? (
+                <PalettePicker key={f.key} field={f} variant="button" />
+              ) : (
+                <Select
+                  key={f.key}
+                  className="ctrl-button__tile"
+                  label={f.label}
+                  variant={f.options.length >= SEARCHABLE_THRESHOLD ? 'combobox' : 'dropdown'}
+                  value={f.value}
+                  options={f.options}
+                  onChange={next => { if (next) f.onChange(next) }}
+                />
+              ),
+            )}
           </div>
           <div className="ctrl-button__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
@@ -465,6 +478,41 @@ function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps
 /* ===== Variation B: Edge Strip ===== */
 type StripQuadrant = `${HorizontalDir}-${VerticalDir}`
 
+interface PaletteStripSlotProps {
+  field: Field
+  isActive: boolean
+  quadrant: StripQuadrant
+  slotRect: DOMRect | null
+  onToggle: (e: ReactMouseEvent<HTMLButtonElement>) => void
+  onClose: () => void
+}
+
+/**
+ * Strip-variant wrapper for the palette picker. Forwards the slot
+ * button's click event to the parent so it can capture the rect for
+ * popover positioning the same way `toggleSlot` does for generic fields.
+ */
+function PaletteStripSlot({
+  field,
+  isActive,
+  quadrant,
+  slotRect,
+  onToggle,
+  onClose,
+}: PaletteStripSlotProps) {
+  return (
+    <PalettePicker
+      field={field}
+      variant="strip"
+      popoverOpen={isActive}
+      onSlotClick={onToggle}
+      onPanelClose={onClose}
+      popoverQuadrant={quadrant}
+      slotRect={slotRect}
+    />
+  )
+}
+
 function pickStripQuadrant(rect: DOMRect): StripQuadrant {
   const spaceRight = window.innerWidth - rect.right
   const spaceLeft = rect.left
@@ -527,6 +575,19 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
             {fields.map(f => {
               const opt = f.options.find(o => o.value === f.value)
               const isActive = activeKey === f.key
+              if (f.kind === 'palette') {
+                return (
+                  <PaletteStripSlot
+                    key={f.key}
+                    field={f}
+                    isActive={isActive}
+                    quadrant={popoverQuadrant}
+                    slotRect={slotRect}
+                    onToggle={e => toggleSlot(f.key, e)}
+                    onClose={() => setActiveKey(null)}
+                  />
+                )
+              }
               return (
                 <div key={f.key} className="ctrl-strip__slot">
                   <button

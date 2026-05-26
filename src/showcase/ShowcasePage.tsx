@@ -15,7 +15,7 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
-import { readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -330,14 +330,7 @@ export function ShowcasePage({
       ]
     : [
         viewField,
-        {
-          key: 'palette',
-          label: 'Palette',
-          short: 'P',
-          value: showcasePaletteId,
-          options: PALETTE_IDS.map(id => ({ value: id, label: `${palettes[id].name} (${palettes[id].engine})` })),
-          onChange: v => handleShowcasePaletteChange(v as PaletteId),
-        },
+        buildPaletteField(showcasePaletteId, handleShowcasePaletteChange),
         {
           key: 'layout',
           label: 'Layout',
