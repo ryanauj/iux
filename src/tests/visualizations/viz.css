@@ -128,7 +128,7 @@
 
 .viz-step {
   display: grid;
-  grid-template-columns: 1.5em 5.5em 1fr auto;
+  grid-template-columns: 1.5em 9em 1fr auto;
   gap: var(--space-2);
   align-items: center;
   padding: var(--space-1) var(--space-2);
@@ -148,6 +148,10 @@
   font-size: 0.9em;
   letter-spacing: 0.05em;
   opacity: 0.85;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .viz-step__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .viz-step__ms { font-family: var(--type-mono-family, monospace); opacity: 0.7; }
@@ -521,6 +525,37 @@
   outline: 1px dashed var(--color-intent-info-bg);
   outline-offset: -1px;
   color: var(--color-content-primary);
+}
+
+.viz-tests__stop-fab {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill, 999px);
+  border: var(--border-width-thin) solid transparent;
+  background: var(--color-intent-danger-bg);
+  color: var(--color-intent-danger-content);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size, var(--type-caption-size));
+  box-shadow: var(--elevation-overlay);
+  cursor: pointer;
+}
+.viz-tests__stop-fab:hover { filter: brightness(0.95); }
+.viz-tests__stop-fab:focus-visible {
+  outline: 2px solid var(--color-intent-primary-bg);
+  outline-offset: 2px;
+}
+.viz-tests__stop-fab__dot {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: currentColor;
+  animation: viz-pulse 1.2s linear infinite;
 }
 
 @media (max-width: 960px) {

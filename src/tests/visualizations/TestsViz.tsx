@@ -35,6 +35,9 @@ export function TestsViz({ results, runningId, runFor }: Props) {
   const [offscreenTestId, setOffscreenTestId] = useState<string | null>(null)
   const [offscreenMountKey, setOffscreenMountKey] = useState(0)
 
+  const [runAllActive, setRunAllActive] = useState(false)
+  const runAllAbortRef = useRef<AbortController | null>(null)
+
   const focusedSandboxRef = useRef<HTMLDivElement>(null)
   const offscreenSandboxRef = useRef<HTMLDivElement>(null)
   const continueResolverRef = useRef<(() => void) | null>(null)
@@ -52,7 +55,7 @@ export function TestsViz({ results, runningId, runFor }: Props) {
   )
 
   const runWithFocus = useCallback(
-    async (id: string) => {
+    async (id: string, signal?: AbortSignal) => {
       const eff = effectiveFor(id)
       setFocusedId(id)
       setMountKey(k => k + 1)
@@ -68,6 +71,7 @@ export function TestsViz({ results, runningId, runFor }: Props) {
       setLive([...stream])
       await runFor(id, focusedSandboxRef.current, {
         stepDelayMs: eff.stepped ? 0 : eff.delayMs,
+        signal,
         onStep: (i, r) => {
           stream[i] = r
           setLive([...stream])
@@ -75,7 +79,7 @@ export function TestsViz({ results, runningId, runFor }: Props) {
         awaitContinue: eff.stepped
           ? i =>
               new Promise<void>(resolve => {
-                if (skipRestRef.current) {
+                if (skipRestRef.current || signal?.aborted) {
                   resolve()
                   return
                 }
@@ -99,21 +103,36 @@ export function TestsViz({ results, runningId, runFor }: Props) {
   )
 
   const runOffscreen = useCallback(
-    async (id: string) => {
+    async (id: string, signal?: AbortSignal) => {
       setOffscreenTestId(id)
       setOffscreenMountKey(k => k + 1)
       await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
-      if (offscreenSandboxRef.current) await runFor(id, offscreenSandboxRef.current)
+      if (offscreenSandboxRef.current) await runFor(id, offscreenSandboxRef.current, { signal })
     },
     [runFor],
   )
 
   const handleRunAll = useCallback(async () => {
-    for (const t of INTEGRATION_TESTS) {
-      if (runAllMode === 'fast') await runOffscreen(t.id)
-      else await runWithFocus(t.id)
+    const ac = new AbortController()
+    runAllAbortRef.current = ac
+    setRunAllActive(true)
+    try {
+      for (const t of INTEGRATION_TESTS) {
+        if (ac.signal.aborted) break
+        if (runAllMode === 'fast') await runOffscreen(t.id, ac.signal)
+        else await runWithFocus(t.id, ac.signal)
+      }
+    } finally {
+      setRunAllActive(false)
+      runAllAbortRef.current = null
     }
   }, [runAllMode, runOffscreen, runWithFocus])
+
+  const handleStopAll = () => {
+    runAllAbortRef.current?.abort()
+    skipRestRef.current = true
+    continueResolverRef.current?.()
+  }
 
   const handleNextStep = () => continueResolverRef.current?.()
   const handleRunToEnd = () => {
@@ -146,7 +165,7 @@ export function TestsViz({ results, runningId, runFor }: Props) {
             type="button"
             className="viz-btn viz-btn--primary"
             onClick={handleRunAll}
-            disabled={!!runningId}
+            disabled={!!runningId || runAllActive}
           >
             ▶ Run all
           </button>
@@ -260,6 +279,18 @@ export function TestsViz({ results, runningId, runFor }: Props) {
       >
         {offscreenTest && <div key={offscreenMountKey}>{offscreenTest.render()}</div>}
       </div>
+
+      {runAllActive && (
+        <button
+          type="button"
+          className="viz-tests__stop-fab"
+          onClick={handleStopAll}
+          aria-label="Stop run all"
+        >
+          <span className="viz-tests__stop-fab__dot" aria-hidden="true" />
+          Stop run
+        </button>
+      )}
     </div>
   )
 }
