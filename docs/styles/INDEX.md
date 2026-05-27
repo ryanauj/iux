@@ -1,71 +1,68 @@
 # Style descriptions — index
 
-22 of 59 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
+59 of 59 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
 
 ## Populated
 
+- [High-Contrast AAA](./aaa.md) — `flat`
+- [Academic](./academic.md) — `flat`
 - [Aero Glass](./aero-glass.md) — `glassmorphism`
 - [Art Deco / Gatsby](./art-deco.md) — `flat`
+- [Aurora](./aurora.md) — `aurora`
+- [Bauhaus](./bauhaus.md) — `flat`
 - [Blueprint](./blueprint.md) — `flat`
+- [Brutalist-elegant](./brutalist-elegant.md) — `neubrutalism`
 - [Bullet Train / Day](./bullet-train-day.md) — `flat`
+- [Cardstock (Layered)](./cardstock-layered.md) — `cardstock`
+- [Cel-shaded (Shojo)](./cel-shaded-shojo.md) — `cel-shaded`
+- [Cel-shaded (Shonen)](./cel-shaded-shonen.md) — `cel-shaded`
+- [Claymorphism](./claymorphism.md) — `claymorphism`
+- [CRT / Phosphor (Amber)](./crt-phosphor-amber.md) — `crt-phosphor`
+- [CRT / Phosphor (Green)](./crt-phosphor-green.md) — `crt-phosphor`
+- [Cyberpunk Neon-Noir](./cyberpunk-neon-noir.md) — `glassmorphism`
+- [Data-dense light](./data-dense-light.md) — `flat`
 - [Desert Modernism](./desert-modernism.md) — `flat`
 - [Dieter Rams / Braun](./dieter-rams.md) — `flat`
+- [Editorial](./editorial.md) — `flat`
+- [Financial Terminal](./financial-terminal.md) — `flat`
 - [Flat / Classic](./flat-classic.md) — `flat`
+- [Frutiger Aero](./frutiger-aero.md) — `glassmorphism`
 - [Glassmorphism](./glassmorphism.md) — `glassmorphism`
 - [Graffiti / Marble](./graffiti-marble.md) — `flat`
 - [Heritage Maritime](./heritage-maritime.md) — `flat`
 - [Industrial / Light](./industrial-light.md) — `flat`
 - [Letterpress](./letterpress.md) — `flat`
+- [Liquid Glass (Dark)](./liquid-glass-dark.md) — `glassmorphism`
+- [Liquid Glass (Light)](./liquid-glass-light.md) — `glassmorphism`
+- [Mall-goth](./mall-goth.md) — `flat`
 - [Marble Royal Flat](./marble-royal-flat.md) — `flat`
+- [Material](./material.md) — `material`
+- [80s Memphis](./memphis-80s.md) — `flat`
 - [Metro / Light](./metro-light.md) — `flat`
+- [Mid-century modern](./mid-century-modern.md) — `flat`
 - [Modern Royal](./modern-royal.md) — `flat`
+- [Neubrutalism](./neubrutalism.md) — `neubrutalism`
+- [Neumorphism](./neumorphism.md) — `neumorphism`
+- [Newspaper / Broadsheet](./newspaper.md) — `flat`
+- [Pixel Art (Cottagecore)](./pixel-art-cottagecore.md) — `pixel-art`
+- [Pixel Art (Game Boy)](./pixel-art-gameboy.md) — `pixel-art`
+- [Pixel Art (Hyper Light)](./pixel-art-hyperlight.md) — `pixel-art`
 - [Pixel Art (NES)](./pixel-art-nes.md) — `pixel-art`
+- [Pixel Art (PICO-8)](./pixel-art-pico8.md) — `pixel-art`
+- [Pixel Art (SNES)](./pixel-art-snes.md) — `pixel-art`
 - [Risograph](./risograph.md) — `flat`
 - [Scandinavian Royal Modern](./scandinavian-royal-modern.md) — `flat`
+- [Hand-drawn (Marker)](./sketch-marker.md) — `sketch`
+- [Skeuomorphism](./skeuomorphism.md) — `skeuomorphism`
 - [Solarpunk](./solarpunk.md) — `flat`
 - [Cathedral / Stained Glass](./stained-glass.md) — `flat`
+- [Swiss / International Style](./swiss-international.md) — `flat`
+- [Terminal / TUI](./terminal-tui.md) — `terminal-tui`
 - [Tokyo / Day](./tokyo-day.md) — `flat`
+- [Tron / Dark-Neon](./tron-dark-neon.md) — `glassmorphism`
+- [Vaporwave](./vaporwave.md) — `flat`
+- [Wikipedia / Institutional](./wikipedia.md) — `flat`
 - [Zen / Sumi-e](./zen-sumie.md) — `sketch`
-
-## Missing
-
-- Material — `material`
-- Neubrutalism — `neubrutalism`
-- Neumorphism — `neumorphism`
-- Claymorphism — `claymorphism`
-- Skeuomorphism — `skeuomorphism`
-- Tron / Dark-Neon — `glassmorphism`
-- Editorial — `flat`
-- High-Contrast AAA — `flat`
-- Liquid Glass (Light) — `glassmorphism`
-- Liquid Glass (Dark) — `glassmorphism`
-- Frutiger Aero — `glassmorphism`
-- Cyberpunk Neon-Noir — `glassmorphism`
-- Vaporwave — `flat`
-- 80s Memphis — `flat`
-- Swiss / International Style — `flat`
-- Bauhaus — `flat`
-- Mall-goth — `flat`
-- Newspaper / Broadsheet — `flat`
-- Academic — `flat`
-- CRT / Phosphor (Green) — `crt-phosphor`
-- CRT / Phosphor (Amber) — `crt-phosphor`
-- Pixel Art (Game Boy) — `pixel-art`
-- Pixel Art (Cottagecore) — `pixel-art`
-- Pixel Art (PICO-8) — `pixel-art`
-- Pixel Art (SNES) — `pixel-art`
-- Pixel Art (Hyper Light) — `pixel-art`
-- Hand-drawn (Marker) — `sketch`
-- Wikipedia / Institutional — `flat`
-- Brutalist-elegant — `neubrutalism`
-- Financial Terminal — `flat`
-- Mid-century modern — `flat`
-- Data-dense light — `flat`
-- Cardstock (Layered) — `cardstock`
-- Cel-shaded (Shonen) — `cel-shaded`
-- Cel-shaded (Shojo) — `cel-shaded`
-- Aurora — `aurora`
-- Terminal / TUI — `terminal-tui`
 
 ---
 
