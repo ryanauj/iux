@@ -412,6 +412,46 @@
   color: var(--color-content-secondary, GrayText);
 }
 
+/* ─────────── browse disclosure ─────────── */
+
+/*
+ * Wraps search + palette list so the bulk of the picker collapses behind
+ * a single toggle. Keeps the popover compact when the user only wants to
+ * switch the active group or cycle through it — important on phones
+ * where the expanded list otherwise consumes most of the viewport and
+ * obscures the showcase view underneath.
+ */
+.palette-picker__browse {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+  padding-top: var(--space-1, 0.25rem);
+}
+
+.palette-picker__browse-toggle {
+  font: inherit;
+  font-size: 0.75rem;
+  text-align: left;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-content-secondary, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+}
+
+.palette-picker__browse-toggle:hover {
+  color: var(--color-content-primary, CanvasText);
+  background: var(--color-surface-sunken, Canvas);
+}
+
+.palette-picker__browse-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
 /* ─────────── empty / actions ─────────── */
 
 .palette-picker__empty {
