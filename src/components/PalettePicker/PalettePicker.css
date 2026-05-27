@@ -289,7 +289,7 @@
  *
  *    Note: we deliberately don't use `flex-basis: 0` (the popover only
  *    has `max-height`, not `height`, so a 0-basis with no available free
- *    space resolves to 0 and the list disappears entirely — see #112).
+ *    space resolves to 0 and the list disappears entirely).
  *
  * `overscroll-behavior: contain` prevents touch/wheel chains from bleeding
  * into the popover's own scroller when the list reaches its top/bottom.
