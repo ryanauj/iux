@@ -98,39 +98,119 @@
   right: 0;
 }
 
-.ctrl-button__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3, 0.75rem);
-  align-items: start;
-}
-
 /*
- * Each grid cell hosts a Select component. Override its 24rem cap so
- * the trigger fills the column, and shrink its label to the compact
- * caption look the panel had before the Select swap.
+ * The button-variant panel is now a stack: palette picker at the top
+ * (full-width tile with its own expand-in-place panel), then a column
+ * of slim disclosure rows for the other fields, then the style-switcher
+ * footer. The disclosure rows mirror the look of the palette picker's
+ * own Browse/Preferences toggles so the whole panel reads as one
+ * collapsible surface instead of two competing systems.
  */
-.ctrl-button__tile.iux-select {
-  max-width: none;
+.ctrl-button__palette {
+  display: flex;
+  flex-direction: column;
 }
 
-.ctrl-button__tile .iux-select__label {
-  font-family: var(--type-caption-family, inherit);
-  font-size: var(--type-caption-size, 0.7rem);
-  font-weight: var(--type-caption-weight, 400);
+.ctrl-button__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-2, 0.5rem);
+  padding-top: var(--space-2, 0.5rem);
+  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+}
+
+.ctrl-button__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.ctrl-button__section-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-content-secondary, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.ctrl-button__section-toggle:hover {
+  color: var(--color-content-primary, CanvasText);
+  background: var(--color-surface-sunken, Canvas);
+}
+
+.ctrl-button__section-caret {
+  font-size: 0.65rem;
   color: var(--color-content-muted, GrayText);
+  flex-shrink: 0;
+  width: 0.75rem;
+  display: inline-flex;
+  justify-content: center;
 }
 
-/*
- * Inside a half-width grid column the trigger can't accommodate long
- * option labels (e.g. "Per-component (one × all palettes)") on one
- * line. Truncate instead of wrapping so the tile height stays uniform.
- */
-.ctrl-button__tile .iux-select__value,
-.ctrl-button__tile .iux-select__input {
+.ctrl-button__section-label {
+  color: var(--color-content-muted, GrayText);
+  flex-shrink: 0;
+}
+
+.ctrl-button__section-value {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--color-content-primary, CanvasText);
+  text-align: right;
+}
+
+.ctrl-button__section.is-open .ctrl-button__section-toggle {
+  color: var(--color-content-primary, CanvasText);
+}
+
+.ctrl-button__section-body {
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem) var(--space-2, 0.5rem);
+}
+
+.ctrl-button__section-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  border-radius: var(--radius-full, 999px);
+  padding: 2px;
+}
+
+.ctrl-button__section-option {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-content-secondary, GrayText);
+  border-radius: var(--radius-full, 999px);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ctrl-button__section-option:hover {
+  color: var(--color-content-primary, CanvasText);
+  background: var(--color-surface-sunken, Canvas);
+}
+
+.ctrl-button__section-option.is-active {
+  background: var(--color-content-primary, CanvasText);
+  color: var(--color-surface-base, Canvas);
 }
 
 .ctrl-button__footer {
@@ -435,10 +515,6 @@
     max-width: calc(100vw - 32px);
     max-height: calc(100vh - 24px);
     overflow-y: auto;
-  }
-
-  .ctrl-button__grid {
-    grid-template-columns: 1fr;
   }
 
   .ctrl-strip {
