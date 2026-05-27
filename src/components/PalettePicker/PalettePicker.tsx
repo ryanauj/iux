@@ -480,6 +480,16 @@ function PalettePickerPanel(props: PanelProps) {
                 )}
               </div>
             ) : (
+              /* FUTURE: virtualize when the catalog grows past a few hundred.
+               * Today (59 palettes, ~30 per group) the list renders all rows
+               * and a CSS cap on `.palette-picker__list` keeps the viewport
+               * footprint reasonable — see PalettePicker.css. If row count
+               * climbs (or per-row swatch previews land), swap the `<ul>`
+               * body for a virtualizer (e.g. `@tanstack/react-virtual`) and
+               * keep the existing scroll container as the scroll element.
+               * Watch out for: the per-row group menu's absolute positioning
+               * against its row, focus-into-view for any keyboard cycling,
+               * and the `palette-picker--up` scroll-to-bottom effect. */
               <ul className="palette-picker__list" role="menu">
           {visiblePalettes.map(id => {
             const palette = palettes[id]
