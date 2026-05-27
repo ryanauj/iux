@@ -1,13 +1,22 @@
 import { Link } from 'react-router-dom'
 import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { useSelectedStyle } from '../../lib/persistedStyle'
+import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
 import { useDocMode } from '../../lib/useDocMode'
 import { DocModeToggle } from '../../components/DocModeToggle/DocModeToggle'
 import { ENGINE_GUIDES, ENGINE_GUIDE_IDS } from './registry'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
-import { useNavLayout } from '../../components/AppShell/navLayouts'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../../components/AppShell/navLayouts'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
 import './guides.css'
 
 const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
@@ -28,12 +37,24 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
 ]
 
 export function EnginesIndex() {
-  const [navLayout] = useNavLayout()
-  const [selectedStyle] = useSelectedStyle()
+  const [navLayout, setNavLayout] = useNavLayout()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const [docMode, setDocMode] = useDocMode()
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
   const brand = (
     <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
   )
+
+  const chromeField: Field = buildPaletteField(selectedStyle, setSelectedStyle)
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+  const fields: Field[] = [chromeField, navLayoutField]
   return (
     <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
       <AppShell
@@ -43,6 +64,11 @@ export function EnginesIndex() {
         activeId="engines"
       >
         <main className="iux-engines-index">
+          <DraggableControls
+            style={controlsStyle}
+            onStyleChange={setControlsStyle}
+            fields={fields}
+          />
           <nav className="iux-engine-guide__crumbs" aria-label="Breadcrumb">
             <Link to="/" className="iux-engine-guide__crumb">Stories</Link>
             <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>

@@ -5,8 +5,17 @@ import { PaletteRoot } from '../../theme/PaletteRoot'
 import { Stepper, type StepperStep } from '../../components/Stepper/Stepper'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
-import { useNavLayout } from '../../components/AppShell/navLayouts'
-import { useSelectedStyle } from '../../lib/persistedStyle'
+import {
+  NAV_LAYOUT_OPTIONS,
+  useNavLayout,
+  type NavLayoutId,
+} from '../../components/AppShell/navLayouts'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
+import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
 import { useDocMode } from '../../lib/useDocMode'
 import { DocModeToggle } from '../../components/DocModeToggle/DocModeToggle'
 import { descriptions } from '../../../palettes/descriptions'
@@ -60,8 +69,9 @@ interface EngineGuideProps {
 
 export function EngineGuide({ guide }: EngineGuideProps) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selectedStyle] = useSelectedStyle()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const [docMode, setDocMode] = useDocMode()
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
   const requestedStep = searchParams.get('step')
   const fallbackId = guide.steps[0]?.id ?? ''
   const currentId = guide.steps.some(s => s.id === requestedStep)
@@ -108,10 +118,21 @@ export function EngineGuide({ guide }: EngineGuideProps) {
     [guide.steps, guide.demoPalette, docMode],
   )
 
-  const [navLayout] = useNavLayout()
+  const [navLayout, setNavLayout] = useNavLayout()
   const brand = (
     <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
   )
+
+  const chromeField: Field = buildPaletteField(selectedStyle, setSelectedStyle)
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+  const fields: Field[] = [chromeField, navLayoutField]
 
   return (
     <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
@@ -122,6 +143,11 @@ export function EngineGuide({ guide }: EngineGuideProps) {
         activeId="engines"
       >
         <main className="iux-engine-guide">
+          <DraggableControls
+            style={controlsStyle}
+            onStyleChange={setControlsStyle}
+            fields={fields}
+          />
           <nav className="iux-engine-guide__crumbs" aria-label="Breadcrumb">
             <Link to="/" className="iux-engine-guide__crumb">Stories</Link>
             <span className="iux-engine-guide__crumb-sep" aria-hidden="true">/</span>
