@@ -345,6 +345,9 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
     setOpen(!open)
   }
 
+  const paletteFields = fields.filter(f => f.kind === 'palette')
+  const otherFields = fields.filter(f => f.kind !== 'palette')
+
   return (
     <div className="ctrl-button">
       <button
@@ -365,26 +368,74 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           role="group"
           aria-label="Demo controls"
         >
-          <div className="ctrl-button__grid">
-            {fields.map(f =>
-              f.kind === 'palette' ? (
+          {paletteFields.length > 0 && (
+            <div className="ctrl-button__palette">
+              {paletteFields.map(f => (
                 <PalettePicker key={f.key} field={f} variant="button" />
-              ) : (
-                <Select
-                  key={f.key}
-                  className="ctrl-button__tile"
-                  label={f.label}
-                  variant={f.options.length >= SEARCHABLE_THRESHOLD ? 'combobox' : 'dropdown'}
-                  value={f.value}
-                  options={f.options}
-                  onChange={next => { if (next) f.onChange(next) }}
-                />
-              ),
-            )}
-          </div>
+              ))}
+            </div>
+          )}
+          {otherFields.length > 0 && (
+            <div className="ctrl-button__sections">
+              {otherFields.map(f => (
+                <CollapsibleSection key={f.key} field={f} />
+              ))}
+            </div>
+          )}
           <div className="ctrl-button__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
           </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CollapsibleSection({ field }: { field: Field }) {
+  const [open, setOpen] = useState(false)
+  const current = field.options.find(o => o.value === field.value)
+  const currentLabel = current?.label ?? field.value
+  const useSelect = field.options.length >= SEARCHABLE_THRESHOLD
+  return (
+    <div className={`ctrl-button__section${open ? ' is-open' : ''}`}>
+      <button
+        type="button"
+        className="ctrl-button__section-toggle"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+      >
+        <span className="ctrl-button__section-caret" aria-hidden="true">{open ? '▾' : '▸'}</span>
+        <span className="ctrl-button__section-label">{field.label}</span>
+        <span className="ctrl-button__section-value">{currentLabel}</span>
+      </button>
+      {open && (
+        <div className="ctrl-button__section-body">
+          {useSelect ? (
+            <Select
+              variant="combobox"
+              value={field.value}
+              options={field.options}
+              onChange={next => { if (next) field.onChange(next) }}
+            />
+          ) : (
+            <div className="ctrl-button__section-options" role="radiogroup" aria-label={field.label}>
+              {field.options.map(o => {
+                const active = o.value === field.value
+                return (
+                  <button
+                    key={o.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    className={`ctrl-button__section-option${active ? ' is-active' : ''}`}
+                    onClick={() => field.onChange(o.value)}
+                  >
+                    {o.label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -572,7 +623,7 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
       {open ? (
         <>
           <div className="ctrl-strip__icons" role="toolbar" aria-label="Demo controls">
-            {fields.map(f => {
+            {[...fields.filter(f => f.kind === 'palette'), ...fields.filter(f => f.kind !== 'palette')].map(f => {
               const opt = f.options.find(o => o.value === f.value)
               const isActive = activeKey === f.key
               if (f.kind === 'palette') {
