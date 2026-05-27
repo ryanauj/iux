@@ -236,6 +236,10 @@
 
 .palette-picker__active-select {
   flex: 1;
+  /* Without min-width: 0 the select holds at the intrinsic width of its
+   * longest <option> ("Editorial (15)" etc.) and shoves the sibling
+   * Reset button over its right edge on narrow popovers. */
+  min-width: 0;
   font: inherit;
   font-size: var(--type-caption-size, 0.75rem);
   padding: 4px 6px;
@@ -254,6 +258,7 @@
   color: var(--color-content-secondary, GrayText);
   border-radius: var(--radius-sm, 4px);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .palette-picker__delete-group:hover {
