@@ -471,6 +471,9 @@ function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps
    * (e.g. the 40+ palette catalogue) get clipped and force an awkward
    * inner scroll even when there's plenty of room on screen. The CSS
    * custom property keeps the mobile media-query override authoritative.
+   *
+   * Cap at the actual available space — flooring to a minimum that
+   * exceeds it pushes the popover past the opposite viewport edge.
    */
   const dynamicStyle = useMemo<CSSProperties>(() => {
     if (!slotRect) return {}
@@ -478,7 +481,7 @@ function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps
     const available = quadrant.endsWith('down')
       ? window.innerHeight - slotRect.top - margin
       : slotRect.bottom - margin
-    return { '--popover-max-height': `${Math.max(160, Math.round(available))}px` } as CSSProperties
+    return { '--popover-max-height': `${Math.max(0, Math.round(available))}px` } as CSSProperties
   }, [slotRect, quadrant])
 
   return (
