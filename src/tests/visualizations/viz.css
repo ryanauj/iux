@@ -405,7 +405,7 @@
   animation: viz-row-flash 1.2s ease-out;
 }
 @keyframes viz-row-flash {
-  0% { box-shadow: inset 0 0 0 3px var(--color-intent-primary-bg); }
+  0% { box-shadow: inset 0 0 0 var(--border-width-heavy) var(--color-intent-primary-bg); }
   100% { box-shadow: inset 0 0 0 0 transparent; }
 }
 
