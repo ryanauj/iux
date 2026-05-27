@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Segmented } from '../../components/Segmented/Segmented'
 import { INTEGRATION_TESTS, involvedComponentIds } from '../registry'
 import type { RunFor } from '../TestsPage'
@@ -73,6 +73,10 @@ export function CoverageViz({ results, runningId, runFor }: Props) {
         </span>
       </div>
 
+      {mode === 'table' && (
+        <FailureSummary results={results} />
+      )}
+
       <div className="viz-coverage__body">
         <div className="viz-coverage__stage">
           {mode === 'table' ? (
@@ -130,49 +134,65 @@ function TableMode({
       <table className="viz-matrix__table">
         <thead>
           <tr>
-            <th className="viz-matrix__corner" scope="col">component &nbsp;/&nbsp; test</th>
-            {INTEGRATION_TESTS.map(t => {
-              const status = statusFor(t.id)
+            <th className="viz-matrix__corner" scope="col">test &nbsp;/&nbsp; component</th>
+            {components.map(c => {
+              const isSelected = selected === c
               return (
-                <th key={t.id} scope="col" className="viz-matrix__col-head">
-                  <button
-                    type="button"
-                    className="viz-matrix__col-btn"
-                    title={t.name}
-                    onClick={() => onRun(t.id)}
-                    disabled={!!runningId}
-                  >
-                    <span className={`viz-matrix__col-status viz-matrix__col-status--${status}`} />
-                    {t.id}
-                  </button>
+                <th
+                  key={c}
+                  scope="col"
+                  className={[
+                    'viz-matrix__col-head',
+                    isSelected && 'is-selected',
+                  ].filter(Boolean).join(' ')}
+                  onMouseEnter={() => onSelect(c)}
+                  onMouseLeave={() => onSelect(null)}
+                >
+                  <span className="viz-matrix__col-label" title={c}>{c}</span>
                 </th>
               )
             })}
           </tr>
         </thead>
         <tbody>
-          {components.map(c => {
-            const isSelected = selected === c
+          {INTEGRATION_TESTS.map(t => {
+            const status = statusFor(t.id)
             return (
-              <tr
-                key={c}
-                className={isSelected ? 'is-selected' : undefined}
-                onMouseEnter={() => onSelect(c)}
-                onMouseLeave={() => onSelect(null)}
-              >
-                <th scope="row" className="viz-matrix__row-head">{c}</th>
-                {INTEGRATION_TESTS.map(t => {
+              <tr key={t.id} id={`test-row-${t.id}`} className={`viz-matrix__row viz-matrix__row--${status}`}>
+                <th scope="row" className="viz-matrix__row-head">
+                  <div className="viz-matrix__row-head-inner">
+                    <span
+                      className={`viz-matrix__row-status viz-matrix__row-status--${status}`}
+                      aria-hidden="true"
+                    >
+                      <CellGlyph status={status} />
+                    </span>
+                    <span className="viz-matrix__row-name" title={t.name}>{t.id}</span>
+                    <button
+                      type="button"
+                      className="viz-matrix__row-run"
+                      onClick={() => onRun(t.id)}
+                      disabled={!!runningId}
+                      aria-label={`Run ${t.name}`}
+                      title={`Run ${t.id}`}
+                    >
+                      ▶
+                    </button>
+                  </div>
+                </th>
+                {components.map(c => {
                   const participates = t.components.includes(c)
-                  const status = statusFor(t.id)
+                  const isSelected = selected === c
                   return (
                     <td
-                      key={t.id}
+                      key={c}
                       className={[
                         'viz-matrix__cell',
                         participates && `viz-matrix__cell--${status}`,
                         isSelected && participates && 'viz-matrix__cell--highlight',
+                        isSelected && 'viz-matrix__cell--in-selected-col',
                       ].filter(Boolean).join(' ')}
-                      aria-label={participates ? `${c} in ${t.id}: ${status}` : `${c} not in ${t.id}`}
+                      aria-label={participates ? `${t.id} uses ${c}: ${status}` : `${t.id} does not use ${c}`}
                     >
                       {participates && <CellGlyph status={status} />}
                     </td>
@@ -192,6 +212,43 @@ function CellGlyph({ status }: { status: Status }) {
   if (status === 'failed') return <span aria-hidden="true">✗</span>
   if (status === 'running') return <span aria-hidden="true" className="viz-matrix__spinner">●</span>
   return <span aria-hidden="true">·</span>
+}
+
+function FailureSummary({ results }: { results: Record<string, RunResult> }) {
+  const scrollToRow = useCallback((testId: string) => {
+    const el = document.getElementById(`test-row-${testId}`)
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    el.classList.add('viz-matrix__row--flash')
+    setTimeout(() => el.classList.remove('viz-matrix__row--flash'), 1200)
+  }, [])
+
+  const failed = useMemo(
+    () => INTEGRATION_TESTS.filter(t => results[t.id] && !results[t.id].passed),
+    [results],
+  )
+  if (failed.length === 0) return null
+  return (
+    <div className="viz-matrix__failures" role="status">
+      <span className="viz-matrix__failures-count">
+        {failed.length} failed
+      </span>
+      <ul className="viz-matrix__failures-list">
+        {failed.map(t => (
+          <li key={t.id}>
+            <button
+              type="button"
+              className="viz-matrix__failures-chip"
+              onClick={() => scrollToRow(t.id)}
+              title={t.name}
+            >
+              {t.id}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 function LegendDot({ status }: { status: Status }) {
@@ -447,8 +504,8 @@ function SidePanel({
         </>
       ) : (
         <p className="viz-graph__hint">
-          Hover a component (row in Table or node in Network) to see the tests it participates in.
-          Click ▶ to run a single test from here, or use “Run all” above.
+          Hover a component column (in Table) or node (in Network) to see the tests it participates in.
+          Click ▶ next to any test row to run it, or use “Run all” above.
         </p>
       )}
     </aside>

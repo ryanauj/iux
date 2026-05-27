@@ -73,6 +73,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
   },
   ref,
 ) {
+  const { ['data-testid']: dataTestId, ...inputRest } = rest as typeof rest & {
+    'data-testid'?: string
+  }
   const fallbackId = useId()
   const inputId = id ?? fallbackId
   const inputRef = useRef<HTMLInputElement>(null)
@@ -162,7 +165,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
     .join(' ') || undefined
 
   return (
-    <div className={classes} data-variant={variant} data-status={status ?? 'none'}>
+    <div
+      className={classes}
+      data-variant={variant}
+      data-status={status ?? 'none'}
+      data-testid={dataTestId}
+    >
       {label && variant !== 'floating' && (
         <label htmlFor={inputId} className="iux-text-input__label">
           {label}
@@ -198,7 +206,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
           aria-describedby={describedBy}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          {...rest}
+          {...inputRest}
         />
 
         {label && variant === 'floating' && (
