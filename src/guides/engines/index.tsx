@@ -20,10 +20,10 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'skeuomorphism',name: 'Skeuomorphism',available: true },
   { id: 'crt-phosphor', name: 'CRT / Phosphor', available: true },
   { id: 'pixel-art',    name: 'Pixel-art',    available: true },
-  { id: 'sketch',       name: 'Sketch',       available: false },
-  { id: 'cardstock',    name: 'Cardstock',    available: false },
-  { id: 'cel-shaded',   name: 'Cel-shaded',   available: false },
-  { id: 'aurora',       name: 'Aurora',       available: false },
+  { id: 'sketch',       name: 'Sketch',       available: true },
+  { id: 'cardstock',    name: 'Cardstock',    available: true },
+  { id: 'cel-shaded',   name: 'Cel-shaded',   available: true },
+  { id: 'aurora',       name: 'Aurora',       available: true },
   { id: 'terminal-tui', name: 'Terminal / TUI', available: true },
 ]
 

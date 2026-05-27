@@ -466,6 +466,53 @@
   gap: var(--space-4);
 }
 
+/* ----- cardstock-specific: paper host wrapper ----- */
+
+/*
+ * The cardstock engine paints its metaphor through the palette's own
+ * `elevation.*` stack rather than through engine CSS, so the demo frame's
+ * `background: var(--color-surface-base)` is already the right warm cream
+ * field. This helper just gives nested demos their own paper host with a
+ * bit more breathing room so the cut-edge baked into `elevation.low` has
+ * somewhere to cast its tight close shadow.
+ */
+.iux-engine-demo__cardstock-host {
+  background: var(--color-surface-base);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ----- aurora-specific: atmospheric host wrapper ----- */
+
+/*
+ * Aurora paints `--effect-atmosphere-gradient` as a `background-image` at
+ * the palette root, but the demo frame's `background: var(--color-surface-base)`
+ * shorthand resets `background-image` to none — the same gotcha CRT hit.
+ * This helper re-paints the gradient and the engine's `--luminance-center`
+ * inside the demo frame, so the atmospheric drift is visible behind each
+ * step's content. We don't animate `background-position` here — the
+ * engine block already drives the drift on the root PaletteRoot — but the
+ * static gradient composition is enough to sell the "fog patches in the
+ * atmosphere" effect for the demo's surface and elevation steps.
+ */
+.iux-engine-demo__aurora-host {
+  position: relative;
+  background-color: var(--color-surface-base);
+  background-image: var(--effect-atmosphere-gradient);
+  background-size: 200% 200%;
+  background-position: 30% 40%;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: 0 0 var(--space-6) var(--luminance-center);
+  overflow: hidden;
+}
+
 /* ----- terminal-tui-specific: character-grid host wrapper ----- */
 
 /*
