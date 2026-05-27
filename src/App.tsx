@@ -8,6 +8,8 @@ import { AppsRouter } from './apps/AppsRouter'
 import { EnginesIndex } from './guides/engines'
 import { EngineGuide } from './guides/engines/EngineGuide'
 import { ENGINE_GUIDES, type EngineGuideId } from './guides/engines/registry'
+import { PalettesIndex } from './guides/palettes/PalettesIndex'
+import { PaletteDesignPageRoute } from './guides/palettes/PaletteDesignPage'
 import { TestsPage } from './tests/TestsPage'
 import { SettingsPage } from './settings/SettingsPage'
 
@@ -49,6 +51,8 @@ export default function App() {
       <Route path="/" element={<HomeRoute />} />
       <Route path="/engines" element={<EnginesIndex />} />
       <Route path="/engines/:engineId" element={<EngineGuideRoute />} />
+      <Route path="/palettes" element={<PalettesIndex />} />
+      <Route path="/palettes/:paletteId/design" element={<PaletteDesignPageRoute />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
