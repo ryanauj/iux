@@ -339,14 +339,18 @@ function PalettePickerPanel(props: PanelProps) {
     [onClose],
   )
 
-  /* Strip popover positioning matches the existing StripPopover. */
+  /* Strip popover positioning matches the existing StripPopover.
+   * Cap max-height at the actual available space — never floor it to a
+   * minimum that exceeds what's there, or the popover anchors past the
+   * opposite viewport edge (e.g. landscape phone with a slot near the
+   * bottom: a 220px floor on ~200px of space pushes the top off-screen). */
   const stripStyle = useMemo<CSSProperties>(() => {
     if (variant !== 'strip' || !slotRect) return {}
     const margin = 16
     const available = quadrant && quadrant.endsWith('down')
       ? window.innerHeight - slotRect.top - margin
       : slotRect.bottom - margin
-    return { '--popover-max-height': `${Math.max(220, Math.round(available))}px` } as CSSProperties
+    return { '--popover-max-height': `${Math.max(0, Math.round(available))}px` } as CSSProperties
   }, [variant, slotRect, quadrant])
 
   const isUp = variant === 'strip' && (quadrant ?? 'right-down').endsWith('-up')
