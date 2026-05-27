@@ -269,6 +269,7 @@ function PalettePickerPanel(props: PanelProps) {
   )
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   /* Auto-focus the search input only when the list is actually visible —
    * otherwise focusing a hidden field is a no-op that silently swallows
@@ -348,10 +349,22 @@ function PalettePickerPanel(props: PanelProps) {
     return { '--popover-max-height': `${Math.max(220, Math.round(available))}px` } as CSSProperties
   }, [variant, slotRect, quadrant])
 
+  const isUp = variant === 'strip' && (quadrant ?? 'right-down').endsWith('-up')
   const containerClass =
     variant === 'strip'
-      ? `ctrl-strip__popover ctrl-strip__popover--${quadrant ?? 'right-down'} palette-picker palette-picker--strip`
+      ? `ctrl-strip__popover ctrl-strip__popover--${quadrant ?? 'right-down'} palette-picker palette-picker--strip${isUp ? ' palette-picker--up' : ''}`
       : 'palette-picker palette-picker--button'
+
+  /* When the popover opens upward, the section stack is reversed via
+   * `palette-picker--up` so the active-group control sits nearest the
+   * trigger (= bottom of the popover). The browser's default scrollTop=0
+   * would show the far edge (preferences) instead. Scroll to the bottom
+   * once on mount so the thumb-side anchor is in view. */
+  useEffect(() => {
+    if (!isUp) return
+    const el = panelRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [isUp])
 
   /* All group names, sorted with Favorites first so it sits at the top
    * of the dropdown and the per-row group menu. */
@@ -369,6 +382,7 @@ function PalettePickerPanel(props: PanelProps) {
 
   return (
     <div
+      ref={panelRef}
       className={containerClass}
       style={stripStyle}
       role="dialog"

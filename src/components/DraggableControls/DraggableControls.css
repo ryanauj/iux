@@ -253,6 +253,13 @@
   max-height: var(--popover-max-height, 22rem);
   overflow-y: auto;
   /*
+   * Trap scroll chaining inside the popover so touch/wheel gestures that
+   * hit a scroll limit don't bleed through to the page underneath. Pairs
+   * with PalettePicker dropping its own inner list scroll — there's one
+   * scroller per popover now, and it owns the chain.
+   */
+  overscroll-behavior: contain;
+  /*
    * Use the surface-overlay token (matches the Select listbox) so glassy
    * palettes still get a slightly opaque card on top of the page. The
    * backdrop blur reinforces the layer separation on the same palettes
