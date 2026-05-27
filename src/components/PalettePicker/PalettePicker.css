@@ -190,6 +190,7 @@
   display: flex;
   align-items: stretch;
   gap: var(--space-1, 0.25rem);
+  flex-shrink: 0;
 }
 
 .palette-picker__search {
@@ -222,6 +223,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2, 0.5rem);
+  flex-shrink: 0;
 }
 
 .palette-picker__active-label {
@@ -268,13 +270,23 @@
 /* ─────────── list ─────────── */
 
 /*
- * The list is its own scroll container, capped at roughly ten rows. With
- * 59 palettes in the catalog (and ~30 in larger default groups), letting
- * the list expand to its natural height pushed the popover well past the
- * viewport and forced the user to scroll past the whole catalog to reach
- * the Preferences section below it. Capping here keeps the active-group
- * selector, search input, and prefs visible without scrolling while the
- * user pages through palettes inside the list.
+ * The list is its own scroll container. With 59 palettes in the catalog
+ * (and ~30 in larger default groups), letting the list expand to its
+ * natural height pushed the popover well past the viewport and forced
+ * the user to scroll past the whole catalog to reach the Preferences
+ * section below it.
+ *
+ * Strip variant: the popover itself caps height (mobile: fixed
+ * top: 16px / max-height 70vh; desktop: --popover-max-height from the
+ * slot rect), and the list `flex: 1 1 0; min-height: 0` so it shrinks
+ * to fill only the space left after the active-group, browse toggle,
+ * search input, and prefs disclosure claim their natural heights. That
+ * way when Preferences opens, the list yields rows instead of pushing
+ * the active-group/search above the popover's scroll viewport.
+ *
+ * Button variant: there's no parent height constraint on desktop, so
+ * an explicit `max-height` keeps the list from filling the page; see
+ * the `--button` override below.
  *
  * `overscroll-behavior: contain` prevents touch/wheel chains from bleeding
  * into the popover's own scroller when the list reaches its top/bottom.
@@ -283,7 +295,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: min(20rem, 50vh);
+  flex: 1 1 0;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   /* Reserve scrollbar gutter so the scrollbar appearing/disappearing
@@ -292,6 +305,13 @@
   scrollbar-gutter: stable;
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   border-bottom: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+}
+
+.palette-picker--button .palette-picker__list {
+  /* No parent height constraint on desktop button-variant panel, so cap
+   * the list at ~10 rows so prefs stay within reach without scrolling
+   * past the entire catalog. */
+  max-height: min(20rem, 50vh);
 }
 
 .palette-picker__row {
@@ -463,6 +483,10 @@
   gap: var(--space-1, 0.25rem);
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   padding-top: var(--space-1, 0.25rem);
+  /* Take the remaining vertical space in a height-constrained popover so the
+   * list (the only flex-shrinking descendant) has somewhere to shrink into. */
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 .palette-picker__browse-toggle {
@@ -475,6 +499,7 @@
   color: var(--color-content-secondary, GrayText);
   border-radius: var(--radius-sm, 4px);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .palette-picker__browse-toggle:hover {
@@ -486,6 +511,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2, 0.5rem);
+  /* Pass the flex-shrink chain through to `.palette-picker__list`. */
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 /* ─────────── empty / actions ─────────── */
@@ -521,6 +549,7 @@
 .palette-picker__prefs {
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   padding-top: var(--space-1, 0.25rem);
+  flex-shrink: 0;
 }
 
 .palette-picker__prefs-toggle {
