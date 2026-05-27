@@ -10,21 +10,19 @@ import {
 } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { FAVORITES_GROUP } from '../../../palettes/defaultGroups'
-import { notify } from '../../lib/_persistedShared'
 import {
-  ARROWS_MODE_KEY,
   cycleInGroup,
   isDefaultGroup,
   resolveGroupMembers,
   searchPalettes,
   useActiveGroup,
-  useArrowsMode,
   useGroups,
-  type ArrowsMode,
   type GroupsApi,
 } from '../../lib/paletteTags'
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import './PalettePicker.css'
+
+const ALL_PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 const LIST_OPEN_KEY = 'palette-picker:list-open'
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
@@ -73,7 +71,6 @@ export function PalettePicker(props: PalettePickerProps) {
   const { field, variant } = props
   const current = field.value as PaletteId
 
-  const [arrowsMode] = useArrowsMode()
   const [activeGroup, setActiveGroup] = useActiveGroup()
   const [groups, groupsApi] = useGroups()
 
@@ -82,16 +79,16 @@ export function PalettePicker(props: PalettePickerProps) {
     [activeGroup, groups],
   )
 
-  const showInlineArrows =
-    arrowsMode !== 'popover' && activeGroup !== null && activeMembers.length > 0
+  /* When no group is active, the arrows step through the whole catalog so
+   * the row is always usable — picking a group just narrows the cycle. */
+  const cycleMembers = activeMembers.length > 0 ? activeMembers : ALL_PALETTE_IDS
 
   const stepPalette = useCallback(
     (dir: -1 | 1) => {
-      if (activeMembers.length === 0) return
-      const next = cycleInGroup(dir, activeMembers, current)
+      const next = cycleInGroup(dir, cycleMembers, current)
       if (next !== current) field.onChange(next)
     },
-    [activeMembers, current, field],
+    [cycleMembers, current, field],
   )
 
   /* Internal open state — only used by the button variant. The strip
@@ -108,21 +105,20 @@ export function PalettePicker(props: PalettePickerProps) {
   }
 
   const inlineLabel = palettes[current]?.name ?? current
+  const cycleScope = activeGroup ?? 'catalog'
 
   if (variant === 'strip') {
     return (
       <div className="ctrl-strip__palette-slot">
         <div className="ctrl-strip__palette-row">
-          {showInlineArrows && (
-            <button
-              type="button"
-              className="ctrl-strip__palette-arrow"
-              aria-label={`Previous palette in ${activeGroup ?? 'group'}`}
-              onClick={() => stepPalette(-1)}
-            >
-              ◀&#xFE0E;
-            </button>
-          )}
+          <button
+            type="button"
+            className="ctrl-strip__palette-arrow"
+            aria-label={`Previous palette in ${cycleScope}`}
+            onClick={() => stepPalette(-1)}
+          >
+            ◀&#xFE0E;
+          </button>
           <button
             type="button"
             className={`ctrl-strip__icon${open ? ' ctrl-strip__icon--active' : ''}`}
@@ -135,16 +131,14 @@ export function PalettePicker(props: PalettePickerProps) {
             </span>
             <span className="ctrl-strip__icon-val">{inlineLabel}</span>
           </button>
-          {showInlineArrows && (
-            <button
-              type="button"
-              className="ctrl-strip__palette-arrow"
-              aria-label={`Next palette in ${activeGroup ?? 'group'}`}
-              onClick={() => stepPalette(1)}
-            >
-              ▶&#xFE0E;
-            </button>
-          )}
+          <button
+            type="button"
+            className="ctrl-strip__palette-arrow"
+            aria-label={`Next palette in ${cycleScope}`}
+            onClick={() => stepPalette(1)}
+          >
+            ▶&#xFE0E;
+          </button>
         </div>
         {open && (
           <PalettePickerPanel
@@ -157,9 +151,7 @@ export function PalettePicker(props: PalettePickerProps) {
             setActiveGroup={setActiveGroup}
             groups={groups}
             groupsApi={groupsApi}
-            arrowsMode={arrowsMode}
             activeMembers={activeMembers}
-            onStepPalette={stepPalette}
             onClose={closePanel}
           />
         )}
@@ -170,16 +162,14 @@ export function PalettePicker(props: PalettePickerProps) {
   return (
     <div className={`ctrl-button__tile ctrl-button__tile--palette${open ? ' is-open' : ''}`}>
       <div className="palette-picker__inline-row">
-        {showInlineArrows && (
-          <button
-            type="button"
-            className="palette-picker__arrow"
-            aria-label={`Previous palette in ${activeGroup ?? 'group'}`}
-            onClick={() => stepPalette(-1)}
-          >
-            ◀&#xFE0E;
-          </button>
-        )}
+        <button
+          type="button"
+          className="palette-picker__arrow"
+          aria-label={`Previous palette in ${cycleScope}`}
+          onClick={() => stepPalette(-1)}
+        >
+          ◀&#xFE0E;
+        </button>
         <button
           type="button"
           className="palette-picker__trigger"
@@ -190,16 +180,14 @@ export function PalettePicker(props: PalettePickerProps) {
           <span className="palette-picker__trigger-label">{field.label ?? 'Palette'}</span>
           <span className="palette-picker__trigger-value">{inlineLabel}</span>
         </button>
-        {showInlineArrows && (
-          <button
-            type="button"
-            className="palette-picker__arrow"
-            aria-label={`Next palette in ${activeGroup ?? 'group'}`}
-            onClick={() => stepPalette(1)}
-          >
-            ▶&#xFE0E;
-          </button>
-        )}
+        <button
+          type="button"
+          className="palette-picker__arrow"
+          aria-label={`Next palette in ${cycleScope}`}
+          onClick={() => stepPalette(1)}
+        >
+          ▶&#xFE0E;
+        </button>
       </div>
       {open && (
         <PalettePickerPanel
@@ -210,9 +198,7 @@ export function PalettePicker(props: PalettePickerProps) {
           setActiveGroup={setActiveGroup}
           groups={groups}
           groupsApi={groupsApi}
-          arrowsMode={arrowsMode}
           activeMembers={activeMembers}
-          onStepPalette={stepPalette}
           onClose={closePanel}
         />
       )}
@@ -232,9 +218,7 @@ interface PanelProps {
   setActiveGroup: (next: string | null) => void
   groups: Record<string, PaletteId[]>
   groupsApi: GroupsApi
-  arrowsMode: ArrowsMode
   activeMembers: PaletteId[]
-  onStepPalette: (dir: -1 | 1) => void
   onClose: () => void
 }
 
@@ -249,9 +233,7 @@ function PalettePickerPanel(props: PanelProps) {
     setActiveGroup,
     groups,
     groupsApi,
-    arrowsMode,
     activeMembers,
-    onStepPalette,
     onClose,
   } = props
 
@@ -277,9 +259,6 @@ function PalettePickerPanel(props: PanelProps) {
   useEffect(() => {
     if (listOpen) searchRef.current?.focus()
   }, [listOpen])
-
-  const showPopoverArrows =
-    arrowsMode !== 'inline' && activeGroup !== null && activeMembers.length > 0
 
   /* Compose the visible palette list. When an active group is set, the
    * list narrows to its members so the picker doubles as a group editor.
@@ -411,26 +390,6 @@ function PalettePickerPanel(props: PanelProps) {
             ))}
           </select>
         </label>
-        {showPopoverArrows && (
-          <div className="palette-picker__popover-arrows" role="group" aria-label="Cycle group">
-            <button
-              type="button"
-              className="palette-picker__arrow"
-              aria-label={`Previous in ${activeGroup}`}
-              onClick={() => onStepPalette(-1)}
-            >
-              ◀&#xFE0E;
-            </button>
-            <button
-              type="button"
-              className="palette-picker__arrow"
-              aria-label={`Next in ${activeGroup}`}
-              onClick={() => onStepPalette(1)}
-            >
-              ▶&#xFE0E;
-            </button>
-          </div>
-        )}
         {activeGroupAction && (
           <button
             type="button"
@@ -583,16 +542,6 @@ function PalettePickerPanel(props: PanelProps) {
         </button>
         {prefsOpen && (
           <div className="palette-picker__prefs-body">
-            <PrefRow
-              storageKey={ARROWS_MODE_KEY}
-              label="Arrows"
-              current={arrowsMode}
-              options={[
-                { value: 'both', label: 'Inline + popover' },
-                { value: 'inline', label: 'Inline only' },
-                { value: 'popover', label: 'Popover only' },
-              ]}
-            />
             <div className="palette-picker__prefs-actions">
               <button
                 type="button"
@@ -615,56 +564,6 @@ function PalettePickerPanel(props: PanelProps) {
         )}
       </div>
 
-    </div>
-  )
-}
-
-/* ──────────────── Preferences row ──────────────── */
-
-interface PrefOption {
-  value: string
-  label: string
-}
-
-function PrefRow({
-  storageKey,
-  label,
-  current,
-  options,
-}: {
-  storageKey: string
-  label: string
-  current: string
-  options: PrefOption[]
-}) {
-  /* Writes through localStorage + the listeners bus directly so the
-   * pref hooks pick it up without us threading setters down. */
-  const set = (next: string) => {
-    try {
-      localStorage.setItem(storageKey, next)
-    } catch {
-      /* ignore */
-    }
-    /* Notify the in-tab bus so the active hook re-reads. */
-    notify(storageKey, next)
-  }
-  return (
-    <div className="palette-picker__pref-row" role="radiogroup" aria-label={label}>
-      <span className="palette-picker__pref-label">{label}</span>
-      <div className="palette-picker__pref-options">
-        {options.map(o => (
-          <button
-            key={o.value}
-            type="button"
-            role="radio"
-            aria-checked={current === o.value}
-            className={`palette-picker__pref-btn${current === o.value ? ' is-active' : ''}`}
-            onClick={() => set(o.value)}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }
