@@ -117,15 +117,11 @@ export const PINNED_GROUPS_KEY = 'iux-palette-pinned-groups'
 export const ACTIVE_GROUP_KEY = 'iux-palette-active-group'
 export const CUSTOM_GROUPS_KEY = 'iux-palette-custom-groups'
 export const PINNING_MODE_KEY = 'iux-palette-pinning-mode'
-export const ARROWS_MODE_KEY = 'iux-palette-arrows-mode'
 
 export type PinningMode = 'pinned' | 'active' | 'both'
-export type ArrowsMode = 'inline' | 'popover' | 'both'
 
 const isPinningMode = (raw: string): raw is PinningMode =>
   raw === 'pinned' || raw === 'active' || raw === 'both'
-const isArrowsMode = (raw: string): raw is ArrowsMode =>
-  raw === 'inline' || raw === 'popover' || raw === 'both'
 
 const isStringArray = (parsed: unknown): parsed is string[] =>
   Array.isArray(parsed) && parsed.every(v => typeof v === 'string')
@@ -163,10 +159,6 @@ export function useCustomGroups() {
 
 export function usePinningMode() {
   return usePersistedPref<PinningMode>(PINNING_MODE_KEY, 'both', isPinningMode)
-}
-
-export function useArrowsMode() {
-  return usePersistedPref<ArrowsMode>(ARROWS_MODE_KEY, 'both', isArrowsMode)
 }
 
 /**
