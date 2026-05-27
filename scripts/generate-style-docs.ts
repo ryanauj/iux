@@ -7,17 +7,17 @@
  * link to a stable URL. Each doc appends the existing
  * `palettes/<id>.README.md` verbatim inside a `<details>` block — the
  * curated prose stays adjacent without duplicate maintenance.
+ *
+ * The actual markdown body is rendered by
+ * `src/theme/renderStyleDescription.ts` so the SPA per-palette design
+ * page emits byte-identical text from the same source.
  */
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { palettes, type PaletteId } from '../palettes'
-import type {
-  StyleDescription,
-  Signature,
-  Lookalike,
-  TokenEvidence,
-} from '../tokens/style-description.contract'
+import type { StyleDescription } from '../tokens/style-description.contract'
+import { renderStyleDescriptionMarkdown } from '../src/theme/renderStyleDescription'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,118 +25,10 @@ const ROOT = path.resolve(__dirname, '..')
 const PALETTES_DIR = path.join(ROOT, 'palettes')
 const OUT_DIR = path.join(ROOT, 'docs', 'styles')
 
-function resolveTokenPath(obj: unknown, dotted: string): unknown {
-  let cur: unknown = obj
-  for (const segment of dotted.split('.')) {
-    if (cur === null || typeof cur !== 'object') return undefined
-    cur = (cur as Record<string, unknown>)[segment]
-  }
-  return cur
-}
-
-function formatTokenValue(v: unknown): string {
-  if (v === undefined) return '_(unresolved)_'
-  if (typeof v === 'string' || typeof v === 'number') return `\`${String(v)}\``
-  if (v && typeof v === 'object' && 'boxShadow' in v && typeof (v as Record<string, unknown>).boxShadow === 'string') {
-    return `\`${(v as Record<string, string>).boxShadow}\``
-  }
-  return '`' + JSON.stringify(v).replace(/\|/g, '\\|') + '`'
-}
-
-function renderSignatures(sigs: Signature[]): string {
-  return sigs.map(s => `- **${s.label}** — ${s.detail}`).join('\n')
-}
-
-function renderTokenEvidence(palette: PaletteId, ev: TokenEvidence[]): string {
-  const head = '| Path | Value | Note |\n|---|---|---|'
-  const rows = ev.map(e => {
-    const resolved = resolveTokenPath(palettes[palette].tokens, e.path)
-    return `| \`${e.path}\` | ${formatTokenValue(resolved).replace(/\|/g, '\\|')} | ${e.note.replace(/\|/g, '\\|')} |`
-  })
-  return [head, ...rows].join('\n')
-}
-
-function renderLookalikes(lk: Lookalike[]): string {
-  return lk
-    .map(l => {
-      const name = palettes[l.against].name
-      return `### vs [${name}](./${l.against}.md)\n\n${l.differentiator}`
-    })
-    .join('\n\n')
-}
-
-function renderDoc(desc: StyleDescription): string {
-  const palette = palettes[desc.paletteId]
-  const lines: string[] = []
-  lines.push(`# ${palette.name}`)
-  lines.push('')
-  lines.push(`> ${desc.tagline}`)
-  lines.push('')
-  lines.push(`**Engine:** \`${palette.engine}\` · **A11y:** \`${palette.a11y}\``)
-  lines.push('')
-  lines.push('## Summary')
-  lines.push('')
-  lines.push(desc.summary)
-  lines.push('')
-  lines.push('## Origin')
-  lines.push('')
-  lines.push(desc.origin)
-  lines.push('')
-  lines.push('## Signatures')
-  lines.push('')
-  lines.push(renderSignatures(desc.signatures))
-  lines.push('')
-  lines.push('## Anti-signatures')
-  lines.push('')
-  lines.push(desc.antiSignatures.map(s => `- ${s}`).join('\n'))
-  lines.push('')
-  lines.push('## Token evidence')
-  lines.push('')
-  lines.push(renderTokenEvidence(desc.paletteId, desc.tokenEvidence))
-  lines.push('')
-  if (desc.lookalikes.length > 0) {
-    lines.push('## Often confused with')
-    lines.push('')
-    lines.push(renderLookalikes(desc.lookalikes))
-    lines.push('')
-  }
-  if (desc.thrivesWith && desc.thrivesWith.length > 0) {
-    lines.push('## Where it thrives')
-    lines.push('')
-    lines.push(desc.thrivesWith.map(s => `- ${s}`).join('\n'))
-    lines.push('')
-  }
-  if (desc.degradesWith && desc.degradesWith.length > 0) {
-    lines.push('## Where it degrades')
-    lines.push('')
-    lines.push(desc.degradesWith.map(s => `- ${s}`).join('\n'))
-    lines.push('')
-  }
-  lines.push('## Recall aliases')
-  lines.push('')
-  lines.push(desc.recallAliases.map(a => `\`${a}\``).join(', '))
-  lines.push('')
-
-  const readmePath = path.join(PALETTES_DIR, `${desc.paletteId}.README.md`)
-  if (fs.existsSync(readmePath)) {
-    const readme = fs.readFileSync(readmePath, 'utf-8').trim()
-    lines.push('## Long-form notes')
-    lines.push('')
-    lines.push('<details>')
-    lines.push(`<summary>From <code>palettes/${desc.paletteId}.README.md</code></summary>`)
-    lines.push('')
-    lines.push(readme)
-    lines.push('')
-    lines.push('</details>')
-    lines.push('')
-  }
-
-  lines.push('---')
-  lines.push('')
-  lines.push(
-    `_Generated from \`palettes/${desc.paletteId}.description.ts\` — do not edit by hand. Run \`pnpm run gen:style-docs\` to regenerate._`,
-  )
-  return lines.join('\n') + '\n'
+function readReadme(id: PaletteId): string | undefined {
+  const readmePath = path.join(PALETTES_DIR, `${id}.README.md`)
+  if (!fs.existsSync(readmePath)) return undefined
+  return fs.readFileSync(readmePath, 'utf-8')
 }
 
 function renderIndex(populated: PaletteId[], missing: PaletteId[]): string {
@@ -189,7 +81,8 @@ async function main() {
     }
     const desc = mod.description
     const outPath = path.join(OUT_DIR, `${desc.paletteId}.md`)
-    fs.writeFileSync(outPath, renderDoc(desc), 'utf-8')
+    const md = renderStyleDescriptionMarkdown(desc, palettes, readReadme(desc.paletteId))
+    fs.writeFileSync(outPath, md, 'utf-8')
     populated.push(desc.paletteId)
     console.log(`wrote: docs/styles/${desc.paletteId}.md`)
   }
