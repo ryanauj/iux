@@ -228,6 +228,9 @@
 
 /* ====================================================================== */
 /*                  Coverage viz — Table mode (matrix)                    */
+/*  Rows are tests (full name + status + run button, sticky on x-scroll), */
+/*  columns are components. The matrix answers "which components does     */
+/*  each test exercise?" — readable on both desktop and mobile.           */
 /* ====================================================================== */
 
 .viz-matrix__legend-dot {
@@ -238,49 +241,176 @@
   margin-left: var(--space-2);
   border: var(--border-width-thin) solid var(--color-border-subtle);
 }
+
+/* ---- failures banner ---- */
+.viz-matrix__failures {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width-thin) solid var(--color-intent-danger-border, var(--color-intent-danger-bg));
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  flex-wrap: wrap;
+}
+.viz-matrix__failures-count {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size, var(--type-caption-size));
+  color: var(--color-intent-danger-bg);
+  white-space: nowrap;
+}
+.viz-matrix__failures-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.viz-matrix__failures-chip {
+  font-family: var(--type-mono-family, monospace);
+  font-size: var(--type-caption-size);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill, 999px);
+  border: var(--border-width-thin) solid var(--color-intent-danger-bg);
+  background: transparent;
+  color: var(--color-intent-danger-bg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.viz-matrix__failures-chip:hover {
+  background: var(--color-intent-danger-bg);
+  color: var(--color-intent-danger-content);
+}
+
+/* ---- table chrome ---- */
 .viz-matrix__table-wrap {
   overflow-x: auto;
+  overflow-y: visible;
   border: var(--border-width-thin) solid var(--color-border-subtle);
   border-radius: var(--radius-md);
+  background: var(--color-surface-base);
 }
 .viz-matrix__table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: var(--type-caption-size);
 }
 .viz-matrix__table th,
 .viz-matrix__table td {
-  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  border-right: var(--border-width-thin) solid var(--color-border-subtle);
   padding: var(--space-1) var(--space-2);
   text-align: center;
   vertical-align: middle;
 }
-.viz-matrix__corner { background: var(--color-surface-sunken); text-align: left; color: var(--color-content-muted); }
-.viz-matrix__col-head { background: var(--color-surface-sunken); }
-.viz-matrix__col-btn {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
+.viz-matrix__table thead th { border-top: 0; }
+.viz-matrix__table tr td:last-child,
+.viz-matrix__table tr th:last-child { border-right: 0; }
+
+/* Corner + column headers */
+.viz-matrix__corner {
+  background: var(--color-surface-sunken);
+  text-align: left;
+  color: var(--color-content-muted);
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  min-width: 18rem;
+}
+.viz-matrix__col-head {
+  background: var(--color-surface-sunken);
+  color: var(--color-content-secondary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
   cursor: pointer;
+  white-space: nowrap;
+}
+.viz-matrix__col-head.is-selected {
+  background: var(--color-intent-primary-bg);
+  color: var(--color-intent-primary-content);
+}
+.viz-matrix__col-label {
+  display: inline-block;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Row headers (sticky left) — status + name + run */
+.viz-matrix__row-head {
+  text-align: left;
+  background: var(--color-surface-base);
+  color: var(--color-content-primary);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 18rem;
+}
+.viz-matrix__row-head-inner {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+.viz-matrix__row-status {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+  font-weight: bold;
+  background: var(--color-surface-sunken);
+  color: var(--color-content-muted);
 }
-.viz-matrix__col-btn:disabled { cursor: not-allowed; opacity: 0.6; }
-.viz-matrix__col-status {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-border-default);
+.viz-matrix__row-status--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-content); }
+.viz-matrix__row-status--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); }
+.viz-matrix__row-status--running { background: var(--color-intent-info-bg); color: var(--color-intent-info-content); }
+.viz-matrix__row-name {
+  font-family: var(--type-mono-family, var(--type-body-family));
+  font-size: var(--type-caption-size);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
-.viz-matrix__col-status--passed { background: var(--color-intent-success-bg); }
-.viz-matrix__col-status--failed { background: var(--color-intent-danger-bg); }
-.viz-matrix__col-status--running { background: var(--color-intent-info-bg); }
-.viz-matrix__row-head { text-align: left; background: var(--color-surface-sunken); color: var(--color-content-secondary); }
-.viz-matrix__cell { color: var(--color-content-muted); }
+.viz-matrix__row-run {
+  background: transparent;
+  border: var(--border-width-thin) solid var(--color-border-default);
+  color: var(--color-content-primary);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-2);
+  cursor: pointer;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.viz-matrix__row-run:hover:not(:disabled) { border-color: var(--color-content-primary); }
+.viz-matrix__row-run:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Row-level tint so the sticky header still reads the test's status when
+   the data cells scroll off-screen. */
+.viz-matrix__row--failed .viz-matrix__row-head { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); }
+.viz-matrix__row--failed .viz-matrix__row-run { border-color: currentColor; color: currentColor; }
+.viz-matrix__row--running .viz-matrix__row-head { background: var(--color-intent-info-bg); color: var(--color-intent-info-content); }
+.viz-matrix__row--passed .viz-matrix__row-head { background: var(--color-surface-base); }
+
+/* Flash on jump-to-failure */
+.viz-matrix__row--flash .viz-matrix__row-head {
+  animation: viz-row-flash 1.2s ease-out;
+}
+@keyframes viz-row-flash {
+  0% { box-shadow: inset 0 0 0 3px var(--color-intent-primary-bg); }
+  100% { box-shadow: inset 0 0 0 0 transparent; }
+}
+
+/* Data cells */
+.viz-matrix__cell { color: var(--color-content-muted); background: var(--color-surface-base); }
 .viz-matrix__cell--idle { background: var(--color-surface-sunken); color: var(--color-content-secondary); }
 .viz-matrix__cell--passed { background: var(--color-intent-success-bg); color: var(--color-intent-success-content); }
 .viz-matrix__cell--failed { background: var(--color-intent-danger-bg); color: var(--color-intent-danger-content); }
@@ -289,14 +419,35 @@
   outline: 2px solid var(--color-intent-primary-bg);
   outline-offset: -2px;
 }
-.viz-matrix__table tbody tr.is-selected .viz-matrix__row-head {
-  background: var(--color-intent-primary-bg);
-  color: var(--color-intent-primary-content);
+.viz-matrix__cell--in-selected-col:not(.viz-matrix__cell--highlight) {
+  background: var(--color-surface-sunken);
 }
 .viz-matrix__spinner { animation: viz-pulse 0.8s linear infinite; display: inline-block; }
 @keyframes viz-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+
+/* Narrow viewports: collapse the matrix to a list of test rows. The
+   sticky first column is the readable unit; the component grid becomes
+   visual context once there's room for it. */
+@media (max-width: 640px) {
+  .viz-matrix__table thead { display: none; }
+  .viz-matrix__corner { display: none; }
+  .viz-matrix__col-head { display: none; }
+  .viz-matrix__cell { display: none; }
+  .viz-matrix__row-head {
+    position: static;
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .viz-matrix__table,
+  .viz-matrix__table tbody,
+  .viz-matrix__table tr {
+    display: block;
+    width: 100%;
+  }
 }
 
 /* ====================================================================== */
