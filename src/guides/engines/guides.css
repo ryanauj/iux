@@ -69,6 +69,14 @@
   gap: var(--space-2);
 }
 
+.iux-engine-guide__header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
 .iux-engine-guide__eyebrow {
   margin: 0;
   font-family: var(--type-label-family);
@@ -112,6 +120,78 @@
 
 .iux-engine-guide__demo-meta a:hover {
   text-decoration: underline;
+}
+
+/* ----- about-this-palette panel ----- */
+
+.iux-palette-panel {
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.iux-palette-panel__eyebrow {
+  margin: 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.iux-palette-panel__title {
+  margin: 0;
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+}
+
+.iux-palette-panel__tagline {
+  margin: 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  font-weight: 500;
+}
+
+.iux-palette-panel__summary {
+  margin: 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-secondary);
+}
+
+.iux-palette-panel__list-heading {
+  margin: var(--space-2) 0 0 0;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.iux-palette-panel__list {
+  margin: 0;
+  padding-left: var(--space-5);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 /* ----- step layout ----- */

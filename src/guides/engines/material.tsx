@@ -196,12 +196,33 @@ export const materialGuide: EngineGuideMeta = {
   name: 'Material',
   summary:
     "Paper-and-ink, codified. Opaque stacked surfaces, indigo as the single accent, a real elevation ladder where each rung holds a paired ambient + key shadow, and motion tuned to Google's standard easing curve at a wider duration band so press affordances feel intentional. Material is what you get when you take flat and give shadow a real job.",
+  plainSummary:
+    "Material treats the screen as a stack of paper sheets. Everything is solid, like flat — but shadows do real work: the deeper a card is in the stack, the bigger the shadow under it. Indigo is the single feature colour, and button presses feel slightly slower and more deliberate than flat's, the way pressing a real button does.",
+  plainTeaser:
+    "Like flat, but shadows do real work — cards look like paper sheets stacked on a desk.",
   demoPalette: material,
   steps: [
     {
       id: 'philosophy',
       title: 'Philosophy',
       description: 'Paper-and-ink, given physics.',
+      plainTitle: 'The big idea',
+      plainBody: (
+        <>
+          <p>
+            Material is built on one image: every panel on the screen
+            is a sheet of paper. To make one sheet feel "above"
+            another, you don't change its colour — you give it a
+            bigger shadow, the way a real sheet of paper casts a
+            bigger shadow when you lift it off the desk.
+          </p>
+          <p>
+            The three sheets in the demo are the same colour. The
+            <em> only</em> reason your eye reads one as on top is the
+            shadow underneath it. That's Material in one sentence.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -227,6 +248,24 @@ export const materialGuide: EngineGuideMeta = {
       id: 'surfaces',
       title: 'Surfaces',
       description: 'Opaque sheets at near-identical tones.',
+      plainTitle: 'Surfaces (the paper sheets)',
+      plainBody: (
+        <>
+          <p>
+            The page is a barely-grey colour. Cards on the page are
+            plain white. They're <em>almost</em> the same colour —
+            just enough difference that the white cards read as "lifted"
+            against the slightly-grey background. Menus and dialogs go
+            back to plain white too, because they're still made of
+            paper.
+          </p>
+          <p>
+            None of the panels are see-through. Material spends its
+            visual budget on shadows and on the press animation, not on
+            decorative tints or frosted effects.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -250,6 +289,24 @@ export const materialGuide: EngineGuideMeta = {
       id: 'borders',
       title: 'Borders',
       description: 'Alpha over ink, used sparingly.',
+      plainTitle: 'Lines, used sparingly',
+      plainBody: (
+        <>
+          <p>
+            Material almost never draws lines. The shadows already
+            tell you which sheet is which, so why repeat yourself? The
+            handful of lines that do appear are very pale grey —
+            barely visible, the way a hairline pencil mark looks on
+            paper.
+          </p>
+          <p>
+            You'll mostly see them inside a sheet (dividing rows in a
+            list) or outlining a text input. Three steps of darkness:
+            barely-there, normal, and a slightly stronger one for when
+            an outline really has to read first.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -272,6 +329,27 @@ export const materialGuide: EngineGuideMeta = {
       id: 'elevation',
       title: 'Elevation',
       description: 'The signature paired-shadow recipe.',
+      plainTitle: 'Lifting paper off the desk',
+      plainBody: (
+        <>
+          <p>
+            This is the heart of Material. Every shadow is actually
+            <em> two</em> shadows layered together: a wide, soft halo
+            that feels like ambient room-light, plus a tighter, darker
+            shadow just under the bottom edge that feels like a
+            spotlight from above. The pair is what makes a panel read
+            as "real paper" rather than just "a rectangle with a
+            shadow."
+          </p>
+          <p>
+            Drag the slider in the demo to feel the ladder. Low is a
+            resting card. Medium is "picked up off the desk." High is
+            a floating action. Overlay is "dialog hovering over the
+            page." The shadow gets bigger every step; the card itself
+            doesn't change.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -295,6 +373,25 @@ export const materialGuide: EngineGuideMeta = {
       id: 'motion',
       title: 'Motion',
       description: "Standard easing, wider band.",
+      plainTitle: 'Motion (a touch more deliberate)',
+      plainBody: (
+        <>
+          <p>
+            Material's animations are slightly longer than flat's — a
+            quarter-second instead of a fifth — and they ease out at
+            the end the way a finger presses a real button: fast to
+            start, gentle to stop. That extra moment is what makes
+            tapping a button feel mechanical instead of clicky.
+          </p>
+          <p>
+            Hover the buttons in the demo. Toggle motion off and the
+            same hover snaps instantly. The animation isn't doing the
+            work of telling you the state changed — your eyes already
+            saw the colour change. The motion just makes it feel
+            intentional.
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>
@@ -319,6 +416,25 @@ export const materialGuide: EngineGuideMeta = {
       id: 'intent',
       title: 'Focus & intent',
       description: 'Saturated fills, indigo focus, AA across the board.',
+      plainTitle: 'Button colours and keyboard focus',
+      plainBody: (
+        <>
+          <p>
+            Six button meanings, each a strong block of colour with
+            white text. Primary is Material's classic indigo; the
+            others are clean, saturated takes on success-green,
+            warning-amber, danger-red, info-blue. The one exception is
+            the neutral button: it stays grey with dark text, because
+            Material treats "cancel"-type actions as quieter outlines.
+          </p>
+          <p>
+            Keyboard focus is one rule: a clear indigo ring around the
+            focused element, no matter which button it is. Material's
+            personality lives in the shadows; focus is just the safety
+            signal that says "you're here."
+          </p>
+        </>
+      ),
       body: (
         <>
           <p>

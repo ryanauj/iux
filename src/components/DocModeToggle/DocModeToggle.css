@@ -1,0 +1,48 @@
+/*
+ * DocModeToggle — small segmented control for switching between the plain
+ * and technical voices on doctrine pages and engine guides. Reads palette
+ * tokens so it adapts to whatever chrome is showing.
+ */
+
+.iux-doc-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: var(--color-surface-sunken);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  font-family: var(--type-label-family);
+}
+
+.iux-doc-mode-toggle__option {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
+  font-family: inherit;
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--motion-duration-fast) var(--motion-easing-standard),
+              color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.iux-doc-mode-toggle__option:hover {
+  color: var(--color-content-primary);
+}
+
+.iux-doc-mode-toggle__option.is-active {
+  background: var(--color-surface-raised);
+  color: var(--color-content-primary);
+  box-shadow: var(--elevation-low);
+}
+
+.iux-doc-mode-toggle__option:focus-visible {
+  outline: var(--effect-focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--effect-focus-ring-offset);
+}

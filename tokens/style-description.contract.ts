@@ -65,6 +65,30 @@ export interface StyleDescription {
    * case-insensitive substrings against trimmed user input. At least one.
    */
   recallAliases: string[]
+
+  /**
+   * Optional plain-English voice of the style — surfaced when the reader
+   * sets the doc-mode toggle to `plain`. Lets less-technical readers
+   * understand how the palette differs from others without parsing CSS or
+   * token paths. Absence is fine; the technical fields are used as a
+   * fallback.
+   */
+  plain?: PlainDescription
+}
+
+export interface PlainDescription {
+  /** One-sentence essence in everyday language — no CSS jargon. */
+  tagline: string
+  /**
+   * 2–4 sentence what-it-looks-like paragraph in plain English. Talks about
+   * how the palette feels and what a non-technical reader would notice.
+   */
+  summary: string
+  /**
+   * 3–6 short, everyday-language bullets describing things to look for that
+   * identify this palette. Rendered as a "What to look for" list.
+   */
+  lookingLike?: string[]
 }
 
 export interface Signature {

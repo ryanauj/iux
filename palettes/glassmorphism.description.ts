@@ -103,4 +103,17 @@ export const description: StyleDescription = {
     'Pages with no host control (third-party embeds) — without a saturated background, glass disappears',
   ],
   recallAliases: ['glass', 'glassmorphism', 'glassmorphic', 'frosted glass'],
+  plain: {
+    tagline:
+      'Frosted glass panels floating over a colourful indigo background — see-through, blurred, with a faint bright rim on each edge.',
+    summary:
+      "Glassmorphism makes cards and menus look like sheets of frosted glass. They're slightly see-through, so the colourful page underneath bleeds up through them, and whatever sits behind a panel is blurred so the panel itself stays readable. A faint white rim runs along each panel's edge — that's the catch of light along the rim of the glass. The whole effect only works because the page is a strong indigo; on a plain grey page the glass would disappear.",
+    lookingLike: [
+      'A deep indigo or purple background showing through every panel',
+      'Cards and menus that are slightly see-through with the page blurred behind them',
+      'A faint, almost-white line along the edge of each panel — the glass rim',
+      "Pop-up dialogs that paint a darker veil under themselves so you can still read",
+      'Soft shadows under panels that feel like glass casting onto the page',
+    ],
+  },
 }

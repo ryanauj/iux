@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { useSelectedStyle } from '../../lib/persistedStyle'
+import { useDocMode } from '../../lib/useDocMode'
+import { DocModeToggle } from '../../components/DocModeToggle/DocModeToggle'
 import { ENGINE_GUIDES, ENGINE_GUIDE_IDS } from './registry'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
@@ -28,6 +30,7 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
 export function EnginesIndex() {
   const [navLayout] = useNavLayout()
   const [selectedStyle] = useSelectedStyle()
+  const [docMode, setDocMode] = useDocMode()
   const brand = (
     <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
   )
@@ -49,14 +52,29 @@ export function EnginesIndex() {
           </nav>
 
           <header className="iux-engines-index__header">
-            <p className="iux-engine-guide__eyebrow">Rendering engines</p>
+            <div className="iux-engine-guide__header-top">
+              <p className="iux-engine-guide__eyebrow">Rendering engines</p>
+              <DocModeToggle value={docMode} onChange={setDocMode} />
+            </div>
             <h1 className="iux-engine-guide__title">How the engines work</h1>
             <p className="iux-engine-guide__summary">
-              Engines are <em>philosophies</em> — rules for how each palette's
-              tokens get interpreted into a visual style. Every palette in the
-              showcase declares which engine it plugs into. Pick one below to walk
-              through its rules step by step, with live demos against a real
-              palette.
+              {docMode === 'plain' ? (
+                <>
+                  An "engine" is the visual personality of a palette — the rules
+                  that decide whether a card has shadows, whether buttons have
+                  rounded corners, whether panels are see-through. Each palette
+                  in this library belongs to one engine; pick one below to see
+                  what makes it look the way it does, in everyday terms.
+                </>
+              ) : (
+                <>
+                  Engines are <em>philosophies</em> — rules for how each palette's
+                  tokens get interpreted into a visual style. Every palette in the
+                  showcase declares which engine it plugs into. Pick one below to walk
+                  through its rules step by step, with live demos against a real
+                  palette.
+                </>
+              )}
             </p>
           </header>
 
@@ -67,11 +85,15 @@ export function EnginesIndex() {
                 Boolean(ENGINE_GUIDES[e.id as keyof typeof ENGINE_GUIDES])
               if (enabled) {
                 const guide = ENGINE_GUIDES[e.id as keyof typeof ENGINE_GUIDES]
+                const teaser =
+                  docMode === 'plain'
+                    ? (guide.plainTeaser ?? guide.plainSummary ?? guide.summary)
+                    : guide.summary
                 return (
                   <li key={e.id} className="iux-engines-index__item is-available">
                     <Link to={`/engines/${e.id}`} className="iux-engines-index__link">
                       <span className="iux-engines-index__name">{e.name}</span>
-                      <span className="iux-engines-index__teaser">{guide.summary}</span>
+                      <span className="iux-engines-index__teaser">{teaser}</span>
                       <span className="iux-engines-index__cta" aria-hidden="true">Start walkthrough →</span>
                     </Link>
                   </li>

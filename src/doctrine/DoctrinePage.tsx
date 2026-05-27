@@ -20,6 +20,8 @@ import {
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { useDocMode } from '../lib/useDocMode'
+import { DocModeToggle } from '../components/DocModeToggle/DocModeToggle'
 import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
@@ -71,6 +73,7 @@ export function DoctrinePage() {
   const [infoOpen, setInfoOpen] = useState(false)
   const [navLayout, setNavLayout] = useNavLayout()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
+  const [docMode, setDocMode] = useDocMode()
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -191,6 +194,11 @@ export function DoctrinePage() {
         >
           i
         </button>
+        <DocModeToggle
+          className="stories__doc-mode"
+          value={docMode}
+          onChange={setDocMode}
+        />
       </h1>
       {infoOpen && (
         <div
@@ -204,7 +212,9 @@ export function DoctrinePage() {
           live demos. Each page pairs the rules from its source
           markdown with real components; switch the Chrome palette
           to watch the rules apply (or fail) under different engines.
-          Use Doc to switch pages.
+          Use Doc to switch pages. Toggle the voice between plain
+          English and the technical original with the control next
+          to the title.
         </div>
       )}
     </>
@@ -231,7 +241,7 @@ export function DoctrinePage() {
             className="stories__palette"
             motionScale={motionScale}
           >
-            {activePage.render(setDoc)}
+            {activePage.render(setDoc, docMode)}
           </PaletteRoot>
         </div>
       </AppShell>

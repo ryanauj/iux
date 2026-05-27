@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { DocMode } from '../lib/useDocMode'
 import { ModalStories } from '../components/Modal/Modal.stories'
 import { DrawerStories } from '../components/Drawer/Drawer.stories'
 import { ToastStories } from '../components/Toast/Toast.stories'
@@ -29,7 +30,7 @@ export type DoctrinePage = {
   eyebrow: string
   title: string
   source: string
-  render: (nav: DoctrineNav) => ReactNode
+  render: (nav: DoctrineNav, mode: DocMode) => ReactNode
 }
 
 const GITHUB_BASE = 'https://github.com/ryanauj/iux/blob/main/doctrine'
@@ -137,7 +138,120 @@ function Rules({ items }: { items: ReactNode[] }) {
   )
 }
 
-function LayoutPage({ nav }: { nav: DoctrineNav }) {
+function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
+  return (
+    <article className="doctrine">
+      <header className="doctrine__head">
+        <p className="doctrine__eyebrow">Doctrine · 00 · plain English</p>
+        <h2 className="doctrine__title">Layout</h2>
+        <p className="doctrine__lede">
+          How things are arranged on the page — the gaps between things, how
+          tightly they're packed, and the choice between a list, a grid, or a
+          bento-box layout. Switch the palette in the floating controls and
+          watch the same buttons get airier or tighter depending on the style.
+        </p>
+        <Source file="00-layout.md" />
+      </header>
+
+      <Section title="The simple rules">
+        <Rules items={[
+          <><strong>Gaps come from a fixed set of sizes.</strong> Don't pick
+            "12 pixels here" — pick "small gap" and let the style decide what
+            that means in pixels.</>,
+          <><strong>One arrangement per area.</strong> Either a stack of items,
+            or a grid, or a bento box — not all three nested inside each
+            other.</>,
+          <><strong>How tight things are packed is the style's job.</strong>{' '}
+            One component shouldn't try to be "compact" all on its own; the
+            palette decides density everywhere.</>,
+          <><strong>Names, not pixel counts.</strong> A "small gap" survives
+            a palette swap; "12 pixels" doesn't.</>,
+          <><strong>Line up text along its baseline, line up boxes along
+            their edges.</strong> Mixing the two is what makes a layout feel
+            "almost right but somehow off."</>,
+        ]} />
+      </Section>
+
+      <Section title="Same buttons, different palette — see density change">
+        <Prose>
+          A row of buttons. Switch palettes in the floating controls and watch
+          the spacing around them tighten or loosen. The buttons themselves
+          don't change — the palette decided what "a small gap" should be in
+          pixels for this look.
+        </Prose>
+        <Demo caption="Buttons in different sizes — gaps come from the palette">
+          <ButtonStories />
+        </Demo>
+      </Section>
+
+      <Section title="Stack vs Grid vs Bento — pick the right shape">
+        <Prose>
+          Three shapes for arranging things, picked by what the items are.
+          <strong> Stack</strong> for a list where everything is roughly the
+          same kind of thing (a feed, a form). <strong>Grid</strong> when
+          there are lots of similar items meant to scan in rows and columns
+          (a photo wall). <strong>Bento</strong> when items are deliberately
+          different sizes and you want the layout to teach which one is most
+          important.
+        </Prose>
+        <Demo caption="Bento — items declare their own size; the layout makes room for each">
+          <BentoStories variant="static" />
+        </Demo>
+        <Callout>
+          Reaching for a Bento because the items happen to be different sizes
+          but you don't actually have a hierarchy. The layout will look
+          confused. Use a Grid with one bigger cell instead.
+        </Callout>
+      </Section>
+
+      <Section title="Things that look almost-aligned but aren't">
+        <Prose>
+          Words and icons should line up by the part the eye reads — letter
+          tops, icon centres — not by the invisible box around them. A row
+          of mixed-size icons aligned to their boxes will look indented or
+          floating, even when the boxes are technically aligned. Align to
+          what you actually see.
+        </Prose>
+        <Demo caption="Buttons across sizes — labels share a baseline, not a box edge">
+          <ButtonStories variant="solid" />
+        </Demo>
+      </Section>
+
+      <Section title="Components shouldn't care how wide the window is">
+        <Prose>
+          A card doesn't know if it's in a sidebar or filling the page — it
+          knows it's been given a certain amount of room. It should arrange
+          itself based on that, not based on the window. The card below is
+          the same card shown at several widths so you can see it adapt.
+        </Prose>
+        <Demo caption="Card — one component, different amounts of room">
+          <CardStories variant="static" />
+        </Demo>
+      </Section>
+
+      <Section title="When the wrong layout punishes the wrong style">
+        <Prose>
+          Some palettes really don't get along with certain layouts. Try
+          switching the chrome palette to Neumorphism and putting things in a
+          tight grid — the shadows that make Neumorphism feel like clay run
+          into each other and blur into a single lump. Each style has
+          arrangements that bring out the best in it and arrangements that
+          ruin it.
+        </Prose>
+      </Section>
+
+      <Cross>
+        Next: <DocLink to="selection" nav={nav}>which component to use</DocLink>{' '}
+        — picking between things that look like they solve the same problem.
+      </Cross>
+
+      <PrevNext nav={nav} next="selection" />
+    </article>
+  )
+}
+
+function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
+  if (mode === 'plain') return <LayoutPagePlain nav={nav} />
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -262,7 +376,149 @@ function LayoutPage({ nav }: { nav: DoctrineNav }) {
   )
 }
 
-function SelectionPage({ nav }: { nav: DoctrineNav }) {
+function SelectionPagePlain({ nav }: { nav: DoctrineNav }) {
+  return (
+    <article className="doctrine">
+      <header className="doctrine__head">
+        <p className="doctrine__eyebrow">Doctrine · 01 · plain English</p>
+        <h2 className="doctrine__title">Picking the right component</h2>
+        <p className="doctrine__lede">
+          Two parts of the screen often look like they could solve the same
+          problem — a Modal vs a Drawer, a Tooltip vs a Coachmark. Each pair
+          below shows the two side-by-side so you can feel the difference
+          rather than read about it.
+        </p>
+        <Source file="01-component-selection.md" />
+      </header>
+
+      <Section title="The simple rules">
+        <Rules items={[
+          <><strong>Pick the thing that names what the user is trying to
+            do.</strong> Not the thing with the most features.</>,
+          <><strong>Every component on the screen is a small ask of the
+            user.</strong> Two components saying the same thing cost twice
+            as much attention as one said well.</>,
+          <><strong>When unsure, use the lighter option.</strong> A modal
+            interrupts more than a drawer; a drawer more than a popover; a
+            popover more than a tooltip. Use the lightest one that still
+            carries the meaning.</>,
+        ]} />
+      </Section>
+
+      <Section title="Drawer vs Modal — side-trip vs interruption">
+        <Prose>
+          A modal is an interruption: you have to deal with it before you can
+          continue. A drawer is a side-trip: you can wander into it and back
+          out without committing to anything. Use a modal for "are you sure
+          you want to delete this?"; use a drawer for "let me peek at the
+          details."
+        </Prose>
+        <Split>
+          <Demo caption="Modal — for things you have to deal with right now">
+            <ModalStories variant="centered" />
+          </Demo>
+          <Demo caption="Drawer — for things you can leave anytime">
+            <DrawerStories variant="side" />
+          </Demo>
+        </Split>
+        <Callout>
+          Putting a "confirm delete" inside a drawer. The drawer's whole vibe
+          says "you can leave this" — exactly the wrong feeling for a
+          destructive action.
+        </Callout>
+      </Section>
+
+      <Section title="One toast vs many — single message vs stack">
+        <Prose>
+          A toast is a brief floating message — "Saved." If they only ever
+          come one at a time, a plain toast is fine. If the user might
+          generate several at once (background uploads, multiple actions),
+          you need a stack so they don't trip over each other.
+        </Prose>
+        <Split>
+          <Demo caption="Toast — one message">
+            <ToastStories variant="action" />
+          </Demo>
+          <Demo caption="Stacked toasts — many at once, ordered by importance">
+            <StackedToastsStories variant="severity" />
+          </Demo>
+        </Split>
+      </Section>
+
+      <Section title="Tabs vs Segmented — different pages vs different views of the same page">
+        <Prose>
+          Tabs switch between separate places — like rooms. Segmented
+          controls change how the current room looks — sort order, filter,
+          view mode. The page underneath stays the same; only the lens
+          changes.
+        </Prose>
+        <Split>
+          <Demo caption="Tabs — each tab is its own place">
+            <TabsStories variant="basic" />
+          </Demo>
+          <Demo caption="Segmented — same page, different view">
+            <SegmentedStories variant="pill" />
+          </Demo>
+        </Split>
+      </Section>
+
+      <Section title="Tooltip vs Coachmark — quick hint vs one-time lesson">
+        <Prose>
+          A tooltip is a short label that pops up when you hover over
+          something. A coachmark is a teaching overlay that points at things
+          and explains what they are. Use a tooltip when the user just needs
+          a name; use a coachmark when you actually need to teach them
+          something they wouldn't figure out on their own.
+        </Prose>
+        <Split>
+          <Demo caption="Tooltip — a quick label">
+            <TooltipStories variant="coach" />
+          </Demo>
+          <Demo caption="Coachmark — a guided lesson">
+            <SpotlightStories variant="sequence" />
+          </Demo>
+        </Split>
+        <Callout>
+          Putting required information inside a tooltip — anyone using a
+          keyboard or a touchscreen probably won't see it. Put critical
+          information in plain text on the page.
+        </Callout>
+      </Section>
+
+      <Section title="Select vs Command palette — pick a value vs pick an action">
+        <Prose>
+          A select picks a <em>thing</em> from a list — a country, a date, a
+          person. A command palette picks an <em>action</em> — "create new
+          file," "rename this." Things go in selects; verbs go in command
+          palettes.
+        </Prose>
+        <Split>
+          <Demo caption="Select — pick a value from a list">
+            <SelectStories variant="combobox" />
+          </Demo>
+          <Demo caption="Command palette — pick an action">
+            <CommandPaletteStories variant="flat" />
+          </Demo>
+        </Split>
+      </Section>
+
+      <Section title="Not too many controls in one row">
+        <Prose>
+          Two rules of thumb. Keep the number of interruption-style components
+          on screen low — a modal inside a drawer inside a popover is three
+          interruptions stacked. And in a single row, three meaningful
+          buttons or controls is the limit. After that, the row stops being
+          a row and starts being noise — push the rest into a "more" menu.
+        </Prose>
+      </Section>
+
+      <PrevNext nav={nav} prev="layout" next="composition" />
+    </article>
+  )
+}
+
+function SelectionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
+  if (mode === 'plain') return <SelectionPagePlain nav={nav} />
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -473,7 +729,118 @@ function SelectionPage({ nav }: { nav: DoctrineNav }) {
   )
 }
 
-function CompositionPage({ nav }: { nav: DoctrineNav }) {
+function CompositionPagePlain({ nav }: { nav: DoctrineNav }) {
+  return (
+    <article className="doctrine">
+      <header className="doctrine__head">
+        <p className="doctrine__eyebrow">Doctrine · 02 · plain English</p>
+        <h2 className="doctrine__title">How to put an app together</h2>
+        <p className="doctrine__lede">
+          The order in which you make decisions when building something. Walk
+          it forwards. Starting from "I love Glassmorphism, what should I
+          build?" is the wrong direction.
+        </p>
+        <Source file="02-app-composition.md" />
+      </header>
+
+      <Section title="The simple rules">
+        <Rules items={[
+          <><strong>Decide what the app does <em>first</em>, decide what it
+            looks like <em>last</em>.</strong> A look is a paintbrush. Pick
+            what you're painting before you pick the brush.</>,
+          <><strong>One core idea per app.</strong> Is it about arranging
+            things in space, moving through time, or reading a document?
+            Pick one. Apps that try to be two things at once teach neither.</>,
+          <><strong>Find the one thing the app can't work without.</strong>{' '}
+            In a kanban it's the draggable card. In an outliner it's typing
+            into a row. Pick this before any other component.</>,
+          <><strong>The look has to make that one thing work, not fight
+            it.</strong> Some looks make drag-and-drop feel great; others
+            make it impossible to see. Match them carefully.</>,
+        ]} />
+      </Section>
+
+      <Section title="The order">
+        <pre className="doctrine__pipeline">
+{`what it does  →  the core idea  →  the must-work component  →  everything else  →  the look`}
+        </pre>
+        <Prose>
+          Walk it left to right. Each step locks in something the next step
+          has to respect. Most apps that feel "off" jumped ahead — usually to
+          the look.
+        </Prose>
+      </Section>
+
+      <Section title="Step 1 — What does the app actually do?">
+        <Prose>
+          One verb, one object, in eight words or fewer. "Move work between
+          stages." "Capture nested thoughts." "Track time on a project." If
+          you can't say it that short, the app is probably two apps.
+        </Prose>
+      </Section>
+
+      <Section title="Step 2 — What's the core idea?">
+        <Prose>
+          Three families to pick from. <strong>Spatial</strong> — moving
+          things around in space matters (kanban, canvas, board).{' '}
+          <strong>Temporal</strong> — time is the main axis (timeline,
+          schedule, history). <strong>Documentary</strong> — the user is
+          reading or writing something top-to-bottom (notes, outliner,
+          table).
+        </Prose>
+      </Section>
+
+      <Section title="Step 3 — The must-work component (kanban example)">
+        <Prose>
+          In a kanban, the draggable card is the must-work component. If
+          drag-and-drop doesn't feel right, the whole app falls apart.
+          Switch the palette in the floating controls to <em>Neumorphism</em>
+          and the card practically disappears against the page. Switch it to{' '}
+          <em>Material</em> or <em>Neubrutalism</em> and the lift comes back.
+          That's the "look has to make the core thing work" rule in action.
+        </Prose>
+        <Demo caption="Card — the must-work component in a kanban">
+          <CardStories variant="spatial" />
+        </Demo>
+        <Callout label="Common mistake">
+          Starting from a look — "we love Glassmorphism, what should we
+          build?" The look has no opinion about what the user is trying to
+          do. If you love a look, treat it as a <em>filter</em> on the next
+          app you pick.
+        </Callout>
+      </Section>
+
+      <Section title="Step 4 — Everything else, kept light">
+        <Prose>
+          Most of the other parts of an app should be the simplest version
+          of themselves. Plain button for most actions. A simple "nothing
+          here yet" message for empty lists. A brief floating toast for "your
+          thing saved." Reach for heavier components only when the lighter
+          ones genuinely can't carry the meaning.
+        </Prose>
+        <Demo caption="A simple 'nothing here yet' message">
+          <EmptyStateStories variant="checklist" />
+        </Demo>
+      </Section>
+
+      <Section title="Step 5 — Picking the look">
+        <Prose>
+          Now that you know what the app does and what its must-work
+          component is, you can pick a look that flatters it. Rules of
+          thumb: if the core thing depends on cards looking lifted off the
+          page, skip Neumorphism. If it depends on small, sharp text, skip
+          Pixel-art and Sketch. If it depends on showing what's underneath,
+          glass-based palettes shine.
+        </Prose>
+      </Section>
+
+      <PrevNext nav={nav} prev="selection" next="modalities" />
+    </article>
+  )
+}
+
+function CompositionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
+  if (mode === 'plain') return <CompositionPagePlain nav={nav} />
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -617,7 +984,119 @@ function CompositionPage({ nav }: { nav: DoctrineNav }) {
   )
 }
 
-function ModalitiesPage({ nav }: { nav: DoctrineNav }) {
+function ModalitiesPagePlain({ nav }: { nav: DoctrineNav }) {
+  return (
+    <article className="doctrine">
+      <header className="doctrine__head">
+        <p className="doctrine__eyebrow">Doctrine · 03 · plain English</p>
+        <h2 className="doctrine__title">Three ways to do the same thing</h2>
+        <p className="doctrine__lede">
+          The same action — say, "delete this card" — should be reachable
+          three ways: by clicking on the card, by typing the action's name
+          into a command bar (Cmd+K), and by typing it as a sentence into a
+          natural-language bar. The three components below are the same
+          underneath; in a real app they all read and write the same data.
+        </p>
+        <Source file="03-modalities.md" />
+      </header>
+
+      <Section title="The simple rules">
+        <Rules items={[
+          <><strong>Every action exists in all three places.</strong> No
+            orphans — if you can do it by clicking, you can do it by command
+            or by typing in plain English, and vice versa.</>,
+          <><strong>There's only one source of truth.</strong> Doing
+            something via the command bar must update the visual UI
+            instantly. The three ways don't have separate state.</>,
+          <><strong>Destructive things preview before they happen.</strong>{' '}
+            Clicking shows an undo toast. Commanding shows an inline
+            confirm. Typing shows what it parsed into editable chips first.</>,
+          <><strong>The plain-English version never runs a sequence
+            without showing you the sequence first.</strong> "Auto-execute
+            without preview" is the rule's negative example.</>,
+          <><strong>Not every action needs all three.</strong> Rare or
+            spatial-only actions can stay click-only — promote them only
+            when there's a reason.</>,
+        ]} />
+      </Section>
+
+      <Section title="Clicking — delete now, undo if you change your mind">
+        <Prose>
+          Clicking the delete button removes the thing immediately and shows
+          a floating "undo" message with a countdown. The user can keep
+          working; the undo stays reachable in a tray for a while. Faster
+          than asking "are you sure?" every time.
+        </Prose>
+        <Demo caption="Optimistic undo — the visible window to take it back">
+          <OptimisticUndoStories variant="countdown" />
+        </Demo>
+      </Section>
+
+      <Section title="Cmd+K — for people who know what they want">
+        <Prose>
+          The command palette is for people who already know the action's
+          name. Press Cmd+K, start typing "delete," pick the action, pick
+          the target, confirm. Each new action you expose this way is one
+          more line in a fuzzy list — much cheaper than a button on screen.
+        </Prose>
+        <Demo caption="Command palette with multiple steps inside">
+          <CommandPaletteStories variant="wizard" />
+        </Demo>
+      </Section>
+
+      <Section title="Plain English — for people who don't know the name">
+        <Prose>
+          The natural-language bar is for people who have a goal but don't
+          know what the action is called. They type "delete the top card";
+          the bar parses that into editable little chips ("delete" + "top
+          card"), shows the parse, and lets them adjust before committing.
+          Never running silently is the whole point.
+        </Prose>
+        <Demo caption="A natural-language bar with editable chips before committing">
+          <NLBarStories variant="editable" />
+        </Demo>
+      </Section>
+
+      <Section title="One truth, three windows onto it">
+        <Prose>
+          Whether you deleted via click, command, or sentence, the same
+          undo toast appears, the same data updates, the same notification
+          fires. The three ways are just <em>windows</em> onto one set of
+          data, never separate copies.
+        </Prose>
+        <Callout>
+          Letting the command bar and the visual UI drift apart — one action
+          can be reached one way but not the other. Pick one truth.
+        </Callout>
+      </Section>
+
+      <Section title="When does an action need all three?">
+        <Prose>
+          Add an action to all three when at least two of these are true:
+          the user does it a lot, the action makes sense to chain together
+          with others, and the action's target can be named without pointing
+          at it ("close the modal" — yes; "drag this card here" — no).
+        </Prose>
+      </Section>
+
+      <Section title="When NOT to add it to all three">
+        <Prose>
+          A modality isn't free — each one needs to be kept up to date and
+          named. Skip the plain-English and command-palette versions when
+          the action is rare (nobody benefits from the lookup), or
+          destructive without easy reversal and uncommon (the confirmation
+          would be more friction than the save), or fundamentally spatial
+          ("drag-to-reorder" — there's no useful sentence for it).
+        </Prose>
+      </Section>
+
+      <PrevNext nav={nav} prev="composition" />
+    </article>
+  )
+}
+
+function ModalitiesPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
+  if (mode === 'plain') return <ModalitiesPagePlain nav={nav} />
   return (
     <article className="doctrine">
       <header className="doctrine__head">
@@ -751,10 +1230,10 @@ function ModalitiesPage({ nav }: { nav: DoctrineNav }) {
 }
 
 export const DOCTRINE_PAGES: DoctrinePage[] = [
-  { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: nav => <LayoutPage nav={nav} /> },
-  { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: nav => <SelectionPage nav={nav} /> },
-  { id: 'composition', label: 'App composition', eyebrow: 'Doctrine · 02', title: 'App composition', source: '02-app-composition.md', render: nav => <CompositionPage nav={nav} /> },
-  { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: nav => <ModalitiesPage nav={nav} /> },
+  { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: (nav, mode) => <LayoutPage nav={nav} mode={mode} /> },
+  { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: (nav, mode) => <SelectionPage nav={nav} mode={mode} /> },
+  { id: 'composition', label: 'App composition', eyebrow: 'Doctrine · 02', title: 'App composition', source: '02-app-composition.md', render: (nav, mode) => <CompositionPage nav={nav} mode={mode} /> },
+  { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: (nav, mode) => <ModalitiesPage nav={nav} mode={mode} /> },
 ]
 
 export const isDoctrineId = (v: string): v is DoctrineId =>
