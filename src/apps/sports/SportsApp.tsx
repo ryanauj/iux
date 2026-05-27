@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { useSelectedStyle } from '../../lib/persistedStyle'
+import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
 import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchSportsRoute, sportsRoutes, type SportsRoute } from './routes'
@@ -101,17 +101,7 @@ export function SportsApp({ location }: SportsAppProps) {
   }
 
   const floatingFields: Field[] = [
-    {
-      key: 'palette',
-      label: 'Palette',
-      short: 'P',
-      value: paletteId,
-      options: PALETTE_IDS.map(id => ({
-        value: id,
-        label: `${palettes[id].name} (${palettes[id].engine})`,
-      })),
-      onChange: handlePaletteChange,
-    },
+    buildPaletteField(paletteId, handlePaletteChange),
     {
       key: 'layout',
       label: 'Layout',

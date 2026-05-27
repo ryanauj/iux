@@ -12,7 +12,7 @@ import {
   MOTION_FIELD_OPTIONS,
   resolveMotionScale,
 } from '../theme/motionScales'
-import { useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, useSelectedStyle } from '../lib/persistedStyle'
 import { replaceParams, type HashLocation } from './router'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
@@ -85,17 +85,7 @@ export function AppsLanding({ location }: AppsLandingProps) {
   }
 
   const fields: Field[] = [
-    {
-      key: 'palette',
-      label: 'Palette',
-      short: 'P',
-      value: paletteId,
-      options: PALETTE_IDS.map(id => ({
-        value: id,
-        label: `${palettes[id].name} (${palettes[id].engine})`,
-      })),
-      onChange: handlePaletteChange,
-    },
+    buildPaletteField(paletteId, handlePaletteChange),
     {
       key: 'navLayout',
       label: 'Nav',
