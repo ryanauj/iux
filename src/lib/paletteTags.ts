@@ -1,6 +1,12 @@
+import { useMemo } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { paletteTags } from '../../palettes/tags'
 import { descriptions } from '../../palettes/descriptions'
+import {
+  DEFAULT_GROUPS,
+  DEFAULT_GROUP_NAMES,
+  FAVORITES_GROUP,
+} from '../../palettes/defaultGroups'
 import { usePersistedPref } from './usePersistedPref'
 import { usePersistedJSON } from './usePersistedJSON'
 
@@ -164,19 +170,109 @@ export function useArrowsMode() {
 }
 
 /**
- * Resolve a group name (either a tag or a custom-group name) to its
- * palette-id members. Custom groups win over identically-named tags so
- * a user can shadow a built-in tag with their own curation.
+ * Resolve a group name to its palette-id members. Custom (user-edited)
+ * groups win over identically-named defaults so an override fully
+ * replaces the built-in list.
  */
 export function resolveGroupMembers(
   name: string | null,
-  customGroups: Record<string, PaletteId[]>,
+  groups: Record<string, PaletteId[]>,
 ): PaletteId[] {
   if (!name) return []
-  const custom = customGroups[name]
-  if (custom) return custom
-  return tagToPaletteIds.get(name) ?? []
+  return groups[name] ?? []
 }
+
+/* ───────────────────────── group helpers ───────────────────────── */
+
+/**
+ * The effective group map shown in the picker: every built-in default
+ * group merged with the user's stored overrides. A stored entry under a
+ * default name fully replaces the default's member list; user-added
+ * groups live alongside the defaults under their own names.
+ *
+ * This is recomputed when stored groups change and is the single source
+ * the picker reads — there's no "default vs custom" distinction in the
+ * UI beyond `isDefaultGroup(name)`.
+ */
+export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
+  const [stored, setStored] = useCustomGroups()
+  const merged = useMemo(() => {
+    const out: Record<string, PaletteId[]> = {}
+    for (const [name, ids] of Object.entries(DEFAULT_GROUPS)) out[name] = ids.slice()
+    for (const [name, ids] of Object.entries(stored)) out[name] = ids.slice()
+    return out
+  }, [stored])
+
+  const api = useMemo<GroupsApi>(() => {
+    const writeGroup = (name: string, ids: PaletteId[]) => {
+      const defaultIds = DEFAULT_GROUPS[name]
+      /* If we'd just be re-storing the default values verbatim, drop the
+       * override so the entry stays "clean" and a future default change
+       * flows through. */
+      if (defaultIds && sameIds(defaultIds, ids)) {
+        if (!(name in stored)) return
+        const next = { ...stored }
+        delete next[name]
+        setStored(next)
+        return
+      }
+      setStored({ ...stored, [name]: ids })
+    }
+
+    const toggleMembership = (name: string, id: PaletteId) => {
+      const current = merged[name] ?? []
+      const exists = current.includes(id)
+      const nextIds = exists ? current.filter(x => x !== id) : [...current, id]
+      writeGroup(name, nextIds)
+    }
+
+    return {
+      toggleMembership,
+      toggleFavorite: (id: PaletteId) => toggleMembership(FAVORITES_GROUP, id),
+      isFavorite: (id: PaletteId) => (merged[FAVORITES_GROUP] ?? []).includes(id),
+      createGroup: (name: string, ids: PaletteId[]) => {
+        if (!name.trim()) return
+        setStored({ ...stored, [name]: ids })
+      },
+      deleteGroup: (name: string) => {
+        if (!(name in stored)) return
+        const next = { ...stored }
+        delete next[name]
+        setStored(next)
+      },
+      resetDefaults: () => {
+        const next: Record<string, PaletteId[]> = {}
+        for (const [name, ids] of Object.entries(stored)) {
+          if (!DEFAULT_GROUP_NAMES.has(name)) next[name] = ids
+        }
+        setStored(next)
+      },
+    }
+  }, [merged, stored, setStored])
+
+  return [merged, api]
+}
+
+export interface GroupsApi {
+  toggleMembership(name: string, id: PaletteId): void
+  toggleFavorite(id: PaletteId): void
+  isFavorite(id: PaletteId): boolean
+  createGroup(name: string, ids: PaletteId[]): void
+  deleteGroup(name: string): void
+  resetDefaults(): void
+}
+
+export function isDefaultGroup(name: string): boolean {
+  return DEFAULT_GROUP_NAMES.has(name)
+}
+
+function sameIds(a: readonly PaletteId[], b: readonly PaletteId[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false
+  return true
+}
+
+export { FAVORITES_GROUP }
 
 /**
  * Cycle within a group, wrapping at both ends. If the current palette

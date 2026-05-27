@@ -64,8 +64,8 @@ export function buildPaletteField(
   return {
     kind: 'palette',
     key: 'chrome',
-    label: 'Chrome',
-    short: 'C',
+    label: 'Palette',
+    short: 'P',
     value,
     options: [],
     onChange: next => {

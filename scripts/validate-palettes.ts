@@ -108,6 +108,7 @@ function listPaletteFiles(): string[] {
         name !== 'index.ts' &&
         name !== 'descriptions.ts' &&
         name !== 'tags.ts' &&
+        name !== 'defaultGroups.ts' &&
         !name.endsWith('.description.ts'),
     )
     .map(name => path.join(PALETTES_DIR, name))

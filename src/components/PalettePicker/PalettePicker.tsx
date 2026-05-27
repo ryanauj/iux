@@ -9,23 +9,19 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
+import { FAVORITES_GROUP } from '../../../palettes/defaultGroups'
 import { notify } from '../../lib/_persistedShared'
 import {
   ARROWS_MODE_KEY,
-  PINNING_MODE_KEY,
-  allTags,
   cycleInGroup,
-  getPaletteTags,
+  isDefaultGroup,
   resolveGroupMembers,
   searchPalettes,
-  tagToPaletteIds,
   useActiveGroup,
   useArrowsMode,
-  useCustomGroups,
-  usePinnedGroups,
-  usePinningMode,
+  useGroups,
   type ArrowsMode,
-  type PinningMode,
+  type GroupsApi,
 } from '../../lib/paletteTags'
 import './PalettePicker.css'
 
@@ -74,16 +70,12 @@ export function PalettePicker(props: PalettePickerProps) {
   const current = field.value as PaletteId
 
   const [arrowsMode] = useArrowsMode()
-  const [pinningMode] = usePinningMode()
-  const [pinned, setPinned] = usePinnedGroups()
   const [activeGroup, setActiveGroup] = useActiveGroup()
-  const [customGroups, setCustomGroups] = useCustomGroups()
+  const [groups, groupsApi] = useGroups()
 
-  /* Resolve active-group members for the arrow cycle. Custom groups
-   * shadow same-named tags so a user can curate their own set. */
   const activeMembers = useMemo(
-    () => resolveGroupMembers(activeGroup, customGroups),
-    [activeGroup, customGroups],
+    () => resolveGroupMembers(activeGroup, groups),
+    [activeGroup, groups],
   )
 
   const showInlineArrows =
@@ -135,7 +127,7 @@ export function PalettePicker(props: PalettePickerProps) {
             onClick={onTriggerClick}
           >
             <span className="ctrl-strip__icon-short" aria-hidden="true">
-              {field.short ?? 'C'}
+              {field.short ?? 'P'}
             </span>
             <span className="ctrl-strip__icon-val">{inlineLabel}</span>
           </button>
@@ -157,14 +149,11 @@ export function PalettePicker(props: PalettePickerProps) {
             variant="strip"
             quadrant={props.popoverQuadrant ?? 'right-down'}
             slotRect={props.slotRect ?? null}
-            pinned={pinned}
-            setPinned={setPinned}
             activeGroup={activeGroup}
             setActiveGroup={setActiveGroup}
-            customGroups={customGroups}
-            setCustomGroups={setCustomGroups}
+            groups={groups}
+            groupsApi={groupsApi}
             arrowsMode={arrowsMode}
-            pinningMode={pinningMode}
             activeMembers={activeMembers}
             onStepPalette={stepPalette}
             onClose={closePanel}
@@ -213,14 +202,11 @@ export function PalettePicker(props: PalettePickerProps) {
           field={field}
           current={current}
           variant="button"
-          pinned={pinned}
-          setPinned={setPinned}
           activeGroup={activeGroup}
           setActiveGroup={setActiveGroup}
-          customGroups={customGroups}
-          setCustomGroups={setCustomGroups}
+          groups={groups}
+          groupsApi={groupsApi}
           arrowsMode={arrowsMode}
-          pinningMode={pinningMode}
           activeMembers={activeMembers}
           onStepPalette={stepPalette}
           onClose={closePanel}
@@ -238,14 +224,11 @@ interface PanelProps {
   variant: PalettePickerVariant
   quadrant?: StripQuadrant
   slotRect?: DOMRect | null
-  pinned: string[]
-  setPinned: (next: string[]) => void
   activeGroup: string | null
   setActiveGroup: (next: string | null) => void
-  customGroups: Record<string, PaletteId[]>
-  setCustomGroups: (next: Record<string, PaletteId[]>) => void
+  groups: Record<string, PaletteId[]>
+  groupsApi: GroupsApi
   arrowsMode: ArrowsMode
-  pinningMode: PinningMode
   activeMembers: PaletteId[]
   onStepPalette: (dir: -1 | 1) => void
   onClose: () => void
@@ -258,21 +241,17 @@ function PalettePickerPanel(props: PanelProps) {
     variant,
     quadrant,
     slotRect,
-    pinned,
-    setPinned,
     activeGroup,
     setActiveGroup,
-    customGroups,
-    setCustomGroups,
+    groups,
+    groupsApi,
     arrowsMode,
-    pinningMode,
     activeMembers,
     onStepPalette,
     onClose,
   } = props
 
   const [query, setQuery] = useState('')
-  const [tagFilter, setTagFilter] = useState<string | null>(null)
   const [prefsOpen, setPrefsOpen] = useState(false)
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
@@ -281,93 +260,56 @@ function PalettePickerPanel(props: PanelProps) {
     searchRef.current?.focus()
   }, [])
 
-  const showActiveGroupControl = pinningMode !== 'pinned'
-  const showPinnedRow = pinningMode !== 'active'
   const showPopoverArrows =
     arrowsMode !== 'inline' && activeGroup !== null && activeMembers.length > 0
 
-  /* Compose the visible palette list. Search wins over tag filter; tag
-   * filter wins over no filter. Order is preserved from `searchPalettes`
-   * so the name-prefix ranking lands on top. */
+  /* Compose the visible palette list. When an active group is set, the
+   * list narrows to its members so the picker doubles as a group editor.
+   * Search wins over the group filter so a name lookup still reaches
+   * everything. */
   const visiblePalettes = useMemo<PaletteId[]>(() => {
-    let ids: PaletteId[]
-    if (query.trim()) {
-      ids = searchPalettes(query)
-    } else if (tagFilter) {
-      ids = tagToPaletteIds.get(tagFilter) ?? []
-    } else {
-      ids = searchPalettes('')
-    }
-    if (activeGroup && pinningMode === 'active') {
+    if (query.trim()) return searchPalettes(query)
+    if (activeGroup) {
+      const ranked = searchPalettes('')
       const memberSet = new Set(activeMembers)
-      ids = ids.filter(id => memberSet.has(id))
+      return ranked.filter(id => memberSet.has(id))
     }
-    return ids
-  }, [query, tagFilter, activeGroup, pinningMode, activeMembers])
-
-  /* Tags surfaced as chips alongside each row. Restrict to the tags
-   * actually present in the filtered set so the rail stays meaningful. */
-  const visibleTags = useMemo(() => {
-    const set = new Set<string>()
-    for (const id of visiblePalettes) {
-      for (const t of getPaletteTags(id)) set.add(t)
-    }
-    return Array.from(set).sort()
-  }, [visiblePalettes])
-
-  const togglePinned = useCallback(
-    (name: string) => {
-      if (pinned.includes(name)) setPinned(pinned.filter(p => p !== name))
-      else setPinned([...pinned, name])
-    },
-    [pinned, setPinned],
-  )
+    return searchPalettes('')
+  }, [query, activeGroup, activeMembers])
 
   const onCreateGroupFromResults = useCallback(() => {
-    const proposed = query.trim() || tagFilter || 'New group'
-    const name = window.prompt('Name this custom group', proposed)?.trim()
+    const proposed = query.trim() || 'New group'
+    const name = window.prompt('Name this group', proposed)?.trim()
     if (!name) return
-    setCustomGroups({ ...customGroups, [name]: visiblePalettes.slice() })
+    groupsApi.createGroup(name, visiblePalettes.slice())
     setActiveGroup(name)
-  }, [query, tagFilter, customGroups, visiblePalettes, setCustomGroups, setActiveGroup])
+  }, [query, visiblePalettes, groupsApi, setActiveGroup])
 
-  const onDeleteCustomGroup = useCallback(
+  const onDeleteGroup = useCallback(
     (name: string) => {
-      if (!window.confirm(`Delete custom group "${name}"?`)) return
-      const next = { ...customGroups }
-      delete next[name]
-      setCustomGroups(next)
-      if (activeGroup === name) setActiveGroup(null)
-      if (pinned.includes(name)) setPinned(pinned.filter(p => p !== name))
+      const detail = isDefaultGroup(name)
+        ? `Reset "${name}" to its default members?`
+        : `Delete group "${name}"?`
+      if (!window.confirm(detail)) return
+      groupsApi.deleteGroup(name)
+      if (!isDefaultGroup(name) && activeGroup === name) setActiveGroup(null)
     },
-    [customGroups, setCustomGroups, activeGroup, setActiveGroup, pinned, setPinned],
-  )
-
-  const onAddToCustomGroup = useCallback(
-    (groupName: string, paletteId: PaletteId) => {
-      const existing = customGroups[groupName] ?? []
-      if (existing.includes(paletteId)) {
-        const filtered = existing.filter(id => id !== paletteId)
-        setCustomGroups({ ...customGroups, [groupName]: filtered })
-      } else {
-        setCustomGroups({ ...customGroups, [groupName]: [...existing, paletteId] })
-      }
-    },
-    [customGroups, setCustomGroups],
+    [groupsApi, activeGroup, setActiveGroup],
   )
 
   const onNewGroupForPalette = useCallback(
     (paletteId: PaletteId) => {
-      const name = window.prompt('New custom group name')?.trim()
+      const name = window.prompt('New group name')?.trim()
       if (!name) return
-      const existing = customGroups[name] ?? []
-      setCustomGroups({
-        ...customGroups,
-        [name]: existing.includes(paletteId) ? existing : [...existing, paletteId],
-      })
+      groupsApi.createGroup(name, [paletteId])
     },
-    [customGroups, setCustomGroups],
+    [groupsApi],
   )
+
+  const onResetDefaults = useCallback(() => {
+    if (!window.confirm('Reset all default groups to their starting members? Groups you created will be kept.')) return
+    groupsApi.resetDefaults()
+  }, [groupsApi])
 
   const onKey = useCallback(
     (e: ReactKeyboardEvent) => {
@@ -394,7 +336,19 @@ function PalettePickerPanel(props: PanelProps) {
       ? `ctrl-strip__popover ctrl-strip__popover--${quadrant ?? 'right-down'} palette-picker palette-picker--strip`
       : 'palette-picker palette-picker--button'
 
-  const customGroupNames = Object.keys(customGroups).sort()
+  /* All group names, sorted with Favorites first so it sits at the top
+   * of the dropdown and the per-row group menu. */
+  const groupNames = useMemo(() => {
+    const names = Object.keys(groups).filter(n => n !== FAVORITES_GROUP).sort()
+    return [FAVORITES_GROUP, ...names]
+  }, [groups])
+
+  const activeGroupExists = activeGroup !== null && activeGroup in groups
+  const activeGroupAction = activeGroupExists
+    ? isDefaultGroup(activeGroup!)
+      ? 'Reset members'
+      : 'Delete group'
+    : null
 
   return (
     <div
@@ -410,12 +364,9 @@ function PalettePickerPanel(props: PanelProps) {
           ref={searchRef}
           type="text"
           className="palette-picker__search"
-          placeholder={`Search ${Object.keys(palettes).length} palettes by name or tag…`}
+          placeholder={`Search ${Object.keys(palettes).length} palettes…`}
           value={query}
-          onChange={e => {
-            setQuery(e.target.value)
-            if (tagFilter) setTagFilter(null)
-          }}
+          onChange={e => setQuery(e.target.value)}
           aria-label="Search palettes"
         />
         {showPopoverArrows && (
@@ -440,111 +391,39 @@ function PalettePickerPanel(props: PanelProps) {
         )}
       </div>
 
-      {/* Pinned chip row */}
-      {showPinnedRow && pinned.length > 0 && (
-        <div className="palette-picker__pinned" role="group" aria-label="Pinned groups">
-          {pinned.map(name => {
-            const active = tagFilter === name
-            const isCustom = !!customGroups[name]
-            return (
-              <span key={name} className={`palette-picker__chip${active ? ' is-active' : ''}`}>
-                <button
-                  type="button"
-                  className="palette-picker__chip-label"
-                  onClick={() => setTagFilter(active ? null : name)}
-                  aria-pressed={active}
-                >
-                  {isCustom ? '★ ' : ''}{name}
-                </button>
-                <button
-                  type="button"
-                  className="palette-picker__chip-remove"
-                  aria-label={`Unpin ${name}`}
-                  onClick={() => togglePinned(name)}
-                >
-                  ×
-                </button>
-              </span>
-            )
-          })}
-        </div>
-      )}
-
       {/* Active group selector */}
-      {showActiveGroupControl && (
-        <div className="palette-picker__active-group">
-          <label className="palette-picker__active-label">
-            Active group
-            <select
-              className="palette-picker__active-select"
-              value={activeGroup ?? ''}
-              onChange={e => setActiveGroup(e.target.value === '' ? null : e.target.value)}
-            >
-              <option value="">— none —</option>
-              {customGroupNames.length > 0 && (
-                <optgroup label="Custom groups">
-                  {customGroupNames.map(name => (
-                    <option key={`cg-${name}`} value={name}>★ {name}</option>
-                  ))}
-                </optgroup>
-              )}
-              <optgroup label="Tags">
-                {allTags.map(tag => (
-                  <option key={`tag-${tag}`} value={tag}>{tag}</option>
-                ))}
-              </optgroup>
-            </select>
-          </label>
-          {activeGroup && customGroups[activeGroup] && (
-            <button
-              type="button"
-              className="palette-picker__delete-group"
-              onClick={() => onDeleteCustomGroup(activeGroup)}
-            >
-              Delete group
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Tag chip rail (filters; pinnable) */}
-      {visibleTags.length > 0 && (
-        <div className="palette-picker__tag-rail" role="group" aria-label="Filter by tag">
-          {visibleTags.map(tag => {
-            const active = tagFilter === tag
-            const isPinned = pinned.includes(tag)
-            return (
-              <span key={tag} className={`palette-picker__chip${active ? ' is-active' : ''}`}>
-                <button
-                  type="button"
-                  className="palette-picker__chip-label"
-                  onClick={() => {
-                    setTagFilter(active ? null : tag)
-                    setQuery('')
-                  }}
-                  aria-pressed={active}
-                >
-                  {tag}
-                </button>
-                <button
-                  type="button"
-                  className={`palette-picker__chip-pin${isPinned ? ' is-pinned' : ''}`}
-                  aria-label={isPinned ? `Unpin ${tag}` : `Pin ${tag}`}
-                  onClick={() => togglePinned(tag)}
-                >
-                  {isPinned ? '★' : '☆'}
-                </button>
-              </span>
-            )
-          })}
-        </div>
-      )}
+      <div className="palette-picker__active-group">
+        <label className="palette-picker__active-label">
+          Active group
+          <select
+            className="palette-picker__active-select"
+            value={activeGroup ?? ''}
+            onChange={e => setActiveGroup(e.target.value === '' ? null : e.target.value)}
+          >
+            <option value="">— none —</option>
+            {groupNames.map(name => (
+              <option key={name} value={name}>
+                {name} ({groups[name].length})
+              </option>
+            ))}
+          </select>
+        </label>
+        {activeGroupAction && (
+          <button
+            type="button"
+            className="palette-picker__delete-group"
+            onClick={() => onDeleteGroup(activeGroup!)}
+          >
+            {activeGroupAction}
+          </button>
+        )}
+      </div>
 
       {/* List */}
       {visiblePalettes.length === 0 ? (
         <div className="palette-picker__empty">
           <span>No matches</span>
-          {(query.trim() || tagFilter) && (
+          {query.trim() && (
             <button
               type="button"
               className="palette-picker__inline-action"
@@ -558,11 +437,23 @@ function PalettePickerPanel(props: PanelProps) {
         <ul className="palette-picker__list" role="menu">
           {visiblePalettes.map(id => {
             const palette = palettes[id]
-            const tags = getPaletteTags(id).slice(0, 4)
             const selected = id === current
             const isGroupOpen = groupPaletteId === id
+            const favorited = groupsApi.isFavorite(id)
             return (
               <li key={id} className="palette-picker__row">
+                <button
+                  type="button"
+                  className={`palette-picker__star${favorited ? ' is-favorited' : ''}`}
+                  aria-label={favorited ? `Unfavorite ${palette.name}` : `Favorite ${palette.name}`}
+                  aria-pressed={favorited}
+                  onClick={(e: ReactMouseEvent) => {
+                    e.stopPropagation()
+                    groupsApi.toggleFavorite(id)
+                  }}
+                >
+                  {favorited ? '★' : '☆'}
+                </button>
                 <button
                   type="button"
                   role="menuitemradio"
@@ -575,16 +466,11 @@ function PalettePickerPanel(props: PanelProps) {
                 >
                   <span className="palette-picker__option-name">{palette.name}</span>
                   <span className="palette-picker__option-engine">{palette.engine}</span>
-                  <span className="palette-picker__option-tags" aria-hidden="true">
-                    {tags.map(t => (
-                      <span key={t} className="palette-picker__option-tag">{t}</span>
-                    ))}
-                  </span>
                 </button>
                 <button
                   type="button"
                   className="palette-picker__option-menu"
-                  aria-label={`Add ${palette.name} to a custom group`}
+                  aria-label={`Add ${palette.name} to a group`}
                   aria-expanded={isGroupOpen}
                   onClick={(e: ReactMouseEvent) => {
                     e.stopPropagation()
@@ -595,17 +481,14 @@ function PalettePickerPanel(props: PanelProps) {
                 </button>
                 {isGroupOpen && (
                   <div className="palette-picker__group-menu" role="menu">
-                    {customGroupNames.length === 0 && (
-                      <div className="palette-picker__group-menu-empty">No custom groups yet</div>
-                    )}
-                    {customGroupNames.map(name => {
-                      const inGroup = (customGroups[name] ?? []).includes(id)
+                    {groupNames.map(name => {
+                      const inGroup = (groups[name] ?? []).includes(id)
                       return (
                         <button
                           key={name}
                           type="button"
                           className={`palette-picker__group-menu-item${inGroup ? ' is-in-group' : ''}`}
-                          onClick={() => onAddToCustomGroup(name, id)}
+                          onClick={() => groupsApi.toggleMembership(name, id)}
                         >
                           {inGroup ? '✓' : '+'} {name}
                         </button>
@@ -642,16 +525,6 @@ function PalettePickerPanel(props: PanelProps) {
         {prefsOpen && (
           <div className="palette-picker__prefs-body">
             <PrefRow
-              storageKey={PINNING_MODE_KEY}
-              label="Grouping"
-              current={pinningMode}
-              options={[
-                { value: 'both', label: 'Pinned + active' },
-                { value: 'pinned', label: 'Pinned only' },
-                { value: 'active', label: 'Active only' },
-              ]}
-            />
-            <PrefRow
               storageKey={ARROWS_MODE_KEY}
               label="Arrows"
               current={arrowsMode}
@@ -662,7 +535,14 @@ function PalettePickerPanel(props: PanelProps) {
               ]}
             />
             <div className="palette-picker__prefs-actions">
-              {(query.trim() || tagFilter) && (
+              <button
+                type="button"
+                className="palette-picker__inline-action"
+                onClick={onResetDefaults}
+              >
+                Reset default groups
+              </button>
+              {query.trim() && (
                 <button
                   type="button"
                   className="palette-picker__inline-action"
