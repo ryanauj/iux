@@ -23,7 +23,11 @@ import {
   type ArrowsMode,
   type GroupsApi,
 } from '../../lib/paletteTags'
+import { usePersistedPref } from '../../lib/usePersistedPref'
 import './PalettePicker.css'
+
+const LIST_OPEN_KEY = 'palette-picker:list-open'
+const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
 export type PalettePickerVariant = 'button' | 'strip'
 
@@ -253,12 +257,25 @@ function PalettePickerPanel(props: PanelProps) {
 
   const [query, setQuery] = useState('')
   const [prefsOpen, setPrefsOpen] = useState(false)
+  const [listOpenRaw, setListOpenRaw] = usePersistedPref<'0' | '1'>(
+    LIST_OPEN_KEY,
+    '1',
+    isBoolPref,
+  )
+  const listOpen = listOpenRaw === '1'
+  const setListOpen = useCallback(
+    (next: boolean) => setListOpenRaw(next ? '1' : '0'),
+    [setListOpenRaw],
+  )
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
 
+  /* Auto-focus the search input only when the list is actually visible —
+   * otherwise focusing a hidden field is a no-op that silently swallows
+   * the keyboard intent. */
   useEffect(() => {
-    searchRef.current?.focus()
-  }, [])
+    if (listOpen) searchRef.current?.focus()
+  }, [listOpen])
 
   const showPopoverArrows =
     arrowsMode !== 'inline' && activeGroup !== null && activeMembers.length > 0
@@ -358,17 +375,24 @@ function PalettePickerPanel(props: PanelProps) {
       aria-label="Palette picker"
       onKeyDown={onKey}
     >
-      {/* Search */}
-      <div className="palette-picker__search-row">
-        <input
-          ref={searchRef}
-          type="text"
-          className="palette-picker__search"
-          placeholder={`Search ${Object.keys(palettes).length} palettes…`}
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          aria-label="Search palettes"
-        />
+      {/* Active group selector — always visible so the user can switch
+       * groups and cycle palettes even when the browse list is collapsed. */}
+      <div className="palette-picker__active-group">
+        <label className="palette-picker__active-label">
+          Active group
+          <select
+            className="palette-picker__active-select"
+            value={activeGroup ?? ''}
+            onChange={e => setActiveGroup(e.target.value === '' ? null : e.target.value)}
+          >
+            <option value="">— none —</option>
+            {groupNames.map(name => (
+              <option key={name} value={name}>
+                {name} ({groups[name].length})
+              </option>
+            ))}
+          </select>
+        </label>
         {showPopoverArrows && (
           <div className="palette-picker__popover-arrows" role="group" aria-label="Cycle group">
             <button
@@ -389,25 +413,6 @@ function PalettePickerPanel(props: PanelProps) {
             </button>
           </div>
         )}
-      </div>
-
-      {/* Active group selector */}
-      <div className="palette-picker__active-group">
-        <label className="palette-picker__active-label">
-          Active group
-          <select
-            className="palette-picker__active-select"
-            value={activeGroup ?? ''}
-            onChange={e => setActiveGroup(e.target.value === '' ? null : e.target.value)}
-          >
-            <option value="">— none —</option>
-            {groupNames.map(name => (
-              <option key={name} value={name}>
-                {name} ({groups[name].length})
-              </option>
-            ))}
-          </select>
-        </label>
         {activeGroupAction && (
           <button
             type="button"
@@ -419,22 +424,45 @@ function PalettePickerPanel(props: PanelProps) {
         )}
       </div>
 
-      {/* List */}
-      {visiblePalettes.length === 0 ? (
-        <div className="palette-picker__empty">
-          <span>No matches</span>
-          {query.trim() && (
-            <button
-              type="button"
-              className="palette-picker__inline-action"
-              onClick={onCreateGroupFromResults}
-            >
-              Create group from results
-            </button>
-          )}
-        </div>
-      ) : (
-        <ul className="palette-picker__list" role="menu">
+      {/* Browse disclosure — collapses the heavy search + list section so
+       * the popover shrinks to a compact pill on small screens. */}
+      <div className="palette-picker__browse">
+        <button
+          type="button"
+          className="palette-picker__browse-toggle"
+          aria-expanded={listOpen}
+          onClick={() => setListOpen(!listOpen)}
+        >
+          {listOpen ? '▾' : '▸'} Browse {Object.keys(palettes).length} palettes
+        </button>
+        {listOpen && (
+          <div className="palette-picker__browse-body">
+            <div className="palette-picker__search-row">
+              <input
+                ref={searchRef}
+                type="text"
+                className="palette-picker__search"
+                placeholder={`Search ${Object.keys(palettes).length} palettes…`}
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                aria-label="Search palettes"
+              />
+            </div>
+            {visiblePalettes.length === 0 ? (
+              <div className="palette-picker__empty">
+                <span>No matches</span>
+                {query.trim() && (
+                  <button
+                    type="button"
+                    className="palette-picker__inline-action"
+                    onClick={onCreateGroupFromResults}
+                  >
+                    Create group from results
+                  </button>
+                )}
+              </div>
+            ) : (
+              <ul className="palette-picker__list" role="menu">
           {visiblePalettes.map(id => {
             const palette = palettes[id]
             const selected = id === current
@@ -508,9 +536,12 @@ function PalettePickerPanel(props: PanelProps) {
                 )}
               </li>
             )
-          })}
-        </ul>
-      )}
+                  })}
+                </ul>
+              )}
+          </div>
+        )}
+      </div>
 
       {/* Preferences disclosure */}
       <div className="palette-picker__prefs">
