@@ -120,7 +120,7 @@ export function PalettePicker(props: PalettePickerProps) {
               aria-label={`Previous palette in ${activeGroup ?? 'group'}`}
               onClick={() => stepPalette(-1)}
             >
-              ◀
+              ◀&#xFE0E;
             </button>
           )}
           <button
@@ -142,7 +142,7 @@ export function PalettePicker(props: PalettePickerProps) {
               aria-label={`Next palette in ${activeGroup ?? 'group'}`}
               onClick={() => stepPalette(1)}
             >
-              ▶
+              ▶&#xFE0E;
             </button>
           )}
         </div>
@@ -177,7 +177,7 @@ export function PalettePicker(props: PalettePickerProps) {
             aria-label={`Previous palette in ${activeGroup ?? 'group'}`}
             onClick={() => stepPalette(-1)}
           >
-            ◀
+            ◀&#xFE0E;
           </button>
         )}
         <button
@@ -197,7 +197,7 @@ export function PalettePicker(props: PalettePickerProps) {
             aria-label={`Next palette in ${activeGroup ?? 'group'}`}
             onClick={() => stepPalette(1)}
           >
-            ▶
+            ▶&#xFE0E;
           </button>
         )}
       </div>
@@ -415,7 +415,7 @@ function PalettePickerPanel(props: PanelProps) {
               aria-label={`Previous in ${activeGroup}`}
               onClick={() => onStepPalette(-1)}
             >
-              ◀
+              ◀&#xFE0E;
             </button>
             <button
               type="button"
@@ -423,7 +423,7 @@ function PalettePickerPanel(props: PanelProps) {
               aria-label={`Next in ${activeGroup}`}
               onClick={() => onStepPalette(1)}
             >
-              ▶
+              ▶&#xFE0E;
             </button>
           </div>
         )}
