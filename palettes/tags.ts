@@ -114,4 +114,16 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
 
   /* Group W — sketch second register */
   'zen-sumie': ['hand-drawn', 'brush', 'east-asian', 'restrained'],
+
+  /* Group X — modern-light register set */
+  'nordic-frost': ['modern', 'light', 'scandinavian', 'cool', 'minimal'],
+  'sage-studio': ['modern', 'light', 'wellness', 'botanical', 'warm'],
+  'linear-workspace': ['modern', 'light', 'saas', 'productivity', 'minimal'],
+  'vercel-geist': ['modern', 'light', 'dev-tool', 'minimal', 'utility'],
+  'soft-pastel': ['modern', 'light', 'pastel', 'playful', 'app'],
+  'lavender-dawn': ['modern', 'light', 'calm', 'app', 'warm'],
+  'stone-modern': ['modern', 'light', 'minimal', 'retail', 'warm'],
+  'coastal-modern': ['modern', 'light', 'coastal', 'cool'],
+  'citrus-spark': ['modern', 'light', 'energetic', 'brand', 'bright'],
+  'mocha-latte': ['modern', 'light', 'cafe', 'warm', 'serif'],
 }
