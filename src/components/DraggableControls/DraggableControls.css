@@ -75,6 +75,17 @@
   padding: var(--space-3, 0.75rem);
   min-width: 22rem;
   max-width: calc(100vw - 32px);
+  /*
+   * Cap the panel to the space available toward the corner it expands into
+   * — JS sets `--panel-max-height` from the FAB's rect (see
+   * DraggableControls.tsx). This is what keeps a bottom-anchored (up
+   * quadrant) panel from running off the top of the viewport; the panel
+   * scrolls internally instead, with its first row pinned at the top
+   * margin. Until JS measures, there's no cap.
+   */
+  max-height: var(--panel-max-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: 1;
 }
 
@@ -578,18 +589,18 @@
     min-width: min(18rem, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
     /*
-     * Single scroll container for the whole window. `100vh` on iOS
-     * Safari ignores the browser chrome (the panel would tuck content
-     * under the URL bar), so `100dvh` tracks the visible height with the
-     * vh line as a fallback. `overscroll-behavior: contain` keeps a swipe
-     * that reaches the scroll limit from scrolling the page beneath. The
-     * palette list hands its own scroll back to this container on phones
-     * (see PalettePicker.css) so one swipe moves everything.
+     * Single scroll container for the whole window. The JS-measured
+     * `--panel-max-height` (capped to the space toward the open corner)
+     * is authoritative; the fallback only covers the first paint before
+     * JS measures. `100vh` on iOS Safari ignores the browser chrome (the
+     * panel would tuck content under the URL bar), so `100dvh` tracks the
+     * visible height with the vh line as a fallback. The base rule already
+     * sets `overflow-y: auto` + `overscroll-behavior: contain` so one
+     * swipe moves the whole window (the palette list hands its own scroll
+     * back to this container on phones — see PalettePicker.css).
      */
-    max-height: calc(100vh - 24px);
-    max-height: calc(100dvh - 24px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    max-height: var(--panel-max-height, calc(100vh - 24px));
+    max-height: var(--panel-max-height, calc(100dvh - 24px));
   }
 
   .ctrl-strip {
