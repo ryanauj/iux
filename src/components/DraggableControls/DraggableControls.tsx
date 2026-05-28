@@ -340,21 +340,41 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
+  const [maxHeight, setMaxHeight] = useState<number | null>(null)
 
-  const recomputeQuadrant = () => {
+  /*
+   * Recompute which corner the panel expands toward AND cap its height to
+   * the space actually available in that direction. Up quadrants anchor by
+   * the panel's bottom edge (at the FAB top, less the 0.5rem gap), so the
+   * room to grow is everything from there up to the top margin; down
+   * quadrants mirror it downward. Without this cap a bottom-anchored panel
+   * taller than the space above runs straight off the top of the screen
+   * with its first rows clipped and unreachable — `max-height` alone
+   * (sized to the viewport) doesn't help, because it measures content, not
+   * the gap above the anchor.
+   */
+  const recompute = () => {
     const el = triggerRef.current
     if (!el) return
-    setQuadrant(pickQuadrant(el.getBoundingClientRect()))
+    const rect = el.getBoundingClientRect()
+    const q = pickQuadrant(rect)
+    setQuadrant(q)
+    const gap = 8
+    const margin = 8
+    const available = q.startsWith('up')
+      ? rect.top - gap - margin
+      : window.innerHeight - rect.bottom - gap - margin
+    setMaxHeight(Math.max(0, Math.round(available)))
   }
 
   useEffect(() => {
     if (!open) return
-    recomputeQuadrant()
-    window.addEventListener('resize', recomputeQuadrant)
-    window.addEventListener('orientationchange', recomputeQuadrant)
+    recompute()
+    window.addEventListener('resize', recompute)
+    window.addEventListener('orientationchange', recompute)
     return () => {
-      window.removeEventListener('resize', recomputeQuadrant)
-      window.removeEventListener('orientationchange', recomputeQuadrant)
+      window.removeEventListener('resize', recompute)
+      window.removeEventListener('orientationchange', recompute)
     }
   }, [open])
 
@@ -374,7 +394,7 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
   }, [open, setOpen])
 
   const handleClick = () => {
-    if (!open) recomputeQuadrant()
+    if (!open) recompute()
     setOpen(!open)
   }
 
@@ -400,6 +420,7 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
         <div
           ref={panelRef}
           className={`ctrl-button__panel ctrl-button__panel--${quadrant}`}
+          style={maxHeight != null ? ({ '--panel-max-height': `${maxHeight}px` } as CSSProperties) : undefined}
           role="group"
           aria-label="Demo controls"
         >
