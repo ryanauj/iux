@@ -270,23 +270,26 @@
 /* ─────────── list ─────────── */
 
 /*
- * The list is its own scroll container. With 59 palettes in the catalog
- * (and ~30 in larger default groups), letting the list expand to its
- * natural height pushed the popover well past the viewport and forced
- * the user to scroll past the whole catalog to reach the Preferences
- * section below it.
+ * The list is its own scroll container. Two bounds in play:
  *
- * Strip variant: the popover itself caps height (mobile: fixed
- * top: 16px / max-height 70vh; desktop: --popover-max-height from the
- * slot rect), and the list `flex: 1 1 0; min-height: 0` so it shrinks
- * to fill only the space left after the active-group, browse toggle,
- * search input, and prefs disclosure claim their natural heights. That
- * way when Preferences opens, the list yields rows instead of pushing
- * the active-group/search above the popover's scroll viewport.
+ *  - `max-height: min(20rem, 50vh)` caps the natural size at ~10 rows so
+ *    the list doesn't push prefs off-screen on its own. (59 palettes, and
+ *    ~30 in larger default groups, would otherwise expand the popover
+ *    well past the viewport.) This is the *upper* bound — it's what
+ *    `flex-basis: auto` resolves to since the list always has more
+ *    content than 20rem.
  *
- * Button variant: there's no parent height constraint on desktop, so
- * an explicit `max-height` keeps the list from filling the page; see
- * the `--button` override below.
+ *  - `min-height: 0` lets the list shrink *below* its 20rem basis when
+ *    the popover hits its own max-height (mobile: 70vh) and there isn't
+ *    room for both the list and an open Preferences section. Browse and
+ *    browse-body in the parent chain also get `min-height: 0` so the
+ *    shrink propagates from the popover down to the list. Siblings that
+ *    must keep their natural height (active-group, search-row, prefs,
+ *    browse-toggle) carry `flex-shrink: 0` so only the list yields rows.
+ *
+ *    Note: we deliberately don't use `flex-basis: 0` (the popover only
+ *    has `max-height`, not `height`, so a 0-basis with no available free
+ *    space resolves to 0 and the list disappears entirely).
  *
  * `overscroll-behavior: contain` prevents touch/wheel chains from bleeding
  * into the popover's own scroller when the list reaches its top/bottom.
@@ -295,7 +298,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  flex: 1 1 0;
+  max-height: min(20rem, 50vh);
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -305,13 +308,6 @@
   scrollbar-gutter: stable;
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   border-bottom: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-}
-
-.palette-picker--button .palette-picker__list {
-  /* No parent height constraint on desktop button-variant panel, so cap
-   * the list at ~10 rows so prefs stay within reach without scrolling
-   * past the entire catalog. */
-  max-height: min(20rem, 50vh);
 }
 
 .palette-picker__row {
@@ -483,9 +479,8 @@
   gap: var(--space-1, 0.25rem);
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   padding-top: var(--space-1, 0.25rem);
-  /* Take the remaining vertical space in a height-constrained popover so the
-   * list (the only flex-shrinking descendant) has somewhere to shrink into. */
-  flex: 1 1 0;
+  /* Forward the shrink chain to the list when the popover hits its
+   * own max-height. See the comment on `.palette-picker__list`. */
   min-height: 0;
 }
 
@@ -511,8 +506,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2, 0.5rem);
-  /* Pass the flex-shrink chain through to `.palette-picker__list`. */
-  flex: 1 1 0;
+  /* Forward the shrink chain to the list. */
   min-height: 0;
 }
 
