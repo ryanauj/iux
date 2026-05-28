@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { PalettePicker } from '../PalettePicker/PalettePicker'
 import { Select } from '../Select/Select'
@@ -136,6 +136,39 @@ function pickQuadrant(rect: DOMRect): Quadrant {
   const v: VerticalDir = spaceBelow >= spaceAbove ? 'down' : 'up'
   const h: HorizontalDir = spaceRight >= spaceLeft ? 'right' : 'left'
   return `${v}-${h}`
+}
+
+/**
+ * Reflect a scroll container's overflow onto `data-overflow-top` /
+ * `data-overflow-bottom` attributes so CSS can fade the edge that still
+ * has hidden content beyond it. The panel routinely outgrows a phone
+ * viewport, and without a cue a clipped panel just looks like the whole
+ * thing. Recomputes on scroll, on container resize, and on subtree
+ * mutations — the palette Browse / Preferences disclosures add and remove
+ * rows, which changes how much is hidden.
+ */
+function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
+  useEffect(() => {
+    if (!active) return
+    const el = ref.current
+    if (!el) return
+    const update = () => {
+      const hiddenBelow = el.scrollHeight - el.clientHeight - el.scrollTop
+      el.toggleAttribute('data-overflow-top', el.scrollTop > 1)
+      el.toggleAttribute('data-overflow-bottom', hiddenBelow > 1)
+    }
+    update()
+    el.addEventListener('scroll', update, { passive: true })
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    const mo = new MutationObserver(update)
+    mo.observe(el, { childList: true, subtree: true })
+    return () => {
+      el.removeEventListener('scroll', update)
+      ro.disconnect()
+      mo.disconnect()
+    }
+  }, [ref, active])
 }
 
 export function DraggableControls({ style, onStyleChange, fields }: Props) {
@@ -345,6 +378,8 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
     setOpen(!open)
   }
 
+  useOverflowEdges(panelRef, open)
+
   const paletteFields = fields.filter(f => f.kind === 'palette')
   const otherFields = fields.filter(f => f.kind !== 'palette')
 
@@ -368,6 +403,7 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           role="group"
           aria-label="Demo controls"
         >
+          <span className="ctrl-button__edge ctrl-button__edge--top" aria-hidden="true" />
           {paletteFields.length > 0 && (
             <div className="ctrl-button__palette">
               {paletteFields.map(f => (
@@ -385,6 +421,7 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           <div className="ctrl-button__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
           </div>
+          <span className="ctrl-button__edge ctrl-button__edge--bottom" aria-hidden="true" />
         </div>
       )}
     </div>

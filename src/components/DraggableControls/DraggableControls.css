@@ -221,6 +221,70 @@
   justify-content: center;
 }
 
+/*
+ * Scroll-edge awareness. When the panel outgrows the viewport it becomes
+ * a single scroll container (see the mobile rules + the palette list
+ * handing scrolling back to it). These zero-height sticky slivers pin to
+ * the top and bottom of the scrollport and fade content into the edge
+ * that still has more beyond it, so it reads as scrollable instead of
+ * clipped. JS toggles `data-overflow-top` / `data-overflow-bottom` from
+ * the panel's scroll position; with nothing hidden, neither fade shows.
+ * `pointer-events: none` keeps them from eating taps on the rows beneath.
+ */
+.ctrl-button__edge {
+  position: sticky;
+  z-index: 3;
+  display: block;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.ctrl-button__edge--top {
+  top: 0;
+}
+
+.ctrl-button__edge--bottom {
+  bottom: 0;
+}
+
+.ctrl-button__edge::after {
+  content: '';
+  position: absolute;
+  /* Span the panel's horizontal padding so the fade reaches both edges. */
+  left: calc(-1 * var(--space-3, 0.75rem));
+  right: calc(-1 * var(--space-3, 0.75rem));
+  height: 1.5rem;
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast, 0.15s) var(--motion-easing-standard, ease);
+}
+
+.ctrl-button__edge--top::after {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--color-surface-overlay, var(--color-surface-raised, Canvas)),
+    transparent
+  );
+}
+
+.ctrl-button__edge--bottom::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    var(--color-surface-overlay, var(--color-surface-raised, Canvas)),
+    transparent
+  );
+}
+
+.ctrl-button__panel[data-overflow-top] .ctrl-button__edge--top::after {
+  opacity: 1;
+}
+
+.ctrl-button__panel[data-overflow-bottom] .ctrl-button__edge--bottom::after {
+  opacity: 1;
+}
+
 /* ===== Variation B: Edge Strip ===== */
 
 .ctrl-strip {
@@ -513,8 +577,19 @@
   .ctrl-button__panel {
     min-width: min(18rem, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
+    /*
+     * Single scroll container for the whole window. `100vh` on iOS
+     * Safari ignores the browser chrome (the panel would tuck content
+     * under the URL bar), so `100dvh` tracks the visible height with the
+     * vh line as a fallback. `overscroll-behavior: contain` keeps a swipe
+     * that reaches the scroll limit from scrolling the page beneath. The
+     * palette list hands its own scroll back to this container on phones
+     * (see PalettePicker.css) so one swipe moves everything.
+     */
     max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .ctrl-strip {
