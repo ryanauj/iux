@@ -7,7 +7,7 @@ import type { Palette } from '../tokens/semantic.contract'
  * Anchored on the new `sketch` engine. The engine exercises two
  * contract slots no previous palette put to work:
  *
- *   - `effect.strokeVariance`     — how wobbly the edges feel (`'1.4px'`).
+ *   - `effect.strokeVariance`     — how wobbly the edges feel (`'1.6px'`).
  *   - `typography.family.hand`    — the bundled hand-drawn font stack.
  *
  * The wobble is delivered by an SVG turbulence + displacement filter
@@ -19,10 +19,13 @@ import type { Palette } from '../tokens/semantic.contract'
  * a stated `radius.none`, but neither corner is geometrically circular
  * once the displacement pass runs.
  *
- * The "marker bleed" — a quarter-pixel softening on stroked edges — is
- * the trailing `feGaussianBlur` in the same filter, plus a subtle
- * inset-shadow on `intent.*.bg` so fills appear to leak slightly past
- * the stated border.
+ * The "marker bleed" — the sense that ink leaked slightly past the
+ * stated border — is carried by the palette colours rather than a
+ * filter blur: each `intent.*.border` sits one luminance step darker
+ * than its fill, so the outline reads as "drawn first, ink filled
+ * second." (An earlier build chained a `feGaussianBlur` for the bleed,
+ * but because the filter covers the whole subtree it also defocused
+ * body text and made the engine render "rough"; the blur was dropped.)
  */
 export const palette: Palette = {
   id: 'sketch-marker',
@@ -220,7 +223,7 @@ export const palette: Palette = {
       // the slot records the intended wobble amplitude so future
       // hand-drawn-aware components (a chart axis, an annotation layer)
       // can scale their own SVG paths to match.
-      strokeVariance: '1.4px',
+      strokeVariance: '1.6px',
       paperEdgeColor: 'transparent',
       paperEdgeWidth: '0',
       outline: { color: 'transparent', width: '0' },

@@ -262,10 +262,13 @@ body {
  *      filter chains `feTurbulence` (fractal noise) into
  *      `feDisplacementMap` (offsets each pixel by the noise), so every
  *      border, glyph outline, focus ring, and shadow stroke gains a
- *      micro-jitter that reads as "drawn by hand." The displacement
- *      scale is tuned to ≈ `--stroke-variance` (1.4px for the marker
- *      palette). The `feGaussianBlur` at the end of the chain provides
- *      the "marker bleed" — a half-pixel softening on every stroked edge.
+ *      gentle wave that reads as "drawn by hand." The displacement
+ *      scale is tuned to ≈ `--stroke-variance` (1.6px for the marker
+ *      palette). The turbulence uses a single low-frequency octave so
+ *      each edge picks up one confident sweep rather than the
+ *      high-frequency fray that reads as "rough"; there is deliberately
+ *      no trailing blur, since the filter also covers text and any blur
+ *      would defocus body copy (see the note in `index.html`).
  *
  *   2. **Cards / overlays use the heavier variant.** Raised surfaces
  *      (`.iux-card`, modals, drawers, toasts) layer a slightly stronger

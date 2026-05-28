@@ -18,17 +18,36 @@
       one-time document-level <defs> island has zero cost when no palette
       references it.
 
-      `iux-sketch-wobble`        — body / control wobble (~1.4px displacement)
+      `iux-sketch-wobble`        — body / control wobble (~1.6px displacement)
       `iux-sketch-wobble-strong` — heavier wobble for raised surfaces
-                                   (cards, modals); ~2.4px displacement
+                                   (cards, modals); ~2.2px displacement
 
       The seed differs between the two so neighbouring shapes don't share
       an identical jitter pattern (which would read as a global skew, not
-      a hand). `feGaussianBlur` chained after the displacement gives the
-      "marker bleed" — a half-pixel softening on every stroked edge.
+      a hand).
 
-      Filters use a generous overflow buffer (x/y: -10%, width/height:
-      120%) so displaced glyphs and offset shadows aren't clipped at the
+      Two tuning choices keep the line reading as "drawn by a steady
+      hand" rather than "rough / frayed":
+
+        - `numOctaves="1"`. A second octave layers high-frequency noise
+          on top of the gentle wave, which frays every edge and, because
+          the filter also covers text, smears glyph outlines. One octave
+          gives a single confident sweep per edge.
+        - low `baseFrequency` (~0.01). The noise feature size is large
+          relative to a control, so each edge picks up one or two gentle
+          curves instead of a dozen tiny wiggles. Higher frequencies read
+          as noise, not as a hand.
+
+      There is deliberately no trailing `feGaussianBlur`. A blur softens
+      stroked edges nicely, but this filter is applied to the whole
+      palette subtree — text included — so any blur also defocuses body
+      copy and is the main source of the "rough" rendering. The
+      marker-bleed feel is instead carried by the palette itself: each
+      `intent.*.border` sits one luminance step darker than its fill, so
+      the outline reads as "drawn first, ink filled second."
+
+      Filters use a generous overflow buffer (x/y: -12%, width/height:
+      124%) so displaced glyphs and offset shadows aren't clipped at the
       source element's bounds.
     -->
     <svg
@@ -41,53 +60,49 @@
       <defs>
         <filter
           id="iux-sketch-wobble"
-          x="-10%"
-          y="-10%"
-          width="120%"
-          height="120%"
+          x="-12%"
+          y="-12%"
+          width="124%"
+          height="124%"
           color-interpolation-filters="sRGB"
         >
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.018"
-            numOctaves="2"
+            baseFrequency="0.011 0.013"
+            numOctaves="1"
             seed="3"
             result="noise"
           />
           <feDisplacementMap
             in="SourceGraphic"
             in2="noise"
-            scale="1.4"
+            scale="1.6"
             xChannelSelector="R"
             yChannelSelector="G"
-            result="wobbled"
           />
-          <feGaussianBlur in="wobbled" stdDeviation="0.35" />
         </filter>
         <filter
           id="iux-sketch-wobble-strong"
-          x="-10%"
-          y="-10%"
-          width="120%"
-          height="120%"
+          x="-12%"
+          y="-12%"
+          width="124%"
+          height="124%"
           color-interpolation-filters="sRGB"
         >
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.013"
-            numOctaves="2"
+            baseFrequency="0.009 0.011"
+            numOctaves="1"
             seed="7"
             result="noise"
           />
           <feDisplacementMap
             in="SourceGraphic"
             in2="noise"
-            scale="2.4"
+            scale="2.2"
             xChannelSelector="R"
             yChannelSelector="G"
-            result="wobbled"
           />
-          <feGaussianBlur in="wobbled" stdDeviation="0.45" />
         </filter>
       </defs>
     </svg>
