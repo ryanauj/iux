@@ -10,7 +10,7 @@ Anchored on a new `sketch` engine that exercises two contract slots
 no previous engine touched:
 
 - `effect.strokeVariance` — the wobble amount, in CSS px. Set to
-  `'1.4px'` here; the engine references a fixed-strength SVG turbulence
+  `'1.6px'` here; the engine references a fixed-strength SVG turbulence
   + displacement filter at the palette root (defined in `index.html`)
   tuned to ≈ this value. Every non-sketch palette returns `'0'`, which
   the engine CSS reads as "no wobble" — the rule is a no-op.
@@ -46,6 +46,26 @@ rendering. **We chose the SVG-filter route.** Three reasons:
    for every border in the showcase generates dozens of new SVG paths
    per render and re-rasterises them every state change.
 
+### Tuning the filter so it reads as a hand, not as noise
+
+The filter is applied to the *whole* palette subtree, so its
+parameters have to flatter borders **and** stay kind to the text
+underneath them. Two settings carry that balance (see the annotated
+`<defs>` in `index.html`):
+
+- **`numOctaves="1"`.** A second octave layers high-frequency noise
+  over the gentle wave. On a border that reads as fraying; on glyphs it
+  reads as the whole word vibrating. One octave gives a single
+  confident sweep per edge.
+- **low `baseFrequency` (~0.01).** The noise feature size is large
+  relative to a button or card, so each edge picks up one or two long
+  curves instead of a dozen tiny wiggles. Higher frequencies read as
+  "rough," not as a hand.
+
+There is no trailing `feGaussianBlur`: any blur in a whole-subtree
+filter also defocuses body copy. The displacement scale (`1.6` at the
+root, `2.2` on raised surfaces) does the hand-drawn work on its own.
+
 The trade-off: `filter: url(...)` on `.palette-root` creates a stacking
 context, so `position: fixed` children become anchored to the filtered
 ancestor rather than the viewport. The showcase's existing
@@ -76,30 +96,33 @@ stay the same.
 
 The "bleed" effect comes from two layered tricks:
 
-1. The same SVG filter chain that wobbles edges ends with a tiny
-   `feGaussianBlur` (stdDeviation 0.35). That gives every stroked edge
-   a half-pixel softening — the visual equivalent of marker ink seeping
-   into the paper fibre by one stroke-width.
+1. `intent.*.border` is set one luminance step darker than
+   `intent.*.bg` on every intent. After the displacement pass this
+   reads as "the marker outline was drawn first, the ink filled
+   second" — i.e. how a real sketch is built up in layers.
 2. `elevation.*` shadows are tinted toward ink-blue rather than black
    (`rgba(26, 37, 72, …)`), so the shadow under a card reads as a
    slightly darker patch of ink leaking around the edge rather than a
    neutral cast shadow.
 
-`intent.*.border` is set one luminance step darker than `intent.*.bg`
-on every intent. After the displacement pass this reads as "the
-marker outline was drawn first, the ink filled second" — i.e. how a
-real sketch is built up in layers.
+> **No filter blur.** An earlier build ended the SVG filter chain with
+> a small `feGaussianBlur` for a "marker bleed" softening. Because the
+> filter is applied to the whole palette subtree, that blur also
+> softened every glyph of body copy — the dominant cause of the engine
+> rendering "rough." The blur was removed; the bleed is now carried by
+> the border/fill luminance step above, which leaves text crisp.
 
 ## A11y
 
 `experimental`. Three reasons:
 
 1. **Body text is handwritten.** Patrick Hand at 1.15rem on a
-   `#fbf6e9` field with `#1a2548` ink clears WCAG AA contrast (~12:1),
-   but the displacement pass introduces a sub-pixel jitter that
-   defeats sub-pixel kerning. Long paragraphs feel more effortful to
-   read than a system font palette. The body-size bump to 1.15rem
-   buys back most of that margin.
+   `#fbf6e9` field with `#1a2548` ink clears WCAG AA contrast (~12:1).
+   The single low-frequency displacement (and the dropped blur) keeps
+   glyphs crisp and lets whole words drift together rather than
+   jittering apart, but a handwritten face still reads as more
+   effortful than a system font over long paragraphs. The body-size
+   bump to 1.15rem buys back most of that margin.
 2. **Focus ring is hand-drawn.** The displacement filter recasts the
    3px solid red ring as a wobbly red loop around the focused
    element. It's *more* visible than a crisp ring against the cream

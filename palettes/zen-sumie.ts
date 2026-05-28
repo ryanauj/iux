@@ -33,10 +33,11 @@ import type { Palette } from '../tokens/semantic.contract'
  *     shadow but the lift is small — the field is the canvas, not a
  *     stage above it. `radius.*` keeps the brush-curve-friendly
  *     defaults so the wobble pass doesn't crush hard corners.
- *   - `effect.strokeVariance` is `'1.0px'` (slightly under the
- *     Hand-drawn / Marker `'1.4px'`) — brush strokes are wobbly but
- *     less than felt-tip marker, and the engine's SVG filter inherits
- *     from the same root definition.
+ *   - `effect.strokeVariance` is `'1.0px'` (under the Hand-drawn /
+ *     Marker `'1.6px'`) — brush strokes are wobbly but less than
+ *     felt-tip marker. The token records that intent; the engine's SVG
+ *     filter is shared from the same root definition, so both registers
+ *     get the same single-octave, low-frequency sweep (no blur).
  */
 export const palette: Palette = {
   id: 'zen-sumie',
