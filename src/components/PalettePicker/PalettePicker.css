@@ -605,3 +605,21 @@
   display: flex;
   gap: var(--space-2, 0.5rem);
 }
+
+/* ─────────── Mobile: one scroll container ───────────
+ *
+ * On phones the surrounding scroller — the button panel or the strip
+ * popover — already caps its height and scrolls. A nested list scroller
+ * here traps the touch gesture: `overscroll-behavior: contain` stops the
+ * scroll chain, so a swipe over the rows can't move the outer panel and
+ * the controls *above* the list (the palette trigger, the active-group
+ * selector) stay out of reach unless Browse is collapsed first. Letting
+ * the list flow at full height hands scrolling back to the single outer
+ * scroller, so one swipe anywhere moves the whole window. The desktop
+ * cap above still applies — there the panel itself doesn't scroll. */
+@media (max-width: 40rem) {
+  .palette-picker__list {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
