@@ -475,8 +475,11 @@ function PalettePickerPanel(props: PanelProps) {
                   aria-checked={selected}
                   className={`palette-picker__option${selected ? ' is-selected' : ''}`}
                   onClick={() => {
+                    /* Keep the panel open after a pick so several palettes can
+                     * be previewed in a row — mirrors the prev/next arrows,
+                     * which already switch without closing. Escape or a click
+                     * outside still dismisses. */
                     field.onChange(id)
-                    onClose()
                   }}
                 >
                   <span className="palette-picker__option-name">{palette.name}</span>
