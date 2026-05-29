@@ -11,10 +11,14 @@ import type { Palette } from '../tokens/semantic.contract'
  *   - `typography.family.hand`    — the bundled hand-drawn font stack.
  *
  * The wobble is delivered by an SVG turbulence + displacement filter
- * applied at the palette root (defined in `index.html` as
- * `#iux-sketch-wobble`). The filter is referenced from the engine block
- * in `src/styles.css` and recasts every border, glyph outline, focus
- * ring, and shadow stroke as a hand-drawn approximation. Radius tokens
+ * (defined in `index.html` as `#iux-sketch-wobble`). The engine block in
+ * `src/styles.css` references it from a curated list of UI-primitive
+ * component classes — buttons, inputs, toggles, tabs, and similar
+ * focusable/bordered chrome — rather than the palette root, so each
+ * control is its own small filter region instead of the whole scrolling
+ * page being one. It recasts every border, glyph outline, focus ring,
+ * and shadow stroke on those controls as a hand-drawn approximation;
+ * large viz / table / list surfaces stay crisp (and fast). Radius tokens
  * stay advisory: a stated `radius.sm` of `'4px'` reads more rounded than
  * a stated `radius.none`, but neither corner is geometrically circular
  * once the displacement pass runs.
@@ -113,19 +117,22 @@ export const palette: Palette = {
         },
       },
     },
-    // Slightly wider scale than Flat — sketched layouts breathe better
-    // because the wobble eats a couple of pixels of perceived margin at
-    // every edge.
+    // Shared baseline scale (matches Flat and the other palettes). An
+    // earlier build widened every step +2-8px on the theory that the
+    // wobble "eats" perceived margin, but the ~1.6px displacement is far
+    // smaller than the inflation it bought — the net effect just read as
+    // hand-drawn being conspicuously roomier than every neighbour. Keep
+    // the scale on the common grid; the wobble lives in the filter.
     space: {
       '0': '0',
       '1': '4px',
       '2': '8px',
-      '3': '14px',
-      '4': '20px',
-      '5': '28px',
-      '6': '40px',
-      '7': '56px',
-      '8': '72px',
+      '3': '12px',
+      '4': '16px',
+      '5': '24px',
+      '6': '32px',
+      '7': '48px',
+      '8': '64px',
     },
     // Radii are kept on a real scale — the engine note in the contract
     // doc is "advisory" because the displacement filter recasts every

@@ -257,12 +257,11 @@ body {
  *
  * The engine has two complementary effects:
  *
- *   1. **Wobble via SVG filter.** The palette root applies
- *      `filter: url(#iux-sketch-wobble)`, defined in `index.html`. The
- *      filter chains `feTurbulence` (fractal noise) into
- *      `feDisplacementMap` (offsets each pixel by the noise), so every
- *      border, glyph outline, focus ring, and shadow stroke gains a
- *      gentle wave that reads as "drawn by hand." The displacement
+ *   1. **Wobble via SVG filter.** `filter: url(#iux-sketch-wobble)`,
+ *      defined in `index.html`, chains `feTurbulence` (fractal noise)
+ *      into `feDisplacementMap` (offsets each pixel by the noise), so
+ *      every border, glyph outline, focus ring, and shadow stroke gains
+ *      a gentle wave that reads as "drawn by hand." The displacement
  *      scale is tuned to ≈ `--stroke-variance` (1.6px for the marker
  *      palette). The turbulence uses a single low-frequency octave so
  *      each edge picks up one confident sweep rather than the
@@ -270,27 +269,45 @@ body {
  *      no trailing blur, since the filter also covers text and any blur
  *      would defocus body copy (see the note in `index.html`).
  *
- *   2. **Cards / overlays use the heavier variant.** Raised surfaces
- *      (`.iux-card`, modals, drawers, toasts) layer a slightly stronger
- *      wobble (`#iux-sketch-wobble-strong`) so big rectangles read as
- *      paper rather than crisp boxes — the underlying root filter still
- *      applies, but `filter` doesn't cascade through nested filter
- *      stacking contexts; it overrides.
+ *      **Scope: per-component, not the palette root.** An earlier build
+ *      hung this filter on `.palette-root` so the whole subtree wobbled
+ *      for free. That made the entire scrolling page (plus every
+ *      data-viz SVG, table, and virtual list inside it) a single filter
+ *      region that re-ran `feTurbulence` on every scroll tick and every
+ *      hover/focus repaint — the source of the "hand-drawn is sluggish"
+ *      report. We now apply the filter to a curated list of UI-primitive
+ *      classes (the focusable controls and small bordered chrome the
+ *      brief calls out as *thriving* under Sketch). Each is a small,
+ *      independent filter region, so a repaint only re-rasterizes the
+ *      one control that changed, and the heavy viz / list / canvas
+ *      components — which the README already documents as *degrading*
+ *      under the displacement pass — are no longer filtered at all.
+ *      The filter is static (no `<animate>`), so this is purely a
+ *      rasterization-cost change, not a motion change.
  *
- * **Choice: SVG filter at root vs. rough.js-per-component.** We chose
- * the SVG-filter route because it stays inside the engine seam — no
- * component changes required, every existing border / radius / shadow
- * inherits the hand-drawn feel for free, and the wobble matches across
- * controls without per-component coordination. The trade-off is that
- * `filter: url(...)` on `.palette-root` creates a stacking context for
- * its descendants: `position: fixed` children become anchored to the
- * filtered ancestor rather than the viewport. The showcase's existing
- * inline-overlay scoping (see `.stories__cell:has(.iux-modal__scrim--inline)`
- * above) already handles this — modals and drawers stay scoped to
- * their cell. A rough.js-style per-component renderer would avoid that
- * containing-block side effect, but would force every component to opt
- * in via its own SVG canvas — exactly the "engines redefine slots,
- * components consume only slots" rule we're trying to keep clean.
+ *   2. **Cards / overlays use the heavier variant.** Raised surfaces
+ *      (`.iux-card`, modals, drawers, toasts) take a slightly stronger
+ *      wobble (`#iux-sketch-wobble-strong`) so big rectangles read as
+ *      paper rather than crisp boxes.
+ *
+ * **Choice: SVG filter vs. rough.js-per-component.** We chose the
+ * SVG-filter route because it stays inside the engine seam — no
+ * component *markup* changes required, every existing border / radius /
+ * shadow on a listed primitive inherits the hand-drawn feel for free,
+ * and the wobble matches across controls without per-component
+ * coordination. Scoping the selector list to component classes (rather
+ * than the root) is an engine-CSS concern; components still consume only
+ * slots. The trade-off vs. the old root filter is that elements outside
+ * the listed primitives (free-floating body copy, layout chrome) no
+ * longer wobble — an acceptable loss for the performance win, and the
+ * controls that carry the look are exactly where the eye lands.
+ *
+ * Note: `filter: url(...)` creates a stacking context for its
+ * descendants, so a filtered control becomes the containing block for
+ * any `position: fixed` child. Scoping to leaf primitives makes this
+ * far narrower than the old root filter; the showcase's inline-overlay
+ * scoping (see `.stories__cell:has(.iux-modal__scrim--inline)` above)
+ * still handles modals/drawers inside their cell.
  *
  * **Radius tokens are advisory.** The palette still sets `radius.sm` /
  * `radius.md` / `radius.lg`; the displacement filter recasts every
@@ -304,24 +321,46 @@ body {
  * reduced-motion block above doesn't need a sketch branch — it already
  * collapses every per-palette duration to `instant`.
  */
-.palette-root[data-palette^='sketch'] {
+/*
+ * Base wobble — curated UI-primitive classes only. This list is the
+ * "thrives under Sketch" set from the brief plus the obvious bordered
+ * chrome (text inputs, selects, date pickers, command menus). It
+ * deliberately excludes the data-viz, table, virtual-list, and canvas
+ * roots: those are both the most expensive to filter and the ones the
+ * README flags as degrading under displacement. Add a class here only
+ * if it is a small, focusable/bordered control whose edges should read
+ * as drawn — not a large scrolling or chart surface.
+ */
+.palette-root[data-palette^='sketch'] :is(
+  .iux-button,
+  .iux-text,
+  .iux-checkbox,
+  .iux-toggle,
+  .iux-stepper,
+  .iux-segmented,
+  .iux-pagination,
+  .iux-tabs,
+  .iux-select,
+  .iux-datepicker,
+  .iux-cmdk,
+  .iux-spotlight,
+  .iux-tooltip,
+  .iux-popover,
+  .iux-empty,
+  .iux-loading,
+  .iux-sidebar,
+  .iux-nav
+) {
   filter: url(#iux-sketch-wobble);
 }
 
 /*
- * Raised surfaces get the heavier wobble. Two reasons:
- *
- *   1. Big rectangles (cards, modal panels, drawer panels) are where
- *      the eye lingers longest; the strong-wobble filter sells the
- *      "drawn frame" effect at low cost.
- *   2. The root filter, once a descendant declares its own `filter`,
- *      doesn't cascade through — applying a different filter to nested
- *      regions lets us tune intensity by element role without
- *      JavaScript or component-level branching.
- *
- * The selectors target component classes (`iux-card`, `iux-modal__panel`,
- * etc.) because those are the load-bearing raised surfaces; any other
- * element inherits the root wobble.
+ * Raised surfaces get the heavier wobble. Big rectangles (cards, modal
+ * panels, drawer panels, toasts) are where the eye lingers longest, so
+ * the strong-wobble filter sells the "drawn frame" effect there. Like
+ * the base list above, these are individually filtered leaf surfaces —
+ * each its own small region — so a card repaint never re-rasterizes the
+ * page. Elements not named in either list simply render crisp.
  */
 .palette-root[data-palette^='sketch'] .iux-card,
 .palette-root[data-palette^='sketch'] .iux-modal__panel,

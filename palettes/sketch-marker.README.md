@@ -130,11 +130,19 @@ The "bleed" effect comes from two layered tricks:
    read the loop as decoration. The 3px width and 3px offset are both
    above the AAA minimum (2px / 2px) to compensate.
 3. **Filter performance.** SVG filters with `feTurbulence` repaint
-   on every layout change. On low-power devices the engine can
-   produce visible per-frame chatter during scroll. Users with
-   `prefers-reduced-motion` already get every duration collapsed to
-   `instant`; the displacement field itself is static, so this is a
-   GPU-load caveat, not a vestibular one.
+   on every layout change. The filter is therefore scoped to a curated
+   list of small UI-primitive classes (see the engine block in
+   `src/styles.css`) rather than the palette root — each control is its
+   own small filter region, so a hover/focus/scroll repaint only
+   re-rasterizes the control that changed instead of the whole page.
+   An earlier build hung the filter on `.palette-root`, which made the
+   entire scrolling subtree (every chart, table, and list included) one
+   giant filter region and was visibly sluggish on long pages. The
+   displacement field itself is static (no `<animate>`), and
+   `prefers-reduced-motion` already collapses every duration to
+   `instant`, so this is a GPU-load caveat, not a vestibular one. The
+   cost of the scoped filter is that free-floating body copy and layout
+   chrome outside the listed primitives render crisp rather than drawn.
 
 ## What thrives vs degrades
 
@@ -162,10 +170,12 @@ not fork to "fix"):
 - **DiffView with character-level highlight** — the displacement pass
   jitters character boundaries, so single-character diffs read as
   loose. Multi-character diffs (word / line level) survive cleanly.
-- **VirtualList / long-scroll columns** — `filter` on the palette root
-  costs a repaint on every scroll position. On a long virtual list the
-  cost compounds. Apps that need a heavy virtual list under Sketch
-  should mount the palette around the viewport, not the list.
+- **VirtualList / long-scroll columns** — these roots are deliberately
+  left off the wobble list: a per-scroll-position filter repaint over a
+  long list compounds badly. Under the scoped engine they render crisp
+  (fast); only the small controls inside them pick up the wobble. If you
+  want the list chrome itself drawn, add its class to the engine list in
+  `src/styles.css` — but expect the old long-scroll cost back.
 - **BezierEditor** — sub-pixel control points run through the
   displacement filter; the curve renders with a hand-drawn wobble that
   fights the precision the editor needs. Acceptable for a teaching
