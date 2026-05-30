@@ -36,7 +36,7 @@ export const formSubmitToast: IntegrationTest = {
   tags: ['forms', 'feedback'],
   render: () => <FormSubmitToastComposition />,
   steps: [
-    { kind: 'type', selector: '[data-testid="name-input"]', text: 'Ada', label: 'Type name' },
+    { kind: 'type', selector: '[data-testid="name-input"] .iux-text-input__input', text: 'Ada', label: 'Type name' },
     { kind: 'click', selector: '[data-testid="submit-btn"]', label: 'Click submit' },
     { kind: 'waitFor', selector: '.iux-toast__title', label: 'Wait for toast' },
     {

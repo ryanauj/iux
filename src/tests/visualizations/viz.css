@@ -428,25 +428,17 @@
   50% { opacity: 0.3; }
 }
 
-/* Narrow viewports: collapse the matrix to a list of test rows. The
-   sticky first column is the readable unit; the component grid becomes
-   visual context once there's room for it. */
+/* Narrow viewports: keep the full matrix, just give the sticky first column
+   (test name + status + run) less of the width so more component cells peek
+   through. The first column stays pinned while the component grid scrolls
+   horizontally underneath it. */
 @media (max-width: 640px) {
-  .viz-matrix__table thead { display: none; }
-  .viz-matrix__corner { display: none; }
-  .viz-matrix__col-head { display: none; }
-  .viz-matrix__cell { display: none; }
+  .viz-matrix__corner,
   .viz-matrix__row-head {
-    position: static;
-    display: block;
-    width: 100%;
-    min-width: 0;
+    min-width: 11rem;
   }
-  .viz-matrix__table,
-  .viz-matrix__table tbody,
-  .viz-matrix__table tr {
-    display: block;
-    width: 100%;
+  .viz-matrix__row-name {
+    font-size: var(--type-caption-size);
   }
 }
 
