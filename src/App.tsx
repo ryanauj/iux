@@ -9,6 +9,7 @@ import { EnginesIndex } from './guides/engines'
 import { EngineGuide } from './guides/engines/EngineGuide'
 import { ENGINE_GUIDES, type EngineGuideId } from './guides/engines/registry'
 import { TestsPage } from './tests/TestsPage'
+import { SettingsPage } from './settings/SettingsPage'
 
 function HomeRoute() {
   const location = useHashLocation()
@@ -26,6 +27,9 @@ function HomeRoute() {
   }
   if (location.path === '/doctrine' || location.path.startsWith('/doctrine/')) {
     return <Doctrine />
+  }
+  if (location.path === '/settings' || location.path.startsWith('/settings/')) {
+    return <SettingsPage />
   }
   return <Stories />
 }

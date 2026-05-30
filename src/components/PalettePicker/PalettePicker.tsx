@@ -238,7 +238,6 @@ function PalettePickerPanel(props: PanelProps) {
   } = props
 
   const [query, setQuery] = useState('')
-  const [prefsOpen, setPrefsOpen] = useState(false)
   const [listOpenRaw, setListOpenRaw] = usePersistedPref<'0' | '1'>(
     LIST_OPEN_KEY,
     '1',
@@ -306,11 +305,6 @@ function PalettePickerPanel(props: PanelProps) {
     [groupsApi],
   )
 
-  const onResetDefaults = useCallback(() => {
-    if (!window.confirm('Reset all default groups to their starting members? Groups you created will be kept.')) return
-    groupsApi.resetDefaults()
-  }, [groupsApi])
-
   const onKey = useCallback(
     (e: ReactKeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -344,7 +338,7 @@ function PalettePickerPanel(props: PanelProps) {
   /* When the popover opens upward, the section stack is reversed via
    * `palette-picker--up` so the active-group control sits nearest the
    * trigger (= bottom of the popover). The browser's default scrollTop=0
-   * would show the far edge (preferences) instead. Scroll to the bottom
+   * would show the far edge (the browse list) instead. Scroll to the bottom
    * once on mount so the thumb-side anchor is in view. */
   useEffect(() => {
     if (!isUp) return
@@ -486,6 +480,15 @@ function PalettePickerPanel(props: PanelProps) {
                 aria-label="Search palettes"
               />
             </div>
+            {query.trim() && visiblePalettes.length > 0 && (
+              <button
+                type="button"
+                className="palette-picker__inline-action"
+                onClick={onCreateGroupFromResults}
+              >
+                Create group from results
+              </button>
+            )}
             {visiblePalettes.length === 0 ? (
               <div className="palette-picker__empty">
                 <span>No matches</span>
@@ -590,40 +593,6 @@ function PalettePickerPanel(props: PanelProps) {
                   })}
                 </ul>
               )}
-          </div>
-        )}
-      </div>
-
-      {/* Preferences disclosure */}
-      <div className="palette-picker__prefs">
-        <button
-          type="button"
-          className="palette-picker__prefs-toggle"
-          aria-expanded={prefsOpen}
-          onClick={() => setPrefsOpen(o => !o)}
-        >
-          {prefsOpen ? '▾' : '▸'} Preferences
-        </button>
-        {prefsOpen && (
-          <div className="palette-picker__prefs-body">
-            <div className="palette-picker__prefs-actions">
-              <button
-                type="button"
-                className="palette-picker__inline-action"
-                onClick={onResetDefaults}
-              >
-                Reset default groups
-              </button>
-              {query.trim() && (
-                <button
-                  type="button"
-                  className="palette-picker__inline-action"
-                  onClick={onCreateGroupFromResults}
-                >
-                  Create group from results
-                </button>
-              )}
-            </div>
           </div>
         )}
       </div>

@@ -16,6 +16,16 @@ export type ControlsStyle = 'button' | 'strip'
 const CONTROLS_STYLE_KEY = 'iux-controls-style'
 const DEFAULT_CONTROLS_STYLE: ControlsStyle = 'button'
 
+/**
+ * Open state of the "Settings" group that nests the non-palette fields
+ * (view, layout, nav, motion). Collapsed by default — these are reached
+ * occasionally, so the panel opens to just the palette picker and a single
+ * disclosure rather than the full settings stack. Persisted so the choice
+ * sticks across pages and reopens.
+ */
+const SETTINGS_OPEN_KEY = 'iux-controls-settings-open'
+const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
+
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
   raw === 'button' || raw === 'strip'
 
@@ -144,7 +154,7 @@ function pickQuadrant(rect: DOMRect): Quadrant {
  * has hidden content beyond it. The panel routinely outgrows a phone
  * viewport, and without a cue a clipped panel just looks like the whole
  * thing. Recomputes on scroll, on container resize, and on subtree
- * mutations — the palette Browse / Preferences disclosures add and remove
+ * mutations — the palette Browse disclosure and the settings group add and remove
  * rows, which changes how much is hidden.
  */
 function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
@@ -434,15 +444,49 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           )}
           {otherFields.length > 0 && (
             <div className="ctrl-button__sections">
-              {otherFields.map(f => (
-                <CollapsibleSection key={f.key} field={f} />
-              ))}
+              <SettingsGroup fields={otherFields} />
             </div>
           )}
           <div className="ctrl-button__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
           </div>
           <span className="ctrl-button__edge ctrl-button__edge--bottom" aria-hidden="true" />
+        </div>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Wraps the non-palette fields (view, layout, nav, motion) in one
+ * collapsed-by-default disclosure so the panel stays compact — the palette
+ * picker is the everyday control, and these sit one click away under
+ * "Settings" rather than always stacked open. Each field keeps its own
+ * inner CollapsibleSection so only the chosen one expands.
+ */
+function SettingsGroup({ fields }: { fields: Field[] }) {
+  const [openRaw, setOpenRaw] = usePersistedPref<'0' | '1'>(
+    SETTINGS_OPEN_KEY,
+    '0',
+    isBoolPref,
+  )
+  const open = openRaw === '1'
+  return (
+    <div className={`ctrl-button__group${open ? ' is-open' : ''}`}>
+      <button
+        type="button"
+        className="ctrl-button__group-toggle"
+        aria-expanded={open}
+        onClick={() => setOpenRaw(open ? '0' : '1')}
+      >
+        <span className="ctrl-button__group-caret" aria-hidden="true">{open ? '▾' : '▸'}</span>
+        <span className="ctrl-button__group-label">Settings</span>
+      </button>
+      {open && (
+        <div className="ctrl-button__group-body">
+          {fields.map(f => (
+            <CollapsibleSection key={f.key} field={f} />
+          ))}
         </div>
       )}
     </div>

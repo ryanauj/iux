@@ -131,6 +131,63 @@
   border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
 }
 
+/*
+ * "Settings" group — a disclosure that nests the view/layout/nav/motion
+ * sections. Collapsed by default so the panel opens compact; the toggle
+ * mirrors a section toggle but reads as the parent (no per-field value),
+ * and its body indents the inner sections one notch.
+ */
+.ctrl-button__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ctrl-button__group-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-content-secondary, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.ctrl-button__group-toggle:hover {
+  color: var(--color-content-primary, CanvasText);
+  background: var(--color-surface-sunken, Canvas);
+}
+
+.ctrl-button__group.is-open .ctrl-button__group-toggle {
+  color: var(--color-content-primary, CanvasText);
+}
+
+.ctrl-button__group-caret {
+  font-size: 0.65rem;
+  color: var(--color-content-muted, GrayText);
+  flex-shrink: 0;
+  width: 0.75rem;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.ctrl-button__group-label {
+  color: var(--color-content-secondary, GrayText);
+  font-weight: 600;
+}
+
+.ctrl-button__group-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: var(--space-2, 0.5rem);
+}
+
 .ctrl-button__section {
   display: flex;
   flex-direction: column;

@@ -35,7 +35,7 @@
  * When the popover opens upward from a bottom-anchored trigger (the
  * common dock-on-bottom case), reverse the section stack so the
  * lightweight active-group selector sits next to the thumb and the
- * heavier Browse + Preferences disclosures stack away from the trigger.
+ * heavier Browse disclosure stacks away from the trigger.
  * Tapping a disclosure then expands the popover further away from the
  * thumb instead of pushing the active-group control under it.
  */
@@ -322,7 +322,7 @@
  * The list is its own scroll container. Two bounds in play:
  *
  *  - `max-height: min(20rem, 50vh)` caps the natural size at ~10 rows so
- *    the list doesn't push prefs off-screen on its own. (59 palettes, and
+ *    the list doesn't push the rest of the panel off-screen on its own. (59 palettes, and
  *    ~30 in larger default groups, would otherwise expand the popover
  *    well past the viewport.) This is the *upper* bound — it's what
  *    `flex-basis: auto` resolves to since the list always has more
@@ -330,10 +330,10 @@
  *
  *  - `min-height: 0` lets the list shrink *below* its 20rem basis when
  *    the popover hits its own max-height (mobile: 70vh) and there isn't
- *    room for both the list and an open Preferences section. Browse and
+ *    room for the full list. Browse and
  *    browse-body in the parent chain also get `min-height: 0` so the
  *    shrink propagates from the popover down to the list. Siblings that
- *    must keep their natural height (active-group, search-row, prefs,
+ *    must keep their natural height (active-group, search-row,
  *    browse-toggle) carry `flex-shrink: 0` so only the list yields rows.
  *
  *    Note: we deliberately don't use `flex-basis: 0` (the popover only
@@ -585,40 +585,6 @@
 
 .palette-picker__inline-action:hover {
   background: var(--color-surface-sunken, Canvas);
-}
-
-/* ─────────── preferences ─────────── */
-
-.palette-picker__prefs {
-  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-  padding-top: var(--space-1, 0.25rem);
-  flex-shrink: 0;
-}
-
-.palette-picker__prefs-toggle {
-  font: inherit;
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  border: none;
-  background: transparent;
-  color: var(--color-content-muted, GrayText);
-  cursor: pointer;
-}
-
-.palette-picker__prefs-toggle:hover {
-  color: var(--color-content-primary, CanvasText);
-}
-
-.palette-picker__prefs-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2, 0.5rem);
-  padding: var(--space-2, 0.5rem) 0;
-}
-
-.palette-picker__prefs-actions {
-  display: flex;
-  gap: var(--space-2, 0.5rem);
 }
 
 /* ─────────── Mobile: one scroll container ───────────
