@@ -48,6 +48,7 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'liquid-glass-dark',
     'cyberpunk-neon-noir',
     'tron-dark-neon',
+    'tron-light-grid',
     'stained-glass',
   ],
   Retro: [
@@ -129,11 +130,20 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
   Terminal: [
     'crt-phosphor-green',
     'crt-phosphor-amber',
+    'crt-phosphor-greenbar',
     'terminal-tui',
+    'terminal-tui-paper',
     'financial-terminal',
   ],
-  Print: ['risograph', 'letterpress', 'blueprint', 'newspaper', 'academic'],
+  Print: ['risograph', 'letterpress', 'blueprint', 'whiteprint', 'newspaper', 'academic'],
   Royal: ['modern-royal', 'scandinavian-royal-modern', 'marble-royal-flat'],
+  Daybreak: [
+    'tron-light-grid',
+    'terminal-tui-paper',
+    'crt-phosphor-greenbar',
+    'whiteprint',
+    'art-deco-ivory',
+  ],
 }
 
 function buildEngineGroups(): Record<string, PaletteId[]> {

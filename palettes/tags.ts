@@ -142,4 +142,11 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   /* Group Z2 — minimal light with bright pops */
   'paper-pop': ['modern', 'light', 'minimal', 'monochrome', 'accent'],
   'studio-confetti': ['modern', 'light', 'playful', 'bright', 'app'],
+
+  /* Group Z3 — daylight inversions of dark palettes ("Daybreak" set) */
+  'tron-light-grid': ['glass', 'neon', 'light', 'grid', 'daybreak'],
+  'terminal-tui-paper': ['terminal', 'mono', 'character-grid', 'tui', 'light', 'paper'],
+  'crt-phosphor-greenbar': ['crt', 'retro', 'terminal', 'monochrome', 'light', 'paper'],
+  whiteprint: ['print', 'technical', 'mono', 'light', 'grid', 'drafting'],
+  'art-deco-ivory': ['deco', 'gatsby', 'vintage', 'light', 'gold', 'geometric'],
 }

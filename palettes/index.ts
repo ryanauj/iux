@@ -77,6 +77,11 @@ import { palette as celShadedSakura } from './cel-shaded-sakura'
 import { palette as celShadedCitrus } from './cel-shaded-citrus'
 import { palette as paperPop } from './paper-pop'
 import { palette as studioConfetti } from './studio-confetti'
+import { palette as tronLightGrid } from './tron-light-grid'
+import { palette as terminalTuiPaper } from './terminal-tui-paper'
+import { palette as crtPhosphorGreenbar } from './crt-phosphor-greenbar'
+import { palette as whiteprint } from './whiteprint'
+import { palette as artDecoIvory } from './art-deco-ivory'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -158,6 +163,11 @@ export const palettes = {
   'cel-shaded-citrus': celShadedCitrus,
   'paper-pop': paperPop,
   'studio-confetti': studioConfetti,
+  'tron-light-grid': tronLightGrid,
+  'terminal-tui-paper': terminalTuiPaper,
+  'crt-phosphor-greenbar': crtPhosphorGreenbar,
+  whiteprint,
+  'art-deco-ivory': artDecoIvory,
 } as const
 
 export type PaletteId = keyof typeof palettes
