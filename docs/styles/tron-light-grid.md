@@ -33,11 +33,11 @@ The same Tron lineage as the dark twin (*Tron* 1982, *Tron: Legacy* 2010), but i
 
 | Path | Value | Note |
 |---|---|---|
-| `color.surface.base` | `#f2f7fb` | `#f2f7fb` — cool near-white blueprint field. Inverts the dark twin's `#04060c` near-black. |
+| `color.surface.base` | `#fbfdff` | `#f2f7fb` — cool near-white blueprint field. Inverts the dark twin's `#04060c` near-black. |
 | `color.content.primary` | `#083344` | `#083344` — deep cyan ink. The dark twin's ground colour promoted to the foreground. |
-| `color.surface.raised` | `rgba(8, 145, 178, 0.06)` | `rgba(8, 145, 178, 0.06)` — cyan-tinted translucent glass at low alpha (dark twin runs `rgba(8, 145, 178, 0.10)` at higher contrast). |
+| `color.surface.raised` | `rgba(8, 145, 178, 0.14)` | `rgba(8, 145, 178, 0.06)` — cyan-tinted translucent glass at low alpha (dark twin runs `rgba(8, 145, 178, 0.10)` at higher contrast). |
 | `color.border.focus` | `#0891b2` | `#0891b2` — the cyan focus halo colour, slightly deeper than the dark twin's `#22d3ee` so it reads on bright paper. |
-| `elevation.medium.boxShadow` | `inset 0 0 0 1px rgba(14, 116, 144, 0.26), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)` | `inset 0 0 0 1px rgba(14, 116, 144, 0.26), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)` — the inset-stroke + outer-cyan-glow recipe dialed down for daylight. |
+| `elevation.medium.boxShadow` | `inset 0 0 0 1px rgba(14, 116, 144, 0.42), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)` | `inset 0 0 0 1px rgba(14, 116, 144, 0.26), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)` — the inset-stroke + outer-cyan-glow recipe dialed down for daylight. |
 | `effect.focusRing.style` | `glow` | `'glow'` — focus renders as a `box-shadow` halo, identical to the dark twin. |
 | `typography.family.display` | `"Orbitron", "Eurostile", "Helvetica Neue", Helvetica, Arial, sans-serif` | Orbitron / Eurostile geometric stack — identical to the dark twin. |
 | `motion.duration.base` | `160ms` | `160ms` — the tight HUD tempo carries over from the dark twin. |
