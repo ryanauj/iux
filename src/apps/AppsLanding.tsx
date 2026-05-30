@@ -39,6 +39,13 @@ const APPS: AppEntry[] = [
     href: '/apps/sports',
     iconText: 'NBA',
   },
+  {
+    id: 'contracts',
+    name: 'Cap School',
+    tagline: 'How NBA contracts work — the cap, the tax, the aprons, and max deals, told in data viz.',
+    href: '/apps/contracts',
+    iconText: 'CAP',
+  },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
