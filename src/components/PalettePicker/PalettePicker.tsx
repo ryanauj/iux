@@ -250,6 +250,9 @@ function PalettePickerPanel(props: PanelProps) {
     [setListOpenRaw],
   )
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
+  /* Add-to-list menu for the current palette's quick-action row (distinct
+   * from the per-row `groupPaletteId` menu inside the browse list). */
+  const [currentMenuOpen, setCurrentMenuOpen] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -372,6 +375,64 @@ function PalettePickerPanel(props: PanelProps) {
       aria-label="Palette picker"
       onKeyDown={onKey}
     >
+      {/* Current-palette quick actions — favorite + add-to-list for the
+       * palette shown in the trigger, so it can be saved without opening
+       * the browse list and scrolling to find its row. */}
+      <div className="palette-picker__current">
+        <button
+          type="button"
+          className={`palette-picker__star${groupsApi.isFavorite(current) ? ' is-favorited' : ''}`}
+          aria-label={
+            groupsApi.isFavorite(current)
+              ? `Unfavorite ${palettes[current]?.name ?? current}`
+              : `Favorite ${palettes[current]?.name ?? current}`
+          }
+          aria-pressed={groupsApi.isFavorite(current)}
+          onClick={() => groupsApi.toggleFavorite(current)}
+        >
+          {groupsApi.isFavorite(current) ? '★' : '☆'}
+        </button>
+        <span className="palette-picker__current-name" title={palettes[current]?.name ?? current}>
+          {palettes[current]?.name ?? current}
+        </span>
+        <button
+          type="button"
+          className="palette-picker__current-add"
+          aria-label={`Add ${palettes[current]?.name ?? current} to a list`}
+          aria-expanded={currentMenuOpen}
+          onClick={() => setCurrentMenuOpen(o => !o)}
+        >
+          + Add to list
+        </button>
+        {currentMenuOpen && (
+          <div className="palette-picker__group-menu" role="menu">
+            {groupNames.map(name => {
+              const inGroup = (groups[name] ?? []).includes(current)
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  className={`palette-picker__group-menu-item${inGroup ? ' is-in-group' : ''}`}
+                  onClick={() => groupsApi.toggleMembership(name, current)}
+                >
+                  {inGroup ? '✓' : '+'} {name}
+                </button>
+              )
+            })}
+            <button
+              type="button"
+              className="palette-picker__group-menu-item palette-picker__group-menu-item--new"
+              onClick={() => {
+                onNewGroupForPalette(current)
+                setCurrentMenuOpen(false)
+              }}
+            >
+              + New group…
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Active group selector — always visible so the user can switch
        * groups and cycle palettes even when the browse list is collapsed. */}
       <div className="palette-picker__active-group">

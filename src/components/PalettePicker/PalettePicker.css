@@ -262,6 +262,60 @@
   color: var(--color-intent-danger-bg, currentColor);
 }
 
+/* ─────────── current-palette quick actions ─────────── */
+
+/*
+ * Compact row sitting directly under the palette trigger: a favorite
+ * toggle and an add-to-list button that act on the *current* palette, so
+ * it can be saved without expanding Browse and hunting for its row. The
+ * `position: relative` anchors the reused `.palette-picker__group-menu`
+ * (absolute, top: 100%) to this row.
+ */
+.palette-picker__current {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.palette-picker__current-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--type-caption-size, 0.8rem);
+  font-weight: var(--type-label-weight, 600);
+  color: var(--color-content-primary, CanvasText);
+}
+
+.palette-picker__current-add {
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  background: var(--color-surface-raised, Canvas);
+  color: var(--color-content-secondary, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.palette-picker__current-add:hover {
+  background: var(--color-surface-sunken, Canvas);
+  color: var(--color-content-primary, CanvasText);
+}
+
+.palette-picker__current-add:focus-visible {
+  outline: var(--effect-focus-ring-width, 2px) var(--effect-focus-ring-style, solid) var(--color-focus-ring, currentColor);
+  outline-offset: var(--effect-focus-ring-offset, 1px);
+}
+
+/* The current-row add-to-list menu anchors to the row's right edge like
+ * the per-row menu, but the button is at the trailing end so the default
+ * `right: 0` lines up cleanly. */
+
 /* ─────────── list ─────────── */
 
 /*
