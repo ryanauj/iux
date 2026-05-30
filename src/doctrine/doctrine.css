@@ -222,6 +222,70 @@
   gap: var(--space-3);
 }
 
+/*
+ * Alignment comparison (Layout 00). Two rows of mixed-size marks: the first
+ * aligned to the box (top edges flush, so the optical centers stagger), the
+ * second aligned to the optical center. Mark sizes read from the space scale
+ * so the size spread survives a palette swap. This is what the prose's
+ * "16px icons look indented next to 24px icons" describes — `Button` can't
+ * show it because it has no size variants.
+ */
+.doctrine__align {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.doctrine__align-case {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.doctrine__align-label {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.doctrine__align-row {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  min-height: var(--space-8);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.doctrine__align-row--box {
+  align-items: flex-start;
+}
+
+.doctrine__align-row--optical {
+  align-items: center;
+}
+
+.doctrine__align-mark {
+  flex: none;
+  background: var(--color-content-primary);
+  border-radius: var(--radius-sm);
+}
+
+.doctrine__align-mark--s {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.doctrine__align-mark--m {
+  width: var(--space-6);
+  height: var(--space-6);
+}
+
+.doctrine__align-mark--l {
+  width: var(--space-8);
+  height: var(--space-8);
+}
+
 .doctrine__rules {
   display: flex;
   flex-direction: column;
