@@ -84,9 +84,9 @@ export function Anatomy() {
             <strong>{money(SAMPLE_CONTRACT_BASE * SAMPLE_CONTRACT_RAISE)}</strong>.
           </p>
           <KeyIdea tone="success" title="Why teams hoard Bird rights">
-            Bigger raises <em>and</em> a fifth year mean a team can always
-            offer its own free agent more total money than any rival. That's
-            by design — the league wants stars to be able to stay.
+            Bigger raises <em>and</em> a fifth year mean a team can almost
+            always offer its own free agent more total money than any rival
+            can. That's by design — the league wants stars to be able to stay.
           </KeyIdea>
         </div>
       </section>

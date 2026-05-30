@@ -144,6 +144,28 @@ export function TeamSheet() {
       </section>
 
       <section className="cap-page__section">
+        <h2 className="cap-page__h2">How a team gets here</h2>
+        <p className="cap-page__p">
+          Read the "signed via" column top to bottom and you can trace the whole
+          life cycle of a contender. It begins at the draft: the cheap
+          rookie-scale deals — the lottery and sophomore wings — are where most
+          cores start, and their below-market price is what bankrolls everything
+          above them. A team develops those picks, then re-signs the ones who hit
+          using <strong>Bird rights</strong> (both max deals here), turning cheap
+          talent into expensive talent it gets to keep. As the payroll climbs the
+          cap closes the cheap doors: outside help now arrives only through the{' '}
+          <strong>mid-level</strong>, <strong>minimums</strong>, and matched
+          trades, and draft picks become the currency for any real upgrade.
+        </p>
+        <p className="cap-page__p">
+          That arc is a GM's job in one line: draft cheap, develop, re-sign your
+          own, and spend the surplus and the picks before the aprons close the
+          window. The {SAMPLE_TEAM_NAME} are near the end of it — a finished
+          contender whose next move is the hardest one.
+        </p>
+      </section>
+
+      <section className="cap-page__section">
         <KeyIdea tone="success" title="You've got the whole system now">
           A cap and a floor, a contract's raises and guarantees, the max tiers,
           the exceptions that beat the cap, the tax that punishes spending, and

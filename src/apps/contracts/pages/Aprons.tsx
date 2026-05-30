@@ -34,12 +34,12 @@ export function Aprons() {
         lede={
           <>
             The luxury tax was supposed to be the brake. For most owners it is —
-            but the richest ones simply paid it, shrugged at the bill, and kept
-            winning every bidding war. Money alone never really stopped them. The{' '}
-            <strong>aprons</strong> are the league's answer: a brake no amount of
-            money can release. Cross these two highest rungs and you don't just
-            owe more — you lose the <strong>tools</strong> you'd use to get
-            better.
+            but the richest ones paid it, shrugged at the bill, and kept
+            spending. A penalty measured in dollars doesn't deter an owner who
+            has enough of them. The <strong>aprons</strong> are the league's
+            answer: a brake no amount of money can release. Cross these two
+            highest rungs and you don't just owe more — you lose the{' '}
+            <strong>tools</strong> you'd use to get better.
           </>
         }
       />
@@ -61,9 +61,10 @@ export function Aprons() {
           </p>
           <KeyIdea tone="danger" title="Why the second apron is feared">
             It's not the money — the richest owners would happily pay. It's that
-            a second-apron team loses the ability to <em>improve</em>: no
+            a second-apron team loses most of its ways to <em>improve</em>: no
             mid-level, no combining contracts in trades, and frozen draft picks.
-            Stay there too long and you can't reshape the roster at all.
+            It can still re-sign its own players and swap matched salaries, but
+            the tools for adding outside talent are nearly all gone.
           </KeyIdea>
         </div>
       </section>

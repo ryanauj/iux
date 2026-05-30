@@ -64,9 +64,8 @@ const CORE = [
       <>
         After three seasons with you, a player becomes yours to re-sign for
         anything up to the max — even while you're deep over the cap. This is the
-        tool that made the wall soft back in Chapter 1: it's the reason your star
-        never has to walk for nothing. The single most valuable thing a team can
-        own.
+        tool that made the wall soft back in Chapter 1, and the reason a team can
+        keep the star it drafted instead of watching him leave for nothing.
       </>
     ),
   },
@@ -88,10 +87,10 @@ const CORE = [
     job: 'Fill the last seats',
     blurb: (
       <>
-        No matter how far over the cap you are, you can always sign minimum
-        deals. It's how the back half of every bench gets built. The league even
-        reimburses part of a veteran's minimum, so a team is never penalized for
-        signing an older player to round out the roster.
+        No matter how far over the cap you are, you can sign minimum deals.
+        It's how the back half of every bench gets built. The league even
+        reimburses part of a veteran's minimum, so an experienced player costs
+        the team barely more than a younger one in the same seat.
       </>
     ),
   },

@@ -117,7 +117,7 @@ export const EXCEPTIONS: Exception[] = [
     shortName: 'Bird',
     maxYears: 5,
     summary:
-      'Earned after 3 seasons without changing teams as a free agent. Lets a team re-sign its own player for up to the max with 8% annual raises — even while over the cap. The single most valuable tool in the system.',
+      'Earned after 3 seasons without changing teams as a free agent. Lets a team re-sign its own player for up to the max with 8% annual raises — even while over the cap. The tool that lets a team keep the stars it drafts.',
     apronLimited: 'none',
   },
   {
@@ -184,7 +184,7 @@ export const EXCEPTIONS: Exception[] = [
     shortName: 'Minimum',
     maxYears: 2,
     summary:
-      'Every team can sign minimum-salary contracts regardless of cap status. The amount scales with years of service; the league reimburses part of a veteran minimum so older players are not penalised.',
+      'Every team can sign minimum-salary contracts regardless of cap status. The amount scales with years of service; the league reimburses part of a veteran minimum, so an experienced player costs the team barely more than a younger one.',
     apronLimited: 'none',
   },
 ]

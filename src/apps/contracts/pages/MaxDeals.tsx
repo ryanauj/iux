@@ -13,11 +13,11 @@ export function MaxDeals() {
         title="Max & rookie deals"
         lede={
           <>
-            Imagine no ceiling on individual pay. One superstar could swallow his
-            team's entire cap by himself, leaving nothing to build around him —
-            or the richest owner could just outbid everyone for every star in
-            sight. Neither makes for a watchable league, so there's a limit on
-            what any one player can earn. The twist: that limit isn't a single
+            In 1997 the Timberwolves gave Kevin Garnett a six-year, $126M
+            extension — the richest contract in league history at the time, for a
+            21-year-old. Owners looked at that number, saw a single player
+            swallowing a team's whole cap, and in the next labor deal capped what
+            any one player could earn. The twist: that limit isn't a single
             number.
           </>
         }
@@ -86,14 +86,25 @@ export function MaxDeals() {
           First-round picks don't negotiate their starting salary — they sign a
           fixed <strong>rookie scale</strong> deal set by draft position. It
           runs two years guaranteed with two team-option years, and the higher
-          the pick, the bigger the slot. That cost certainty is why young stars
-          on rookie deals are the most valuable assets in the league: elite
-          production at a controlled price.
+          the pick, the bigger the slot.
+        </p>
+        <p className="cap-page__p">
+          That fixed price is the draft's real gift to a cap sheet. A top pick
+          who develops into a star can produce like a{' '}
+          <strong>{money(MAX_TIERS[2].firstYear)}</strong> player while counting
+          a fraction of that against the cap. The gap between what he's worth and
+          what he costs is room the team gets to spend on everyone else — which
+          is why a young star on a rookie deal is the cheapest way to put real
+          talent on the floor. The catch is the clock: those four years are
+          exactly when a team has to build around him, because the bill comes due
+          the moment he's eligible for a raise.
         </p>
         <KeyIdea tone="info" title="Then the extension">
           After year three, a team can offer a rookie-scale extension. A player
           who hits the awards criteria can qualify for the 25%→30% "Rose Rule"
           bump — the first place the max tiers and individual achievement meet.
+          Sign it and the cheap years are over: the surplus that quietly funded
+          the rest of the roster becomes a max-sized line on the cap sheet.
         </KeyIdea>
       </section>
 

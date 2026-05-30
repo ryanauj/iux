@@ -59,11 +59,11 @@ export function Trades() {
         lede={
           <>
             A trade looks like the simplest move in sports: you send me a player,
-            I send you one back. In the NBA it's the most complicated move there
-            is — and one rule is the reason why. Almost every team is{' '}
-            <em>over</em> the cap, so the salaries going each way have to roughly
-            match. That single constraint turns every trade into a math puzzle,
-            and the hardest puzzles need a third team to solve.
+            I send you one back. In the NBA, one rule turns it into a math
+            puzzle. Almost every team is <em>over</em> the cap, so the salaries
+            going each way have to roughly match. That single constraint is why
+            NBA trades sprout salary filler and extra teams — and why the hardest
+            ones need a third club to solve.
           </>
         }
       />
@@ -117,8 +117,8 @@ export function Trades() {
           The contender's math now works. But trades have two sides, and the
           other side has its own wishes. Our rebuilding team is glad to send the
           star away for a useful wing and a draft pick — but it has zero interest
-          in taking on the aging backup big the contender needs to dump. Two
-          teams simply can't make every piece fit.
+          in taking on the aging backup big the contender needs to dump. On their
+          own, the two teams can't make every piece fit.
         </p>
         <p className="cap-page__p">
           So you bring in a third. A team sitting <strong>under the cap</strong>{' '}
@@ -152,6 +152,37 @@ export function Trades() {
       </section>
 
       <section className="cap-page__section">
+        <h2 className="cap-page__h2">Where the draft picks come in</h2>
+        <p className="cap-page__p">
+          Notice the deal had to balance twice. The salaries matched so the trade
+          would be <em>legal</em> — but matched salaries don't make it{' '}
+          <em>fair</em>. The rebuilder is giving up a star and taking back a
+          lesser wing; the cap-space team is doing a favor by eating a contract it
+          never wanted. <strong>Draft picks</strong> settle that second ledger:
+          the contender sends a future first to the rebuilder to cover the talent
+          gap, and a second-rounder to the cap team to pay for the cap favor.
+          Salary matching decides whether a trade <em>can</em> happen; picks and
+          players decide whether anyone <em>agrees</em> to it.
+        </p>
+        <p className="cap-page__p">
+          That split is why picks are a GM's most flexible currency. They carry
+          no salary, so they never threaten the matching rule, and a pick years
+          out is cheap to promise today. A rebuilding team collects them by
+          selling its present; a contender spends them to win now.
+        </p>
+        <KeyIdea tone="warning" title="The Stepien rule: why picks come with strings">
+          A team can't trade away its first-round pick in two consecutive future
+          years — it always has to keep one in hand. That rule (named for an owner
+          who once dealt his away with abandon) is why picks so often move{' '}
+          <em>protected</em> — "top-4 protected", say — or as a{' '}
+          <strong>swap</strong> of draft positions rather than the pick itself.
+          It's also what sharpens the second apron's frozen picks: a team that
+          can't move its firsts loses its richest trade chip at exactly the moment
+          it most needs to retool.
+        </KeyIdea>
+      </section>
+
+      <section className="cap-page__section">
         <KeyIdea tone="success" title="The leftover-money trick">
           One more piece, and it ties back to Chapter 5. When a team sends out
           more salary than it takes in — like a club trading a star purely for
@@ -168,8 +199,8 @@ export function Trades() {
           Next time a four-team trade scrolls across your feed, count the teams
           and you'll know what you're looking at: each extra club is there to
           satisfy the matching rule, dodge an apron limit, or route a player to
-          where he's actually wanted. It's never as complicated as it looks —
-          it's the same equation, balanced across more sets of books.
+          where he's actually wanted. Usually it's less tangled than it looks —
+          the same equation, just balanced across more sets of books.
         </KeyIdea>
       </section>
 
