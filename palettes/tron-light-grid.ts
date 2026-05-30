@@ -38,12 +38,12 @@ export const palette: Palette = {
         focus: '#0891b2',
       },
       intent: {
-        primary: { bg: 'rgba(8, 145, 178, 0.28)', content: '#083344', border: '#0891b2', bgHover: 'rgba(8, 145, 178, 0.38)', bgActive: 'rgba(8, 145, 178, 0.48)' },
-        neutral: { bg: 'rgba(8, 51, 68, 0.10)', content: '#083344', border: 'rgba(14, 116, 144, 0.36)', bgHover: 'rgba(8, 51, 68, 0.16)', bgActive: 'rgba(8, 51, 68, 0.22)' },
-        success: { bg: 'rgba(22, 163, 74, 0.28)', content: '#14532d', border: '#16a34a', bgHover: 'rgba(22, 163, 74, 0.38)', bgActive: 'rgba(22, 163, 74, 0.48)' },
-        warning: { bg: 'rgba(202, 138, 4, 0.30)', content: '#713f12', border: '#ca8a04', bgHover: 'rgba(202, 138, 4, 0.40)', bgActive: 'rgba(202, 138, 4, 0.50)' },
-        danger:  { bg: 'rgba(225, 29, 72, 0.28)', content: '#881337', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.38)', bgActive: 'rgba(225, 29, 72, 0.48)' },
-        info:    { bg: 'rgba(2, 132, 199, 0.28)', content: '#0c4a6e', border: '#0284c7', bgHover: 'rgba(2, 132, 199, 0.38)', bgActive: 'rgba(2, 132, 199, 0.48)' },
+        primary: { bg: 'rgba(8, 145, 178, 0.42)', content: '#083344', border: '#0891b2', bgHover: 'rgba(8, 145, 178, 0.52)', bgActive: 'rgba(8, 145, 178, 0.62)' },
+        neutral: { bg: 'rgba(8, 51, 68, 0.12)', content: '#083344', border: 'rgba(14, 116, 144, 0.36)', bgHover: 'rgba(8, 51, 68, 0.18)', bgActive: 'rgba(8, 51, 68, 0.24)' },
+        success: { bg: 'rgba(22, 163, 74, 0.42)', content: '#14532d', border: '#16a34a', bgHover: 'rgba(22, 163, 74, 0.52)', bgActive: 'rgba(22, 163, 74, 0.62)' },
+        warning: { bg: 'rgba(202, 138, 4, 0.42)', content: '#713f12', border: '#ca8a04', bgHover: 'rgba(202, 138, 4, 0.52)', bgActive: 'rgba(202, 138, 4, 0.62)' },
+        danger:  { bg: 'rgba(225, 29, 72, 0.42)', content: '#881337', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.52)', bgActive: 'rgba(225, 29, 72, 0.62)' },
+        info:    { bg: 'rgba(2, 132, 199, 0.42)', content: '#0c4a6e', border: '#0284c7', bgHover: 'rgba(2, 132, 199, 0.52)', bgActive: 'rgba(2, 132, 199, 0.62)' },
       },
     },
     space: {
