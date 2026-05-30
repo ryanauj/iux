@@ -208,6 +208,33 @@ function AlignmentCompare() {
   )
 }
 
+// One component, three container widths, on one page. Each frame is a size
+// container (`container-type: inline-size`); the panel inside reads a real
+// `@container (min-width)` query and switches from a stacked layout to a row
+// as its OWN width — not the viewport — crosses the threshold. This is the
+// technique the section preaches; nothing in the component library actually
+// uses a size container query, so the demo carries the rule on its own.
+const CONTAINER_WIDTHS = ['240px', '360px', '520px'] as const
+
+function ContainerCompare() {
+  return (
+    <div className="doctrine__cq">
+      {CONTAINER_WIDTHS.map(w => (
+        <div key={w} className="doctrine__cq-frame" style={{ width: w }}>
+          <span className="doctrine__cq-width">{w} container</span>
+          <div className="doctrine__cq-panel">
+            <div className="doctrine__cq-body">
+              <span className="doctrine__cq-title">Container card</span>
+              <span className="doctrine__cq-sub">reflows on its own width</span>
+            </div>
+            <Button variant="solid" intent="primary">Action</Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -302,11 +329,13 @@ function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
         <Prose>
           A card doesn't know if it's in a sidebar or filling the page — it
           knows it's been given a certain amount of room. It should arrange
-          itself based on that, not based on the window. The card below is
-          the same card shown at several widths so you can see it adapt.
+          itself based on that, not based on the window. The panel below is
+          the same component shown at three widths — all on this one page — so
+          you can see it rearrange itself based only on the room it's given,
+          not on how wide your browser is.
         </Prose>
-        <Demo caption="Card — one component, different amounts of room">
-          <CardStories variant="static" />
+        <Demo caption="One component, three amounts of room — it stacks when narrow, spreads into a row when wide">
+          <ContainerCompare />
         </Demo>
       </Section>
 
@@ -427,11 +456,14 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
           know if it's in a sidebar or a hero slot — it knows it has{' '}
           <code>width: 320px</code> of room. Breakpoints encode a viewport
           guess that fails the moment the component lives somewhere else in
-          the layout. The Card below renders the same primitive at multiple
-          container widths to demonstrate the rule.
+          the layout. The panel below is one component rendered in three
+          fixed-width containers on this same page; each reads a real{' '}
+          <code>@container (min-width)</code> query and flips from a stacked
+          layout to a row as its <em>own</em> width — not the window — crosses
+          the threshold.
         </Prose>
-        <Demo caption="Card · static — one primitive, container-driven layout">
-          <CardStories variant="static" />
+        <Demo caption="One component, three container widths — the layout switches on container width, not viewport">
+          <ContainerCompare />
         </Demo>
       </Section>
 
