@@ -20,4 +20,5 @@ jobs:
       - run: pnpm run validate:palettes
       - run: pnpm run lint:tokens
       - run: pnpm run test:gates
+      - run: pnpm run test
       - run: pnpm run build

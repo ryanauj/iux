@@ -15,8 +15,10 @@
     "lint:contrast": "tsx scripts/lint-contrast.ts",
     "lint:tier-contrast": "tsx scripts/lint-tier-contrast.ts",
     "test:gates": "tsx scripts/test-gates.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "gen:style-docs": "tsx scripts/generate-style-docs.ts",
-    "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run lint:contrast && pnpm run lint:tier-contrast && pnpm run test:gates"
+    "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run lint:contrast && pnpm run lint:tier-contrast && pnpm run test:gates && pnpm run test"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -28,9 +30,11 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "jsdom": "^25.0.1",
     "tsx": "^4.22.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.6"
+    "vite": "^5.4.6",
+    "vitest": "^2.1.9"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
