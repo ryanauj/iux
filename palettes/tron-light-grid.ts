@@ -19,8 +19,8 @@ export const palette: Palette = {
     color: {
       surface: {
         base: '#fbfdff',
-        raised: 'rgba(8, 145, 178, 0.06)',
-        sunken: 'rgba(8, 145, 178, 0.03)',
+        raised: 'rgba(8, 145, 178, 0.14)',
+        sunken: 'rgba(8, 145, 178, 0.08)',
         overlay: 'rgba(255, 255, 255, 0.74)',
         scrim: 'rgba(15, 23, 42, 0.32)',
       },
@@ -32,18 +32,18 @@ export const palette: Palette = {
         link: '#0e7490',
       },
       border: {
-        subtle: 'rgba(14, 116, 144, 0.20)',
-        default: 'rgba(14, 116, 144, 0.38)',
-        strong: 'rgba(14, 116, 144, 0.60)',
+        subtle: 'rgba(14, 116, 144, 0.32)',
+        default: 'rgba(14, 116, 144, 0.52)',
+        strong: 'rgba(14, 116, 144, 0.74)',
         focus: '#0891b2',
       },
       intent: {
-        primary: { bg: 'rgba(8, 145, 178, 0.12)', content: '#083344', border: '#0891b2', bgHover: 'rgba(8, 145, 178, 0.20)', bgActive: 'rgba(8, 145, 178, 0.30)' },
-        neutral: { bg: 'rgba(8, 51, 68, 0.04)', content: '#083344', border: 'rgba(14, 116, 144, 0.24)', bgHover: 'rgba(8, 51, 68, 0.08)', bgActive: 'rgba(8, 51, 68, 0.12)' },
-        success: { bg: 'rgba(22, 163, 74, 0.12)', content: '#14532d', border: '#16a34a', bgHover: 'rgba(22, 163, 74, 0.20)', bgActive: 'rgba(22, 163, 74, 0.30)' },
-        warning: { bg: 'rgba(202, 138, 4, 0.14)', content: '#713f12', border: '#ca8a04', bgHover: 'rgba(202, 138, 4, 0.22)', bgActive: 'rgba(202, 138, 4, 0.32)' },
-        danger:  { bg: 'rgba(225, 29, 72, 0.12)', content: '#881337', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.20)', bgActive: 'rgba(225, 29, 72, 0.30)' },
-        info:    { bg: 'rgba(2, 132, 199, 0.12)', content: '#0c4a6e', border: '#0284c7', bgHover: 'rgba(2, 132, 199, 0.20)', bgActive: 'rgba(2, 132, 199, 0.30)' },
+        primary: { bg: 'rgba(8, 145, 178, 0.28)', content: '#083344', border: '#0891b2', bgHover: 'rgba(8, 145, 178, 0.38)', bgActive: 'rgba(8, 145, 178, 0.48)' },
+        neutral: { bg: 'rgba(8, 51, 68, 0.10)', content: '#083344', border: 'rgba(14, 116, 144, 0.36)', bgHover: 'rgba(8, 51, 68, 0.16)', bgActive: 'rgba(8, 51, 68, 0.22)' },
+        success: { bg: 'rgba(22, 163, 74, 0.28)', content: '#14532d', border: '#16a34a', bgHover: 'rgba(22, 163, 74, 0.38)', bgActive: 'rgba(22, 163, 74, 0.48)' },
+        warning: { bg: 'rgba(202, 138, 4, 0.30)', content: '#713f12', border: '#ca8a04', bgHover: 'rgba(202, 138, 4, 0.40)', bgActive: 'rgba(202, 138, 4, 0.50)' },
+        danger:  { bg: 'rgba(225, 29, 72, 0.28)', content: '#881337', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.38)', bgActive: 'rgba(225, 29, 72, 0.48)' },
+        info:    { bg: 'rgba(2, 132, 199, 0.28)', content: '#0c4a6e', border: '#0284c7', bgHover: 'rgba(2, 132, 199, 0.38)', bgActive: 'rgba(2, 132, 199, 0.48)' },
       },
     },
     space: {
@@ -73,11 +73,11 @@ export const palette: Palette = {
       heavy: '3px',
     },
     elevation: {
-      flat: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.16)' },
-      low: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.20), 0 1px 3px rgba(15, 23, 42, 0.08), 0 0 8px rgba(8, 145, 178, 0.10)' },
-      medium: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.26), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)' },
-      high: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.32), 0 8px 24px rgba(15, 23, 42, 0.12), 0 0 24px rgba(8, 145, 178, 0.14)' },
-      overlay: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.40), 0 24px 60px rgba(15, 23, 42, 0.20), 0 0 36px rgba(8, 145, 178, 0.16)' },
+      flat: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.28)' },
+      low: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.34), 0 1px 3px rgba(15, 23, 42, 0.08), 0 0 8px rgba(8, 145, 178, 0.10)' },
+      medium: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.42), 0 4px 12px rgba(15, 23, 42, 0.10), 0 0 16px rgba(8, 145, 178, 0.12)' },
+      high: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.50), 0 8px 24px rgba(15, 23, 42, 0.12), 0 0 24px rgba(8, 145, 178, 0.14)' },
+      overlay: { boxShadow: 'inset 0 0 0 1px rgba(14, 116, 144, 0.58), 0 24px 60px rgba(15, 23, 42, 0.20), 0 0 36px rgba(8, 145, 178, 0.16)' },
     },
     typography: {
       family: {
