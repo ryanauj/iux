@@ -157,6 +157,10 @@
 .showcase-card__demo {
   min-width: 0;
   overflow-x: auto;
+  /* overflow-x: auto forces overflow-y to clip too (per CSS spec), which
+     crops components whose visuals overflow their box vertically — most
+     notably the Slider thumb, which extends above and below its track. */
+  padding-block: var(--space-2);
   /* Each story root pads its own contents; we only protect against
      wide demos blowing out the card width. */
 }
@@ -430,8 +434,11 @@
     gap: var(--space-4);
   }
 
+  /* Keep the card's inline padding at desktop scale so the title and
+     tier badge don't crowd the card edges; only trim the block padding
+     to reclaim some vertical density on phones. */
   .showcase-card {
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-4);
   }
 }
 
@@ -453,7 +460,7 @@
   }
 
   .showcase-card {
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-4);
   }
 
   .showcase-feed { columns: 1; }
