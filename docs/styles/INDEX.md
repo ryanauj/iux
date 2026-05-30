@@ -1,12 +1,13 @@
 # Style descriptions — index
 
-59 of 59 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
+84 of 84 palettes have structured descriptions. Add a `palettes/<id>.description.ts` and register it in `palettes/descriptions.ts` to populate one.
 
 ## Populated
 
 - [High-Contrast AAA](./aaa.md) — `flat`
 - [Academic](./academic.md) — `flat`
 - [Aero Glass](./aero-glass.md) — `glassmorphism`
+- [Art Deco / Ivory](./art-deco-ivory.md) — `flat`
 - [Art Deco / Gatsby](./art-deco.md) — `flat`
 - [Aurora](./aurora.md) — `aurora`
 - [Bauhaus](./bauhaus.md) — `flat`
@@ -14,11 +15,18 @@
 - [Brutalist-elegant](./brutalist-elegant.md) — `neubrutalism`
 - [Bullet Train / Day](./bullet-train-day.md) — `flat`
 - [Cardstock (Layered)](./cardstock-layered.md) — `cardstock`
+- [Cel-shaded (Citrus Pop)](./cel-shaded-citrus.md) — `cel-shaded`
+- [Cel-shaded (Kawaii)](./cel-shaded-kawaii.md) — `cel-shaded`
+- [Cel-shaded (Mecha)](./cel-shaded-mecha.md) — `cel-shaded`
+- [Cel-shaded (Sakura)](./cel-shaded-sakura.md) — `cel-shaded`
 - [Cel-shaded (Shojo)](./cel-shaded-shojo.md) — `cel-shaded`
 - [Cel-shaded (Shonen)](./cel-shaded-shonen.md) — `cel-shaded`
+- [Citrus Spark](./citrus-spark.md) — `flat`
 - [Claymorphism](./claymorphism.md) — `claymorphism`
+- [Coastal Modern](./coastal-modern.md) — `flat`
 - [CRT / Phosphor (Amber)](./crt-phosphor-amber.md) — `crt-phosphor`
 - [CRT / Phosphor (Green)](./crt-phosphor-green.md) — `crt-phosphor`
+- [CRT / Greenbar](./crt-phosphor-greenbar.md) — `crt-phosphor`
 - [Cyberpunk Neon-Noir](./cyberpunk-neon-noir.md) — `glassmorphism`
 - [Data-dense light](./data-dense-light.md) — `flat`
 - [Desert Modernism](./desert-modernism.md) — `flat`
@@ -31,7 +39,9 @@
 - [Graffiti / Marble](./graffiti-marble.md) — `flat`
 - [Heritage Maritime](./heritage-maritime.md) — `flat`
 - [Industrial / Light](./industrial-light.md) — `flat`
+- [Lavender Dawn](./lavender-dawn.md) — `flat`
 - [Letterpress](./letterpress.md) — `flat`
+- [Linear Workspace](./linear-workspace.md) — `flat`
 - [Liquid Glass (Dark)](./liquid-glass-dark.md) — `glassmorphism`
 - [Liquid Glass (Light)](./liquid-glass-light.md) — `glassmorphism`
 - [Mall-goth](./mall-goth.md) — `flat`
@@ -40,10 +50,17 @@
 - [80s Memphis](./memphis-80s.md) — `flat`
 - [Metro / Light](./metro-light.md) — `flat`
 - [Mid-century modern](./mid-century-modern.md) — `flat`
+- [Mocha Latte](./mocha-latte.md) — `flat`
 - [Modern Royal](./modern-royal.md) — `flat`
+- [Neo Bubblegum](./neo-bubblegum.md) — `neubrutalism`
+- [Neo Citrus](./neo-citrus.md) — `neubrutalism`
+- [Neo Grape](./neo-grape.md) — `neubrutalism`
+- [Neo Tangerine](./neo-tangerine.md) — `neubrutalism`
 - [Neubrutalism](./neubrutalism.md) — `neubrutalism`
 - [Neumorphism](./neumorphism.md) — `neumorphism`
 - [Newspaper / Broadsheet](./newspaper.md) — `flat`
+- [Nordic Frost](./nordic-frost.md) — `flat`
+- [Paper Pop](./paper-pop.md) — `flat`
 - [Pixel Art (Cottagecore)](./pixel-art-cottagecore.md) — `pixel-art`
 - [Pixel Art (Game Boy)](./pixel-art-gameboy.md) — `pixel-art`
 - [Pixel Art (Hyper Light)](./pixel-art-hyperlight.md) — `pixel-art`
@@ -51,16 +68,24 @@
 - [Pixel Art (PICO-8)](./pixel-art-pico8.md) — `pixel-art`
 - [Pixel Art (SNES)](./pixel-art-snes.md) — `pixel-art`
 - [Risograph](./risograph.md) — `flat`
+- [Sage Studio](./sage-studio.md) — `flat`
 - [Scandinavian Royal Modern](./scandinavian-royal-modern.md) — `flat`
 - [Hand-drawn (Marker)](./sketch-marker.md) — `sketch`
 - [Skeuomorphism](./skeuomorphism.md) — `skeuomorphism`
+- [Soft Pastel](./soft-pastel.md) — `flat`
 - [Solarpunk](./solarpunk.md) — `flat`
 - [Cathedral / Stained Glass](./stained-glass.md) — `flat`
+- [Stone Modern](./stone-modern.md) — `flat`
+- [Studio Confetti](./studio-confetti.md) — `flat`
 - [Swiss / International Style](./swiss-international.md) — `flat`
+- [Terminal / Paper](./terminal-tui-paper.md) — `terminal-tui`
 - [Terminal / TUI](./terminal-tui.md) — `terminal-tui`
 - [Tokyo / Day](./tokyo-day.md) — `flat`
 - [Tron / Dark-Neon](./tron-dark-neon.md) — `glassmorphism`
+- [Tron / Light-Grid](./tron-light-grid.md) — `glassmorphism`
 - [Vaporwave](./vaporwave.md) — `flat`
+- [Vercel Geist](./vercel-geist.md) — `flat`
+- [Whiteprint](./whiteprint.md) — `flat`
 - [Wikipedia / Institutional](./wikipedia.md) — `flat`
 - [Zen / Sumi-e](./zen-sumie.md) — `sketch`
 
