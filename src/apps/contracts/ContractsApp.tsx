@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
@@ -45,6 +45,13 @@ export function ContractsApp({ location }: ContractsAppProps) {
   const route = useMemo(() => {
     const segs = pathSegments(location.path)
     return matchContractsRoute(segs.slice(2))
+  }, [location.path])
+
+  // Jump back to the top whenever the chapter changes — otherwise paging
+  // forward lands you mid-page at the previous scroll offset. Keyed on the
+  // path only, so palette/layout/motion tweaks don't yank the scroll.
+  useEffect(() => {
+    window.scrollTo(0, 0)
   }, [location.path])
 
   // URL wins on a fresh visit (pasted permalink); the site-wide persisted

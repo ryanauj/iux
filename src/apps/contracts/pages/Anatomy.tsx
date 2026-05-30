@@ -60,7 +60,7 @@ export function Anatomy() {
       </section>
 
       <section className="cap-page__section cap-split">
-        <Card variant="static" title="Salary by year" subtitle="8% raises compound off Year 1" className="cap-split__aside">
+        <Card variant="static" title="Salary by year" subtitle="8% of Year 1 added each season" className="cap-split__aside">
           <Bar
             variant="simple"
             height={240}

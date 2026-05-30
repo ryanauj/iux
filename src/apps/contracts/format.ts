@@ -8,9 +8,9 @@
 /** Compact millions form: 154_647_000 → "$154.6M". */
 export function money(n: number): string {
   const millions = n / 1_000_000
-  // Whole millions read cleaner without a trailing ".0".
-  const digits = Math.abs(millions) >= 100 || Number.isInteger(millions) ? 1 : 1
-  return `$${millions.toFixed(digits)}M`
+  // Always one decimal so every figure reads at the same precision
+  // ($30.0M alongside $154.6M) and columns line up.
+  return `$${millions.toFixed(1)}M`
 }
 
 /** Full grouped form: 154_647_000 → "$154,647,000". */

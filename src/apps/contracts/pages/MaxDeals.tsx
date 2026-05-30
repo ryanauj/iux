@@ -51,7 +51,9 @@ export function MaxDeals() {
             valueLabel="First-year max"
             data={MAX_TIERS.map(t => ({
               key: t.id,
-              label: `${t.label} · ${t.service}`,
+              // Keep the axis label short so it fits the chart's left gutter
+              // on narrow screens; the service band is on each tier card above.
+              label: t.label,
               value: t.firstYear,
               intent: 'primary',
             }))}

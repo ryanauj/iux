@@ -86,7 +86,7 @@ export function Waterfall({
         {yTicks.map((tick, i) => (
           <g key={`y-${i}`}>
             <line className="iux-waterfall__gridline" x1={PAD.left} x2={width - PAD.right} y1={ys(tick)} y2={ys(tick)} vectorEffect="non-scaling-stroke" />
-            <text className="iux-waterfall__tick-label" x={PAD.left - 6} y={ys(tick)} textAnchor="end" dominantBaseline="central">{tick.toFixed(0)}</text>
+            <text className="iux-waterfall__tick-label" x={PAD.left - 6} y={ys(tick)} textAnchor="end" dominantBaseline="central">{fmt(tick)}</text>
           </g>
         ))}
         <line className="iux-waterfall__axis-line" x1={PAD.left} x2={width - PAD.right} y1={ys(0)} y2={ys(0)} vectorEffect="non-scaling-stroke" />
@@ -100,13 +100,13 @@ export function Waterfall({
           return (
             <g key={b.step.key} className={`iux-waterfall__step iux-waterfall__step--${b.kind}`}>
               <rect className="iux-waterfall__bar" x={x} y={top} width={barW} height={h} rx={2}>
-                <title>{`${b.step.label}: ${fmt(b.step.value)} → running ${b.runningAfter.toFixed(0)}`}</title>
+                <title>{`${b.step.label}: ${fmt(b.step.value)} → running ${fmt(b.runningAfter)}`}</title>
               </rect>
               {i < bars.length - 1 && (
                 <line className="iux-waterfall__connector" x1={x + barW} y1={connectorY} x2={nextX} y2={connectorY} vectorEffect="non-scaling-stroke" />
               )}
               <text className="iux-waterfall__value" x={x + barW / 2} y={Math.min(ys(b.y0), ys(b.y1)) - 6} textAnchor="middle">
-                {b.kind === 'total' ? b.runningAfter.toFixed(0) : fmt(b.step.value)}
+                {b.kind === 'total' ? fmt(b.runningAfter) : fmt(b.step.value)}
               </text>
               <text className="iux-waterfall__category" x={x + barW / 2} y={height - PAD.bottom + 6} textAnchor="middle" dominantBaseline="hanging">{b.step.label}</text>
             </g>

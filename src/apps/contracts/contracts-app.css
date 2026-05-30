@@ -914,9 +914,13 @@
     gap: var(--space-4);
   }
 
+  /* Even two-up grid instead of a ragged content-width wrap, so the eight
+     chapters read as a tidy block rather than rows of one-then-two. */
   .cap-rail__nav {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-basis: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-1) var(--space-2);
   }
 
   .cap-rail__bottom {
@@ -926,6 +930,30 @@
   .cap-split,
   .cap-apron-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Phone: let multi-column tables fit the viewport instead of forcing a
+   silent horizontal scroll that hides the rightmost column (e.g. the
+   roster's "Cap hit" salaries) and clips the table caption. */
+@media (max-width: 40rem) {
+  .cap-app .iux-table__table {
+    min-width: 0;
+  }
+
+  .cap-app .iux-table__caption {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Stack the prev/next pager so neither card is squeezed or shoved
+     off-edge when only one direction is present. */
+  .cap-pager {
+    flex-direction: column;
+  }
+
+  .cap-pager__link--next {
+    margin-left: 0;
   }
 }
 
