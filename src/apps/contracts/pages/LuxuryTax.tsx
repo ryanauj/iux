@@ -46,13 +46,19 @@ export function LuxuryTax() {
   const payroll = SEASON.taxLine + overage
   const { total, steps } = computeTax(payroll, mode)
 
+  // Keep the chart's category labels short so they don't collide on narrow
+  // screens — the per-bracket rate lives in the bracket table above and in
+  // each bar's tooltip. "$0M–$5M over" → "$0–5M".
   const waterfallSteps: WaterfallStep[] = [
     ...steps.map(s => ({
       key: s.label,
-      label: `${s.label} × ${rate(s.rate)}`,
+      label: s.label
+        .replace(' over', '')
+        .replace('M–+', 'M+')
+        .replace(/M–\$/g, '–'),
       value: s.tax,
     })),
-    { key: 'total', label: 'Total tax bill', value: 0, subtotal: true },
+    { key: 'total', label: 'Total', value: 0, subtotal: true },
   ]
 
   return (

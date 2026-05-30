@@ -78,7 +78,7 @@ export function TeamSheet() {
           <StatTile label="Total payroll" value={money(total)} sub={`${SAMPLE_ROSTER.length} players`} />
           <StatTile label="Over the cap" value={money(overCap)} sub={`Cap is ${money(SEASON.salaryCap)}`} />
           <StatTile label="Over the tax line" value={money(overage)} sub="Taxable amount" />
-          <StatTile label="Luxury-tax bill" value={moneyFull(tax)} sub="Standard rates" />
+          <StatTile label="Luxury-tax bill" value={money(tax)} sub="Standard rates" />
         </div>
       </section>
 
