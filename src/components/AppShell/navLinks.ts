@@ -28,6 +28,7 @@ export type AppShellNavId =
   | 'doctrine'
   | 'tests'
   | 'engines'
+  | 'settings'
 
 export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'components',     href: '#/',         label: 'Components',     short: 'Co' },
@@ -37,4 +38,5 @@ export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'doctrine',       href: '#/doctrine', label: 'Doctrine',       short: 'Do' },
   { id: 'tests',          href: '#/tests',    label: 'Tests',          short: 'Te' },
   { id: 'engines',        href: '/engines',   label: 'Engines',        short: 'En' },
+  { id: 'settings',       href: '#/settings', label: 'Settings',       short: 'Se' },
 ]
