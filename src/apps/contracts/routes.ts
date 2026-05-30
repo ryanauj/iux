@@ -1,0 +1,52 @@
+/**
+ * Centralised route helpers for the Cap School app. Pages build links
+ * through these so the route shape lives in one place — mirrors the
+ * pattern the sibling sports app uses.
+ */
+
+export const CONTRACTS_BASE = '/apps/contracts'
+
+export const contractsRoutes = {
+  overview: () => CONTRACTS_BASE,
+  ladder: () => `${CONTRACTS_BASE}/ladder`,
+  anatomy: () => `${CONTRACTS_BASE}/anatomy`,
+  maxDeals: () => `${CONTRACTS_BASE}/max`,
+  exceptions: () => `${CONTRACTS_BASE}/exceptions`,
+  tax: () => `${CONTRACTS_BASE}/tax`,
+  aprons: () => `${CONTRACTS_BASE}/aprons`,
+  team: () => `${CONTRACTS_BASE}/team`,
+} as const
+
+export type ContractsRoute =
+  | { kind: 'overview' }
+  | { kind: 'ladder' }
+  | { kind: 'anatomy' }
+  | { kind: 'maxDeals' }
+  | { kind: 'exceptions' }
+  | { kind: 'tax' }
+  | { kind: 'aprons' }
+  | { kind: 'team' }
+  | { kind: 'notFound' }
+
+/** Parses the segments AFTER `apps/contracts` and returns a discriminated route. */
+export function matchContractsRoute(segments: string[]): ContractsRoute {
+  if (segments.length === 0) return { kind: 'overview' }
+  switch (segments[0]) {
+    case 'ladder':
+      return { kind: 'ladder' }
+    case 'anatomy':
+      return { kind: 'anatomy' }
+    case 'max':
+      return { kind: 'maxDeals' }
+    case 'exceptions':
+      return { kind: 'exceptions' }
+    case 'tax':
+      return { kind: 'tax' }
+    case 'aprons':
+      return { kind: 'aprons' }
+    case 'team':
+      return { kind: 'team' }
+    default:
+      return { kind: 'notFound' }
+  }
+}

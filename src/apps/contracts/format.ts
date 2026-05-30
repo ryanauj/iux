@@ -1,0 +1,35 @@
+/**
+ * Money formatting helpers shared across the Cap School pages. The app
+ * deals almost entirely in salary figures, so a compact "$154.6M" reading
+ * is the default; the long form is available for tables where precision
+ * matters.
+ */
+
+/** Compact millions form: 154_647_000 → "$154.6M". */
+export function money(n: number): string {
+  const millions = n / 1_000_000
+  // Whole millions read cleaner without a trailing ".0".
+  const digits = Math.abs(millions) >= 100 || Number.isInteger(millions) ? 1 : 1
+  return `$${millions.toFixed(digits)}M`
+}
+
+/** Full grouped form: 154_647_000 → "$154,647,000". */
+export function moneyFull(n: number): string {
+  return `$${Math.round(n).toLocaleString('en-US')}`
+}
+
+/** Signed compact form for deltas: 14_059_000 → "+$14.1M". */
+export function moneySigned(n: number): string {
+  const sign = n >= 0 ? '+' : '−'
+  return `${sign}${money(Math.abs(n))}`
+}
+
+/** 0.25 → "25%". */
+export function pct(fraction: number, digits = 0): string {
+  return `${(fraction * 100).toFixed(digits)}%`
+}
+
+/** Dollar-per-dollar tax rate: 1.5 → "$1.50". */
+export function rate(n: number): string {
+  return `$${n.toFixed(2)}`
+}

@@ -1,0 +1,133 @@
+import { useMemo, useRef } from 'react'
+import { palettes, type PaletteId } from '../../../palettes'
+import { PaletteRoot } from '../../theme/PaletteRoot'
+import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
+import { pathSegments, replaceParams, type HashLocation } from '../router'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
+import {
+  DEFAULT_MOTION_SCALE,
+  MOTION_FIELD_OPTIONS,
+  resolveMotionScale,
+} from '../../theme/motionScales'
+import { matchContractsRoute, type ContractsRoute } from './routes'
+import {
+  DEFAULT_LAYOUT,
+  LAYOUT_OPTIONS,
+  Shell,
+  resolveLayoutId,
+} from './shell'
+import { Overview } from './pages/Overview'
+import { Ladder } from './pages/Ladder'
+import { Anatomy } from './pages/Anatomy'
+import { MaxDeals } from './pages/MaxDeals'
+import { Exceptions } from './pages/Exceptions'
+import { LuxuryTax } from './pages/LuxuryTax'
+import { Aprons } from './pages/Aprons'
+import { TeamSheet } from './pages/TeamSheet'
+import { NotFound } from './pages/NotFound'
+import './contracts-app.css'
+
+const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
+
+interface ContractsAppProps {
+  location: HashLocation
+}
+
+export function ContractsApp({ location }: ContractsAppProps) {
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
+
+  // Drop the `apps/contracts` prefix and match the remainder.
+  const route = useMemo(() => {
+    const segs = pathSegments(location.path)
+    return matchContractsRoute(segs.slice(2))
+  }, [location.path])
+
+  // URL wins on a fresh visit (pasted permalink); the site-wide persisted
+  // style is the fallback so arriving from anywhere keeps the chosen look.
+  const paletteParam = location.params.get('palette')
+  const paletteId: PaletteId =
+    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
+      ? (paletteParam as PaletteId)
+      : selectedStyle
+  const palette = palettes[paletteId]
+  const motionScale = resolveMotionScale(location.params.get('motion'))
+
+  const didSeedFromUrl = useRef(false)
+  if (!didSeedFromUrl.current) {
+    didSeedFromUrl.current = true
+    if (paletteParam && paletteId !== selectedStyle) {
+      setSelectedStyle(paletteId)
+    }
+  }
+
+  const handlePaletteChange = (next: string) => {
+    if ((PALETTE_IDS as string[]).includes(next)) {
+      setSelectedStyle(next as PaletteId)
+    }
+    replaceParams({ palette: next })
+  }
+
+  const layoutId = resolveLayoutId(location.params.get('layout'))
+  const handleLayoutChange = (next: string) => {
+    const id = resolveLayoutId(next)
+    replaceParams({ layout: id === DEFAULT_LAYOUT ? undefined : id })
+  }
+
+  const handleMotionChange = (next: string) => {
+    replaceParams({
+      motion: Number(next) === DEFAULT_MOTION_SCALE ? undefined : next,
+    })
+  }
+
+  const floatingFields: Field[] = [
+    buildPaletteField(paletteId, handlePaletteChange),
+    {
+      key: 'layout',
+      label: 'Layout',
+      short: 'L',
+      value: layoutId,
+      options: LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+      onChange: handleLayoutChange,
+    },
+    {
+      key: 'motion',
+      label: 'Motion',
+      short: 'M',
+      value: String(motionScale),
+      options: MOTION_FIELD_OPTIONS.map(o => ({ ...o })),
+      onChange: handleMotionChange,
+    },
+  ]
+
+  return (
+    <PaletteRoot palette={palette} as="section" motionScale={motionScale}>
+      <Shell layoutId={layoutId} route={route}>
+        <RouteContent route={route} />
+      </Shell>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={floatingFields}
+      />
+    </PaletteRoot>
+  )
+}
+
+function RouteContent({ route }: { route: ContractsRoute }) {
+  switch (route.kind) {
+    case 'overview': return <Overview />
+    case 'ladder': return <Ladder />
+    case 'anatomy': return <Anatomy />
+    case 'maxDeals': return <MaxDeals />
+    case 'exceptions': return <Exceptions />
+    case 'tax': return <LuxuryTax />
+    case 'aprons': return <Aprons />
+    case 'team': return <TeamSheet />
+    case 'notFound': return <NotFound />
+  }
+}
