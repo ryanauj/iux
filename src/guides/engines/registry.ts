@@ -7,6 +7,10 @@ import { claymorphismGuide } from './claymorphism'
 import { skeuomorphismGuide } from './skeuomorphism'
 import { crtPhosphorGuide } from './crt-phosphor'
 import { pixelArtGuide } from './pixel-art'
+import { sketchGuide } from './sketch'
+import { cardstockGuide } from './cardstock'
+import { celShadedGuide } from './cel-shaded'
+import { auroraGuide } from './aurora'
 import { terminalTuiGuide } from './terminal-tui'
 import type { EngineGuideMeta } from './types'
 
@@ -20,6 +24,10 @@ export const ENGINE_GUIDES = {
   skeuomorphism: skeuomorphismGuide,
   'crt-phosphor': crtPhosphorGuide,
   'pixel-art': pixelArtGuide,
+  sketch: sketchGuide,
+  cardstock: cardstockGuide,
+  'cel-shaded': celShadedGuide,
+  aurora: auroraGuide,
   'terminal-tui': terminalTuiGuide,
 } satisfies Record<string, EngineGuideMeta>
 
