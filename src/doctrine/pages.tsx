@@ -174,6 +174,40 @@ function SpacingCompare() {
   )
 }
 
+// `Button` has no size prop, so a row of buttons can't show cross-size
+// alignment — this demo does it directly. Mixed-size marks rendered two ways:
+// aligned to the box (top edges flush, so their centers stagger and the row
+// reads "almost aligned but off") versus aligned to the optical center (reads
+// even). Sizes are drawn from the space scale so the contrast survives a
+// palette swap.
+const ALIGN_MARKS = ['s', 'l', 'm', 'l', 's'] as const
+
+function AlignmentCompare() {
+  const row = (mod: string) => (
+    <div className={`doctrine__align-row doctrine__align-row--${mod}`}>
+      {ALIGN_MARKS.map((sz, i) => (
+        <span key={i} className={`doctrine__align-mark doctrine__align-mark--${sz}`} />
+      ))}
+    </div>
+  )
+  return (
+    <div className="doctrine__align">
+      <div className="doctrine__align-case">
+        <span className="doctrine__align-label">
+          Aligned to the box — top edges flush, centers stagger
+        </span>
+        {row('box')}
+      </div>
+      <div className="doctrine__align-case">
+        <span className="doctrine__align-label">
+          Aligned to the optical center — reads even
+        </span>
+        {row('optical')}
+      </div>
+    </div>
+  )
+}
+
 function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -219,13 +253,14 @@ function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
           One catch: most palettes share the same "small gap," so flipping
           between two of them changes nothing. The strip below pins the four
           palettes whose spacing genuinely differs, side by side — same three
-          buttons, four different gaps. Watch the space <em>between</em> the
-          buttons, not their colors.
+          buttons in each. Watch the whole column tighten or open up: the
+          palette sets the gaps <em>and</em> the padding inside the buttons.
+          The colors differ too, but spacing is the thing to watch.
         </Prose>
-        <Demo caption="Same buttons, four palettes — the gap reads each palette's space.3">
+        <Demo caption="Same buttons, four palettes — padding and gaps both come from each palette's space scale">
           <SpacingCompare />
         </Demo>
-        <Demo caption="Buttons in different sizes — gaps come from the palette">
+        <Demo caption="Buttons across states — spacing comes from the palette">
           <ButtonStories />
         </Demo>
       </Section>
@@ -258,8 +293,8 @@ function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
           floating, even when the boxes are technically aligned. Align to
           what you actually see.
         </Prose>
-        <Demo caption="Buttons across sizes — labels share a baseline, not a box edge">
-          <ButtonStories variant="solid" />
+        <Demo caption="Same marks, two ways — aligned to the box (top), aligned to what you see (bottom)">
+          <AlignmentCompare />
         </Demo>
       </Section>
 
@@ -335,8 +370,9 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
         <Prose>
           A row of buttons rendered through the contract. Switch the palette
           in the floating controls: AAA tightens the whole ramp, Editorial widens
-          it, Pixel-art snaps gaps to the grid step. The components don't change —
-          the palette remaps <code>space.*</code> underneath.
+          it, Pixel-art snaps gaps to the grid step. The components don't change
+          shape — every length they use, padding and gaps alike, resolves through{' '}
+          <code>space.*</code>, which the palette remaps underneath.
         </Prose>
         <Prose>
           The catch the floating control hides: most palettes ship the same
@@ -344,11 +380,12 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
           no-op on spacing. The strip below pins the palettes whose{' '}
           <code>space.3</code> actually diverges — <code>10 → 12 → 16 → 20px</code>{' '}
           — so the remap is legible without trial-and-error through the list.
+          Watch the padding and gaps scale together, not just the gutter.
         </Prose>
-        <Demo caption="Same row, four engines — gap = each palette's space.3, labeled">
+        <Demo caption="Same row, four engines — padding + gap both resolve through each palette's space scale (space.3 labeled)">
           <SpacingCompare />
         </Demo>
-        <Demo caption="Button rungs 1–4 — gap reads from space.*">
+        <Demo caption="Button variants × states — scaffold gap reads from space.*">
           <ButtonStories />
         </Demo>
       </Section>
@@ -379,8 +416,8 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
           look indented next to 24px icons. Align to the optical center; let
           the box float.
         </Prose>
-        <Demo caption="Button · solid — labels share an optical baseline across sizes">
-          <ButtonStories variant="solid" />
+        <Demo caption="Mixed-size marks — top row aligned to the box (centers stagger); bottom row aligned to the optical center (reads even)">
+          <AlignmentCompare />
         </Demo>
       </Section>
 
