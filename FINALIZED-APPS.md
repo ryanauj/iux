@@ -141,6 +141,66 @@ If the shell introduces new sticky URL state (the `tabs`, `triptych`,
 
 ---
 
+## 2. Promptbook — prompt & strategy library
+
+**Purpose.** Save, fill, and copy prompts, and browse the prompting
+strategies behind them. The canonical "small CRUD library + a reference
+deck" UI — where the value is in capture, retrieval, and a copy that
+actually lands on the clipboard.
+
+**Routes.**
+- `#/apps/prompts` — Library: search, category filter, tag cloud,
+  favorites toggle, and sort over the saved-prompt grid.
+- `#/apps/prompts/p/:id` — One prompt: full text in a copyable block, an
+  interactive `{{variable}}` filler with a live preview, notes, and
+  cross-links to the strategies it demonstrates.
+- `#/apps/prompts/new` — Compose a new prompt. Accepts `?from=<strategyId>`
+  to seed the body from a strategy template.
+- `#/apps/prompts/p/:id/edit` — Edit an existing prompt (same form).
+- `#/apps/prompts/strategies` — All prompting strategies, filterable by
+  category.
+- `#/apps/prompts/strategies/:id` — One strategy: how it works, when to
+  use it, a copy-paste template, a worked example, related strategies, and
+  the saved prompts that use it. "Start a prompt from this" jumps to the
+  new-prompt form pre-seeded.
+
+**Components composed.**
+- `Card` — prompt cards, strategy cards.
+- `TextInput` — search, title, variable-filler inputs.
+- `Select` — category picker, sort.
+- `Segmented` — category / strategy-category filters.
+- `TokenField` — tags and target-models entry.
+- `Modal` — delete confirmation.
+- `Toast` (via a scoped `Toaster` + `useToastQueue`) — copy / save /
+  delete confirmations.
+- `EmptyState` — no-match (illustrated) and not-found (minimal) views.
+- `Button` — primary actions, in-app `Badge` / `CopyButton` /
+  `FavoriteButton` / `CodeBlock` / `VariableFiller` are small local
+  compositions in `src/apps/prompts/components/`.
+
+**Data.**
+- `src/apps/prompts/data/strategies.ts` — 12 hand-authored strategies
+  (zero-shot, few-shot, chain-of-thought, self-consistency, ReAct, role,
+  structured output, decomposition, self-critique, grounding/RAG,
+  step-back, delimiters). Static reference content.
+- `src/apps/prompts/data/prompts.ts` — 12 seed prompts spanning the six
+  categories, each linked to the strategies it demonstrates.
+
+**State / persistence.** The prompt collection is an in-session store
+(`src/apps/prompts/store.tsx`) seeded from `data/prompts.ts`. Add / edit /
+delete / favorite all work while the app is open and are
+reload-safe by design (they reset on refresh), per the "No `localStorage`,
+no network" rule below. The provider is the single seam to swap for the
+forthcoming persistence-contract `Store` without touching any page.
+
+**In-app palette picker.** Like the sports app, a `DraggableControls`
+panel drives a scoped `PaletteRoot` (palette + motion), persisted in the
+URL as `?palette=` / `?motion=`. Promptbook ships a single `topbar` shell
+rather than the sports app's shell zoo — the focus here is the content
+model, not chrome variants.
+
+---
+
 ## Cross-cutting notes
 
 - **Adding an app.** Add a directory under `src/apps/<id>/`, export

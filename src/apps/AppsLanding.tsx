@@ -46,6 +46,13 @@ const APPS: AppEntry[] = [
     href: '/apps/contracts',
     iconText: 'CAP',
   },
+  {
+    id: 'prompts',
+    name: 'Promptbook',
+    tagline: 'Save, fill, and copy prompts — plus a reference deck of prompting strategies.',
+    href: '/apps/prompts',
+    iconText: '›_',
+  },
 ]
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
