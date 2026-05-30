@@ -54,7 +54,10 @@ export function Aprons() {
             The first apron ({money(SEASON.firstApron)}) starts switching tools
             off. The second apron ({money(SEASON.secondApron)}) is the harshest
             tier in the system — it behaves like a genuine hard cap, because the
-            ways to add salary are nearly all gone.
+            ways to add salary are nearly all gone. It doesn't cancel the soft cap
+            from Chapter 1, though. It's a hard ceiling perched far above it, and
+            only the league's biggest spenders ever climb high enough to feel it —
+            everyone else still lives in soft-cap land below.
           </p>
           <KeyIdea tone="danger" title="Why the second apron is feared">
             It's not the money — the richest owners would happily pay. It's that
