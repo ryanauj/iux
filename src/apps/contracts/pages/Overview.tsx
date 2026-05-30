@@ -22,10 +22,11 @@ export function Overview() {
           <>
             Picture the simplest rule the league could write: every team may
             spend the same fixed amount on salaries, and not a dollar more.
-            Clean — and it would fall apart in a single offseason. Almost every
-            rule in this guide is a patch on that one idea, each fixing a problem
-            the last version caused. We'll build it the way the league did:
-            start with the wall, watch it break, then add one fix at a time.
+            Clean, workable — and it would hand the league a problem it decided
+            it couldn't live with. Almost every rule in this guide is a patch on
+            that one idea, each fixing a problem the last version caused. We'll
+            build it the way the league did: start with the wall, find where it
+            pinches, then add one fix at a time.
           </>
         }
       />
