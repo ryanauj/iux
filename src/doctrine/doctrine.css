@@ -165,6 +165,63 @@
   min-width: 0;
 }
 
+/*
+ * Spacing comparison strip (Layout 00). Each column is its own PaletteRoot,
+ * so its surface, type, and — the point of the demo — its `--space-*` ramp
+ * read from that palette. The inter-button gap below reads `--space-3`, which
+ * differs per column; everything else is held constant so the gap is the
+ * visible variable.
+ */
+.doctrine__spacing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-3);
+}
+
+.doctrine__spacing-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+
+.doctrine__spacing-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.doctrine__spacing-name {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+.doctrine__spacing-val {
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.doctrine__spacing-note {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+.doctrine__spacing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 .doctrine__rules {
   display: flex;
   flex-direction: column;

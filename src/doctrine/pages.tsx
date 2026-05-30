@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react'
 import type { DocMode } from '../lib/useDocMode'
+import { palettes, type PaletteId } from '../../palettes'
+import { PaletteRoot } from '../theme/PaletteRoot'
+import { Button } from '../components/Button/Button'
 import { ModalStories } from '../components/Modal/Modal.stories'
 import { DrawerStories } from '../components/Drawer/Drawer.stories'
 import { ToastStories } from '../components/Toast/Toast.stories'
@@ -138,6 +141,39 @@ function Rules({ items }: { items: ReactNode[] }) {
   )
 }
 
+// The "switch the palette and watch spacing change" rule is invisible if the
+// reader happens to toggle between two of the ~80 palettes that share the
+// default 12px ramp. This strip renders the same button row under the four
+// palettes whose space scale actually diverges, side by side, so the gap
+// difference is visible without hunting through the palette list.
+const SPACING_LADDER: { id: PaletteId; name: string; space3: string; note: string }[] = [
+  { id: 'aaa', name: 'AAA', space3: '10px', note: 'tightens the ramp' },
+  { id: 'material', name: 'Material', space3: '12px', note: 'the shared default' },
+  { id: 'editorial', name: 'Editorial', space3: '16px', note: 'widens for type' },
+  { id: 'academic', name: 'Academic', space3: '20px', note: 'widest ramp' },
+]
+
+function SpacingCompare() {
+  return (
+    <div className="doctrine__spacing">
+      {SPACING_LADDER.map(({ id, name, space3, note }) => (
+        <PaletteRoot key={id} palette={palettes[id]} className="doctrine__spacing-col">
+          <div className="doctrine__spacing-head">
+            <span className="doctrine__spacing-name">{name}</span>
+            <code className="doctrine__spacing-val">space.3 = {space3}</code>
+            <span className="doctrine__spacing-note">{note}</span>
+          </div>
+          <div className="doctrine__spacing-row">
+            <Button variant="solid" intent="primary">One</Button>
+            <Button variant="solid" intent="neutral">Two</Button>
+            <Button variant="solid" intent="info">Three</Button>
+          </div>
+        </PaletteRoot>
+      ))}
+    </div>
+  )
+}
+
 function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -179,6 +215,16 @@ function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
           don't change — the palette decided what "a small gap" should be in
           pixels for this look.
         </Prose>
+        <Prose>
+          One catch: most palettes share the same "small gap," so flipping
+          between two of them changes nothing. The strip below pins the four
+          palettes whose spacing genuinely differs, side by side — same three
+          buttons, four different gaps. Watch the space <em>between</em> the
+          buttons, not their colors.
+        </Prose>
+        <Demo caption="Same buttons, four palettes — the gap reads each palette's space.3">
+          <SpacingCompare />
+        </Demo>
         <Demo caption="Buttons in different sizes — gaps come from the palette">
           <ButtonStories />
         </Demo>
@@ -292,6 +338,16 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
           it, Pixel-art snaps gaps to the grid step. The components don't change —
           the palette remaps <code>space.*</code> underneath.
         </Prose>
+        <Prose>
+          The catch the floating control hides: most palettes ship the same
+          <code> 4/8/12/16/24</code> ramp, so a swap between two of them is a
+          no-op on spacing. The strip below pins the palettes whose{' '}
+          <code>space.3</code> actually diverges — <code>10 → 12 → 16 → 20px</code>{' '}
+          — so the remap is legible without trial-and-error through the list.
+        </Prose>
+        <Demo caption="Same row, four engines — gap = each palette's space.3, labeled">
+          <SpacingCompare />
+        </Demo>
         <Demo caption="Button rungs 1–4 — gap reads from space.*">
           <ButtonStories />
         </Demo>
