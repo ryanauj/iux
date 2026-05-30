@@ -89,3 +89,26 @@ export interface RosterSpot {
   /** Which tool put this salary on the books. */
   via: string
 }
+
+/** A single asset moving in a trade — a contract (with salary) or a pick. */
+export interface TradePiece {
+  label: string
+  /** Salary in dollars; omitted for draft picks and other non-salary assets. */
+  salary?: number
+}
+
+/** One team's side of the worked multi-team trade. */
+export interface TradeParty {
+  id: string
+  team: string
+  /** Short cap-situation descriptor, e.g. "Over the first apron". */
+  situation: string
+  /** Drives the card accent: where this team sits on the danger ramp. */
+  intent: 'success' | 'warning' | 'danger'
+  out: TradePiece[]
+  in: TradePiece[]
+  /** Plain-English reason this team is part of the deal. */
+  why: string
+  /** Why this team's side of the salary math is legal. */
+  rule: string
+}

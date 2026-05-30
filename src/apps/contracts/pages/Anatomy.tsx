@@ -41,11 +41,11 @@ export function Anatomy() {
         title="The anatomy of a contract"
         lede={
           <>
-            Zoom all the way in to one deal. Every NBA contract is built from
-            the same parts: a <strong>starting salary</strong>, yearly{' '}
-            <strong>raises</strong>, a <strong>length</strong>, and a set of{' '}
-            <strong>guarantees and options</strong> that decide how firm the
-            money really is.
+            A team's payroll is just a stack of individual deals, so zoom all the
+            way in to one. Here's a real-shaped contract: <strong>$30M</strong>{' '}
+            to start, four years, about <strong>$134M</strong> on the headline.
+            Hold onto that headline number — by the end of this page you'll see
+            why it's almost never what the team actually pays.
           </>
         }
       />
@@ -93,10 +93,12 @@ export function Anatomy() {
 
       <section className="cap-page__section cap-split">
         <div className="cap-split__main">
-          <h2 className="cap-page__h2">Guarantees & options</h2>
+          <h2 className="cap-page__h2">Guarantees & options: why the headline lies</h2>
           <p className="cap-page__p">
-            The headline number is rarely the real number. Each year carries a
-            guarantee status that decides whether the money is locked in:
+            Here's the payoff to that $134M. Add up the years and you get the
+            headline — but not every year is real money yet. Each one carries a
+            guarantee status that decides whether the team is actually on the
+            hook for it:
           </p>
           <ul className="cap-anatomy-years">
             {SAMPLE_CONTRACT.map(y => (

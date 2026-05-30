@@ -6,6 +6,7 @@ import type {
   MaxTier,
   RosterSpot,
   TaxBracket,
+  TradeParty,
 } from '../types'
 
 /**
@@ -244,6 +245,59 @@ export const SAMPLE_ROSTER: RosterSpot[] = [
 export function rosterTotal(roster: RosterSpot[] = SAMPLE_ROSTER): number {
   return roster.reduce((sum, spot) => sum + spot.salary, 0)
 }
+
+/**
+ * Worked three-team trade for the Trades chapter. A contender over the first
+ * apron lands a $34M star; it has to send out matching salary by bundling two
+ * contracts, but the rebuilder only wants one of them — so a third team with
+ * cap space absorbs the other for a pick. Numbers are illustrative but the
+ * salary math each team has to satisfy is real.
+ */
+export const TRADE_STAR_SALARY = 34_000_000
+
+export const SAMPLE_TRADE: TradeParty[] = [
+  {
+    id: 'contender',
+    team: 'The Contender',
+    situation: 'Over the first apron',
+    intent: 'danger',
+    out: [
+      { label: 'Veteran wing', salary: 22_000_000 },
+      { label: 'Backup big', salary: 13_500_000 },
+      { label: '2027 first-round pick' },
+      { label: '2030 second-round pick' },
+    ],
+    in: [{ label: 'All-NBA forward', salary: TRADE_STAR_SALARY }],
+    why: "Wants the star. But it's over the first apron, so it can't take back a single dollar more than it sends — and it has no one player big enough to match a $34M salary on its own.",
+    rule: 'Sends out $35.5M to take in $34.0M. Legal: an apron team must send out at least as much as it brings back.',
+  },
+  {
+    id: 'rebuilder',
+    team: 'The Rebuilder',
+    situation: 'Tearing it down',
+    intent: 'success',
+    out: [{ label: 'All-NBA forward', salary: TRADE_STAR_SALARY }],
+    in: [
+      { label: 'Veteran wing', salary: 22_000_000 },
+      { label: '2027 first-round pick' },
+    ],
+    why: 'Happy to move the star for a useful wing and a first-round pick — but has no interest in the contender’s aging backup big.',
+    rule: 'Sends out $34.0M, takes in $22.0M. Always legal: taking back less than you send never breaks the matching rule.',
+  },
+  {
+    id: 'caproom',
+    team: 'The Cap-Space Team',
+    situation: 'Under the cap, room to spare',
+    intent: 'warning',
+    out: [],
+    in: [
+      { label: 'Backup big', salary: 13_500_000 },
+      { label: '2030 second-round pick' },
+    ],
+    why: 'The fixer. It has open cap space and no need to match anything, so it soaks up the backup big the rebuilder refused — and pockets a second-round pick for the favor.',
+    rule: 'Absorbs $13.5M straight into cap space. No matching needed when you have the room to fit a salary outright.',
+  },
+]
 
 /**
  * Computes the standard or repeater luxury-tax bill for a given payroll,

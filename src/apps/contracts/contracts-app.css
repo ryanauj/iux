@@ -822,6 +822,91 @@
   color: var(--color-content-secondary);
 }
 
+/* ---------- Trades ---------- */
+
+.cap-trade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-4);
+}
+
+.cap-trade__why {
+  margin: 0 0 var(--space-3);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-secondary);
+}
+
+.cap-trade__flows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cap-trade__dir {
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+}
+
+.cap-trade__dir--out { color: var(--color-content-muted); }
+.cap-trade__dir--in { color: var(--color-content-link); }
+
+.cap-trade__pieces {
+  list-style: none;
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cap-trade__piece {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--type-caption-size);
+}
+
+.cap-trade__piece-label { color: var(--color-content-secondary); }
+
+.cap-trade__piece-salary {
+  font-weight: 700;
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.cap-trade__empty {
+  margin: var(--space-1) 0 0;
+  font-size: var(--type-caption-size);
+  font-style: italic;
+  color: var(--color-content-muted);
+}
+
+/* The legality note is a tinted panel: intent `*-bg` + `*-content` is the only
+   pairing the palette contract guarantees to be legible. */
+.cap-trade__rule {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-body-line-height);
+}
+
+.cap-trade__rule--success {
+  background-color: var(--color-intent-success-bg);
+  color: var(--color-intent-success-content);
+}
+
+.cap-trade__rule--warning {
+  background-color: var(--color-intent-warning-bg);
+  color: var(--color-intent-warning-content);
+}
+
+.cap-trade__rule--danger {
+  background-color: var(--color-intent-danger-bg);
+  color: var(--color-intent-danger-content);
+}
+
 /* ---------- Disclaimer + pager ---------- */
 
 .cap-disclaimer {

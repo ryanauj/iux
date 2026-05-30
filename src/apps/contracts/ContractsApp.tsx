@@ -27,6 +27,7 @@ import { MaxDeals } from './pages/MaxDeals'
 import { Exceptions } from './pages/Exceptions'
 import { LuxuryTax } from './pages/LuxuryTax'
 import { Aprons } from './pages/Aprons'
+import { Trades } from './pages/Trades'
 import { TeamSheet } from './pages/TeamSheet'
 import { NotFound } from './pages/NotFound'
 import './contracts-app.css'
@@ -134,6 +135,7 @@ function RouteContent({ route }: { route: ContractsRoute }) {
     case 'exceptions': return <Exceptions />
     case 'tax': return <LuxuryTax />
     case 'aprons': return <Aprons />
+    case 'trades': return <Trades />
     case 'team': return <TeamSheet />
     case 'notFound': return <NotFound />
   }

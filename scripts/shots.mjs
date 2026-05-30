@@ -14,6 +14,7 @@ const pages = [
   ['exceptions', '/exceptions'],
   ['tax', '/tax'],
   ['aprons', '/aprons'],
+  ['trades', '/trades'],
   ['team', '/team'],
 ]
 

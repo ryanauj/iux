@@ -14,6 +14,7 @@ export const contractsRoutes = {
   exceptions: () => `${CONTRACTS_BASE}/exceptions`,
   tax: () => `${CONTRACTS_BASE}/tax`,
   aprons: () => `${CONTRACTS_BASE}/aprons`,
+  trades: () => `${CONTRACTS_BASE}/trades`,
   team: () => `${CONTRACTS_BASE}/team`,
 } as const
 
@@ -25,6 +26,7 @@ export type ContractsRoute =
   | { kind: 'exceptions' }
   | { kind: 'tax' }
   | { kind: 'aprons' }
+  | { kind: 'trades' }
   | { kind: 'team' }
   | { kind: 'notFound' }
 
@@ -44,6 +46,8 @@ export function matchContractsRoute(segments: string[]): ContractsRoute {
       return { kind: 'tax' }
     case 'aprons':
       return { kind: 'aprons' }
+    case 'trades':
+      return { kind: 'trades' }
     case 'team':
       return { kind: 'team' }
     default:
