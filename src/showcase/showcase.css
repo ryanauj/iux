@@ -105,6 +105,18 @@
   min-width: 0;
 }
 
+/*
+ * The tier badge reads as a small filled chip: the tier's intent color is the
+ * *fill*, and the intent's paired `content` token carries the label on top of
+ * it. This is the same bg/content pairing every button and badge uses, so the
+ * contract's "intent text on fill clears WCAG UI minimum" guarantee covers the
+ * badge too — on light and dark palettes alike.
+ *
+ * (Previously the intent *fill* color was used as the badge's *text* color over
+ * `surface.sunken`. On light palettes that fill is a pale tint meant to host
+ * dark text, so as text-on-sunken it dropped to ~1.2:1 and vanished. See
+ * `scripts/lint-tier-contrast.ts`, which guards this pairing across palettes.)
+ */
 .showcase__tier {
   font-family: var(--type-label-family);
   font-size: var(--type-caption-size);
@@ -114,16 +126,29 @@
   padding: 0 var(--space-2);
   border-width: var(--border-width-thin);
   border-style: solid;
-  border-color: var(--color-border-default);
   border-radius: var(--radius-sm);
+  /* Neutral fallback; each tier overrides the trio below. */
   color: var(--color-content-secondary);
   background: var(--color-surface-sunken);
+  border-color: var(--color-border-default);
   white-space: nowrap;
 }
 
-.showcase__tier--1 { color: var(--color-intent-info-bg, var(--color-content-primary)); }
-.showcase__tier--2 { color: var(--color-intent-warning-bg, var(--color-content-primary)); }
-.showcase__tier--3 { color: var(--color-intent-success-bg, var(--color-content-primary)); }
+.showcase__tier--1 {
+  color: var(--color-intent-info-content);
+  background: var(--color-intent-info-bg);
+  border-color: var(--color-intent-info-border);
+}
+.showcase__tier--2 {
+  color: var(--color-intent-warning-content);
+  background: var(--color-intent-warning-bg);
+  border-color: var(--color-intent-warning-border);
+}
+.showcase__tier--3 {
+  color: var(--color-intent-success-content);
+  background: var(--color-intent-success-bg);
+  border-color: var(--color-intent-success-border);
+}
 
 .showcase-card__chips {
   display: flex;
