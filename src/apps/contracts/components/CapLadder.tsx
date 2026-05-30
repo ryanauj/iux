@@ -7,6 +7,13 @@ interface CapLadderProps {
   payroll?: number
   /** Highlight one threshold by id (dim the rest). */
   highlightId?: string
+  /**
+   * Render each rung's explanatory blurb. Off by default so the ladder is a
+   * compact spatial scale that pages can reuse without repeating the same
+   * five paragraphs — the blurbs live once in the Ladder chapter's
+   * "Reading the rungs" list.
+   */
+  detailed?: boolean
   className?: string
 }
 
@@ -19,7 +26,7 @@ interface CapLadderProps {
  * Built as a flex column of rungs (top = most money) rather than an SVG so
  * it reflows cleanly and inherits palette tokens with no per-engine work.
  */
-export function CapLadder({ payroll, highlightId, className }: CapLadderProps) {
+export function CapLadder({ payroll, highlightId, detailed = false, className }: CapLadderProps) {
   const rungs = [...THRESHOLDS].reverse() // top of the ladder = most money
   const max = SEASON.secondApron
   const min = SEASON.minimumTeamSalary
@@ -32,7 +39,12 @@ export function CapLadder({ payroll, highlightId, className }: CapLadderProps) {
       aria-label="The NBA cap ladder, from the salary floor up to the second apron.">
       <div className="cap-ladder__scale">
         {rungs.map(rung => (
-          <Rung key={rung.id} rung={rung} dim={!!highlightId && highlightId !== rung.id} />
+          <Rung
+            key={rung.id}
+            rung={rung}
+            dim={!!highlightId && highlightId !== rung.id}
+            detailed={detailed}
+          />
         ))}
         {payroll !== undefined && (
           <div
@@ -50,7 +62,7 @@ export function CapLadder({ payroll, highlightId, className }: CapLadderProps) {
   )
 }
 
-function Rung({ rung, dim }: { rung: CapThreshold; dim: boolean }) {
+function Rung({ rung, dim, detailed }: { rung: CapThreshold; dim: boolean; detailed: boolean }) {
   return (
     <div className={`cap-rung cap-rung--${rung.intent}${dim ? ' is-dim' : ''}`}>
       <div className="cap-rung__line" aria-hidden="true" />
@@ -59,7 +71,7 @@ function Rung({ rung, dim }: { rung: CapThreshold; dim: boolean }) {
           <span className="cap-rung__label">{rung.label}</span>
           <span className="cap-rung__amount">{money(rung.amount)}</span>
         </div>
-        <p className="cap-rung__blurb">{rung.blurb}</p>
+        {detailed && <p className="cap-rung__blurb">{rung.blurb}</p>}
       </div>
     </div>
   )
