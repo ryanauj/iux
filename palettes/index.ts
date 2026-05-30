@@ -67,6 +67,16 @@ import { palette as stoneModern } from './stone-modern'
 import { palette as coastalModern } from './coastal-modern'
 import { palette as citrusSpark } from './citrus-spark'
 import { palette as mochaLatte } from './mocha-latte'
+import { palette as neoCitrus } from './neo-citrus'
+import { palette as neoBubblegum } from './neo-bubblegum'
+import { palette as neoGrape } from './neo-grape'
+import { palette as neoTangerine } from './neo-tangerine'
+import { palette as celShadedKawaii } from './cel-shaded-kawaii'
+import { palette as celShadedMecha } from './cel-shaded-mecha'
+import { palette as celShadedSakura } from './cel-shaded-sakura'
+import { palette as celShadedCitrus } from './cel-shaded-citrus'
+import { palette as paperPop } from './paper-pop'
+import { palette as studioConfetti } from './studio-confetti'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -138,6 +148,16 @@ export const palettes = {
   'coastal-modern': coastalModern,
   'citrus-spark': citrusSpark,
   'mocha-latte': mochaLatte,
+  'neo-citrus': neoCitrus,
+  'neo-bubblegum': neoBubblegum,
+  'neo-grape': neoGrape,
+  'neo-tangerine': neoTangerine,
+  'cel-shaded-kawaii': celShadedKawaii,
+  'cel-shaded-mecha': celShadedMecha,
+  'cel-shaded-sakura': celShadedSakura,
+  'cel-shaded-citrus': celShadedCitrus,
+  'paper-pop': paperPop,
+  'studio-confetti': studioConfetti,
 } as const
 
 export type PaletteId = keyof typeof palettes

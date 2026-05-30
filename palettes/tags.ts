@@ -126,4 +126,20 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'coastal-modern': ['modern', 'light', 'coastal', 'cool'],
   'citrus-spark': ['modern', 'light', 'energetic', 'brand', 'bright'],
   'mocha-latte': ['modern', 'light', 'cafe', 'warm', 'serif'],
+
+  /* Group Y — light neobrutalist register set */
+  'neo-citrus': ['neobrutalist', 'light', 'bold', 'bright', 'lime'],
+  'neo-bubblegum': ['neobrutalist', 'light', 'bold', 'bright', 'pink'],
+  'neo-grape': ['neobrutalist', 'light', 'bold', 'bright', 'violet'],
+  'neo-tangerine': ['neobrutalist', 'light', 'bold', 'bright', 'orange'],
+
+  /* Group Z — light anime / cel-shaded register set */
+  'cel-shaded-kawaii': ['anime', 'light', 'pastel', 'kawaii', 'bright'],
+  'cel-shaded-mecha': ['anime', 'light', 'mecha', 'cool', 'technical'],
+  'cel-shaded-sakura': ['anime', 'light', 'pastel', 'spring', 'bright'],
+  'cel-shaded-citrus': ['anime', 'light', 'energetic', 'bright', 'shonen'],
+
+  /* Group Z2 — minimal light with bright pops */
+  'paper-pop': ['modern', 'light', 'minimal', 'monochrome', 'accent'],
+  'studio-confetti': ['modern', 'light', 'playful', 'bright', 'app'],
 }
