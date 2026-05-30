@@ -33,7 +33,7 @@ Felt-tip marker on cream notebook paper — the lo-fi sketching register of desi
 
 | Path | Value | Note |
 |---|---|---|
-| `effect.strokeVariance` | `1.4px` | `1.4px` — the wobble amplitude the root-level SVG filter applies to every stroke. Every non-sketch palette returns `0`. |
+| `effect.strokeVariance` | `1.6px` | `1.4px` — the wobble amplitude the root-level SVG filter applies to every stroke. Every non-sketch palette returns `0`. |
 | `typography.family.hand` | `"Patrick Hand", "Bradley Hand", "Comic Sans MS", cursive` | `"Patrick Hand", "Bradley Hand", "Comic Sans MS", cursive` — the marker stack that body / label / caption / code all route through. |
 | `typography.family.display` | `"Caveat", "Bradley Hand", "Marker Felt", cursive` | `"Caveat", "Bradley Hand", "Marker Felt", cursive` — the brush-marker face for `display` / `title`. |
 | `color.surface.base` | `#fbf6e9` | `#fbf6e9` notebook cream — the paper field. |
@@ -90,7 +90,7 @@ Anchored on a new `sketch` engine that exercises two contract slots
 no previous engine touched:
 
 - `effect.strokeVariance` — the wobble amount, in CSS px. Set to
-  `'1.4px'` here; the engine references a fixed-strength SVG turbulence
+  `'1.6px'` here; the engine references a fixed-strength SVG turbulence
   + displacement filter at the palette root (defined in `index.html`)
   tuned to ≈ this value. Every non-sketch palette returns `'0'`, which
   the engine CSS reads as "no wobble" — the rule is a no-op.
@@ -126,6 +126,26 @@ rendering. **We chose the SVG-filter route.** Three reasons:
    for every border in the showcase generates dozens of new SVG paths
    per render and re-rasterises them every state change.
 
+### Tuning the filter so it reads as a hand, not as noise
+
+The filter is applied to the *whole* palette subtree, so its
+parameters have to flatter borders **and** stay kind to the text
+underneath them. Two settings carry that balance (see the annotated
+`<defs>` in `index.html`):
+
+- **`numOctaves="1"`.** A second octave layers high-frequency noise
+  over the gentle wave. On a border that reads as fraying; on glyphs it
+  reads as the whole word vibrating. One octave gives a single
+  confident sweep per edge.
+- **low `baseFrequency` (~0.01).** The noise feature size is large
+  relative to a button or card, so each edge picks up one or two long
+  curves instead of a dozen tiny wiggles. Higher frequencies read as
+  "rough," not as a hand.
+
+There is no trailing `feGaussianBlur`: any blur in a whole-subtree
+filter also defocuses body copy. The displacement scale (`1.6` at the
+root, `2.2` on raised surfaces) does the hand-drawn work on its own.
+
 The trade-off: `filter: url(...)` on `.palette-root` creates a stacking
 context, so `position: fixed` children become anchored to the filtered
 ancestor rather than the viewport. The showcase's existing
@@ -156,30 +176,33 @@ stay the same.
 
 The "bleed" effect comes from two layered tricks:
 
-1. The same SVG filter chain that wobbles edges ends with a tiny
-   `feGaussianBlur` (stdDeviation 0.35). That gives every stroked edge
-   a half-pixel softening — the visual equivalent of marker ink seeping
-   into the paper fibre by one stroke-width.
+1. `intent.*.border` is set one luminance step darker than
+   `intent.*.bg` on every intent. After the displacement pass this
+   reads as "the marker outline was drawn first, the ink filled
+   second" — i.e. how a real sketch is built up in layers.
 2. `elevation.*` shadows are tinted toward ink-blue rather than black
    (`rgba(26, 37, 72, …)`), so the shadow under a card reads as a
    slightly darker patch of ink leaking around the edge rather than a
    neutral cast shadow.
 
-`intent.*.border` is set one luminance step darker than `intent.*.bg`
-on every intent. After the displacement pass this reads as "the
-marker outline was drawn first, the ink filled second" — i.e. how a
-real sketch is built up in layers.
+> **No filter blur.** An earlier build ended the SVG filter chain with
+> a small `feGaussianBlur` for a "marker bleed" softening. Because the
+> filter is applied to the whole palette subtree, that blur also
+> softened every glyph of body copy — the dominant cause of the engine
+> rendering "rough." The blur was removed; the bleed is now carried by
+> the border/fill luminance step above, which leaves text crisp.
 
 ## A11y
 
 `experimental`. Three reasons:
 
 1. **Body text is handwritten.** Patrick Hand at 1.15rem on a
-   `#fbf6e9` field with `#1a2548` ink clears WCAG AA contrast (~12:1),
-   but the displacement pass introduces a sub-pixel jitter that
-   defeats sub-pixel kerning. Long paragraphs feel more effortful to
-   read than a system font palette. The body-size bump to 1.15rem
-   buys back most of that margin.
+   `#fbf6e9` field with `#1a2548` ink clears WCAG AA contrast (~12:1).
+   The single low-frequency displacement (and the dropped blur) keeps
+   glyphs crisp and lets whole words drift together rather than
+   jittering apart, but a handwritten face still reads as more
+   effortful than a system font over long paragraphs. The body-size
+   bump to 1.15rem buys back most of that margin.
 2. **Focus ring is hand-drawn.** The displacement filter recasts the
    3px solid red ring as a wobbly red loop around the focused
    element. It's *more* visible than a crisp ring against the cream
@@ -187,11 +210,19 @@ real sketch is built up in layers.
    read the loop as decoration. The 3px width and 3px offset are both
    above the AAA minimum (2px / 2px) to compensate.
 3. **Filter performance.** SVG filters with `feTurbulence` repaint
-   on every layout change. On low-power devices the engine can
-   produce visible per-frame chatter during scroll. Users with
-   `prefers-reduced-motion` already get every duration collapsed to
-   `instant`; the displacement field itself is static, so this is a
-   GPU-load caveat, not a vestibular one.
+   on every layout change. The filter is therefore scoped to a curated
+   list of small UI-primitive classes (see the engine block in
+   `src/styles.css`) rather than the palette root — each control is its
+   own small filter region, so a hover/focus/scroll repaint only
+   re-rasterizes the control that changed instead of the whole page.
+   An earlier build hung the filter on `.palette-root`, which made the
+   entire scrolling subtree (every chart, table, and list included) one
+   giant filter region and was visibly sluggish on long pages. The
+   displacement field itself is static (no `<animate>`), and
+   `prefers-reduced-motion` already collapses every duration to
+   `instant`, so this is a GPU-load caveat, not a vestibular one. The
+   cost of the scoped filter is that free-floating body copy and layout
+   chrome outside the listed primitives render crisp rather than drawn.
 
 ## What thrives vs degrades
 
@@ -219,10 +250,12 @@ not fork to "fix"):
 - **DiffView with character-level highlight** — the displacement pass
   jitters character boundaries, so single-character diffs read as
   loose. Multi-character diffs (word / line level) survive cleanly.
-- **VirtualList / long-scroll columns** — `filter` on the palette root
-  costs a repaint on every scroll position. On a long virtual list the
-  cost compounds. Apps that need a heavy virtual list under Sketch
-  should mount the palette around the viewport, not the list.
+- **VirtualList / long-scroll columns** — these roots are deliberately
+  left off the wobble list: a per-scroll-position filter repaint over a
+  long list compounds badly. Under the scoped engine they render crisp
+  (fast); only the small controls inside them pick up the wobble. If you
+  want the list chrome itself drawn, add its class to the engine list in
+  `src/styles.css` — but expect the old long-scroll cost back.
 - **BezierEditor** — sub-pixel control points run through the
   displacement filter; the curve renders with a hand-drawn wobble that
   fights the precision the editor needs. Acceptable for a teaching
