@@ -59,7 +59,7 @@ export const modalWithForm: IntegrationTest = {
     { kind: 'assertVisible', selector: '.iux-modal', label: 'Modal is visible' },
     {
       kind: 'type',
-      selector: '[data-testid="modal-input"]',
+      selector: '[data-testid="modal-input"] .iux-text-input__input',
       text: 'Buy milk',
       label: 'Type note in modal',
     },
