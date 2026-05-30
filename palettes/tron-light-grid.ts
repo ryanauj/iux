@@ -18,7 +18,7 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f2f7fb',
+        base: '#fbfdff',
         raised: 'rgba(8, 145, 178, 0.06)',
         sunken: 'rgba(8, 145, 178, 0.03)',
         overlay: 'rgba(255, 255, 255, 0.74)',

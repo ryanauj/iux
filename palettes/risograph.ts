@@ -145,12 +145,7 @@ export const palette: Palette = {
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
       focusRing: { width: '3px', offset: '2px', color: '#e2266e', style: 'solid' },
-      overlay: {
-        image:
-          'radial-gradient(circle at 50% 50%, rgba(26, 24, 20, 0.18) 0.6px, transparent 1.1px)',
-        size: '4px 4px',
-        blend: 'multiply',
-      },
+      overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',
       strokeVariance: '0',
