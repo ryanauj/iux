@@ -633,7 +633,7 @@ body {
  * level reduced-motion block already covers the rest by collapsing
  * every per-palette duration to `instant`.
  */
-.palette-root[data-palette='terminal-tui'] {
+.palette-root[data-palette^='terminal-tui'] {
   /*
    * Enable monospace stylistic-set 1 where the font supports it
    * (Iosevka / IBM Plex Mono / Fira Code all expose tighter box-
@@ -656,11 +656,11 @@ body {
  * The selector targets the existing Spatial canvas component class.
  * If the component isn't present on a given app, the rule is inert.
  */
-.palette-root[data-palette='terminal-tui'] .iux-canvas {
+.palette-root[data-palette^='terminal-tui'] .iux-canvas {
   position: relative;
 }
 
-.palette-root[data-palette='terminal-tui'] .iux-canvas::after {
+.palette-root[data-palette^='terminal-tui'] .iux-canvas::after {
   content: '┌─ TUI not supported for this canvas ─┐\A│ swap palettes to interact          │\A└────────────────────────────────────┘';
   white-space: pre;
   position: absolute;
