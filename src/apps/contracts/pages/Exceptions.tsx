@@ -53,6 +53,50 @@ const columns: TableColumn<Exception>[] = [
   },
 ]
 
+const byId = (id: string): Exception => EXCEPTIONS.find(e => e.id === id)!
+
+/** The three tools that explain most of what you'll see in any offseason. */
+const CORE = [
+  {
+    exc: byId('bird'),
+    job: 'Keep your own free agent',
+    blurb: (
+      <>
+        After three seasons with you, a player becomes yours to re-sign for
+        anything up to the max — even while you're deep over the cap. This is the
+        tool that made the wall soft back in Chapter 1: it's the reason your star
+        never has to walk for nothing. The single most valuable thing a team can
+        own.
+      </>
+    ),
+  },
+  {
+    exc: byId('mle-nt'),
+    job: 'Sign one good outsider',
+    blurb: (
+      <>
+        Bird rights only help with players already on your roster. The mid-level
+        is your one real swing at someone else's free agent — about{' '}
+        {money(byId('mle-nt').amount ?? 0)} a year, roughly the going rate for a
+        solid rotation player. Reaching for the full version pins your ceiling at
+        the first apron for the season (Chapter 7).
+      </>
+    ),
+  },
+  {
+    exc: byId('min'),
+    job: 'Fill the last seats',
+    blurb: (
+      <>
+        No matter how far over the cap you are, you can always sign minimum
+        deals. It's how the back half of every bench gets built. The league even
+        reimburses part of a veteran's minimum, so a team is never penalized for
+        signing an older player to round out the roster.
+      </>
+    ),
+  },
+]
+
 export function Exceptions() {
   return (
     <article className="cap-page">
@@ -61,29 +105,58 @@ export function Exceptions() {
         title="Exceptions & tools"
         lede={
           <>
-            This is what makes the cap "soft". A team over the cap can't just
-            sign anyone — but it can reach for an <strong>exception</strong>,
-            a specific, pre-authorised way to add salary anyway. Knowing which
-            tool a team has is the key to reading any offseason.
+            Here's the puzzle Chapter 1 left open. Almost every team sits{' '}
+            <em>above</em> the cap line — and the cap says a team over it can't
+            add salary. So how does anyone ever sign anyone? The answer is a set
+            of pre-authorized exceptions, each one a specific, legal way to add a
+            player anyway. This is the machinery that makes the cap "soft".
           </>
         }
       />
 
       <section className="cap-page__section">
-        <KeyIdea tone="info" title="The hierarchy">
-          The most powerful tool is <strong>Bird rights</strong> — the ability
-          to re-sign your own player for the max even while deep over the cap.
-          Everything else is a way to add an <em>outside</em> player: the
-          mid-level for a meaningful signing, the bi-annual and minimum for
-          depth.
+        <h2 className="cap-page__h2">Three tools do most of the work</h2>
+        <p className="cap-page__p">
+          There are eight exceptions in all, but you can read the great majority
+          of signings with just three. Each answers a different need a team
+          actually has:
+        </p>
+        <div className="cap-exc-cards">
+          {CORE.map(({ exc, job, blurb }) => (
+            <Card
+              key={exc.id}
+              variant="static"
+              accent="primary"
+              title={job}
+              subtitle={`${exc.shortName} · ${exc.amount ? money(exc.amount) : `up to ${exc.maxYears} yrs`}`}
+            >
+              <p className="cap-exc-cards__summary">{blurb}</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="cap-page__section">
+        <KeyIdea tone="info" title="Everything else is a variation on these">
+          The other five tools are just finer-grained versions of the same three
+          ideas. <strong>Early Bird</strong> and <strong>Non-Bird</strong> are
+          weaker re-signing rights for a player who's been with you a shorter
+          time. The <strong>taxpayer mid-level</strong> and{' '}
+          <strong>room exception</strong> are smaller outsider-signing tools for
+          teams in different cap spots. The <strong>bi-annual</strong> is a small
+          every-other-year bonus. Learn the three above and the rest slot in
+          around them.
         </KeyIdea>
       </section>
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">The toolbox</h2>
+        <h2 className="cap-page__h2">The full toolbox</h2>
         <p className="cap-page__p">
-          Sort by amount or length to compare. Note the right-hand column: the
-          aprons (Chapter 7) switch several of these tools off entirely.
+          Here's the complete set for reference — sort by amount or length to
+          compare. You don't need to memorize it, but do glance at the right-hand
+          column: the aprons (Chapter 7) switch several of these tools off
+          entirely, and which ones a team has left is the whole story of its
+          offseason.
         </p>
         <Table
           variant="sortable"
@@ -96,24 +169,14 @@ export function Exceptions() {
       </section>
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">In plain English</h2>
-        <div className="cap-exc-cards">
-          {EXCEPTIONS.map(e => (
-            <Card key={e.id} variant="static" title={e.name} subtitle={e.amount ? money(e.amount) : `Up to ${e.maxYears} yrs`}>
-              <p className="cap-exc-cards__summary">{e.summary}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="cap-page__section">
-        <KeyIdea tone="warning" title="Sign-and-trade">
-          When a free agent's team has Bird rights but the player wants to
-          leave, the two teams can arrange a <strong>sign-and-trade</strong>:
-          the old team signs him (using its Bird rights for a bigger deal) and
-          immediately trades him. It's how a player can change teams and still
-          get the larger contract — but it hard-caps the receiving team at the
-          first apron.
+        <KeyIdea tone="warning" title="Sign-and-trade: how a star still gets paid to leave">
+          One wrinkle worth knowing. When a free agent wants out but his current
+          team holds his Bird rights, the two clubs can arrange a{' '}
+          <strong>sign-and-trade</strong>: the old team re-signs him (using those
+          Bird rights for a bigger deal) and immediately trades him away. It's how
+          a player can change teams and still land the larger contract — but it
+          hard-caps the team receiving him at the first apron, our next-to-last
+          rung.
         </KeyIdea>
       </section>
 

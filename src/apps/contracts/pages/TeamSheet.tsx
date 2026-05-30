@@ -61,14 +61,16 @@ export function TeamSheet() {
   return (
     <article className="cap-page">
       <PageHeader
-        kicker="Chapter 8 · Putting it together"
+        kicker="Chapter 9 · Putting it together"
         title="A team cap sheet"
         lede={
           <>
-            Now every piece in one place. Here's an illustrative contender, the{' '}
-            <strong>{SAMPLE_TEAM_NAME}</strong>, built with the exact tools from
-            the earlier chapters. Watch how twelve contracts stack up against
-            the ladder — and what it costs.
+            Now every piece in one place. Here's an illustrative contender — the{' '}
+            <strong>{SAMPLE_TEAM_NAME}</strong> — where every contract was built
+            with a tool from the earlier chapters: Bird re-signings, a mid-level,
+            rookie scales, minimums. Read the "signed via" column and you'll
+            recognize all of them. Watch how twelve deals stack against the
+            ladder — and what the whole thing costs.
           </>
         }
       />
@@ -151,7 +153,7 @@ export function TeamSheet() {
       </section>
 
       <Disclaimer />
-      <Pager prev={{ label: 'The aprons', to: contractsRoutes.aprons() }} />
+      <Pager prev={{ label: 'Trades & multi-team deals', to: contractsRoutes.trades() }} />
     </article>
   )
 }

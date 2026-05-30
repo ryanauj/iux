@@ -39,7 +39,8 @@ export const NAV: NavItem[] = [
   { to: contractsRoutes.exceptions(), label: 'Exceptions & tools', step: 5, isActive: r => r.kind === 'exceptions' },
   { to: contractsRoutes.tax(), label: 'The luxury tax', step: 6, isActive: r => r.kind === 'tax' },
   { to: contractsRoutes.aprons(), label: 'The aprons', step: 7, isActive: r => r.kind === 'aprons' },
-  { to: contractsRoutes.team(), label: 'A team cap sheet', step: 8, isActive: r => r.kind === 'team' },
+  { to: contractsRoutes.trades(), label: 'Trades & multi-team deals', step: 8, isActive: r => r.kind === 'trades' },
+  { to: contractsRoutes.team(), label: 'A team cap sheet', step: 9, isActive: r => r.kind === 'team' },
 ]
 
 interface ShellProps {

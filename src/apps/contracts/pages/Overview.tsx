@@ -20,15 +20,51 @@ export function Overview() {
         title="How NBA contracts actually work"
         lede={
           <>
-            The NBA runs a <strong>soft cap</strong>: there's a spending limit,
-            but a thicket of exceptions lets teams blow past it — for a price
-            that climbs the higher they go. This guide starts at that big
-            picture and works down into the details, one chapter at a time.
+            Picture the simplest rule the league could write: every team may
+            spend the same fixed amount on salaries, and not a dollar more.
+            Clean — and it would fall apart in a single offseason. Almost every
+            rule in this guide is a patch on that one idea, each fixing a problem
+            the last version caused. We'll build it the way the league did:
+            start with the wall, watch it break, then add one fix at a time.
           </>
         }
       />
 
       <section className="cap-page__section">
+        <h2 className="cap-page__h2">Start with a wall</h2>
+        <p className="cap-page__p">
+          A hard cap is a wall. Pick a spending limit, let teams spend up to it,
+          and stop them cold at the line. It sounds fair, and for one season it
+          works. Then your best player's contract ends. You're already pressed
+          against the wall, so you have no room to re-sign him — he walks for
+          nothing, and there was never a thing you could do about it. Run that
+          rule across the whole league and the same clubs lose their stars every
+          summer while a couple of teams with room scoop them up.
+        </p>
+        <KeyIdea tone="info" title="The fix: let teams keep their own">
+          So the NBA made the wall soft. A team is allowed to spend past the
+          limit — but mainly to re-sign the players it already has. That single
+          change is why nearly every team you'll see sits <em>above</em> the cap
+          line, not under it. The number stops being a wall and becomes a
+          baseline you climb past. That's what people mean by a "soft cap", and
+          it's the reason the rest of this guide has anything to explain.
+        </KeyIdea>
+        <p className="cap-page__p">
+          But softening the wall opens a new hole: if teams can spend past the
+          line, what stops them spending forever? The whole system that follows
+          is the answer — and the answer is never a louder "no". It's a bill.
+          Cross the next line up and you pay a tax. Cross the lines above that
+          and you start losing the very tools you'd use to get better. You don't
+          get stopped. You get charged — in dollars, then in flexibility.
+        </p>
+      </section>
+
+      <section className="cap-page__section">
+        <p className="cap-page__p cap-page__p--muted">
+          Here are the real numbers we'll work with this season. Don't memorize
+          them — you'll meet each line in its own chapter. For now, just notice
+          how far apart they sit.
+        </p>
         <div className="cap-statrow">
           <StatTile
             label={`Salary cap · ${SEASON.label}`}
@@ -37,31 +73,26 @@ export function Overview() {
           />
           <StatTile label="Luxury-tax line" value={money(SEASON.taxLine)} sub="Spend past it, pay the tax" />
           <StatTile label="First apron" value={money(SEASON.firstApron)} sub="Tools start switching off" />
-          <StatTile label="Second apron" value={money(SEASON.secondApron)} sub="The real hard cap" />
+          <StatTile label="Second apron" value={money(SEASON.secondApron)} sub="The real hard ceiling" />
         </div>
       </section>
 
       <section className="cap-page__section cap-split">
         <div className="cap-split__main">
-          <h2 className="cap-page__h2">Why it's a "soft" cap</h2>
+          <h2 className="cap-page__h2">A ladder of costs, not a wall</h2>
           <p className="cap-page__p">
-            A hard cap is a wall: spend a dollar over and you can't. The NBA
-            chose something softer. The cap is a baseline, but teams keep their
-            own free agents and fill out rosters using <em>exceptions</em> —
-            so almost every team operates above the cap line. The brakes come
-            instead from a series of higher thresholds, each one more punishing
-            than the last.
+            Because there's no wall, every team's payroll sits somewhere on a
+            climb. The cap is near the bottom. Above it are a few more lines, and
+            each one a team crosses makes the next dollar more expensive than the
+            last — first in tax, then in lost roster-building tools. The chart
+            shows how far apart this season's lines actually sit.
           </p>
-          <KeyIdea tone="info" title="The one idea to hold onto">
-            You don't get told "no". You get charged more — in dollars (the
-            luxury tax) and in lost flexibility (the aprons). The system is a
-            ramp of consequences, not a single wall.
-          </KeyIdea>
           <p className="cap-page__p">
-            The chart shows how far apart those lines sit this season. The gap
-            from the cap to the second apron is more than{' '}
-            <strong>{money(SEASON.secondApron - SEASON.salaryCap)}</strong> —
-            an enormous amount of room, but every step up it costs more.
+            The gap from the cap to the top line is more than{' '}
+            <strong>{money(SEASON.secondApron - SEASON.salaryCap)}</strong> — an
+            enormous amount of room to spend in. The league's trick is that it
+            lets you use all of it, while making every step up hurt a little
+            more than the one before.
           </p>
         </div>
         <Card variant="static" title="This season's thresholds" className="cap-split__aside">
@@ -85,11 +116,12 @@ export function Overview() {
       </section>
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">The ladder, at a glance</h2>
+        <h2 className="cap-page__h2">The shape we'll climb</h2>
         <p className="cap-page__p">
-          Every team payroll lives somewhere on this ladder. We'll climb it
-          rung by rung in the next chapter — but here's the shape of the whole
-          thing first.
+          This is the picture to keep in your head for the rest of the guide:
+          one climb, a handful of rungs, getting more punishing toward the top.
+          Every chapter from here fills in one rung or one tool. You already have
+          the whole shape — the rest is detail.
         </p>
         <CapLadder />
       </section>

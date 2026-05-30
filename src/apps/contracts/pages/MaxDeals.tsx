@@ -13,20 +13,28 @@ export function MaxDeals() {
         title="Max & rookie deals"
         lede={
           <>
-            There's a floor (the minimum) and there's a <strong>ceiling</strong>{' '}
-            on what any one player can earn. The max isn't a single number — it
-            scales with <strong>years of service</strong>, so a player earns the
-            right to a bigger slice of the cap the longer they've been in the
-            league.
+            Imagine no ceiling on individual pay. One superstar could swallow his
+            team's entire cap by himself, leaving nothing to build around him —
+            or the richest owner could just outbid everyone for every star in
+            sight. Neither makes for a watchable league, so there's a limit on
+            what any one player can earn. The twist: that limit isn't a single
+            number.
           </>
         }
       />
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">The three max tiers</h2>
+        <h2 className="cap-page__h2">Experience buys a bigger slice</h2>
         <p className="cap-page__p">
-          A player's maximum starting salary is a percentage of the salary cap
-          ({money(SEASON.salaryCap)} this season), set by experience:
+          Same season, same cap. A player with four years in the league can start
+          at no more than <strong>{money(MAX_TIERS[0].firstYear)}</strong>. A
+          ten-year veteran can start at{' '}
+          <strong>{money(MAX_TIERS[2].firstYear)}</strong> — over{' '}
+          <strong>{money(MAX_TIERS[2].firstYear - MAX_TIERS[0].firstYear)}</strong>{' '}
+          more for the very same roster spot. Nobody negotiates that gap; it's
+          fixed by service time. Each max is really just a share of the cap
+          ({money(SEASON.salaryCap)} this season), and the share climbs in three
+          steps:
         </p>
         <div className="cap-tiers">
           {MAX_TIERS.map(tier => (
@@ -61,7 +69,7 @@ export function MaxDeals() {
           />
         </Card>
         <div className="cap-split__main">
-          <h2 className="cap-page__h2">The supermax</h2>
+          <h2 className="cap-page__h2">Jumping a tier early</h2>
           <p className="cap-page__p">{SUPERMAX_NOTE}</p>
           <KeyIdea tone="warning" title="The catch">
             The supermax is a retention tool, not a free-agency prize. Because

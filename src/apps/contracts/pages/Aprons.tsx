@@ -33,10 +33,13 @@ export function Aprons() {
         title="The aprons"
         lede={
           <>
-            The luxury tax costs money. The <strong>aprons</strong> cost
-            something teams value even more: <strong>flexibility</strong>. These
-            are the two highest rungs, and crossing them doesn't just raise the
-            bill — it takes roster-building tools off the table entirely.
+            The luxury tax was supposed to be the brake. For most owners it is —
+            but the richest ones simply paid it, shrugged at the bill, and kept
+            winning every bidding war. Money alone never really stopped them. The{' '}
+            <strong>aprons</strong> are the league's answer: a brake no amount of
+            money can release. Cross these two highest rungs and you don't just
+            owe more — you lose the <strong>tools</strong> you'd use to get
+            better.
           </>
         }
       />
@@ -95,7 +98,7 @@ export function Aprons() {
       <Disclaimer />
       <Pager
         prev={{ label: 'The luxury tax', to: contractsRoutes.tax() }}
-        next={{ label: 'A team cap sheet', to: contractsRoutes.team() }}
+        next={{ label: 'Trades & multi-team deals', to: contractsRoutes.trades() }}
       />
     </article>
   )

@@ -68,9 +68,11 @@ export function LuxuryTax() {
         title="The luxury tax"
         lede={
           <>
-            Cross the tax line and you start paying a penalty on every dollar
-            above it — to the league, not your players. The rate isn't flat: it
-            <strong> climbs in brackets</strong>, so the deeper a team goes, the
+            Cross the tax line and every dollar above it costs you a second
+            dollar — paid to the league, not your players. You'd guess that
+            penalty is a flat percentage. It isn't, and the gap between what
+            you'd guess and what you actually owe is the point: the rate{' '}
+            <strong>climbs in brackets</strong>, so the deeper a team goes, the
             more each extra dollar stings.
           </>
         }
