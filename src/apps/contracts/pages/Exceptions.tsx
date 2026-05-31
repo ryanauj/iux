@@ -104,11 +104,14 @@ export function Exceptions() {
         title="Exceptions & tools"
         lede={
           <>
-            Here's the puzzle Chapter 1 left open. Almost every team sits{' '}
-            <em>above</em> the cap line — and the cap says a team over it can't
-            add salary. So how does anyone ever sign anyone? The answer is a set
-            of pre-authorized exceptions, each one a specific, legal way to add a
-            player anyway. This is the machinery that makes the cap "soft".
+            Chapter 1 showed the cap is soft: nearly every team spends past it.
+            But soft doesn't mean open. A team over the cap can't just add salary
+            freely — each dollar over the line has to come through a specific,
+            pre-authorized <em>exception</em>, a named and legal way to add a
+            player. You've already met the first one: the{' '}
+            <strong>Bird rights</strong> that let a team re-sign its own stars.
+            This chapter lays out the full toolbox — including how a capped-out
+            team adds someone from <em>outside</em>.
           </>
         }
       />
