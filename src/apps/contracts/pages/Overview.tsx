@@ -108,11 +108,16 @@ export function Overview() {
         <div className="cap-split__main">
           <h2 className="cap-page__h2">A ladder of costs, not a wall</h2>
           <p className="cap-page__p">
-            Because there's no wall, every team's payroll sits somewhere on a
-            climb. The cap is near the bottom. Above it are a few more lines, and
-            each one a team crosses makes the next dollar more expensive than the
-            last — first in tax, then in lost roster-building tools. The chart
-            shows how far apart this season's lines actually sit.
+            Because the cap stopped being a wall, every team's payroll now sits
+            somewhere on a climb instead of jammed against a single line. The cap
+            is near the bottom. Above it are a few more lines, and each one a team
+            crosses makes the next dollar more expensive than the last — first in
+            tax, then in lost roster-building tools. Only at the very top does the
+            climb run back into a wall: the second apron, the one line a team
+            truly can't buy its way past. That's the difference to hold onto — the
+            hard ceiling is real, but it's a single line at the top, not the cap
+            itself. The chart shows how far apart this season's lines actually
+            sit.
           </p>
           <p className="cap-page__p">
             The gap from the cap to the top line is more than{' '}
