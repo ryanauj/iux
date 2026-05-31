@@ -97,7 +97,7 @@ export const MAX_TIERS: MaxTier[] = [
     service: '10+ years',
     capShare: 0.35,
     firstYear: 54_126_450,
-    note: 'Decade-plus veterans — and the gateway to the supermax.',
+    note: 'Decade-plus veterans — the same 35% the supermax unlocks before year ten.',
   },
 ]
 
@@ -107,7 +107,7 @@ export const MAX_TIERS: MaxTier[] = [
  * before 10 years — but only with the team that drafted them.
  */
 export const SUPERMAX_NOTE =
-  'A 30%-tier player who makes an All-NBA team, wins MVP, or wins Defensive Player of the Year can jump to the 35% supermax — but only by re-signing with the team that drafted (or that traded for him on his rookie deal).'
+  'A player with the service time for the 30% tier who makes an All-NBA team, wins MVP, or wins Defensive Player of the Year can open at the 35% supermax tier instead — but only by re-signing with the team that drafted him (or traded for him on his rookie deal).'
 
 /** Salary-cap exceptions, ordered roughly largest → smallest. */
 export const EXCEPTIONS: Exception[] = [
