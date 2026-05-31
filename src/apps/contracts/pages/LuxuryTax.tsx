@@ -46,16 +46,16 @@ export function LuxuryTax() {
   const payroll = SEASON.taxLine + overage
   const { total, steps } = computeTax(payroll, mode)
 
-  // Keep the chart's category labels short so they don't collide on narrow
-  // screens — the per-bracket rate lives in the bracket table above and in
-  // each bar's tooltip. "$0M–$5M over" → "$0–5M".
+  // Category labels pair each salary band with the rate that applies to it,
+  // so the band ("$5–10M") and the tax dollars in its box read as connected.
+  // "$0M–$5M over" → "$0–5M @ $1.50".
   const waterfallSteps: WaterfallStep[] = [
     ...steps.map(s => ({
       key: s.label,
-      label: s.label
+      label: `${s.label
         .replace(' over', '')
         .replace('M–+', 'M+')
-        .replace(/M–\$/g, '–'),
+        .replace(/M–\$/g, '–')} @ ${rate(s.rate)}`,
       value: s.tax,
     })),
     { key: 'total', label: 'Total', value: 0, subtotal: true },
@@ -105,11 +105,28 @@ export function LuxuryTax() {
       </section>
 
       <section className="cap-page__section">
+        <KeyIdea tone="info" title="The tax isn't on the cap sheet">
+          The bill is a check ownership writes to the league — not a salary, so
+          it never lands on the cap sheet. The arrow only points one way: your{' '}
+          <strong>salaries</strong> are what sit on the cap sheet and decide how
+          far over the line you are, and <em>that</em> produces the tax. The tax
+          doesn't count back against the cap or push you toward an apron. That's
+          why a team's true cost is payroll <em>plus</em> tax: two separate
+          numbers, not one.
+        </KeyIdea>
+      </section>
+
+      <section className="cap-page__section">
         <h2 className="cap-page__h2">Worked example</h2>
         <p className="cap-page__p">
           Pick how far over the tax line a team is and watch the bill build
-          bracket by bracket. Toggle the repeater rates to see why chronic tax
-          teams pay so much more.
+          bracket by bracket. Each black box is the <strong>tax owed on one $5M
+          slice</strong> of salary above the line — labelled by the slice it
+          covers ("$5–10M over") but sized by the tax that slice generates. The
+          boxes stack because the bill accumulates, and the red bar is the{' '}
+          <strong>running total</strong>: every slice's tax added together.
+          Toggle the repeater rates to see why chronic tax teams pay so much
+          more.
         </p>
         <div className="cap-controls">
           <Segmented
@@ -130,7 +147,7 @@ export function LuxuryTax() {
         </div>
 
         <div className="cap-split">
-          <Card variant="static" title="How the bill builds" className="cap-split__aside">
+          <Card variant="static" title="How the bill builds" subtitle="Black: tax per $5M slice · Red: total bill" className="cap-split__aside">
             <Waterfall
               variant="subtotals"
               height={260}

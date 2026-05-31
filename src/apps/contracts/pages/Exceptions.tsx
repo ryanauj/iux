@@ -27,7 +27,7 @@ const columns: TableColumn<Exception>[] = [
   },
   {
     key: 'amount',
-    header: 'Amount',
+    header: 'Max salary',
     align: 'end',
     accessor: e => (e.amount ? money(e.amount) : <span className="cap-muted">Varies</span>),
     sortBy: (a, b) => (a.amount ?? 0) - (b.amount ?? 0),
@@ -104,11 +104,14 @@ export function Exceptions() {
         title="Exceptions & tools"
         lede={
           <>
-            Here's the puzzle Chapter 1 left open. Almost every team sits{' '}
-            <em>above</em> the cap line — and the cap says a team over it can't
-            add salary. So how does anyone ever sign anyone? The answer is a set
-            of pre-authorized exceptions, each one a specific, legal way to add a
-            player anyway. This is the machinery that makes the cap "soft".
+            Chapter 1 showed the cap is soft: nearly every team spends past it.
+            But soft doesn't mean open. A team over the cap can't just add salary
+            freely — each dollar over the line has to come through a specific,
+            pre-authorized <em>exception</em>, a named and legal way to add a
+            player. You've already met the first one: the{' '}
+            <strong>Bird rights</strong> that let a team re-sign its own stars.
+            This chapter lays out the full toolbox — including how a capped-out
+            team adds someone from <em>outside</em>.
           </>
         }
       />
@@ -151,10 +154,13 @@ export function Exceptions() {
       <section className="cap-page__section">
         <h2 className="cap-page__h2">The full toolbox</h2>
         <p className="cap-page__p">
-          Here's the complete set for reference — sort by amount or length to
-          compare. You don't need to memorize it, but do glance at the right-hand
-          column: the aprons (Chapter 7) switch several of these tools off
-          entirely, and which ones a team has left is the whole story of its
+          Here's the complete set for reference — sort by salary or length to
+          compare. Read the <strong>max salary</strong> column as the most a team
+          can pay through that door, not a fee: an exception adds salary, it
+          doesn't cost the team anything to use (the tax bill comes later, in
+          Chapter 6). You don't need to memorize the table, but do glance at the
+          right-hand column: the aprons (Chapter 7) switch several of these tools
+          off entirely, and which ones a team has left is the whole story of its
           offseason.
         </p>
         <Table

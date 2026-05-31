@@ -100,10 +100,14 @@ export function MaxDeals() {
           the moment he's eligible for a raise.
         </p>
         <KeyIdea tone="info" title="Then the extension">
-          After year three, a team can offer a rookie-scale extension. A player
-          who hits the awards criteria can qualify for the 25%→30% "Rose Rule"
-          bump — the first place the max tiers and individual achievement meet.
-          Sign it and the cheap years are over: the surplus that quietly funded
+          A team can lock a rookie-scale player up early: after his third season
+          it can offer an extension that takes over once the cheap deal expires.
+          Coming off a rookie contract he has only a few years of service, so
+          he'd normally open at the <strong>25% tier</strong> — but the "Rose
+          Rule" lets a player who hits the awards criteria (All-NBA, MVP,
+          Defensive Player of the Year) open at the <strong>30% tier</strong>{' '}
+          instead, the same awards-for-a-tier jump the supermax pulls at the top
+          end. Either way the bargain is over: the surplus that quietly funded
           the rest of the roster becomes a max-sized line on the cap sheet.
         </KeyIdea>
       </section>

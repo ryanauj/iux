@@ -16,9 +16,9 @@ export interface CapSeason {
   minimumTeamSalary: number
   /** Luxury-tax line — spending past it triggers the tax. */
   taxLine: number
-  /** First apron — a hard-ish ceiling that disables several tools. */
+  /** First apron — disables several tools; certain moves hard-cap a team here. */
   firstApron: number
-  /** Second apron — the league's true hard cap, with the harshest limits. */
+  /** Second apron — the harshest limits; strips the tools to add outside talent. */
   secondApron: number
 }
 
