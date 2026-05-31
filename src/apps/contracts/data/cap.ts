@@ -68,7 +68,7 @@ export const THRESHOLDS: CapThreshold[] = [
     id: 'apron2',
     label: 'Second apron',
     amount: SEASON.secondApron,
-    blurb: "The hard ceiling. No mid-level at all, frozen future picks, and you can't combine salaries in trades.",
+    blurb: "The toughest tier: no mid-level at all, frozen future picks, and you can't combine salaries in trades. Caps the tools to add talent, not the payroll itself.",
     intent: 'danger',
   },
 ]

@@ -53,11 +53,13 @@ export function Aprons() {
           <p className="cap-page__p">
             The first apron ({money(SEASON.firstApron)}) starts switching tools
             off. The second apron ({money(SEASON.secondApron)}) is the harshest
-            tier in the system — it behaves like a genuine hard cap, because the
-            ways to add salary are nearly all gone. It doesn't cancel the soft cap
-            from Chapter 1, though. It's a hard ceiling perched far above it, and
-            only the league's biggest spenders ever climb high enough to feel it —
-            everyone else still lives in soft-cap land below.
+            tier in the system — by the time a team is up here, nearly every way
+            to add outside salary is gone. It's often called a "hard cap," but
+            that's shorthand: a team can still climb past it by re-signing its
+            own players. What it can't do is bring in anyone new. So it's less a
+            ceiling on what you spend than a wall against getting better — and it
+            doesn't cancel the soft cap from Chapter 1, which is still the system
+            everyone below lives in.
           </p>
           <KeyIdea tone="danger" title="Why the second apron is feared">
             It's not the money — the richest owners would happily pay. It's that
@@ -91,11 +93,15 @@ export function Aprons() {
       </section>
 
       <section className="cap-page__section">
-        <KeyIdea tone="info" title="The hard cap, made on the fly">
-          Certain moves — using the full mid-level, taking in a sign-and-trade,
-          using the bi-annual — <strong>hard-cap</strong> a team at the first
-          apron for that whole season. So a team can pin its own ceiling in July
-          by the tools it chooses to use.
+        <KeyIdea tone="info" title="The one true hard cap is lower down">
+          Here's the twist. Neither apron is a dollar line a team can't cross —
+          payroll can climb past both. The system's only genuine{' '}
+          <strong>hard cap</strong> — a line you literally cannot exceed — is
+          one a team brings on itself: certain moves (using the full mid-level,
+          taking in a sign-and-trade, using the bi-annual) hard-cap it at the{' '}
+          <strong>first</strong> apron for that whole season. So the closest
+          thing to an uncrossable ceiling sits at the first apron, not the
+          second — and only for teams that trip it.
         </KeyIdea>
       </section>
 

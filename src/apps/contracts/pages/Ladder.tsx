@@ -71,11 +71,12 @@ export function Ladder() {
       <section className="cap-page__section">
         <KeyIdea tone="warning" title="One ladder, two very different halves">
           The bottom half is soft: teams cross the cap routinely, and the tax is
-          just a price. The top behaves like a real wall — at the second apron
-          most of the usual ways to add salary are simply switched off. Same
-          ladder, but as you climb the question shifts from "can we afford it?"
-          to "are we even allowed?" The chapters ahead walk up it one rung at a
-          time.
+          just a price. The top bites differently — at the second apron most of
+          the usual ways to add outside salary are simply switched off. (A team
+          can still climb past it re-signing its own; what it loses is the tools
+          to bring anyone new in.) Same ladder, but as you climb the question
+          shifts from "can we afford it?" to "are we even allowed?" The chapters
+          ahead walk up it one rung at a time.
         </KeyIdea>
       </section>
 

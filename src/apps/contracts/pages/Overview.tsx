@@ -73,16 +73,18 @@ export function Overview() {
           get stopped. You get charged — in dollars, then in flexibility.
         </p>
         <p className="cap-page__p">
-          One honest caveat, because it trips everyone up: at the very top that
-          bill climbs so high it becomes a wall again. The highest line — the{' '}
-          <strong>second apron</strong> — is a genuine hard ceiling. So why still
-          call this a soft cap? Because that ceiling sits an enormous distance
-          above the cap, and only the few biggest spenders ever reach it. For the
-          other twenty-some teams, the soft cap <em>is</em> the system: spend past
-          the cap, keep your own players, pay a rising bill if you push it. The
-          NBA didn't trade the soft cap for a hard one — it kept the soft cap for
-          the whole league and bolted a hard ceiling on overhead for the handful
-          who'd otherwise spend without limit.
+          One honest caveat, because it trips everyone up: people call the top
+          line — the <strong>second apron</strong> — a "hard cap," but it isn't a
+          flat dollar wall. A team can still climb past it by re-signing its own
+          players. What changes up there is that the penalty stops being just a
+          bill and starts taking away <em>tools</em>: by the second apron nearly
+          every way to add outside talent is switched off. So why still call this
+          a soft cap? Because for the other twenty-some teams none of that bites
+          — the soft cap <em>is</em> the system: spend past the cap, keep your
+          own players, pay a rising bill if you push it. The NBA didn't trade the
+          soft cap for a hard one; it kept the soft cap for everyone and stacked
+          tool-stripping penalties on top for the handful who'd otherwise add
+          talent without limit.
         </p>
       </section>
 
@@ -100,7 +102,7 @@ export function Overview() {
           />
           <StatTile label="Luxury-tax line" value={money(SEASON.taxLine)} sub="Spend past it, pay the tax" />
           <StatTile label="First apron" value={money(SEASON.firstApron)} sub="Tools start switching off" />
-          <StatTile label="Second apron" value={money(SEASON.secondApron)} sub="The real hard ceiling" />
+          <StatTile label="Second apron" value={money(SEASON.secondApron)} sub="Most tools switch off" />
         </div>
       </section>
 
@@ -112,10 +114,12 @@ export function Overview() {
             somewhere on a climb instead of jammed against a single line. The cap
             is near the bottom. Above it are a few more lines, and each one a team
             crosses makes the next dollar more expensive than the last — first in
-            tax, then in lost roster-building tools. Only at the very top does the
-            climb run back into a wall: the second apron, the one line a team
-            truly can't buy its way past. That's the difference to hold onto — the
-            hard ceiling is real, but it's a single line at the top, not the cap
+            tax, then in lost roster-building tools. By the top line — the second
+            apron — almost every way to add outside talent is gone. It's the
+            closest thing to a wall in the system, though even there a team can
+            still climb higher by re-signing its own. That's the difference to
+            hold onto: the squeeze is real and it's harshest at the top, but it's
+            a tightening grip on a single line near the ceiling, not the cap
             itself. The chart shows how far apart this season's lines actually
             sit.
           </p>
