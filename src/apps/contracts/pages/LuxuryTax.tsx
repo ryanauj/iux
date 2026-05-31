@@ -108,8 +108,13 @@ export function LuxuryTax() {
         <h2 className="cap-page__h2">Worked example</h2>
         <p className="cap-page__p">
           Pick how far over the tax line a team is and watch the bill build
-          bracket by bracket. Toggle the repeater rates to see why chronic tax
-          teams pay so much more.
+          bracket by bracket. Each black box is the <strong>tax owed on one $5M
+          slice</strong> of salary above the line — labelled by the slice it
+          covers ("$5–10M over") but sized by the tax that slice generates. The
+          boxes stack because the bill accumulates, and the red bar is the{' '}
+          <strong>running total</strong>: every slice's tax added together.
+          Toggle the repeater rates to see why chronic tax teams pay so much
+          more.
         </p>
         <div className="cap-controls">
           <Segmented
@@ -130,7 +135,7 @@ export function LuxuryTax() {
         </div>
 
         <div className="cap-split">
-          <Card variant="static" title="How the bill builds" className="cap-split__aside">
+          <Card variant="static" title="How the bill builds" subtitle="Black: tax per $5M slice · Red: total bill" className="cap-split__aside">
             <Waterfall
               variant="subtotals"
               height={260}
