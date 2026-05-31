@@ -50,6 +50,8 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'tron-dark-neon',
     'tron-light-grid',
     'stained-glass',
+    'sea-glass',
+    'iridescent-opal',
   ],
   Retro: [
     'vaporwave',
@@ -143,6 +145,18 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'crt-phosphor-greenbar',
     'whiteprint',
     'art-deco-ivory',
+  ],
+  Curiosities: [
+    'e-ink-carta',
+    'salt-flats',
+    'whitewash-aegean',
+    'apothecary-herbarium',
+    'origami-fold',
+    'celadon-glaze',
+    'sea-glass',
+    'iridescent-opal',
+    'silver-daguerreotype',
+    'sugar-paper-chalk',
   ],
 }
 

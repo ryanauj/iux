@@ -82,6 +82,16 @@ import { palette as terminalTuiPaper } from './terminal-tui-paper'
 import { palette as crtPhosphorGreenbar } from './crt-phosphor-greenbar'
 import { palette as whiteprint } from './whiteprint'
 import { palette as artDecoIvory } from './art-deco-ivory'
+import { palette as eInkCarta } from './e-ink-carta'
+import { palette as saltFlats } from './salt-flats'
+import { palette as whitewashAegean } from './whitewash-aegean'
+import { palette as apothecaryHerbarium } from './apothecary-herbarium'
+import { palette as origamiFold } from './origami-fold'
+import { palette as celadonGlaze } from './celadon-glaze'
+import { palette as seaGlass } from './sea-glass'
+import { palette as iridescentOpal } from './iridescent-opal'
+import { palette as silverDaguerreotype } from './silver-daguerreotype'
+import { palette as sugarPaperChalk } from './sugar-paper-chalk'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -168,6 +178,16 @@ export const palettes = {
   'crt-phosphor-greenbar': crtPhosphorGreenbar,
   whiteprint,
   'art-deco-ivory': artDecoIvory,
+  'e-ink-carta': eInkCarta,
+  'salt-flats': saltFlats,
+  'whitewash-aegean': whitewashAegean,
+  'apothecary-herbarium': apothecaryHerbarium,
+  'origami-fold': origamiFold,
+  'celadon-glaze': celadonGlaze,
+  'sea-glass': seaGlass,
+  'iridescent-opal': iridescentOpal,
+  'silver-daguerreotype': silverDaguerreotype,
+  'sugar-paper-chalk': sugarPaperChalk,
 } as const
 
 export type PaletteId = keyof typeof palettes
