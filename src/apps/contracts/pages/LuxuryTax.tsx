@@ -46,16 +46,16 @@ export function LuxuryTax() {
   const payroll = SEASON.taxLine + overage
   const { total, steps } = computeTax(payroll, mode)
 
-  // Keep the chart's category labels short so they don't collide on narrow
-  // screens — the per-bracket rate lives in the bracket table above and in
-  // each bar's tooltip. "$0M–$5M over" → "$0–5M".
+  // Category labels pair each salary band with the rate that applies to it,
+  // so the band ("$5–10M") and the tax dollars in its box read as connected.
+  // "$0M–$5M over" → "$0–5M @ $1.50".
   const waterfallSteps: WaterfallStep[] = [
     ...steps.map(s => ({
       key: s.label,
-      label: s.label
+      label: `${s.label
         .replace(' over', '')
         .replace('M–+', 'M+')
-        .replace(/M–\$/g, '–'),
+        .replace(/M–\$/g, '–')} @ ${rate(s.rate)}`,
       value: s.tax,
     })),
     { key: 'total', label: 'Total', value: 0, subtotal: true },
@@ -102,6 +102,18 @@ export function LuxuryTax() {
           getRowId={(_b, i) => String(i)}
           caption="Marginal luxury-tax rates, dollars of tax per dollar over the line"
         />
+      </section>
+
+      <section className="cap-page__section">
+        <KeyIdea tone="info" title="The tax isn't on the cap sheet">
+          The bill is a check ownership writes to the league — not a salary, so
+          it never lands on the cap sheet. The arrow only points one way: your{' '}
+          <strong>salaries</strong> are what sit on the cap sheet and decide how
+          far over the line you are, and <em>that</em> produces the tax. The tax
+          doesn't count back against the cap or push you toward an apron. That's
+          why a team's true cost is payroll <em>plus</em> tax: two separate
+          numbers, not one.
+        </KeyIdea>
       </section>
 
       <section className="cap-page__section">
