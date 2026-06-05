@@ -29,6 +29,7 @@ export type AppShellNavId =
   | 'tests'
   | 'engines'
   | 'palettes'
+  | 'editor'
   | 'settings'
 
 export const APP_SHELL_NAV: AppShellNavLink[] = [
@@ -40,5 +41,6 @@ export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'tests',          href: '#/tests',    label: 'Tests',          short: 'Te' },
   { id: 'engines',        href: '/engines',   label: 'Engines',        short: 'En' },
   { id: 'palettes',       href: '/palettes',  label: 'Palettes',       short: 'Pa' },
+  { id: 'editor',         href: '#/editor',   label: 'Styles',         short: 'St' },
   { id: 'settings',       href: '#/settings', label: 'Settings',       short: 'Se' },
 ]

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
+import { resolveStyle } from '../../lib/customPatterns'
 import { useDocMode } from '../../lib/useDocMode'
 import { DocModeToggle } from '../../components/DocModeToggle/DocModeToggle'
 import { ENGINE_GUIDES, ENGINE_GUIDE_IDS } from './registry'
@@ -57,7 +57,7 @@ export function EnginesIndex() {
   }
   const fields: Field[] = [chromeField, navLayoutField]
   return (
-    <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
+    <PaletteRoot palette={resolveStyle(selectedStyle)} as="section" className="iux-engine-guide-shell">
       <AppShell
         layoutId={navLayout}
         brand={brand}

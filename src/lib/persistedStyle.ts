@@ -1,6 +1,7 @@
 import { palettes, type PaletteId } from '../../palettes'
 import type { Field } from '../components/DraggableControls/DraggableControls'
 import { usePersistedPref } from './usePersistedPref'
+import { isCustomPatternId, type StyleId } from './customPatterns'
 
 export const SELECTED_STYLE_KEY = 'iux-selected-style'
 export const DEFAULT_SELECTED_STYLE: PaletteId = 'flat-classic'
@@ -9,6 +10,15 @@ const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
 export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
+}
+
+/**
+ * Either a built-in palette id or a `custom:<slug>` pattern id. The selected
+ * style and the palette picker accept both; `resolveStyle` (in
+ * `customPatterns.ts`) turns either into a concrete `Palette`.
+ */
+export function isStyleId(value: string): value is StyleId {
+  return isPaletteId(value) || isCustomPatternId(value)
 }
 
 /**
@@ -25,10 +35,10 @@ export function isPaletteId(value: string): value is PaletteId {
  * next surface visited picks up the same style without needing the URL.
  */
 export function useSelectedStyle() {
-  return usePersistedPref<PaletteId>(
+  return usePersistedPref<StyleId>(
     SELECTED_STYLE_KEY,
     DEFAULT_SELECTED_STYLE,
-    isPaletteId,
+    isStyleId,
   )
 }
 
@@ -38,11 +48,11 @@ export function useSelectedStyle() {
  * to the user's last choice when the URL is bare. Returns the default
  * in non-browser contexts or when nothing valid is stored.
  */
-export function readSelectedStyle(): PaletteId {
+export function readSelectedStyle(): StyleId {
   if (typeof window === 'undefined') return DEFAULT_SELECTED_STYLE
   try {
     const raw = localStorage.getItem(SELECTED_STYLE_KEY)
-    if (raw !== null && isPaletteId(raw)) return raw
+    if (raw !== null && isStyleId(raw)) return raw
   } catch {
     /* ignore */
   }
@@ -58,8 +68,8 @@ export function readSelectedStyle(): PaletteId {
  * registry itself — so call sites no longer need to map `PALETTE_IDS`.
  */
 export function buildPaletteField(
-  value: PaletteId,
-  onChange: (next: PaletteId) => void,
+  value: StyleId,
+  onChange: (next: StyleId) => void,
 ): Field {
   return {
     kind: 'palette',
@@ -69,7 +79,7 @@ export function buildPaletteField(
     value,
     options: [],
     onChange: next => {
-      if (isPaletteId(next)) onChange(next)
+      if (isStyleId(next)) onChange(next)
     },
   }
 }

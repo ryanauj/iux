@@ -12,11 +12,16 @@ import { PalettesIndex } from './guides/palettes/PalettesIndex'
 import { PaletteDesignPageRoute } from './guides/palettes/PaletteDesignPage'
 import { TestsPage } from './tests/TestsPage'
 import { SettingsPage } from './settings/SettingsPage'
+import { StyleEditorPage } from './editor/StyleEditorPage'
+import { useSharedPatternHydration } from './lib/useSharedPatternHydration'
 
 function HomeRoute() {
   const location = useHashLocation()
   if (location.path.startsWith('/apps')) {
     return <AppsRouter location={location} />
+  }
+  if (location.path === '/editor' || location.path.startsWith('/editor/')) {
+    return <StyleEditorPage />
   }
   if (location.path === '/viz' || location.path.startsWith('/viz/')) {
     return <Viz />
@@ -46,6 +51,7 @@ function EngineGuideRoute() {
 }
 
 export default function App() {
+  useSharedPatternHydration()
   return (
     <Routes>
       <Route path="/" element={<HomeRoute />} />

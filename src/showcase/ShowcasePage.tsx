@@ -15,7 +15,8 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
-import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { baseOf, resolveStyle, type StyleId } from '../lib/customPatterns'
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
@@ -74,7 +75,7 @@ export function ShowcasePage({
     view: 'per-palette' as ViewMode,
     component: defaultComponent,
     variant: 'all' as VariantChoice,
-    palette: persistedStyle as PaletteChoice,
+    palette: baseOf(persistedStyle) as PaletteChoice,
     chrome: persistedStyle,
     showcasePalette: persistedStyle,
     layout: 'feed' as ShowcaseLayout,
@@ -93,8 +94,8 @@ export function ShowcasePage({
     component: Component
     variant: VariantChoice
     palette: PaletteChoice
-    chrome: PaletteId
-    showcasePalette: PaletteId
+    chrome: StyleId
+    showcasePalette: StyleId
     layout: ShowcaseLayout
     motion: number
   }
@@ -115,9 +116,9 @@ export function ShowcasePage({
     const palette: PaletteChoice =
       paletteRaw === 'all' ? 'all' : isPaletteId(paletteRaw) ? paletteRaw : DEFAULTS.palette
     const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
-    const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
+    const chrome: StyleId = isStyleId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
     const showcaseRaw = p.get(URL_PARAM.showcasePalette) ?? ''
-    const showcasePalette: PaletteId = isPaletteId(showcaseRaw) ? showcaseRaw : DEFAULTS.showcasePalette
+    const showcasePalette: StyleId = isStyleId(showcaseRaw) ? showcaseRaw : DEFAULTS.showcasePalette
     const layoutRaw = p.get(URL_PARAM.layout) ?? ''
     const layout: ShowcaseLayout = isLayoutId(layoutRaw) ? layoutRaw : DEFAULTS.layout
     const motionRaw = Number(p.get(URL_PARAM.motion))
@@ -129,9 +130,9 @@ export function ShowcasePage({
   const [viewMode, setViewMode] = useState<ViewMode>(initial.view)
   const [component, setComponent] = useState<Component>(initial.component)
   const [paletteChoice, setPaletteChoice] = useState<PaletteChoice>(initial.palette)
-  const [showcasePaletteId, setShowcasePaletteId] = useState<PaletteId>(initial.showcasePalette)
+  const [showcasePaletteId, setShowcasePaletteId] = useState<StyleId>(initial.showcasePalette)
   const [layout, setLayout] = useState<ShowcaseLayout>(initial.layout)
-  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
+  const [chromePaletteId, setChromePaletteId] = useState<StyleId>(initial.chrome)
   const [motionScale, setMotionScale] = useState<number>(initial.motion)
   const [variantChoice, setVariantChoice] = useState<VariantChoice>(initial.variant)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
@@ -189,7 +190,7 @@ export function ShowcasePage({
   const active = entries.find(c => c.id === component)
   const visiblePaletteIds: PaletteId[] =
     paletteChoice === 'all' ? PALETTE_IDS : [paletteChoice]
-  const chromePalette = palettes[chromePaletteId]
+  const chromePalette = resolveStyle(chromePaletteId)
   const activeVariant =
     variantChoice !== 'all' && active?.variants.includes(variantChoice)
       ? variantChoice
@@ -208,7 +209,7 @@ export function ShowcasePage({
     }
   }
 
-  const handleShowcasePaletteChange = (next: PaletteId) => {
+  const handleShowcasePaletteChange = (next: StyleId) => {
     setShowcasePaletteId(next)
     setChromePaletteId(next)
     setSelectedStyle(next)
@@ -233,7 +234,7 @@ export function ShowcasePage({
     if (selectedStyle === chromePaletteId) return
     setChromePaletteId(selectedStyle)
     setShowcasePaletteId(selectedStyle)
-    if (paletteChoice !== 'all') setPaletteChoice(selectedStyle)
+    if (paletteChoice !== 'all') setPaletteChoice(baseOf(selectedStyle))
     // `paletteChoice` is intentionally excluded — we only react to
     // external style changes, not to the user re-picking 'all' locally.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -415,7 +416,7 @@ export function ShowcasePage({
 
           {viewMode === 'per-palette' && (
             <PaletteShowcase
-              palette={palettes[showcasePaletteId]}
+              palette={resolveStyle(showcasePaletteId)}
               layout={layout}
               motionScale={motionScale}
               entries={entries}

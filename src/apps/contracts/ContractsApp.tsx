@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../../lib/customPatterns'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import {
   DraggableControls,
@@ -32,8 +32,6 @@ import { TeamSheet } from './pages/TeamSheet'
 import { NotFound } from './pages/NotFound'
 import './contracts-app.css'
 
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
-
 interface ContractsAppProps {
   location: HashLocation
 }
@@ -58,25 +56,21 @@ export function ContractsApp({ location }: ContractsAppProps) {
   // URL wins on a fresh visit (pasted permalink); the site-wide persisted
   // style is the fallback so arriving from anywhere keeps the chosen look.
   const paletteParam = location.params.get('palette')
-  const paletteId: PaletteId =
-    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
-      ? (paletteParam as PaletteId)
-      : selectedStyle
-  const palette = palettes[paletteId]
+  const styleId: StyleId =
+    paletteParam && isStyleId(paletteParam) ? paletteParam : selectedStyle
+  const palette = resolveStyle(styleId)
   const motionScale = resolveMotionScale(location.params.get('motion'))
 
   const didSeedFromUrl = useRef(false)
   if (!didSeedFromUrl.current) {
     didSeedFromUrl.current = true
-    if (paletteParam && paletteId !== selectedStyle) {
-      setSelectedStyle(paletteId)
+    if (paletteParam && styleId !== selectedStyle) {
+      setSelectedStyle(styleId)
     }
   }
 
   const handlePaletteChange = (next: string) => {
-    if ((PALETTE_IDS as string[]).includes(next)) {
-      setSelectedStyle(next as PaletteId)
-    }
+    if (isStyleId(next)) setSelectedStyle(next)
     replaceParams({ palette: next })
   }
 
@@ -93,7 +87,7 @@ export function ContractsApp({ location }: ContractsAppProps) {
   }
 
   const floatingFields: Field[] = [
-    buildPaletteField(paletteId, handlePaletteChange),
+    buildPaletteField(styleId, handlePaletteChange),
     {
       key: 'layout',
       label: 'Layout',

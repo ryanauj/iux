@@ -20,9 +20,21 @@ import {
   type GroupsApi,
 } from '../../lib/paletteTags'
 import { usePersistedPref } from '../../lib/usePersistedPref'
+import {
+  isCustomPatternId,
+  useCustomPatterns,
+  type CustomPatternMap,
+} from '../../lib/customPatterns'
+import { navigate } from '../../apps/router'
 import './PalettePicker.css'
 
 const ALL_PALETTE_IDS = Object.keys(palettes) as PaletteId[]
+
+/** Display name for either a built-in palette or a custom pattern id. */
+function styleName(id: string, customs: CustomPatternMap): string {
+  if (isCustomPatternId(id)) return customs[id]?.name ?? id
+  return palettes[id as PaletteId]?.name ?? id
+}
 
 const LIST_OPEN_KEY = 'palette-picker:list-open'
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
@@ -104,7 +116,8 @@ export function PalettePicker(props: PalettePickerProps) {
     else setInternalOpen(o => !o)
   }
 
-  const inlineLabel = palettes[current]?.name ?? current
+  const [customPatterns] = useCustomPatterns()
+  const inlineLabel = styleName(current, customPatterns)
   const cycleScope = activeGroup ?? 'catalog'
 
   if (variant === 'strip') {
@@ -236,6 +249,10 @@ function PalettePickerPanel(props: PanelProps) {
     activeMembers,
     onClose,
   } = props
+
+  const [customPatterns, setCustomPatterns] = useCustomPatterns()
+  const currentIsCustom = isCustomPatternId(current)
+  const currentName = styleName(current, customPatterns)
 
   const [query, setQuery] = useState('')
   const [listOpenRaw, setListOpenRaw] = usePersistedPref<'0' | '1'>(
@@ -373,32 +390,45 @@ function PalettePickerPanel(props: PanelProps) {
        * palette shown in the trigger, so it can be saved without opening
        * the browse list and scrolling to find its row. */}
       <div className="palette-picker__current">
-        <button
-          type="button"
-          className={`palette-picker__star${groupsApi.isFavorite(current) ? ' is-favorited' : ''}`}
-          aria-label={
-            groupsApi.isFavorite(current)
-              ? `Unfavorite ${palettes[current]?.name ?? current}`
-              : `Favorite ${palettes[current]?.name ?? current}`
-          }
-          aria-pressed={groupsApi.isFavorite(current)}
-          onClick={() => groupsApi.toggleFavorite(current)}
-        >
-          {groupsApi.isFavorite(current) ? '★' : '☆'}
-        </button>
-        <span className="palette-picker__current-name" title={palettes[current]?.name ?? current}>
-          {palettes[current]?.name ?? current}
+        {!currentIsCustom && (
+          <button
+            type="button"
+            className={`palette-picker__star${groupsApi.isFavorite(current) ? ' is-favorited' : ''}`}
+            aria-label={
+              groupsApi.isFavorite(current)
+                ? `Unfavorite ${currentName}`
+                : `Favorite ${currentName}`
+            }
+            aria-pressed={groupsApi.isFavorite(current)}
+            onClick={() => groupsApi.toggleFavorite(current)}
+          >
+            {groupsApi.isFavorite(current) ? '★' : '☆'}
+          </button>
+        )}
+        <span className="palette-picker__current-name" title={currentName}>
+          {currentName}
         </span>
-        <button
-          type="button"
-          className="palette-picker__current-add"
-          aria-label={`Add ${palettes[current]?.name ?? current} to a list`}
-          aria-expanded={currentMenuOpen}
-          onClick={() => setCurrentMenuOpen(o => !o)}
-        >
-          + Add to list
-        </button>
-        {currentMenuOpen && (
+        {currentIsCustom ? (
+          <button
+            type="button"
+            className="palette-picker__current-add"
+            aria-label={`Edit ${currentName}`}
+            onClick={() => navigate('/editor', { edit: current })}
+          >
+            ✎ Edit
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="palette-picker__current-add"
+            aria-label={`Add ${currentName} to a list`}
+            aria-expanded={currentMenuOpen}
+            onClick={() => setCurrentMenuOpen(o => !o)}
+          >
+            + Add to list
+          </button>
+        )}
+        {!currentIsCustom && currentMenuOpen && (
           <div className="palette-picker__group-menu" role="menu">
             {groupNames.map(name => {
               const inGroup = (groups[name] ?? []).includes(current)
@@ -453,6 +483,71 @@ function PalettePickerPanel(props: PanelProps) {
           >
             {activeGroupAction}
           </button>
+        )}
+      </div>
+
+      {/* Custom patterns — user-saved clones. Kept separate from the
+       * built-in catalog (groups/favorites are built-in only); each row
+       * selects, edits, or deletes a pattern. */}
+      <div className="palette-picker__custom">
+        <div className="palette-picker__custom-head">
+          <span className="palette-picker__custom-title">Custom patterns</span>
+          <button
+            type="button"
+            className="palette-picker__inline-action"
+            onClick={() => navigate('/editor')}
+          >
+            + New
+          </button>
+        </div>
+        {Object.values(customPatterns).length === 0 ? (
+          <p className="palette-picker__custom-empty">
+            Clone a palette in the style editor to save your own.
+          </p>
+        ) : (
+          <ul className="palette-picker__list" role="menu">
+            {Object.values(customPatterns).map(rec => {
+              const selected = rec.id === (current as string)
+              return (
+                <li key={rec.id} className="palette-picker__row">
+                  <button
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={selected}
+                    className={`palette-picker__option${selected ? ' is-selected' : ''}`}
+                    onClick={() => field.onChange(rec.id)}
+                  >
+                    <span className="palette-picker__option-name">{rec.name}</span>
+                    <span className="palette-picker__option-engine">
+                      {palettes[rec.base]?.engine ?? rec.base}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="palette-picker__option-menu"
+                    aria-label={`Edit ${rec.name}`}
+                    onClick={() => navigate('/editor', { edit: rec.id })}
+                  >
+                    ✎
+                  </button>
+                  <button
+                    type="button"
+                    className="palette-picker__option-menu"
+                    aria-label={`Delete ${rec.name}`}
+                    onClick={() => {
+                      if (!window.confirm(`Delete "${rec.name}"?`)) return
+                      const next = { ...customPatterns }
+                      delete next[rec.id]
+                      setCustomPatterns(next)
+                      if (rec.id === (current as string)) field.onChange(rec.base)
+                    }}
+                  >
+                    ✕
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
         )}
       </div>
 
