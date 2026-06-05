@@ -31,7 +31,9 @@ four source-of-truth documents that constrain everything downstream:
   ([`02-app-composition.md`](./doctrine/02-app-composition.md)), and
   parity rules for exposing the same action through visual,
   command-palette, and natural-language interfaces
-  ([`03-modalities.md`](./doctrine/03-modalities.md)).
+  ([`03-modalities.md`](./doctrine/03-modalities.md)), and how visual
+  style and colour encode feeling without overriding meaning
+  ([`04-feeling-and-affect.md`](./doctrine/04-feeling-and-affect.md)).
 
 Component and palette implementations land in future sessions.
 
