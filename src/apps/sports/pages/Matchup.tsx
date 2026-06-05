@@ -3,7 +3,6 @@ import { Tabs } from '../../../components/Tabs/Tabs'
 import { Select } from '../../../components/Select/Select'
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { Waterfall, type WaterfallStep } from '../../../components/Waterfall/Waterfall'
-import { Radar } from '../../../components/Radar/Radar'
 import { Breadcrumbs } from '../components/Breadcrumbs'
 import { sportsRoutes } from '../routes'
 import { navigate } from '../../router'
@@ -83,7 +82,7 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
           { id: 'bridge', label: 'Projection bridge' },
           { id: 'battle', label: 'Category battle' },
           { id: 'conversion', label: 'Conversion map' },
-          { id: 'radar', label: 'Two-way radar' },
+          { id: 'buildup', label: 'Build-up' },
           { id: 'ledger', label: 'Points ledger' },
         ]}
         renderPanel={id => {
@@ -91,7 +90,7 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
             case 'bridge': return <BridgeView analysis={analysis} teamA={teamA} teamB={teamB} />
             case 'battle': return <BattleView analysis={analysis} teamA={teamA} teamB={teamB} />
             case 'conversion': return <ConversionView analysis={analysis} teamA={teamA} teamB={teamB} />
-            case 'radar': return <RadarView analysis={analysis} teamA={teamA} teamB={teamB} />
+            case 'buildup': return <BuildUpView analysis={analysis} teamA={teamA} teamB={teamB} />
             case 'ledger': return <LedgerView analysis={analysis} teamA={teamA} teamB={teamB} />
             default: return null
           }
@@ -133,20 +132,49 @@ function ConversionChip({ def, showLabel = true }: { def: StatDef; showLabel?: b
   )
 }
 
-/** A single stat's full derivation as one line: value vs avg → ×rate → points. */
+/** A single stat's full derivation as one line, units included: value − avg (stat/gm) = Δ × rate = points. */
 function DerivationLine({ c }: { c: StatContribution }) {
+  const unit = c.def.short.toLowerCase()
   return (
-    <span className="deriv-line" title={`${formatValue(c.value)} ${c.def.short} − ${formatValue(c.leagueAverage)} league avg = ${signedDelta(c.delta)} × ${c.def.coefficient} = ${formatPoints(c.relativePoints)}`}>
+    <span className="deriv-line" title={`${formatValue(c.value)} − ${formatValue(c.leagueAverage)} league avg = ${signedDelta(c.delta)} ${unit}/gm, × ${c.def.coefficient} pts per ${unit} = ${formatPoints(c.relativePoints)} pts`}>
       <span className="deriv-line__val">{formatValue(c.value)}</span>
       <span className="deriv-line__op">−</span>
       <span className="deriv-line__avg">{formatValue(c.leagueAverage)}</span>
+      <span className="deriv-line__unit">{unit}/gm</span>
       <span className="deriv-line__eq">=</span>
       <span className={`deriv-line__delta ${c.delta >= 0 ? 'is-pos' : 'is-neg'}`}>{signedDelta(c.delta)}</span>
       <span className="deriv-line__op">×</span>
       <span className="deriv-line__rate">{c.def.coefficient}</span>
+      <span className="deriv-line__unit">pts/{unit}</span>
       <span className="deriv-line__eq">=</span>
       <span className={`deriv-line__pts ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`}>{formatPoints(c.relativePoints)}</span>
+      <span className="deriv-line__unit">pts</span>
     </span>
+  )
+}
+
+/**
+ * A units legend for the derivation equation, the table-view analogue of the
+ * conversion map's axis labels: it names what each number in the formula is.
+ */
+function FormulaKey() {
+  return (
+    <div className="formula-key">
+      <span className="formula-key__part">
+        <span className="formula-key__lead">team avg − league avg</span>
+        <span className="formula-key__unit">per game (REB, AST, …)</span>
+      </span>
+      <span className="formula-key__op" aria-hidden="true">×</span>
+      <span className="formula-key__part">
+        <span className="formula-key__lead">rate</span>
+        <span className="formula-key__unit">points per stat</span>
+      </span>
+      <span className="formula-key__op" aria-hidden="true">=</span>
+      <span className="formula-key__part">
+        <span className="formula-key__lead">points</span>
+        <span className="formula-key__unit">vs an average team</span>
+      </span>
+    </div>
   )
 }
 
@@ -219,8 +247,9 @@ function BridgeView({ analysis }: ViewProps) {
   return (
     <ViewFrame
       title="How each stat builds the projected total"
-      caption="Each bar adds a stat's points to a running total (the league baseline sits underneath). The list shows where every bar comes from: raw average minus the league average, times the rate."
+      caption="Each bar adds a stat's points to a running total (the league baseline sits underneath). The list under each chart shows where every bar comes from — read left to right, with units."
     >
+      <FormulaKey />
       <div className="matchup__bridge">
         <TeamBridge tm={analysis.a} baseline={analysis.baseline} />
         <TeamBridge tm={analysis.b} baseline={analysis.baseline} />
@@ -268,25 +297,28 @@ function BattleView({ analysis, teamA, teamB }: ViewProps) {
   return (
     <ViewFrame
       title="Each team's profile, mirrored"
-      caption="Bar length is points versus a league-average team. The centre shows the conversion rate and how far above or below average each side is — the bar is that deviation times the rate. Solid helps, faded costs."
+      caption="Each side shows a team's per-game average (with its deviation from the league average) and the points that earns. The centre is the conversion rate; the bar length is that deviation times the rate. Solid helps, faded costs."
     >
+      <FormulaKey />
       <div className="matchup__battle">
         <div className="matchup__battle-head">
-          <span style={{ color: teamA.primaryColor }}>{teamA.abbreviation}</span>
+          <span style={{ color: teamA.primaryColor }}>{teamA.abbreviation} — avg (Δ) · pts</span>
           <span>rate</span>
-          <span style={{ color: teamB.primaryColor }}>{teamB.abbreviation}</span>
+          <span style={{ color: teamB.primaryColor }}>{teamB.abbreviation} — avg (Δ) · pts</span>
         </div>
         {analysis.edges.map((e, i) => {
           const ca = analysis.a.contributions[i]
           const cb = analysis.b.contributions[i]
+          const unit = e.def.short.toLowerCase()
           return (
             <div key={e.def.key} className="matchup__battle-row">
               <div className="matchup__battle-side matchup__battle-side--a">
-                <span className="matchup__battle-val">{formatValue(ca.value)} <em className={ca.delta >= 0 ? 'is-pos' : 'is-neg'}>{signedDelta(ca.delta)}</em></span>
-                <span className="matchup__battle-pts">{formatPoints(e.aPoints)}</span>
+                <span className="matchup__battle-val">{formatValue(ca.value)} <em className={ca.delta >= 0 ? 'is-pos' : 'is-neg'}>({signedDelta(ca.delta)})</em> <span className="matchup__u">{unit}</span></span>
+                <span className="matchup__battle-pts">{formatPoints(e.aPoints)} <span className="matchup__u">pts</span></span>
                 <span
                   className={`matchup__battle-bar ${e.aPoints >= 0 ? 'is-help' : 'is-hurt'}${e.edge > 0 ? ' is-winner' : ''}`}
                   style={{ width: `${(Math.abs(e.aPoints) / maxAbsPoints) * 100}%`, backgroundColor: teamA.primaryColor }}
+                  title={`${teamA.abbreviation} ${e.def.label}: ${formatValue(ca.value)} − ${formatValue(ca.leagueAverage)} = ${signedDelta(ca.delta)} ${unit} × ${e.def.coefficient} = ${formatPoints(e.aPoints)} pts`}
                 />
               </div>
               <div className="matchup__battle-center">
@@ -296,24 +328,25 @@ function BattleView({ analysis, teamA, teamB }: ViewProps) {
                 <span
                   className={`matchup__battle-bar ${e.bPoints >= 0 ? 'is-help' : 'is-hurt'}${e.edge < 0 ? ' is-winner' : ''}`}
                   style={{ width: `${(Math.abs(e.bPoints) / maxAbsPoints) * 100}%`, backgroundColor: teamB.primaryColor }}
+                  title={`${teamB.abbreviation} ${e.def.label}: ${formatValue(cb.value)} − ${formatValue(cb.leagueAverage)} = ${signedDelta(cb.delta)} ${unit} × ${e.def.coefficient} = ${formatPoints(e.bPoints)} pts`}
                 />
-                <span className="matchup__battle-pts">{formatPoints(e.bPoints)}</span>
-                <span className="matchup__battle-val"><em className={cb.delta >= 0 ? 'is-pos' : 'is-neg'}>{signedDelta(cb.delta)}</em> {formatValue(cb.value)}</span>
+                <span className="matchup__battle-pts">{formatPoints(e.bPoints)} <span className="matchup__u">pts</span></span>
+                <span className="matchup__battle-val"><span className="matchup__u">{unit}</span> <em className={cb.delta >= 0 ? 'is-pos' : 'is-neg'}>({signedDelta(cb.delta)})</em> {formatValue(cb.value)}</span>
               </div>
             </div>
           )
         })}
         <div className="matchup__battle-row matchup__battle-row--total">
           <div className="matchup__battle-side matchup__battle-side--a">
-            <span className="matchup__battle-val matchup__battle-proj">{formatValue(analysis.a.projectedPoints)}</span>
-            <span className="matchup__battle-pts">{formatPoints(analysis.a.netRelativePoints)}</span>
+            <span className="matchup__battle-val matchup__battle-proj">{formatValue(analysis.a.projectedPoints)} <span className="matchup__u">proj</span></span>
+            <span className="matchup__battle-pts">{formatPoints(analysis.a.netRelativePoints)} <span className="matchup__u">pts</span></span>
             <span className="matchup__battle-bar is-total" style={{ width: `${(Math.abs(analysis.a.netRelativePoints) / maxNet) * 100}%`, backgroundColor: teamA.primaryColor }} />
           </div>
-          <div className="matchup__battle-center"><span className="matchup__battle-total-label">total</span></div>
+          <div className="matchup__battle-center"><span className="matchup__battle-total-label">net → proj</span></div>
           <div className="matchup__battle-side matchup__battle-side--b">
             <span className="matchup__battle-bar is-total" style={{ width: `${(Math.abs(analysis.b.netRelativePoints) / maxNet) * 100}%`, backgroundColor: teamB.primaryColor }} />
-            <span className="matchup__battle-pts">{formatPoints(analysis.b.netRelativePoints)}</span>
-            <span className="matchup__battle-val matchup__battle-proj">{formatValue(analysis.b.projectedPoints)}</span>
+            <span className="matchup__battle-pts">{formatPoints(analysis.b.netRelativePoints)} <span className="matchup__u">pts</span></span>
+            <span className="matchup__battle-val matchup__battle-proj">{formatValue(analysis.b.projectedPoints)} <span className="matchup__u">proj</span></span>
           </div>
         </div>
       </div>
@@ -412,64 +445,102 @@ function ConversionView({ analysis, teamA, teamB }: ViewProps) {
 }
 
 /* ----------------------------------------------------------------
-   VIEW 4 — Two-way radar.
-   The absolute-points shape (raw stat × rate, turnovers as ball security) for
-   both teams, paired with a key that spells out value × rate = points per axis
-   and totals each team's generated points.
+   VIEW 4 — Build-up (shared axis).
+   Both teams stand on ONE points axis. Each starts at the league-average
+   baseline, and every stat nudges its projection right (helps) or left
+   (costs) until it lands on its projected total. Because the two tracks share
+   the axis, the horizontal gap between the end caps IS the projected margin.
    ---------------------------------------------------------------- */
-function RadarView({ analysis, teamA, teamB }: ViewProps) {
-  const axes = STAT_DEFS.map(d => (d.key === 'tov' ? 'SEC' : d.short))
-  const totalA = analysis.a.contributions.reduce((s, c) => s + c.absolutePoints, 0)
-  const totalB = analysis.b.contributions.reduce((s, c) => s + c.absolutePoints, 0)
+function BuildUpView({ analysis, teamA, teamB }: ViewProps) {
+  const width = 600
+  const rowH = 64
+  const pad = { top: 28, right: 24, bottom: 34, left: 16 }
+  const height = pad.top + pad.bottom + rowH * 2
+  const plotL = pad.left + 44 // room for the team label
+  const plotR = width - pad.right
+  const plotW = plotR - plotL
+
+  // Shared x-domain spans the baseline and both projected totals, zoomed in so
+  // the small per-stat steps are legible (not anchored at zero).
+  const ends = [analysis.baseline, analysis.a.projectedPoints, analysis.b.projectedPoints]
+  const lo = Math.min(...ends) - 1.4
+  const hi = Math.max(...ends) + 1.4
+  const xs = (v: number) => plotL + ((v - lo) / (hi - lo)) * plotW
+  const baseX = xs(analysis.baseline)
+
+  const ticks = [lo, analysis.baseline, hi].map(v => Math.round(v * 2) / 2)
+
+  const tracks: { tm: TeamMatchup; color: string }[] = [
+    { tm: analysis.a, color: teamA.primaryColor },
+    { tm: analysis.b, color: teamB.primaryColor },
+  ]
+
   return (
     <ViewFrame
-      title="Scoring identity, all-positive"
-      caption="A point's distance from the centre is that stat's raw value times its rate (turnovers reframed as ball security, SEC). A fuller shape means more points generated off non-scoring play; the key on the right shows each multiplication."
+      title="Build-up on a shared points axis"
+      caption="Both teams start at the league-average baseline (the dashed line). Each block is one stat moving the projection right if it helps or left if it costs; the end cap is the projected total. The two tracks share the axis, so the gap between the caps is the projected margin."
     >
-      <div className="matchup__radar-wrap">
-        <div className="matchup__radar">
-          <Radar
-            variant="multiple"
-            axes={axes}
-            series={[
-              { id: 'a', label: teamA.abbreviation, values: analysis.a.contributions.map(c => c.absolutePoints), intent: 'primary' },
-              { id: 'b', label: teamB.abbreviation, values: analysis.b.contributions.map(c => c.absolutePoints), intent: 'warning' },
-            ]}
-            size={300}
-            formatValue={n => n.toFixed(1)}
-          />
-        </div>
-        <table className="matchup__radar-key">
-          <thead>
-            <tr>
-              <th>Stat</th>
-              <th>Rate</th>
-              <th style={{ color: teamA.primaryColor }}>{teamA.abbreviation}</th>
-              <th style={{ color: teamB.primaryColor }}>{teamB.abbreviation}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {STAT_DEFS.map((def, i) => {
-              const ca = analysis.a.contributions[i]
-              const cb = analysis.b.contributions[i]
-              const label = def.key === 'tov' ? 'SEC' : def.short
-              return (
-                <tr key={def.key}>
-                  <th scope="row">{label}</th>
-                  <td><ConversionChip def={def} showLabel={false} /></td>
-                  <td className="matchup__radar-key-cell">{formatValue(ca.value)} → <strong>{ca.absolutePoints.toFixed(1)}</strong></td>
-                  <td className="matchup__radar-key-cell">{formatValue(cb.value)} → <strong>{cb.absolutePoints.toFixed(1)}</strong></td>
-                </tr>
-              )
-            })}
-            <tr className="matchup__radar-key-total">
-              <th scope="row">Total</th>
-              <td>generated</td>
-              <td><strong>{totalA.toFixed(1)}</strong></td>
-              <td><strong>{totalB.toFixed(1)}</strong></td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="matchup__chart-scroll">
+        <svg className="matchup__build-svg" viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label="Build-up to projected totals on a shared points axis">
+          {/* x-axis ticks (points) */}
+          {ticks.map((t, i) => (
+            <g key={`t-${i}`}>
+              <line className="matchup__build-grid" x1={xs(t)} y1={pad.top - 8} x2={xs(t)} y2={height - pad.bottom} />
+              <text className="matchup__build-tick" x={xs(t)} y={height - pad.bottom + 14} textAnchor="middle">{t.toFixed(1)}</text>
+            </g>
+          ))}
+          <text className="matchup__build-axis-title" x={plotR} y={pad.top - 14} textAnchor="end">projected points →</text>
+          {/* baseline marker */}
+          <line className="matchup__build-baseline" x1={baseX} y1={pad.top - 8} x2={baseX} y2={height - pad.bottom} />
+          <text className="matchup__build-baseline-label" x={baseX} y={pad.top - 14} textAnchor="middle">{formatValue(analysis.baseline)} baseline</text>
+
+          {tracks.map((track, ti) => {
+            const cy = pad.top + ti * rowH + rowH / 2
+            const barH = 20
+            let running = analysis.baseline
+            return (
+              <g key={track.tm.team.id}>
+                <text className="matchup__build-team" x={pad.left} y={cy} dominantBaseline="central" style={{ fill: track.color }}>{track.tm.team.abbreviation}</text>
+                {track.tm.contributions.map(c => {
+                  const x0 = xs(running)
+                  running += c.relativePoints
+                  const x1 = xs(running)
+                  const left = Math.min(x0, x1)
+                  const w = Math.max(1.5, Math.abs(x1 - x0))
+                  const wide = w > 24
+                  return (
+                    <g key={c.def.key}>
+                      <rect
+                        className={`matchup__build-seg ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`}
+                        x={left} y={cy - barH / 2} width={w} height={barH} rx={2}
+                      >
+                        <title>{`${track.tm.team.abbreviation} ${c.def.label}: ${signedDelta(c.delta)} ${c.def.short.toLowerCase()} × ${c.def.coefficient} = ${formatPoints(c.relativePoints)} pts`}</title>
+                      </rect>
+                      {wide && <text className={`matchup__build-seg-label ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`} x={(left + left + w) / 2} y={cy} dominantBaseline="central" textAnchor="middle">{c.def.short}</text>}
+                      {wide && <text className="matchup__build-seg-pts" x={(left + left + w) / 2} y={cy - barH / 2 - 4} textAnchor="middle">{formatPoints(c.relativePoints)}</text>}
+                    </g>
+                  )
+                })}
+                {/* end cap = projected total */}
+                <line className="matchup__build-cap" x1={xs(track.tm.projectedPoints)} y1={cy - barH / 2 - 3} x2={xs(track.tm.projectedPoints)} y2={cy + barH / 2 + 3} style={{ stroke: track.color }} />
+                <text className="matchup__build-proj" x={xs(track.tm.projectedPoints) + (track.tm.projectedPoints >= analysis.baseline ? 6 : -6)} y={cy} dominantBaseline="central" textAnchor={track.tm.projectedPoints >= analysis.baseline ? 'start' : 'end'} style={{ fill: track.color }}>
+                  {formatValue(track.tm.projectedPoints)}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+      <div className="matchup__build-legend">
+        <span className="matchup__conv-legend-item"><span className="matchup__build-swatch is-pos" /> helps (adds points)</span>
+        <span className="matchup__conv-legend-item"><span className="matchup__build-swatch is-neg" /> costs (removes points)</span>
+        <span className="matchup__build-margin">
+          gap = projected margin <strong style={{ color: analysis.netEdge >= 0 ? teamA.primaryColor : teamB.primaryColor }}>{analysis.netEdge >= 0 ? teamA.abbreviation : teamB.abbreviation} +{Math.abs(analysis.netEdge).toFixed(1)}</strong>
+        </span>
+      </div>
+      <div className="matchup__conv-sums">
+        <SumStrip tm={analysis.a} baseline={analysis.baseline} />
+        <SumStrip tm={analysis.b} baseline={analysis.baseline} />
       </div>
     </ViewFrame>
   )
@@ -499,15 +570,29 @@ function LedgerView({ analysis, teamA, teamB }: ViewProps) {
   }))
 
   const columns: TableColumn<LedgerRow>[] = [
-    { key: 'stat', header: 'Stat', accessor: r => r.def.label, sortBy: (a, b) => a.def.label.localeCompare(b.def.label) },
-    { key: 'rate', header: 'Rate', accessor: r => <ConversionChip def={r.def} showLabel={false} />, align: 'center' },
-    { key: 'lg', header: 'Lg avg', accessor: r => formatValue(r.a.leagueAverage), align: 'end' },
-    { key: 'aVal', header: `${teamA.abbreviation} /gm`, accessor: r => formatValue(r.a.value), sortBy: (a, b) => a.a.value - b.a.value, align: 'end' },
-    { key: 'aDelta', header: 'Δ', accessor: r => <span className={r.a.delta >= 0 ? 'is-pos' : 'is-neg'}>{signedDelta(r.a.delta)}</span>, sortBy: (a, b) => a.a.delta - b.a.delta, align: 'end' },
-    { key: 'aPts', header: `${teamA.abbreviation} pts`, accessor: r => <strong>{formatPoints(r.a.relativePoints)}</strong>, sortBy: (a, b) => a.a.relativePoints - b.a.relativePoints, align: 'end' },
-    { key: 'bVal', header: `${teamB.abbreviation} /gm`, accessor: r => formatValue(r.b.value), sortBy: (a, b) => a.b.value - b.b.value, align: 'end' },
-    { key: 'bDelta', header: 'Δ', accessor: r => <span className={r.b.delta >= 0 ? 'is-pos' : 'is-neg'}>{signedDelta(r.b.delta)}</span>, sortBy: (a, b) => a.b.delta - b.b.delta, align: 'end' },
-    { key: 'bPts', header: `${teamB.abbreviation} pts`, accessor: r => <strong>{formatPoints(r.b.relativePoints)}</strong>, sortBy: (a, b) => a.b.relativePoints - b.b.relativePoints, align: 'end' },
+    {
+      key: 'stat',
+      header: 'Stat · rate',
+      accessor: r => (
+        <span className="matchup__ledger-stat">
+          <span className="matchup__ledger-stat-name">{r.def.label}</span>
+          <span className="matchup__ledger-stat-rate">{r.def.coefficient} pts / {r.def.short.toLowerCase()}</span>
+        </span>
+      ),
+      sortBy: (a, b) => a.def.label.localeCompare(b.def.label),
+    },
+    {
+      key: 'a',
+      header: <span style={{ color: teamA.primaryColor }}>{teamA.abbreviation}: avg − lg = Δ × rate = pts</span>,
+      accessor: r => <DerivationLine c={r.a} />,
+      sortBy: (a, b) => a.a.relativePoints - b.a.relativePoints,
+    },
+    {
+      key: 'b',
+      header: <span style={{ color: teamB.primaryColor }}>{teamB.abbreviation}: avg − lg = Δ × rate = pts</span>,
+      accessor: r => <DerivationLine c={r.b} />,
+      sortBy: (a, b) => a.b.relativePoints - b.b.relativePoints,
+    },
     {
       key: 'edge',
       header: 'Edge',
@@ -524,15 +609,17 @@ function LedgerView({ analysis, teamA, teamB }: ViewProps) {
   return (
     <ViewFrame
       title="The accounting"
-      caption="Read each row as a formula: a team's per-game average, minus the league average (Δ), times the rate, equals its points. The block below sums every row into each team's projected total. Sort any column."
+      caption="Every number, in full. Each team's cell is the formula spelled out with units: per-game average minus the league average gives the deviation (Δ), times the rate (points per stat) gives the points. The block below sums each team's five into its projected total."
     >
-      <Table
-        variant="sortable"
-        data={rows}
-        columns={columns}
-        getRowId={r => r.key}
-        caption={`${teamA.name} vs ${teamB.name} non-scoring points ledger`}
-      />
+      <div className="matchup__chart-scroll">
+        <Table
+          variant="sortable"
+          data={rows}
+          columns={columns}
+          getRowId={r => r.key}
+          caption={`${teamA.name} vs ${teamB.name} non-scoring points ledger`}
+        />
+      </div>
       <div className="matchup__ledger-totals">
         <LedgerTotal tm={analysis.a} baseline={analysis.baseline} />
         <div className="matchup__ledger-margin">

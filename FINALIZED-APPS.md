@@ -52,14 +52,16 @@ feature, not the chrome.
   (rebounds, assists, steals, blocks, turnovers) are worth in points
   versus a league-average team. Every view shows both halves of the
   story — *why* each stat is worth its points (raw average − league
-  average = deviation × rate) and *how* the five aggregate into a
-  projected total — five ways: a per-team Waterfall **projection
-  bridge** with a derivation line per stat, a back-to-back **category
-  battle** with the rate and deviation in the centre, a **conversion
-  map** scatter where each stat is a ray whose slope is its rate and
-  team dots sit on the ray, a two-team **radar** paired with a
-  value × rate key, and a sortable Table **points ledger** laid out as
-  the literal formula. The points model lives in
+  average, in stat units, × a points-per-stat rate) and *how* the five
+  aggregate into a projected total — five ways: a per-team Waterfall
+  **projection bridge** with a unit-annotated derivation line per stat,
+  a back-to-back **category battle** with the rate and deviation in the
+  centre, a **conversion map** scatter where each stat is a ray whose
+  slope is its rate and team dots sit on the ray, a shared-axis
+  **build-up** where both teams start on the league baseline and each
+  stat slides the projection until the gap between the end caps is the
+  margin, and a sortable Table **points ledger** whose cells are the
+  full formula spelled out with units. The points model lives in
   `src/apps/sports/matchup.ts` with per-event coefficients and the
   league baseline in one tunable place.
 
@@ -68,9 +70,10 @@ feature, not the chrome.
 - `Table` (sortable) — rosters, standings, box scores, leader tables,
   matchup points ledger.
 - `Tabs` — team detail (Roster / Schedule / Stats), player detail,
-  matchup views (Bridge / Battle / Conversion map / Radar / Ledger).
-- `Waterfall`, `Radar` — matchup lab visualizations (plus a bespoke
-  conversion-map scatter and back-to-back battle bars).
+  matchup views (Bridge / Battle / Conversion map / Build-up / Ledger).
+- `Waterfall` — matchup projection bridge (plus bespoke SVG for the
+  conversion-map scatter, the shared-axis build-up, and the
+  back-to-back battle bars).
 - `Segmented` — conference filter on teams + standings, position
   filter on players, status filter on games.
 - `Select` — in-app palette picker.

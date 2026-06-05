@@ -5189,6 +5189,57 @@
 .deriv-line__pts {
   font-weight: var(--type-label-weight);
 }
+.deriv-line__unit {
+  font-size: 0.85em;
+  color: var(--color-content-secondary);
+  opacity: 0.8;
+  margin-inline-start: -0.12rem;
+}
+
+/* Inline unit tag (battle view, totals). */
+.matchup__u {
+  font-size: 0.82em;
+  color: var(--color-content-secondary);
+  opacity: 0.85;
+}
+
+/* --- Formula key: units-by-position legend (views 1 & 2) --- */
+.formula-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width-thin) dashed var(--color-border-default);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+}
+
+.formula-key__part {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.formula-key__lead {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+.formula-key__unit {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.formula-key__op {
+  align-self: center;
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-secondary);
+}
 
 /* --- Sum strip: stats → net → projected (shared aggregation) --- */
 .sum-strip {
@@ -5251,7 +5302,7 @@
 /* --- VIEW 1: Projection bridge --- */
 .matchup__bridge {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-4);
 }
 
@@ -5460,52 +5511,117 @@
   border-radius: var(--radius-pill);
 }
 
-/* --- VIEW 4: Two-way radar --- */
-.matchup__radar-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  align-items: center;
+/* --- VIEW 4: Build-up (shared axis) --- */
+.matchup__build-svg { display: block; }
+
+.matchup__build-grid {
+  stroke: var(--color-border-subtle);
+  stroke-width: var(--border-width-hairline);
+  vector-effect: non-scaling-stroke;
 }
 
-.matchup__radar { flex: 0 0 auto; }
+.matchup__build-tick,
+.matchup__build-axis-title,
+.matchup__build-baseline-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  fill: var(--color-content-secondary);
+}
 
-.matchup__radar-key {
-  flex: 1 1 280px;
-  border-collapse: collapse;
+.matchup__build-baseline {
+  stroke: var(--color-content-secondary);
+  stroke-width: var(--border-width-thin);
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.matchup__build-team {
+  font-family: var(--type-display-family);
+  font-weight: var(--type-display-weight);
+  font-size: var(--type-label-size);
+}
+
+.matchup__build-seg {
+  stroke: var(--color-surface-raised);
+  stroke-width: 1;
+}
+
+.matchup__build-seg.is-pos { fill: var(--color-intent-success-bg); }
+.matchup__build-seg.is-neg { fill: var(--color-intent-danger-bg); }
+
+.matchup__build-seg-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  pointer-events: none;
+}
+
+.matchup__build-seg-label.is-pos { fill: var(--color-intent-success-content); }
+.matchup__build-seg-label.is-neg { fill: var(--color-intent-danger-content); }
+
+.matchup__build-seg-pts {
+  font-size: var(--type-caption-size);
+  fill: var(--color-content-secondary);
   font-variant-numeric: tabular-nums;
 }
 
-.matchup__radar-key th,
-.matchup__radar-key td {
-  text-align: start;
-  padding: 0.35rem var(--space-2);
-  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
-  font-size: var(--type-caption-size);
+.matchup__build-cap {
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
 }
 
-.matchup__radar-key thead th {
+.matchup__build-proj {
+  font-family: var(--type-display-family);
+  font-weight: var(--type-display-weight);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.matchup__build-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
   font-family: var(--type-label-family);
-  font-weight: var(--type-label-weight);
+  font-size: var(--type-label-size);
   color: var(--color-content-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
-.matchup__radar-key tbody th {
-  font-family: var(--type-label-family);
+.matchup__build-swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--radius-sm);
+  margin-inline-end: 0.35rem;
+  vertical-align: -1px;
+}
+
+.matchup__build-swatch.is-pos { background-color: var(--color-intent-success-bg); }
+.matchup__build-swatch.is-neg { background-color: var(--color-intent-danger-bg); }
+
+.matchup__build-margin { margin-inline-start: auto; }
+.matchup__build-margin strong {
+  font-family: var(--type-display-family);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- VIEW 5: Points ledger --- */
+.matchup__ledger-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.matchup__ledger-stat-name {
   font-weight: var(--type-label-weight);
   color: var(--color-content-primary);
 }
 
-.matchup__radar-key-cell { color: var(--color-content-secondary); }
-.matchup__radar-key-cell strong { color: var(--color-content-primary); }
-
-.matchup__radar-key-total th,
-.matchup__radar-key-total td {
-  border-top: var(--border-width-thin) solid var(--color-border-default);
-  border-bottom: none;
+.matchup__ledger-stat-rate {
+  font-size: var(--type-caption-size);
   color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* --- VIEW 5: Points ledger totals --- */
