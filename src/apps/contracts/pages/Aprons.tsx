@@ -94,14 +94,31 @@ export function Aprons() {
 
       <section className="cap-page__section">
         <KeyIdea tone="info" title="The one true hard cap is lower down">
-          Neither apron is a dollar line a team can't cross: payroll can climb
-          past both. The system's only genuine <strong>hard cap</strong> — a
-          line that cannot be exceeded — is one a team brings on itself.
-          Certain moves (using the full mid-level, taking in a sign-and-trade,
-          using the bi-annual) hard-cap it at the <strong>first</strong> apron
-          for that whole season. So the closest thing to an uncrossable ceiling
-          sits at the first apron, not the second, and only for teams that trip
-          it.
+          <p className="cap-keyidea__p">
+            Two different things share the word "cap" here, and separating them
+            clears up the confusion. The apron <strong>thresholds</strong> (
+            {money(SEASON.firstApron)} and {money(SEASON.secondApron)}) are lines
+            a team crosses by spending, and crossing one only switches tools off.
+            A <strong>hard cap</strong> is something else: a fixed ceiling a
+            team's payroll cannot exceed for any reason for the rest of the
+            season.
+          </p>
+          <p className="cap-keyidea__p">
+            No team starts the year hard-capped. A team takes the cap on itself
+            by using a tool reserved for clubs under the first apron: the full
+            mid-level, an incoming sign-and-trade, or the bi-annual. The price of
+            using one is a hard cap fixed at the <strong>first</strong> apron
+            through season's end. That is the restriction list above seen from
+            the other side. A team already over the first apron can't use these
+            tools at all, because using them would mean staying under a line it
+            has already passed.
+          </p>
+          <p className="cap-keyidea__p">
+            So the only line in the system that genuinely cannot be crossed sits
+            at the first apron, not the second, and it binds only the teams that
+            trip it. Everyone else, second-apron teams included, can still climb
+            higher on payroll alone, mostly by re-signing their own players.
+          </p>
         </KeyIdea>
       </section>
 

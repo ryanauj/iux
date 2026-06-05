@@ -382,6 +382,14 @@
   line-height: var(--type-body-line-height);
 }
 
+.cap-keyidea__p {
+  margin: 0 0 var(--space-2);
+}
+
+.cap-keyidea__p:last-child {
+  margin-bottom: 0;
+}
+
 /* ---------- Cap ladder ---------- */
 
 .cap-ladder {
