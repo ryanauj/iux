@@ -586,6 +586,83 @@ body {
 }
 
 /*
+ * Cel-Glass engine. Scoped via `data-palette` so non-cel-glass palettes are
+ * completely untouched, the same shape as the Cel-shaded / Glass / Aurora
+ * blocks above. The engine is, literally, a MIX of two earlier engines:
+ *
+ *   1. **Cel-shaded ink outline.** Identical mechanism to the cel-shaded
+ *      block — a literal `outline:` halo on every interactive control sourced
+ *      from `--outline-color` / `--outline-width`, plus the same ink at every
+ *      `color.border.*` slot so cards / modals carry it through their own
+ *      `border:` rule. The cel-glass palettes invert the ink to a bright line
+ *      on the dark (Noir) register; the engine doesn't care, it just paints
+ *      whatever `--outline-color` resolves to.
+ *
+ *   2. **Glassmorphism frost.** A `backdrop-filter` blur on every raised /
+ *      overlay-class surface (Card, Modal, Drawer, Toast, Tooltip, Popover),
+ *      sourced from `--effect-backdrop-blur-md`. The palette's translucent
+ *      `surface.*` alphas are what let the blur show through; the cel outline
+ *      gives the frosted pane the crisp graphic boundary plain glass lacks.
+ *
+ * The two halves are deliberately independent: the outline lives OUTSIDE the
+ * border-box (no layout shift, no double-stroke against `--elevation-*`, which
+ * already bakes a hard-offset block + glass top-highlight), while the blur
+ * frosts the fill underneath. Together they read as a cel-animation frame cut
+ * out of frosted glass.
+ */
+.palette-root[data-palette^='cel-glass'] .iux-card,
+.palette-root[data-palette^='cel-glass'] .iux-modal__panel,
+.palette-root[data-palette^='cel-glass'] .iux-drawer__panel,
+.palette-root[data-palette^='cel-glass'] .iux-toast,
+.palette-root[data-palette^='cel-glass'] .iux-tooltip__body,
+.palette-root[data-palette^='cel-glass'] .iux-popover {
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+}
+
+.palette-root[data-palette^='cel-glass'] .iux-button,
+.palette-root[data-palette^='cel-glass'] .iux-toggle__track,
+.palette-root[data-palette^='cel-glass'] .iux-checkbox__box,
+.palette-root[data-palette^='cel-glass'] .iux-text-input__control,
+.palette-root[data-palette^='cel-glass'] .iux-select__control,
+.palette-root[data-palette^='cel-glass'] .iux-segmented__segment,
+.palette-root[data-palette^='cel-glass'] .iux-tabs__tab,
+.palette-root[data-palette^='cel-glass'] .iux-tooltip__body,
+.palette-root[data-palette^='cel-glass'] .iux-pagination__btn,
+.palette-root[data-palette^='cel-glass'] .iux-stepper__step {
+  outline-width: var(--outline-width);
+  outline-style: solid;
+  outline-color: var(--outline-color);
+  outline-offset: 0;
+}
+
+/*
+ * Outline-room patches — identical rationale to the cel-shaded block: the
+ * `outline:` halo paints OUTSIDE the border-box and gets scissored by any
+ * scroll container whose `overflow` is promoted away from `visible`. We add
+ * inline/block padding equal to `--outline-width`, scoped to cel-glass so
+ * every other palette's layout is untouched.
+ */
+.palette-root[data-palette^='cel-glass'] .iux-tabs__list {
+  padding: var(--outline-width);
+}
+
+.palette-root[data-palette^='cel-glass'] .showcase-card__demo {
+  padding-block: var(--outline-width);
+  padding-inline: var(--outline-width);
+}
+
+.palette-root[data-palette^='cel-glass'] .showcase-deck__track {
+  padding-inline: var(--outline-width);
+}
+
+@media (max-width: 40rem) {
+  .palette-root[data-palette^='cel-glass'] .stories__cells {
+    padding-inline: var(--outline-width);
+  }
+}
+
+/*
  * Terminal-TUI engine. Scoped via `data-palette` so non-TUI palettes are
  * untouched, the same shape as the CRT / Pixel-art / Sketch / Cardstock /
  * Cel-shaded / Aurora blocks above. The engine has three concerns,

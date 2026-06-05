@@ -161,4 +161,9 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'iridescent-opal': ['light', 'glass', 'holographic', 'pearlescent', 'translucent', 'multicolor'],
   'silver-daguerreotype': ['light', 'antique', 'silver', 'photographic', 'serif', 'monotone'],
   'sugar-paper-chalk': ['light', 'hand-drawn', 'chalk', 'pastel', 'classroom', 'craft'],
+
+  /* Group Z5 — cel-glass (cel-shaded × glassmorphism mix) */
+  'cel-glass-frost': ['glass', 'anime', 'translucent', 'frosted', 'cool', 'light', 'cel-shaded'],
+  'cel-glass-noir': ['glass', 'anime', 'translucent', 'frosted', 'neon', 'dark', 'cel-shaded'],
+  'cel-glass-sunset': ['glass', 'anime', 'translucent', 'frosted', 'warm', 'light', 'cel-shaded'],
 }
