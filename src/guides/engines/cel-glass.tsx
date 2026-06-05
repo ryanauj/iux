@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { palette as celGlassFrost } from '../../../palettes/cel-glass-frost'
 import { palette as celGlassNoir } from '../../../palettes/cel-glass-noir'
 import { palette as celGlassSunset } from '../../../palettes/cel-glass-sunset'
+import { palette as celGlassMist } from '../../../palettes/cel-glass-mist'
+import { palette as celGlassBone } from '../../../palettes/cel-glass-bone'
+import { palette as celGlassOrchid } from '../../../palettes/cel-glass-orchid'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { Button } from '../../components/Button/Button'
 import { Card } from '../../components/Card/Card'
@@ -172,6 +175,9 @@ function VariationsDemo() {
     { palette: celGlassFrost,  label: 'Frost' },
     { palette: celGlassNoir,   label: 'Noir' },
     { palette: celGlassSunset, label: 'Sunset' },
+    { palette: celGlassMist,   label: 'Mist' },
+    { palette: celGlassBone,   label: 'Bone' },
+    { palette: celGlassOrchid, label: 'Orchid' },
   ]
   return (
     <div className="iux-engine-demo__col">
@@ -193,13 +199,20 @@ function VariationsDemo() {
         ))}
       </div>
       <p className="iux-engine-demo__caption">
-        Three registers on the one engine. <strong>Frost</strong> is the cool,
-        light reading — aqua host, ink line. <strong>Noir</strong> inverts onto
-        a midnight host and flips the cel line to a bright near-white edge so it
-        still shows on smoked glass. <strong>Sunset</strong> is the warm
-        anime-poster end — magenta host, orange/violet intents, warm ink. The
-        engine rules are identical; only the palette's host, alphas, and
-        outline colour change.
+        Two families on the one engine. The <strong>saturated-host</strong> set
+        frosts panes over a coloured or dark ground:{' '}
+        <strong>Frost</strong> (cool aqua host, ink line),{' '}
+        <strong>Noir</strong> (midnight host, with the cel line flipped to a
+        bright near-white edge so it shows on smoked glass), and{' '}
+        <strong>Sunset</strong> (warm magenta host, warm ink). The{' '}
+        <strong>light-ground</strong> set inverts the formula — a white or
+        beige ground with the colour moved into the cel LINE:{' '}
+        <strong>Mist</strong> (white, teal line), <strong>Bone</strong>{' '}
+        (beige, clay line), and <strong>Orchid</strong> (pale greige, violet
+        line). Because their ground is light and content stays dark ink, the
+        three light registers clear AA and ship <code>a11y: 'pass'</code>,
+        where the saturated-host set is <code>'experimental'</code>. The engine
+        rules are identical across all six; only the palette changes.
       </p>
     </div>
   )
@@ -234,9 +247,9 @@ export const celGlassGuide: EngineGuideMeta = {
   engine: 'cel-glass',
   name: 'Cel-Glass',
   summary:
-    "A mix of two engines: cel-shaded's hard ink outline laid over glassmorphism's frosted translucent surfaces. The engine paints a literal `outline:` halo on controls from `effect.outline.{color,width}` AND a `backdrop-filter` frost on raised surfaces from `effect.backdropBlur.md`, while the palette's translucent `surface.*` alphas let the host show through. `elevation.*` blends both — an inset glass top-highlight over a hard-offset cel block (`effect.shadowStyle = 'hard'`). Three registers ship: Frost (cool light), Noir (dark, with an inverted bright cel line), and Sunset (warm anime-poster). Translucent fills mean it carries `a11y: 'experimental'`, like the rest of the glass family.",
+    "A mix of two engines: cel-shaded's hard ink outline laid over glassmorphism's frosted translucent surfaces. The engine paints a literal `outline:` halo on controls from `effect.outline.{color,width}` AND a `backdrop-filter` frost on raised surfaces from `effect.backdropBlur.md`, while the palette's translucent `surface.*` alphas let the host show through. `elevation.*` blends both — an inset glass top-highlight over a hard-offset cel block (`effect.shadowStyle = 'hard'`). Six registers ship in two families: a saturated-host set (Frost cool, Noir dark with an inverted bright cel line, Sunset warm anime-poster) that carries `a11y: 'experimental'`, and a light-ground set (Mist white/teal, Bone beige/clay, Orchid greige/violet) that grounds the panes on white or beige with the colour moved into the cel line and clears AA for `a11y: 'pass'`.",
   plainSummary:
-    "Frosted, see-through panels — like glass — but every panel and button is wrapped in a crisp cartoon outline, the way a cel-animation frame is. It comes in three flavours: a cool icy one, a dark neon one, and a warm sunset one.",
+    "Frosted, see-through panels — like glass — but every panel and button is wrapped in a crisp cartoon outline, the way a cel-animation frame is. It comes in six flavours: three on bold or dark backgrounds (icy, neon, sunset) and three on calm white or beige backgrounds where the bright colour is the outline itself (teal, clay, violet).",
   plainTeaser: 'Glassmorphism you can actually see the edges of — frosted panels with a cel-anime ink line.',
   demoPalette: celGlassFrost,
   steps: [
@@ -338,20 +351,32 @@ export const celGlassGuide: EngineGuideMeta = {
     {
       id: 'variations',
       title: 'Variations',
-      description: 'Frost, Noir, Sunset — one engine, three hosts.',
+      description: 'Two families — saturated-host and light-ground — six registers.',
       body: (
         <>
           <p>
-            Three registers ship on the engine. <strong>Frost</strong> is the
-            cool, light reading — an aqua host under frosted white panes with a
-            near-black ink line. <strong>Noir</strong> inverts onto a midnight
-            host: a near-black line would vanish on smoked glass, so the cel ink
-            flips to a bright near-white edge. <strong>Sunset</strong> is the
-            warm, anime-poster end — a hot magenta host with an orange/violet
-            intent story and a warm ink line.
+            The <strong>saturated-host</strong> set frosts panes over a coloured
+            or dark ground. <strong>Frost</strong> is the cool reading — an aqua
+            host under frosted white panes with a near-black ink line.{' '}
+            <strong>Noir</strong> inverts onto a midnight host: a near-black line
+            would vanish on smoked glass, so the cel ink flips to a bright
+            near-white edge. <strong>Sunset</strong> is the warm, anime-poster
+            end — a hot magenta host with an orange/violet intent story and a
+            warm ink line. Their translucent fills depend on the backdrop, so
+            they ship <code>a11y: 'experimental'</code>.
           </p>
           <p>
-            The engine rules are byte-for-byte identical across all three; only
+            The <strong>light-ground</strong> set inverts the formula: a white
+            or beige ground with the colour moved into the cel LINE rather than
+            the surface. <strong>Mist</strong> is a cool white ground with a
+            teal line, <strong>Bone</strong> a warm ivory ground with a clay
+            line, <strong>Orchid</strong> a pale greige ground with a violet
+            line. Because the ground is light and content stays dark ink, all
+            three clear AA and ship <code>a11y: 'pass'</code> — the accessible
+            members of the engine.
+          </p>
+          <p>
+            The engine rules are byte-for-byte identical across all six; only
             the palette changes — its host colour, its surface alphas, and the{' '}
             <code>effect.outline.color</code> that the cel halo paints.
           </p>

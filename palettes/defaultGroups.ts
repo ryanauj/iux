@@ -56,6 +56,9 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'cel-glass-frost',
     'cel-glass-noir',
     'cel-glass-sunset',
+    'cel-glass-mist',
+    'cel-glass-bone',
+    'cel-glass-orchid',
   ],
   Retro: [
     'vaporwave',
@@ -116,6 +119,9 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'mocha-latte',
     'paper-pop',
     'studio-confetti',
+    'cel-glass-mist',
+    'cel-glass-bone',
+    'cel-glass-orchid',
   ],
   Anime: [
     'cel-shaded-shonen',
@@ -127,6 +133,9 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'cel-glass-frost',
     'cel-glass-noir',
     'cel-glass-sunset',
+    'cel-glass-mist',
+    'cel-glass-bone',
+    'cel-glass-orchid',
   ],
   Neobrutalist: [
     'neubrutalism',
