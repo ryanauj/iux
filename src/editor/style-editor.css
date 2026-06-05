@@ -156,11 +156,14 @@
   color: var(--color-content-primary, CanvasText);
 }
 
-.iux-knob__reset {
+.iux-knob__reset,
+.iux-knob__mode {
   font: inherit;
+  font-size: var(--type-caption-size, 0.8rem);
   flex: none;
-  inline-size: 1.75rem;
+  min-inline-size: 1.75rem;
   block-size: 1.75rem;
+  padding: 0 var(--space-1, 0.25rem);
   border: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
   border-radius: var(--radius-sm, 4px);
   background: var(--color-surface-base, Canvas);
@@ -168,9 +171,117 @@
   cursor: pointer;
 }
 
-.iux-knob__reset:disabled {
+.iux-knob__reset:disabled,
+.iux-knob__mode:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+.iux-knob__mode.is-active {
+  border-color: var(--color-border-focus, Highlight);
+  color: var(--color-content-primary, CanvasText);
+}
+
+/* ── Length slider + unit ── */
+.iux-knob__slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  flex: 1;
+  min-width: 0;
+}
+
+.iux-knob__slider > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.iux-knob__slider-val {
+  flex: none;
+  min-inline-size: 3.25rem;
+  text-align: right;
+  font-size: var(--type-caption-size, 0.8rem);
+  color: var(--color-content-secondary, GrayText);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Block knobs (font stack) ── */
+.iux-knob--block {
+  grid-template-columns: 1fr;
+}
+
+.iux-knob__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+}
+
+.iux-knob--block .iux-knob__control {
+  display: block;
+}
+
+.iux-font-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.iux-font-stack__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+}
+
+.iux-font-stack__row > :nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.iux-font-stack__rank {
+  flex: none;
+  inline-size: 1.25rem;
+  text-align: center;
+  font-size: var(--type-caption-size, 0.75rem);
+  color: var(--color-content-muted, GrayText);
+  font-variant-numeric: tabular-nums;
+}
+
+.iux-font-stack__btn {
+  font: inherit;
+  font-size: var(--type-caption-size, 0.8rem);
+  flex: none;
+  inline-size: 1.6rem;
+  block-size: 1.6rem;
+  border: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-surface-base, Canvas);
+  color: var(--color-content-secondary, GrayText);
+  cursor: pointer;
+}
+
+.iux-font-stack__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.iux-font-stack__add {
+  align-self: flex-start;
+  font: inherit;
+  font-size: var(--type-caption-size, 0.8rem);
+  margin-top: var(--space-1, 0.25rem);
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-surface-base, Canvas);
+  color: var(--color-content-primary, CanvasText);
+  cursor: pointer;
+}
+
+.iux-font-stack__empty {
+  margin: 0;
+  font-size: var(--type-caption-size, 0.8rem);
+  color: var(--color-content-muted, GrayText);
 }
 
 .iux-style-editor__preview {

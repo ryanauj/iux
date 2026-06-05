@@ -10,7 +10,7 @@
  * any of which can be slotted in the same way.
  */
 
-export type KnobKind = 'color' | 'length' | 'text' | 'select'
+export type KnobKind = 'color' | 'length' | 'text' | 'select' | 'font'
 
 export interface KnobOption {
   value: string
@@ -27,6 +27,61 @@ export interface Knob {
   /** Required for `kind: 'select'`. */
   options?: KnobOption[]
 }
+
+/**
+ * Units the length-knob slider can pick, with a sensible slider range and
+ * step for each. The editor raises `max` to fit a larger current value (e.g.
+ * a `999px` pill radius) so the slider stays usable, and falls back to the
+ * text input for values that don't parse as `<number><unit>`.
+ */
+export interface LengthUnit {
+  /** The unit suffix appended to the number. `''` = unitless (e.g. `0`). */
+  value: string
+  label: string
+  min: number
+  max: number
+  step: number
+}
+
+export const LENGTH_UNITS: LengthUnit[] = [
+  { value: 'px', label: 'px', min: 0, max: 96, step: 1 },
+  { value: 'rem', label: 'rem', min: 0, max: 6, step: 0.0625 },
+  { value: 'em', label: 'em', min: 0, max: 6, step: 0.0625 },
+  { value: '%', label: '%', min: 0, max: 100, step: 1 },
+  { value: 'ms', label: 'ms', min: 0, max: 2000, step: 10 },
+  { value: 's', label: 's', min: 0, max: 3, step: 0.05 },
+  { value: 'ch', label: 'ch', min: 0, max: 80, step: 1 },
+  { value: 'lh', label: 'lh', min: 0, max: 4, step: 0.1 },
+  { value: '', label: '—', min: 0, max: 100, step: 1 },
+]
+
+/**
+ * Curated single-family options for the font-stack builder. The `font` knob
+ * composes an ordered, rearrangeable list of these into a CSS stack; the
+ * current value's families are injected as options too so nothing is lost.
+ */
+export const FONT_FAMILY_OPTIONS: KnobOption[] = [
+  { value: 'system-ui', label: 'System UI' },
+  { value: '-apple-system', label: 'Apple system' },
+  { value: '"Segoe UI"', label: 'Segoe UI' },
+  { value: 'Roboto', label: 'Roboto' },
+  { value: 'Inter', label: 'Inter' },
+  { value: '"Helvetica Neue"', label: 'Helvetica Neue' },
+  { value: 'Helvetica', label: 'Helvetica' },
+  { value: 'Arial', label: 'Arial' },
+  { value: 'Georgia', label: 'Georgia' },
+  { value: '"Times New Roman"', label: 'Times New Roman' },
+  { value: '"Courier New"', label: 'Courier New' },
+  { value: 'ui-monospace', label: 'UI Monospace' },
+  { value: 'Menlo', label: 'Menlo' },
+  { value: 'Monaco', label: 'Monaco' },
+  { value: 'Caveat', label: 'Caveat (hand)' },
+  { value: '"Press Start 2P"', label: 'Press Start 2P (pixel)' },
+  { value: 'sans-serif', label: 'sans-serif (generic)' },
+  { value: 'serif', label: 'serif (generic)' },
+  { value: 'monospace', label: 'monospace (generic)' },
+  { value: 'cursive', label: 'cursive (generic)' },
+]
 
 export const KNOB_GROUPS = [
   'Surface',
@@ -83,10 +138,10 @@ export const KNOBS: Knob[] = [
   { path: 'borderWidth.thick', label: 'Thick', group: 'Border width', kind: 'length' },
   { path: 'borderWidth.heavy', label: 'Heavy', group: 'Border width', kind: 'length' },
 
-  // ── Typography families ──
-  { path: 'typography.family.ui', label: 'UI font', group: 'Typography', kind: 'text' },
-  { path: 'typography.family.display', label: 'Display font', group: 'Typography', kind: 'text' },
-  { path: 'typography.family.mono', label: 'Mono font', group: 'Typography', kind: 'text' },
+  // ── Typography families (reorderable font-stack builder) ──
+  { path: 'typography.family.ui', label: 'UI font', group: 'Typography', kind: 'font' },
+  { path: 'typography.family.display', label: 'Display font', group: 'Typography', kind: 'font' },
+  { path: 'typography.family.mono', label: 'Mono font', group: 'Typography', kind: 'font' },
 
   // ── Motion ──
   { path: 'motion.duration.base', label: 'Base duration', group: 'Motion', kind: 'length' },

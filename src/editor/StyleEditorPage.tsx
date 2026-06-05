@@ -12,6 +12,7 @@ import {
 import { Button } from '../components/Button/Button'
 import { Card } from '../components/Card/Card'
 import { Select } from '../components/Select/Select'
+import { Slider } from '../components/Slider/Slider'
 import { buildPaletteField, useSelectedStyle } from '../lib/persistedStyle'
 import {
   baseOf,
@@ -27,7 +28,13 @@ import {
 } from '../lib/customPatterns'
 import { encodePattern, decodePattern } from '../lib/patternCodec'
 import { useHashLocation, replaceParams } from '../apps/router'
-import { KNOBS, KNOB_GROUPS, type Knob } from './knobRegistry'
+import {
+  KNOBS,
+  KNOB_GROUPS,
+  LENGTH_UNITS,
+  FONT_FAMILY_OPTIONS,
+  type Knob,
+} from './knobRegistry'
 import './style-editor.css'
 
 const BASE_OPTIONS = (Object.keys(palettes) as PaletteId[]).map(id => ({
@@ -283,39 +290,35 @@ interface KnobControlProps {
 }
 
 function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControlProps) {
+  const isBlock = knob.kind === 'font'
+  const reset = (
+    <button
+      type="button"
+      className="iux-knob__reset"
+      onClick={onReset}
+      disabled={!overridden}
+      aria-label={`Reset ${knob.label}`}
+      title="Reset to base value"
+    >
+      ↺
+    </button>
+  )
   return (
-    <div className={`iux-knob${overridden ? ' is-overridden' : ''}`}>
-      <span className="iux-knob__label" title={knob.path}>
-        {knob.label}
-      </span>
+    <div className={`iux-knob${overridden ? ' is-overridden' : ''}${isBlock ? ' iux-knob--block' : ''}`}>
+      {isBlock ? (
+        <div className="iux-knob__head">
+          <span className="iux-knob__label" title={knob.path}>{knob.label}</span>
+          {reset}
+        </div>
+      ) : (
+        <span className="iux-knob__label" title={knob.path}>
+          {knob.label}
+        </span>
+      )}
       <div className="iux-knob__control">
-        {knob.kind === 'color' && (
-          <>
-            {isHexColor(value) ? (
-              <input
-                type="color"
-                className="iux-knob__swatch"
-                value={value}
-                onChange={e => onChange(e.target.value)}
-                aria-label={`${knob.label} color`}
-              />
-            ) : (
-              <span
-                className="iux-knob__swatch iux-knob__swatch--preview"
-                style={{ background: value }}
-                aria-hidden="true"
-              />
-            )}
-            <input
-              type="text"
-              className="iux-knob__text"
-              value={value}
-              onChange={e => onChange(e.target.value)}
-              aria-label={`${knob.label} value`}
-            />
-          </>
-        )}
-        {(knob.kind === 'length' || knob.kind === 'text') && (
+        {knob.kind === 'color' && <ColorControl knob={knob} value={value} onChange={onChange} />}
+        {knob.kind === 'length' && <LengthControl knob={knob} value={value} onChange={onChange} />}
+        {knob.kind === 'text' && (
           <input
             type="text"
             className="iux-knob__text"
@@ -332,16 +335,8 @@ function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControl
             onChange={onChange}
           />
         )}
-        <button
-          type="button"
-          className="iux-knob__reset"
-          onClick={onReset}
-          disabled={!overridden}
-          aria-label={`Reset ${knob.label}`}
-          title="Reset to base value"
-        >
-          ↺
-        </button>
+        {knob.kind === 'font' && <FontControl value={value} onChange={onChange} />}
+        {!isBlock && reset}
       </div>
     </div>
   )
@@ -350,6 +345,216 @@ function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControl
 /** Whether a value is a hex color the native color picker can edit directly. */
 function isHexColor(value: string): boolean {
   return /^#[0-9a-fA-F]{3,8}$/.test(value)
+}
+
+function ColorControl({ knob, value, onChange }: { knob: Knob; value: string; onChange: (v: string) => void }) {
+  return (
+    <>
+      {isHexColor(value) ? (
+        <input
+          type="color"
+          className="iux-knob__swatch"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          aria-label={`${knob.label} color`}
+        />
+      ) : (
+        <span
+          className="iux-knob__swatch iux-knob__swatch--preview"
+          style={{ background: value }}
+          aria-hidden="true"
+        />
+      )}
+      <input
+        type="text"
+        className="iux-knob__text"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        aria-label={`${knob.label} value`}
+      />
+    </>
+  )
+}
+
+/** Split a CSS `<number><unit>` value (e.g. `12px`, `1.5rem`, `0`). */
+function parseLength(value: string): { num: number; unit: string } | null {
+  const m = /^(-?\d*\.?\d+)([a-z%]*)$/i.exec(value.trim())
+  if (!m) return null
+  const num = Number(m[1])
+  if (!Number.isFinite(num)) return null
+  return { num, unit: m[2] }
+}
+
+function tidy(n: number): number {
+  return Number.parseFloat(n.toFixed(4))
+}
+
+/**
+ * Length knob with a text input and a toggle into a slider + unit picker.
+ * The text input stays the source of truth (it accepts `calc()`, `clamp()`,
+ * etc.); the toggle is disabled when the current value doesn't parse as a
+ * plain `<number><unit>`.
+ */
+function LengthControl({ knob, value, onChange }: { knob: Knob; value: string; onChange: (v: string) => void }) {
+  const parsed = parseLength(value)
+  const [slider, setSlider] = useState(false)
+  const showSlider = slider && parsed !== null
+
+  return (
+    <>
+      {showSlider && parsed ? (
+        <SliderUnit num={parsed.num} unit={parsed.unit} onChange={onChange} label={knob.label} />
+      ) : (
+        <input
+          type="text"
+          className="iux-knob__text"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          aria-label={knob.label}
+        />
+      )}
+      <button
+        type="button"
+        className={`iux-knob__mode${showSlider ? ' is-active' : ''}`}
+        aria-pressed={showSlider}
+        disabled={parsed === null}
+        onClick={() => setSlider(s => !s)}
+        title={showSlider ? 'Switch to text input' : 'Switch to slider + units'}
+        aria-label={`Toggle slider for ${knob.label}`}
+      >
+        {showSlider ? 'Tx' : '⇔'}
+      </button>
+    </>
+  )
+}
+
+function SliderUnit({
+  num,
+  unit,
+  label,
+  onChange,
+}: {
+  num: number
+  unit: string
+  label: string
+  onChange: (v: string) => void
+}) {
+  const def = LENGTH_UNITS.find(u => u.value === unit) ?? LENGTH_UNITS[LENGTH_UNITS.length - 1]
+  const max = Math.max(def.max, num)
+  return (
+    <div className="iux-knob__slider">
+      <Slider
+        variant="single"
+        value={num}
+        min={def.min}
+        max={max}
+        step={def.step}
+        label={`${label} amount`}
+        formatValue={n => `${tidy(n)}${unit}`}
+        onChange={n => onChange(`${tidy(n)}${unit}`)}
+      />
+      <Select
+        variant="dropdown"
+        value={unit}
+        options={LENGTH_UNITS.map(u => ({ value: u.value, label: u.label }))}
+        onChange={nextUnit => onChange(`${tidy(num)}${nextUnit}`)}
+      />
+      <span className="iux-knob__slider-val" aria-hidden="true">
+        {tidy(num)}{unit || ''}
+      </span>
+    </div>
+  )
+}
+
+/** Split a font stack into its ordered family tokens. */
+function splitStack(value: string): string[] {
+  return value.split(',').map(s => s.trim()).filter(Boolean)
+}
+
+/**
+ * Font knob: an ordered, rearrangeable list of family dropdowns that compose
+ * a CSS font stack. Families from the current value that aren't in the
+ * curated list are injected as options so nothing is lost on edit.
+ */
+function FontControl({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const families = splitStack(value)
+  const update = (next: string[]) => onChange(next.join(', '))
+
+  const options = useMemo(() => {
+    const opts = FONT_FAMILY_OPTIONS.slice()
+    const known = new Set(opts.map(o => o.value))
+    for (const fam of families) {
+      if (fam && !known.has(fam)) {
+        known.add(fam)
+        opts.push({ value: fam, label: fam.replace(/^["']|["']$/g, '') })
+      }
+    }
+    return opts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [families.join('')])
+
+  const addFamily = () => {
+    const next = FONT_FAMILY_OPTIONS.find(o => !families.includes(o.value))?.value ?? 'sans-serif'
+    update([...families, next])
+  }
+
+  const swap = (i: number, j: number) => {
+    const next = families.slice()
+    ;[next[i], next[j]] = [next[j], next[i]]
+    update(next)
+  }
+
+  return (
+    <div className="iux-font-stack">
+      {families.length === 0 && (
+        <p className="iux-font-stack__empty">No fonts yet — add one.</p>
+      )}
+      {families.map((fam, i) => (
+        <div className="iux-font-stack__row" key={`${fam}-${i}`}>
+          <span className="iux-font-stack__rank" aria-hidden="true">{i + 1}</span>
+          <Select
+            variant="dropdown"
+            value={fam}
+            options={options}
+            onChange={nv => {
+              const next = families.slice()
+              next[i] = nv
+              update(next)
+            }}
+          />
+          <button
+            type="button"
+            className="iux-font-stack__btn"
+            aria-label={`Move ${fam} up`}
+            disabled={i === 0}
+            onClick={() => swap(i, i - 1)}
+          >
+            ↑
+          </button>
+          <button
+            type="button"
+            className="iux-font-stack__btn"
+            aria-label={`Move ${fam} down`}
+            disabled={i === families.length - 1}
+            onClick={() => swap(i, i + 1)}
+          >
+            ↓
+          </button>
+          <button
+            type="button"
+            className="iux-font-stack__btn"
+            aria-label={`Remove ${fam}`}
+            onClick={() => update(families.filter((_, j) => j !== i))}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      <button type="button" className="iux-font-stack__add" onClick={addFamily}>
+        + Add font
+      </button>
+    </div>
+  )
 }
 
 /** A compact spread of components so token edits are visible immediately. */
