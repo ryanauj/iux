@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -289,9 +289,20 @@ interface KnobControlProps {
   onReset: () => void
 }
 
-function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControlProps) {
-  const isBlock = knob.kind === 'font'
-  const reset = (
+function KnobControl(props: KnobControlProps) {
+  if (props.knob.kind === 'length') return <LengthKnob {...props} />
+  if (props.knob.kind === 'font') {
+    return (
+      <BlockKnob knob={props.knob} overridden={props.overridden} onReset={props.onReset}>
+        <FontControl value={props.value} onChange={props.onChange} />
+      </BlockKnob>
+    )
+  }
+  return <SimpleKnob {...props} />
+}
+
+function ResetButton({ knob, overridden, onReset }: { knob: Knob; overridden: boolean; onReset: () => void }) {
+  return (
     <button
       type="button"
       className="iux-knob__reset"
@@ -303,21 +314,17 @@ function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControl
       ↺
     </button>
   )
+}
+
+/** Compact two-column knob (label | control) for color / text / select. */
+function SimpleKnob({ knob, value, overridden, onChange, onReset }: KnobControlProps) {
   return (
-    <div className={`iux-knob${overridden ? ' is-overridden' : ''}${isBlock ? ' iux-knob--block' : ''}`}>
-      {isBlock ? (
-        <div className="iux-knob__head">
-          <span className="iux-knob__label" title={knob.path}>{knob.label}</span>
-          {reset}
-        </div>
-      ) : (
-        <span className="iux-knob__label" title={knob.path}>
-          {knob.label}
-        </span>
-      )}
+    <div className={`iux-knob${overridden ? ' is-overridden' : ''}`}>
+      <span className="iux-knob__label" title={knob.path}>
+        {knob.label}
+      </span>
       <div className="iux-knob__control">
         {knob.kind === 'color' && <ColorControl knob={knob} value={value} onChange={onChange} />}
-        {knob.kind === 'length' && <LengthControl knob={knob} value={value} onChange={onChange} />}
         {knob.kind === 'text' && (
           <input
             type="text"
@@ -328,16 +335,44 @@ function KnobControl({ knob, value, overridden, onChange, onReset }: KnobControl
           />
         )}
         {knob.kind === 'select' && (
-          <Select
-            variant="dropdown"
-            value={value}
-            options={knob.options ?? []}
-            onChange={onChange}
-          />
+          <Select variant="dropdown" value={value} options={knob.options ?? []} onChange={onChange} />
         )}
-        {knob.kind === 'font' && <FontControl value={value} onChange={onChange} />}
-        {!isBlock && reset}
+        <ResetButton knob={knob} overridden={overridden} onReset={onReset} />
       </div>
+    </div>
+  )
+}
+
+/**
+ * Full-width knob: a head row (label + actions + reset) over a control body
+ * that owns the whole row. Used for the font-stack builder and for length
+ * knobs while in slider mode, both of which need real horizontal space.
+ */
+function BlockKnob({
+  knob,
+  overridden,
+  onReset,
+  actions,
+  children,
+}: {
+  knob: Knob
+  overridden: boolean
+  onReset: () => void
+  actions?: ReactNode
+  children: ReactNode
+}) {
+  return (
+    <div className={`iux-knob iux-knob--block${overridden ? ' is-overridden' : ''}`}>
+      <div className="iux-knob__head">
+        <span className="iux-knob__label" title={knob.path}>
+          {knob.label}
+        </span>
+        <div className="iux-knob__head-actions">
+          {actions}
+          <ResetButton knob={knob} overridden={overridden} onReset={onReset} />
+        </div>
+      </div>
+      <div className="iux-knob__control">{children}</div>
     </div>
   )
 }
@@ -390,21 +425,43 @@ function tidy(n: number): number {
 }
 
 /**
- * Length knob with a text input and a toggle into a slider + unit picker.
- * The text input stays the source of truth (it accepts `calc()`, `clamp()`,
- * etc.); the toggle is disabled when the current value doesn't parse as a
- * plain `<number><unit>`.
+ * Length knob: a text input by default, with a toggle into a full-width
+ * slider + unit picker. The text input stays the source of truth (it accepts
+ * `calc()`, `clamp()`, etc.); the toggle is disabled when the current value
+ * doesn't parse as a plain `<number><unit>`.
  */
-function LengthControl({ knob, value, onChange }: { knob: Knob; value: string; onChange: (v: string) => void }) {
+function LengthKnob({ knob, value, overridden, onChange, onReset }: KnobControlProps) {
   const parsed = parseLength(value)
   const [slider, setSlider] = useState(false)
   const showSlider = slider && parsed !== null
 
+  const modeToggle = (
+    <button
+      type="button"
+      className={`iux-knob__mode${showSlider ? ' is-active' : ''}`}
+      aria-pressed={showSlider}
+      disabled={parsed === null}
+      onClick={() => setSlider(s => !s)}
+      title={showSlider ? 'Switch to text input' : 'Switch to slider + units'}
+    >
+      {showSlider ? 'Text' : 'Slider'}
+    </button>
+  )
+
+  if (showSlider && parsed) {
+    return (
+      <BlockKnob knob={knob} overridden={overridden} onReset={onReset} actions={modeToggle}>
+        <SliderUnit num={parsed.num} unit={parsed.unit} label={knob.label} onChange={onChange} />
+      </BlockKnob>
+    )
+  }
+
   return (
-    <>
-      {showSlider && parsed ? (
-        <SliderUnit num={parsed.num} unit={parsed.unit} onChange={onChange} label={knob.label} />
-      ) : (
+    <div className={`iux-knob${overridden ? ' is-overridden' : ''}`}>
+      <span className="iux-knob__label" title={knob.path}>
+        {knob.label}
+      </span>
+      <div className="iux-knob__control">
         <input
           type="text"
           className="iux-knob__text"
@@ -412,19 +469,10 @@ function LengthControl({ knob, value, onChange }: { knob: Knob; value: string; o
           onChange={e => onChange(e.target.value)}
           aria-label={knob.label}
         />
-      )}
-      <button
-        type="button"
-        className={`iux-knob__mode${showSlider ? ' is-active' : ''}`}
-        aria-pressed={showSlider}
-        disabled={parsed === null}
-        onClick={() => setSlider(s => !s)}
-        title={showSlider ? 'Switch to text input' : 'Switch to slider + units'}
-        aria-label={`Toggle slider for ${knob.label}`}
-      >
-        {showSlider ? 'Tx' : '⇔'}
-      </button>
-    </>
+        {modeToggle}
+        <ResetButton knob={knob} overridden={overridden} onReset={onReset} />
+      </div>
+    </div>
   )
 }
 
@@ -449,19 +497,19 @@ function SliderUnit({
         min={def.min}
         max={max}
         step={def.step}
-        label={`${label} amount`}
-        formatValue={n => `${tidy(n)}${unit}`}
+        label={label}
+        formatValue={n => `${tidy(n)}${unit || ''}`}
         onChange={n => onChange(`${tidy(n)}${unit}`)}
       />
-      <Select
-        variant="dropdown"
-        value={unit}
-        options={LENGTH_UNITS.map(u => ({ value: u.value, label: u.label }))}
-        onChange={nextUnit => onChange(`${tidy(num)}${nextUnit}`)}
-      />
-      <span className="iux-knob__slider-val" aria-hidden="true">
-        {tidy(num)}{unit || ''}
-      </span>
+      <label className="iux-knob__unit">
+        <span className="iux-knob__unit-label">Unit</span>
+        <Select
+          variant="dropdown"
+          value={unit}
+          options={LENGTH_UNITS.map(u => ({ value: u.value, label: u.label || '— none —' }))}
+          onChange={nextUnit => onChange(`${tidy(num)}${nextUnit}`)}
+        />
+      </label>
     </div>
   )
 }
