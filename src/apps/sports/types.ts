@@ -31,6 +31,16 @@ export interface Team {
   pointsFor: number
   /** Average points allowed per game. */
   pointsAgainst: number
+  /** Team rebounds per game (offensive + defensive). */
+  reboundsPerGame: number
+  /** Team assists per game. */
+  assistsPerGame: number
+  /** Team steals per game. */
+  stealsPerGame: number
+  /** Team blocks per game. */
+  blocksPerGame: number
+  /** Team turnovers per game. */
+  turnoversPerGame: number
   /** Record over the most recent 10 games, e.g. "7-3". */
   last10: string
   /** Win or loss streak, e.g. "W3" or "L2". */

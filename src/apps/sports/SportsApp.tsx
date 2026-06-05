@@ -30,6 +30,7 @@ import { PlayerDetail } from './pages/PlayerDetail'
 import { Games } from './pages/Games'
 import { GameDetail } from './pages/GameDetail'
 import { Standings } from './pages/Standings'
+import { Matchup } from './pages/Matchup'
 import { NotFound } from './pages/NotFound'
 import './sports-app.css'
 
@@ -45,6 +46,7 @@ const NAV: NavItem[] = [
   { to: sportsRoutes.players(), label: 'Players', isActive: r => r.kind === 'players' || r.kind === 'playerDetail' },
   { to: sportsRoutes.games(), label: 'Games', isActive: r => r.kind === 'games' || r.kind === 'gameDetail' },
   { to: sportsRoutes.standings(), label: 'Standings', isActive: r => r.kind === 'standings' },
+  { to: sportsRoutes.matchup(), label: 'Matchup', isActive: r => r.kind === 'matchup' },
 ]
 
 export function SportsApp({ location }: SportsAppProps) {
@@ -161,6 +163,7 @@ function RouteContent({ route }: { route: SportsRoute }) {
     case 'games': return <Games />
     case 'gameDetail': return <GameDetail id={route.id} />
     case 'standings': return <Standings />
+    case 'matchup': return <Matchup aSlug={route.aSlug} bSlug={route.bSlug} />
     case 'notFound': return <NotFound />
   }
 }

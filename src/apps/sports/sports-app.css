@@ -4985,3 +4985,309 @@
     height: 2rem;
   }
 }
+
+/* ============================================================
+   Matchup lab — non-scoring points comparison
+   ============================================================ */
+
+.matchup__pickers {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 var(--space-3);
+}
+
+.matchup__picker {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex: 1 1 240px;
+  min-width: 200px;
+}
+
+.matchup__picker--b {
+  flex-direction: row-reverse;
+}
+
+.matchup__picker-dot {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.55rem;
+  flex: none;
+}
+
+.matchup__vs {
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-secondary);
+  padding-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+/* --- Headline summary --- */
+.matchup__summary {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+}
+
+.matchup__summary-team {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: start;
+}
+
+.matchup__summary-team--right {
+  text-align: end;
+}
+
+.matchup__summary-name {
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-display-weight);
+}
+
+.matchup__summary-metric {
+  font-family: var(--type-display-family);
+  font-size: var(--type-title-size);
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.matchup__summary-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0 var(--space-3);
+  border-inline: var(--border-width-thin) solid var(--color-border-subtle);
+  text-align: center;
+}
+
+.matchup__summary-edge-label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-content-secondary);
+}
+
+.matchup__summary-edge {
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.matchup__summary-caption {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+/* --- Per-view frame --- */
+.matchup__view {
+  padding-top: var(--space-3);
+}
+
+.matchup__view-title {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-heading-weight);
+  margin: 0 0 var(--space-1);
+}
+
+.matchup__view-caption {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin: 0 0 var(--space-3);
+  max-width: 60ch;
+}
+
+.matchup__chart-scroll {
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.matchup__radar {
+  display: flex;
+  justify-content: center;
+}
+
+/* --- View 2: category battle (back-to-back bars) --- */
+.matchup__battle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.matchup__battle-head {
+  display: grid;
+  grid-template-columns: 1fr 3.5rem 1fr;
+  align-items: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.matchup__battle-head > span:first-child { text-align: end; }
+.matchup__battle-head > span:last-child { text-align: start; }
+
+.matchup__battle-row {
+  display: grid;
+  grid-template-columns: 1fr 3.5rem 1fr;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.matchup__battle-side {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.matchup__battle-side--a {
+  flex-direction: row-reverse;
+}
+
+.matchup__battle-bar {
+  height: 1.1rem;
+  min-width: 2px;
+  border-radius: var(--radius-sm);
+  transition: width var(--motion-duration-medium) var(--motion-easing-standard);
+}
+
+.matchup__battle-bar.is-hurt {
+  opacity: 0.32;
+}
+
+.matchup__battle-bar.is-winner {
+  outline: var(--border-width-thin) solid var(--color-border-strong);
+  outline-offset: 1px;
+}
+
+.matchup__battle-val {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+.matchup__battle-label {
+  text-align: center;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+/* --- View 5: ledger total strip --- */
+.matchup__ledger-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+}
+
+.matchup__ledger-total strong {
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Model note --- */
+.matchup__model {
+  margin-top: var(--space-5);
+  border-top: var(--border-width-thin) solid var(--color-border-subtle);
+  padding-top: var(--space-3);
+}
+
+.matchup__model-summary {
+  cursor: pointer;
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-secondary);
+}
+
+.matchup__model-summary:hover {
+  color: var(--color-content-primary);
+}
+
+.matchup__model-body {
+  margin-top: var(--space-2);
+}
+
+.matchup__model-body p {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  max-width: 64ch;
+  margin: 0 0 var(--space-2);
+}
+
+.matchup__model-coeffs {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+}
+
+.matchup__model-coeffs li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-default);
+}
+
+.matchup__model-stat {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+.matchup__model-coeff {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .matchup__summary {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .matchup__summary-team,
+  .matchup__summary-team--right {
+    text-align: center;
+  }
+
+  .matchup__summary-center {
+    border-inline: none;
+    border-block: var(--border-width-thin) solid var(--color-border-subtle);
+    padding: var(--space-2) 0;
+  }
+}

@@ -47,11 +47,22 @@ feature, not the chrome.
 - `#/apps/sports/games/:id` — One game: score header, box score,
   quarter breakdown, top performers (linked to the player page).
 - `#/apps/sports/standings` — East and West conference standings.
+- `#/apps/sports/matchup` and `#/apps/sports/matchup/:a/:b` — Matchup
+  lab: pick two teams and see how much their non-scoring stats
+  (rebounds, assists, steals, blocks, turnovers) are worth in points
+  versus a league-average team, shown five ways — a Waterfall points
+  bridge, a back-to-back "category battle" bar pyramid, a paired
+  Lollipop dumbbell, a two-team Radar, and a sortable Table ledger.
+  The points model lives in `src/apps/sports/matchup.ts` with
+  per-event coefficients in one tunable place.
 
 **Components composed.**
 - `Card` — team cards, game cards, player profile, stat-leader tiles.
-- `Table` (sortable) — rosters, standings, box scores, leader tables.
-- `Tabs` — team detail (Roster / Schedule / Stats), player detail.
+- `Table` (sortable) — rosters, standings, box scores, leader tables,
+  matchup points ledger.
+- `Tabs` — team detail (Roster / Schedule / Stats), player detail,
+  matchup views (Bridge / Battle / Head-to-head / Radar / Ledger).
+- `Waterfall`, `Lollipop`, `Radar` — matchup lab visualizations.
 - `Segmented` — conference filter on teams + standings, position
   filter on players, status filter on games.
 - `Select` — in-app palette picker.
@@ -60,7 +71,9 @@ feature, not the chrome.
 
 **Data.**
 - `src/apps/sports/data/teams.ts` — 10 teams (5 East, 5 West), seeded
-  with colors, arena, head coach, record, conference rank.
+  with colors, arena, head coach, record, points for/against, and
+  per-game rebound / assist / steal / block / turnover averages (the
+  inputs to the matchup lab).
 - `src/apps/sports/data/players.ts` — 30 players (3 per team) with
   realistic per-game stat lines.
 - `src/apps/sports/data/games.ts` — 15 games dated around the current
@@ -82,7 +95,7 @@ fuse:
 
 - **Content** is what a route produces — the pages in
   `src/apps/sports/pages/` (`Home`, `Teams`, `TeamDetail`, `Players`,
-  `PlayerDetail`, `Games`, `GameDetail`, `Standings`). A page reads
+  `PlayerDetail`, `Games`, `GameDetail`, `Standings`, `Matchup`). A page reads
   the URL, looks up data, and renders a result. It has no opinion
   about where on the screen it appears, how the user got there, or
   what navigation surrounds it.
