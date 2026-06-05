@@ -27,6 +27,7 @@ import {
   type TokenOverrides,
 } from '../lib/customPatterns'
 import { encodePattern, decodePattern } from '../lib/patternCodec'
+import { applyPickedHex, toPickerHex } from '../lib/color'
 import { useHashLocation, replaceParams } from '../apps/router'
 import {
   KNOBS,
@@ -377,20 +378,16 @@ function BlockKnob({
   )
 }
 
-/** Whether a value is a hex color the native color picker can edit directly. */
-function isHexColor(value: string): boolean {
-  return /^#[0-9a-fA-F]{3,8}$/.test(value)
-}
-
 function ColorControl({ knob, value, onChange }: { knob: Knob; value: string; onChange: (v: string) => void }) {
+  const pickerHex = toPickerHex(value)
   return (
     <>
-      {isHexColor(value) ? (
+      {pickerHex !== null ? (
         <input
           type="color"
           className="iux-knob__swatch"
-          value={value}
-          onChange={e => onChange(e.target.value)}
+          value={pickerHex}
+          onChange={e => onChange(applyPickedHex(value, e.target.value))}
           aria-label={`${knob.label} color`}
         />
       ) : (
