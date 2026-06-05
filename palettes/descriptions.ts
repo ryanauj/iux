@@ -10,6 +10,16 @@ import type { PaletteId } from './index'
 
 import { description as aaa } from './aaa.description'
 import { description as academic } from './academic.description'
+import { description as apothecaryHerbarium } from './apothecary-herbarium.description'
+import { description as celadonGlaze } from './celadon-glaze.description'
+import { description as eInkCarta } from './e-ink-carta.description'
+import { description as iridescentOpal } from './iridescent-opal.description'
+import { description as origamiFold } from './origami-fold.description'
+import { description as saltFlats } from './salt-flats.description'
+import { description as seaGlass } from './sea-glass.description'
+import { description as silverDaguerreotype } from './silver-daguerreotype.description'
+import { description as sugarPaperChalk } from './sugar-paper-chalk.description'
+import { description as whitewashAegean } from './whitewash-aegean.description'
 import { description as aeroGlass } from './aero-glass.description'
 import { description as artDeco } from './art-deco.description'
 import { description as artDecoIvory } from './art-deco-ivory.description'
@@ -96,6 +106,16 @@ import { description as zenSumie } from './zen-sumie.description'
 export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   aaa,
   academic,
+  'apothecary-herbarium': apothecaryHerbarium,
+  'celadon-glaze': celadonGlaze,
+  'e-ink-carta': eInkCarta,
+  'iridescent-opal': iridescentOpal,
+  'origami-fold': origamiFold,
+  'salt-flats': saltFlats,
+  'sea-glass': seaGlass,
+  'silver-daguerreotype': silverDaguerreotype,
+  'sugar-paper-chalk': sugarPaperChalk,
+  'whitewash-aegean': whitewashAegean,
   'aero-glass': aeroGlass,
   'art-deco': artDeco,
   'art-deco-ivory': artDecoIvory,

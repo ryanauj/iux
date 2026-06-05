@@ -149,4 +149,16 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'crt-phosphor-greenbar': ['crt', 'retro', 'terminal', 'monochrome', 'light', 'paper'],
   whiteprint: ['print', 'technical', 'mono', 'light', 'grid', 'drafting'],
   'art-deco-ivory': ['deco', 'gatsby', 'vintage', 'light', 'gold', 'geometric'],
+
+  /* Group Z4 — out-of-the-box light register set */
+  'e-ink-carta': ['light', 'e-ink', 'reader', 'monochrome', 'serif', 'paper'],
+  'salt-flats': ['light', 'mineral', 'minimal', 'desert', 'spacious', 'earthy'],
+  'whitewash-aegean': ['light', 'coastal', 'mediterranean', 'cycladic', 'serif', 'blue'],
+  'apothecary-herbarium': ['light', 'vintage', 'botanical', 'serif', 'cream', 'medicinal'],
+  'origami-fold': ['light', 'paper', 'folded', 'craft', 'bright', 'geometric'],
+  'celadon-glaze': ['light', 'ceramic', 'glaze', 'jade', 'puffy', '3d'],
+  'sea-glass': ['light', 'glass', 'frosted', 'coastal', 'aqua', 'translucent'],
+  'iridescent-opal': ['light', 'glass', 'holographic', 'pearlescent', 'translucent', 'multicolor'],
+  'silver-daguerreotype': ['light', 'antique', 'silver', 'photographic', 'serif', 'monotone'],
+  'sugar-paper-chalk': ['light', 'hand-drawn', 'chalk', 'pastel', 'classroom', 'craft'],
 }
