@@ -105,6 +105,9 @@ import { description as zenSumie } from './zen-sumie.description'
 import { description as celGlassFrost } from './cel-glass-frost.description'
 import { description as celGlassNoir } from './cel-glass-noir.description'
 import { description as celGlassSunset } from './cel-glass-sunset.description'
+import { description as celGlassMist } from './cel-glass-mist.description'
+import { description as celGlassBone } from './cel-glass-bone.description'
+import { description as celGlassOrchid } from './cel-glass-orchid.description'
 
 export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   aaa,
@@ -137,6 +140,9 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'cel-glass-frost': celGlassFrost,
   'cel-glass-noir': celGlassNoir,
   'cel-glass-sunset': celGlassSunset,
+  'cel-glass-mist': celGlassMist,
+  'cel-glass-bone': celGlassBone,
+  'cel-glass-orchid': celGlassOrchid,
   'citrus-spark': citrusSpark,
   claymorphism,
   'coastal-modern': coastalModern,

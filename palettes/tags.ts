@@ -166,4 +166,9 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'cel-glass-frost': ['glass', 'anime', 'translucent', 'frosted', 'cool', 'light', 'cel-shaded'],
   'cel-glass-noir': ['glass', 'anime', 'translucent', 'frosted', 'neon', 'dark', 'cel-shaded'],
   'cel-glass-sunset': ['glass', 'anime', 'translucent', 'frosted', 'warm', 'light', 'cel-shaded'],
+
+  /* Group Z6 — cel-glass light-ground registers (white/beige + colored line) */
+  'cel-glass-mist': ['glass', 'anime', 'frosted', 'light', 'white', 'cool', 'teal', 'cel-shaded'],
+  'cel-glass-bone': ['glass', 'anime', 'frosted', 'light', 'beige', 'warm', 'clay', 'cel-shaded'],
+  'cel-glass-orchid': ['glass', 'anime', 'frosted', 'light', 'white', 'violet', 'cel-shaded'],
 }

@@ -95,6 +95,9 @@ import { palette as sugarPaperChalk } from './sugar-paper-chalk'
 import { palette as celGlassFrost } from './cel-glass-frost'
 import { palette as celGlassNoir } from './cel-glass-noir'
 import { palette as celGlassSunset } from './cel-glass-sunset'
+import { palette as celGlassMist } from './cel-glass-mist'
+import { palette as celGlassBone } from './cel-glass-bone'
+import { palette as celGlassOrchid } from './cel-glass-orchid'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -194,6 +197,9 @@ export const palettes = {
   'cel-glass-frost': celGlassFrost,
   'cel-glass-noir': celGlassNoir,
   'cel-glass-sunset': celGlassSunset,
+  'cel-glass-mist': celGlassMist,
+  'cel-glass-bone': celGlassBone,
+  'cel-glass-orchid': celGlassOrchid,
 } as const
 
 export type PaletteId = keyof typeof palettes
