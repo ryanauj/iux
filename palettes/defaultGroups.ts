@@ -30,6 +30,7 @@ const ENGINE_LABELS: Record<string, string> = {
   sketch: 'Sketch',
   cardstock: 'Cardstock',
   'cel-shaded': 'Cel-Shaded',
+  'cel-glass': 'Cel-Glass',
   aurora: 'Aurora',
   'terminal-tui': 'Terminal',
 }
@@ -52,6 +53,9 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'stained-glass',
     'sea-glass',
     'iridescent-opal',
+    'cel-glass-frost',
+    'cel-glass-noir',
+    'cel-glass-sunset',
   ],
   Retro: [
     'vaporwave',
@@ -120,6 +124,9 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'cel-shaded-mecha',
     'cel-shaded-sakura',
     'cel-shaded-citrus',
+    'cel-glass-frost',
+    'cel-glass-noir',
+    'cel-glass-sunset',
   ],
   Neobrutalist: [
     'neubrutalism',

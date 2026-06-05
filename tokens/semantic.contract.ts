@@ -606,6 +606,7 @@ export type Engine =
   | 'sketch'
   | 'cardstock'
   | 'cel-shaded'
+  | 'cel-glass'
   | 'aurora'
   | 'terminal-tui'
 

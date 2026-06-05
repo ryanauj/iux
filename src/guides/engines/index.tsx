@@ -32,6 +32,7 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'sketch',       name: 'Sketch',       available: true },
   { id: 'cardstock',    name: 'Cardstock',    available: true },
   { id: 'cel-shaded',   name: 'Cel-shaded',   available: true },
+  { id: 'cel-glass',    name: 'Cel-Glass',    available: true },
   { id: 'aurora',       name: 'Aurora',       available: true },
   { id: 'terminal-tui', name: 'Terminal / TUI', available: true },
 ]

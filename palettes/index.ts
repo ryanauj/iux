@@ -92,6 +92,9 @@ import { palette as seaGlass } from './sea-glass'
 import { palette as iridescentOpal } from './iridescent-opal'
 import { palette as silverDaguerreotype } from './silver-daguerreotype'
 import { palette as sugarPaperChalk } from './sugar-paper-chalk'
+import { palette as celGlassFrost } from './cel-glass-frost'
+import { palette as celGlassNoir } from './cel-glass-noir'
+import { palette as celGlassSunset } from './cel-glass-sunset'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -188,6 +191,9 @@ export const palettes = {
   'iridescent-opal': iridescentOpal,
   'silver-daguerreotype': silverDaguerreotype,
   'sugar-paper-chalk': sugarPaperChalk,
+  'cel-glass-frost': celGlassFrost,
+  'cel-glass-noir': celGlassNoir,
+  'cel-glass-sunset': celGlassSunset,
 } as const
 
 export type PaletteId = keyof typeof palettes
