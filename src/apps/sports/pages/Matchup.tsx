@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Select } from '../../../components/Select/Select'
 import { Table, type TableColumn } from '../../../components/Table/Table'
@@ -9,13 +9,17 @@ import { navigate } from '../../router'
 import { TEAMS, getTeamBySlug } from '../data'
 import {
   analyzeMatchup,
+  DEFAULT_RATES,
   LEAGUE_BASELINE_POINTS,
+  LEAGUE_PPP,
   STAT_DEFS,
   formatPoints,
+  formatRate,
   formatValue,
   type MatchupAnalysis,
   type StatContribution,
   type StatDef,
+  type StatKey,
   type TeamMatchup,
 } from '../matchup'
 import type { Team } from '../types'
@@ -30,8 +34,10 @@ const DEFAULT_B = 'nuggets'
 
 const TEAM_OPTIONS = TEAMS.map(t => ({ value: t.slug, label: `${t.city} ${t.name}` }))
 
-/** Strongest coefficient, for scaling the conversion-rate intensity bars. */
-const MAX_COEFF = Math.max(...STAT_DEFS.map(d => Math.abs(d.coefficient)))
+/** Strongest rate in a map, for scaling the conversion-rate intensity bars. */
+function maxAbsRate(rates: Record<StatKey, number>): number {
+  return Math.max(0.01, ...STAT_DEFS.map(d => Math.abs(rates[d.key])))
+}
 
 export function Matchup({ aSlug, bSlug }: MatchupProps) {
   const teamA = getTeamBySlug(aSlug ?? '') ?? getTeamBySlug(DEFAULT_A) ?? TEAMS[0]
@@ -40,7 +46,10 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
     teamB = TEAMS.find(t => t.id !== teamA.id) ?? teamB
   }
 
-  const analysis = analyzeMatchup(teamA, teamB)
+  // Points-per-stat rates are configurable; they start at the data-derived
+  // defaults (league PPP × each stat's possession weight).
+  const [rates, setRates] = useState<Record<StatKey, number>>(DEFAULT_RATES)
+  const analysis = analyzeMatchup(teamA, teamB, rates)
 
   const goTo = (a: string, b: string) => navigate(sportsRoutes.matchup(a, b))
 
@@ -75,6 +84,8 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
 
       <Summary analysis={analysis} teamA={teamA} teamB={teamB} />
 
+      <PricingPanel rates={rates} onChange={setRates} />
+
       <Tabs
         variant="basic"
         ariaLabel="Matchup views"
@@ -96,8 +107,6 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
           }
         }}
       />
-
-      <ModelNote />
     </>
   )
 }
@@ -118,15 +127,15 @@ interface ViewProps {
  * length is proportional to the rate. A steal's bar runs near full; a
  * rebound's is short — that ratio IS the reason a steal is worth more.
  */
-function ConversionChip({ def, showLabel = true }: { def: StatDef; showLabel?: boolean }) {
-  const signed = `${def.coefficient > 0 ? '+' : '−'}${Math.abs(def.coefficient).toFixed(2)}`
-  const pct = (Math.abs(def.coefficient) / MAX_COEFF) * 100
+function ConversionChip({ def, rate, maxRate, showLabel = true }: { def: StatDef; rate: number; maxRate: number; showLabel?: boolean }) {
+  const signed = `${rate > 0 ? '+' : '−'}${Math.abs(rate).toFixed(2)}`
+  const pct = (Math.abs(rate) / maxRate) * 100
   return (
     <span className="conv-chip" title={`Each ${def.label.toLowerCase()} ≈ ${signed} pts`}>
       {showLabel && <span className="conv-chip__stat">{def.short}</span>}
       <span className="conv-chip__rate">{signed}</span>
       <span className="conv-chip__track">
-        <span className={`conv-chip__fill ${def.coefficient >= 0 ? 'is-pos' : 'is-neg'}`} style={{ width: `${pct}%` }} />
+        <span className={`conv-chip__fill ${rate >= 0 ? 'is-pos' : 'is-neg'}`} style={{ width: `${pct}%` }} />
       </span>
     </span>
   )
@@ -136,7 +145,7 @@ function ConversionChip({ def, showLabel = true }: { def: StatDef; showLabel?: b
 function DerivationLine({ c }: { c: StatContribution }) {
   const unit = c.def.short.toLowerCase()
   return (
-    <span className="deriv-line" title={`${formatValue(c.value)} − ${formatValue(c.leagueAverage)} league avg = ${signedDelta(c.delta)} ${unit}/gm, × ${c.def.coefficient} pts per ${unit} = ${formatPoints(c.relativePoints)} pts`}>
+    <span className="deriv-line" title={`${formatValue(c.value)} − ${formatValue(c.leagueAverage)} league avg = ${signedDelta(c.delta)} ${unit}/gm, × ${formatRate(c.rate)} pts per ${unit} = ${formatPoints(c.relativePoints)} pts`}>
       <span className="deriv-line__val">{formatValue(c.value)}</span>
       <span className="deriv-line__op">−</span>
       <span className="deriv-line__avg">{formatValue(c.leagueAverage)}</span>
@@ -144,7 +153,7 @@ function DerivationLine({ c }: { c: StatContribution }) {
       <span className="deriv-line__eq">=</span>
       <span className={`deriv-line__delta ${c.delta >= 0 ? 'is-pos' : 'is-neg'}`}>{signedDelta(c.delta)}</span>
       <span className="deriv-line__op">×</span>
-      <span className="deriv-line__rate">{c.def.coefficient}</span>
+      <span className="deriv-line__rate">{formatRate(c.rate)}</span>
       <span className="deriv-line__unit">pts/{unit}</span>
       <span className="deriv-line__eq">=</span>
       <span className={`deriv-line__pts ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`}>{formatPoints(c.relativePoints)}</span>
@@ -259,6 +268,7 @@ function BridgeView({ analysis }: ViewProps) {
 }
 
 function TeamBridge({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
+  const maxRate = Math.max(0.01, ...tm.contributions.map(c => Math.abs(c.rate)))
   const steps: WaterfallStep[] = [
     ...tm.contributions.map(c => ({ key: c.def.key, label: c.def.short, value: c.relativePoints })),
     { key: 'net', label: 'Net', value: 0, subtotal: true },
@@ -276,7 +286,7 @@ function TeamBridge({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
       <ul className="matchup__bridge-deriv">
         {tm.contributions.map(c => (
           <li key={c.def.key}>
-            <ConversionChip def={c.def} />
+            <ConversionChip def={c.def} rate={c.rate} maxRate={maxRate} />
             <DerivationLine c={c} />
           </li>
         ))}
@@ -293,6 +303,7 @@ function TeamBridge({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
    ---------------------------------------------------------------- */
 function BattleView({ analysis, teamA, teamB }: ViewProps) {
   const { maxAbsPoints } = analysis
+  const maxRate = maxAbsRate(analysis.rates)
   const maxNet = Math.max(0.1, Math.abs(analysis.a.netRelativePoints), Math.abs(analysis.b.netRelativePoints))
   return (
     <ViewFrame
@@ -318,17 +329,17 @@ function BattleView({ analysis, teamA, teamB }: ViewProps) {
                 <span
                   className={`matchup__battle-bar ${e.aPoints >= 0 ? 'is-help' : 'is-hurt'}${e.edge > 0 ? ' is-winner' : ''}`}
                   style={{ width: `${(Math.abs(e.aPoints) / maxAbsPoints) * 100}%`, backgroundColor: teamA.primaryColor }}
-                  title={`${teamA.abbreviation} ${e.def.label}: ${formatValue(ca.value)} − ${formatValue(ca.leagueAverage)} = ${signedDelta(ca.delta)} ${unit} × ${e.def.coefficient} = ${formatPoints(e.aPoints)} pts`}
+                  title={`${teamA.abbreviation} ${e.def.label}: ${formatValue(ca.value)} − ${formatValue(ca.leagueAverage)} = ${signedDelta(ca.delta)} ${unit} × ${formatRate(ca.rate)} = ${formatPoints(e.aPoints)} pts`}
                 />
               </div>
               <div className="matchup__battle-center">
-                <ConversionChip def={e.def} />
+                <ConversionChip def={e.def} rate={ca.rate} maxRate={maxRate} />
               </div>
               <div className="matchup__battle-side matchup__battle-side--b">
                 <span
                   className={`matchup__battle-bar ${e.bPoints >= 0 ? 'is-help' : 'is-hurt'}${e.edge < 0 ? ' is-winner' : ''}`}
                   style={{ width: `${(Math.abs(e.bPoints) / maxAbsPoints) * 100}%`, backgroundColor: teamB.primaryColor }}
-                  title={`${teamB.abbreviation} ${e.def.label}: ${formatValue(cb.value)} − ${formatValue(cb.leagueAverage)} = ${signedDelta(cb.delta)} ${unit} × ${e.def.coefficient} = ${formatPoints(e.bPoints)} pts`}
+                  title={`${teamB.abbreviation} ${e.def.label}: ${formatValue(cb.value)} − ${formatValue(cb.leagueAverage)} = ${signedDelta(cb.delta)} ${unit} × ${formatRate(cb.rate)} = ${formatPoints(e.bPoints)} pts`}
                 />
                 <span className="matchup__battle-pts">{formatPoints(e.bPoints)} <span className="matchup__u">pts</span></span>
                 <span className="matchup__battle-val"><span className="matchup__u">{unit}</span> <em className={cb.delta >= 0 ? 'is-pos' : 'is-neg'}>({signedDelta(cb.delta)})</em> {formatValue(cb.value)}</span>
@@ -393,12 +404,13 @@ function ConversionView({ analysis, teamA, teamB }: ViewProps) {
           {/* rays — slope = rate */}
           <g clipPath="url(#conv-clip)">
             {STAT_DEFS.map(def => {
-              const y1 = def.coefficient * -xMax
-              const y2 = def.coefficient * xMax
+              const rate = analysis.rates[def.key]
+              const y1 = rate * -xMax
+              const y2 = rate * xMax
               return (
                 <line
                   key={def.key}
-                  className={`matchup__conv-ray ${def.coefficient >= 0 ? 'is-pos' : 'is-neg'}`}
+                  className={`matchup__conv-ray ${rate >= 0 ? 'is-pos' : 'is-neg'}`}
                   x1={xs(-xMax)} y1={ys(clampY(y1))}
                   x2={xs(xMax)} y2={ys(clampY(y2))}
                 />
@@ -407,11 +419,12 @@ function ConversionView({ analysis, teamA, teamB }: ViewProps) {
           </g>
           {/* ray labels near the positive end */}
           {STAT_DEFS.map(def => {
+            const rate = analysis.rates[def.key]
             const f = 0.82
-            const yEnd = clampY(def.coefficient * xMax * f)
+            const yEnd = clampY(rate * xMax * f)
             return (
               <text key={def.key} className="matchup__conv-ray-label" x={xs(xMax * f) + 6} y={ys(yEnd)} dominantBaseline="central">
-                {def.short} {def.coefficient > 0 ? '+' : '−'}{Math.abs(def.coefficient).toFixed(2)}
+                {def.short} {rate > 0 ? '+' : '−'}{Math.abs(rate).toFixed(2)}
               </text>
             )
           })}
@@ -422,10 +435,10 @@ function ConversionView({ analysis, teamA, teamB }: ViewProps) {
             return (
               <g key={def.key}>
                 <circle className="matchup__conv-dot" cx={xs(cb.delta)} cy={ys(clampY(cb.relativePoints))} r={5} style={{ fill: teamB.primaryColor }}>
-                  <title>{`${teamB.abbreviation} ${def.short}: ${formatValue(cb.value)} (${signedDelta(cb.delta)} vs avg) × ${def.coefficient} = ${formatPoints(cb.relativePoints)}`}</title>
+                  <title>{`${teamB.abbreviation} ${def.short}: ${formatValue(cb.value)} (${signedDelta(cb.delta)} vs avg) × ${formatRate(cb.rate)} = ${formatPoints(cb.relativePoints)}`}</title>
                 </circle>
                 <circle className="matchup__conv-dot" cx={xs(ca.delta)} cy={ys(clampY(ca.relativePoints))} r={5} style={{ fill: teamA.primaryColor }}>
-                  <title>{`${teamA.abbreviation} ${def.short}: ${formatValue(ca.value)} (${signedDelta(ca.delta)} vs avg) × ${def.coefficient} = ${formatPoints(ca.relativePoints)}`}</title>
+                  <title>{`${teamA.abbreviation} ${def.short}: ${formatValue(ca.value)} (${signedDelta(ca.delta)} vs avg) × ${formatRate(ca.rate)} = ${formatPoints(ca.relativePoints)}`}</title>
                 </circle>
               </g>
             )
@@ -514,7 +527,7 @@ function BuildUpView({ analysis, teamA, teamB }: ViewProps) {
                         className={`matchup__build-seg ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`}
                         x={left} y={cy - barH / 2} width={w} height={barH} rx={2}
                       >
-                        <title>{`${track.tm.team.abbreviation} ${c.def.label}: ${signedDelta(c.delta)} ${c.def.short.toLowerCase()} × ${c.def.coefficient} = ${formatPoints(c.relativePoints)} pts`}</title>
+                        <title>{`${track.tm.team.abbreviation} ${c.def.label}: ${signedDelta(c.delta)} ${c.def.short.toLowerCase()} × ${formatRate(c.rate)} = ${formatPoints(c.relativePoints)} pts`}</title>
                       </rect>
                       {wide && <text className={`matchup__build-seg-label ${c.relativePoints >= 0 ? 'is-pos' : 'is-neg'}`} x={(left + left + w) / 2} y={cy} dominantBaseline="central" textAnchor="middle">{c.def.short}</text>}
                       {wide && <text className="matchup__build-seg-pts" x={(left + left + w) / 2} y={cy - barH / 2 - 4} textAnchor="middle">{formatPoints(c.relativePoints)}</text>}
@@ -576,7 +589,7 @@ function LedgerView({ analysis, teamA, teamB }: ViewProps) {
       accessor: r => (
         <span className="matchup__ledger-stat">
           <span className="matchup__ledger-stat-name">{r.def.label}</span>
-          <span className="matchup__ledger-stat-rate">{r.def.coefficient} pts / {r.def.short.toLowerCase()}</span>
+          <span className="matchup__ledger-stat-rate">{formatRate(r.a.rate)} pts / {r.def.short.toLowerCase()}</span>
         </span>
       ),
       sortBy: (a, b) => a.def.label.localeCompare(b.def.label),
@@ -656,29 +669,67 @@ function ViewFrame({ title, caption, children }: { title: string; caption: strin
   )
 }
 
-/** Transparency: the rates that drive every number on the screen. */
-function ModelNote() {
+/**
+ * Where the rates come from, and a way to change them. Each rate is the
+ * league's points-per-possession (computed from the teams) times the stat's
+ * possession weight. Sliders override any rate; reset restores the data-fit.
+ */
+function PricingPanel({ rates, onChange }: { rates: Record<StatKey, number>; onChange: (r: Record<StatKey, number>) => void }) {
+  const maxRate = maxAbsRate(rates)
+  const dirty = STAT_DEFS.some(d => Math.abs(rates[d.key] - DEFAULT_RATES[d.key]) > 0.001)
+  const set = (key: StatKey, value: number) => onChange({ ...rates, [key]: value })
+
   return (
-    <details className="matchup__model">
-      <summary className="matchup__model-summary">How it's modelled</summary>
-      <div className="matchup__model-body">
-        <p>
-          Each non-scoring event carries a fixed point value, grounded in the
-          league's roughly 1.1 points-per-possession economy. A stat's
-          contribution is its deviation from the league average times that rate,
-          so it reads as “points added or removed versus an average team.”
-          Summing the five and adding the league-average baseline of{' '}
-          {formatValue(LEAGUE_BASELINE_POINTS)} points gives the projected
-          total. These are a teachable estimate, not official metrics.
+    <details className="matchup__pricing" open>
+      <summary className="matchup__pricing-summary">
+        How each stat is priced — points per stat
+        <span className="matchup__pricing-hint">{dirty ? 'custom rates' : 'data-derived · drag to adjust'}</span>
+      </summary>
+      <div className="matchup__pricing-body">
+        <p className="matchup__pricing-intro">
+          A rate is the league's <strong>points per possession</strong> —{' '}
+          {LEAGUE_PPP.toFixed(2)}, computed from every team's {''}
+          <code>pointsFor / possessions</code> — times how much of a possession
+          the stat is worth. So nothing here is a magic number: change a slider
+          to price a stat your own way, and every view, projection, and the{' '}
+          {formatValue(LEAGUE_BASELINE_POINTS)} baseline re-derive instantly.
         </p>
-        <ul className="matchup__model-coeffs">
-          {STAT_DEFS.map(d => (
-            <li key={d.key}>
-              <ConversionChip def={d} />
-              <span className="matchup__model-coeff-label">per {d.label.toLowerCase().replace(/s$/, '')}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="matchup__pricing-grid">
+          {STAT_DEFS.map(d => {
+            const rate = rates[d.key]
+            const min = d.possessionWeight >= 0 ? 0 : -2
+            const max = d.possessionWeight >= 0 ? 2 : 0
+            return (
+              <div key={d.key} className="pricing-row">
+                <div className="pricing-row__head">
+                  <span className="pricing-row__name">{d.label}</span>
+                  <ConversionChip def={d} rate={rate} maxRate={maxRate} showLabel={false} />
+                  <span className="pricing-row__value">{formatRate(rate)} <em>pts / {d.short.toLowerCase()}</em></span>
+                </div>
+                <input
+                  className="pricing-row__slider"
+                  type="range"
+                  min={min}
+                  max={max}
+                  step={0.01}
+                  value={rate}
+                  aria-label={`Points per ${d.label.toLowerCase().replace(/s$/, '')}`}
+                  onChange={e => set(d.key, Number(e.target.value))}
+                />
+                <p className="pricing-row__why">
+                  <strong>{LEAGUE_PPP.toFixed(2)} × {d.possessionWeight.toFixed(2)} = {formatRate(DEFAULT_RATES[d.key])}</strong>{' '}
+                  {d.rationale}
+                </p>
+              </div>
+            )
+          })}
+        </div>
+        <div className="matchup__pricing-foot">
+          <button type="button" className="matchup__pricing-reset" onClick={() => onChange(DEFAULT_RATES)} disabled={!dirty}>
+            Reset to data-derived rates
+          </button>
+          <span className="matchup__pricing-note">A teachable estimate, not an official NBA metric.</span>
+        </div>
       </div>
     </details>
   )

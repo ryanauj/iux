@@ -5678,51 +5678,140 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* --- Model note --- */
-.matchup__model {
-  margin-top: var(--space-5);
-  border-top: var(--border-width-thin) solid var(--color-border-subtle);
-  padding-top: var(--space-3);
+/* --- Pricing panel (where rates come from + configurable sliders) --- */
+.matchup__pricing {
+  margin-bottom: var(--space-4);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
 }
 
-.matchup__model-summary {
+.matchup__pricing-summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
   cursor: pointer;
-  font-family: var(--type-label-family);
-  font-size: var(--type-label-size);
-  color: var(--color-content-secondary);
+  padding: var(--space-3);
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size);
+  font-weight: var(--type-heading-weight);
+  color: var(--color-content-primary);
 }
 
-.matchup__model-summary:hover { color: var(--color-content-primary); }
+.matchup__pricing-hint {
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
 
-.matchup__model-body { margin-top: var(--space-2); }
+.matchup__pricing-body {
+  padding: 0 var(--space-3) var(--space-3);
+}
 
-.matchup__model-body p {
+.matchup__pricing-intro {
   font-size: var(--type-caption-size);
   color: var(--color-content-secondary);
-  max-width: 68ch;
-  margin: 0 0 var(--space-2);
+  max-width: 78ch;
+  margin: 0 0 var(--space-3);
 }
 
-.matchup__model-coeffs {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin: 0;
-  padding: 0;
-}
-
-.matchup__model-coeffs li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-2);
-  border: var(--border-width-thin) solid var(--color-border-subtle);
+.matchup__pricing-intro code {
+  font-family: var(--type-body-family);
+  background-color: var(--color-surface-sunken);
+  padding: 0.05rem 0.3rem;
   border-radius: var(--radius-sm);
+}
+
+.matchup__pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-3);
+}
+
+.pricing-row {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
   background-color: var(--color-surface-default);
 }
 
-.matchup__model-coeff-label {
+.pricing-row__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.pricing-row__name {
+  font-family: var(--type-label-family);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+}
+
+.pricing-row__value {
+  margin-inline-start: auto;
+  font-family: var(--type-display-family);
+  font-size: var(--type-subheading-size);
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.pricing-row__value em {
+  font-style: normal;
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.pricing-row__slider {
+  width: 100%;
+  margin: 0.2rem 0;
+  accent-color: var(--color-intent-primary-bg);
+}
+
+.pricing-row__why {
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  margin: var(--space-1) 0 0;
+}
+
+.pricing-row__why strong {
+  color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.matchup__pricing-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.matchup__pricing-reset {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  color: var(--color-content-primary);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-default);
+  cursor: pointer;
+}
+
+.matchup__pricing-reset:hover:not(:disabled) {
+  background-color: var(--color-surface-sunken);
+}
+
+.matchup__pricing-reset:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.matchup__pricing-note {
   font-size: var(--type-caption-size);
   color: var(--color-content-secondary);
 }

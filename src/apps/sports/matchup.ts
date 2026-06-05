@@ -6,29 +6,39 @@
  * steals, blocks, turnovers — are worth in points, and how that tilts an
  * expected head-to-head.
  *
- * The model is deliberately simple and transparent: every box-score event is
- * assigned a marginal point value (`COEFFICIENTS`), grounded in the league's
- * roughly-1.1 points-per-possession economy. A steal flips a possession (you
- * gain one, the opponent loses one) so it is worth about a full possession; a
- * rebound is worth a fraction of a possession because many are uncontested; a
- * turnover is a possession handed away, so it carries a negative weight.
+ * WHERE THE RATES COME FROM
+ * -------------------------
+ * Each stat's points-per-event rate is *derived from the team data*, not
+ * guessed. It is the product of two parts:
  *
- * Two framings are exposed, because "how many points does rebounding add"
- * has two honest answers:
+ *   rate = LEAGUE_PPP × possessionWeight
+ *
+ *   - LEAGUE_PPP is the league's points per possession, computed straight from
+ *     the teams: each team's `pointsFor / possessionsPerGame`, averaged. With
+ *     the seeded data this is ≈ 1.17.
+ *   - possessionWeight is how much of a possession one event is worth, from
+ *     basketball first principles (documented per stat in `STAT_DEFS`). A
+ *     turnover forfeits ~0.9 of a possession; a steal recovers ~0.9; a block
+ *     ends ~0.55 (the rest are rebounded back); a rebound secures ~0.30; an
+ *     assist stands in for ~0.25 of a possession's worth of shot quality.
+ *
+ * Why derive it this way instead of regressing points on the box score? With
+ * only ten teams a naïve regression is wildly unstable — on this data it even
+ * prices steals *negatively*, because the scrappy teams that gamble for steals
+ * also score less. The possession model keeps every sign correct and every
+ * number explainable, while still anchoring the one free scalar (PPP) to the
+ * actual team metrics. The rates are also configurable in the UI, so callers
+ * can override any of them; everything downstream re-derives.
+ *
+ * Two framings are exposed, because "how many points does rebounding add" has
+ * two honest answers:
  *
  *   1. RELATIVE — points added or removed *versus a league-average team*.
- *      Each stat's value is `(team − leagueAverage) × coefficient`. This is
- *      what the Bridge, Battle, Dumbbell, and Ledger views use, because the
- *      question is comparative: who gains the edge, and by how much.
+ *      `(team − leagueAverage) × rate`. Used by every comparative view.
+ *   2. ABSOLUTE — the raw points a stat generates, `stat × rate`, with
+ *      turnovers reframed as "ball security" so bigger is always better.
  *
- *   2. ABSOLUTE — the raw points a stat generates, `stat × coefficient`,
- *      with turnovers reframed as "ball security" (points NOT lost). This is
- *      what the Radar view uses, because a radar reads best when every axis
- *      points the same way (bigger is better) and starts from zero.
- *
- * None of these are official NBA metrics; they are a teachable estimate. The
- * coefficients live in one place so the whole screen re-derives if you tune
- * them.
+ * None of these are official NBA metrics; they are a teachable estimate.
  */
 import type { Team } from './types'
 import { TEAMS } from './data'
@@ -41,8 +51,6 @@ export interface StatDef {
   short: string
   /** Full label, e.g. "Rebounds". */
   label: string
-  /** Marginal points per event. Negative for stats that cost points. */
-  coefficient: number
   /** Field on `Team` that carries the per-game average for this stat. */
   field: keyof Pick<
     Team,
@@ -52,32 +60,55 @@ export interface StatDef {
     | 'blocksPerGame'
     | 'turnoversPerGame'
   >
-}
-
-/**
- * Marginal point value of each non-scoring event, in points. Tuned to the
- * league's ~1.1 points-per-possession economy:
- *   - steal: gains your possession AND denies one — near a full possession.
- *   - block: ends a possession, but ~half are recovered by the offense.
- *   - rebound: a fraction of a possession; many are uncontested.
- *   - assist: credits the passing that produces efficient shots.
- *   - turnover: a possession handed away — a full negative.
- */
-export const COEFFICIENTS: Record<StatKey, number> = {
-  reb: 0.35,
-  ast: 0.30,
-  stl: 1.05,
-  blk: 0.65,
-  tov: -1.05,
+  /** Possessions one event is worth (negative for stats that cost you). */
+  possessionWeight: number
+  /** Plain-language reason for the weight, shown in the pricing panel. */
+  rationale: string
 }
 
 export const STAT_DEFS: StatDef[] = [
-  { key: 'reb', short: 'REB', label: 'Rebounds', coefficient: COEFFICIENTS.reb, field: 'reboundsPerGame' },
-  { key: 'ast', short: 'AST', label: 'Assists', coefficient: COEFFICIENTS.ast, field: 'assistsPerGame' },
-  { key: 'stl', short: 'STL', label: 'Steals', coefficient: COEFFICIENTS.stl, field: 'stealsPerGame' },
-  { key: 'blk', short: 'BLK', label: 'Blocks', coefficient: COEFFICIENTS.blk, field: 'blocksPerGame' },
-  { key: 'tov', short: 'TOV', label: 'Turnovers', coefficient: COEFFICIENTS.tov, field: 'turnoversPerGame' },
+  {
+    key: 'reb', short: 'REB', label: 'Rebounds', field: 'reboundsPerGame',
+    possessionWeight: 0.30,
+    rationale: 'Securing the ball ends or extends a possession, but many boards are uncontested — worth about 0.30 of a possession.',
+  },
+  {
+    key: 'ast', short: 'AST', label: 'Assists', field: 'assistsPerGame',
+    possessionWeight: 0.25,
+    rationale: 'Assists stand in for the shot quality good ball movement creates — roughly a quarter-possession of added value.',
+  },
+  {
+    key: 'stl', short: 'STL', label: 'Steals', field: 'stealsPerGame',
+    possessionWeight: 0.90,
+    rationale: 'A steal is a live-ball takeaway, usually in transition; it recovers about 0.90 of a possession.',
+  },
+  {
+    key: 'blk', short: 'BLK', label: 'Blocks', field: 'blocksPerGame',
+    possessionWeight: 0.55,
+    rationale: 'A block ends a possession, but ~45% are rebounded by the offense for another try — net ~0.55.',
+  },
+  {
+    key: 'tov', short: 'TOV', label: 'Turnovers', field: 'turnoversPerGame',
+    possessionWeight: -0.90,
+    rationale: 'A turnover forfeits a possession worth roughly a point, less the few that would have missed anyway — about −0.90.',
+  },
 ]
+
+/**
+ * League points per possession, computed from the teams: the average of each
+ * team's `pointsFor / possessionsPerGame`. This is the single empirical anchor
+ * every rate is scaled by.
+ */
+export const LEAGUE_PPP: number =
+  TEAMS.reduce((acc, t) => acc + t.pointsFor / t.possessionsPerGame, 0) / TEAMS.length
+
+const round2 = (n: number) => Math.round(n * 100) / 100
+
+/** Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`. */
+export const DEFAULT_RATES: Record<StatKey, number> = STAT_DEFS.reduce((out, def) => {
+  out[def.key] = round2(LEAGUE_PPP * def.possessionWeight)
+  return out
+}, {} as Record<StatKey, number>)
 
 /** League-average per-game value for every modelled stat. */
 export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
@@ -95,22 +126,17 @@ export const LEAGUE_BASELINE_POINTS: number =
 
 export interface StatContribution {
   def: StatDef
+  /** Points-per-event rate actually used for this contribution. */
+  rate: number
   /** The team's per-game value for this stat. */
   value: number
   /** League average for this stat. */
   leagueAverage: number
   /** Deviation from league average (value − leagueAverage). */
   delta: number
-  /**
-   * RELATIVE framing: points added/removed versus a league-average team.
-   * `delta × coefficient`. Positive always means "helps this team".
-   */
+  /** RELATIVE framing: `delta × rate`. Positive always helps this team. */
   relativePoints: number
-  /**
-   * ABSOLUTE framing: raw points the stat generates. For turnovers this is
-   * reframed as "ball security" — points NOT lost relative to a high-turnover
-   * baseline — so that, like every other axis, bigger is better.
-   */
+  /** ABSOLUTE framing: raw points generated; turnovers reframed as ball security. */
   absolutePoints: number
 }
 
@@ -127,27 +153,23 @@ export interface TeamMatchup {
   projectedPoints: number
 }
 
-/**
- * A turnover baseline used for the ABSOLUTE framing: the league's highest
- * turnover team. Ball-security points = (baseline − turnovers) × |coeff|, so
- * the cleanest ball-handlers score highest and nobody goes negative.
- */
+/** Turnover baseline for the ABSOLUTE framing: the league's highest-turnover team. */
 const TOV_BASELINE = Math.max(...TEAMS.map(t => t.turnoversPerGame))
 
-function buildContribution(team: Team, def: StatDef): StatContribution {
+function buildContribution(team: Team, def: StatDef, rate: number): StatContribution {
   const value = team[def.field] as number
   const leagueAverage = LEAGUE_AVERAGES[def.key]
   const delta = value - leagueAverage
-  const relativePoints = delta * def.coefficient
+  const relativePoints = delta * rate
   const absolutePoints =
     def.key === 'tov'
-      ? (TOV_BASELINE - value) * Math.abs(def.coefficient)
-      : value * def.coefficient
-  return { def, value, leagueAverage, delta, relativePoints, absolutePoints }
+      ? (TOV_BASELINE - value) * Math.abs(rate)
+      : value * rate
+  return { def, rate, value, leagueAverage, delta, relativePoints, absolutePoints }
 }
 
-export function analyzeTeam(team: Team): TeamMatchup {
-  const contributions = STAT_DEFS.map(def => buildContribution(team, def))
+export function analyzeTeam(team: Team, rates: Record<StatKey, number>): TeamMatchup {
+  const contributions = STAT_DEFS.map(def => buildContribution(team, def, rates[def.key]))
   const netRelativePoints = contributions.reduce((acc, c) => acc + c.relativePoints, 0)
   const projectedPoints = LEAGUE_BASELINE_POINTS + netRelativePoints
   return { team, contributions, netRelativePoints, projectedPoints }
@@ -171,6 +193,8 @@ export interface MatchupAnalysis {
   netEdge: number
   /** League-average points both projections build on. */
   baseline: number
+  /** The rate map this analysis was built with. */
+  rates: Record<StatKey, number>
   /** Largest absolute single-stat point contribution across both teams. */
   maxAbsPoints: number
   /** Largest absolute single-stat deviation (in stat units) across both teams. */
@@ -178,9 +202,13 @@ export interface MatchupAnalysis {
 }
 
 /** Build the full two-team analysis used by every view on the matchup screen. */
-export function analyzeMatchup(teamA: Team, teamB: Team): MatchupAnalysis {
-  const a = analyzeTeam(teamA)
-  const b = analyzeTeam(teamB)
+export function analyzeMatchup(
+  teamA: Team,
+  teamB: Team,
+  rates: Record<StatKey, number> = DEFAULT_RATES,
+): MatchupAnalysis {
+  const a = analyzeTeam(teamA, rates)
+  const b = analyzeTeam(teamB, rates)
   const edges: StatEdge[] = STAT_DEFS.map((def, i) => {
     const aPoints = a.contributions[i].relativePoints
     const bPoints = b.contributions[i].relativePoints
@@ -190,7 +218,7 @@ export function analyzeMatchup(teamA: Team, teamB: Team): MatchupAnalysis {
   const allContribs = [...a.contributions, ...b.contributions]
   const maxAbsPoints = Math.max(0.1, ...allContribs.map(c => Math.abs(c.relativePoints)))
   const maxAbsDelta = Math.max(0.1, ...allContribs.map(c => Math.abs(c.delta)))
-  return { a, b, edges, netEdge, baseline: LEAGUE_BASELINE_POINTS, maxAbsPoints, maxAbsDelta }
+  return { a, b, edges, netEdge, baseline: LEAGUE_BASELINE_POINTS, rates, maxAbsPoints, maxAbsDelta }
 }
 
 /** "+2.3" / "-1.4" / "0.0" — signed, one decimal, for point values. */
@@ -202,4 +230,9 @@ export function formatPoints(n: number): string {
 /** Unsigned one-decimal, for raw stat values. */
 export function formatValue(n: number): string {
   return n.toFixed(1)
+}
+
+/** Two-decimal rate, e.g. 0.35 or -1.06. */
+export function formatRate(n: number): string {
+  return n.toFixed(2)
 }

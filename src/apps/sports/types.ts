@@ -41,6 +41,12 @@ export interface Team {
   blocksPerGame: number
   /** Team turnovers per game. */
   turnoversPerGame: number
+  /**
+   * Estimated possessions per game (pace). Combined with `pointsFor` this
+   * yields the team's points-per-possession, the empirical anchor the matchup
+   * lab uses to price every stat.
+   */
+  possessionsPerGame: number
   /** Record over the most recent 10 games, e.g. "7-3". */
   last10: string
   /** Win or loss streak, e.g. "W3" or "L2". */
