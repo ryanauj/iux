@@ -171,4 +171,14 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'cel-glass-mist': ['glass', 'anime', 'frosted', 'light', 'white', 'cool', 'teal', 'cel-shaded'],
   'cel-glass-bone': ['glass', 'anime', 'frosted', 'light', 'beige', 'warm', 'clay', 'cel-shaded'],
   'cel-glass-orchid': ['glass', 'anime', 'frosted', 'light', 'white', 'violet', 'cel-shaded'],
+
+  /* Group Z7 — CRT light-ground bars (paper printout + coloured ink) */
+  'crt-phosphor-bluebar': ['crt', 'retro', 'terminal', 'light', 'paper', 'printout', 'blue'],
+  'crt-phosphor-rosebar': ['crt', 'retro', 'terminal', 'light', 'paper', 'printout', 'rose'],
+  'crt-phosphor-goldbar': ['crt', 'retro', 'terminal', 'light', 'paper', 'printout', 'amber'],
+
+  /* Group Z8 — pixel-art light-ground registers (pale field + coloured accent) */
+  'pixel-art-sky': ['retro-gaming', 'pixel', 'light', 'pastel', 'cozy', 'blue', 'indie'],
+  'pixel-art-meadow': ['retro-gaming', 'pixel', 'light', 'pastel', 'cozy', 'green', 'indie'],
+  'pixel-art-blossom': ['retro-gaming', 'pixel', 'light', 'pastel', 'cozy', 'pink', 'indie'],
 }
