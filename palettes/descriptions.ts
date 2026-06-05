@@ -108,12 +108,6 @@ import { description as celGlassSunset } from './cel-glass-sunset.description'
 import { description as celGlassMist } from './cel-glass-mist.description'
 import { description as celGlassBone } from './cel-glass-bone.description'
 import { description as celGlassOrchid } from './cel-glass-orchid.description'
-import { description as crtPhosphorBluebar } from './crt-phosphor-bluebar.description'
-import { description as crtPhosphorRosebar } from './crt-phosphor-rosebar.description'
-import { description as crtPhosphorGoldbar } from './crt-phosphor-goldbar.description'
-import { description as pixelArtSky } from './pixel-art-sky.description'
-import { description as pixelArtMeadow } from './pixel-art-meadow.description'
-import { description as pixelArtBlossom } from './pixel-art-blossom.description'
 
 export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   aaa,
@@ -149,12 +143,6 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'cel-glass-mist': celGlassMist,
   'cel-glass-bone': celGlassBone,
   'cel-glass-orchid': celGlassOrchid,
-  'crt-phosphor-bluebar': crtPhosphorBluebar,
-  'crt-phosphor-rosebar': crtPhosphorRosebar,
-  'crt-phosphor-goldbar': crtPhosphorGoldbar,
-  'pixel-art-sky': pixelArtSky,
-  'pixel-art-meadow': pixelArtMeadow,
-  'pixel-art-blossom': pixelArtBlossom,
   'citrus-spark': citrusSpark,
   claymorphism,
   'coastal-modern': coastalModern,

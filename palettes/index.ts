@@ -98,12 +98,6 @@ import { palette as celGlassSunset } from './cel-glass-sunset'
 import { palette as celGlassMist } from './cel-glass-mist'
 import { palette as celGlassBone } from './cel-glass-bone'
 import { palette as celGlassOrchid } from './cel-glass-orchid'
-import { palette as crtPhosphorBluebar } from './crt-phosphor-bluebar'
-import { palette as crtPhosphorRosebar } from './crt-phosphor-rosebar'
-import { palette as crtPhosphorGoldbar } from './crt-phosphor-goldbar'
-import { palette as pixelArtSky } from './pixel-art-sky'
-import { palette as pixelArtMeadow } from './pixel-art-meadow'
-import { palette as pixelArtBlossom } from './pixel-art-blossom'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -206,12 +200,6 @@ export const palettes = {
   'cel-glass-mist': celGlassMist,
   'cel-glass-bone': celGlassBone,
   'cel-glass-orchid': celGlassOrchid,
-  'crt-phosphor-bluebar': crtPhosphorBluebar,
-  'crt-phosphor-rosebar': crtPhosphorRosebar,
-  'crt-phosphor-goldbar': crtPhosphorGoldbar,
-  'pixel-art-sky': pixelArtSky,
-  'pixel-art-meadow': pixelArtMeadow,
-  'pixel-art-blossom': pixelArtBlossom,
 } as const
 
 export type PaletteId = keyof typeof palettes
