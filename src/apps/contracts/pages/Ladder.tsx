@@ -14,9 +14,8 @@ export function Ladder() {
         lede={
           <>
             Chapter 1 gave the shape: one climb, getting steeper toward the top.
-            This chapter puts names on the rungs. What matters most is the{' '}
-            <strong>gaps between them</strong>: how far apart these lines sit is
-            what quietly decides how every team behaves.
+            This chapter names the rungs. The distances between them are what
+            determine how teams behave.
           </>
         }
       />

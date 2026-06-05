@@ -20,13 +20,11 @@ export function Overview() {
         title="How NBA contracts actually work"
         lede={
           <>
-            The simplest cap the league could write would let every team spend
-            the same fixed amount on salaries and not a dollar more. That design
-            is clean and workable, but it creates a problem the league decided it
-            couldn't live with. Almost every rule in this guide is a patch on
-            that one idea, each fixing a problem the last version caused. We'll
-            build it the way the league did: start with the wall, find where it
-            binds, then add one fix at a time.
+            Almost every rule in this guide is a patch on one idea: a single
+            fixed spending limit for every team. The league started near that
+            and spent decades adding fixes, each one solving a problem the
+            previous version created. We'll build it the same way — start with
+            the wall, find where it binds, then add one fix at a time.
           </>
         }
       />
