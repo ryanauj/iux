@@ -171,4 +171,18 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'cel-glass-mist': ['glass', 'anime', 'frosted', 'light', 'white', 'cool', 'teal', 'cel-shaded'],
   'cel-glass-bone': ['glass', 'anime', 'frosted', 'light', 'beige', 'warm', 'clay', 'cel-shaded'],
   'cel-glass-orchid': ['glass', 'anime', 'frosted', 'light', 'white', 'violet', 'cel-shaded'],
+
+  /* Group Z7 — editor / IDE syntax themes (cel+glass+crt) */
+  'cel-shaded-dracula-crt': ['editor-theme', 'cel-shaded', 'glass', 'crt', 'light', 'neon'],
+  'cel-shaded-gruvbox-crt': ['editor-theme', 'cel-shaded', 'glass', 'crt', 'light', 'warm'],
+  'cel-shaded-nord-crt': ['editor-theme', 'cel-shaded', 'glass', 'crt', 'light', 'frost'],
+  'cel-shaded-solarized-crt': ['editor-theme', 'cel-shaded', 'glass', 'crt', 'light', 'low-glare'],
+  'cel-shaded-monokai-crt': ['editor-theme', 'cel-shaded', 'glass', 'crt', 'light', 'neon'],
+
+  /* Group Z8 — period & movement registers (cel+glass) */
+  'cel-shaded-academia-glass': ['cel-shaded', 'glass', 'scholarly', 'serif', 'light', 'ink-outline'],
+  'cel-shaded-ukiyo-glass': ['cel-shaded', 'glass', 'woodblock', 'japanese', 'indigo', 'ink-outline'],
+  'cel-shaded-constructivist-glass': ['cel-shaded', 'glass', 'agitprop', 'poster', 'red', 'ink-outline'],
+  'cel-shaded-nouveau-glass': ['cel-shaded', 'glass', 'organic', 'ornate', 'serif', 'ink-outline'],
+  'cel-shaded-botanical-glass': ['cel-shaded', 'glass', 'botanical', 'serif', 'naturalist', 'ink-outline'],
 }

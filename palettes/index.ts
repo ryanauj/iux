@@ -98,6 +98,16 @@ import { palette as celGlassSunset } from './cel-glass-sunset'
 import { palette as celGlassMist } from './cel-glass-mist'
 import { palette as celGlassBone } from './cel-glass-bone'
 import { palette as celGlassOrchid } from './cel-glass-orchid'
+import { palette as celShadedDraculaCrt } from './cel-shaded-dracula-crt'
+import { palette as celShadedGruvboxCrt } from './cel-shaded-gruvbox-crt'
+import { palette as celShadedNordCrt } from './cel-shaded-nord-crt'
+import { palette as celShadedSolarizedCrt } from './cel-shaded-solarized-crt'
+import { palette as celShadedMonokaiCrt } from './cel-shaded-monokai-crt'
+import { palette as celShadedAcademiaGlass } from './cel-shaded-academia-glass'
+import { palette as celShadedUkiyoGlass } from './cel-shaded-ukiyo-glass'
+import { palette as celShadedConstructivistGlass } from './cel-shaded-constructivist-glass'
+import { palette as celShadedNouveauGlass } from './cel-shaded-nouveau-glass'
+import { palette as celShadedBotanicalGlass } from './cel-shaded-botanical-glass'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -200,6 +210,16 @@ export const palettes = {
   'cel-glass-mist': celGlassMist,
   'cel-glass-bone': celGlassBone,
   'cel-glass-orchid': celGlassOrchid,
+  'cel-shaded-dracula-crt': celShadedDraculaCrt,
+  'cel-shaded-gruvbox-crt': celShadedGruvboxCrt,
+  'cel-shaded-nord-crt': celShadedNordCrt,
+  'cel-shaded-solarized-crt': celShadedSolarizedCrt,
+  'cel-shaded-monokai-crt': celShadedMonokaiCrt,
+  'cel-shaded-academia-glass': celShadedAcademiaGlass,
+  'cel-shaded-ukiyo-glass': celShadedUkiyoGlass,
+  'cel-shaded-constructivist-glass': celShadedConstructivistGlass,
+  'cel-shaded-nouveau-glass': celShadedNouveauGlass,
+  'cel-shaded-botanical-glass': celShadedBotanicalGlass,
 } as const
 
 export type PaletteId = keyof typeof palettes

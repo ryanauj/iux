@@ -174,6 +174,17 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'silver-daguerreotype',
     'sugar-paper-chalk',
   ],
+  'Editor Themes': ['cel-shaded-dracula-crt', 'cel-shaded-gruvbox-crt', 'cel-shaded-nord-crt', 'cel-shaded-monokai-crt', 'cel-shaded-solarized-crt'],
+  'Period & Movement': [
+    'cel-shaded-academia-glass',
+    'cel-shaded-ukiyo-glass',
+    'cel-shaded-constructivist-glass',
+    'cel-shaded-nouveau-glass',
+    'cel-shaded-botanical-glass',
+    'art-deco',
+    'art-deco-ivory',
+    'bauhaus',
+  ],
 }
 
 function buildEngineGroups(): Record<string, PaletteId[]> {

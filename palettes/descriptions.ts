@@ -23,6 +23,16 @@ import { description as whitewashAegean } from './whitewash-aegean.description'
 import { description as aeroGlass } from './aero-glass.description'
 import { description as artDeco } from './art-deco.description'
 import { description as artDecoIvory } from './art-deco-ivory.description'
+import { description as celShadedNouveauGlass } from './cel-shaded-nouveau-glass.description'
+import { description as celShadedBotanicalGlass } from './cel-shaded-botanical-glass.description'
+import { description as celShadedConstructivistGlass } from './cel-shaded-constructivist-glass.description'
+import { description as celShadedAcademiaGlass } from './cel-shaded-academia-glass.description'
+import { description as celShadedDraculaCrt } from './cel-shaded-dracula-crt.description'
+import { description as celShadedGruvboxCrt } from './cel-shaded-gruvbox-crt.description'
+import { description as celShadedMonokaiCrt } from './cel-shaded-monokai-crt.description'
+import { description as celShadedNordCrt } from './cel-shaded-nord-crt.description'
+import { description as celShadedSolarizedCrt } from './cel-shaded-solarized-crt.description'
+import { description as celShadedUkiyoGlass } from './cel-shaded-ukiyo-glass.description'
 import { description as aurora } from './aurora.description'
 import { description as bauhaus } from './bauhaus.description'
 import { description as blueprint } from './blueprint.description'
@@ -125,6 +135,16 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'aero-glass': aeroGlass,
   'art-deco': artDeco,
   'art-deco-ivory': artDecoIvory,
+  'cel-shaded-nouveau-glass': celShadedNouveauGlass,
+  'cel-shaded-botanical-glass': celShadedBotanicalGlass,
+  'cel-shaded-constructivist-glass': celShadedConstructivistGlass,
+  'cel-shaded-academia-glass': celShadedAcademiaGlass,
+  'cel-shaded-dracula-crt': celShadedDraculaCrt,
+  'cel-shaded-gruvbox-crt': celShadedGruvboxCrt,
+  'cel-shaded-monokai-crt': celShadedMonokaiCrt,
+  'cel-shaded-nord-crt': celShadedNordCrt,
+  'cel-shaded-solarized-crt': celShadedSolarizedCrt,
+  'cel-shaded-ukiyo-glass': celShadedUkiyoGlass,
   aurora,
   bauhaus,
   blueprint,
