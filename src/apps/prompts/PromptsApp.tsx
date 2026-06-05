@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
-import { palettes, type PaletteId } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../../lib/customPatterns'
 import { Link } from '../Link'
 import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchPromptsRoute, promptRoutes, type PromptsRoute } from './routes'
@@ -24,8 +24,6 @@ import { Strategies } from './pages/Strategies'
 import { StrategyDetail } from './pages/StrategyDetail'
 import { NotFound } from './pages/NotFound'
 import './promptbook-app.css'
-
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 interface PromptsAppProps {
   location: HashLocation
@@ -60,25 +58,21 @@ export function PromptsApp({ location }: PromptsAppProps) {
   }, [location.path])
 
   const paletteParam = location.params.get('palette')
-  const paletteId: PaletteId =
-    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
-      ? (paletteParam as PaletteId)
-      : selectedStyle
-  const palette = palettes[paletteId]
+  const styleId: StyleId =
+    paletteParam && isStyleId(paletteParam) ? paletteParam : selectedStyle
+  const palette = resolveStyle(styleId)
   const motionScale = resolveMotionScale(location.params.get('motion'))
 
   const didSeedFromUrl = useRef(false)
   if (!didSeedFromUrl.current) {
     didSeedFromUrl.current = true
-    if (paletteParam && paletteId !== selectedStyle) {
-      setSelectedStyle(paletteId)
+    if (paletteParam && styleId !== selectedStyle) {
+      setSelectedStyle(styleId)
     }
   }
 
   const handlePaletteChange = (next: string) => {
-    if ((PALETTE_IDS as string[]).includes(next)) {
-      setSelectedStyle(next as PaletteId)
-    }
+    if (isStyleId(next)) setSelectedStyle(next)
     replaceParams({ palette: next })
   }
 
@@ -87,7 +81,7 @@ export function PromptsApp({ location }: PromptsAppProps) {
   }
 
   const floatingFields: Field[] = [
-    buildPaletteField(paletteId, handlePaletteChange),
+    buildPaletteField(styleId, handlePaletteChange),
     {
       key: 'motion',
       label: 'Motion',

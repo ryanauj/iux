@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
   type ControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
-import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import '../showcase/showcase.css'
 import { QuizView } from './QuizView'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -17,8 +17,6 @@ import {
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
-
 const URL_PARAM = {
   chrome: 'chrome',
   controls: 'controls',
@@ -26,21 +24,18 @@ const URL_PARAM = {
 
 const DEFAULT_CONTROLS: ControlsStyle = 'button'
 
-const isPaletteId = (v: string): v is PaletteId =>
-  (PALETTE_IDS as string[]).includes(v)
-
 type UrlSettings = {
-  chrome: PaletteId
+  chrome: StyleId
   controls: ControlsStyle
 }
 
-function readUrlSettings(persistedChrome: PaletteId): UrlSettings {
+function readUrlSettings(persistedChrome: StyleId): UrlSettings {
   if (typeof window === 'undefined') {
     return { chrome: persistedChrome, controls: DEFAULT_CONTROLS }
   }
   const p = new URL(window.location.href).searchParams
   const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
-  const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : persistedChrome
+  const chrome: StyleId = isStyleId(chromeRaw) ? chromeRaw : persistedChrome
   const controlsRaw = p.get(URL_PARAM.controls) ?? ''
   const controls: ControlsStyle =
     controlsRaw === 'strip' || controlsRaw === 'button'
@@ -52,7 +47,7 @@ function readUrlSettings(persistedChrome: PaletteId): UrlSettings {
 export function QuizPage() {
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const initial = useMemo(() => readUrlSettings(readSelectedStyle()), [])
-  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
+  const [chromePaletteId, setChromePaletteId] = useState<StyleId>(initial.chrome)
   const [controlsStyle, setControlsStyle] = useState<ControlsStyle>(initial.controls)
   const [infoOpen, setInfoOpen] = useState(false)
   const [navLayout, setNavLayout] = useNavLayout()
@@ -177,7 +172,7 @@ export function QuizPage() {
   )
 
   return (
-    <PaletteRoot palette={palettes[chromePaletteId]} as="section">
+    <PaletteRoot palette={resolveStyle(chromePaletteId)} as="section">
       <AppShell
         layoutId={navLayout}
         brand={brand}

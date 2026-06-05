@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { palettes, type PaletteId } from '../../palettes'
 import { readHash, replaceParams, useHashLocation } from '../apps/router'
 import { Segmented } from '../components/Segmented/Segmented'
 import { PaletteRoot } from '../theme/PaletteRoot'
@@ -8,7 +7,8 @@ import {
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
-import { buildPaletteField, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import { CoverageViz } from './visualizations/CoverageViz'
 import { TestsViz } from './visualizations/TestsViz'
 import './visualizations/viz.css'
@@ -34,7 +34,6 @@ const VIZ_OPTIONS: { value: VizId; label: string; hint: string }[] = [
 
 const VIZ_VALUES: VizId[] = VIZ_OPTIONS.map(v => v.value)
 const DEFAULT_VIZ: VizId = 'tests'
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
 
@@ -55,18 +54,16 @@ export function TestsPage() {
   // Apps / Quiz / Engine guides keeps the same look without depending
   // on the hash carrying `?palette=`.
   const paletteParam = location.params.get('palette')
-  const paletteId: PaletteId =
-    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
-      ? (paletteParam as PaletteId)
-      : selectedStyle
+  const styleId: StyleId =
+    paletteParam && isStyleId(paletteParam) ? paletteParam : selectedStyle
 
   // Seed the persisted store from the URL on first mount so a pasted
   // permalink wins over the user's previous selection.
   const didSeedFromUrl = useRef(false)
   if (!didSeedFromUrl.current) {
     didSeedFromUrl.current = true
-    if (paletteParam && paletteId !== selectedStyle) {
-      setSelectedStyle(paletteId)
+    if (paletteParam && styleId !== selectedStyle) {
+      setSelectedStyle(styleId)
     }
   }
 
@@ -75,9 +72,7 @@ export function TestsPage() {
   }, [])
 
   const handlePaletteChange = (next: string) => {
-    if ((PALETTE_IDS as string[]).includes(next)) {
-      setSelectedStyle(next as PaletteId)
-    }
+    if (isStyleId(next)) setSelectedStyle(next)
     replaceParams({ palette: next })
   }
 
@@ -129,12 +124,12 @@ export function TestsPage() {
     ? INTEGRATION_TESTS.find(t => t.id === autorunTestId)
     : null
 
-  const palette = palettes[paletteId]
+  const palette = resolveStyle(styleId)
   const activeHint = VIZ_OPTIONS.find(v => v.value === viz)?.hint
   const [navLayout] = useNavLayout()
 
   const fields: Field[] = [
-    buildPaletteField(paletteId, handlePaletteChange),
+    buildPaletteField(styleId, handlePaletteChange),
   ]
 
   const brand = (

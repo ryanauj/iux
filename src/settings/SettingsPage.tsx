@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
@@ -9,7 +8,8 @@ import {
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
-import { buildPaletteField, isPaletteId, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import { useGroups } from '../lib/paletteTags'
 import './settings.css'
 
@@ -27,10 +27,10 @@ export function SettingsPage() {
   const [, groupsApi] = useGroups()
   const [resetNote, setResetNote] = useState<string | null>(null)
 
-  const palette = palettes[selectedStyle]
+  const palette = resolveStyle(selectedStyle)
 
   const handlePaletteChange = (next: string) => {
-    if (isPaletteId(next)) setSelectedStyle(next as PaletteId)
+    if (isStyleId(next)) setSelectedStyle(next as StyleId)
   }
 
   const fields: Field[] = [buildPaletteField(selectedStyle, handlePaletteChange)]

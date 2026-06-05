@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { Card } from '../components/Card/Card'
 import { Link } from './Link'
@@ -12,7 +11,8 @@ import {
   MOTION_FIELD_OPTIONS,
   resolveMotionScale,
 } from '../theme/motionScales'
-import { buildPaletteField, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import { replaceParams, type HashLocation } from './router'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
@@ -55,8 +55,6 @@ const APPS: AppEntry[] = [
   },
 ]
 
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
-
 interface AppsLandingProps {
   location: HashLocation
 }
@@ -71,11 +69,9 @@ export function AppsLanding({ location }: AppsLandingProps) {
   // Viz / Quiz / Engine guides keeps the same look without depending
   // on the hash carrying `?palette=`.
   const paletteParam = location.params.get('palette')
-  const paletteId: PaletteId =
-    paletteParam && (PALETTE_IDS as string[]).includes(paletteParam)
-      ? (paletteParam as PaletteId)
-      : selectedStyle
-  const palette = palettes[paletteId]
+  const styleId: StyleId =
+    paletteParam && isStyleId(paletteParam) ? paletteParam : selectedStyle
+  const palette = resolveStyle(styleId)
   const motionScale = resolveMotionScale(location.params.get('motion'))
 
   // Seed the persisted store from the URL on first mount so a pasted
@@ -83,15 +79,13 @@ export function AppsLanding({ location }: AppsLandingProps) {
   const didSeedFromUrl = useRef(false)
   if (!didSeedFromUrl.current) {
     didSeedFromUrl.current = true
-    if (paletteParam && paletteId !== selectedStyle) {
-      setSelectedStyle(paletteId)
+    if (paletteParam && styleId !== selectedStyle) {
+      setSelectedStyle(styleId)
     }
   }
 
   const handlePaletteChange = (next: string) => {
-    if ((PALETTE_IDS as string[]).includes(next)) {
-      setSelectedStyle(next as PaletteId)
-    }
+    if (isStyleId(next)) setSelectedStyle(next)
     replaceParams({ palette: next })
   }
   const handleMotionChange = (next: string) => {
@@ -99,7 +93,7 @@ export function AppsLanding({ location }: AppsLandingProps) {
   }
 
   const fields: Field[] = [
-    buildPaletteField(paletteId, handlePaletteChange),
+    buildPaletteField(styleId, handlePaletteChange),
     {
       key: 'navLayout',
       label: 'Nav',

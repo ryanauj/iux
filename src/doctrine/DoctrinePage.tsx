@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
@@ -19,14 +18,13 @@ import {
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
-import { buildPaletteField, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import { useDocMode } from '../lib/useDocMode'
 import { DocModeToggle } from '../components/DocModeToggle/DocModeToggle'
 import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
-
-const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
 const URL_PARAM = {
   chrome: 'chrome',
@@ -34,11 +32,8 @@ const URL_PARAM = {
   motion: 'motion',
 } as const
 
-const isPaletteId = (v: string): v is PaletteId =>
-  (PALETTE_IDS as string[]).includes(v)
-
 type UrlSettings = {
-  chrome: PaletteId
+  chrome: StyleId
   doc: DoctrineId
   motion: MotionScale
 }
@@ -58,7 +53,7 @@ export function DoctrinePage() {
     if (typeof window === 'undefined') return { ...DEFAULTS }
     const p = new URL(window.location.href).searchParams
     const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
-    const chrome: PaletteId = isPaletteId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
+    const chrome: StyleId = isStyleId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
     const docRaw = p.get(URL_PARAM.doc) ?? ''
     const doc: DoctrineId = isDoctrineId(docRaw) ? docRaw : DEFAULTS.doc
     const motion = resolveMotionScale(p.get(URL_PARAM.motion))
@@ -66,7 +61,7 @@ export function DoctrinePage() {
   }
 
   const initial = useMemo(readUrlSettings, [])
-  const [chromePaletteId, setChromePaletteId] = useState<PaletteId>(initial.chrome)
+  const [chromePaletteId, setChromePaletteId] = useState<StyleId>(initial.chrome)
   const [doc, setDoc] = useState<DoctrineId>(initial.doc)
   const [motionScale, setMotionScale] = useState<MotionScale>(initial.motion)
   const [controlsStyle, setControlsStyle] = useControlsStyle()
@@ -221,7 +216,7 @@ export function DoctrinePage() {
   )
 
   return (
-    <PaletteRoot palette={palettes[chromePaletteId]} as="section" motionScale={motionScale}>
+    <PaletteRoot palette={resolveStyle(chromePaletteId)} as="section" motionScale={motionScale}>
       <AppShell
         layoutId={navLayout}
         brand={brand}
@@ -236,7 +231,7 @@ export function DoctrinePage() {
           />
 
           <PaletteRoot
-            palette={palettes[chromePaletteId]}
+            palette={resolveStyle(chromePaletteId)}
             as="section"
             className="stories__palette"
             motionScale={motionScale}

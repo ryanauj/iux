@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { palettes } from '../../../palettes'
 import { PaletteRoot } from '../../theme/PaletteRoot'
+import { resolveStyle } from '../../lib/customPatterns'
 import { Stepper, type StepperStep } from '../../components/Stepper/Stepper'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
@@ -135,7 +135,7 @@ export function EngineGuide({ guide }: EngineGuideProps) {
   const fields: Field[] = [chromeField, navLayoutField]
 
   return (
-    <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-engine-guide-shell">
+    <PaletteRoot palette={resolveStyle(selectedStyle)} as="section" className="iux-engine-guide-shell">
       <AppShell
         layoutId={navLayout}
         brand={brand}

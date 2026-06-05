@@ -7,6 +7,7 @@ import { palettes, type PaletteId } from '../../../palettes'
 import { descriptions } from '../../../palettes/descriptions'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { useSelectedStyle } from '../../lib/persistedStyle'
+import { resolveStyle } from '../../lib/customPatterns'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
 import { useNavLayout } from '../../components/AppShell/navLayouts'
@@ -40,7 +41,7 @@ export function PalettesIndex() {
   const brand = <h1 className="iux-palette-page__brand-title">iux — palettes</h1>
 
   return (
-    <PaletteRoot palette={palettes[selectedStyle]} as="section" className="iux-palette-page-shell">
+    <PaletteRoot palette={resolveStyle(selectedStyle)} as="section" className="iux-palette-page-shell">
       <AppShell
         layoutId={navLayout}
         brand={brand}
