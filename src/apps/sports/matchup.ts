@@ -89,6 +89,10 @@ export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
   return out
 })()
 
+/** League-average points scored per game — the baseline a projection builds on. */
+export const LEAGUE_BASELINE_POINTS: number =
+  TEAMS.reduce((acc, t) => acc + t.pointsFor, 0) / TEAMS.length
+
 export interface StatContribution {
   def: StatDef
   /** The team's per-game value for this stat. */
@@ -115,6 +119,12 @@ export interface TeamMatchup {
   contributions: StatContribution[]
   /** Sum of `relativePoints` — net hidden points vs a league-average team. */
   netRelativePoints: number
+  /**
+   * Projected points from the non-scoring profile: the league baseline plus
+   * this team's net hidden points. A league-average team projects to exactly
+   * the baseline; the deviations push it up or down.
+   */
+  projectedPoints: number
 }
 
 /**
@@ -139,7 +149,8 @@ function buildContribution(team: Team, def: StatDef): StatContribution {
 export function analyzeTeam(team: Team): TeamMatchup {
   const contributions = STAT_DEFS.map(def => buildContribution(team, def))
   const netRelativePoints = contributions.reduce((acc, c) => acc + c.relativePoints, 0)
-  return { team, contributions, netRelativePoints }
+  const projectedPoints = LEAGUE_BASELINE_POINTS + netRelativePoints
+  return { team, contributions, netRelativePoints, projectedPoints }
 }
 
 export interface StatEdge {
@@ -158,6 +169,12 @@ export interface MatchupAnalysis {
   edges: StatEdge[]
   /** Sum of per-stat edges — projected non-scoring margin, A's perspective. */
   netEdge: number
+  /** League-average points both projections build on. */
+  baseline: number
+  /** Largest absolute single-stat point contribution across both teams. */
+  maxAbsPoints: number
+  /** Largest absolute single-stat deviation (in stat units) across both teams. */
+  maxAbsDelta: number
 }
 
 /** Build the full two-team analysis used by every view on the matchup screen. */
@@ -170,7 +187,10 @@ export function analyzeMatchup(teamA: Team, teamB: Team): MatchupAnalysis {
     return { def, aPoints, bPoints, edge: aPoints - bPoints }
   })
   const netEdge = edges.reduce((acc, e) => acc + e.edge, 0)
-  return { a, b, edges, netEdge }
+  const allContribs = [...a.contributions, ...b.contributions]
+  const maxAbsPoints = Math.max(0.1, ...allContribs.map(c => Math.abs(c.relativePoints)))
+  const maxAbsDelta = Math.max(0.1, ...allContribs.map(c => Math.abs(c.delta)))
+  return { a, b, edges, netEdge, baseline: LEAGUE_BASELINE_POINTS, maxAbsPoints, maxAbsDelta }
 }
 
 /** "+2.3" / "-1.4" / "0.0" — signed, one decimal, for point values. */

@@ -50,19 +50,27 @@ feature, not the chrome.
 - `#/apps/sports/matchup` and `#/apps/sports/matchup/:a/:b` — Matchup
   lab: pick two teams and see how much their non-scoring stats
   (rebounds, assists, steals, blocks, turnovers) are worth in points
-  versus a league-average team, shown five ways — a Waterfall points
-  bridge, a back-to-back "category battle" bar pyramid, a paired
-  Lollipop dumbbell, a two-team Radar, and a sortable Table ledger.
-  The points model lives in `src/apps/sports/matchup.ts` with
-  per-event coefficients in one tunable place.
+  versus a league-average team. Every view shows both halves of the
+  story — *why* each stat is worth its points (raw average − league
+  average = deviation × rate) and *how* the five aggregate into a
+  projected total — five ways: a per-team Waterfall **projection
+  bridge** with a derivation line per stat, a back-to-back **category
+  battle** with the rate and deviation in the centre, a **conversion
+  map** scatter where each stat is a ray whose slope is its rate and
+  team dots sit on the ray, a two-team **radar** paired with a
+  value × rate key, and a sortable Table **points ledger** laid out as
+  the literal formula. The points model lives in
+  `src/apps/sports/matchup.ts` with per-event coefficients and the
+  league baseline in one tunable place.
 
 **Components composed.**
 - `Card` — team cards, game cards, player profile, stat-leader tiles.
 - `Table` (sortable) — rosters, standings, box scores, leader tables,
   matchup points ledger.
 - `Tabs` — team detail (Roster / Schedule / Stats), player detail,
-  matchup views (Bridge / Battle / Head-to-head / Radar / Ledger).
-- `Waterfall`, `Lollipop`, `Radar` — matchup lab visualizations.
+  matchup views (Bridge / Battle / Conversion map / Radar / Ledger).
+- `Waterfall`, `Radar` — matchup lab visualizations (plus a bespoke
+  conversion-map scatter and back-to-back battle bars).
 - `Segmented` — conference filter on teams + standings, position
   filter on players, status filter on games.
 - `Select` — in-app palette picker.
