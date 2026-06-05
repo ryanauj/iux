@@ -15,10 +15,9 @@ export function MaxDeals() {
           <>
             In 1997 the Timberwolves gave Kevin Garnett a six-year, $126M
             extension — the richest contract in league history at the time, for a
-            21-year-old. Owners looked at that number, saw a single player
-            swallowing a team's whole cap, and in the next labor deal capped what
-            any one player could earn. The twist: that limit isn't a single
-            number.
+            21-year-old. Owners looked at that number, saw a single player take
+            up a team's whole cap, and in the next labor deal capped what any one
+            player could earn. That limit is not a single number.
           </>
         }
       />
@@ -72,8 +71,8 @@ export function MaxDeals() {
           <h2 className="cap-page__h2">Jumping a tier early</h2>
           <p className="cap-page__p">{SUPERMAX_NOTE}</p>
           <KeyIdea tone="warning" title="The catch">
-            The supermax is a retention tool, not a free-agency prize. Because
-            you can only sign it with your own team, a player who forces a
+            The supermax is a retention tool, not a free-agency prize. Because it
+            can be signed only with a player's own team, a player who forces a
             trade often leaves tens of millions on the table — which is exactly
             the leverage the league hands to the incumbent team.
           </KeyIdea>

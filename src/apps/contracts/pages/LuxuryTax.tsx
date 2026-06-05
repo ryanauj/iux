@@ -64,16 +64,14 @@ export function LuxuryTax() {
   return (
     <article className="cap-page">
       <PageHeader
-        kicker="Chapter 6 · The first brake"
+        kicker="Chapter 6 · The graduated penalty"
         title="The luxury tax"
         lede={
           <>
-            Cross the tax line and every dollar above it costs you a second
-            dollar — paid to the league, not your players. You'd guess that
-            penalty is a flat percentage. It isn't, and the gap between what
-            you'd guess and what you actually owe is the point: the rate{' '}
-            <strong>climbs in brackets</strong>, so the deeper a team goes, the
-            more each extra dollar stings.
+            Above the tax line, every dollar of payroll owes an additional
+            payment to the league. The rate is not flat: it{' '}
+            <strong>climbs in brackets</strong>, so each dollar of overage is
+            taxed more heavily than the one before it.
           </>
         }
       />
@@ -106,13 +104,13 @@ export function LuxuryTax() {
 
       <section className="cap-page__section">
         <KeyIdea tone="info" title="The tax isn't on the cap sheet">
-          The bill is a check ownership writes to the league — not a salary, so
-          it never lands on the cap sheet. The arrow only points one way: your{' '}
-          <strong>salaries</strong> are what sit on the cap sheet and decide how
-          far over the line you are, and <em>that</em> produces the tax. The tax
-          doesn't count back against the cap or push you toward an apron. That's
-          why a team's true cost is payroll <em>plus</em> tax: two separate
-          numbers, not one.
+          The bill is a check ownership writes to the league, not a salary, so
+          it never lands on the cap sheet. The arrow only points one way: a
+          team's <strong>salaries</strong> are what sit on the cap sheet and
+          decide how far over the line it is, and <em>that</em> produces the
+          tax. The tax doesn't count back against the cap or push the team
+          toward an apron. That's why a team's true cost is payroll <em>plus</em>
+          tax: two separate numbers, not one.
         </KeyIdea>
       </section>
 

@@ -13,11 +13,10 @@ export function Ladder() {
         title="The cap ladder"
         lede={
           <>
-            You already have the shape from Chapter 1: one climb, getting more
-            punishing toward the top. Now we'll put names on the rungs — but the
-            useful part isn't the names. It's the <strong>gaps between
-            them</strong>. How far apart these lines sit is what quietly decides
-            how every team behaves.
+            Chapter 1 gave the shape: one climb, getting steeper toward the top.
+            This chapter puts names on the rungs. What matters most is the{' '}
+            <strong>gaps between them</strong>: how far apart these lines sit is
+            what quietly decides how every team behaves.
           </>
         }
       />
@@ -49,11 +48,11 @@ export function Ladder() {
       </section>
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">Your map for the rest of the guide</h2>
+        <h2 className="cap-page__h2">A map for the rest of the guide</h2>
         <p className="cap-page__p">
           Here's every rung, bottom to top, with the one thing that changes when
           a payroll crosses it. Don't try to memorize them — each gets its own
-          chapter. Treat this as the index you'll keep coming back to.
+          chapter. Treat this as the index to return to.
         </p>
         <ol className="cap-rungs-list">
           {THRESHOLDS.map(t => (
@@ -71,10 +70,10 @@ export function Ladder() {
       <section className="cap-page__section">
         <KeyIdea tone="warning" title="One ladder, two very different halves">
           The bottom half is soft: teams cross the cap routinely, and the tax is
-          just a price. The top bites differently — at the second apron most of
+          just a price. The top works differently: at the second apron most of
           the usual ways to add outside salary are simply switched off. (A team
           can still climb past it re-signing its own; what it loses is the tools
-          to bring anyone new in.) Same ladder, but as you climb the question
+          to bring anyone new in.) Same ladder, but as a team climbs the question
           shifts from "can we afford it?" to "are we even allowed?" The chapters
           ahead walk up it one rung at a time.
         </KeyIdea>

@@ -44,8 +44,8 @@ export function Anatomy() {
             A team's payroll is just a stack of individual deals, so zoom all the
             way in to one. Here's a real-shaped contract: <strong>$30M</strong>{' '}
             to start, four years, about <strong>$134M</strong> on the headline.
-            Hold onto that headline number — by the end of this page you'll see
-            why it's almost never what the team actually pays.
+            That headline number is almost never what the team actually pays,
+            and this page works through why.
           </>
         }
       />
@@ -95,10 +95,9 @@ export function Anatomy() {
         <div className="cap-split__main">
           <h2 className="cap-page__h2">Guarantees & options: why the headline lies</h2>
           <p className="cap-page__p">
-            Here's the payoff to that $134M. Add up the years and you get the
-            headline — but not every year is real money yet. Each one carries a
-            guarantee status that decides whether the team is actually on the
-            hook for it:
+            The years add up to that $134M headline, but not every year is real
+            money yet. Each one carries a guarantee status that decides whether
+            the team is actually on the hook for it:
           </p>
           <ul className="cap-anatomy-years">
             {SAMPLE_CONTRACT.map(y => (

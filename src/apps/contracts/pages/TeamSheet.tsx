@@ -68,9 +68,9 @@ export function TeamSheet() {
             Now every piece in one place. Here's an illustrative contender — the{' '}
             <strong>{SAMPLE_TEAM_NAME}</strong> — where every contract was built
             with a tool from the earlier chapters: Bird re-signings, a mid-level,
-            rookie scales, minimums. Read the "signed via" column and you'll
-            recognize all of them. Watch how twelve deals stack against the
-            ladder — and what the whole thing costs.
+            rookie scales, minimums. The "signed via" column names each one.
+            Watch how twelve deals stack against the ladder, and what the whole
+            thing costs.
           </>
         }
       />
@@ -146,8 +146,8 @@ export function TeamSheet() {
       <section className="cap-page__section">
         <h2 className="cap-page__h2">How a team gets here</h2>
         <p className="cap-page__p">
-          Read the "signed via" column top to bottom and you can trace the whole
-          life cycle of a contender. It begins at the draft: the cheap
+          Read the "signed via" column top to bottom and the whole life cycle of
+          a contender comes into view. It begins at the draft: the cheap
           rookie-scale deals — the lottery and sophomore wings — are where most
           cores start, and their below-market price is what bankrolls everything
           above them. A team develops those picks, then re-signs the ones who hit
@@ -158,7 +158,7 @@ export function TeamSheet() {
           trades, and draft picks become the currency for any real upgrade.
         </p>
         <p className="cap-page__p">
-          That arc is a GM's job in one line: draft cheap, develop, re-sign your
+          That arc is a GM's job in one line: draft cheap, develop, re-sign its
           own, and spend the surplus and the picks before the aprons close the
           window. The {SAMPLE_TEAM_NAME} are near the end of it — a finished
           contender whose next move is the hardest one.
@@ -166,11 +166,11 @@ export function TeamSheet() {
       </section>
 
       <section className="cap-page__section">
-        <KeyIdea tone="success" title="You've got the whole system now">
+        <KeyIdea tone="success" title="The whole system, in one place">
           A cap and a floor, a contract's raises and guarantees, the max tiers,
-          the exceptions that beat the cap, the tax that punishes spending, and
-          the aprons that punish it harder. Every offseason headline is just
-          some combination of these moving parts.
+          the exceptions that beat the cap, the tax that costs a team for
+          spending, and the aprons that restrict it further. Every offseason
+          headline is just some combination of these moving parts.
         </KeyIdea>
       </section>
 
