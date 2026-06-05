@@ -177,35 +177,51 @@
   cursor: default;
 }
 
+.iux-knob__mode {
+  padding-inline: var(--space-2, 0.5rem);
+}
+
 .iux-knob__mode.is-active {
   border-color: var(--color-border-focus, Highlight);
   color: var(--color-content-primary, CanvasText);
 }
 
-/* ── Length slider + unit ── */
+/* ── Length slider + unit (full-width block body) ── */
 .iux-knob__slider {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  width: 100%;
+}
+
+/* The shared Slider already shows its value via the readout in its header;
+ * hide its visible label here so the knob's own label isn't duplicated. The
+ * label is still passed for the thumb's accessible name. */
+.iux-knob__slider .iux-slider {
+  max-width: none;
+}
+
+.iux-knob__slider .iux-slider__label {
+  display: none;
+}
+
+.iux-knob__unit {
+  display: inline-flex;
   align-items: center;
   gap: var(--space-2, 0.5rem);
-  flex: 1;
-  min-width: 0;
-}
-
-.iux-knob__slider > :first-child {
-  flex: 1;
-  min-width: 0;
-}
-
-.iux-knob__slider-val {
-  flex: none;
-  min-inline-size: 3.25rem;
-  text-align: right;
   font-size: var(--type-caption-size, 0.8rem);
   color: var(--color-content-secondary, GrayText);
-  font-variant-numeric: tabular-nums;
 }
 
-/* ── Block knobs (font stack) ── */
+.iux-knob__unit-label {
+  flex: none;
+}
+
+.iux-knob__unit .iux-select {
+  min-inline-size: 7rem;
+}
+
+/* ── Block knobs (font stack, length-in-slider-mode) ── */
 .iux-knob--block {
   grid-template-columns: 1fr;
 }
@@ -215,6 +231,13 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2, 0.5rem);
+}
+
+.iux-knob__head-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+  flex: none;
 }
 
 .iux-knob--block .iux-knob__control {
