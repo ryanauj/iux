@@ -42,11 +42,8 @@ second apron removes"; open with the restriction, not "It's not the money."
 ## Per-page checklist
 1. Lede: no expectation-reversal, no em-dash antithesis, no metaphor except
    the ladder.
-2. Body: rewrite any expectation-reversal, not just the literal phrases. The
-   strings “the point”, “the twist”, “you’d guess”, “what matters most”,
-   “shrug”, “sting”, “feared”, “happily”, “brake” are a starting scan — also
-   flag any sentence that sets up an expectation in order to overturn it, even
-   if it uses none of those words. Apply the rule-1 test from `PROSE-STYLE.md`.
+2. Search body for: "the point", "the twist", "you'd guess", "shrug",
+   "sting", "feared", "happily", "brake". Rewrite each.
 3. Reduce em-dash antithesis to at most one per page.
 4. Convert explanatory "you" to "a team" / "an owner"; leave tool copy alone.
 5. Preserve all figures, the Garnett anecdote, and ladder language in meaning.
