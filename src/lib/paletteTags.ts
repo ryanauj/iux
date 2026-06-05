@@ -9,6 +9,7 @@ import {
 } from '../../palettes/defaultGroups'
 import { usePersistedPref } from './usePersistedPref'
 import { usePersistedJSON } from './usePersistedJSON'
+import { isCustomPatternId, type StyleId } from './customPatterns'
 
 /* ─────────────────────────── tag derivation ─────────────────────────── */
 
@@ -126,13 +127,21 @@ const isPinningMode = (raw: string): raw is PinningMode =>
 const isStringArray = (parsed: unknown): parsed is string[] =>
   Array.isArray(parsed) && parsed.every(v => typeof v === 'string')
 
-const isCustomGroups = (parsed: unknown): parsed is Record<string, PaletteId[]> => {
+/**
+ * A group member is either a built-in palette id or a custom pattern id —
+ * lists and favorites hold both kinds since a user can save a custom
+ * pattern into any list the same way they save a built-in palette.
+ */
+const isStyleMemberId = (id: unknown): id is StyleId =>
+  typeof id === 'string' && (isPaletteId(id) || isCustomPatternId(id))
+
+const isCustomGroups = (parsed: unknown): parsed is Record<string, StyleId[]> => {
   if (!parsed || typeof parsed !== 'object') return false
   for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
     if (typeof key !== 'string') return false
     if (!Array.isArray(value)) return false
     for (const id of value) {
-      if (typeof id !== 'string' || !isPaletteId(id)) return false
+      if (!isStyleMemberId(id)) return false
     }
   }
   return true
@@ -150,7 +159,7 @@ export function useActiveGroup() {
 }
 
 export function useCustomGroups() {
-  return usePersistedJSON<Record<string, PaletteId[]>>(
+  return usePersistedJSON<Record<string, StyleId[]>>(
     CUSTOM_GROUPS_KEY,
     {},
     isCustomGroups,
@@ -168,8 +177,8 @@ export function usePinningMode() {
  */
 export function resolveGroupMembers(
   name: string | null,
-  groups: Record<string, PaletteId[]>,
-): PaletteId[] {
+  groups: Record<string, StyleId[]>,
+): StyleId[] {
   if (!name) return []
   return groups[name] ?? []
 }
@@ -186,17 +195,17 @@ export function resolveGroupMembers(
  * the picker reads — there's no "default vs custom" distinction in the
  * UI beyond `isDefaultGroup(name)`.
  */
-export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
+export function useGroups(): [Record<string, StyleId[]>, GroupsApi] {
   const [stored, setStored] = useCustomGroups()
   const merged = useMemo(() => {
-    const out: Record<string, PaletteId[]> = {}
+    const out: Record<string, StyleId[]> = {}
     for (const [name, ids] of Object.entries(DEFAULT_GROUPS)) out[name] = ids.slice()
     for (const [name, ids] of Object.entries(stored)) out[name] = ids.slice()
     return out
   }, [stored])
 
   const api = useMemo<GroupsApi>(() => {
-    const writeGroup = (name: string, ids: PaletteId[]) => {
+    const writeGroup = (name: string, ids: StyleId[]) => {
       const defaultIds = DEFAULT_GROUPS[name]
       /* If we'd just be re-storing the default values verbatim, drop the
        * override so the entry stays "clean" and a future default change
@@ -211,7 +220,7 @@ export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
       setStored({ ...stored, [name]: ids })
     }
 
-    const toggleMembership = (name: string, id: PaletteId) => {
+    const toggleMembership = (name: string, id: StyleId) => {
       const current = merged[name] ?? []
       const exists = current.includes(id)
       const nextIds = exists ? current.filter(x => x !== id) : [...current, id]
@@ -220,9 +229,9 @@ export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
 
     return {
       toggleMembership,
-      toggleFavorite: (id: PaletteId) => toggleMembership(FAVORITES_GROUP, id),
-      isFavorite: (id: PaletteId) => (merged[FAVORITES_GROUP] ?? []).includes(id),
-      createGroup: (name: string, ids: PaletteId[]) => {
+      toggleFavorite: (id: StyleId) => toggleMembership(FAVORITES_GROUP, id),
+      isFavorite: (id: StyleId) => (merged[FAVORITES_GROUP] ?? []).includes(id),
+      createGroup: (name: string, ids: StyleId[]) => {
         if (!name.trim()) return
         setStored({ ...stored, [name]: ids })
       },
@@ -232,8 +241,31 @@ export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
         delete next[name]
         setStored(next)
       },
+      removeFromAllGroups: (id: StyleId) => {
+        /* Drop a now-deleted style (typically a custom pattern) from every
+         * stored list and from Favorites so no list keeps a dangling
+         * reference. Only stored overrides can hold a custom id — a default
+         * group's built-in members never gain one without first becoming an
+         * override — so iterating `stored` covers every membership. */
+        let changed = false
+        const next: Record<string, StyleId[]> = {}
+        for (const [name, ids] of Object.entries(stored)) {
+          if (!ids.includes(id)) {
+            next[name] = ids
+            continue
+          }
+          changed = true
+          const filtered = ids.filter(x => x !== id)
+          /* If removing the id leaves the default members verbatim, drop the
+           * override entirely to keep the entry clean. */
+          const defaultIds = DEFAULT_GROUPS[name]
+          if (defaultIds && sameIds(defaultIds, filtered)) continue
+          next[name] = filtered
+        }
+        if (changed) setStored(next)
+      },
       resetDefaults: () => {
-        const next: Record<string, PaletteId[]> = {}
+        const next: Record<string, StyleId[]> = {}
         for (const [name, ids] of Object.entries(stored)) {
           if (!DEFAULT_GROUP_NAMES.has(name)) next[name] = ids
         }
@@ -246,11 +278,12 @@ export function useGroups(): [Record<string, PaletteId[]>, GroupsApi] {
 }
 
 export interface GroupsApi {
-  toggleMembership(name: string, id: PaletteId): void
-  toggleFavorite(id: PaletteId): void
-  isFavorite(id: PaletteId): boolean
-  createGroup(name: string, ids: PaletteId[]): void
+  toggleMembership(name: string, id: StyleId): void
+  toggleFavorite(id: StyleId): void
+  isFavorite(id: StyleId): boolean
+  createGroup(name: string, ids: StyleId[]): void
   deleteGroup(name: string): void
+  removeFromAllGroups(id: StyleId): void
   resetDefaults(): void
 }
 
@@ -258,7 +291,7 @@ export function isDefaultGroup(name: string): boolean {
   return DEFAULT_GROUP_NAMES.has(name)
 }
 
-function sameIds(a: readonly PaletteId[], b: readonly PaletteId[]): boolean {
+function sameIds(a: readonly StyleId[], b: readonly StyleId[]): boolean {
   if (a.length !== b.length) return false
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false
   return true
@@ -273,9 +306,9 @@ export { FAVORITES_GROUP }
  */
 export function cycleInGroup(
   dir: -1 | 1,
-  members: PaletteId[],
-  current: PaletteId,
-): PaletteId {
+  members: StyleId[],
+  current: StyleId,
+): StyleId {
   if (members.length === 0) return current
   const i = members.indexOf(current)
   const next =

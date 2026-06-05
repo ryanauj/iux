@@ -26,6 +26,7 @@ import {
   type CustomPatternId,
   type TokenOverrides,
 } from '../lib/customPatterns'
+import { useGroups } from '../lib/paletteTags'
 import { encodePattern, decodePattern } from '../lib/patternCodec'
 import { applyPickedHex, toPickerHex } from '../lib/color'
 import { useHashLocation, replaceParams } from '../apps/router'
@@ -89,6 +90,7 @@ export function StyleEditorPage() {
   const paletteParam = location.params.get('palette')
 
   const [patterns, setPatterns] = useCustomPatterns()
+  const [, groupsApi] = useGroups()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const [navLayout] = useNavLayout()
   const [controlsStyle, setControlsStyle] = useControlsStyle()
@@ -174,11 +176,14 @@ export function StyleEditorPage() {
     const next = { ...patterns }
     delete next[editingId]
     setPatterns(next)
+    /* Drop the deleted pattern from every list so no favorite or group
+     * keeps a dangling reference. */
+    groupsApi.removeFromAllGroups(editingId)
     if (selectedStyle === editingId) setSelectedStyle(base)
     setEditingId(null)
     replaceParams({ edit: undefined, palette: undefined })
     setNote('Pattern deleted.')
-  }, [editingId, name, patterns, selectedStyle, base, setPatterns, setSelectedStyle])
+  }, [editingId, name, patterns, selectedStyle, base, setPatterns, setSelectedStyle, groupsApi])
 
   const chromeField: Field = buildPaletteField(selectedStyle, setSelectedStyle)
   const brand = <h1 className="iux-style-editor__title">iux — style editor</h1>
