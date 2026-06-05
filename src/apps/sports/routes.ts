@@ -14,6 +14,9 @@ export const sportsRoutes = {
   games: () => `${SPORTS_BASE}/games`,
   gameDetail: (id: string) => `${SPORTS_BASE}/games/${id}`,
   standings: () => `${SPORTS_BASE}/standings`,
+  /** Matchup comparison. With no slugs, the page falls back to a default pairing. */
+  matchup: (a?: string, b?: string) =>
+    a && b ? `${SPORTS_BASE}/matchup/${a}/${b}` : `${SPORTS_BASE}/matchup`,
 } as const
 
 export type SportsRoute =
@@ -25,13 +28,16 @@ export type SportsRoute =
   | { kind: 'games' }
   | { kind: 'gameDetail'; id: string }
   | { kind: 'standings' }
+  | { kind: 'matchup'; aSlug?: string; bSlug?: string }
   | { kind: 'notFound' }
 
 /** Parses the segments AFTER `apps/sports` and returns a discriminated route. */
 export function matchSportsRoute(segments: string[]): SportsRoute {
   if (segments.length === 0) return { kind: 'home' }
-  const [section, slug] = segments
+  const [section, slug, slug2] = segments
   switch (section) {
+    case 'matchup':
+      return { kind: 'matchup', aSlug: slug, bSlug: slug2 }
     case 'teams':
       if (!slug) return { kind: 'teams' }
       return { kind: 'teamDetail', slug }

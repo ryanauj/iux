@@ -47,11 +47,36 @@ feature, not the chrome.
 - `#/apps/sports/games/:id` — One game: score header, box score,
   quarter breakdown, top performers (linked to the player page).
 - `#/apps/sports/standings` — East and West conference standings.
+- `#/apps/sports/matchup` and `#/apps/sports/matchup/:a/:b` — Matchup
+  lab: pick two teams and see how much their non-scoring stats
+  (rebounds, assists, steals, blocks, turnovers) are worth in points
+  versus a league-average team. Every view shows both halves of the
+  story — *why* each stat is worth its points (raw average − league
+  average, in stat units, × a points-per-stat rate) and *how* the five
+  aggregate into a projected total — five ways: a per-team Waterfall
+  **projection bridge** with a unit-annotated derivation line per stat,
+  a back-to-back **category battle** with the rate and deviation in the
+  centre, a **conversion map** scatter where each stat is a ray whose
+  slope is its rate and team dots sit on the ray, a shared-axis
+  **build-up** where both teams start on the league baseline and each
+  stat slides the projection until the gap between the end caps is the
+  margin, and a sortable Table **points ledger** whose cells are the
+  full formula spelled out with units. The points-per-stat rates are
+  derived from the team data — league points-per-possession (each
+  team's `pointsFor / possessionsPerGame`, averaged) times each stat's
+  possession weight — and are adjustable live via sliders in a "How
+  each stat is priced" panel that re-derives every view. The model
+  lives in `src/apps/sports/matchup.ts`.
 
 **Components composed.**
 - `Card` — team cards, game cards, player profile, stat-leader tiles.
-- `Table` (sortable) — rosters, standings, box scores, leader tables.
-- `Tabs` — team detail (Roster / Schedule / Stats), player detail.
+- `Table` (sortable) — rosters, standings, box scores, leader tables,
+  matchup points ledger.
+- `Tabs` — team detail (Roster / Schedule / Stats), player detail,
+  matchup views (Bridge / Battle / Conversion map / Build-up / Ledger).
+- `Waterfall` — matchup projection bridge (plus bespoke SVG for the
+  conversion-map scatter, the shared-axis build-up, and the
+  back-to-back battle bars).
 - `Segmented` — conference filter on teams + standings, position
   filter on players, status filter on games.
 - `Select` — in-app palette picker.
@@ -60,7 +85,10 @@ feature, not the chrome.
 
 **Data.**
 - `src/apps/sports/data/teams.ts` — 10 teams (5 East, 5 West), seeded
-  with colors, arena, head coach, record, conference rank.
+  with colors, arena, head coach, record, points for/against, per-game
+  rebound / assist / steal / block / turnover averages, and
+  possessions per game (the inputs to the matchup lab, including the
+  league points-per-possession the stat rates are derived from).
 - `src/apps/sports/data/players.ts` — 30 players (3 per team) with
   realistic per-game stat lines.
 - `src/apps/sports/data/games.ts` — 15 games dated around the current
@@ -82,7 +110,7 @@ fuse:
 
 - **Content** is what a route produces — the pages in
   `src/apps/sports/pages/` (`Home`, `Teams`, `TeamDetail`, `Players`,
-  `PlayerDetail`, `Games`, `GameDetail`, `Standings`). A page reads
+  `PlayerDetail`, `Games`, `GameDetail`, `Standings`, `Matchup`). A page reads
   the URL, looks up data, and renders a result. It has no opinion
   about where on the screen it appears, how the user got there, or
   what navigation surrounds it.
