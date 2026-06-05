@@ -12,16 +12,12 @@ reference-manual register.
   reused across the app. One such metaphor is an asset; decorative ones are not.
 
 ## Cut or limit
-1. **Expectation-reversal scaffolding — CUT. This is a structure, not a word
-   list.** The banned move: state what a reader would naively expect, then
-   reveal the reality. It appears in unlimited surface forms — “looks like the
-   simplest move… but one rule turns it into a puzzle,” “clean and workable,
-   but it creates a problem,” “you’d guess it’s flat — it isn’t,” “what matters
-   most is…,” “the real point is….” Delete the setup clause and state the
-   mechanic directly. **Test:** if a clause’s only job is to signal an upcoming
-   surprise, or to label what matters rather than state it, cut the clause and
-   keep the fact. The phrases above are illustrations, not an exhaustive
-   find-list; match paraphrases too.
+1. **Expectation-reversal scaffolding — CUT.** Do not plant a guess to
+   overturn it, and do not narrate significance. Remove: "you'd guess… it
+   isn't," "the point is," "here's the twist," "the useful part isn't X, it's
+   Y," and setups of the form "picture the simplest rule… and it would hand
+   them a problem." State the mechanic directly; if it's counterintuitive, the
+   contrast with the reader's prior does the work unlabeled.
 2. **Antithesis via em-dash — LIMIT.** "not just X — Y" / "less X than Y": at
    most one per page, never in the opening lede. Usually splits into two plain
    sentences.

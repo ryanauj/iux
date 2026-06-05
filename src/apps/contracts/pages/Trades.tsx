@@ -58,11 +58,12 @@ export function Trades() {
         title="Trades & multi-team deals"
         lede={
           <>
-            Almost every NBA team is <em>over</em> the cap, so the salaries
-            going each way in a trade have to roughly match. That matching
-            requirement drives the rest: teams add minimum-salary filler to
-            balance the numbers, and deals that won't balance two-way pull in a
-            third team.
+            A trade looks like the simplest move in sports: one team sends a
+            player, the other sends one back. In the NBA, one rule turns it into
+            a math puzzle. Almost every team is <em>over</em> the cap, so the
+            salaries going each way have to roughly match. That single constraint
+            is why NBA trades sprout salary filler and extra teams, and why the
+            hardest ones need a third club to solve.
           </>
         }
       />
