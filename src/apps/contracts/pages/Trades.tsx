@@ -58,25 +58,25 @@ export function Trades() {
         title="Trades & multi-team deals"
         lede={
           <>
-            A trade looks like the simplest move in sports: you send me a player,
-            I send you one back. In the NBA, one rule turns it into a math
-            puzzle. Almost every team is <em>over</em> the cap, so the salaries
-            going each way have to roughly match. That single constraint is why
-            NBA trades sprout salary filler and extra teams — and why the hardest
-            ones need a third club to solve.
+            A trade looks like the simplest move in sports: one team sends a
+            player, the other sends one back. In the NBA, one rule turns it into
+            a math puzzle. Almost every team is <em>over</em> the cap, so the
+            salaries going each way have to roughly match. That single constraint
+            is why NBA trades sprout salary filler and extra teams, and why the
+            hardest ones need a third club to solve.
           </>
         }
       />
 
       <section className="cap-page__section">
-        <h2 className="cap-page__h2">Why you can't just swap</h2>
+        <h2 className="cap-page__h2">Why a team can't just swap</h2>
         <p className="cap-page__p">
           Say a contender wants a star earning{' '}
           <strong>{money(TRADE_STAR_SALARY)}</strong>. In a sane world it just
           takes him. But the contender is already over the cap, and there's no
           exception big enough to simply absorb a {money(TRADE_STAR_SALARY)}{' '}
           salary out of thin air. So the cap imposes the rule that governs every
-          trade: to bring {money(TRADE_STAR_SALARY)} <em>in</em>, you have to
+          trade: to bring {money(TRADE_STAR_SALARY)} <em>in</em>, a team has to
           send roughly {money(TRADE_STAR_SALARY)} <em>out</em>.
         </p>
         <KeyIdea tone="info" title="The matching rule">
@@ -91,7 +91,7 @@ export function Trades() {
       <section className="cap-page__section">
         <h2 className="cap-page__h2">Bundling salaries to hit the number</h2>
         <p className="cap-page__p">
-          Here's the first complication. Our contender doesn't have a single
+          The first complication: our contender doesn't have a single
           {' '}{money(TRADE_STAR_SALARY)} player to send back. So it combines two
           — a {money(22_000_000)} wing and a {money(13_500_000)} backup big — to
           reach <strong>{money(matchOut)}</strong> of outgoing salary. Stacking
@@ -99,14 +99,14 @@ export function Trades() {
           <strong>aggregation</strong>, and it's the everyday tool that makes
           most trades possible.
         </p>
-        <KeyIdea tone="danger" title="This is where the aprons bite">
-          Remember the aprons from Chapter 7? They land right here. Because our
+        <KeyIdea tone="danger" title="Where the aprons land">
+          Remember the aprons from Chapter 7? They apply right here. Because our
           team is over the <strong>first apron</strong>, it can't take back a
           dollar more than it sends — which is why it ships out{' '}
           {money(matchOut)} to bring in {money(TRADE_STAR_SALARY)}. And if it
           were over the <strong>second apron</strong>, it couldn't aggregate at
           all: those two salaries could not be combined, and this trade would be
-          dead before it started. The aprons don't just cost money here — they
+          dead before it started. The aprons here don't only cost money; they
           decide whether a trade is even legal.
         </KeyIdea>
       </section>
@@ -121,7 +121,7 @@ export function Trades() {
           own, the two teams can't make every piece fit.
         </p>
         <p className="cap-page__p">
-          So you bring in a third. A team sitting <strong>under the cap</strong>{' '}
+          So a third team comes in. A team sitting <strong>under the cap</strong>{' '}
           has something the other two don't: empty room it can drop a salary into
           without matching anything. It absorbs the unwanted contract, and gets
           paid a draft pick for the favor. That's the whole reason multi-team
@@ -196,11 +196,11 @@ export function Trades() {
 
       <section className="cap-page__section">
         <KeyIdea tone="info" title="How to read any blockbuster">
-          Next time a four-team trade scrolls across your feed, count the teams
-          and you'll know what you're looking at: each extra club is there to
-          satisfy the matching rule, dodge an apron limit, or route a player to
-          where he's actually wanted. Usually it's less tangled than it looks —
-          the same equation, just balanced across more sets of books.
+          Next time a four-team trade scrolls past, count the teams and the
+          shape is clear: each extra club is there to satisfy the matching rule,
+          dodge an apron limit, or route a player to where he's actually wanted.
+          Usually it's less tangled than it looks — the same equation, just
+          balanced across more sets of books.
         </KeyIdea>
       </section>
 

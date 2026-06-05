@@ -59,13 +59,14 @@ const byId = (id: string): Exception => EXCEPTIONS.find(e => e.id === id)!
 const CORE = [
   {
     exc: byId('bird'),
-    job: 'Keep your own free agent',
+    job: 'Keep a homegrown free agent',
     blurb: (
       <>
-        After three seasons with you, a player becomes yours to re-sign for
-        anything up to the max — even while you're deep over the cap. This is the
-        tool that made the wall soft back in Chapter 1, and the reason a team can
-        keep the star it drafted instead of watching him leave for nothing.
+        After three seasons with a team, a player becomes that team's to
+        re-sign for anything up to the max — even while the team is deep over
+        the cap. This is the tool that made the wall soft back in Chapter 1, and
+        the reason a team can keep the star it drafted instead of watching him
+        leave for nothing.
       </>
     ),
   },
@@ -74,11 +75,11 @@ const CORE = [
     job: 'Sign one good outsider',
     blurb: (
       <>
-        Bird rights only help with players already on your roster. The mid-level
-        is your one real swing at someone else's free agent — about{' '}
-        {money(byId('mle-nt').amount ?? 0)} a year, roughly the going rate for a
-        solid rotation player. Reaching for the full version pins your ceiling at
-        the first apron for the season (Chapter 7).
+        Bird rights only help with players already on a team's roster. The
+        mid-level is a team's one real swing at someone else's free agent —
+        about {money(byId('mle-nt').amount ?? 0)} a year, roughly the going rate
+        for a solid rotation player. Reaching for the full version pins the
+        team's ceiling at the first apron for the season (Chapter 7).
       </>
     ),
   },
@@ -87,7 +88,7 @@ const CORE = [
     job: 'Fill the last seats',
     blurb: (
       <>
-        No matter how far over the cap you are, you can sign minimum deals.
+        No matter how far over the cap a team is, it can sign minimum deals.
         It's how the back half of every bench gets built. The league even
         reimburses part of a veteran's minimum, so an experienced player costs
         the team barely more than a younger one in the same seat.
@@ -108,7 +109,7 @@ export function Exceptions() {
             But soft doesn't mean open. A team over the cap can't just add salary
             freely — each dollar over the line has to come through a specific,
             pre-authorized <em>exception</em>, a named and legal way to add a
-            player. You've already met the first one: the{' '}
+            player. One has already appeared: the{' '}
             <strong>Bird rights</strong> that let a team re-sign its own stars.
             This chapter lays out the full toolbox — including how a capped-out
             team adds someone from <em>outside</em>.
@@ -119,8 +120,8 @@ export function Exceptions() {
       <section className="cap-page__section">
         <h2 className="cap-page__h2">Three tools do most of the work</h2>
         <p className="cap-page__p">
-          There are eight exceptions in all, but you can read the great majority
-          of signings with just three. Each answers a different need a team
+          There are eight exceptions in all, but the great majority of signings
+          can be read with just three. Each answers a different need a team
           actually has:
         </p>
         <div className="cap-exc-cards">
@@ -142,7 +143,7 @@ export function Exceptions() {
         <KeyIdea tone="info" title="Everything else is a variation on these">
           The other five tools are just finer-grained versions of the same three
           ideas. <strong>Early Bird</strong> and <strong>Non-Bird</strong> are
-          weaker re-signing rights for a player who's been with you a shorter
+          weaker re-signing rights for a player who's been with a team a shorter
           time. The <strong>taxpayer mid-level</strong> and{' '}
           <strong>room exception</strong> are smaller outsider-signing tools for
           teams in different cap spots. The <strong>bi-annual</strong> is a small
@@ -158,7 +159,7 @@ export function Exceptions() {
           compare. Read the <strong>max salary</strong> column as the most a team
           can pay through that door, not a fee: an exception adds salary, it
           doesn't cost the team anything to use (the tax bill comes later, in
-          Chapter 6). You don't need to memorize the table, but do glance at the
+          Chapter 6). The table doesn't need memorizing, but do glance at the
           right-hand column: the aprons (Chapter 7) switch several of these tools
           off entirely, and which ones a team has left is the whole story of its
           offseason.

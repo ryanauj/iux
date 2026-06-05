@@ -20,13 +20,13 @@ export function Overview() {
         title="How NBA contracts actually work"
         lede={
           <>
-            Picture the simplest rule the league could write: every team may
-            spend the same fixed amount on salaries, and not a dollar more.
-            Clean, workable — and it would hand the league a problem it decided
-            it couldn't live with. Almost every rule in this guide is a patch on
+            The simplest cap the league could write would let every team spend
+            the same fixed amount on salaries and not a dollar more. That design
+            is clean and workable, but it creates a problem the league decided it
+            couldn't live with. Almost every rule in this guide is a patch on
             that one idea, each fixing a problem the last version caused. We'll
             build it the way the league did: start with the wall, find where it
-            pinches, then add one fix at a time.
+            binds, then add one fix at a time.
           </>
         }
       />
@@ -35,17 +35,18 @@ export function Overview() {
         <h2 className="cap-page__h2">Start with a wall</h2>
         <p className="cap-page__p">
           A hard cap is a wall. Pick a spending limit, let teams spend up to it,
-          and stop them cold at the line. This isn't a strawman — it's a real,
+          and stop them cold at the line. This isn't a strawman; it's a real,
           working design. The NFL and NHL run on hard caps today, and the NBA's
           own cap started life this way in 1983. So the question was never
-          whether a wall <em>works</em>. It's what kind of league it hands you.
+          whether a wall <em>works</em>. It's what kind of league it produces.
         </p>
         <p className="cap-page__p">
-          Here's the catch the NBA didn't want. Say your best player's contract
-          ends and you're already pressed against the wall. You can still keep
-          him — but only by clearing the room first: cutting or trading the good
-          players around him to fit his new deal under the line. A hard cap
-          doesn't make stars vanish into thin air; it forces that trade-off. The
+          The catch is one the NBA didn't want. Say a team's best player comes
+          to the end of his contract while the team is already pressed against
+          the wall. It can still keep him, but only by clearing the room first:
+          cutting or trading the good players around him to fit his new deal
+          under the line. A hard cap doesn't make stars vanish into thin air; it
+          forces that trade-off. The
           team that drafts and develops a superstar often has to dismantle the
           rest of its roster just to pay him, and a promising young core gets
           broken up by arithmetic instead of by choice. That's not hypothetical:
@@ -59,18 +60,19 @@ export function Overview() {
           that same year it made the wall soft: a team may spend past the limit,
           but mainly to re-sign the players it already has. (The very first such
           carve-out is still called the "Larry Bird exception.") That one change
-          is why nearly every team you'll see sits <em>above</em> the cap line,
-          not under it. The number stops being a wall and becomes a baseline you
-          climb past — a "soft cap" — and it's the reason the rest of this guide
-          has anything to explain.
+          is why nearly every team sits <em>above</em> the cap line, not under
+          it. The number stops being a wall and becomes a baseline teams climb
+          past — a "soft cap" — and it's the reason the rest of this guide has
+          anything to explain.
         </KeyIdea>
         <p className="cap-page__p">
           But softening the wall opens a new hole: if teams can spend past the
           line, what stops them spending forever? The whole system that follows
-          is the answer — and the answer is never a louder "no". It's a bill.
-          Cross the next line up and you pay a tax. Cross the lines above that
-          and you start losing the very tools you'd use to get better. You don't
-          get stopped. You get charged — in dollars, then in flexibility.
+          is the answer, and the answer is never a flat "no". It's a bill. Cross
+          the next line up and a team pays a tax. Cross the lines above that and
+          it starts losing the very tools it would use to get better. A team
+          doesn't get stopped; it gets charged, first in dollars, then in
+          flexibility.
         </p>
         <p className="cap-page__p">
           One honest caveat, because it trips everyone up: people call the top
@@ -79,9 +81,10 @@ export function Overview() {
           players. What changes up there is that the penalty stops being just a
           bill and starts taking away <em>tools</em>: by the second apron nearly
           every way to add outside talent is switched off. So why still call this
-          a soft cap? Because for the other twenty-some teams none of that bites
-          — the soft cap <em>is</em> the system: spend past the cap, keep your
-          own players, pay a rising bill if you push it. The NBA didn't trade the
+          a soft cap? Because for the other twenty-some teams none of that
+          applies. The soft cap <em>is</em> the system: a team spends past the
+          cap, keeps its own players, and pays a rising bill if payroll climbs.
+          The NBA didn't trade the
           soft cap for a hard one; it kept the soft cap for everyone and stacked
           tool-stripping penalties on top for the handful who'd otherwise add
           talent without limit.
@@ -90,8 +93,8 @@ export function Overview() {
 
       <section className="cap-page__section">
         <p className="cap-page__p cap-page__p--muted">
-          Here are the real numbers we'll work with this season. Don't memorize
-          them — you'll meet each line in its own chapter. For now, just notice
+          Here are the real numbers we'll work with this season. These don't
+          need memorizing; each line gets its own chapter. For now, just notice
           how far apart they sit.
         </p>
         <div className="cap-statrow">
@@ -126,9 +129,9 @@ export function Overview() {
           <p className="cap-page__p">
             The gap from the cap to the top line is more than{' '}
             <strong>{money(SEASON.secondApron - SEASON.salaryCap)}</strong> — an
-            enormous amount of room to spend in. The league's trick is that it
-            lets you use all of it, while making every step up hurt a little
-            more than the one before.
+            enormous amount of room to spend in. The league lets a team use all
+            of it, while making every step up cost a little more than the one
+            before.
           </p>
         </div>
         <Card variant="static" title="This season's thresholds" className="cap-split__aside">
@@ -154,10 +157,10 @@ export function Overview() {
       <section className="cap-page__section">
         <h2 className="cap-page__h2">The shape we'll climb</h2>
         <p className="cap-page__p">
-          This is the picture to keep in your head for the rest of the guide:
-          one climb, a handful of rungs, getting more punishing toward the top.
-          Every chapter from here fills in one rung or one tool. You already have
-          the whole shape — the rest is detail.
+          This is the picture to hold for the rest of the guide: one climb, a
+          handful of rungs, getting steeper toward the top. Every chapter from
+          here fills in one rung or one tool. The whole shape is already here;
+          the rest is detail.
         </p>
         <CapLadder />
       </section>
