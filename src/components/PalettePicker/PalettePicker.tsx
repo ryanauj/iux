@@ -24,6 +24,7 @@ import {
   isCustomPatternId,
   useCustomPatterns,
   type CustomPatternMap,
+  type StyleId,
 } from '../../lib/customPatterns'
 import { navigate } from '../../apps/router'
 import './PalettePicker.css'
@@ -37,6 +38,7 @@ function styleName(id: string, customs: CustomPatternMap): string {
 }
 
 const LIST_OPEN_KEY = 'palette-picker:list-open'
+const CUSTOM_OPEN_KEY = 'palette-picker:custom-open'
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
 export type PalettePickerVariant = 'button' | 'strip'
@@ -81,7 +83,7 @@ interface PalettePickerProps {
 
 export function PalettePicker(props: PalettePickerProps) {
   const { field, variant } = props
-  const current = field.value as PaletteId
+  const current = field.value as StyleId
 
   const [activeGroup, setActiveGroup] = useActiveGroup()
   const [groups, groupsApi] = useGroups()
@@ -223,15 +225,15 @@ export function PalettePicker(props: PalettePickerProps) {
 
 interface PanelProps {
   field: FieldShape
-  current: PaletteId
+  current: StyleId
   variant: PalettePickerVariant
   quadrant?: StripQuadrant
   slotRect?: DOMRect | null
   activeGroup: string | null
   setActiveGroup: (next: string | null) => void
-  groups: Record<string, PaletteId[]>
+  groups: Record<string, StyleId[]>
   groupsApi: GroupsApi
-  activeMembers: PaletteId[]
+  activeMembers: StyleId[]
   onClose: () => void
 }
 
@@ -265,9 +267,22 @@ function PalettePickerPanel(props: PanelProps) {
     (next: boolean) => setListOpenRaw(next ? '1' : '0'),
     [setListOpenRaw],
   )
+  const [customOpenRaw, setCustomOpenRaw] = usePersistedPref<'0' | '1'>(
+    CUSTOM_OPEN_KEY,
+    '1',
+    isBoolPref,
+  )
+  const customOpen = customOpenRaw === '1'
+  const setCustomOpen = useCallback(
+    (next: boolean) => setCustomOpenRaw(next ? '1' : '0'),
+    [setCustomOpenRaw],
+  )
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
+  /* Add-to-list menu for a custom pattern row (separate from the built-in
+   * browse list's `groupPaletteId` so opening one closes the other). */
+  const [groupCustomId, setGroupCustomId] = useState<StyleId | null>(null)
   /* Add-to-list menu for the current palette's quick-action row (distinct
-   * from the per-row `groupPaletteId` menu inside the browse list). */
+   * from the per-row menus inside the lists below). */
   const [currentMenuOpen, setCurrentMenuOpen] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -314,10 +329,10 @@ function PalettePickerPanel(props: PanelProps) {
   )
 
   const onNewGroupForPalette = useCallback(
-    (paletteId: PaletteId) => {
+    (styleId: StyleId) => {
       const name = window.prompt('New group name')?.trim()
       if (!name) return
-      groupsApi.createGroup(name, [paletteId])
+      groupsApi.createGroup(name, [styleId])
     },
     [groupsApi],
   )
@@ -386,29 +401,37 @@ function PalettePickerPanel(props: PanelProps) {
       aria-label="Palette picker"
       onKeyDown={onKey}
     >
-      {/* Current-palette quick actions — favorite + add-to-list for the
-       * palette shown in the trigger, so it can be saved without opening
-       * the browse list and scrolling to find its row. */}
+      {/* Current-style quick actions — favorite + add-to-list for the style
+       * shown in the trigger (built-in palette or custom pattern), so it can
+       * be saved without opening a list and scrolling to find its row.
+       * Custom patterns also get an Edit shortcut into the style editor. */}
       <div className="palette-picker__current">
-        {!currentIsCustom && (
-          <button
-            type="button"
-            className={`palette-picker__star${groupsApi.isFavorite(current) ? ' is-favorited' : ''}`}
-            aria-label={
-              groupsApi.isFavorite(current)
-                ? `Unfavorite ${currentName}`
-                : `Favorite ${currentName}`
-            }
-            aria-pressed={groupsApi.isFavorite(current)}
-            onClick={() => groupsApi.toggleFavorite(current)}
-          >
-            {groupsApi.isFavorite(current) ? '★' : '☆'}
-          </button>
-        )}
+        <button
+          type="button"
+          className={`palette-picker__star${groupsApi.isFavorite(current) ? ' is-favorited' : ''}`}
+          aria-label={
+            groupsApi.isFavorite(current)
+              ? `Unfavorite ${currentName}`
+              : `Favorite ${currentName}`
+          }
+          aria-pressed={groupsApi.isFavorite(current)}
+          onClick={() => groupsApi.toggleFavorite(current)}
+        >
+          {groupsApi.isFavorite(current) ? '★' : '☆'}
+        </button>
         <span className="palette-picker__current-name" title={currentName}>
           {currentName}
         </span>
-        {currentIsCustom ? (
+        <button
+          type="button"
+          className="palette-picker__current-add"
+          aria-label={`Add ${currentName} to a list`}
+          aria-expanded={currentMenuOpen}
+          onClick={() => setCurrentMenuOpen(o => !o)}
+        >
+          + Add to list
+        </button>
+        {currentIsCustom && (
           <button
             type="button"
             className="palette-picker__current-add"
@@ -417,18 +440,8 @@ function PalettePickerPanel(props: PanelProps) {
           >
             ✎ Edit
           </button>
-        ) : (
-          <button
-            type="button"
-            className="palette-picker__current-add"
-            aria-label={`Add ${currentName} to a list`}
-            aria-expanded={currentMenuOpen}
-            onClick={() => setCurrentMenuOpen(o => !o)}
-          >
-            + Add to list
-          </button>
         )}
-        {!currentIsCustom && currentMenuOpen && (
+        {currentMenuOpen && (
           <div className="palette-picker__group-menu" role="menu">
             {groupNames.map(name => {
               const inGroup = (groups[name] ?? []).includes(current)
@@ -486,12 +499,19 @@ function PalettePickerPanel(props: PanelProps) {
         )}
       </div>
 
-      {/* Custom patterns — user-saved clones. Kept separate from the
-       * built-in catalog (groups/favorites are built-in only); each row
-       * selects, edits, or deletes a pattern. */}
+      {/* Custom patterns — user-saved clones. Collapsible like Browse so the
+       * popover stays compact, and each row can be favorited or added to a
+       * list the same way built-in palettes can, alongside select/edit/delete. */}
       <div className="palette-picker__custom">
         <div className="palette-picker__custom-head">
-          <span className="palette-picker__custom-title">Custom patterns</span>
+          <button
+            type="button"
+            className="palette-picker__browse-toggle"
+            aria-expanded={customOpen}
+            onClick={() => setCustomOpen(!customOpen)}
+          >
+            {customOpen ? '▾' : '▸'} Custom patterns ({Object.values(customPatterns).length})
+          </button>
           <button
             type="button"
             className="palette-picker__inline-action"
@@ -500,55 +520,112 @@ function PalettePickerPanel(props: PanelProps) {
             + New
           </button>
         </div>
-        {Object.values(customPatterns).length === 0 ? (
-          <p className="palette-picker__custom-empty">
-            Clone a palette in the style editor to save your own.
-          </p>
-        ) : (
-          <ul className="palette-picker__list" role="menu">
-            {Object.values(customPatterns).map(rec => {
-              const selected = rec.id === (current as string)
-              return (
-                <li key={rec.id} className="palette-picker__row">
-                  <button
-                    type="button"
-                    role="menuitemradio"
-                    aria-checked={selected}
-                    className={`palette-picker__option${selected ? ' is-selected' : ''}`}
-                    onClick={() => field.onChange(rec.id)}
-                  >
-                    <span className="palette-picker__option-name">{rec.name}</span>
-                    <span className="palette-picker__option-engine">
-                      {palettes[rec.base]?.engine ?? rec.base}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="palette-picker__option-menu"
-                    aria-label={`Edit ${rec.name}`}
-                    onClick={() => navigate('/editor', { edit: rec.id })}
-                  >
-                    ✎
-                  </button>
-                  <button
-                    type="button"
-                    className="palette-picker__option-menu"
-                    aria-label={`Delete ${rec.name}`}
-                    onClick={() => {
-                      if (!window.confirm(`Delete "${rec.name}"?`)) return
-                      const next = { ...customPatterns }
-                      delete next[rec.id]
-                      setCustomPatterns(next)
-                      if (rec.id === (current as string)) field.onChange(rec.base)
-                    }}
-                  >
-                    ✕
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+        {customOpen &&
+          (Object.values(customPatterns).length === 0 ? (
+            <p className="palette-picker__custom-empty">
+              Clone a palette in the style editor to save your own.
+            </p>
+          ) : (
+            <ul className="palette-picker__list" role="menu">
+              {Object.values(customPatterns).map(rec => {
+                const selected = rec.id === (current as string)
+                const favorited = groupsApi.isFavorite(rec.id)
+                const isGroupOpen = groupCustomId === rec.id
+                return (
+                  <li key={rec.id} className="palette-picker__row">
+                    <button
+                      type="button"
+                      className={`palette-picker__star${favorited ? ' is-favorited' : ''}`}
+                      aria-label={favorited ? `Unfavorite ${rec.name}` : `Favorite ${rec.name}`}
+                      aria-pressed={favorited}
+                      onClick={(e: ReactMouseEvent) => {
+                        e.stopPropagation()
+                        groupsApi.toggleFavorite(rec.id)
+                      }}
+                    >
+                      {favorited ? '★' : '☆'}
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={selected}
+                      className={`palette-picker__option${selected ? ' is-selected' : ''}`}
+                      onClick={() => field.onChange(rec.id)}
+                    >
+                      <span className="palette-picker__option-name">{rec.name}</span>
+                      <span className="palette-picker__option-engine">
+                        {palettes[rec.base]?.engine ?? rec.base}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      className="palette-picker__option-menu"
+                      aria-label={`Add ${rec.name} to a list`}
+                      aria-expanded={isGroupOpen}
+                      onClick={(e: ReactMouseEvent) => {
+                        e.stopPropagation()
+                        setGroupCustomId(isGroupOpen ? null : rec.id)
+                      }}
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      className="palette-picker__option-menu"
+                      aria-label={`Edit ${rec.name}`}
+                      onClick={() => navigate('/editor', { edit: rec.id })}
+                    >
+                      ✎
+                    </button>
+                    <button
+                      type="button"
+                      className="palette-picker__option-menu"
+                      aria-label={`Delete ${rec.name}`}
+                      onClick={() => {
+                        if (!window.confirm(`Delete "${rec.name}"?`)) return
+                        const next = { ...customPatterns }
+                        delete next[rec.id]
+                        setCustomPatterns(next)
+                        /* Drop the deleted pattern from every list so no
+                         * favorite or group keeps a dangling reference. */
+                        groupsApi.removeFromAllGroups(rec.id)
+                        if (rec.id === (current as string)) field.onChange(rec.base)
+                      }}
+                    >
+                      ✕
+                    </button>
+                    {isGroupOpen && (
+                      <div className="palette-picker__group-menu" role="menu">
+                        {groupNames.map(name => {
+                          const inGroup = (groups[name] ?? []).includes(rec.id)
+                          return (
+                            <button
+                              key={name}
+                              type="button"
+                              className={`palette-picker__group-menu-item${inGroup ? ' is-in-group' : ''}`}
+                              onClick={() => groupsApi.toggleMembership(name, rec.id)}
+                            >
+                              {inGroup ? '✓' : '+'} {name}
+                            </button>
+                          )
+                        })}
+                        <button
+                          type="button"
+                          className="palette-picker__group-menu-item palette-picker__group-menu-item--new"
+                          onClick={() => {
+                            onNewGroupForPalette(rec.id)
+                            setGroupCustomId(null)
+                          }}
+                        >
+                          + New group…
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          ))}
       </div>
 
       {/* Browse disclosure — collapses the heavy search + list section so
