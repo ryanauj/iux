@@ -6,9 +6,10 @@
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "pnpm run gen:ast-graph && tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "gen:ast-graph": "tsx scripts/generate-ast-graph.ts",
     "validate:palettes": "tsx scripts/validate-palettes.ts",
     "validate:descriptions": "tsx scripts/validate-descriptions.ts",
     "lint:tokens": "tsx scripts/lint-raw-values.ts",
@@ -21,6 +22,7 @@
     "check": "pnpm run typecheck && pnpm run validate:palettes && pnpm run validate:descriptions && pnpm run lint:tokens && pnpm run lint:contrast && pnpm run lint:tier-contrast && pnpm run test:gates && pnpm run test"
   },
   "dependencies": {
+    "@xyflow/react": "^12.11.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.15.1"

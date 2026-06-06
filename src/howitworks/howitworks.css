@@ -67,6 +67,30 @@
   border-radius: var(--radius-md);
 }
 
+/*
+ * The AST graph carries its own canvas frame and needs to breathe, so the
+ * graph figure drops the inner padding and border the SVG diagrams used.
+ */
+.howitworks__figure--graph {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.howitworks__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24rem;
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  border-width: var(--border-width-thin);
+  border-style: dashed;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
 .howitworks__note {
   font-family: var(--type-caption-family);
   font-size: var(--type-caption-size);
