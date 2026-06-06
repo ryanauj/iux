@@ -1,0 +1,390 @@
+/*
+ * AST graph viewer styling.
+ *
+ * Everything paints from contract token variables so the graph re-themes
+ * with the active palette, exactly like the rest of the site. Mobile-first:
+ * the toolbar wraps, the canvas fills a touch-friendly viewport block, and
+ * the minimap is hidden on narrow screens to keep the canvas uncluttered.
+ *
+ * React Flow's own classes (`.react-flow__*`) are overridden here to read
+ * the same tokens; its base stylesheet is imported by AstGraph.tsx.
+ */
+
+.astg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+.astg__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.astg__search {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  color: var(--color-content-primary);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.astg__search:focus-visible {
+  outline-width: var(--border-width-thick, var(--border-width-thin));
+  outline-style: solid;
+  outline-color: var(--color-intent-primary-border, var(--color-border-strong));
+  outline-offset: 2px;
+}
+
+.astg__toolbar-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.astg__btn {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  color: var(--color-content-primary);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  min-height: 2.5rem;
+  transition-property: background-color, border-color;
+  transition-duration: var(--motion-duration-fast, var(--motion-duration-base));
+}
+
+.astg__btn:hover {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border-strong, var(--color-border-default));
+}
+
+.astg__btn:focus-visible {
+  outline-width: var(--border-width-thick, var(--border-width-thin));
+  outline-style: solid;
+  outline-color: var(--color-intent-primary-border, var(--color-border-strong));
+  outline-offset: 2px;
+}
+
+/* ── Legend ──────────────────────────────────────────────────────────── */
+.astg__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.astg__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.astg__legend-dot {
+  font-family: var(--type-code-family, monospace);
+  font-weight: 700;
+  width: 1.1rem;
+  text-align: center;
+}
+
+/* ── Canvas ──────────────────────────────────────────────────────────── */
+.astg__canvas {
+  height: 70vh;
+  min-height: 24rem;
+  width: 100%;
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface-base);
+  touch-action: none;
+}
+
+.astg__canvas .react-flow__background {
+  color: var(--color-border-subtle);
+}
+
+/* React Flow chrome → tokens. */
+.astg__canvas .react-flow__controls {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--elevation-low, none);
+}
+
+.astg__canvas .react-flow__controls-button {
+  background: var(--color-surface-raised);
+  border-bottom-color: var(--color-border-subtle);
+  color: var(--color-content-primary);
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.astg__canvas .react-flow__controls-button:hover {
+  background: var(--color-surface-sunken);
+}
+
+.astg__canvas .react-flow__controls-button svg {
+  fill: var(--color-content-primary);
+  max-width: 60%;
+  max-height: 60%;
+}
+
+.astg__minimap.react-flow__minimap {
+  background: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.astg__minimap .react-flow__minimap-mask {
+  fill: var(--color-surface-base);
+  fill-opacity: 0.55;
+}
+
+/* ── Area node (collapsed cluster) ───────────────────────────────────── */
+.astg-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 260px;
+  height: 132px;
+  box-sizing: border-box;
+  padding: var(--space-4);
+  justify-content: center;
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thick, var(--border-width-thin));
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-low, none);
+  cursor: pointer;
+}
+
+.astg-area.is-selected {
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+}
+
+.astg-area__chevron {
+  color: var(--color-content-muted);
+  font-size: var(--type-caption-size);
+}
+
+.astg-area__label {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-subheading-size, var(--type-body-size));
+  font-weight: var(--type-heading-weight);
+  color: var(--color-content-primary);
+}
+
+.astg-area__counts {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+}
+
+.astg-area__hint {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-text-transform);
+  color: var(--color-content-muted);
+}
+
+/* ── Region (expanded cluster container) ─────────────────────────────── */
+.astg-region {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--color-surface-sunken);
+  border-width: var(--border-width-thin);
+  border-style: dashed;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-lg, var(--radius-md));
+}
+
+.astg-region__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+}
+
+.astg-region__chevron {
+  color: var(--color-content-muted);
+}
+
+.astg-region__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: 700;
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+}
+
+.astg-region__counts {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+}
+
+/* ── File node ───────────────────────────────────────────────────────── */
+.astg-file {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+  background: var(--color-surface-raised);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-low, none);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.astg-file.is-selected {
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+  box-shadow: var(--elevation-medium, var(--elevation-low, none));
+}
+
+.astg-file.is-matched {
+  border-color: var(--color-intent-warning-border, var(--color-border-strong));
+}
+
+.astg-file__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.astg-file__chevron {
+  color: var(--color-content-muted);
+  font-size: var(--type-caption-size);
+  line-height: 1.4;
+}
+
+.astg-file__titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.astg-file__name {
+  font-family: var(--type-code-family, var(--type-label-family));
+  font-size: var(--type-body-size);
+  font-weight: 600;
+  color: var(--color-content-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.astg-file__dir {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.astg-file__count {
+  font-family: var(--type-code-family, monospace);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill, var(--radius-sm));
+  padding: 0 var(--space-2);
+}
+
+.astg-file__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.astg-file__badge {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-muted);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-1);
+}
+
+.astg-file__badge--ext {
+  color: var(--color-content-secondary);
+}
+
+.astg-file__members {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.astg-file__member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 24px;
+}
+
+.astg-file__member-dot {
+  font-family: var(--type-code-family, monospace);
+  font-weight: 700;
+  width: 1.1rem;
+  text-align: center;
+  flex: none;
+}
+
+.astg-file__member-name {
+  font-family: var(--type-code-family, var(--type-body-family));
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.astg-file__member-name.is-exported {
+  color: var(--color-content-primary);
+  font-weight: 600;
+}
+
+/* Narrow screens: drop the minimap, give the canvas more height. */
+@media (max-width: 720px) {
+  .astg__canvas {
+    height: 64vh;
+  }
+
+  .astg__minimap.react-flow__minimap {
+    display: none;
+  }
+}

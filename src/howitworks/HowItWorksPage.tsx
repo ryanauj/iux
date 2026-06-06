@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
@@ -20,19 +20,21 @@ import {
 } from '../components/AppShell/navLayouts'
 import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import { resolveStyle, type StyleId } from '../lib/customPatterns'
-import { HOWITWORKS_PAGES, isHowItWorksId, type HowItWorksId } from './pages'
+import astGraph from './generated/ast-graph.json'
 import '../showcase/showcase.css'
 import './howitworks.css'
 
+// React Flow is heavy; load the graph only on this route to keep the rest
+// of the site lean on mobile.
+const AstGraph = lazy(() => import('./AstGraph').then(m => ({ default: m.AstGraph })))
+
 const URL_PARAM = {
   chrome: 'chrome',
-  view: 'view',
   motion: 'motion',
 } as const
 
 type UrlSettings = {
   chrome: StyleId
-  view: HowItWorksId
   motion: MotionScale
 }
 
@@ -43,7 +45,6 @@ export function HowItWorksPage() {
   const persistedStyle = readSelectedStyle()
   const DEFAULTS = {
     chrome: persistedStyle,
-    view: 'component-flow' as HowItWorksId,
     motion: DEFAULT_MOTION_SCALE,
   }
 
@@ -52,15 +53,12 @@ export function HowItWorksPage() {
     const p = new URL(window.location.href).searchParams
     const chromeRaw = p.get(URL_PARAM.chrome) ?? ''
     const chrome: StyleId = isStyleId(chromeRaw) ? chromeRaw : DEFAULTS.chrome
-    const viewRaw = p.get(URL_PARAM.view) ?? ''
-    const view: HowItWorksId = isHowItWorksId(viewRaw) ? viewRaw : DEFAULTS.view
     const motion = resolveMotionScale(p.get(URL_PARAM.motion))
-    return { chrome, view, motion }
+    return { chrome, motion }
   }
 
   const initial = useMemo(readUrlSettings, [])
   const [chromePaletteId, setChromePaletteId] = useState<StyleId>(initial.chrome)
-  const [view, setView] = useState<HowItWorksId>(initial.view)
   const [motionScale, setMotionScale] = useState<MotionScale>(initial.motion)
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [infoOpen, setInfoOpen] = useState(false)
@@ -74,19 +72,17 @@ export function HowItWorksPage() {
       else url.searchParams.set(key, value)
     }
     sync(URL_PARAM.chrome, chromePaletteId, DEFAULTS.chrome)
-    sync(URL_PARAM.view, view, DEFAULTS.view)
     sync(URL_PARAM.motion, String(motionScale), String(DEFAULTS.motion))
     const next = url.toString()
     if (next !== window.location.href) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [chromePaletteId, view, motionScale])
+  }, [chromePaletteId, motionScale])
 
   useEffect(() => {
     const onPop = () => {
       const s = readUrlSettings()
       setChromePaletteId(s.chrome)
-      setView(s.view)
       setMotionScale(s.motion)
       setSelectedStyle(s.chrome)
     }
@@ -130,15 +126,6 @@ export function HowItWorksPage() {
     }
   }, [infoOpen])
 
-  const viewField: Field = {
-    key: 'view',
-    label: 'View',
-    short: 'V',
-    value: view,
-    options: HOWITWORKS_PAGES.map(p => ({ value: p.id, label: p.label })),
-    onChange: v => setView(v as HowItWorksId),
-  }
-
   const chromeField: Field = buildPaletteField(chromePaletteId, next => {
     setChromePaletteId(next)
     setSelectedStyle(next)
@@ -162,9 +149,7 @@ export function HowItWorksPage() {
     onChange: v => setNavLayout(v as NavLayoutId),
   }
 
-  const fields: Field[] = [viewField, chromeField, navLayoutField, motionField]
-
-  const activePage = HOWITWORKS_PAGES.find(p => p.id === view) ?? HOWITWORKS_PAGES[0]
+  const fields: Field[] = [chromeField, navLayoutField, motionField]
 
   const brand = (
     <>
@@ -190,11 +175,14 @@ export function HowItWorksPage() {
           aria-label="About this page"
           className="stories__info-popover"
         >
-          Visual explanations of how the system itself works, at different
-          levels of specificity. The diagrams are hand-authored for now and
-          paint with the active palette&apos;s tokens — switch the Palette to
-          watch them re-theme. Use View to switch flows. Over time these will
-          become deterministic visualizations generated at build.
+          A deterministic map of the codebase itself. At build time the
+          source under <code>src/</code> is parsed and emitted as a graph —
+          directories, files, and every top-level member (components,
+          functions, classes, consts, types) — with file-to-file import
+          links between them. Tap a directory to open it, tap a file to
+          reveal its members, and pinch or scroll to zoom. It paints with
+          the active palette&apos;s tokens, so switch the Palette to watch
+          it re-theme.
         </div>
       )}
     </>
@@ -218,17 +206,28 @@ export function HowItWorksPage() {
           >
             <article className="howitworks">
               <header className="howitworks__head">
-                <p className="howitworks__eyebrow">{activePage.eyebrow}</p>
-                <h2 className="howitworks__title">{activePage.title}</h2>
-                <p className="howitworks__blurb">{activePage.blurb}</p>
+                <p className="howitworks__eyebrow">How it works · AST graph</p>
+                <h2 className="howitworks__title">The codebase as a navigable graph</h2>
+                <p className="howitworks__blurb">
+                  Every file under <code>src/</code> parsed at build into a
+                  deterministic graph: {astGraph.stats.areas} directories,{' '}
+                  {astGraph.stats.files} files, and {astGraph.stats.members}{' '}
+                  members, joined by {astGraph.stats.imports} import links. Tap
+                  a directory to open it, tap a file to reveal its members, and
+                  zoom to navigate.
+                </p>
               </header>
 
-              <figure className="howitworks__figure">{activePage.render()}</figure>
+              <figure className="howitworks__figure howitworks__figure--graph">
+                <Suspense fallback={<div className="howitworks__loading">Building graph…</div>}>
+                  <AstGraph />
+                </Suspense>
+              </figure>
 
               <p className="howitworks__note">
-                Hand-authored diagram — a provisional sketch of this flow, not
-                yet generated from the source. These will become deterministic
-                visualizations produced at build time.
+                Generated at build by <code>scripts/generate-ast-graph.ts</code>{' '}
+                — no hand-authoring. Re-runs on every <code>pnpm run build</code>,
+                so the map always matches the source it ships with.
               </p>
             </article>
           </PaletteRoot>

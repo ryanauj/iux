@@ -47,6 +47,8 @@ pnpm run dev
 Other scripts:
 
 - `pnpm run typecheck` — strict TypeScript check (covers `src/` and `tokens/`)
+- `pnpm run gen:ast-graph` — parse `src/` and emit the AST graph data
+  (see below); runs automatically as the first step of `build`
 - `pnpm run build` — production build into `dist/`
 - `pnpm run preview` — serve the production build locally
 
@@ -58,6 +60,28 @@ Actions.
 
 The Vite `base` is set to `/iux/` to match the repo subpath. Custom
 domain later? Switch `base` to `'/'` in `vite.config.ts`.
+
+## How it works — AST graph
+
+The **How it works** page (`#/how-it-works`) renders the codebase as a
+navigable, zoomable graph instead of hand-authored diagrams.
+`scripts/generate-ast-graph.ts` walks every authored file under `src/`
+with the TypeScript parser and emits
+`src/howitworks/generated/ast-graph.json`: directories, files, and every
+top-level member (components, functions, classes, consts, types), plus
+the file-to-file import links between them. The generator runs as the
+first step of `build`, so the deployed map always matches the source it
+ships with.
+
+The viewer (`src/howitworks/AstGraph.tsx`) draws it with React Flow.
+It is mobile-first: directories collapse to single nodes on first paint,
+tapping one opens its files, tapping a file reveals its members, and the
+canvas pans and pinch-zooms. Every node and edge paints from contract
+token variables, so the graph re-themes with the active palette like the
+rest of the site. The layout is deterministic — a pure function of the
+expand/collapse state, not a force simulation — so the same view is
+reproducible. React Flow loads in its own route-level chunk so it never
+weighs on the rest of the site.
 
 ## Shareable URLs
 
