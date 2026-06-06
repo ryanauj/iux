@@ -1,0 +1,89 @@
+/*
+ * "How it works" page chrome.
+ *
+ * Rendered inside the active palette (the showcase chrome wraps the route),
+ * so every surface reads from contract tokens — never raw values. The SVG
+ * diagrams paint with the same token variables, so they re-theme too.
+ */
+
+.howitworks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-5);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.howitworks__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  border-bottom-width: var(--border-width-thin);
+  border-bottom-style: solid;
+  border-bottom-color: var(--color-border-subtle);
+}
+
+.howitworks__eyebrow {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  text-transform: var(--type-label-text-transform);
+  letter-spacing: var(--type-label-tracking);
+  color: var(--color-content-secondary);
+  margin: 0;
+}
+
+.howitworks__title {
+  font-family: var(--type-heading-family);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-heading-tracking);
+  color: var(--color-content-primary);
+  margin: 0;
+}
+
+.howitworks__blurb {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-primary);
+  margin: 0;
+  max-width: 48rem;
+}
+
+.howitworks__figure {
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--color-surface-base);
+  border-width: var(--border-width-thin);
+  border-style: solid;
+  border-color: var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.howitworks__note {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-body-line-height);
+  color: var(--color-content-muted);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-sunken);
+  border-left-width: var(--border-width-thick, var(--border-width-thin));
+  border-left-style: solid;
+  border-left-color: var(--color-intent-info-border, var(--color-border-default));
+  border-radius: var(--radius-sm);
+  margin: 0;
+  max-width: 48rem;
+}
+
+@media (max-width: 720px) {
+  .howitworks {
+    padding: var(--space-4);
+  }
+}

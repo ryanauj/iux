@@ -3,6 +3,7 @@ import { Stories } from './stories'
 import { Viz } from './stories/viz'
 import { Quiz } from './stories/quiz'
 import { Doctrine } from './stories/doctrine'
+import { HowItWorks } from './stories/howitworks'
 import { useHashLocation } from './apps/router'
 import { AppsRouter } from './apps/AppsRouter'
 import { EnginesIndex } from './guides/engines'
@@ -34,6 +35,9 @@ function HomeRoute() {
   }
   if (location.path === '/doctrine' || location.path.startsWith('/doctrine/')) {
     return <Doctrine />
+  }
+  if (location.path === '/how-it-works' || location.path.startsWith('/how-it-works/')) {
+    return <HowItWorks />
   }
   if (location.path === '/settings' || location.path.startsWith('/settings/')) {
     return <SettingsPage />
