@@ -5313,6 +5313,13 @@
   background-color: var(--color-surface-raised);
 }
 
+/* The Waterfall ships with a fixed pixel width inline; let it scale down to
+   the card on narrow screens while keeping its natural size as the ceiling. */
+.matchup__bridge-team .iux-waterfall {
+  width: 100% !important;
+  max-width: 460px;
+}
+
 .matchup__bridge-head {
   display: flex;
   align-items: baseline;
@@ -5450,7 +5457,9 @@
 }
 
 /* --- VIEW 3: Conversion map --- */
-.matchup__conv-svg { display: block; }
+/* viewBox keeps the aspect ratio; max-width lets the chart shrink to fit a
+   phone instead of forcing a horizontal pan, capped at its natural size. */
+.matchup__conv-svg { display: block; max-width: 100%; height: auto; }
 
 .matchup__conv-axis {
   stroke: var(--color-border-default);
@@ -5512,7 +5521,7 @@
 }
 
 /* --- VIEW 4: Build-up (shared axis) --- */
-.matchup__build-svg { display: block; }
+.matchup__build-svg { display: block; max-width: 100%; height: auto; }
 
 .matchup__build-grid {
   stroke: var(--color-border-subtle);
@@ -5689,6 +5698,7 @@
 .matchup__pricing-summary {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: var(--space-2);
   cursor: pointer;
   padding: var(--space-3);
@@ -5846,4 +5856,52 @@
   .matchup__battle-row {
     grid-template-columns: minmax(0, 1fr) 4.5rem minmax(0, 1fr);
   }
+}
+
+@media (max-width: 480px) {
+  /* Pickers stack with the "vs" centred between them. */
+  .matchup__pickers { flex-direction: column; align-items: stretch; }
+  .matchup__vs { align-self: center; padding-bottom: 0; }
+
+  /* Bridge derivation: stack the rate chip over the formula, and let the
+     formula scroll within its own row rather than widening the page. */
+  .matchup__bridge-deriv li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+  .matchup__bridge-deriv .deriv-line {
+    display: flex;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Battle: a mirrored row of horizontal bars can't fit two label columns on a
+     phone, so flip each side to a vertical stack — the numbers hug the centre
+     and the bar grows outward beneath them, preserving the mirror. */
+  .matchup__battle-head { display: none; }
+  .matchup__battle-row {
+    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+  .matchup__battle-side,
+  .matchup__battle-side--a {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .matchup__battle-side--a { align-items: flex-end; text-align: end; }
+  .matchup__battle-side--b { align-items: flex-start; text-align: start; }
+  /* Keep both bars below their numbers so they line up across the row. */
+  .matchup__battle-side--b .matchup__battle-val { order: 1; }
+  .matchup__battle-side--b .matchup__battle-pts { order: 2; }
+  .matchup__battle-side--b .matchup__battle-bar { order: 3; }
+  /* Drop the inline unit tags (reb/pts/proj) to win back width. */
+  .matchup__battle .matchup__u { display: none; }
+  /* Centre rate chip stacks to stay inside the narrow middle column. */
+  .matchup__battle-center .conv-chip {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+  }
+  .matchup__battle-center .conv-chip__track { width: 1.8rem; }
 }
