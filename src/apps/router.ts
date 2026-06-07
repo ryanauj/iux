@@ -58,7 +58,7 @@ export function buildHash(path: string, params?: Record<string, string | undefin
  */
 const STICKY_PARAMS = ['layout', 'palette', 'motion', 'tabs', 'tri', 'bento', 'deck', 'graph'] as const
 
-// ABOUTME: getStickyParams — a helper function.
+// ABOUTME: Read the current values of any sticky params from the URL hash.
 /** Read the current values of any sticky params from the URL hash. */
 export function getStickyParams(): Record<string, string> {
   const current = readHash()
@@ -81,7 +81,7 @@ export function navigate(path: string, params?: Record<string, string | undefine
   }
 }
 
-// ABOUTME: replaceParams — a helper function.
+// ABOUTME: Replace just the query params on the current hash without touching the path.
 /**
  * Replace just the query params on the current hash without touching the
  * path. Used by in-app pickers (e.g. the palette picker) that want to
@@ -101,7 +101,7 @@ export function replaceParams(params: Record<string, string | undefined>): void 
   }
 }
 
-// ABOUTME: pathSegments — a helper function.
+// ABOUTME: Split a path into segments, dropping empties.
 /** Split a path into segments, dropping empties. `/apps/sports/teams` → `['apps','sports','teams']`. */
 export function pathSegments(path: string): string[] {
   return path.split('/').filter(Boolean)

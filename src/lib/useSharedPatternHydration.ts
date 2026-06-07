@@ -1,4 +1,4 @@
-// ABOUTME: useSharedPatternHydration — a React hook (lib).
+// ABOUTME: Make a shared `?palette=<encoded>` link "stick".
 
 import { useEffect } from 'react'
 import { readHash, replaceParams } from '../apps/router'
@@ -9,7 +9,7 @@ import {
   useCustomPatterns,
 } from './customPatterns'
 
-// ABOUTME: useSharedPatternHydration — a React hook.
+// ABOUTME: Make a shared `?palette=<encoded>` link "stick".
 /**
  * Make a shared `?palette=<encoded>` link "stick".
  *

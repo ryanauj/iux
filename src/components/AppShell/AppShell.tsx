@@ -1,4 +1,4 @@
-// ABOUTME: AppShell — a React component (components).
+// ABOUTME: Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations.
 
 import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -21,7 +21,7 @@ export interface AppShellProps {
   brandExtra?: ReactNode
 }
 
-// ABOUTME: AppShell — a React component.
+// ABOUTME: Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations.
 /**
  * Renders the page chrome (brand + cross-page nav + main content) in
  * one of ten configurable nav locations. The brand bar is always

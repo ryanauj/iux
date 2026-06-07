@@ -5,7 +5,7 @@
  * through these functions so the route shape can change in one place.
  */
 
-// ABOUTME: SPORTS_BASE — an exported value.
+// ABOUTME: Centralised route helpers for the sports app.
 export const SPORTS_BASE = '/apps/sports'
 
 // ABOUTME: sportsRoutes — an exported value.
@@ -36,7 +36,7 @@ export type SportsRoute =
   | { kind: 'matchup'; aSlug?: string; bSlug?: string }
   | { kind: 'notFound' }
 
-// ABOUTME: matchSportsRoute — a helper function.
+// ABOUTME: Parses the segments AFTER `apps/sports` and returns a discriminated route.
 /** Parses the segments AFTER `apps/sports` and returns a discriminated route. */
 export function matchSportsRoute(segments: string[]): SportsRoute {
   if (segments.length === 0) return { kind: 'home' }

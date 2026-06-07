@@ -5,7 +5,7 @@
  * through these so the URL shape lives in one place.
  */
 
-// ABOUTME: PROMPTS_BASE — an exported value.
+// ABOUTME: Centralised route helpers for the Promptbook app.
 export const PROMPTS_BASE = '/apps/prompts'
 
 // ABOUTME: promptRoutes — an exported value.
@@ -28,7 +28,7 @@ export type PromptsRoute =
   | { kind: 'strategy'; id: string }
   | { kind: 'notFound' }
 
-// ABOUTME: matchPromptsRoute — a helper function.
+// ABOUTME: Parses the segments AFTER `apps/prompts` into a discriminated route.
 /** Parses the segments AFTER `apps/prompts` into a discriminated route. */
 export function matchPromptsRoute(segments: string[]): PromptsRoute {
   if (segments.length === 0) return { kind: 'library' }

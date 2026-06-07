@@ -1,4 +1,4 @@
-// ABOUTME: types — part of the apps area.
+// ABOUTME: ABOUTME: Conference — a type alias.
 
 // ABOUTME: Conference — a type alias.
 export type Conference = 'East' | 'West'

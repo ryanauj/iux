@@ -10,7 +10,7 @@ function areaCode(id: string): string {
   return id.replace(/[^a-z]/gi, '').slice(0, 3).toLowerCase()
 }
 
-// ABOUTME: AstMatrix — a React component.
+// ABOUTME: Rows are the importing area, columns the imported area; a cell's shade is how many file→file imports cross from row to column.
 /**
  * Rows are the importing area, columns the imported area; a cell's shade is how
  * many file→file imports cross from row to column. The whole 14×14 grid fits a

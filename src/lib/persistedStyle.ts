@@ -17,7 +17,7 @@ export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
 
-// ABOUTME: isStyleId — a helper function.
+// ABOUTME: Either a built-in palette id or a `custom:<slug>` pattern id.
 /**
  * Either a built-in palette id or a `custom:<slug>` pattern id. The selected
  * style and the palette picker accept both; `resolveStyle` (in
@@ -27,7 +27,7 @@ export function isStyleId(value: string): value is StyleId {
   return isPaletteId(value) || isCustomPatternId(value)
 }
 
-// ABOUTME: useSelectedStyle — a React hook.
+// ABOUTME: Site-wide "selected style" — the palette the user has most recently picked anywhere on the site.
 /**
  * Site-wide "selected style" — the palette the user has most recently
  * picked anywhere on the site. Backed by localStorage so the choice
@@ -49,7 +49,7 @@ export function useSelectedStyle() {
   )
 }
 
-// ABOUTME: readSelectedStyle — a helper function.
+// ABOUTME: Synchronous accessor for the persisted selected style.
 /**
  * Synchronous accessor for the persisted selected style. Used by surfaces
  * that resolve their initial chrome from the URL but want to fall back
@@ -67,7 +67,7 @@ export function readSelectedStyle(): StyleId {
   return DEFAULT_SELECTED_STYLE
 }
 
-// ABOUTME: buildPaletteField — a helper function.
+// ABOUTME: Build the canonical "chrome" Field for `DraggableControls`.
 /**
  * Build the canonical "chrome" Field for `DraggableControls`. Tagged
  * with `kind: 'palette'` so both DraggableControls variants substitute

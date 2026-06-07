@@ -1,4 +1,4 @@
-// ABOUTME: VariableFiller — a React component (apps).
+// ABOUTME: Live template tool: one input per `{{variable}}`, with a running preview of the filled prompt and a copy button for the result.
 
 import { useState } from 'react'
 import { TextInput } from '../../../components/TextInput/TextInput'
@@ -10,7 +10,7 @@ interface VariableFillerProps {
   variables: string[]
 }
 
-// ABOUTME: VariableFiller — a React component.
+// ABOUTME: Live template tool: one input per `{{variable}}`, with a running preview of the filled prompt and a copy button for the result.
 /**
  * Live template tool: one input per `{{variable}}`, with a running preview
  * of the filled prompt and a copy button for the result. Unfilled slots

@@ -6,7 +6,7 @@
  * pattern the sibling sports app uses.
  */
 
-// ABOUTME: CONTRACTS_BASE — an exported value.
+// ABOUTME: Centralised route helpers for the Cap School app.
 export const CONTRACTS_BASE = '/apps/contracts'
 
 // ABOUTME: contractsRoutes — an exported value.
@@ -35,7 +35,7 @@ export type ContractsRoute =
   | { kind: 'team' }
   | { kind: 'notFound' }
 
-// ABOUTME: matchContractsRoute — a helper function.
+// ABOUTME: Parses the segments AFTER `apps/contracts` and returns a discriminated route.
 /** Parses the segments AFTER `apps/contracts` and returns a discriminated route. */
 export function matchContractsRoute(segments: string[]): ContractsRoute {
   if (segments.length === 0) return { kind: 'overview' }

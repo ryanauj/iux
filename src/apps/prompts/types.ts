@@ -6,7 +6,7 @@
  */
 
 /** Top-level grouping for a saved prompt. */
-// ABOUTME: PromptCategory — a type alias.
+// ABOUTME: Top-level grouping for a saved prompt.
 export type PromptCategory =
   | 'writing'
   | 'coding'
@@ -25,7 +25,7 @@ export const PROMPT_CATEGORIES: { value: PromptCategory; label: string }[] = [
   { value: 'meta', label: 'Meta' },
 ]
 
-// ABOUTME: Prompt — an interface.
+// ABOUTME: A saved prompt the user can read, copy, fill, and edit.
 /** A saved prompt the user can read, copy, fill, and edit. */
 export interface Prompt {
   id: string
@@ -46,7 +46,7 @@ export interface Prompt {
   updatedAt: string
 }
 
-// ABOUTME: StrategyCategory — a type alias.
+// ABOUTME: A reusable prompting technique with a template and worked example.
 /** A reusable prompting technique with a template and worked example. */
 export type StrategyCategory =
   | 'reasoning'

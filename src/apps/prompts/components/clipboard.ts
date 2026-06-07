@@ -5,7 +5,7 @@
  * hidden textarea + execCommand for environments without the async
  * Clipboard API (older browsers, some embedded webviews).
  */
-// ABOUTME: copyText — a helper function.
+// ABOUTME: Best-effort clipboard write.
 export async function copyText(text: string): Promise<boolean> {
   try {
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {

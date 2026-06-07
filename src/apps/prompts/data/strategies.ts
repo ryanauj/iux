@@ -2,7 +2,7 @@
 
 import type { Strategy } from '../types'
 
-// ABOUTME: STRATEGIES — an exported value.
+// ABOUTME: A curated reference set of prompting strategies.
 /**
  * A curated reference set of prompting strategies. This content is static
  * — it's the "textbook" half of the app. Saved prompts (mutable, in

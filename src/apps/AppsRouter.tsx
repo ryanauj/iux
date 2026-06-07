@@ -1,4 +1,4 @@
-// ABOUTME: AppsRouter — a React component (apps).
+// ABOUTME: Dispatches `#/apps/...` to either the landing page or a registered app's shell.
 
 import { useMemo } from 'react'
 import { pathSegments, type HashLocation } from './router'
@@ -11,7 +11,7 @@ interface AppsRouterProps {
   location: HashLocation
 }
 
-// ABOUTME: AppsRouter — a React component.
+// ABOUTME: Dispatches `#/apps/...` to either the landing page or a registered app's shell.
 /**
  * Dispatches `#/apps/...` to either the landing page or a registered
  * app's shell. Each registered app handles its own sub-routes.

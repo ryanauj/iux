@@ -8,7 +8,7 @@ import {
   type TokenOverrides,
 } from './customPatterns'
 
-// ABOUTME: SharedPattern — an interface.
+// ABOUTME: The decoded payload of a shared custom pattern (everything but its id).
 /**
  * URL encoding for shareable styles.
  *
@@ -42,7 +42,7 @@ function base64UrlDecode(token: string): string {
   return decodeURIComponent(escape(atob(b64)))
 }
 
-// ABOUTME: encodePattern — a helper function.
+// ABOUTME: Encode a built-in id (bare) or a custom pattern (base64url payload).
 /** Encode a built-in id (bare) or a custom pattern (base64url payload). */
 export function encodePattern(
   pattern: PaletteId | CustomPattern | SharedPattern,
@@ -56,7 +56,7 @@ export function encodePattern(
   return base64UrlEncode(payload)
 }
 
-// ABOUTME: decodePattern — a helper function.
+// ABOUTME: Decode a `?palette=` token into a built-in id or a shared custom pattern.
 /**
  * Decode a `?palette=` token into a built-in id or a shared custom pattern.
  * Returns `null` for anything malformed — never throws.

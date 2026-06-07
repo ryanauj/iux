@@ -12,7 +12,7 @@ import {
 } from './astViews'
 import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 
-// ABOUTME: AstFocus — a React component.
+// ABOUTME: A single focused file fills the screen — its summary and members — flanked by "Depends on" and "Used by" neighbour cards.
 /**
  * A single focused file fills the screen — its summary and members — flanked
  * by "Depends on" and "Used by" neighbour cards. Tapping a card moves focus
@@ -63,9 +63,11 @@ export function AstFocus() {
   return (
     <div className="astv">
       <div className="astv-focus__bar">
-        <button type="button" className="astg__btn" onClick={back} disabled={history.length === 0}>
-          ← Back
-        </button>
+        {history.length > 0 && (
+          <button type="button" className="astg__btn astv-focus__back" onClick={back}>
+            ← Back
+          </button>
+        )}
         <div className="astv-focus__search">
           <input
             className="astg__search"
@@ -90,6 +92,14 @@ export function AstFocus() {
           )}
         </div>
       </div>
+
+      {history.length === 0 && (
+        <p className="astv-focus__hint">
+          Starting at the most-connected file. Tap any <strong>Depends on</strong> or{' '}
+          <strong>Used by</strong> card to walk the import graph one hop at a time — a{' '}
+          <strong>Back</strong> button appears once you do.
+        </p>
+      )}
 
       {file && (
         <article className="astv-focus">

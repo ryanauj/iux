@@ -8,7 +8,7 @@
  */
 
 /** Compact millions form: 154_647_000 → "$154.6M". */
-// ABOUTME: money — a helper function.
+// ABOUTME: Compact millions form: 154_647_000 → "$154.6M".
 export function money(n: number): string {
   const millions = n / 1_000_000
   // Always one decimal so every figure reads at the same precision
@@ -16,26 +16,26 @@ export function money(n: number): string {
   return `$${millions.toFixed(1)}M`
 }
 
-// ABOUTME: moneyFull — a helper function.
+// ABOUTME: Full grouped form: 154_647_000 → "$154,647,000".
 /** Full grouped form: 154_647_000 → "$154,647,000". */
 export function moneyFull(n: number): string {
   return `$${Math.round(n).toLocaleString('en-US')}`
 }
 
-// ABOUTME: moneySigned — a helper function.
+// ABOUTME: Signed compact form for deltas: 14_059_000 → "+$14.1M".
 /** Signed compact form for deltas: 14_059_000 → "+$14.1M". */
 export function moneySigned(n: number): string {
   const sign = n >= 0 ? '+' : '−'
   return `${sign}${money(Math.abs(n))}`
 }
 
-// ABOUTME: pct — a helper function.
+// ABOUTME: 0.25 → "25%".
 /** 0.25 → "25%". */
 export function pct(fraction: number, digits = 0): string {
   return `${(fraction * 100).toFixed(digits)}%`
 }
 
-// ABOUTME: rate — a helper function.
+// ABOUTME: Dollar-per-dollar tax rate: 1.5 → "$1.50".
 /** Dollar-per-dollar tax rate: 1.5 → "$1.50". */
 export function rate(n: number): string {
   return `$${n.toFixed(2)}`

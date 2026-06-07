@@ -12,7 +12,7 @@
  * any of which can be slotted in the same way.
  */
 
-// ABOUTME: KnobKind — a type alias.
+// ABOUTME: The curated set of token "knobs" the style editor exposes.
 export type KnobKind = 'color' | 'length' | 'text' | 'select' | 'font'
 
 // ABOUTME: KnobOption — an interface.
@@ -33,7 +33,7 @@ export interface Knob {
   options?: KnobOption[]
 }
 
-// ABOUTME: LengthUnit — an interface.
+// ABOUTME: Units the length-knob slider can pick, with a sensible slider range and step for each.
 /**
  * Units the length-knob slider can pick, with a sensible slider range and
  * step for each. The editor raises `max` to fit a larger current value (e.g.
@@ -62,7 +62,7 @@ export const LENGTH_UNITS: LengthUnit[] = [
   { value: '', label: '—', min: 0, max: 100, step: 1 },
 ]
 
-// ABOUTME: FONT_FAMILY_OPTIONS — an exported value.
+// ABOUTME: Curated single-family options for the font-stack builder.
 /**
  * Curated single-family options for the font-stack builder. The `font` knob
  * composes an ordered, rearrangeable list of these into a CSS stack; the

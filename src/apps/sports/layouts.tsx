@@ -14,7 +14,7 @@ import { DeckShell } from './shells/deck'
 import { GraphShell } from './shells/graph'
 import { ChatShell } from './shells/chat'
 
-// ABOUTME: LAYOUT_IDS — an exported value.
+// ABOUTME: Layout = the **shell** that wraps the app: brand, navigation, and where page content lands.
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
  * page content lands. Most layouts only restyle the chrome (topbar,

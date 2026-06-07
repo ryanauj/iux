@@ -1,4 +1,4 @@
-// ABOUTME: Checkbox — an exported value (components).
+// ABOUTME: ---------- Component ----------
 
 import {
   forwardRef,
@@ -105,7 +105,7 @@ function toggleNode(node: CheckboxTreeNode, leafSet: Set<string>): Set<string> {
   return next
 }
 
-// ABOUTME: Checkbox — an exported value.
+// ABOUTME: ---------- Component ----------
 // ---------- Component ----------
 
 export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Checkbox(

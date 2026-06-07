@@ -16,7 +16,7 @@
  */
 
 /** The kind of a top-level declaration inside a file. */
-// ABOUTME: MemberKind — a type alias.
+// ABOUTME: The kind of a top-level declaration inside a file.
 export type MemberKind =
   | 'component' // PascalCase function / arrow (a React component)
   | 'function' // camelCase function / arrow
@@ -26,7 +26,7 @@ export type MemberKind =
   | 'interface'
   | 'enum'
 
-// ABOUTME: AstMember — an interface.
+// ABOUTME: A single top-level declaration inside a file.
 /** A single top-level declaration inside a file. */
 export interface AstMember {
   name: string
@@ -43,7 +43,7 @@ export interface AstMember {
   about?: string
 }
 
-// ABOUTME: AstFile — an interface.
+// ABOUTME: One source file — a parent node made up of its members.
 /** One source file — a parent node made up of its members. */
 export interface AstFile {
   /** Repo-relative path with forward slashes, e.g. `src/components/Button/Button.tsx`. */
@@ -68,7 +68,7 @@ export interface AstFile {
   members: AstMember[]
 }
 
-// ABOUTME: AstArea — an interface.
+// ABOUTME: A directory cluster grouping files by their top-level `src/` segment.
 /** A directory cluster grouping files by their top-level `src/` segment. */
 export interface AstArea {
   id: string
@@ -77,7 +77,7 @@ export interface AstArea {
   memberCount: number
 }
 
-// ABOUTME: AstImport — an interface.
+// ABOUTME: A resolved file → file import edge (deduplicated, no self-edges).
 /** A resolved file → file import edge (deduplicated, no self-edges). */
 export interface AstImport {
   source: string

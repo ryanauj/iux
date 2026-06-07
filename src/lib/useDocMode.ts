@@ -2,7 +2,7 @@
 
 import { usePersistedPref } from './usePersistedPref'
 
-// ABOUTME: DocMode — a type alias.
+// ABOUTME: Two voices for the same content: - `plain` — everyday-English prose for readers who don't speak CSS.
 /**
  * Two voices for the same content:
  *  - `plain` — everyday-English prose for readers who don't speak CSS.

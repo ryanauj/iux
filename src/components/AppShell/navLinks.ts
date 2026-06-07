@@ -11,7 +11,7 @@
  * targets — AppShell renders them as anchors so the same array drives
  * Components, Viz, Quiz, Tests, Apps landing, and the Engines pages.
  */
-// ABOUTME: AppShellNavLink — an interface.
+// ABOUTME: Cross-page nav for every showcase chrome.
 export interface AppShellNavLink {
   /** Stable id, used to mark the current page active. */
   id: AppShellNavId

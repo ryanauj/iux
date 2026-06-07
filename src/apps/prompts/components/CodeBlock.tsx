@@ -1,4 +1,4 @@
-// ABOUTME: CodeBlock — a React component (apps).
+// ABOUTME: A monospaced, copyable text block for prompt bodies, templates, examples.
 
 import { CopyButton } from './CopyButton'
 
@@ -11,7 +11,7 @@ interface CodeBlockProps {
   className?: string
 }
 
-// ABOUTME: CodeBlock — a React component.
+// ABOUTME: A monospaced, copyable text block for prompt bodies, templates, examples.
 /** A monospaced, copyable text block for prompt bodies, templates, examples. */
 export function CodeBlock({ text, what = 'Text', label, className }: CodeBlockProps) {
   return (

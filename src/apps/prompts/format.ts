@@ -3,7 +3,7 @@
 import { PROMPT_CATEGORIES, STRATEGY_CATEGORIES } from './types'
 import type { PromptCategory, StrategyCategory } from './types'
 
-// ABOUTME: extractVariables — a helper function.
+// ABOUTME: Pull every distinct `{{variable}}` name out of a template body, in order.
 /** Pull every distinct `{{variable}}` name out of a template body, in order. */
 export function extractVariables(body: string): string[] {
   const out: string[] = []
@@ -20,7 +20,7 @@ export function extractVariables(body: string): string[] {
   return out
 }
 
-// ABOUTME: fillTemplate — a helper function.
+// ABOUTME: Substitute `{{var}}` placeholders with provided values.
 /** Substitute `{{var}}` placeholders with provided values. Blank values are left as the placeholder so the gap is visible. */
 export function fillTemplate(body: string, values: Record<string, string>): string {
   return body.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (whole, name) => {
@@ -29,7 +29,7 @@ export function fillTemplate(body: string, values: Record<string, string>): stri
   })
 }
 
-// ABOUTME: snippet — a helper function.
+// ABOUTME: A short single-line snippet for cards, with placeholders kept readable.
 /** A short single-line snippet for cards, with placeholders kept readable. */
 export function snippet(body: string, max = 140): string {
   const oneLine = body.replace(/\s+/g, ' ').trim()
@@ -58,7 +58,7 @@ export function formatDate(iso: string): string {
   return Number.isNaN(d.getTime()) ? iso : DATE_FMT.format(d)
 }
 
-// ABOUTME: humanizeVar — a helper function.
+// ABOUTME: Variable-name → human label ("real_input" → "Real input").
 /** Variable-name → human label ("real_input" → "Real input"). */
 export function humanizeVar(name: string): string {
   const spaced = name.replace(/_/g, ' ')

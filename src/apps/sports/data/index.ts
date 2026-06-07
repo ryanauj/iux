@@ -67,7 +67,7 @@ export function getStandings(conference: Conference): Team[] {
   })
 }
 
-// ABOUTME: groupGamesByDate — a helper function.
+// ABOUTME: Group games by ISO date in chronological order; useful for the schedule view.
 /**
  * Group games by ISO date in chronological order; useful for the
  * schedule view.

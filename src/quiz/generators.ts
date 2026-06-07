@@ -36,7 +36,7 @@ export function makeRng(seed: number): () => number {
   return mulberry32(seed)
 }
 
-// ABOUTME: nextQuestion — a helper function.
+// ABOUTME: Generate one identify question.
 /**
  * Generate one identify question. Distractors prefer the same engine as the
  * target so the question forces you to discriminate within an engine family

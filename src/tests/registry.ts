@@ -41,7 +41,7 @@ export function findTest(id: string): IntegrationTest | undefined {
   return INTEGRATION_TESTS.find(t => t.id === id)
 }
 
-// ABOUTME: involvedComponentIds — a helper function.
+// ABOUTME: All component ids referenced by at least one test, in stable order.
 /** All component ids referenced by at least one test, in stable order. */
 export function involvedComponentIds(): string[] {
   const seen = new Set<string>()

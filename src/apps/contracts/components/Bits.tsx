@@ -1,10 +1,10 @@
-// ABOUTME: PageHeader — a React component (apps).
+// ABOUTME: Small shared presentational bits used across the Cap School pages: a page header, a "key idea" callout, a stat tile, and the prev/next pa…
 
 import type { ReactNode } from 'react'
 import { Link } from '../../Link'
 import { contractsRoutes } from '../routes'
 
-// ABOUTME: PageHeader — a React component.
+// ABOUTME: Small shared presentational bits used across the Cap School pages: a page header, a "key idea" callout, a stat tile, and the prev/next pa…
 /**
  * Small shared presentational bits used across the Cap School pages:
  * a page header, a "key idea" callout, a stat tile, and the prev/next
@@ -67,7 +67,7 @@ export function StatTile({
   )
 }
 
-// ABOUTME: Disclaimer — a React component.
+// ABOUTME: Educational disclaimer reused on data-heavy pages.
 /** Educational disclaimer reused on data-heavy pages. */
 export function Disclaimer() {
   return (

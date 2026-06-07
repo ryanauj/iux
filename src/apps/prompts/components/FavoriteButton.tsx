@@ -1,4 +1,4 @@
-// ABOUTME: FavoriteButton — a React component (apps).
+// ABOUTME: A star toggle that marks a prompt as a favorite.
 
 interface FavoriteButtonProps {
   active: boolean
@@ -8,7 +8,7 @@ interface FavoriteButtonProps {
   className?: string
 }
 
-// ABOUTME: FavoriteButton — a React component.
+// ABOUTME: A star toggle that marks a prompt as a favorite.
 /** A star toggle that marks a prompt as a favorite. */
 export function FavoriteButton({ active, onToggle, label, className }: FavoriteButtonProps) {
   return (

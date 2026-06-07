@@ -2,7 +2,7 @@
 
 import type { Step } from '../types'
 
-// ABOUTME: describeStep — a helper function.
+// ABOUTME: One-line description that includes the kind context.
 /** One-line description that includes the kind context. Used in dense step rows. */
 export function describeStep(step: Step): string {
   switch (step.kind) {
@@ -17,7 +17,7 @@ export function describeStep(step: Step): string {
   }
 }
 
-// ABOUTME: bubbleLabel — a helper function.
+// ABOUTME: Short label for a storyboard bubble — the bubble already shows the kind separately.
 /** Short label for a storyboard bubble — the bubble already shows the kind separately. */
 export function bubbleLabel(step: Step): string {
   switch (step.kind) {

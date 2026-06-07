@@ -99,7 +99,7 @@ export const STAT_DEFS: StatDef[] = [
   },
 ]
 
-// ABOUTME: LEAGUE_PPP — an exported value.
+// ABOUTME: League points per possession, computed from the teams: the average of each team's `pointsFor / possessionsPerGame`.
 /**
  * League points per possession, computed from the teams: the average of each
  * team's `pointsFor / possessionsPerGame`. This is the single empirical anchor
@@ -110,14 +110,14 @@ export const LEAGUE_PPP: number =
 
 const round2 = (n: number) => Math.round(n * 100) / 100
 
-// ABOUTME: DEFAULT_RATES — an exported value.
+// ABOUTME: Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`.
 /** Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`. */
 export const DEFAULT_RATES: Record<StatKey, number> = STAT_DEFS.reduce((out, def) => {
   out[def.key] = round2(LEAGUE_PPP * def.possessionWeight)
   return out
 }, {} as Record<StatKey, number>)
 
-// ABOUTME: LEAGUE_AVERAGES — an exported value.
+// ABOUTME: League-average per-game value for every modelled stat.
 /** League-average per-game value for every modelled stat. */
 export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
   const out = {} as Record<StatKey, number>
@@ -128,7 +128,7 @@ export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
   return out
 })()
 
-// ABOUTME: LEAGUE_BASELINE_POINTS — an exported value.
+// ABOUTME: League-average points scored per game — the baseline a projection builds on.
 /** League-average points scored per game — the baseline a projection builds on. */
 export const LEAGUE_BASELINE_POINTS: number =
   TEAMS.reduce((acc, t) => acc + t.pointsFor, 0) / TEAMS.length
@@ -215,7 +215,7 @@ export interface MatchupAnalysis {
   maxAbsDelta: number
 }
 
-// ABOUTME: analyzeMatchup — a helper function.
+// ABOUTME: Build the full two-team analysis used by every view on the matchup screen.
 /** Build the full two-team analysis used by every view on the matchup screen. */
 export function analyzeMatchup(
   teamA: Team,
@@ -236,20 +236,20 @@ export function analyzeMatchup(
   return { a, b, edges, netEdge, baseline: LEAGUE_BASELINE_POINTS, rates, maxAbsPoints, maxAbsDelta }
 }
 
-// ABOUTME: formatPoints — a helper function.
+// ABOUTME: "+2.3" / "-1.4" / "0.0" — signed, one decimal, for point values.
 /** "+2.3" / "-1.4" / "0.0" — signed, one decimal, for point values. */
 export function formatPoints(n: number): string {
   const fixed = Math.abs(n) < 0.05 ? '0.0' : n.toFixed(1)
   return n > 0.05 ? `+${fixed}` : fixed
 }
 
-// ABOUTME: formatValue — a helper function.
+// ABOUTME: Unsigned one-decimal, for raw stat values.
 /** Unsigned one-decimal, for raw stat values. */
 export function formatValue(n: number): string {
   return n.toFixed(1)
 }
 
-// ABOUTME: formatRate — a helper function.
+// ABOUTME: Two-decimal rate, e.g.
 /** Two-decimal rate, e.g. 0.35 or -1.06. */
 export function formatRate(n: number): string {
   return n.toFixed(2)
