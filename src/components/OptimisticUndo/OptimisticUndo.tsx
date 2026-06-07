@@ -160,7 +160,7 @@ export function OptimisticUndo({
   return createPortal(stack, getPortalTarget())
 }
 
-// ABOUTME: useOptimisticUndo — a React hook.
+// ABOUTME: Minimal hook that owns the action queue + history.
 // Minimal hook that owns the action queue + history.
 export function useOptimisticUndo(defaultTtlMs: number = 5000) {
   const [actions, setActions] = useState<UndoAction[]>([])

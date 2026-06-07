@@ -20,7 +20,7 @@ export interface RunOptions {
 
 const DEFAULT_TIMEOUT_MS = 2000
 
-// ABOUTME: runTest — a helper function.
+// ABOUTME: Drive a test's steps against a mounted DOM root.
 /**
  * Drive a test's steps against a mounted DOM root.
  *

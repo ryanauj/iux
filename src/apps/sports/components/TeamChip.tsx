@@ -1,4 +1,4 @@
-// ABOUTME: TeamChip — a React component (apps).
+// ABOUTME: Linkable team identifier with a color dot.
 
 import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
@@ -11,7 +11,7 @@ interface TeamChipProps {
   linked?: boolean
 }
 
-// ABOUTME: TeamChip — a React component.
+// ABOUTME: Linkable team identifier with a color dot.
 /**
  * Linkable team identifier with a color dot. Used in tables, score cards,
  * roster lists, and anywhere a team needs to be referenced inline.

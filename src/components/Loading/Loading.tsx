@@ -6,7 +6,7 @@ import './Loading.css'
 // ABOUTME: LoadingVariant — a type alias.
 export type LoadingVariant = 'spinner' | 'shimmer' | 'skeleton' | 'optimistic'
 
-// ABOUTME: SkeletonShape — a type alias.
+// ABOUTME: Built-in skeleton shapes that variants 'skeleton' draws.
 /** Built-in skeleton shapes that variants 'skeleton' draws. */
 export type SkeletonShape = 'card' | 'table-row' | 'list-row' | 'avatar-text' | 'paragraph'
 

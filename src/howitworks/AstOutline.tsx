@@ -15,7 +15,7 @@ import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 
 const elementId = (fileId: string) => `astv-of-${fileId}`
 
-// ABOUTME: AstOutline — a React component.
+// ABOUTME: The graph as a nested list: tap an area to reveal its files, tap a file to reveal its members and the files it imports / is imported by.
 /**
  * The graph as a nested list: tap an area to reveal its files, tap a file to
  * reveal its members and the files it imports / is imported by. Links are

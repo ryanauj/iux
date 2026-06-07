@@ -11,7 +11,7 @@ import {
 import type { Prompt } from './types'
 import { SEED_PROMPTS } from './data/prompts'
 
-// ABOUTME: NewPromptInput — an interface.
+// ABOUTME: In-session prompt store.
 /**
  * In-session prompt store. Seeded from the static starter library; the
  * user can add, edit, delete, and favorite prompts while the app is open.

@@ -5,14 +5,17 @@
  * Adds an `ABOUTME:` summary to every authored source file under `src/` and
  * to every exported top-level member that lacks one.
  *
- * Text is chosen in this order:
+ * Text is chosen in this order, for both files and exported members:
  *   1. a hand-authored entry in `aboutme-overrides.ts`,
- *   2. the first sentence of an existing file/JSDoc header (reusing the
- *      author's own words), or
+ *   2. the first sentence of the declaration's own doc comment / JSDoc
+ *      (reusing the author's own words), or
  *   3. a concise summary synthesised from the declaration's name and kind.
  *
- * The pass is idempotent: a file/member that already carries an `ABOUTME:`
- * line is left untouched, so re-running only fills gaps. The build step
+ * The pass is near-idempotent: a hand-authored or prose-derived `ABOUTME:`
+ * line is left untouched, but a *generic* structural summary (one that still
+ * exactly matches the synthesised fallback) is refreshed in place when real
+ * prose has since become available — so adding a JSDoc and re-running upgrades
+ * the summary instead of leaving the stale guess. The build step
  * (`scripts/generate-ast-graph.ts`) then lifts these comments into the graph
  * the "how it works" page renders.
  *
@@ -72,12 +75,17 @@ interface MemberSite {
   kind: Kind
   /** Offset to insert a new comment line above (start of leading trivia or decl). */
   insertAt: number
-  /** Whether an ABOUTME already sits in this member's (non-header) leading trivia. */
-  documented: boolean
+  /** Existing `ABOUTME:` comment in this member's own (non-header) trivia, if any. */
+  about?: ts.CommentRange
+  /** First sentence of the member's own doc comment (JSDoc / non-ABOUTME), if any. */
+  docSentence?: string
 }
 
-const rangesHaveAbout = (text: string, ranges: ts.CommentRange[] | undefined): boolean =>
-  !!ranges?.some(r => /ABOUTME:/.test(text.slice(r.pos, r.end)))
+/** The summary text carried by a single `ABOUTME:` comment range. */
+function aboutmeText(text: string, r: ts.CommentRange): string {
+  const m = text.slice(r.pos, r.end).match(/ABOUTME:\s?(.*)$/)
+  return m ? m[1].replace(/\*\/\s*$/, '').trim() : ''
+}
 
 /** The contiguous run of `ABOUTME:` line comments at the very top of a file. */
 function topAboutRun(sf: ts.SourceFile, text: string): ts.CommentRange[] {
@@ -141,12 +149,14 @@ function synthFile(area: string, base: string, members: MemberSite[]): string {
   return `${base} — part of the ${area} area.`
 }
 
-interface Insert {
-  at: number
+/** A single text replacement; `start === end` inserts, `start < end` rewrites. */
+interface Edit {
+  start: number
+  end: number
   text: string
 }
 
-function processFile(abs: string): { fileAdded: boolean; membersAdded: number } {
+function processFile(abs: string): { fileAdded: boolean; membersAdded: number; refreshed: number } {
   const id = toId(abs)
   const source = fs.readFileSync(abs, 'utf8')
   const sf = ts.createSourceFile(abs, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
@@ -165,17 +175,26 @@ function processFile(abs: string): { fileAdded: boolean; membersAdded: number } 
   const aboutRun = topAboutRun(sf, source)
   const aboutRunPos = new Set(aboutRun.map(r => r.pos))
 
-  // Gather exported top-level members and where to insert their comment.
+  // Gather exported top-level members: where to insert a comment, the existing
+  // ABOUTME (if any), and the first sentence of any real doc comment the author
+  // already wrote — so a member with a JSDoc summary gets that prose, not a
+  // generic structural guess.
   const members: MemberSite[] = []
   const memberOf = (name: string, kind: Kind, stmt: ts.Node) => {
     const leading = ts.getLeadingCommentRanges(source, stmt.getFullStart()) ?? []
     const placeable = leading.filter(r => !placementPos.has(r.pos))
     const insertAt = placeable.length > 0 ? placeable[0].pos : stmt.getStart(sf)
-    const documented = rangesHaveAbout(
-      source,
-      leading.filter(r => !aboutRunPos.has(r.pos)),
-    )
-    members.push({ name, kind, insertAt, documented })
+    // The member's own trivia is everything except the file header ABOUTME run.
+    // (`placementPos` can't be used here: the first member in a file shares the
+    // file-top trivia with the header, so it would hide the member's own line.)
+    const own = leading.filter(r => !aboutRunPos.has(r.pos))
+    const about = own.find(r => /ABOUTME:/.test(source.slice(r.pos, r.end)))
+    // The member's doc comment is the non-ABOUTME comment closest to the
+    // declaration — for the first member, an earlier range may be the file's
+    // own header block, which describes the file, not this member.
+    const docRanges = own.filter(r => !/ABOUTME:/.test(source.slice(r.pos, r.end)))
+    const memberDoc = docRanges.length > 0 ? [docRanges[docRanges.length - 1]] : undefined
+    members.push({ name, kind, insertAt, about, docSentence: firstSentence(source, memberDoc) })
   }
 
   for (const stmt of sf.statements) {
@@ -199,54 +218,85 @@ function processFile(abs: string): { fileAdded: boolean; membersAdded: number } 
     }
   }
 
-  // Member-level ABOUTME for any exported member without one.
-  const memberInserts: Insert[] = []
+  // The summary we'd choose for a member today: a hand-authored override wins,
+  // then the author's own doc-comment prose, and only then the structural guess.
+  const desiredMember = (m: MemberSite): string =>
+    override?.members?.[m.name] ?? m.docSentence ?? synthMember(m.name, m.kind)
+
+  // Member-level ABOUTME: insert one where it's missing, and refresh a *generic*
+  // one in place when real prose is now available. A hand-edited summary (one
+  // that doesn't match the structural guess) is left untouched.
+  const edits: Edit[] = []
+  let membersAdded = 0
+  let refreshed = 0
   for (const m of members) {
-    if (m.documented) continue
-    const text = override?.members?.[m.name] ?? synthMember(m.name, m.kind)
-    memberInserts.push({ at: m.insertAt, text })
+    const desired = desiredMember(m)
+    if (!m.about) {
+      edits.push({ start: m.insertAt, end: m.insertAt, text: `// ABOUTME: ${desired}\n` })
+      membersAdded++
+      continue
+    }
+    const existing = aboutmeText(source, m.about)
+    if (existing === synthMember(m.name, m.kind) && desired !== existing) {
+      edits.push({ start: m.about.pos, end: m.about.end, text: `// ABOUTME: ${desired}` })
+      refreshed++
+    }
   }
 
-  // File-level ABOUTME at the very top, unless an ABOUTME run already sits
-  // there. The existing header block (if any) is reused for its wording.
+  // File-level ABOUTME. Prefer an override, then a reused file header sentence,
+  // then the primary member's prose (so a single-component file reads like its
+  // component), and only then the structural guess.
   const existingHeader = (ts.getLeadingCommentRanges(source, 0) ?? []).filter(r => !aboutRunPos.has(r.pos))
-  const fileAdded = aboutRun.length === 0
-  const fileText = fileAdded
-    ? (override?.file ?? firstSentence(source, existingHeader) ?? synthFile(area, base, members))
-    : undefined
+  const primary = members.find(m => m.name === base) ?? members.find(m => m.kind === 'component')
+  const primaryProse =
+    primary && (override?.members?.[primary.name] ?? primary.docSentence) ? desiredMember(primary) : undefined
+  const genericFile = synthFile(area, base, members)
+  const headerText = override?.file ?? firstSentence(source, existingHeader) ?? primaryProse ?? genericFile
 
-  if (!fileAdded && memberInserts.length === 0) return { fileAdded: false, membersAdded: 0 }
+  const fileAdded = aboutRun.length === 0
+  if (!fileAdded && aboutRun.length === 1) {
+    const existing = aboutmeText(source, aboutRun[0])
+    if (existing === genericFile && headerText !== existing) {
+      edits.push({ start: aboutRun[0].pos, end: aboutRun[0].end, text: `// ABOUTME: ${headerText}` })
+      refreshed++
+    }
+  }
+
+  if (!fileAdded && edits.length === 0) return { fileAdded: false, membersAdded: 0, refreshed: 0 }
 
   if (!DRY) {
     let out = source
-    // Apply member inserts high-offset-first so earlier offsets stay valid.
-    for (const ins of memberInserts.sort((a, b) => b.at - a.at)) {
-      out = out.slice(0, ins.at) + `// ABOUTME: ${ins.text}\n` + out.slice(ins.at)
+    // Apply edits high-offset-first so earlier offsets stay valid.
+    for (const e of edits.sort((a, b) => b.start - a.start)) {
+      out = out.slice(0, e.start) + e.text + out.slice(e.end)
     }
     // Prepend the file header last so it always lands on the first line,
     // separated by a blank line from whatever follows.
-    if (fileText) out = `// ABOUTME: ${fileText}\n\n` + out
+    if (fileAdded) out = `// ABOUTME: ${headerText}\n\n` + out
     fs.writeFileSync(abs, out, 'utf8')
   }
 
-  return { fileAdded, membersAdded: memberInserts.length }
+  return { fileAdded, membersAdded, refreshed }
 }
 
 function main(): void {
   let files = 0
   let filesDocumented = 0
   let membersDocumented = 0
+  let refreshedTotal = 0
   for (const abs of walk(SRC)) {
     const id = toId(abs)
     if (isExcluded(id)) continue
     files++
-    const { fileAdded, membersAdded } = processFile(abs)
+    const { fileAdded, membersAdded, refreshed } = processFile(abs)
     if (fileAdded) filesDocumented++
     membersDocumented += membersAdded
+    refreshedTotal += refreshed
   }
   console.log(
     `apply-aboutme${DRY ? ' (dry run)' : ''} → scanned ${files} files · ` +
-      `added ${filesDocumented} file summaries, ${membersDocumented} member summaries`,
+      `added ${filesDocumented} file summaries, ${membersDocumented} member summaries · ` +
+      `refreshed ${refreshedTotal} stale generic summaries`,
   )
 }
 

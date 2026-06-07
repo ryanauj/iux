@@ -2,7 +2,7 @@
 
 import type { Prompt } from '../types'
 
-// ABOUTME: SEED_PROMPTS — an exported value.
+// ABOUTME: The starter prompt library.
 /**
  * The starter prompt library. These seed the in-session store; the user
  * can favorite, edit, add to, or delete from this set while the app is

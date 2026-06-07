@@ -1,9 +1,9 @@
-// ABOUTME: usePersistedPref — a React hook (lib).
+// ABOUTME: localStorage-backed React state with cross-instance sync.
 
 import { useEffect, useState } from 'react'
 import { notify, subscribe } from './_persistedShared'
 
-// ABOUTME: usePersistedPref — a React hook.
+// ABOUTME: localStorage-backed React state with cross-instance sync.
 /**
  * localStorage-backed React state with cross-instance sync. Returns the
  * current value and a setter that persists and broadcasts the change.

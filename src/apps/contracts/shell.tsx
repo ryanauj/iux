@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
 import { contractsRoutes, type ContractsRoute } from './routes'
 
-// ABOUTME: LAYOUT_IDS — an exported value.
+// ABOUTME: Shell = the chrome around every Cap School page: brand, the chapter nav, and where the page lands.
 /**
  * Shell = the chrome around every Cap School page: brand, the chapter nav,
  * and where the page lands. Two layouts are offered through the floating

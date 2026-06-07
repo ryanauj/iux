@@ -67,7 +67,7 @@ export function getPaletteTags(id: PaletteId): string[] {
   return list
 }
 
-// ABOUTME: tagToPaletteIds — an exported value.
+// ABOUTME: Map from tag → palette ids that carry it.
 /**
  * Map from tag → palette ids that carry it. Built once at module load
  * since the palette registry is static. Used by both the active-group
@@ -91,7 +91,7 @@ export const tagToPaletteIds: Map<string, PaletteId[]> = (() => {
 // ABOUTME: allTags — an exported value.
 export const allTags: string[] = Array.from(tagToPaletteIds.keys()).sort()
 
-// ABOUTME: searchPalettes — a helper function.
+// ABOUTME: Rank palette ids against a query, matching name + id + tags.
 /* ──────────────────────────── search ──────────────────────────── */
 
 /**
@@ -119,7 +119,7 @@ export function searchPalettes(query: string): PaletteId[] {
   return scored.map(s => s.id)
 }
 
-// ABOUTME: PINNED_GROUPS_KEY — an exported value.
+// ABOUTME: ─────────────────────────── persistence ───────────────────────────
 /* ─────────────────────────── persistence ─────────────────────────── */
 
 export const PINNED_GROUPS_KEY = 'iux-palette-pinned-groups'
@@ -186,7 +186,7 @@ export function usePinningMode() {
   return usePersistedPref<PinningMode>(PINNING_MODE_KEY, 'both', isPinningMode)
 }
 
-// ABOUTME: resolveGroupMembers — a helper function.
+// ABOUTME: Resolve a group name to its palette-id members.
 /**
  * Resolve a group name to its palette-id members. Custom (user-edited)
  * groups win over identically-named defaults so an override fully
@@ -200,7 +200,7 @@ export function resolveGroupMembers(
   return groups[name] ?? []
 }
 
-// ABOUTME: useGroups — a React hook.
+// ABOUTME: The effective group map shown in the picker: every built-in default group merged with the user's stored overrides.
 /* ───────────────────────── group helpers ───────────────────────── */
 
 /**
@@ -319,7 +319,7 @@ function sameIds(a: readonly StyleId[], b: readonly StyleId[]): boolean {
 
 export { FAVORITES_GROUP }
 
-// ABOUTME: cycleInGroup — a helper function.
+// ABOUTME: Cycle within a group, wrapping at both ends.
 /**
  * Cycle within a group, wrapping at both ends. If the current palette
  * isn't in the group, arrow-right jumps to the first member and

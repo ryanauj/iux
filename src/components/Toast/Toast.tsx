@@ -204,7 +204,7 @@ function IntentGlyph({ intent }: { intent: ToastIntent }) {
   )
 }
 
-// ABOUTME: useToastQueue — a React hook.
+// ABOUTME: ---------- minimal hook helper ----------
 // ---------- minimal hook helper ----------
 
 export function useToastQueue() {

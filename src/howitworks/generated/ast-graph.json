@@ -183,10 +183,10 @@
           "kind": "component",
           "exported": true,
           "line": 19,
-          "about": "AppsRouter — a React component."
+          "about": "Dispatches `#/apps/...` to either the landing page or a registered app's shell."
         }
       ],
-      "about": "AppsRouter — a React component (apps)."
+      "about": "Dispatches `#/apps/...` to either the landing page or a registered app's shell."
     },
     {
       "id": "src/apps/contracts/components/Bits.tsx",
@@ -202,7 +202,7 @@
           "kind": "component",
           "exported": true,
           "line": 15,
-          "about": "PageHeader — a React component."
+          "about": "Small shared presentational bits used across the Cap School pages: a page header, a \"key idea\" callout, a stat tile, and the prev/next pa…"
         },
         {
           "name": "KeyIdea",
@@ -223,7 +223,7 @@
           "kind": "component",
           "exported": true,
           "line": 72,
-          "about": "Disclaimer — a React component."
+          "about": "Educational disclaimer reused on data-heavy pages."
         },
         {
           "name": "PagerLink",
@@ -239,7 +239,7 @@
           "about": "Pager — a React component."
         }
       ],
-      "about": "PageHeader — a React component (apps)."
+      "about": "Small shared presentational bits used across the Cap School pages: a page header, a \"key idea\" callout, a stat tile, and the prev/next pa…"
     },
     {
       "id": "src/apps/contracts/components/CapLadder.tsx",
@@ -261,7 +261,7 @@
           "kind": "component",
           "exported": true,
           "line": 32,
-          "about": "CapLadder — a React component."
+          "about": "The signature visual: the cap \"ladder\"."
         },
         {
           "name": "Rung",
@@ -270,7 +270,7 @@
           "line": 68
         }
       ],
-      "about": "CapLadder — a React component (apps)."
+      "about": "The signature visual: the cap \"ladder\"."
     },
     {
       "id": "src/apps/contracts/ContractsApp.tsx",
@@ -317,56 +317,56 @@
           "kind": "const",
           "exported": true,
           "line": 24,
-          "about": "SEASON — an exported value."
+          "about": "All figures below are the official 2025–26 NBA cap numbers (salary cap $154.647M and the tax / apron lines that key off it) plus the stan…"
         },
         {
           "name": "PRIOR_CAP",
           "kind": "const",
           "exported": true,
           "line": 35,
-          "about": "PRIOR_CAP — an exported value."
+          "about": "Last season's cap, used to show year-over-year growth on the overview."
         },
         {
           "name": "THRESHOLDS",
           "kind": "const",
           "exported": true,
           "line": 43,
-          "about": "THRESHOLDS — an exported value."
+          "about": "The ladder of lines a payroll climbs."
         },
         {
           "name": "MAX_TIERS",
           "kind": "const",
           "exported": true,
           "line": 83,
-          "about": "MAX_TIERS — an exported value."
+          "about": "Max-salary tiers for the active season (25% / 30% / 35% of the cap)."
         },
         {
           "name": "SUPERMAX_NOTE",
           "kind": "const",
           "exported": true,
           "line": 116,
-          "about": "SUPERMAX_NOTE — an exported value."
+          "about": "The supermax (Designated Veteran) lets a 35%-eligible player who hits the awards criteria re-sign with their own team for the full 35% ev…"
         },
         {
           "name": "EXCEPTIONS",
           "kind": "const",
           "exported": true,
           "line": 121,
-          "about": "EXCEPTIONS — an exported value."
+          "about": "Salary-cap exceptions, ordered roughly largest → smallest."
         },
         {
           "name": "TAX_BRACKETS",
           "kind": "const",
           "exported": true,
           "line": 206,
-          "about": "TAX_BRACKETS — an exported value."
+          "about": "Standard and repeater luxury-tax brackets."
         },
         {
           "name": "SAMPLE_CONTRACT",
           "kind": "const",
           "exported": true,
           "line": 221,
-          "about": "SAMPLE_CONTRACT — an exported value."
+          "about": "Worked single contract for the anatomy page: a 4-year veteran extension re-signed with Bird rights (8% raises off a $30M starting salary)…"
         },
         {
           "name": "SAMPLE_CONTRACT_RAISE",
@@ -387,7 +387,7 @@
           "kind": "const",
           "exported": true,
           "line": 240,
-          "about": "SAMPLE_TEAM_NAME — an exported value."
+          "about": "Worked team cap sheet — a fictional contender (\"Harbor City\") built to sit between the first and second apron so the thresholds all come…"
         },
         {
           "name": "SAMPLE_ROSTER",
@@ -401,14 +401,14 @@
           "kind": "function",
           "exported": true,
           "line": 260,
-          "about": "rosterTotal — a helper function."
+          "about": "Total of the worked roster — recomputed rather than hard-coded."
         },
         {
           "name": "TRADE_STAR_SALARY",
           "kind": "const",
           "exported": true,
           "line": 272,
-          "about": "TRADE_STAR_SALARY — an exported value."
+          "about": "Worked three-team trade for the Trades chapter."
         },
         {
           "name": "SAMPLE_TRADE",
@@ -422,7 +422,7 @@
           "kind": "interface",
           "exported": true,
           "line": 325,
-          "about": "TaxBreakdownStep — an interface."
+          "about": "Computes the standard or repeater luxury-tax bill for a given payroll, walking the incremental brackets."
         },
         {
           "name": "computeTax",
@@ -448,35 +448,35 @@
           "kind": "function",
           "exported": true,
           "line": 12,
-          "about": "money — a helper function."
+          "about": "Compact millions form: 154_647_000 → \"$154.6M\"."
         },
         {
           "name": "moneyFull",
           "kind": "function",
           "exported": true,
           "line": 21,
-          "about": "moneyFull — a helper function."
+          "about": "Full grouped form: 154_647_000 → \"$154,647,000\"."
         },
         {
           "name": "moneySigned",
           "kind": "function",
           "exported": true,
           "line": 27,
-          "about": "moneySigned — a helper function."
+          "about": "Signed compact form for deltas: 14_059_000 → \"+$14.1M\"."
         },
         {
           "name": "pct",
           "kind": "function",
           "exported": true,
           "line": 34,
-          "about": "pct — a helper function."
+          "about": "0.25 → \"25%\"."
         },
         {
           "name": "rate",
           "kind": "function",
           "exported": true,
           "line": 40,
-          "about": "rate — a helper function."
+          "about": "Dollar-per-dollar tax rate: 1.5 → \"$1.50\"."
         }
       ],
       "about": "Money formatting helpers shared across the Cap School pages."
@@ -781,7 +781,7 @@
           "kind": "const",
           "exported": true,
           "line": 10,
-          "about": "CONTRACTS_BASE — an exported value."
+          "about": "Centralised route helpers for the Cap School app."
         },
         {
           "name": "contractsRoutes",
@@ -802,7 +802,7 @@
           "kind": "function",
           "exported": true,
           "line": 40,
-          "about": "matchContractsRoute — a helper function."
+          "about": "Parses the segments AFTER `apps/contracts` and returns a discriminated route."
         }
       ],
       "about": "Centralised route helpers for the Cap School app."
@@ -821,7 +821,7 @@
           "kind": "const",
           "exported": true,
           "line": 15,
-          "about": "LAYOUT_IDS — an exported value."
+          "about": "Shell = the chrome around every Cap School page: brand, the chapter nav, and where the page lands."
         },
         {
           "name": "LayoutId",
@@ -925,63 +925,63 @@
           "kind": "interface",
           "exported": true,
           "line": 13,
-          "about": "CapSeason — an interface."
+          "about": "A single dollar threshold in the cap system for one league year."
         },
         {
           "name": "CapThreshold",
           "kind": "interface",
           "exported": true,
           "line": 30,
-          "about": "CapThreshold — an interface."
+          "about": "The four (well, five) horizontal lines a team's payroll is measured against."
         },
         {
           "name": "MaxTier",
           "kind": "interface",
           "exported": true,
           "line": 42,
-          "about": "MaxTier — an interface."
+          "about": "A maximum-salary tier keyed off years of service."
         },
         {
           "name": "Exception",
           "kind": "interface",
           "exported": true,
           "line": 56,
-          "about": "Exception — an interface."
+          "about": "A salary-cap exception — a tool teams use to sign players over the cap."
         },
         {
           "name": "TaxBracket",
           "kind": "interface",
           "exported": true,
           "line": 71,
-          "about": "TaxBracket — an interface."
+          "about": "One incremental luxury-tax bracket."
         },
         {
           "name": "ContractYear",
           "kind": "interface",
           "exported": true,
           "line": 84,
-          "about": "ContractYear — an interface."
+          "about": "A contract year inside a single deal, for the anatomy walkthrough."
         },
         {
           "name": "RosterSpot",
           "kind": "interface",
           "exported": true,
           "line": 93,
-          "about": "RosterSpot — an interface."
+          "about": "One roster line on the worked team cap sheet."
         },
         {
           "name": "TradePiece",
           "kind": "interface",
           "exported": true,
           "line": 104,
-          "about": "TradePiece — an interface."
+          "about": "A single asset moving in a trade — a contract (with salary) or a pick."
         },
         {
           "name": "TradeParty",
           "kind": "interface",
           "exported": true,
           "line": 112,
-          "about": "TradeParty — an interface."
+          "about": "One team's side of the worked multi-team trade."
         }
       ],
       "about": "Domain types for the Cap School app."
@@ -1006,10 +1006,10 @@
           "kind": "component",
           "exported": true,
           "line": 21,
-          "about": "Link — a React component."
+          "about": "Anchor element that drives the in-app hash router."
         }
       ],
-      "about": "Link — a React component (apps)."
+      "about": "Anchor element that drives the in-app hash router."
     },
     {
       "id": "src/apps/prompts/components/Badge.tsx",
@@ -1038,10 +1038,10 @@
           "kind": "component",
           "exported": true,
           "line": 18,
-          "about": "Badge — a React component."
+          "about": "A small inline pill, toned via the contract intents."
         }
       ],
-      "about": "Badge — a React component (apps)."
+      "about": "A small inline pill, toned via the contract intents."
     },
     {
       "id": "src/apps/prompts/components/clipboard.ts",
@@ -1057,7 +1057,7 @@
           "kind": "function",
           "exported": true,
           "line": 9,
-          "about": "copyText — a helper function."
+          "about": "Best-effort clipboard write."
         }
       ],
       "about": "Best-effort clipboard write."
@@ -1082,10 +1082,10 @@
           "kind": "component",
           "exported": true,
           "line": 16,
-          "about": "CodeBlock — a React component."
+          "about": "A monospaced, copyable text block for prompt bodies, templates, examples."
         }
       ],
-      "about": "CodeBlock — a React component (apps)."
+      "about": "A monospaced, copyable text block for prompt bodies, templates, examples."
     },
     {
       "id": "src/apps/prompts/components/CopyButton.tsx",
@@ -1107,7 +1107,7 @@
           "kind": "component",
           "exported": true,
           "line": 22,
-          "about": "CopyButton — a React component."
+          "about": "A Button that copies `text` and confirms with a transient label + toast."
         },
         {
           "name": "CopyGlyph",
@@ -1122,7 +1122,7 @@
           "line": 70
         }
       ],
-      "about": "CopyButton — a React component (apps)."
+      "about": "A Button that copies `text` and confirms with a transient label + toast."
     },
     {
       "id": "src/apps/prompts/components/FavoriteButton.tsx",
@@ -1144,10 +1144,10 @@
           "kind": "component",
           "exported": true,
           "line": 13,
-          "about": "FavoriteButton — a React component."
+          "about": "A star toggle that marks a prompt as a favorite."
         }
       ],
-      "about": "FavoriteButton — a React component (apps)."
+      "about": "A star toggle that marks a prompt as a favorite."
     },
     {
       "id": "src/apps/prompts/components/feedback.tsx",
@@ -1232,10 +1232,10 @@
           "kind": "component",
           "exported": true,
           "line": 19,
-          "about": "VariableFiller — a React component."
+          "about": "Live template tool: one input per `{{variable}}`, with a running preview of the filled prompt and a copy button for the result."
         }
       ],
-      "about": "VariableFiller — a React component (apps)."
+      "about": "Live template tool: one input per `{{variable}}`, with a running preview of the filled prompt and a copy button for the result."
     },
     {
       "id": "src/apps/prompts/data/prompts.ts",
@@ -1251,7 +1251,7 @@
           "kind": "const",
           "exported": true,
           "line": 12,
-          "about": "SEED_PROMPTS — an exported value."
+          "about": "The starter prompt library."
         }
       ],
       "about": "prompts — part of the apps area."
@@ -1270,7 +1270,7 @@
           "kind": "const",
           "exported": true,
           "line": 11,
-          "about": "STRATEGIES — an exported value."
+          "about": "A curated reference set of prompting strategies."
         },
         {
           "name": "STRATEGY_BY_ID",
@@ -1302,21 +1302,21 @@
           "kind": "function",
           "exported": true,
           "line": 8,
-          "about": "extractVariables — a helper function."
+          "about": "Pull every distinct `{{variable}}` name out of a template body, in order."
         },
         {
           "name": "fillTemplate",
           "kind": "function",
           "exported": true,
           "line": 25,
-          "about": "fillTemplate — a helper function."
+          "about": "Substitute `{{var}}` placeholders with provided values."
         },
         {
           "name": "snippet",
           "kind": "function",
           "exported": true,
           "line": 34,
-          "about": "snippet — a helper function."
+          "about": "A short single-line snippet for cards, with placeholders kept readable."
         },
         {
           "name": "promptCategoryLabel",
@@ -1350,7 +1350,7 @@
           "kind": "function",
           "exported": true,
           "line": 63,
-          "about": "humanizeVar — a helper function."
+          "about": "Variable-name → human label (\"real_input\" → \"Real input\")."
         }
       ],
       "about": "format — part of the apps area."
@@ -1586,7 +1586,7 @@
           "kind": "const",
           "exported": true,
           "line": 9,
-          "about": "PROMPTS_BASE — an exported value."
+          "about": "Centralised route helpers for the Promptbook app."
         },
         {
           "name": "promptRoutes",
@@ -1607,7 +1607,7 @@
           "kind": "function",
           "exported": true,
           "line": 33,
-          "about": "matchPromptsRoute — a helper function."
+          "about": "Parses the segments AFTER `apps/prompts` into a discriminated route."
         }
       ],
       "about": "Centralised route helpers for the Promptbook app."
@@ -1626,7 +1626,7 @@
           "kind": "interface",
           "exported": true,
           "line": 26,
-          "about": "NewPromptInput — an interface."
+          "about": "In-session prompt store."
         },
         {
           "name": "PromptStore",
@@ -1683,7 +1683,7 @@
           "kind": "type",
           "exported": true,
           "line": 10,
-          "about": "PromptCategory — a type alias."
+          "about": "Top-level grouping for a saved prompt."
         },
         {
           "name": "PROMPT_CATEGORIES",
@@ -1697,14 +1697,14 @@
           "kind": "interface",
           "exported": true,
           "line": 30,
-          "about": "Prompt — an interface."
+          "about": "A saved prompt the user can read, copy, fill, and edit."
         },
         {
           "name": "StrategyCategory",
           "kind": "type",
           "exported": true,
           "line": 51,
-          "about": "StrategyCategory — a type alias."
+          "about": "A reusable prompting technique with a template and worked example."
         },
         {
           "name": "STRATEGY_CATEGORIES",
@@ -1777,7 +1777,7 @@
           "kind": "function",
           "exported": true,
           "line": 63,
-          "about": "getStickyParams — a helper function."
+          "about": "Read the current values of any sticky params from the URL hash."
         },
         {
           "name": "navigate",
@@ -1791,14 +1791,14 @@
           "kind": "function",
           "exported": true,
           "line": 90,
-          "about": "replaceParams — a helper function."
+          "about": "Replace just the query params on the current hash without touching the path."
         },
         {
           "name": "pathSegments",
           "kind": "function",
           "exported": true,
           "line": 106,
-          "about": "pathSegments — a helper function."
+          "about": "Split a path into segments, dropping empties."
         }
       ],
       "about": "router — part of the apps area."
@@ -1849,10 +1849,10 @@
           "kind": "component",
           "exported": true,
           "line": 21,
-          "about": "ScoreCard — a React component."
+          "about": "Compact score / matchup card linking through to the game detail."
         }
       ],
-      "about": "ScoreCard — a React component (apps)."
+      "about": "Compact score / matchup card linking through to the game detail."
     },
     {
       "id": "src/apps/sports/components/TeamChip.tsx",
@@ -1874,10 +1874,10 @@
           "kind": "component",
           "exported": true,
           "line": 19,
-          "about": "TeamChip — a React component."
+          "about": "Linkable team identifier with a color dot."
         }
       ],
-      "about": "TeamChip — a React component (apps)."
+      "about": "Linkable team identifier with a color dot."
     },
     {
       "id": "src/apps/sports/data/games.ts",
@@ -1893,14 +1893,14 @@
           "kind": "const",
           "exported": true,
           "line": 9,
-          "about": "GAMES — an exported value."
+          "about": "drift with the host clock."
         },
         {
           "name": "TODAY",
           "kind": "const",
           "exported": true,
           "line": 245,
-          "about": "TODAY — an exported value."
+          "about": "The \"today\" anchor used by the seed data; pages that show \"Today's games\" key off it."
         }
       ],
       "about": "games — part of the apps area."
@@ -2019,7 +2019,7 @@
           "kind": "function",
           "exported": true,
           "line": 75,
-          "about": "groupGamesByDate — a helper function."
+          "about": "Group games by ISO date in chronological order; useful for the schedule view."
         },
         {
           "name": "StatKey",
@@ -2090,49 +2090,49 @@
           "kind": "function",
           "exported": true,
           "line": 5,
-          "about": "formatHeight — a helper function."
+          "about": "Inches to \"6'7\\\"\" — basketball convention."
         },
         {
           "name": "formatPct",
           "kind": "function",
           "exported": true,
           "line": 13,
-          "about": "formatPct — a helper function."
+          "about": "Decimal share like 0.512 → \".512\" — basketball convention drops the leading 0."
         },
         {
           "name": "formatStat",
           "kind": "function",
           "exported": true,
           "line": 20,
-          "about": "formatStat — a helper function."
+          "about": "Decimal like 24.7 → \"24.7\" with exactly one trailing digit."
         },
         {
           "name": "winPct",
           "kind": "function",
           "exported": true,
           "line": 26,
-          "about": "winPct — a helper function."
+          "about": "Win percentage like .823 from a (W, L) pair."
         },
         {
           "name": "gamesBehind",
           "kind": "function",
           "exported": true,
           "line": 33,
-          "about": "gamesBehind — a helper function."
+          "about": "Games behind leader, given the leader's record and the team's record."
         },
         {
           "name": "formatDate",
           "kind": "function",
           "exported": true,
           "line": 50,
-          "about": "formatDate — a helper function."
+          "about": "\"Wed, May 23\" — short month and weekday."
         },
         {
           "name": "formatLongDate",
           "kind": "function",
           "exported": true,
           "line": 62,
-          "about": "formatLongDate — a helper function."
+          "about": "\"May 23, 2026\"."
         }
       ],
       "about": "Inches to \"6'7\\\"\" — basketball convention."
@@ -2151,7 +2151,7 @@
           "kind": "const",
           "exported": true,
           "line": 46,
-          "about": "LAYOUT_IDS — an exported value."
+          "about": "Layout = the **shell** that wraps the app: brand, navigation, and where page content lands."
         },
         {
           "name": "LayoutId",
@@ -2276,7 +2276,7 @@
           "kind": "const",
           "exported": true,
           "line": 108,
-          "about": "LEAGUE_PPP — an exported value."
+          "about": "League points per possession, computed from the teams: the average of each team's `pointsFor / possessionsPerGame`."
         },
         {
           "name": "round2",
@@ -2289,21 +2289,21 @@
           "kind": "const",
           "exported": true,
           "line": 115,
-          "about": "DEFAULT_RATES — an exported value."
+          "about": "Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`."
         },
         {
           "name": "LEAGUE_AVERAGES",
           "kind": "const",
           "exported": true,
           "line": 122,
-          "about": "LEAGUE_AVERAGES — an exported value."
+          "about": "League-average per-game value for every modelled stat."
         },
         {
           "name": "LEAGUE_BASELINE_POINTS",
           "kind": "const",
           "exported": true,
           "line": 133,
-          "about": "LEAGUE_BASELINE_POINTS — an exported value."
+          "about": "League-average points scored per game — the baseline a projection builds on."
         },
         {
           "name": "StatContribution",
@@ -2357,28 +2357,28 @@
           "kind": "function",
           "exported": true,
           "line": 220,
-          "about": "analyzeMatchup — a helper function."
+          "about": "Build the full two-team analysis used by every view on the matchup screen."
         },
         {
           "name": "formatPoints",
           "kind": "function",
           "exported": true,
           "line": 241,
-          "about": "formatPoints — a helper function."
+          "about": "\"+2.3\" / \"-1.4\" / \"0.0\" — signed, one decimal, for point values."
         },
         {
           "name": "formatValue",
           "kind": "function",
           "exported": true,
           "line": 248,
-          "about": "formatValue — a helper function."
+          "about": "Unsigned one-decimal, for raw stat values."
         },
         {
           "name": "formatRate",
           "kind": "function",
           "exported": true,
           "line": 254,
-          "about": "formatRate — a helper function."
+          "about": "Two-decimal rate, e.g."
         }
       ],
       "about": "Matchup analysis model — turning non-scoring box-score stats into points."
@@ -2791,7 +2791,7 @@
           "kind": "const",
           "exported": true,
           "line": 9,
-          "about": "SPORTS_BASE — an exported value."
+          "about": "Centralised route helpers for the sports app."
         },
         {
           "name": "sportsRoutes",
@@ -2812,7 +2812,7 @@
           "kind": "function",
           "exported": true,
           "line": 41,
-          "about": "matchSportsRoute — a helper function."
+          "about": "Parses the segments AFTER `apps/sports` and returns a discriminated route."
         }
       ],
       "about": "Centralised route helpers for the sports app."
@@ -3916,7 +3916,7 @@
           "about": "Game — an interface."
         }
       ],
-      "about": "types — part of the apps area."
+      "about": "ABOUTME: Conference — a type alias."
     },
     {
       "id": "src/components/AdjacencyMatrix/AdjacencyMatrix.tsx",
@@ -4005,7 +4005,7 @@
           "kind": "component",
           "exported": true,
           "line": 31,
-          "about": "AppShell — a React component."
+          "about": "Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations."
         },
         {
           "name": "NavAnchor",
@@ -4068,7 +4068,7 @@
           "line": 347
         }
       ],
-      "about": "AppShell — a React component (components)."
+      "about": "Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations."
     },
     {
       "id": "src/components/AppShell/navLayouts.ts",
@@ -4084,7 +4084,7 @@
           "kind": "const",
           "exported": true,
           "line": 16,
-          "about": "NAV_LAYOUT_IDS — an exported value."
+          "about": "App-shell nav locations."
         },
         {
           "name": "NavLayoutId",
@@ -4131,7 +4131,7 @@
           "kind": "function",
           "exported": true,
           "line": 68,
-          "about": "useNavLayout — a React hook."
+          "about": "Persistent nav layout preference, shared across every page that mounts an `<AppShell>`."
         }
       ],
       "about": "navLayouts — part of the components area."
@@ -4150,7 +4150,7 @@
           "kind": "interface",
           "exported": true,
           "line": 15,
-          "about": "AppShellNavLink — an interface."
+          "about": "Cross-page nav for every showcase chrome."
         },
         {
           "name": "AppShellNavId",
@@ -4818,7 +4818,7 @@
           "kind": "const",
           "exported": true,
           "line": 111,
-          "about": "Checkbox — an exported value."
+          "about": "---------- Component ----------"
         },
         {
           "name": "CheckboxRowProps",
@@ -4857,7 +4857,7 @@
           "line": 420
         }
       ],
-      "about": "Checkbox — an exported value (components)."
+      "about": "---------- Component ----------"
     },
     {
       "id": "src/components/ChordDiagram/ChordDiagram.tsx",
@@ -5475,7 +5475,7 @@
           "kind": "type",
           "exported": true,
           "line": 18,
-          "about": "DatePickerVariant — a type alias."
+          "about": "React types in this file: ReactNode shows up in the public `label` prop."
         },
         {
           "name": "DatePreset",
@@ -5562,14 +5562,14 @@
           "kind": "component",
           "exported": true,
           "line": 175,
-          "about": "DatePicker — a React component."
+          "about": "---------- Component ----------"
         },
         {
           "name": "presetLastNDays",
           "kind": "function",
           "exported": true,
           "line": 502,
-          "about": "presetLastNDays — a helper function."
+          "about": "Helpers exported for stories / tests."
         },
         {
           "name": "presetThisMonth",
@@ -5579,7 +5579,7 @@
           "about": "presetThisMonth — a helper function."
         }
       ],
-      "about": "DatePicker — a React component (components)."
+      "about": "---------- Component ----------"
     },
     {
       "id": "src/components/Dendrogram/Dendrogram.tsx",
@@ -5757,7 +5757,7 @@
           "kind": "type",
           "exported": true,
           "line": 28,
-          "about": "LineOp — a type alias."
+          "about": "---------- Line LCS ----------"
         },
         {
           "name": "diffLines",
@@ -5795,7 +5795,7 @@
           "kind": "component",
           "exported": true,
           "line": 135,
-          "about": "DiffView — a React component."
+          "about": "---------- Component ----------"
         },
         {
           "name": "ColumnProps",
@@ -5810,7 +5810,7 @@
           "line": 310
         }
       ],
-      "about": "DiffView — a React component (components)."
+      "about": "---------- Component ----------"
     },
     {
       "id": "src/components/DocModeToggle/DocModeToggle.tsx",
@@ -5971,7 +5971,7 @@
           "kind": "function",
           "exported": true,
           "line": 42,
-          "about": "useControlsStyle — a React hook."
+          "about": "Shared user preference for the floating controls' style (Button FAB vs Edge Strip)."
         },
         {
           "name": "Field",
@@ -7424,7 +7424,7 @@
           "kind": "type",
           "exported": true,
           "line": 11,
-          "about": "SkeletonShape — a type alias."
+          "about": "Built-in skeleton shapes that variants 'skeleton' draws."
         },
         {
           "name": "LoadingProps",
@@ -7838,7 +7838,7 @@
           "kind": "function",
           "exported": true,
           "line": 165,
-          "about": "useOptimisticUndo — a React hook."
+          "about": "Minimal hook that owns the action queue + history."
         }
       ],
       "about": "OptimisticUndo — a React component (components)."
@@ -9931,7 +9931,7 @@
           "kind": "function",
           "exported": true,
           "line": 210,
-          "about": "useToastQueue — a React hook."
+          "about": "---------- minimal hook helper ----------"
         }
       ],
       "about": "Toast — a React component (components)."
@@ -10748,7 +10748,7 @@
           "kind": "type",
           "exported": true,
           "line": 16,
-          "about": "KnobKind — a type alias."
+          "about": "The curated set of token \"knobs\" the style editor exposes."
         },
         {
           "name": "KnobOption",
@@ -10769,7 +10769,7 @@
           "kind": "interface",
           "exported": true,
           "line": 43,
-          "about": "LengthUnit — an interface."
+          "about": "Units the length-knob slider can pick, with a sensible slider range and step for each."
         },
         {
           "name": "LENGTH_UNITS",
@@ -10783,7 +10783,7 @@
           "kind": "const",
           "exported": true,
           "line": 71,
-          "about": "FONT_FAMILY_OPTIONS — an exported value."
+          "about": "Curated single-family options for the font-stack builder."
         },
         {
           "name": "KNOB_GROUPS",
@@ -12227,7 +12227,7 @@
           "kind": "component",
           "exported": true,
           "line": 22,
-          "about": "AstFocus — a React component."
+          "about": "A single focused file fills the screen — its summary and members — flanked by \"Depends on\" and \"Used by\" neighbour cards."
         }
       ],
       "about": "Focus view — one file at a time with its dependency neighbours as tappable cards, traversing the import graph one hop at a time."
@@ -12579,7 +12579,7 @@
           "kind": "component",
           "exported": true,
           "line": 20,
-          "about": "AstMatrix — a React component."
+          "about": "Rows are the importing area, columns the imported area; a cell's shade is how many file→file imports cross from row to column."
         },
         {
           "name": "Row",
@@ -12610,7 +12610,7 @@
           "kind": "component",
           "exported": true,
           "line": 25,
-          "about": "AstOutline — a React component."
+          "about": "The graph as a nested list: tap an area to reveal its files, tap a file to reveal its members and the files it imports / is imported by."
         }
       ],
       "about": "Outline view — an indented disclosure list of areas, files, members and each file's import links, built for vertical scrolling on mobile."
@@ -12636,35 +12636,35 @@
           "kind": "const",
           "exported": true,
           "line": 22,
-          "about": "FILE_BY_ID — an exported value."
+          "about": "Every file keyed by its repo-relative id."
         },
         {
           "name": "fileLabel",
           "kind": "function",
           "exported": true,
           "line": 26,
-          "about": "fileLabel — a helper function."
+          "about": "The basename a file is shown as, e.g."
         },
         {
           "name": "FILES_BY_AREA",
           "kind": "const",
           "exported": true,
           "line": 30,
-          "about": "FILES_BY_AREA — an exported value."
+          "about": "Files grouped by their top-level area, preserving the graph's stable order."
         },
         {
           "name": "IMPORTS_OF",
           "kind": "const",
           "exported": true,
           "line": 42,
-          "about": "IMPORTS_OF — an exported value."
+          "about": "Outgoing import targets for each file (the files it depends on)."
         },
         {
           "name": "IMPORTED_BY",
           "kind": "const",
           "exported": true,
           "line": 54,
-          "about": "IMPORTED_BY — an exported value."
+          "about": "Incoming import sources for each file (the files that depend on it)."
         },
         {
           "name": "importsOf",
@@ -12685,35 +12685,35 @@
           "kind": "interface",
           "exported": true,
           "line": 71,
-          "about": "AreaLink — an interface."
+          "about": "One directed area→area dependency, with the file links behind it."
         },
         {
           "name": "AREA_MATRIX",
           "kind": "const",
           "exported": true,
           "line": 78,
-          "about": "AREA_MATRIX — an exported value."
+          "about": "Area→area dependency matrix: `AREA_MATRIX.get(from)?.get(to)`."
         },
         {
           "name": "AREA_MATRIX_MAX",
           "kind": "const",
           "exported": true,
           "line": 96,
-          "about": "AREA_MATRIX_MAX — an exported value."
+          "about": "Largest single area→area count, for scaling the matrix heat."
         },
         {
           "name": "fileMatches",
           "kind": "function",
           "exported": true,
           "line": 104,
-          "about": "fileMatches — a helper function."
+          "about": "Does a file match a free-text query across its name, dir, summary, members?"
         },
         {
           "name": "MOST_CONNECTED_FILE",
           "kind": "const",
           "exported": true,
           "line": 118,
-          "about": "MOST_CONNECTED_FILE — an exported value."
+          "about": "A sensible starting file for the focus view: the most-connected one."
         }
       ],
       "about": "Shared graph indexes and helpers for the alternative (mobile) AST views — outline, focus, and matrix — derived from the graph."
@@ -12732,35 +12732,35 @@
           "kind": "type",
           "exported": true,
           "line": 20,
-          "about": "MemberKind — a type alias."
+          "about": "The kind of a top-level declaration inside a file."
         },
         {
           "name": "AstMember",
           "kind": "interface",
           "exported": true,
           "line": 31,
-          "about": "AstMember — an interface."
+          "about": "A single top-level declaration inside a file."
         },
         {
           "name": "AstFile",
           "kind": "interface",
           "exported": true,
           "line": 48,
-          "about": "AstFile — an interface."
+          "about": "One source file — a parent node made up of its members."
         },
         {
           "name": "AstArea",
           "kind": "interface",
           "exported": true,
           "line": 73,
-          "about": "AstArea — an interface."
+          "about": "A directory cluster grouping files by their top-level `src/` segment."
         },
         {
           "name": "AstImport",
           "kind": "interface",
           "exported": true,
           "line": 82,
-          "about": "AstImport — an interface."
+          "about": "A resolved file → file import edge (deduplicated, no self-edges)."
         },
         {
           "name": "AstGraph",
@@ -12829,7 +12829,7 @@
           "kind": "const",
           "exported": true,
           "line": 16,
-          "about": "listeners — an exported value."
+          "about": "In-memory subscribers keyed by storage key."
         },
         {
           "name": "notify",
@@ -12904,21 +12904,21 @@
           "kind": "function",
           "exported": true,
           "line": 97,
-          "about": "isPickableColor — a helper function."
+          "about": "Whether the value is a color the native picker can edit (hex, rgb, or rgba)."
         },
         {
           "name": "toPickerHex",
           "kind": "function",
           "exported": true,
           "line": 103,
-          "about": "toPickerHex — a helper function."
+          "about": "Convert a supported color value to `#rrggbb` for `<input type=\"color\">`."
         },
         {
           "name": "applyPickedHex",
           "kind": "function",
           "exported": true,
           "line": 114,
-          "about": "applyPickedHex — a helper function."
+          "about": "Apply a new `#rrggbb` from the picker, preserving the original value's format (hex / rgb / rgba) and alpha channel."
         },
         {
           "name": "formatAlpha",
@@ -12943,21 +12943,21 @@
           "kind": "const",
           "exported": true,
           "line": 27,
-          "about": "CUSTOM_PREFIX — an exported value."
+          "about": "─────────────────────────────── id types ───────────────────────────────"
         },
         {
           "name": "CustomPatternId",
           "kind": "type",
           "exported": true,
           "line": 31,
-          "about": "CustomPatternId — a type alias."
+          "about": "A user-defined pattern id, namespaced so it never collides with a built-in."
         },
         {
           "name": "StyleId",
           "kind": "type",
           "exported": true,
           "line": 35,
-          "about": "StyleId — a type alias."
+          "about": "Either a built-in palette id or a custom pattern id."
         },
         {
           "name": "isCustomPatternId",
@@ -12977,28 +12977,28 @@
           "kind": "function",
           "exported": true,
           "line": 46,
-          "about": "isBuiltInPaletteId — a helper function."
+          "about": "Local built-in check that doesn't pull in the `persistedStyle` guard."
         },
         {
           "name": "DeepPartial",
           "kind": "type",
           "exported": true,
           "line": 53,
-          "about": "DeepPartial — a type alias."
+          "about": "───────────────────────────── override types ───────────────────────────"
         },
         {
           "name": "TokenOverrides",
           "kind": "type",
           "exported": true,
           "line": 59,
-          "about": "TokenOverrides — a type alias."
+          "about": "A sparse patch over the token contract — only the edited leaves are present."
         },
         {
           "name": "CustomPattern",
           "kind": "interface",
           "exported": true,
           "line": 63,
-          "about": "CustomPattern — an interface."
+          "about": "A stored custom pattern: a name, the built-in it clones, and the overrides."
         },
         {
           "name": "CustomPatternMap",
@@ -13012,70 +13012,70 @@
           "kind": "function",
           "exported": true,
           "line": 76,
-          "about": "isPlainObject — a helper function."
+          "about": "──────────────────────────── object utilities ──────────────────────────"
         },
         {
           "name": "deepMerge",
           "kind": "function",
           "exported": true,
           "line": 86,
-          "about": "deepMerge — a helper function."
+          "about": "Deep-merge `overrides` onto `base`, returning a new object."
         },
         {
           "name": "getAtPath",
           "kind": "function",
           "exported": true,
           "line": 103,
-          "about": "getAtPath — a helper function."
+          "about": "Read a dotted path (`color.surface.base`) out of a nested object."
         },
         {
           "name": "setAtPath",
           "kind": "function",
           "exported": true,
           "line": 117,
-          "about": "setAtPath — a helper function."
+          "about": "Immutably set a dotted path, creating intermediate objects as needed."
         },
         {
           "name": "deleteAtPath",
           "kind": "function",
           "exported": true,
           "line": 136,
-          "about": "deleteAtPath — a helper function."
+          "about": "Immutably delete a dotted path, pruning any intermediate objects left empty."
         },
         {
           "name": "customDataPaletteId",
           "kind": "function",
           "exported": true,
           "line": 164,
-          "about": "customDataPaletteId — a helper function."
+          "about": "The `data-palette` id a reconstructed custom palette carries."
         },
         {
           "name": "baseOf",
           "kind": "function",
           "exported": true,
           "line": 175,
-          "about": "baseOf — a helper function."
+          "about": "Coerce any style id to a built-in `PaletteId` — itself if built-in, the clone's base if it's a custom pattern, else the default."
         },
         {
           "name": "buildWorkingPalette",
           "kind": "function",
           "exported": true,
           "line": 186,
-          "about": "buildWorkingPalette — a helper function."
+          "about": "Build the concrete `Palette` a base + name + overrides reconstruct to."
         },
         {
           "name": "resolveStyle",
           "kind": "function",
           "exported": true,
           "line": 208,
-          "about": "resolveStyle — a helper function."
+          "about": "The single seam from a style id (built-in or custom) to a concrete `Palette` ready for `<PaletteRoot>`."
         },
         {
           "name": "CUSTOM_PATTERNS_KEY",
           "kind": "const",
           "exported": true,
           "line": 225,
-          "about": "CUSTOM_PATTERNS_KEY — an exported value."
+          "about": "──────────────────────────────── storage ───────────────────────────────"
         },
         {
           "name": "isCustomPattern",
@@ -13095,21 +13095,21 @@
           "kind": "function",
           "exported": true,
           "line": 247,
-          "about": "readCustomPatterns — a helper function."
+          "about": "Synchronous read for non-hook contexts (mirrors `readSelectedStyle`)."
         },
         {
           "name": "useCustomPatterns",
           "kind": "function",
           "exported": true,
           "line": 262,
-          "about": "useCustomPatterns — a React hook."
+          "about": "localStorage-backed map of every custom pattern, synced across tabs."
         },
         {
           "name": "slugify",
           "kind": "function",
           "exported": true,
           "line": 269,
-          "about": "slugify — a helper function."
+          "about": "───────────────────────────── id generation ────────────────────────────"
         },
         {
           "name": "makeCustomId",
@@ -13123,7 +13123,7 @@
           "kind": "function",
           "exported": true,
           "line": 285,
-          "about": "uniqueCustomId — a helper function."
+          "about": "A `custom:<slug>` id unique against `existing` (suffixes `-2`, `-3`, …)."
         }
       ],
       "about": "customPatterns — part of the lib area."
@@ -13192,7 +13192,7 @@
           "kind": "const",
           "exported": true,
           "line": 76,
-          "about": "tagToPaletteIds — an exported value."
+          "about": "Map from tag → palette ids that carry it."
         },
         {
           "name": "allTags",
@@ -13206,14 +13206,14 @@
           "kind": "function",
           "exported": true,
           "line": 104,
-          "about": "searchPalettes — a helper function."
+          "about": "Rank palette ids against a query, matching name + id + tags."
         },
         {
           "name": "PINNED_GROUPS_KEY",
           "kind": "const",
           "exported": true,
           "line": 125,
-          "about": "PINNED_GROUPS_KEY — an exported value."
+          "about": "─────────────────────────── persistence ───────────────────────────"
         },
         {
           "name": "ACTIVE_GROUP_KEY",
@@ -13306,14 +13306,14 @@
           "kind": "function",
           "exported": true,
           "line": 195,
-          "about": "resolveGroupMembers — a helper function."
+          "about": "Resolve a group name to its palette-id members."
         },
         {
           "name": "useGroups",
           "kind": "function",
           "exported": true,
           "line": 216,
-          "about": "useGroups — a React hook."
+          "about": "The effective group map shown in the picker: every built-in default group merged with the user's stored overrides."
         },
         {
           "name": "GroupsApi",
@@ -13340,7 +13340,7 @@
           "kind": "function",
           "exported": true,
           "line": 328,
-          "about": "cycleInGroup — a helper function."
+          "about": "Cycle within a group, wrapping at both ends."
         }
       ],
       "about": "paletteTags — part of the lib area."
@@ -13359,7 +13359,7 @@
           "kind": "interface",
           "exported": true,
           "line": 23,
-          "about": "SharedPattern — an interface."
+          "about": "The decoded payload of a shared custom pattern (everything but its id)."
         },
         {
           "name": "DecodeResult",
@@ -13385,14 +13385,14 @@
           "kind": "function",
           "exported": true,
           "line": 47,
-          "about": "encodePattern — a helper function."
+          "about": "Encode a built-in id (bare) or a custom pattern (base64url payload)."
         },
         {
           "name": "decodePattern",
           "kind": "function",
           "exported": true,
           "line": 64,
-          "about": "decodePattern — a helper function."
+          "about": "Decode a `?palette=` token into a built-in id or a shared custom pattern."
         }
       ],
       "about": "patternCodec — part of the lib area."
@@ -13438,28 +13438,28 @@
           "kind": "function",
           "exported": true,
           "line": 26,
-          "about": "isStyleId — a helper function."
+          "about": "Either a built-in palette id or a `custom:<slug>` pattern id."
         },
         {
           "name": "useSelectedStyle",
           "kind": "function",
           "exported": true,
           "line": 44,
-          "about": "useSelectedStyle — a React hook."
+          "about": "Site-wide \"selected style\" — the palette the user has most recently picked anywhere on the site."
         },
         {
           "name": "readSelectedStyle",
           "kind": "function",
           "exported": true,
           "line": 59,
-          "about": "readSelectedStyle — a helper function."
+          "about": "Synchronous accessor for the persisted selected style."
         },
         {
           "name": "buildPaletteField",
           "kind": "function",
           "exported": true,
           "line": 79,
-          "about": "buildPaletteField — a helper function."
+          "about": "Build the canonical \"chrome\" Field for `DraggableControls`."
         }
       ],
       "about": "persistedStyle — part of the lib area."
@@ -13478,7 +13478,7 @@
           "kind": "type",
           "exported": true,
           "line": 17,
-          "about": "DocMode — a type alias."
+          "about": "Two voices for the same content: - `plain` — everyday-English prose for readers who don't speak CSS."
         },
         {
           "name": "DOC_MODE_KEY",
@@ -13531,7 +13531,7 @@
           "kind": "function",
           "exported": true,
           "line": 16,
-          "about": "usePersistedJSON — a React hook."
+          "about": "localStorage-backed React state for JSON-serialisable values."
         },
         {
           "name": "readValue",
@@ -13546,7 +13546,7 @@
           "line": 77
         }
       ],
-      "about": "usePersistedJSON — a React hook (lib)."
+      "about": "localStorage-backed React state for JSON-serialisable values."
     },
     {
       "id": "src/lib/usePersistedPref.ts",
@@ -13562,10 +13562,10 @@
           "kind": "function",
           "exported": true,
           "line": 13,
-          "about": "usePersistedPref — a React hook."
+          "about": "localStorage-backed React state with cross-instance sync."
         }
       ],
-      "about": "usePersistedPref — a React hook (lib)."
+      "about": "localStorage-backed React state with cross-instance sync."
     },
     {
       "id": "src/lib/useSharedPatternHydration.ts",
@@ -13581,10 +13581,10 @@
           "kind": "function",
           "exported": true,
           "line": 25,
-          "about": "useSharedPatternHydration — a React hook."
+          "about": "Make a shared `?palette=<encoded>` link \"stick\"."
         }
       ],
-      "about": "useSharedPatternHydration — a React hook (lib)."
+      "about": "Make a shared `?palette=<encoded>` link \"stick\"."
     },
     {
       "id": "src/main.tsx",
@@ -13661,7 +13661,7 @@
           "kind": "function",
           "exported": true,
           "line": 46,
-          "about": "nextQuestion — a helper function."
+          "about": "Generate one identify question."
         }
       ],
       "about": "generators — part of the quiz area."
@@ -13798,10 +13798,10 @@
           "kind": "component",
           "exported": true,
           "line": 26,
-          "about": "SettingsPage — a React component."
+          "about": "Home for rarely-used settings that don't belong in the everyday floating controls."
         }
       ],
-      "about": "SettingsPage — a React component (settings)."
+      "about": "Home for rarely-used settings that don't belong in the everyday floating controls."
     },
     {
       "id": "src/showcase/components.tsx",
@@ -13845,14 +13845,14 @@
           "kind": "const",
           "exported": true,
           "line": 169,
-          "about": "VISUALIZATIONS — an exported value."
+          "about": "Parallel registry to COMPONENTS."
         },
         {
           "name": "ALL_ENTRIES",
           "kind": "const",
           "exported": true,
           "line": 226,
-          "about": "ALL_ENTRIES — an exported value."
+          "about": "Convenience: every entry across both registries."
         }
       ],
       "about": "components — part of the showcase area."
@@ -14640,7 +14640,7 @@
           "kind": "function",
           "exported": true,
           "line": 46,
-          "about": "involvedComponentIds — a helper function."
+          "about": "All component ids referenced by at least one test, in stable order."
         }
       ],
       "about": "registry — part of the tests area."
@@ -14672,7 +14672,7 @@
           "kind": "function",
           "exported": true,
           "line": 31,
-          "about": "runTest — a helper function."
+          "about": "Drive a test's steps against a mounted DOM root."
         },
         {
           "name": "executeStep",
@@ -14989,14 +14989,14 @@
           "kind": "function",
           "exported": true,
           "line": 7,
-          "about": "describeStep — a helper function."
+          "about": "One-line description that includes the kind context."
         },
         {
           "name": "bubbleLabel",
           "kind": "function",
           "exported": true,
           "line": 22,
-          "about": "bubbleLabel — a helper function."
+          "about": "Short label for a storyboard bubble — the bubble already shows the kind separately."
         },
         {
           "name": "stepIcon",
@@ -15144,7 +15144,7 @@
           "about": "MOTION_FIELD_OPTIONS — an exported value."
         }
       ],
-      "about": "motionScales — part of the theme area."
+      "about": "ABOUTME: MOTION_SCALES — an exported value."
     },
     {
       "id": "src/theme/PaletteRoot.tsx",
@@ -15166,10 +15166,10 @@
           "kind": "component",
           "exported": true,
           "line": 22,
-          "about": "PaletteRoot — a React component."
+          "about": "Applies a palette's tokens as CSS custom properties on a wrapping element."
         }
       ],
-      "about": "PaletteRoot — a React component (theme)."
+      "about": "Applies a palette's tokens as CSS custom properties on a wrapping element."
     },
     {
       "id": "src/theme/paletteToCssVars.ts",
@@ -15210,7 +15210,7 @@
           "kind": "function",
           "exported": true,
           "line": 19,
-          "about": "getPortalTarget — a helper function."
+          "about": "Resolve the DOM element overlay components should portal into."
         }
       ],
       "about": "Resolve the DOM element overlay components should portal into."
@@ -15259,14 +15259,14 @@
           "kind": "function",
           "exported": true,
           "line": 75,
-          "about": "renderStyleDescriptionMarkdown — a helper function."
+          "about": "Renders the canonical `docs/styles/<id>.md` body for a palette."
         },
         {
           "name": "renderCssVarsBlock",
           "kind": "function",
           "exported": true,
           "line": 157,
-          "about": "renderCssVarsBlock — a helper function."
+          "about": "Renders the palette's CSS custom properties as a copy-pasteable block for external projects."
         }
       ],
       "about": "Shared style-description renderer."

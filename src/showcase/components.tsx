@@ -159,7 +159,7 @@ export const COMPONENTS: StoryEntry[] = [
   { id: 'canvas', label: 'Spatial canvas', tier: 3, variants: SpatialCanvasVariants, render: v => <SpatialCanvasStories variant={v} /> },
 ]
 
-// ABOUTME: VISUALIZATIONS — an exported value.
+// ABOUTME: Parallel registry to COMPONENTS.
 /**
  * Parallel registry to COMPONENTS. Visualizations sit alongside components
  * as a separate dimension — see FINALIZED-VISUALIZATIONS.md. Both registries
@@ -221,6 +221,6 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'coefpath',    label: 'Coefficient path',     tier: 3, variants: CoefficientPathVariants,    render: v => <CoefficientPathStories variant={v} /> },
 ]
 
-// ABOUTME: ALL_ENTRIES — an exported value.
+// ABOUTME: Convenience: every entry across both registries.
 /** Convenience: every entry across both registries. Use for global lookups. */
 export const ALL_ENTRIES: StoryEntry[] = [...COMPONENTS, ...VISUALIZATIONS]

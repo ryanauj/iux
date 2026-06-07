@@ -15,7 +15,7 @@
  * tokens. The "first" root is the chrome palette wrapping the whole app,
  * which is exactly what the user sees painted around the page.
  */
-// ABOUTME: getPortalTarget — a helper function.
+// ABOUTME: Resolve the DOM element overlay components should portal into.
 export function getPortalTarget(): HTMLElement {
   if (typeof document === 'undefined') {
     // SSR fallback. Callers gate on `typeof document !== 'undefined'`

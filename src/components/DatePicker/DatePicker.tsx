@@ -1,4 +1,4 @@
-// ABOUTME: DatePicker — a React component (components).
+// ABOUTME: ---------- Component ----------
 
 import {
   useCallback,
@@ -12,7 +12,7 @@ import {
 } from 'react'
 import './DatePicker.css'
 
-// ABOUTME: DatePickerVariant — a type alias.
+// ABOUTME: React types in this file: ReactNode shows up in the public `label` prop.
 // React types in this file: ReactNode shows up in the public `label` prop.
 
 export type DatePickerVariant = 'input' | 'calendar' | 'range' | 'nl'
@@ -169,7 +169,7 @@ function monthMatrix(viewYear: number, viewMonth: number): Date[][] {
   return rows
 }
 
-// ABOUTME: DatePicker — a React component.
+// ABOUTME: ---------- Component ----------
 // ---------- Component ----------
 
 export function DatePicker(props: DatePickerProps) {
@@ -497,7 +497,7 @@ export function DatePicker(props: DatePickerProps) {
   )
 }
 
-// ABOUTME: presetLastNDays — a helper function.
+// ABOUTME: Helpers exported for stories / tests.
 // Helpers exported for stories / tests.
 export function presetLastNDays(n: number, label?: string): DatePreset {
   return { label: label ?? `Last ${n} days`, getRange: () => [addDays(startOfDay(new Date()), -n + 1), startOfDay(new Date())] }

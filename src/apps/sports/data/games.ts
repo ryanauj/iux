@@ -2,7 +2,7 @@
 
 import type { Game } from '../types'
 
-// ABOUTME: GAMES — an exported value.
+// ABOUTME: drift with the host clock.
 // Anchor window: today's "live" game is 2026-05-23. Earlier dates are
 // final, later dates are scheduled. Dates are baked so the data doesn't
 // drift with the host clock.
@@ -240,6 +240,6 @@ export const GAMES: Game[] = [
   },
 ]
 
-// ABOUTME: TODAY — an exported value.
+// ABOUTME: The "today" anchor used by the seed data; pages that show "Today's games" key off it.
 /** The "today" anchor used by the seed data; pages that show "Today's games" key off it. */
 export const TODAY = '2026-05-23'

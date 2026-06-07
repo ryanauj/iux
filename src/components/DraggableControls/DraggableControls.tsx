@@ -32,7 +32,7 @@ const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
   raw === 'button' || raw === 'strip'
 
-// ABOUTME: useControlsStyle — a React hook.
+// ABOUTME: Shared user preference for the floating controls' style (Button FAB vs Edge Strip).
 /**
  * Shared user preference for the floating controls' style (Button FAB vs
  * Edge Strip). Backed by localStorage so the choice survives navigation

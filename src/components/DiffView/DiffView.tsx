@@ -1,4 +1,4 @@
-// ABOUTME: DiffView — a React component (components).
+// ABOUTME: ---------- Component ----------
 
 import { useMemo, useState } from 'react'
 import './DiffView.css'
@@ -22,7 +22,7 @@ export interface DiffViewProps {
   className?: string
 }
 
-// ABOUTME: LineOp — a type alias.
+// ABOUTME: ---------- Line LCS ----------
 // ---------- Line LCS ----------
 
 export type LineOp =
@@ -129,7 +129,7 @@ function chunkOps(ops: LineOp[]): DiffChunk[] {
   return out
 }
 
-// ABOUTME: DiffView — a React component.
+// ABOUTME: ---------- Component ----------
 // ---------- Component ----------
 
 export function DiffView({

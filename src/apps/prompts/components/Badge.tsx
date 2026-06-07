@@ -1,4 +1,4 @@
-// ABOUTME: Badge — a React component (apps).
+// ABOUTME: A small inline pill, toned via the contract intents.
 
 import type { ReactNode } from 'react'
 
@@ -13,7 +13,7 @@ interface BadgeProps {
   className?: string
 }
 
-// ABOUTME: Badge — a React component.
+// ABOUTME: A small inline pill, toned via the contract intents.
 /** A small inline pill, toned via the contract intents. */
 export function Badge({ children, tone = 'neutral', outline = false, className }: BadgeProps) {
   const classes = [

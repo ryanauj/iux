@@ -1,4 +1,4 @@
-// ABOUTME: ScoreCard — a React component (apps).
+// ABOUTME: Compact score / matchup card linking through to the game detail.
 
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
@@ -13,7 +13,7 @@ interface ScoreCardProps {
   highlightStatus?: boolean
 }
 
-// ABOUTME: ScoreCard — a React component.
+// ABOUTME: Compact score / matchup card linking through to the game detail.
 /**
  * Compact score / matchup card linking through to the game detail.
  * Renders three layouts depending on `game.status`.

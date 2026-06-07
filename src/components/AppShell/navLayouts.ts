@@ -2,7 +2,7 @@
 
 import { usePersistedPref } from '../../lib/usePersistedPref'
 
-// ABOUTME: NAV_LAYOUT_IDS — an exported value.
+// ABOUTME: App-shell nav locations.
 /**
  * App-shell nav locations. Ten variations that place the cross-page nav
  * (Components / Visualizations / Apps / Quiz / Tests / Engines) in
@@ -59,7 +59,7 @@ const NAV_LAYOUT_KEY = 'iux-nav-layout'
 const isNavLayoutId = (raw: string): raw is NavLayoutId =>
   (NAV_LAYOUT_IDS as readonly string[]).includes(raw)
 
-// ABOUTME: useNavLayout — a React hook.
+// ABOUTME: Persistent nav layout preference, shared across every page that mounts an `<AppShell>`.
 /**
  * Persistent nav layout preference, shared across every page that
  * mounts an `<AppShell>`. localStorage-backed so a layout chosen on the

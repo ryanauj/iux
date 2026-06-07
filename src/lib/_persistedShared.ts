@@ -2,7 +2,7 @@
 
 type Listener = (raw: string) => void
 
-// ABOUTME: listeners — an exported value.
+// ABOUTME: In-memory subscribers keyed by storage key.
 /**
  * In-memory subscribers keyed by storage key. Lets multiple React tree
  * instances (e.g. a floating picker mounted on both the showcase and an

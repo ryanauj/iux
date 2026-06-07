@@ -1,4 +1,4 @@
-// ABOUTME: motionScales — part of the theme area.
+// ABOUTME: ABOUTME: MOTION_SCALES — an exported value.
 
 // ABOUTME: MOTION_SCALES — an exported value.
 export const MOTION_SCALES = [
