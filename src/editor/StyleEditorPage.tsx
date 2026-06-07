@@ -1,4 +1,4 @@
-// ABOUTME: StyleEditorPage — a React component (editor).
+// ABOUTME: Page for creating and editing custom palette patterns: lets users clone a built-in palette, tweak token knobs (colors, radius, spacing, fonts, motion), preview changes live in a PreviewSampler, and save/share/delete the result; URL params drive initial state and are kept in sync as the user edits.
 
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
