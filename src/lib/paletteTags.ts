@@ -122,6 +122,7 @@ export function searchPalettes(query: string): PaletteId[] {
 // ABOUTME: ─────────────────────────── persistence ───────────────────────────
 /* ─────────────────────────── persistence ─────────────────────────── */
 
+// ABOUTME: localStorage key for the array of group names the user has pinned in the picker sidebar.
 export const PINNED_GROUPS_KEY = 'iux-palette-pinned-groups'
 // ABOUTME: localStorage key for the name of the currently active palette group (used by arrow-key cycling).
 export const ACTIVE_GROUP_KEY = 'iux-palette-active-group'

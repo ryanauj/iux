@@ -1,4 +1,4 @@
-// ABOUTME: Pagination ladder rungs: numbered (prev/next + ellipsis), rich (first/last jump + page-size selector), load-more (button + item count), i…
+// ABOUTME: Integration tests for the Pagination component covering three ladder rungs: numbered (aria-current page, prev/next, ellipsis gaps), rich (first/last jump buttons and page-size select), and load-more (item count display and Load more button extends the list); rung 4 (infinite scroll) requires IntersectionObserver and is omitted.
 
 // Pagination ladder rungs: numbered (prev/next + ellipsis), rich (first/last
 // jump + page-size selector), load-more (button + item count), infinite (scroll
@@ -54,7 +54,7 @@ function LoadMoreComposition() {
   )
 }
 
-// ABOUTME: paginationTests — an exported value.
+// ABOUTME: Array of three IntegrationTest definitions for Pagination: numbered prev/next with ellipsis, rich first/last jump with page-size select, and load-more button with item count.
 export const paginationTests: IntegrationTest[] = [
   {
     id: 'pagination-rung-1-numbered',

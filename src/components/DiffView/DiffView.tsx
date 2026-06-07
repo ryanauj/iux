@@ -22,9 +22,7 @@ export interface DiffViewProps {
   className?: string
 }
 
-// ABOUTME: ---------- Line LCS ----------
-// ---------- Line LCS ----------
-
+// ABOUTME: A tagged-union token produced by diffLines: 'eq' for unchanged lines, 'del' for lines removed from a, 'add' for lines inserted in b.
 export type LineOp =
   | { type: 'eq'; line: string }
   | { type: 'del'; line: string }

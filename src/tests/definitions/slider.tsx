@@ -1,4 +1,4 @@
-// ABOUTME: slider — part of the tests area.
+// ABOUTME: Integration tests for the Slider component covering four ladder rungs: arrow keys step a single-thumb slider (rung 1), ticks variant renders marks and keyboard step respects the step prop (rung 2), range variant has two thumbs and max thumb responds to arrows (rung 3), and curve variant renders an SVG polyline backdrop (rung 4).
 
 import { useState } from 'react'
 import { Slider } from '../../components/Slider/Slider'
@@ -56,7 +56,7 @@ function CurveComposition() {
   )
 }
 
-// ABOUTME: sliderTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Slider: arrow key stepping, ticks with step-aligned jumps, range two-thumb, and curve SVG backdrop.
 export const sliderTests: IntegrationTest[] = [
   {
     id: 'slider-rung-1-arrow',

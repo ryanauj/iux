@@ -168,7 +168,7 @@
       "area": "apps",
       "dir": "apps",
       "name": "AppsRouter.tsx",
-      "loc": 31,
+      "loc": 33,
       "importCount": 5,
       "externalCount": 1,
       "members": [
@@ -182,8 +182,8 @@
           "name": "AppsRouter",
           "kind": "component",
           "exported": true,
-          "line": 19,
-          "about": "Dispatches `#/apps/...` to either the landing page or a registered app's shell."
+          "line": 21,
+          "about": "Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, or AppsLanding; each registered app owns its own sub-route matching from that point on."
         }
       ],
       "about": "Dispatches `#/apps/...` to either the landing page or a registered app's shell."
@@ -246,7 +246,7 @@
       "area": "apps",
       "dir": "apps/contracts/components",
       "name": "CapLadder.tsx",
-      "loc": 82,
+      "loc": 81,
       "importCount": 3,
       "externalCount": 0,
       "members": [
@@ -260,14 +260,14 @@
           "name": "CapLadder",
           "kind": "component",
           "exported": true,
-          "line": 32,
-          "about": "The signature visual: the cap \"ladder\"."
+          "line": 31,
+          "about": "Renders all five THRESHOLDS (floor → cap → tax → first apron → second apron) as vertically proportional rungs; accepts an optional payroll marker (used by TeamSheet) and a highlightId to dim all other rungs (used by Aprons)."
         },
         {
           "name": "Rung",
           "kind": "component",
           "exported": false,
-          "line": 68
+          "line": 67
         }
       ],
       "about": "The cap \"ladder\" visualization — a vertical scale of NBA salary thresholds (floor → cap → tax → aprons) with optional payroll marker and highlight, built as a flex column so it reflows and inherits palette tokens."
@@ -422,7 +422,7 @@
           "kind": "interface",
           "exported": true,
           "line": 325,
-          "about": "Computes the standard or repeater luxury-tax bill for a given payroll, walking the incremental brackets."
+          "about": "One row in the computeTax bracket breakdown — the salary band label, dollars of overage that fell inside it, the marginal tax rate applied, and the resulting tax owed for that slice."
         },
         {
           "name": "computeTax",
@@ -795,7 +795,7 @@
           "kind": "type",
           "exported": true,
           "line": 26,
-          "about": "ContractsRoute — a type alias."
+          "about": "Discriminated union of every valid Cap School route (nine chapters + notFound); ContractsApp switches on the `kind` field to render the correct page component."
         },
         {
           "name": "matchContractsRoute",
@@ -828,42 +828,42 @@
           "kind": "type",
           "exported": true,
           "line": 17,
-          "about": "LayoutId — a type alias."
+          "about": "Union of the two Cap School layout identifiers ('sidebar' | 'topbar'), derived from LAYOUT_IDS."
         },
         {
           "name": "DEFAULT_LAYOUT",
           "kind": "const",
           "exported": true,
           "line": 19,
-          "about": "DEFAULT_LAYOUT — an exported value."
+          "about": "Default layout for Cap School ('sidebar'); used by ContractsApp to omit the param from the URL when the user picks the default."
         },
         {
           "name": "LAYOUT_OPTIONS",
           "kind": "const",
           "exported": true,
           "line": 22,
-          "about": "LAYOUT_OPTIONS — an exported value."
+          "about": "Human-readable label/value pairs for the layout Segmented control in the DraggableControls panel."
         },
         {
           "name": "resolveLayoutId",
           "kind": "function",
           "exported": true,
           "line": 28,
-          "about": "resolveLayoutId — a helper function."
+          "about": "Coerces a raw URL param string (from `?layout=`) to a valid LayoutId, falling back to DEFAULT_LAYOUT for unknown or missing values."
         },
         {
           "name": "NavItem",
           "kind": "interface",
           "exported": true,
           "line": 34,
-          "about": "NavItem — an interface."
+          "about": "One entry in the Cap School chapter nav: a path, a display label, a step ordinal shown in the sidebar rail, and a predicate that marks it active for a given ContractsRoute."
         },
         {
           "name": "NAV",
           "kind": "const",
           "exported": true,
           "line": 43,
-          "about": "NAV — an exported value."
+          "about": "Ordered list of all nine Cap School chapters (steps 1–9) with their paths and active predicates; consumed by both Shell layouts for navigation and by Overview to render the chapter-card grid."
         },
         {
           "name": "ShellProps",
@@ -894,7 +894,7 @@
           "kind": "component",
           "exported": true,
           "line": 102,
-          "about": "Shell — a React component."
+          "about": "Top-level layout switcher for Cap School — renders SidebarShell (left rail with step numbers) or TopbarShell (hamburger-collapsible bar) based on layoutId, wrapping the active chapter page as children."
         },
         {
           "name": "SidebarShell",
@@ -909,7 +909,7 @@
           "line": 128
         }
       ],
-      "about": "Shell — a React component (apps)."
+      "about": "Chrome for the Cap School app: the Shell component (sidebar or topbar layout), the chapter NAV array, layout constants, and resolveLayoutId — everything ContractsApp needs to wrap each chapter page."
     },
     {
       "id": "src/apps/contracts/types.ts",
@@ -6585,7 +6585,7 @@
       "area": "components",
       "dir": "components/Gauge",
       "name": "Gauge.tsx",
-      "loc": 158,
+      "loc": 166,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6615,7 +6615,7 @@
           "kind": "interface",
           "exported": true,
           "line": 21,
-          "about": "Props for Gauge."
+          "about": "Props for Gauge — variant selects arc style, value/min/max define the range, zones configures the 'zones' colour bands, target draws an optional notch at a goal value, and caption is a short label shown under the centre value."
         },
         {
           "name": "defaultFormat",
@@ -6639,8 +6639,8 @@
           "name": "Gauge",
           "kind": "component",
           "exported": true,
-          "line": 59,
-          "about": "Gauge — a React component."
+          "line": 67,
+          "about": "Renders an arc-shaped gauge SVG with a grey track, an intent-coloured filled arc or zone bands, a small circle needle, an optional target line notch, and a centre value label with optional caption."
         }
       ],
       "about": "SVG arc gauge with three modes — plain arc fill, coloured zone bands with an intent-coloured needle, and a full-circle ring; supports an optional target notch and a centre value label."
@@ -6650,7 +6650,7 @@
       "area": "components",
       "dir": "components/Heatmap",
       "name": "Heatmap.tsx",
-      "loc": 155,
+      "loc": 162,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6659,21 +6659,21 @@
           "kind": "type",
           "exported": true,
           "line": 7,
-          "about": "HeatmapVariant — a type alias."
+          "about": "Colour scheme: 'continuous' maps absolute magnitude to five tint levels (l0–l4) in a single hue, 'diverging' uses separate pos/neg hues scaled from a configurable centre, 'sparse' applies tinting only at levels l3–l4 and suppresses labels on low-intensity cells."
         },
         {
           "name": "HeatmapCell",
           "kind": "interface",
           "exported": true,
           "line": 10,
-          "about": "HeatmapCell — an interface."
+          "about": "A single cell value at a named row/column intersection; missing row×col combinations render as a 'missing' placeholder rect."
         },
         {
           "name": "HeatmapProps",
           "kind": "interface",
           "exported": true,
           "line": 17,
-          "about": "Props for Heatmap."
+          "about": "Props for Heatmap — variant selects the colour scheme, cells is the flat data array, rows/cols fix display order (default discovery order), cellSize sets the pixel dimension of each square, and center pins the midpoint for the 'diverging' scheme."
         },
         {
           "name": "tintLevel",
@@ -6697,18 +6697,18 @@
           "name": "Heatmap",
           "kind": "component",
           "exported": true,
-          "line": 55,
-          "about": "Heatmap — a React component."
+          "line": 62,
+          "about": "Renders an SVG grid where each cell is a rounded rect coloured by its tint level; 'continuous' and 'sparse' use `tintLevel` (absolute magnitude), 'diverging' uses `divergingLevel` (signed distance from center) with separate pos/neg CSS classes."
         }
       ],
-      "about": "Heatmap — a React component (components)."
+      "about": "SVG grid heatmap that maps cell values to one of five tint levels in three colour schemes — continuous single-hue intensity, diverging positive/negative, and sparse (highlights only the top two intensity levels)."
     },
     {
       "id": "src/components/Hexbin/Hexbin.tsx",
       "area": "components",
       "dir": "components/Hexbin",
       "name": "Hexbin.tsx",
-      "loc": 165,
+      "loc": 173,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6717,21 +6717,21 @@
           "kind": "type",
           "exported": true,
           "line": 7,
-          "about": "HexbinVariant — a type alias."
+          "about": "Encoding mode: 'density' uses tint level (l0–l4) to show relative count with fixed hex size, 'count' shows the raw count as a text label inside each hex, 'sized' scales each hex radius proportionally to the square root of its count."
         },
         {
           "name": "HexbinPoint",
           "kind": "interface",
           "exported": true,
           "line": 10,
-          "about": "HexbinPoint — an interface."
+          "about": "A single data point in data-space coordinates; the component projects it into pixel space and snaps it to the nearest hex grid cell."
         },
         {
           "name": "HexbinProps",
           "kind": "interface",
           "exported": true,
           "line": 16,
-          "about": "Props for Hexbin."
+          "about": "Props for Hexbin — variant selects the count encoding, points is the raw (x,y) array, radius sets the hex circumradius in plot pixels, and xDomain/yDomain optionally clamp the data extents used for projection."
         },
         {
           "name": "PAD",
@@ -6761,11 +6761,11 @@
           "name": "Hexbin",
           "kind": "component",
           "exported": true,
-          "line": 59,
-          "about": "Hexbin — a React component."
+          "line": 67,
+          "about": "Renders a hexbin SVG by projecting each point through linear x/y scales then snapping to axial hex-grid coordinates; bins are tinted by count level, sized by sqrt(count), or labelled with raw counts depending on variant."
         }
       ],
-      "about": "Hexbin — a React component (components)."
+      "about": "SVG hexagonal binning chart that aggregates 2D scatter points into a pointy-top hex grid and encodes per-bin count as tint intensity, hex size, or inline count labels depending on variant."
     },
     {
       "id": "src/components/Histogram/Histogram.tsx",
@@ -7847,7 +7847,7 @@
       "area": "components",
       "dir": "components/Pagination",
       "name": "Pagination.tsx",
-      "loc": 231,
+      "loc": 239,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -7875,8 +7875,8 @@
           "name": "Pagination",
           "kind": "component",
           "exported": true,
-          "line": 55,
-          "about": "Pagination — a React component."
+          "line": 63,
+          "about": "Renders a `<nav>` whose content branches on variant: numbered/rich build a `pageList` with at most 7 visible buttons (collapsing distant pages to ellipsis gaps), load-more shows a single button, infinite attaches an IntersectionObserver to an invisible sentinel div and shows a \"Back to top\" button after 320 px of scroll."
         }
       ],
       "about": "Navigation component covering four pagination patterns: numbered page buttons with ellipsis, a rich variant adding first/last buttons and a page-size selector, a manual load-more button, and an infinite-scroll variant that uses IntersectionObserver to auto-fire onLoadMore with a scroll-to-top affordance."
@@ -7886,7 +7886,7 @@
       "area": "components",
       "dir": "components/PalettePicker",
       "name": "PalettePicker.tsx",
-      "loc": 779,
+      "loc": 787,
       "importCount": 4,
       "externalCount": 4,
       "members": [
@@ -7925,7 +7925,7 @@
           "kind": "type",
           "exported": true,
           "line": 47,
-          "about": "PalettePickerVariant — a type alias."
+          "about": "Determines the layout context: 'button' manages its own open state and renders inside the button tile, 'strip' delegates open/close to the parent DraggableControls strip so only one slot popover is shown at a time."
         },
         {
           "name": "StripQuadrant",
@@ -7949,30 +7949,30 @@
           "name": "PalettePicker",
           "kind": "component",
           "exported": true,
-          "line": 88,
-          "about": "PalettePicker — a React component."
+          "line": 96,
+          "about": "Renders prev/next arrow buttons that cycle through the active group (or the full catalog when no group is active) and a trigger button that opens the `PalettePickerPanel` popover; the 'strip' variant proxies open state and click events to the parent, while 'button' manages its own `internalOpen`."
         },
         {
           "name": "PanelProps",
           "kind": "interface",
           "exported": false,
-          "line": 230
+          "line": 238
         },
         {
           "name": "PalettePickerPanel",
           "kind": "component",
           "exported": false,
-          "line": 244
+          "line": 252
         }
       ],
-      "about": "PalettePicker — a React component (components)."
+      "about": "Palette and custom-pattern selector used in the DraggableControls strip and button tile; renders prev/next cycle arrows and a popover panel with search, group management, custom pattern CRUD, and favorite toggling — backed by `paletteTags` and `customPatterns` hooks."
     },
     {
       "id": "src/components/PartialDependence/PartialDependence.tsx",
       "area": "components",
       "dir": "components/PartialDependence",
       "name": "PartialDependence.tsx",
-      "loc": 140,
+      "loc": 148,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -7981,28 +7981,28 @@
           "kind": "type",
           "exported": true,
           "line": 7,
-          "about": "PartialDependenceVariant — a type alias."
+          "about": "Controls chart decoration: 'line' draws only the mean prediction curve, 'band' additionally fills the lower/upper confidence interval when all PartialPoints supply them, 'rug' appends tick marks below the x-axis at each observed x value."
         },
         {
           "name": "PartialDependenceIntent",
           "kind": "type",
           "exported": true,
           "line": 10,
-          "about": "PartialDependenceIntent — a type alias."
+          "about": "Semantic colour intent applied to the curve line and confidence band fill; defaults to 'primary'."
         },
         {
           "name": "PartialPoint",
           "kind": "interface",
           "exported": true,
           "line": 14,
-          "about": "PartialPoint — an interface."
+          "about": "One step along the focal predictor's range: `x` is the predictor value, `y` is the predicted mean response, and optional `lower`/`upper` are the confidence-interval bounds required by the 'band' variant."
         },
         {
           "name": "PartialDependenceProps",
           "kind": "interface",
           "exported": true,
           "line": 22,
-          "about": "Props for PartialDependence."
+          "about": "Configures PartialDependence — `curve` is the predicted-response array, `rug` supplies observed x-values for the 'rug' variant, `xDomain`/`yDomain` override auto-computed axes, and `intent` colours the curve."
         },
         {
           "name": "PAD",
@@ -8026,11 +8026,11 @@
           "name": "PartialDependence",
           "kind": "component",
           "exported": true,
-          "line": 54,
-          "about": "PartialDependence — a React component."
+          "line": 62,
+          "about": "Builds SVG path strings for the mean line and optional confidence band in a single `useMemo`, extending the bottom padding when the 'rug' variant is active so tick marks don't overlap the x-axis; x- and y-axis labels appear below the SVG when provided."
         }
       ],
-      "about": "PartialDependence — a React component (components)."
+      "about": "SVG partial-dependence (PDP) plot showing predicted response across a focal predictor's range, with three variants: a plain line, a line with confidence-band fill, and a rug of observed data values below the axis."
     },
     {
       "id": "src/components/PartialRegression/PartialRegression.tsx",
@@ -8046,28 +8046,28 @@
           "kind": "type",
           "exported": true,
           "line": 7,
-          "about": "PartialRegressionVariant — a type alias."
+          "about": "Controls the facet layout and annotation level: 'single' renders only the first facet, 'grid' arranges all facets in a CSS grid up to 3 columns wide, 'annotated' is like 'grid' but adds a \"slope = β\" label inside each SVG panel."
         },
         {
           "name": "PartialRegressionIntent",
           "kind": "type",
           "exported": true,
           "line": 10,
-          "about": "PartialRegressionIntent — a type alias."
+          "about": "Semantic colour intent applied per facet panel; cycles over the INTENTS palette when not set on a PartialFacet."
         },
         {
           "name": "PartialResidualPoint",
           "kind": "interface",
           "exported": true,
           "line": 14,
-          "about": "PartialResidualPoint — an interface."
+          "about": "One observation in an added-variable plot: `xRes` is the residual of the focal predictor after partialling out the other predictors, and `yRes` is the residual of y after partialling them out — their slope equals the multiple-regression coefficient."
         },
         {
           "name": "PartialFacet",
           "kind": "interface",
           "exported": true,
           "line": 23,
-          "about": "PartialFacet — an interface."
+          "about": "One predictor facet in the partial regression display: a display `label`, the regression `beta` coefficient shown in the panel header, and an array of PartialResidualPoints that form the scatter and the fit line."
         },
         {
           "name": "PartialRegressionProps",
@@ -8120,7 +8120,7 @@
           "about": "PartialRegression — a React component."
         }
       ],
-      "about": "PartialRegression — a React component (components)."
+      "about": "Added-variable (partial regression) plot collection that renders one scatter facet per predictor, each showing residualized x vs residualized y with the partial slope (beta) as a fit line, supporting single-panel, CSS-grid, and annotated variants."
     },
     {
       "id": "src/components/Presence/Presence.tsx",
@@ -12176,10 +12176,10 @@
           "kind": "component",
           "exported": true,
           "line": 287,
-          "about": "PaletteDesignPageRoute — a React component."
+          "about": "PaletteDesignPageRoute — the routed entry point at /palettes/:paletteId/design; extracts the paletteId param, redirects unknown ids to /palettes, and delegates to the internal PaletteDesignPage component."
         }
       ],
-      "about": "Per-palette design page."
+      "about": "Per-palette design page at /palettes/:paletteId/design — renders the palette's full structured description (summary, origin, signatures, anti-signatures, token evidence, lookalikes), a copy-pasteable CSS custom-properties block identical to what PaletteRoot applies inline, and a \"Copy as markdown\" button emitting the same text as the on-disk docs/styles/*.md file, all painted inside a PaletteRoot using the palette being documented."
     },
     {
       "id": "src/guides/palettes/PalettesIndex.tsx",
@@ -12207,10 +12207,10 @@
           "kind": "component",
           "exported": true,
           "line": 37,
-          "about": "PalettesIndex — a React component."
+          "about": "PalettesIndex — the /palettes index page: groups all palettes by engine using the palettes registry, renders each group as a section with engine-keyed headings, and links each entry to its design doc, falling back to \"Description pending\" for palettes without a structured descriptions entry."
         }
       ],
-      "about": "Landing page at `/palettes`."
+      "about": "Landing page at /palettes — lists every registered palette grouped by engine, linking each to its /palettes/:id/design page with a one-line tagline teaser, and shows how many of the total have structured descriptions so far."
     },
     {
       "id": "src/howitworks/AstFocus.tsx",
@@ -13138,7 +13138,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "paletteTags.ts",
-      "loc": 343,
+      "loc": 344,
       "importCount": 3,
       "externalCount": 5,
       "members": [
@@ -13217,134 +13217,134 @@
           "name": "PINNED_GROUPS_KEY",
           "kind": "const",
           "exported": true,
-          "line": 125,
-          "about": "─────────────────────────── persistence ───────────────────────────"
+          "line": 126,
+          "about": "localStorage key for the array of group names the user has pinned in the picker sidebar."
         },
         {
           "name": "ACTIVE_GROUP_KEY",
           "kind": "const",
           "exported": true,
-          "line": 127,
+          "line": 128,
           "about": "localStorage key for the name of the currently active palette group (used by arrow-key cycling)."
         },
         {
           "name": "CUSTOM_GROUPS_KEY",
           "kind": "const",
           "exported": true,
-          "line": 129,
+          "line": 130,
           "about": "localStorage key for the user's custom and overridden palette groups (a JSON map of name → StyleId[])."
         },
         {
           "name": "PINNING_MODE_KEY",
           "kind": "const",
           "exported": true,
-          "line": 131,
+          "line": 132,
           "about": "localStorage key for the pinning-mode pref — controls which groups (pinned, active, or both) appear in the picker's sidebar."
         },
         {
           "name": "PinningMode",
           "kind": "type",
           "exported": true,
-          "line": 134,
+          "line": 135,
           "about": "Which groups the picker sidebar shows: only pinned, only active, or both."
         },
         {
           "name": "isPinningMode",
           "kind": "function",
           "exported": false,
-          "line": 136
+          "line": 137
         },
         {
           "name": "isStringArray",
           "kind": "function",
           "exported": false,
-          "line": 139
+          "line": 140
         },
         {
           "name": "isStyleMemberId",
           "kind": "function",
           "exported": false,
-          "line": 147
+          "line": 148
         },
         {
           "name": "isCustomGroups",
           "kind": "function",
           "exported": false,
-          "line": 150
+          "line": 151
         },
         {
           "name": "isActiveGroupValue",
           "kind": "function",
           "exported": false,
-          "line": 162
+          "line": 163
         },
         {
           "name": "usePinnedGroups",
           "kind": "function",
           "exported": true,
-          "line": 166,
+          "line": 167,
           "about": "Persisted array of group names the user has pinned in the picker sidebar; synced across tabs."
         },
         {
           "name": "useActiveGroup",
           "kind": "function",
           "exported": true,
-          "line": 171,
+          "line": 172,
           "about": "Persisted name of the group the picker is currently cycling through via arrow keys (null when cycling is off); synced across tabs."
         },
         {
           "name": "useCustomGroups",
           "kind": "function",
           "exported": true,
-          "line": 176,
+          "line": 177,
           "about": "Persisted map of user-defined or user-overridden palette groups (name → StyleId[]); the raw storage layer useGroups builds on."
         },
         {
           "name": "usePinningMode",
           "kind": "function",
           "exported": true,
-          "line": 185,
+          "line": 186,
           "about": "Persisted PinningMode pref that controls which groups appear in the picker sidebar; synced across tabs."
         },
         {
           "name": "resolveGroupMembers",
           "kind": "function",
           "exported": true,
-          "line": 195,
+          "line": 196,
           "about": "Resolve a group name to its palette-id members."
         },
         {
           "name": "useGroups",
           "kind": "function",
           "exported": true,
-          "line": 216,
+          "line": 217,
           "about": "The effective group map shown in the picker: every built-in default group merged with the user's stored overrides."
         },
         {
           "name": "GroupsApi",
           "kind": "interface",
           "exported": true,
-          "line": 299,
+          "line": 300,
           "about": "Mutation methods returned by useGroups: toggle membership, manage favorites, create/delete groups, remove a style from all groups, and reset defaults."
         },
         {
           "name": "isDefaultGroup",
           "kind": "function",
           "exported": true,
-          "line": 310,
+          "line": 311,
           "about": "True when a group name belongs to the built-in default set — used by the picker UI to hide the delete button on default groups."
         },
         {
           "name": "sameIds",
           "kind": "function",
           "exported": false,
-          "line": 314
+          "line": 315
         },
         {
           "name": "cycleInGroup",
           "kind": "function",
           "exported": true,
-          "line": 328,
+          "line": 329,
           "about": "Cycle within a group, wrapping at both ends."
         }
       ],
@@ -13483,7 +13483,7 @@
           "kind": "type",
           "exported": true,
           "line": 17,
-          "about": "Two voices for the same content: - `plain` — everyday-English prose for readers who don't speak CSS."
+          "about": "The two documentation voices available across doctrine and engine guides: plain everyday-English prose or technical engineering text with token names and CSS jargon."
         },
         {
           "name": "DOC_MODE_KEY",
@@ -13517,7 +13517,7 @@
           "kind": "function",
           "exported": true,
           "line": 32,
-          "about": "useDocMode — a React hook."
+          "about": "Returns the persisted DocMode and a setter; persists across reloads and syncs across tabs via usePersistedPref."
         }
       ],
       "about": "Persisted documentation voice pref — plain prose vs. technical engineering language — shared across all doctrine and engine-guide surfaces."
@@ -14205,10 +14205,10 @@
           "kind": "const",
           "exported": true,
           "line": 75,
-          "about": "checkboxTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for Checkbox: single toggle, detailed with description/error, tree parent-cascades, and group multi-select."
         }
       ],
-      "about": "checkbox — part of the tests area."
+      "about": "Integration tests for the Checkbox component covering four ladder rungs: single toggle on click (rung 1), detailed variant shows description and error (rung 2), tree parent cascades to all leaves (rung 3), and group multi-select via independent clicks (rung 3)."
     },
     {
       "id": "src/tests/definitions/command-palette.tsx",
@@ -14230,10 +14230,10 @@
           "kind": "const",
           "exported": true,
           "line": 38,
-          "about": "commandPaletteFilter — an exported value."
+          "about": "Single IntegrationTest that exercises the filter-and-run flow: open palette, type \"say\" to narrow to one match, press Enter, assert the command's output appears — exercises CommandPalette and Button together."
         }
       ],
-      "about": "command-palette — part of the tests area."
+      "about": "Composition integration test for CommandPalette + Button: opens the palette via a button click, types to narrow the command list to a single match, presses Enter to run the highlighted command, and asserts the command's result appears in the DOM."
     },
     {
       "id": "src/tests/definitions/empty-state.tsx",
@@ -14273,10 +14273,10 @@
           "kind": "const",
           "exported": true,
           "line": 74,
-          "about": "emptyStateTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for EmptyState: minimal layout, illustrated CTA, checklist step actions, and generative seed field submission."
         }
       ],
-      "about": "EmptyState ladder rungs: minimal, illustrated (icon + CTA), checklist (onboarding steps), generative (editable seed fields → onGenerate)."
+      "about": "Integration tests for the EmptyState component covering four ladder rungs: minimal (centered title/description), illustrated (icon + primary/secondary CTA fires callback), checklist (progress count and per-step action buttons), and generative (editable seed inputs submit values via onGenerate)."
     },
     {
       "id": "src/tests/definitions/form-submit-toast.tsx",
@@ -14298,10 +14298,10 @@
           "kind": "const",
           "exported": true,
           "line": 33,
-          "about": "formSubmitToast — an exported value."
+          "about": "Single IntegrationTest for the form-submit → confirmation toast flow: type into TextInput, click Button, assert Toast title contains the typed value."
         }
       ],
-      "about": "form-submit-toast — part of the tests area."
+      "about": "Composition integration test for TextInput + Button + Toast: types a name into a text field, clicks Submit, waits for a success toast, and asserts the toast title contains the entered value — exercises three components together."
     },
     {
       "id": "src/tests/definitions/modal-with-form.tsx",
@@ -14323,10 +14323,10 @@
           "kind": "const",
           "exported": true,
           "line": 51,
-          "about": "modalWithForm — an exported value."
+          "about": "Single IntegrationTest for the modal-form-submit flow: open Modal, type into TextInput, click Save, assert modal closes and Toast confirms the note — exercises Button, Modal, TextInput, and Toast."
         }
       ],
-      "about": "modal-with-form — part of the tests area."
+      "about": "Composition integration test for Modal + TextInput + Button + Toast: opens a centered modal, types a note into a text input inside it, clicks Save, asserts the modal closes and a success toast appears with the entered value — exercises four components together."
     },
     {
       "id": "src/tests/definitions/modal.tsx",
@@ -14360,10 +14360,10 @@
           "kind": "const",
           "exported": true,
           "line": 76,
-          "about": "modalTests — an exported value."
+          "about": "Array of three IntegrationTest definitions for Modal: centered (dismiss + callback), sectioned (scroll body + sticky footer), and wizard (three-step walk + onComplete)."
         }
       ],
-      "about": "Modal ladder rungs: centered, sectioned, wizard, routed."
+      "about": "Integration tests for the Modal component covering three ladder rungs: centered primary action closes the modal and fires the callback (rung 1), sectioned variant has a scroll body and sticky footer (rung 2), and wizard variant walks three steps and fires onComplete after the final Next (rung 3); rung 4 (routed) is skipped as URL-state assertion is impractical in the sandbox."
     },
     {
       "id": "src/tests/definitions/pagination.tsx",
@@ -14397,10 +14397,10 @@
           "kind": "const",
           "exported": true,
           "line": 58,
-          "about": "paginationTests — an exported value."
+          "about": "Array of three IntegrationTest definitions for Pagination: numbered prev/next with ellipsis, rich first/last jump with page-size select, and load-more button with item count."
         }
       ],
-      "about": "Pagination ladder rungs: numbered (prev/next + ellipsis), rich (first/last jump + page-size selector), load-more (button + item count), i…"
+      "about": "Integration tests for the Pagination component covering three ladder rungs: numbered (aria-current page, prev/next, ellipsis gaps), rich (first/last jump buttons and page-size select), and load-more (item count display and Load more button extends the list); rung 4 (infinite scroll) requires IntersectionObserver and is omitted."
     },
     {
       "id": "src/tests/definitions/slider.tsx",
@@ -14440,10 +14440,10 @@
           "kind": "const",
           "exported": true,
           "line": 60,
-          "about": "sliderTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for Slider: arrow key stepping, ticks with step-aligned jumps, range two-thumb, and curve SVG backdrop."
         }
       ],
-      "about": "slider — part of the tests area."
+      "about": "Integration tests for the Slider component covering four ladder rungs: arrow keys step a single-thumb slider (rung 1), ticks variant renders marks and keyboard step respects the step prop (rung 2), range variant has two thumbs and max thumb responds to arrows (rung 3), and curve variant renders an SVG polyline backdrop (rung 4)."
     },
     {
       "id": "src/tests/definitions/tabs.tsx",
@@ -14483,10 +14483,10 @@
           "kind": "const",
           "exported": true,
           "line": 83,
-          "about": "tabsTests — an exported value."
+          "about": "Array of five IntegrationTest definitions for Tabs: click-switch, ArrowRight/End keyboard navigation, rich icons/badges/disabled, overflow More button, and editable close/add."
         }
       ],
-      "about": "Tabs ladder rungs: basic, rich, overflow, editable."
+      "about": "Integration tests for the Tabs component covering four ladder rungs: basic click-to-switch and ArrowRight/End keyboard navigation (rung 1), rich variant with icons, badge counts, and aria-disabled (rung 2), overflow variant renders a More button (rung 3), and editable variant supports close and add (rung 4); drag-to-reorder and overflow auto-collapse are not asserted."
     },
     {
       "id": "src/tests/definitions/text-input.tsx",
@@ -14529,7 +14529,7 @@
           "about": "textInputTests — an exported value."
         }
       ],
-      "about": "text-input — part of the tests area."
+      "about": "Integration tests for the TextInput component covering four ladder rungs: bare input echoes typed value to state (rung 1), labeled input with hint text and required marker (rung 2), validate variant surfaces danger then success messages on live input (rung 3), and command variant renders a ghost suggestion for a typed prefix (rung 4)."
     },
     {
       "id": "src/tests/definitions/toast.tsx",
@@ -15196,10 +15196,10 @@
           "kind": "function",
           "exported": true,
           "line": 27,
-          "about": "paletteToCssVars — a helper function."
+          "about": "Map a SemanticTokens tree to a flat `--name: value` Record for use as inline CSS custom properties; the sole gateway from typed tokens to runtime CSS that PaletteRoot applies."
         }
       ],
-      "about": "paletteToCssVars — a helper function (theme)."
+      "about": "Converts a SemanticTokens object to a flat Record of CSS custom properties, covering every token category (color, space, radius, typography, motion, effects)."
     },
     {
       "id": "src/theme/portalTarget.ts",

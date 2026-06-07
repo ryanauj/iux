@@ -13,7 +13,7 @@ export interface HeatmapCell {
   value: number
 }
 
-// ABOUTME: Props for Heatmap.
+// ABOUTME: Props for Heatmap — variant selects the colour scheme, cells is the flat data array, rows/cols fix display order (default discovery order), cellSize sets the pixel dimension of each square, and center pins the midpoint for the 'diverging' scheme.
 export interface HeatmapProps {
   variant?: HeatmapVariant
   cells: HeatmapCell[]
@@ -51,7 +51,14 @@ function discoveryOrder(list: string[]): string[] {
   return out
 }
 
-// ABOUTME: Heatmap — a React component.
+// ABOUTME: Renders an SVG grid where each cell is a rounded rect coloured by its tint level; 'continuous' and 'sparse' use `tintLevel` (absolute magnitude), 'diverging' uses `divergingLevel` (signed distance from center) with separate pos/neg CSS classes.
+/**
+ * Builds a `lookup` map keyed by `"row::col"` in a `useMemo` pass alongside
+ * overall `max` and `span` values. SVG dimensions are derived from row/column
+ * count and `cellSize`. Value labels are inlined in cells when `cellSize >= 26`
+ * (continuous/sparse modes) or when the tint level is l3/l4 in sparse mode.
+ * Missing cells receive the `iux-heatmap__cell--missing` class.
+ */
 export function Heatmap({
   variant = 'continuous',
   cells,

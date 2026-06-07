@@ -11,10 +11,12 @@ interface AppsRouterProps {
   location: HashLocation
 }
 
-// ABOUTME: Dispatches `#/apps/...` to either the landing page or a registered app's shell.
+// ABOUTME: Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, or AppsLanding; each registered app owns its own sub-route matching from that point on.
 /**
- * Dispatches `#/apps/...` to either the landing page or a registered
- * app's shell. Each registered app handles its own sub-routes.
+ * Reads the second path segment (e.g. "contracts") from the hash location
+ * and renders the matching app root — SportsApp, ContractsApp, or PromptsApp —
+ * or falls back to AppsLanding for an unknown or missing segment.
+ * Each app handles its own sub-routes internally.
  */
 export function AppsRouter({ location }: AppsRouterProps) {
   const segments = useMemo(() => pathSegments(location.path), [location.path])

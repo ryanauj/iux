@@ -3,14 +3,14 @@
 import { useMemo } from 'react'
 import './PartialDependence.css'
 
-// ABOUTME: PartialDependenceVariant — a type alias.
+// ABOUTME: Controls chart decoration: 'line' draws only the mean prediction curve, 'band' additionally fills the lower/upper confidence interval when all PartialPoints supply them, 'rug' appends tick marks below the x-axis at each observed x value.
 export type PartialDependenceVariant = 'line' | 'band' | 'rug'
 
-// ABOUTME: PartialDependenceIntent — a type alias.
+// ABOUTME: Semantic colour intent applied to the curve line and confidence band fill; defaults to 'primary'.
 export type PartialDependenceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: PartialPoint — an interface.
+// ABOUTME: One step along the focal predictor's range: `x` is the predictor value, `y` is the predicted mean response, and optional `lower`/`upper` are the confidence-interval bounds required by the 'band' variant.
 export interface PartialPoint {
   x: number
   y: number
@@ -18,7 +18,7 @@ export interface PartialPoint {
   upper?: number
 }
 
-// ABOUTME: Props for PartialDependence.
+// ABOUTME: Configures PartialDependence — `curve` is the predicted-response array, `rug` supplies observed x-values for the 'rug' variant, `xDomain`/`yDomain` override auto-computed axes, and `intent` colours the curve.
 export interface PartialDependenceProps {
   variant?: PartialDependenceVariant
   /** Predicted Y across the range of the focal predictor, others held fixed. */
@@ -50,7 +50,15 @@ function scale(value: number, d0: number, d1: number, r0: number, r1: number): n
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
-// ABOUTME: PartialDependence — a React component.
+// ABOUTME: Builds SVG path strings for the mean line and optional confidence band in a single `useMemo`, extending the bottom padding when the 'rug' variant is active so tick marks don't overlap the x-axis; x- and y-axis labels appear below the SVG when provided.
+/**
+ * The band path is only computed when every PartialPoint supplies `lower` and
+ * `upper`; it traces the upper bound forward and the lower bound in reverse to
+ * form a closed polygon. The rug draws short 8-px vertical ticks below the
+ * x-axis baseline, spaced to align with the same x-scale used for the curve.
+ * Domain auto-padding is 8 % on y and 2 % on x to keep the curve away from
+ * the plot edges.
+ */
 export function PartialDependence({
   variant = 'band',
   curve,

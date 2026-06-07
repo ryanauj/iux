@@ -316,11 +316,11 @@ export const SAMPLE_TRADE: TradeParty[] = [
   },
 ]
 
-// ABOUTME: Computes the standard or repeater luxury-tax bill for a given payroll, walking the incremental brackets.
+// ABOUTME: One row in the computeTax bracket breakdown — the salary band label, dollars of overage that fell inside it, the marginal tax rate applied, and the resulting tax owed for that slice.
 /**
- * Computes the standard or repeater luxury-tax bill for a given payroll,
- * walking the incremental brackets. Returns both the total and the
- * per-bracket breakdown so the Waterfall can show the climb.
+ * One row returned by computeTax per bracket that has any overage. The label
+ * names the band ("$0M–$5M over"); overageInBracket and rate let the LuxuryTax
+ * page build its Waterfall step labels; tax is the pre-summed amount for the slice.
  */
 export interface TaxBreakdownStep {
   label: string

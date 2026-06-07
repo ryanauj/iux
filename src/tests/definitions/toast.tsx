@@ -1,4 +1,4 @@
-// ABOUTME: Toast ladder rungs: plain (auto-dismiss + manual close), action (inline undo), severity (severity-ordered stack), progress (progress bar…
+// ABOUTME: Integration tests for the Toast component covering four ladder rungs: plain toast pushed and manually closed (rung 1), action variant with inline Undo button (rung 2), severity-ordered stack puts danger at the top regardless of insertion order (rung 3), and progress variant renders a progress bar that persists after update (rung 4); inline rendering keeps portals inside the sandbox.
 
 // Toast ladder rungs: plain (auto-dismiss + manual close), action (inline
 // undo), severity (severity-ordered stack), progress (progress bar tied to a
@@ -76,7 +76,7 @@ function ProgressComposition() {
   )
 }
 
-// ABOUTME: toastTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Toast: plain push and close, action Undo button, severity-ordered stack, and progress bar.
 export const toastTests: IntegrationTest[] = [
   {
     id: 'toast-rung-1-manual-close',
