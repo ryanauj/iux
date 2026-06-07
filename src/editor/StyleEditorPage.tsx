@@ -86,7 +86,7 @@ function deriveInitial(
   return { base, name: `${palettes[base].name} copy`, overrides: {}, editingId: null }
 }
 
-// ABOUTME: StyleEditorPage — a React component.
+// ABOUTME: Root component of the style editor: derives initial working state from URL params (?edit= to edit in place, ?palette= to clone a shared token), renders KNOB_GROUPS as fieldsets of KnobControl rows, and shows a live PreviewSampler in the right panel; save/save-as-new/share/delete actions persist to the custom patterns store via useCustomPatterns.
 export function StyleEditorPage() {
   const location = useHashLocation()
   const editParam = location.params.get('edit')

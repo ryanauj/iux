@@ -1,4 +1,4 @@
-// ABOUTME: components — part of the showcase area.
+// ABOUTME: Registries of every story entry for the component and visualization showcase pages: exports COMPONENTS (36 UI components, tiers 1–3) and VISUALIZATIONS (55+ chart/graph types, tiers 1–3) as StoryEntry arrays, plus ALL_ENTRIES as their union; each entry maps an id to its story render function and variant list.
 
 import type { ReactNode } from 'react'
 import { ButtonStories, VARIANTS as ButtonVariants } from '../components/Button/Button.stories'
@@ -89,7 +89,7 @@ import { LeveragePlotStories, VARIANTS as LeveragePlotVariants } from '../compon
 import { InteractionPlotStories, VARIANTS as InteractionPlotVariants } from '../components/InteractionPlot/InteractionPlot.stories'
 import { CoefficientPathStories, VARIANTS as CoefficientPathVariants } from '../components/CoefficientPath/CoefficientPath.stories'
 
-// ABOUTME: Component — a type alias.
+// ABOUTME: Union of all component and visualization id strings used as keys in COMPONENTS, VISUALIZATIONS, and integration test `components` arrays.
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
   | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker'
@@ -108,10 +108,10 @@ export type Component =
   | 'coefplot' | 'partdep' | 'partreg' | 'residplot'
   | 'obspred' | 'splom' | 'regsurf' | 'leverage' | 'interaction' | 'coefpath'
 
-// ABOUTME: Tier — a type alias.
+// ABOUTME: Complexity tier of a story entry (1 = foundational, 2 = intermediate, 3 = advanced), displayed as a badge in PaletteShowcase.
 export type Tier = 1 | 2 | 3
 
-// ABOUTME: StoryEntry — a type alias.
+// ABOUTME: Shape of one showcase entry: component/viz id, display label, tier badge, ordered list of variant names, and a render factory that accepts an optional variant string and returns a ReactNode — the contract shared by COMPONENTS and VISUALIZATIONS.
 export type StoryEntry = {
   id: Component
   label: string
@@ -120,7 +120,7 @@ export type StoryEntry = {
   render: (variant?: string) => ReactNode
 }
 
-// ABOUTME: COMPONENTS — an exported value.
+// ABOUTME: Ordered registry of the 36 UI component story entries (Button through SpatialCanvas, tiers 1–3) consumed by ShowcasePage, PaletteShowcase, the quiz stimulus, and the integration test runner; each maps a Component id to its Stories component and VARIANTS array.
 export const COMPONENTS: StoryEntry[] = [
   { id: 'button', label: 'Button', tier: 1, variants: ButtonVariants, render: v => <ButtonStories variant={v} /> },
   { id: 'textinput', label: 'Text input', tier: 1, variants: TextInputVariants, render: v => <TextInputStories variant={v} /> },
@@ -159,7 +159,7 @@ export const COMPONENTS: StoryEntry[] = [
   { id: 'canvas', label: 'Spatial canvas', tier: 3, variants: SpatialCanvasVariants, render: v => <SpatialCanvasStories variant={v} /> },
 ]
 
-// ABOUTME: Parallel registry to COMPONENTS.
+// ABOUTME: Registry of 55+ visualization story entries (Sparkline through CoefficientPath, tiers 1–3), parallel in shape to COMPONENTS and iterated by the same showcase view modes and quiz stimulus.
 /**
  * Parallel registry to COMPONENTS. Visualizations sit alongside components
  * as a separate dimension — see FINALIZED-VISUALIZATIONS.md. Both registries
@@ -221,6 +221,6 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'coefpath',    label: 'Coefficient path',     tier: 3, variants: CoefficientPathVariants,    render: v => <CoefficientPathStories variant={v} /> },
 ]
 
-// ABOUTME: Convenience: every entry across both registries.
-/** Convenience: every entry across both registries. Use for global lookups. */
+// ABOUTME: Concatenation of COMPONENTS and VISUALIZATIONS for global lookups across both registries; used wherever a single flat list of all story entries is needed.
+/** Concatenation of COMPONENTS and VISUALIZATIONS for global lookups across both registries. */
 export const ALL_ENTRIES: StoryEntry[] = [...COMPONENTS, ...VISUALIZATIONS]

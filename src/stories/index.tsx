@@ -1,9 +1,9 @@
-// ABOUTME: Barrel entry for the stories module.
+// ABOUTME: Router entry point for the component stories surface: mounts ShowcasePage with the COMPONENTS registry, defaulting to the button entry and the "components" nav link.
 
 import { COMPONENTS } from '../showcase/components'
 import { ShowcasePage } from '../showcase/ShowcasePage'
 
-// ABOUTME: Stories — a React component.
+// ABOUTME: Component stories surface: passes COMPONENTS to ShowcasePage so users can browse UI components per-component or per-palette, with feed/deck/grid layout options.
 export function Stories() {
   return (
     <ShowcasePage

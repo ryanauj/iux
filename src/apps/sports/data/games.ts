@@ -5,6 +5,7 @@ import type { Game } from '../types'
 // Anchor window: today's "live" game is 2026-05-23. Earlier dates are
 // final, later dates are scheduled. Dates are baked so the data doesn't
 // drift with the host clock.
+// ABOUTME: The seeded game list (finals, one live, and scheduled), consumed by the games selectors in data/index.ts and the Games/GameDetail pages.
 export const GAMES: Game[] = [
   // ----- Finals (past) -----
   {

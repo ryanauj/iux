@@ -1,4 +1,4 @@
-// ABOUTME: PaletteShowcase — a React component (showcase).
+// ABOUTME: Renders all story entries for one palette in the chosen layout (feed, deck, or grid) inside a PaletteRoot, with an optional header showing palette name/engine and an engine-guide link; used by ShowcasePage in per-palette mode and by QuizView as the components and visualizations stimulus.
 
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
 import type { StoryEntry, Tier } from './components'
 
-// ABOUTME: ShowcaseLayout — a type alias.
+// ABOUTME: Discriminant for PaletteShowcase's three layout modes: feed (stacked masonry cards with variant chip tabs), deck (horizontally swipeable variant carousel), or grid (tap-to-expand tiles).
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
   showHeader?: boolean
 }
 
-// ABOUTME: PaletteShowcase — a React component.
+// ABOUTME: Wraps entries in a PaletteRoot and dispatches to FeedLayout, DeckLayout, or GridLayout; omits the palette header when showHeader=false (used by QuizView to hide the answer).
 export function PaletteShowcase({
   palette,
   layout,

@@ -1,9 +1,9 @@
-// ABOUTME: Viz — a React component (stories).
+// ABOUTME: Router entry point for the visualization stories surface: mounts ShowcasePage with the VISUALIZATIONS registry, defaulting to the sparkline entry and the "visualizations" nav link.
 
 import { VISUALIZATIONS } from '../showcase/components'
 import { ShowcasePage } from '../showcase/ShowcasePage'
 
-// ABOUTME: Viz — a React component.
+// ABOUTME: Visualization stories surface: passes VISUALIZATIONS to ShowcasePage so users can browse chart and graph types per-visualization or per-palette.
 export function Viz() {
   return (
     <ShowcasePage

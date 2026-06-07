@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 877
+    "documentedMembers": 878
   },
   "areas": [
     {
@@ -1884,7 +1884,7 @@
       "area": "apps",
       "dir": "apps/sports/data",
       "name": "games.ts",
-      "loc": 245,
+      "loc": 246,
       "importCount": 1,
       "externalCount": 0,
       "members": [
@@ -1892,13 +1892,14 @@
           "name": "GAMES",
           "kind": "const",
           "exported": true,
-          "line": 8
+          "line": 9,
+          "about": "The seeded game list (finals, one live, and scheduled), consumed by the games selectors in data/index.ts and the Games/GameDetail pages."
         },
         {
           "name": "TODAY",
           "kind": "const",
           "exported": true,
-          "line": 244,
+          "line": 245,
           "about": "The \"today\" anchor used by the seed data; pages that show \"Today's games\" key off it."
         }
       ],
@@ -10544,21 +10545,21 @@
           "kind": "type",
           "exported": true,
           "line": 29,
-          "about": "DoctrineId — a type alias."
+          "about": "Union of the four doctrine page identifiers used as URL params and DOCTRINE_PAGES keys."
         },
         {
           "name": "DoctrineNav",
           "kind": "type",
           "exported": true,
           "line": 32,
-          "about": "DoctrineNav — a type alias."
+          "about": "Callback type passed into each doctrine article so prev/next links and cross-references can navigate between pages without a full route change."
         },
         {
           "name": "DoctrinePage",
           "kind": "type",
           "exported": true,
           "line": 35,
-          "about": "DoctrinePage — a type alias."
+          "about": "Shape of one doctrine article entry: its id, display label, eyebrow text, title, source markdown filename, and a render factory that receives a nav callback and the current doc mode."
         },
         {
           "name": "GITHUB_BASE",
@@ -10721,14 +10722,14 @@
           "kind": "const",
           "exported": true,
           "line": 1363,
-          "about": "DOCTRINE_PAGES — an exported value."
+          "about": "Ordered array of the four doctrine articles (Layout → Component selection → App composition → Modalities) consumed by DoctrinePage to render the active page and populate the Doc field options."
         },
         {
           "name": "isDoctrineId",
           "kind": "function",
           "exported": true,
           "line": 1371,
-          "about": "isDoctrineId — a helper function."
+          "about": "Type guard that returns true when a string is one of the four valid DoctrineId values; used by DoctrinePage to validate URL params."
         }
       ],
       "about": "Doctrine page content and registry: defines the four article pages (Layout, Component selection, App composition, Modalities), each rendered in plain-English and technical voice, with live component demos pulled from component story files, and exports the DOCTRINE_PAGES array that DoctrinePage iterates."
@@ -10738,7 +10739,7 @@
       "area": "editor",
       "dir": "editor",
       "name": "knobRegistry.ts",
-      "loc": 172,
+      "loc": 173,
       "importCount": 0,
       "externalCount": 0,
       "members": [
@@ -10747,65 +10748,65 @@
           "kind": "type",
           "exported": true,
           "line": 16,
-          "about": "The curated set of token \"knobs\" the style editor exposes."
+          "about": "Discriminant for how the style editor renders and interprets a knob value: color (swatch + hex text), length (text with optional slider + unit picker), text (plain text input), select (dropdown), or font (reorderable font-stack builder)."
         },
         {
           "name": "KnobOption",
           "kind": "interface",
           "exported": true,
           "line": 19,
-          "about": "KnobOption — an interface."
+          "about": "A single value/label pair used by select-kind knobs to populate their dropdown options."
         },
         {
           "name": "Knob",
           "kind": "interface",
           "exported": true,
           "line": 25,
-          "about": "Knob — an interface."
+          "about": "Descriptor for a single editable token: a dotted path into SemanticTokens (e.g. \"color.surface.base\"), a display label, the group heading it appears under, the knob kind controlling the control widget, and optional select options."
         },
         {
           "name": "LengthUnit",
           "kind": "interface",
           "exported": true,
           "line": 43,
-          "about": "Units the length-knob slider can pick, with a sensible slider range and step for each."
+          "about": "Descriptor for one supported CSS unit in the length knob: the suffix string (e.g. \"px\", \"rem\", \"\"), display label, and slider min/max/step defaults; the editor raises max at runtime to accommodate values larger than the default range."
         },
         {
           "name": "LENGTH_UNITS",
           "kind": "const",
           "exported": true,
           "line": 53,
-          "about": "LENGTH_UNITS — an exported value."
+          "about": "Ordered list of supported CSS units for the length knob slider, each with a sensible min/max/step for its slider range; the editor raises max dynamically when the current value exceeds it."
         },
         {
           "name": "FONT_FAMILY_OPTIONS",
           "kind": "const",
           "exported": true,
-          "line": 71,
-          "about": "Curated single-family options for the font-stack builder."
+          "line": 72,
+          "about": "Curated font-family options for the style editor's font-stack builder knob: system, web-safe, and specialty families (pixel-art, handwriting, monospace) that can be combined into an ordered CSS stack; the knob injects any family already in the current value that isn't on this list so no data is lost on edit."
         },
         {
           "name": "KNOB_GROUPS",
           "kind": "const",
           "exported": true,
-          "line": 95,
-          "about": "KNOB_GROUPS — an exported value."
+          "line": 96,
+          "about": "Ordered list of section headings under which the style editor groups its knobs; StyleEditorPage iterates this array to render one fieldset per group."
         },
         {
           "name": "INTENTS",
           "kind": "const",
           "exported": false,
-          "line": 108
+          "line": 109
         },
         {
           "name": "KNOBS",
           "kind": "const",
           "exported": true,
-          "line": 111,
-          "about": "KNOBS — an exported value."
+          "line": 112,
+          "about": "The master array of editable token knobs rendered by StyleEditorPage: surface colors, content colors, border/focus ring colors, six intent backgrounds, radius scale, spacing scale (space.2–5), border widths, font family stacks, motion durations, and shadow style."
         }
       ],
-      "about": "The curated set of token \"knobs\" the style editor exposes."
+      "about": "Curated registry of token knobs for the style editor: defines the Knob type and the KNOBS array (surface colors, content colors, borders, intent backgrounds, radius, spacing, border widths, font families, motion durations, shadow style) grouped under KNOB_GROUPS; adding a knob is a one-line append with no editor or codec change required."
     },
     {
       "id": "src/editor/StyleEditorPage.tsx",
@@ -10839,7 +10840,7 @@
           "kind": "component",
           "exported": true,
           "line": 90,
-          "about": "StyleEditorPage — a React component."
+          "about": "Root component of the style editor: derives initial working state from URL params (?edit= to edit in place, ?palette= to clone a shared token), renders KNOB_GROUPS as fieldsets of KnobControl rows, and shows a live PreviewSampler in the right panel; save/save-as-new/share/delete actions persist to the custom patterns store via useCustomPatterns."
         },
         {
           "name": "KnobControlProps",
@@ -10920,7 +10921,7 @@
           "line": 614
         }
       ],
-      "about": "StyleEditorPage — a React component (editor)."
+      "about": "Page for creating and editing custom palette patterns: lets users clone a built-in palette, tweak token knobs (colors, radius, spacing, fonts, motion), preview changes live in a PreviewSampler, and save/share/delete the result; URL params drive initial state and are kept in sync as the user edits."
     },
     {
       "id": "src/guides/engines/aurora.tsx",
@@ -13659,7 +13660,7 @@
           "kind": "function",
           "exported": true,
           "line": 35,
-          "about": "makeRng — a helper function."
+          "about": "Initialise a Mulberry32 PRNG from a 32-bit seed and return a stateful function that produces uniformly distributed floats in [0, 1); used by QuizView so questions are reproducible within a session."
         },
         {
           "name": "nextQuestion",
@@ -13669,7 +13670,7 @@
           "about": "Generate one identify question."
         }
       ],
-      "about": "generators — part of the quiz area."
+      "about": "Question generators for the palette-guessing quiz: makeRng initialises a Mulberry32 deterministic PRNG from a seed, and nextQuestion picks a target palette, selects three distractors (preferring same-engine peers so users must discriminate within a family), shuffles all four options, and returns an IdentifyQuestion."
     },
     {
       "id": "src/quiz/QuizPage.tsx",
@@ -13709,10 +13710,10 @@
           "kind": "component",
           "exported": true,
           "line": 50,
-          "about": "QuizPage — a React component."
+          "about": "Root component of the quiz page: reads chrome/controls URL params, seeds the persisted style on first mount, follows cross-surface style changes, and passes a stable seed to QuizView so the endless question sequence is reproducible within a session but fresh each reload."
         }
       ],
-      "about": "QuizPage — a React component (quiz)."
+      "about": "Shell page for the palette-guessing quiz: generates a stable random seed per page mount, manages chrome palette and controls-style URL state, syncs with the cross-surface persisted style store, and renders QuizView inside an AppShell with a DraggableControls panel."
     },
     {
       "id": "src/quiz/QuizView.tsx",
@@ -13740,7 +13741,7 @@
           "kind": "component",
           "exported": true,
           "line": 24,
-          "about": "QuizView — a React component."
+          "about": "Stateful quiz interaction loop: holds the current IdentifyQuestion and the user's AnswerState, renders a Stimulus inside a shield div, four palette-name option buttons, feedback text after answering, and a Next button that calls nextQuestion to advance the seeded RNG."
         },
         {
           "name": "Stimulus",
@@ -13761,7 +13762,7 @@
           "line": 132
         }
       ],
-      "about": "QuizView — a React component (quiz)."
+      "about": "Interactive view for the palette-guessing quiz: renders a Stimulus (components grid, visualizations grid, or a sample sports app) in the target palette, shows four multiple-choice palette buttons, reveals correct/wrong feedback on answer, and advances to the next seeded question via nextQuestion from generators.ts."
     },
     {
       "id": "src/quiz/types.ts",
@@ -13777,17 +13778,17 @@
           "kind": "type",
           "exported": true,
           "line": 6,
-          "about": "StimulusKind — a type alias."
+          "about": "Discriminates what the quiz renders as the stimulus: a component grid from PaletteShowcase, a visualization grid from PaletteShowcase, or the full sports sample app."
         },
         {
           "name": "IdentifyQuestion",
           "kind": "interface",
           "exported": true,
           "line": 9,
-          "about": "IdentifyQuestion — an interface."
+          "about": "One quiz question: the target palette id, the stimulus kind shown, four shuffled candidate palette ids, and the index into options that is correct — produced by nextQuestion in generators.ts."
         }
       ],
-      "about": "types — part of the quiz area."
+      "about": "Types for the palette-identification quiz: StimulusKind (which display is shown to the user) and IdentifyQuestion (the full question object holding the target palette, stimulus kind, four shuffled option ids, and the index of the correct answer)."
     },
     {
       "id": "src/settings/SettingsPage.tsx",
@@ -13822,45 +13823,45 @@
           "kind": "type",
           "exported": true,
           "line": 93,
-          "about": "Component — a type alias."
+          "about": "Union of all component and visualization id strings used as keys in COMPONENTS, VISUALIZATIONS, and integration test `components` arrays."
         },
         {
           "name": "Tier",
           "kind": "type",
           "exported": true,
           "line": 112,
-          "about": "Tier — a type alias."
+          "about": "Complexity tier of a story entry (1 = foundational, 2 = intermediate, 3 = advanced), displayed as a badge in PaletteShowcase."
         },
         {
           "name": "StoryEntry",
           "kind": "type",
           "exported": true,
           "line": 115,
-          "about": "StoryEntry — a type alias."
+          "about": "Shape of one showcase entry: component/viz id, display label, tier badge, ordered list of variant names, and a render factory that accepts an optional variant string and returns a ReactNode — the contract shared by COMPONENTS and VISUALIZATIONS."
         },
         {
           "name": "COMPONENTS",
           "kind": "const",
           "exported": true,
           "line": 124,
-          "about": "COMPONENTS — an exported value."
+          "about": "Ordered registry of the 36 UI component story entries (Button through SpatialCanvas, tiers 1–3) consumed by ShowcasePage, PaletteShowcase, the quiz stimulus, and the integration test runner; each maps a Component id to its Stories component and VARIANTS array."
         },
         {
           "name": "VISUALIZATIONS",
           "kind": "const",
           "exported": true,
           "line": 169,
-          "about": "Parallel registry to COMPONENTS."
+          "about": "Registry of 55+ visualization story entries (Sparkline through CoefficientPath, tiers 1–3), parallel in shape to COMPONENTS and iterated by the same showcase view modes and quiz stimulus."
         },
         {
           "name": "ALL_ENTRIES",
           "kind": "const",
           "exported": true,
           "line": 226,
-          "about": "Convenience: every entry across both registries."
+          "about": "Concatenation of COMPONENTS and VISUALIZATIONS for global lookups across both registries; used wherever a single flat list of all story entries is needed."
         }
       ],
-      "about": "components — part of the showcase area."
+      "about": "Registries of every story entry for the component and visualization showcase pages: exports COMPONENTS (36 UI components, tiers 1–3) and VISUALIZATIONS (55+ chart/graph types, tiers 1–3) as StoryEntry arrays, plus ALL_ENTRIES as their union; each entry maps an id to its story render function and variant list."
     },
     {
       "id": "src/showcase/PaletteShowcase.tsx",
@@ -13876,7 +13877,7 @@
           "kind": "type",
           "exported": true,
           "line": 11,
-          "about": "ShowcaseLayout — a type alias."
+          "about": "Discriminant for PaletteShowcase's three layout modes: feed (stacked masonry cards with variant chip tabs), deck (horizontally swipeable variant carousel), or grid (tap-to-expand tiles)."
         },
         {
           "name": "Props",
@@ -13889,7 +13890,7 @@
           "kind": "component",
           "exported": true,
           "line": 28,
-          "about": "PaletteShowcase — a React component."
+          "about": "Wraps entries in a PaletteRoot and dispatches to FeedLayout, DeckLayout, or GridLayout; omits the palette header when showHeader=false (used by QuizView to hide the answer)."
         },
         {
           "name": "TierBadge",
@@ -13922,7 +13923,7 @@
           "line": 219
         }
       ],
-      "about": "PaletteShowcase — a React component (showcase)."
+      "about": "Renders all story entries for one palette in the chosen layout (feed, deck, or grid) inside a PaletteRoot, with an optional header showing palette name/engine and an engine-guide link; used by ShowcasePage in per-palette mode and by QuizView as the components and visualizations stimulus."
     },
     {
       "id": "src/showcase/ShowcasePage.tsx",
@@ -13974,17 +13975,17 @@
           "kind": "interface",
           "exported": true,
           "line": 47,
-          "about": "Props for ShowcasePage."
+          "about": "Configuration props for ShowcasePage: the story entries to display, singular/plural noun labels, page title, default selected entry id, the nav link to mark active, and the info popover body text."
         },
         {
           "name": "ShowcasePage",
           "kind": "component",
           "exported": true,
           "line": 65,
-          "about": "ShowcasePage — a React component."
+          "about": "Root component of the showcase surface: reads and writes view/component/variant/palette/chrome/layout/motion URL params, syncs with the persisted style store, renders DraggableControls with context-appropriate fields, and delegates to per-component PaletteRoot rows or a full PaletteShowcase depending on the active view mode."
         }
       ],
-      "about": "ShowcasePage — a React component (showcase)."
+      "about": "Generic showcase page used by both the component stories surface and the visualization stories surface: supports per-component mode (one entry across all palettes) and per-palette mode (all entries in one palette with feed/deck/grid layout), with full URL-driven state and cross-surface persisted style sync."
     },
     {
       "id": "src/stories/doctrine.tsx",
@@ -14000,10 +14001,10 @@
           "kind": "component",
           "exported": true,
           "line": 6,
-          "about": "Doctrine — a React component."
+          "about": "Thin wrapper that renders DoctrinePage at the /doctrine route; the router references this component rather than DoctrinePage directly."
         }
       ],
-      "about": "Doctrine — a React component (stories)."
+      "about": "Router entry point that mounts the Doctrine page, wiring the /doctrine route to DoctrinePage."
     },
     {
       "id": "src/stories/howitworks.tsx",
@@ -14019,10 +14020,10 @@
           "kind": "component",
           "exported": true,
           "line": 6,
-          "about": "HowItWorks — a React component."
+          "about": "Thin wrapper that renders HowItWorksPage at the /howitworks route; the router references this component rather than HowItWorksPage directly."
         }
       ],
-      "about": "HowItWorks — a React component (stories)."
+      "about": "Router entry point that mounts the How It Works page, wiring the /howitworks route to HowItWorksPage."
     },
     {
       "id": "src/stories/index.tsx",
@@ -14038,10 +14039,10 @@
           "kind": "component",
           "exported": true,
           "line": 7,
-          "about": "Stories — a React component."
+          "about": "Component stories surface: passes COMPONENTS to ShowcasePage so users can browse UI components per-component or per-palette, with feed/deck/grid layout options."
         }
       ],
-      "about": "Barrel entry for the stories module."
+      "about": "Router entry point for the component stories surface: mounts ShowcasePage with the COMPONENTS registry, defaulting to the button entry and the \"components\" nav link."
     },
     {
       "id": "src/stories/quiz.tsx",
@@ -14057,10 +14058,10 @@
           "kind": "component",
           "exported": true,
           "line": 6,
-          "about": "Quiz — a React component."
+          "about": "Thin wrapper that renders QuizPage at the /quiz route; the router references this component rather than QuizPage directly."
         }
       ],
-      "about": "Quiz — a React component (stories)."
+      "about": "Router entry point that mounts the palette-guessing quiz, wiring the /quiz route to QuizPage."
     },
     {
       "id": "src/stories/viz.tsx",
@@ -14076,10 +14077,10 @@
           "kind": "component",
           "exported": true,
           "line": 7,
-          "about": "Viz — a React component."
+          "about": "Visualization stories surface: passes VISUALIZATIONS to ShowcasePage so users can browse chart and graph types per-visualization or per-palette."
         }
       ],
-      "about": "Viz — a React component (stories)."
+      "about": "Router entry point for the visualization stories surface: mounts ShowcasePage with the VISUALIZATIONS registry, defaulting to the sparkline entry and the \"visualizations\" nav link."
     },
     {
       "id": "src/tests/definitions/button.tsx",

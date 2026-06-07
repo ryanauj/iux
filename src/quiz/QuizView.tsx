@@ -1,4 +1,4 @@
-// ABOUTME: QuizView — a React component (quiz).
+// ABOUTME: Interactive view for the palette-guessing quiz: renders a Stimulus (components grid, visualizations grid, or a sample sports app) in the target palette, shows four multiple-choice palette buttons, reveals correct/wrong feedback on answer, and advances to the next seeded question via nextQuestion from generators.ts.
 
 import { useMemo, useState } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
@@ -20,7 +20,7 @@ interface AnswerState {
   pickedId: PaletteId
 }
 
-// ABOUTME: QuizView — a React component.
+// ABOUTME: Stateful quiz interaction loop: holds the current IdentifyQuestion and the user's AnswerState, renders a Stimulus inside a shield div, four palette-name option buttons, feedback text after answering, and a Next button that calls nextQuestion to advance the seeded RNG.
 export function QuizView({ seed }: Props) {
   const rng = useMemo(() => makeRng(seed), [seed])
   const [question, setQuestion] = useState<IdentifyQuestion>(() =>

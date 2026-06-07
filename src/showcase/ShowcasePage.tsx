@@ -1,4 +1,4 @@
-// ABOUTME: ShowcasePage — a React component (showcase).
+// ABOUTME: Generic showcase page used by both the component stories surface and the visualization stories surface: supports per-component mode (one entry across all palettes) and per-palette mode (all entries in one palette with feed/deck/grid layout), with full URL-driven state and cross-surface persisted style sync.
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -43,7 +43,7 @@ const URL_PARAM = {
   motion: 'motion',
 } as const
 
-// ABOUTME: Props for ShowcasePage.
+// ABOUTME: Configuration props for ShowcasePage: the story entries to display, singular/plural noun labels, page title, default selected entry id, the nav link to mark active, and the info popover body text.
 export interface ShowcasePageProps {
   /** Stories rendered by this showcase. */
   entries: StoryEntry[]
@@ -61,7 +61,7 @@ export interface ShowcasePageProps {
   infoText: ReactNode
 }
 
-// ABOUTME: ShowcasePage — a React component.
+// ABOUTME: Root component of the showcase surface: reads and writes view/component/variant/palette/chrome/layout/motion URL params, syncs with the persisted style store, renders DraggableControls with context-appropriate fields, and delegates to per-component PaletteRoot rows or a full PaletteShowcase depending on the active view mode.
 export function ShowcasePage({
   entries,
   itemLabel,
