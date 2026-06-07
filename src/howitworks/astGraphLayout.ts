@@ -328,6 +328,38 @@ function applyForceLayout(nodes: AstNode[], edges: AstEdge[]): void {
     }
   }
 
+  // Resolve any residual box overlaps so cluster nodes never cover each other
+  // (the force pass minimises but doesn't guarantee separation, and expanded
+  // regions are large). Each pass nudges overlapping pairs apart along their
+  // axis of least penetration; it settles quickly and stays deterministic.
+  for (let pass = 0; pass < 80; pass++) {
+    let moved = false
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const pa = pos.get(tops[i].id)!
+        const pb = pos.get(tops[j].id)!
+        const sa = sizeOf(tops[i])
+        const sb = sizeOf(tops[j])
+        const dx = pb.x - pa.x
+        const dy = pb.y - pa.y
+        const overlapX = (sa.w + sb.w) / 2 + GAP - Math.abs(dx)
+        const overlapY = (sa.h + sb.h) / 2 + GAP - Math.abs(dy)
+        if (overlapX <= 0 || overlapY <= 0) continue
+        if (overlapX < overlapY) {
+          const shift = (dx < 0 ? -1 : 1) * (overlapX / 2)
+          pa.x -= shift
+          pb.x += shift
+        } else {
+          const shift = (dy < 0 ? -1 : 1) * (overlapY / 2)
+          pa.y -= shift
+          pb.y += shift
+        }
+        moved = true
+      }
+    }
+    if (!moved) break
+  }
+
   // Convert centre coordinates to React Flow's top-left origin, normalised to
   // a small margin so nothing lands at a negative offset.
   let minX = Infinity

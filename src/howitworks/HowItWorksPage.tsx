@@ -184,9 +184,11 @@ export function HowItWorksPage() {
           functions, classes, consts, types) — with file-to-file import
           links between them. Each file and exported member also carries a
           plain-English summary, lifted from its <code>ABOUTME:</code>{' '}
-          comment and shown beside the name. Tap a directory to open it, tap
-          a file to reveal its members, hit <em>Auto layout</em> to arrange
-          clusters by their dependencies, and pinch or scroll to zoom. It
+          comment and shown beside the name. The clusters start arranged by
+          their import dependencies so the zoomed-out map stays legible —
+          toggle <em>Auto layout</em> off for a plain grid. Tap a directory to
+          open it, tap a file to reveal its members, and pinch or scroll to
+          zoom. It
           paints with the active palette&apos;s tokens, so switch the Palette
           to watch it re-theme.
         </div>

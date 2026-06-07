@@ -53,7 +53,12 @@ function AstGraphInner() {
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(new Set())
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [autoLayout, setAutoLayout] = useState(false)
+  // Auto-layout is on by default: the collapsed overview is otherwise a tall
+  // single column that fitView shrinks to an unreadable ribbon. Arranging the
+  // clusters by their import dependencies fills the canvas 2-dimensionally, so
+  // the zoomed-out map is legible on arrival. Toggle it off for the
+  // deterministic grid/stack.
+  const [autoLayout, setAutoLayout] = useState(true)
   const [fitToken, setFitToken] = useState(0)
   const rf = useRef<ReactFlowInstance<AstNode, AstEdge> | null>(null)
 
