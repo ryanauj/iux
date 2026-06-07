@@ -1,11 +1,16 @@
+// ABOUTME: NodeLink — a React component (components).
+
 import { useMemo } from 'react'
 import './NodeLink.css'
 
+// ABOUTME: NodeLinkVariant — a type alias.
 export type NodeLinkVariant = 'simple' | 'weighted' | 'directed'
 
+// ABOUTME: NodeLinkIntent — a type alias.
 export type NodeLinkIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: GraphNode — an interface.
 export interface GraphNode {
   id: string
   label: string
@@ -19,6 +24,7 @@ export interface GraphNode {
   y?: number
 }
 
+// ABOUTME: GraphEdge — an interface.
 export interface GraphEdge {
   from: string
   to: string
@@ -26,6 +32,7 @@ export interface GraphEdge {
   value?: number
 }
 
+// ABOUTME: Props for NodeLink.
 export interface NodeLinkProps {
   variant?: NodeLinkVariant
   nodes: GraphNode[]
@@ -130,6 +137,7 @@ function deterministicLayout(nodes: GraphNode[], edges: GraphEdge[], width: numb
   return ring
 }
 
+// ABOUTME: NodeLink — a React component.
 export function NodeLink({
   variant = 'simple',
   nodes,

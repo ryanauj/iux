@@ -1,3 +1,5 @@
+// ABOUTME: Ladder — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
 import { CapLadder } from '../components/CapLadder'
@@ -5,6 +7,7 @@ import { contractsRoutes } from '../routes'
 import { THRESHOLDS, SEASON } from '../data/cap'
 import { money } from '../format'
 
+// ABOUTME: Ladder — a React component.
 export function Ladder() {
   return (
     <article className="cap-page">

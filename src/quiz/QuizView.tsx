@@ -1,3 +1,5 @@
+// ABOUTME: QuizView — a React component (quiz).
+
 import { useMemo, useState } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteShowcase } from '../showcase/PaletteShowcase'
@@ -18,6 +20,7 @@ interface AnswerState {
   pickedId: PaletteId
 }
 
+// ABOUTME: QuizView — a React component.
 export function QuizView({ seed }: Props) {
   const rng = useMemo(() => makeRng(seed), [seed])
   const [question, setQuestion] = useState<IdentifyQuestion>(() =>

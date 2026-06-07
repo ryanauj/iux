@@ -1,3 +1,5 @@
+// ABOUTME: PaletteShowcase — a React component (showcase).
+
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Palette } from '../../tokens/semantic.contract'
@@ -5,6 +7,7 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
 import type { StoryEntry, Tier } from './components'
 
+// ABOUTME: ShowcaseLayout — a type alias.
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
 
 interface Props {
@@ -21,6 +24,7 @@ interface Props {
   showHeader?: boolean
 }
 
+// ABOUTME: PaletteShowcase — a React component.
 export function PaletteShowcase({
   palette,
   layout,

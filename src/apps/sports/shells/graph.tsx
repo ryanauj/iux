@@ -1,3 +1,5 @@
+// ABOUTME: GraphShell — a React component (apps).
+
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import { navigate, replaceParams, useHashLocation } from '../../router'
@@ -370,6 +372,7 @@ function GraphNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
+// ABOUTME: GraphShell — a React component.
 export function GraphShell(props: ShellProps): ReactNode {
   const location = useHashLocation()
   const filter = useMemo(

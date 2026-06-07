@@ -1,3 +1,5 @@
+// ABOUTME: BentoShell — a React component (apps).
+
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import { replaceParams, useHashLocation } from '../../router'
@@ -241,6 +243,7 @@ function BentoNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
+// ABOUTME: BentoShell — a React component.
 export function BentoShell(props: ShellProps) {
   const location = useHashLocation()
   const visible = useMemo(() => parseBento(location.params.get('bento')), [location.params])

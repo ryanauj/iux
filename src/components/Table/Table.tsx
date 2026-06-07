@@ -1,3 +1,5 @@
+// ABOUTME: Table — a React component (components).
+
 import {
   useCallback,
   useId,
@@ -11,8 +13,10 @@ import {
 } from 'react'
 import './Table.css'
 
+// ABOUTME: TableVariant — a type alias.
 export type TableVariant = 'static' | 'sortable' | 'resizable' | 'editable'
 
+// ABOUTME: TableColumn — an interface.
 export interface TableColumn<T> {
   key: string
   header: ReactNode
@@ -31,6 +35,7 @@ export interface TableColumn<T> {
   align?: 'start' | 'end' | 'center'
 }
 
+// ABOUTME: Props for Table.
 export interface TableProps<T> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TableVariant
@@ -70,6 +75,7 @@ function defaultGetId(_row: unknown, index: number): string {
   return String(index)
 }
 
+// ABOUTME: Table — a React component.
 export function Table<T>(props: TableProps<T>) {
   const {
     variant = 'static',

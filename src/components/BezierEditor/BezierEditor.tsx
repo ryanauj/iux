@@ -1,3 +1,5 @@
+// ABOUTME: BezierEditor — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -8,8 +10,10 @@ import {
 } from 'react'
 import './BezierEditor.css'
 
+// ABOUTME: BezierVariant — a type alias.
 export type BezierVariant = 'single' | 'multi' | 'snap' | 'presets'
 
+// ABOUTME: BezierAnchor — an interface.
 export interface BezierAnchor {
   id: string
   x: number
@@ -19,11 +23,13 @@ export interface BezierAnchor {
   outHandle?: { dx: number; dy: number }
 }
 
+// ABOUTME: BezierPreset — an interface.
 export interface BezierPreset {
   name: string
   anchors: BezierAnchor[]
 }
 
+// ABOUTME: Props for BezierEditor.
 export interface BezierEditorProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: BezierVariant
@@ -56,6 +62,7 @@ function snapToOtherAnchor(n: number, others: number[], tol: number): number {
   return n
 }
 
+// ABOUTME: BezierEditor — a React component.
 export function BezierEditor({
   variant = 'single',
   anchors,

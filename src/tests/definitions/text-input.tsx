@@ -1,3 +1,5 @@
+// ABOUTME: text-input — part of the tests area.
+
 import { useState } from 'react'
 import { TextInput } from '../../components/TextInput/TextInput'
 import type { IntegrationTest } from '../types'
@@ -63,6 +65,7 @@ function CommandSuggestionComposition() {
   )
 }
 
+// ABOUTME: textInputTests — an exported value.
 export const textInputTests: IntegrationTest[] = [
   {
     id: 'text-input-rung-1-bare',

@@ -1,7 +1,10 @@
+// ABOUTME: Shell — a React component (apps).
+
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
 import { contractsRoutes, type ContractsRoute } from './routes'
 
+// ABOUTME: LAYOUT_IDS — an exported value.
 /**
  * Shell = the chrome around every Cap School page: brand, the chapter nav,
  * and where the page lands. Two layouts are offered through the floating
@@ -10,19 +13,24 @@ import { contractsRoutes, type ContractsRoute } from './routes'
  * page content is untouched between them.
  */
 export const LAYOUT_IDS = ['sidebar', 'topbar'] as const
+// ABOUTME: LayoutId — a type alias.
 export type LayoutId = (typeof LAYOUT_IDS)[number]
+// ABOUTME: DEFAULT_LAYOUT — an exported value.
 export const DEFAULT_LAYOUT: LayoutId = 'sidebar'
 
+// ABOUTME: LAYOUT_OPTIONS — an exported value.
 export const LAYOUT_OPTIONS = [
   { value: 'sidebar', label: 'Sidebar — chapter rail' },
   { value: 'topbar', label: 'Top bar — compact' },
 ]
 
+// ABOUTME: resolveLayoutId — a helper function.
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
   if (raw && (LAYOUT_IDS as readonly string[]).includes(raw)) return raw as LayoutId
   return DEFAULT_LAYOUT
 }
 
+// ABOUTME: NavItem — an interface.
 export interface NavItem {
   to: string
   label: string
@@ -31,6 +39,7 @@ export interface NavItem {
   isActive: (route: ContractsRoute) => boolean
 }
 
+// ABOUTME: NAV — an exported value.
 export const NAV: NavItem[] = [
   { to: contractsRoutes.overview(), label: 'Overview', step: 1, isActive: r => r.kind === 'overview' },
   { to: contractsRoutes.ladder(), label: 'The cap ladder', step: 2, isActive: r => r.kind === 'ladder' },
@@ -89,6 +98,7 @@ function RailLinks({ route, variant }: { route: ContractsRoute; variant: 'rail' 
   )
 }
 
+// ABOUTME: Shell — a React component.
 export function Shell({ layoutId, route, children }: ShellProps) {
   if (layoutId === 'topbar') return <TopbarShell route={route}>{children}</TopbarShell>
   return <SidebarShell route={route}>{children}</SidebarShell>

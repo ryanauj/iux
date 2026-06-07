@@ -1,3 +1,5 @@
+// ABOUTME: PromptStoreProvider — a React component (apps).
+
 import {
   createContext,
   useCallback,
@@ -9,6 +11,7 @@ import {
 import type { Prompt } from './types'
 import { SEED_PROMPTS } from './data/prompts'
 
+// ABOUTME: NewPromptInput — an interface.
 /**
  * In-session prompt store. Seeded from the static starter library; the
  * user can add, edit, delete, and favorite prompts while the app is open.
@@ -47,6 +50,7 @@ function makeId(): string {
   return `pr-user-${Date.now().toString(36)}-${idCounter}`
 }
 
+// ABOUTME: PromptStoreProvider — a React component.
 export function PromptStoreProvider({ children }: { children: ReactNode }) {
   const [prompts, setPrompts] = useState<Prompt[]>(() =>
     // Newest first; the seed is authored oldest-first.
@@ -101,6 +105,7 @@ export function PromptStoreProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// ABOUTME: usePromptStore — a React hook.
 export function usePromptStore(): PromptStore {
   const ctx = useContext(PromptStoreContext)
   if (!ctx) throw new Error('usePromptStore must be used within PromptStoreProvider')

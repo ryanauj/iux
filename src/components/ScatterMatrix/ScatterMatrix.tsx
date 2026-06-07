@@ -1,16 +1,22 @@
+// ABOUTME: ScatterMatrix — a React component (components).
+
 import { useMemo } from 'react'
 import './ScatterMatrix.css'
 
+// ABOUTME: ScatterMatrixVariant — a type alias.
 export type ScatterMatrixVariant = 'pairs' | 'lower' | 'diagonal'
 
+// ABOUTME: ScatterMatrixIntent — a type alias.
 export type ScatterMatrixIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ScatterMatrixField — an interface.
 export interface ScatterMatrixField {
   key: string
   label: string
 }
 
+// ABOUTME: Props for ScatterMatrix.
 export interface ScatterMatrixProps {
   variant?: ScatterMatrixVariant
   fields: ScatterMatrixField[]
@@ -65,6 +71,7 @@ function histPath(values: number[], w: number, h: number, bins = 14): string {
   return d
 }
 
+// ABOUTME: ScatterMatrix — a React component.
 export function ScatterMatrix({
   variant = 'pairs',
   fields,

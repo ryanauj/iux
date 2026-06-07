@@ -1,3 +1,5 @@
+// ABOUTME: QuizPage — a React component (quiz).
+
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
@@ -44,6 +46,7 @@ function readUrlSettings(persistedChrome: StyleId): UrlSettings {
   return { chrome, controls }
 }
 
+// ABOUTME: QuizPage — a React component.
 export function QuizPage() {
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const initial = useMemo(() => readUrlSettings(readSelectedStyle()), [])

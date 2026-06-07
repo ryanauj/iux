@@ -1,3 +1,5 @@
+// ABOUTME: jsdom polyfills for the headless integration harness.
+
 /**
  * jsdom polyfills for the headless integration harness.
  *

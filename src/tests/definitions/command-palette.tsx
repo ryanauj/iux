@@ -1,3 +1,5 @@
+// ABOUTME: command-palette — part of the tests area.
+
 import { useMemo, useState } from 'react'
 import { Button } from '../../components/Button/Button'
 import { CommandPalette, type Command } from '../../components/CommandPalette/CommandPalette'
@@ -32,6 +34,7 @@ function CommandPaletteComposition() {
   )
 }
 
+// ABOUTME: commandPaletteFilter — an exported value.
 export const commandPaletteFilter: IntegrationTest = {
   id: 'command-palette-filter',
   name: 'Command palette filters and runs selection',

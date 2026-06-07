@@ -1,3 +1,5 @@
+// ABOUTME: Landing page at `/palettes`.
+
 /**
  * Landing page at `/palettes`. Lists every palette grouped by engine
  * with a link to its per-palette design page. Mirrors `EnginesIndex`.
@@ -31,6 +33,7 @@ function groupByEngine(): Group[] {
     .sort((a, b) => a.engine.localeCompare(b.engine))
 }
 
+// ABOUTME: PalettesIndex — a React component.
 export function PalettesIndex() {
   const [navLayout] = useNavLayout()
   const [selectedStyle] = useSelectedStyle()

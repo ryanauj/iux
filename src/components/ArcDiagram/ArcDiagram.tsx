@@ -1,11 +1,16 @@
+// ABOUTME: ArcDiagram — a React component (components).
+
 import { useMemo } from 'react'
 import './ArcDiagram.css'
 
+// ABOUTME: ArcDiagramVariant — a type alias.
 export type ArcDiagramVariant = 'simple' | 'weighted' | 'bipartite'
 
+// ABOUTME: ArcDiagramIntent — a type alias.
 export type ArcDiagramIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ArcNode — an interface.
 export interface ArcNode {
   id: string
   label: string
@@ -14,12 +19,14 @@ export interface ArcNode {
   intent?: ArcDiagramIntent
 }
 
+// ABOUTME: ArcEdge — an interface.
 export interface ArcEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for ArcDiagram.
 export interface ArcDiagramProps {
   variant?: ArcDiagramVariant
   nodes: ArcNode[]
@@ -31,6 +38,7 @@ export interface ArcDiagramProps {
 
 const INTENTS: ArcDiagramIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: ArcDiagram — a React component.
 export function ArcDiagram({
   variant = 'simple',
   nodes,

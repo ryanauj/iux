@@ -1,3 +1,5 @@
+// ABOUTME: Link — a React component (apps).
+
 import { useCallback, type AnchorHTMLAttributes, type MouseEvent } from 'react'
 import { getStickyParams, navigate } from './router'
 
@@ -10,6 +12,7 @@ interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void
 }
 
+// ABOUTME: Link — a React component.
 /**
  * Anchor element that drives the in-app hash router. Renders a real
  * `<a>` (so middle-click / cmd-click still open in new tabs through the

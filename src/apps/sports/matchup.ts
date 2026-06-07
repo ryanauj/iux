@@ -1,3 +1,5 @@
+// ABOUTME: Matchup analysis model — turning non-scoring box-score stats into points.
+
 /**
  * Matchup analysis model — turning non-scoring box-score stats into points.
  *
@@ -43,8 +45,10 @@
 import type { Team } from './types'
 import { TEAMS } from './data'
 
+// ABOUTME: StatKey — a type alias.
 export type StatKey = 'reb' | 'ast' | 'stl' | 'blk' | 'tov'
 
+// ABOUTME: StatDef — an interface.
 export interface StatDef {
   key: StatKey
   /** Short axis/column label, e.g. "REB". */
@@ -66,6 +70,7 @@ export interface StatDef {
   rationale: string
 }
 
+// ABOUTME: STAT_DEFS — an exported value.
 export const STAT_DEFS: StatDef[] = [
   {
     key: 'reb', short: 'REB', label: 'Rebounds', field: 'reboundsPerGame',
@@ -94,6 +99,7 @@ export const STAT_DEFS: StatDef[] = [
   },
 ]
 
+// ABOUTME: LEAGUE_PPP — an exported value.
 /**
  * League points per possession, computed from the teams: the average of each
  * team's `pointsFor / possessionsPerGame`. This is the single empirical anchor
@@ -104,12 +110,14 @@ export const LEAGUE_PPP: number =
 
 const round2 = (n: number) => Math.round(n * 100) / 100
 
+// ABOUTME: DEFAULT_RATES — an exported value.
 /** Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`. */
 export const DEFAULT_RATES: Record<StatKey, number> = STAT_DEFS.reduce((out, def) => {
   out[def.key] = round2(LEAGUE_PPP * def.possessionWeight)
   return out
 }, {} as Record<StatKey, number>)
 
+// ABOUTME: LEAGUE_AVERAGES — an exported value.
 /** League-average per-game value for every modelled stat. */
 export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
   const out = {} as Record<StatKey, number>
@@ -120,10 +128,12 @@ export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
   return out
 })()
 
+// ABOUTME: LEAGUE_BASELINE_POINTS — an exported value.
 /** League-average points scored per game — the baseline a projection builds on. */
 export const LEAGUE_BASELINE_POINTS: number =
   TEAMS.reduce((acc, t) => acc + t.pointsFor, 0) / TEAMS.length
 
+// ABOUTME: StatContribution — an interface.
 export interface StatContribution {
   def: StatDef
   /** Points-per-event rate actually used for this contribution. */
@@ -140,6 +150,7 @@ export interface StatContribution {
   absolutePoints: number
 }
 
+// ABOUTME: TeamMatchup — an interface.
 export interface TeamMatchup {
   team: Team
   contributions: StatContribution[]
@@ -168,6 +179,7 @@ function buildContribution(team: Team, def: StatDef, rate: number): StatContribu
   return { def, rate, value, leagueAverage, delta, relativePoints, absolutePoints }
 }
 
+// ABOUTME: analyzeTeam — a helper function.
 export function analyzeTeam(team: Team, rates: Record<StatKey, number>): TeamMatchup {
   const contributions = STAT_DEFS.map(def => buildContribution(team, def, rates[def.key]))
   const netRelativePoints = contributions.reduce((acc, c) => acc + c.relativePoints, 0)
@@ -175,6 +187,7 @@ export function analyzeTeam(team: Team, rates: Record<StatKey, number>): TeamMat
   return { team, contributions, netRelativePoints, projectedPoints }
 }
 
+// ABOUTME: StatEdge — an interface.
 export interface StatEdge {
   def: StatDef
   /** Team A's relative points for this stat. */
@@ -185,6 +198,7 @@ export interface StatEdge {
   edge: number
 }
 
+// ABOUTME: MatchupAnalysis — an interface.
 export interface MatchupAnalysis {
   a: TeamMatchup
   b: TeamMatchup
@@ -201,6 +215,7 @@ export interface MatchupAnalysis {
   maxAbsDelta: number
 }
 
+// ABOUTME: analyzeMatchup — a helper function.
 /** Build the full two-team analysis used by every view on the matchup screen. */
 export function analyzeMatchup(
   teamA: Team,
@@ -221,17 +236,20 @@ export function analyzeMatchup(
   return { a, b, edges, netEdge, baseline: LEAGUE_BASELINE_POINTS, rates, maxAbsPoints, maxAbsDelta }
 }
 
+// ABOUTME: formatPoints — a helper function.
 /** "+2.3" / "-1.4" / "0.0" — signed, one decimal, for point values. */
 export function formatPoints(n: number): string {
   const fixed = Math.abs(n) < 0.05 ? '0.0' : n.toFixed(1)
   return n > 0.05 ? `+${fixed}` : fixed
 }
 
+// ABOUTME: formatValue — a helper function.
 /** Unsigned one-decimal, for raw stat values. */
 export function formatValue(n: number): string {
   return n.toFixed(1)
 }
 
+// ABOUTME: formatRate — a helper function.
 /** Two-decimal rate, e.g. 0.35 or -1.06. */
 export function formatRate(n: number): string {
   return n.toFixed(2)

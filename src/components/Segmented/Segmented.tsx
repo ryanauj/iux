@@ -1,3 +1,5 @@
+// ABOUTME: Segmented — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -10,8 +12,10 @@ import {
 } from 'react'
 import './Segmented.css'
 
+// ABOUTME: SegmentedVariant — a type alias.
 export type SegmentedVariant = 'pill' | 'rich' | 'animated' | 'overflow'
 
+// ABOUTME: SegmentedItem — an interface.
 export interface SegmentedItem {
   value: string
   label: ReactNode
@@ -20,6 +24,7 @@ export interface SegmentedItem {
   disabled?: boolean
 }
 
+// ABOUTME: Props for Segmented.
 export interface SegmentedProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SegmentedVariant
@@ -32,6 +37,7 @@ export interface SegmentedProps {
   className?: string
 }
 
+// ABOUTME: Segmented — a React component.
 export function Segmented({
   variant = 'pill',
   value,

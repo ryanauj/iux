@@ -1,11 +1,16 @@
+// ABOUTME: EdgeBundle — a React component (components).
+
 import { useMemo } from 'react'
 import './EdgeBundle.css'
 
+// ABOUTME: EdgeBundleVariant — a type alias.
 export type EdgeBundleVariant = 'simple' | 'bundled' | 'directional'
 
+// ABOUTME: EdgeBundleIntent — a type alias.
 export type EdgeBundleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: EdgeBundleNode — an interface.
 export interface EdgeBundleNode {
   id: string
   label: string
@@ -13,12 +18,14 @@ export interface EdgeBundleNode {
   children?: EdgeBundleNode[]
 }
 
+// ABOUTME: EdgeBundleEdge — an interface.
 export interface EdgeBundleEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for EdgeBundle.
 export interface EdgeBundleProps {
   variant?: EdgeBundleVariant
   /** Hierarchy root. Leaves are the nodes that participate in edges. */
@@ -135,6 +142,7 @@ function bundlePath(from: Placed, to: Placed, beta: number): string {
   return d
 }
 
+// ABOUTME: EdgeBundle — a React component.
 export function EdgeBundle({
   variant = 'bundled',
   root,

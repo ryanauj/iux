@@ -1,3 +1,5 @@
+// ABOUTME: Trades — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
 import { contractsRoutes } from '../routes'
@@ -47,6 +49,7 @@ function PartyCard({ party }: { party: TradeParty }) {
   )
 }
 
+// ABOUTME: Trades — a React component.
 export function Trades() {
   const contender = SAMPLE_TRADE[0]
   const matchOut = salaryTotal(contender.out)

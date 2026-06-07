@@ -1,3 +1,5 @@
+// ABOUTME: CoverageViz — a React component (tests).
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Segmented } from '../../components/Segmented/Segmented'
 import { INTEGRATION_TESTS, involvedComponentIds } from '../registry'
@@ -13,6 +15,7 @@ interface Props {
 type Mode = 'table' | 'network'
 type Status = 'idle' | 'running' | 'passed' | 'failed'
 
+// ABOUTME: CoverageViz — a React component.
 export function CoverageViz({ results, runningId, runFor }: Props) {
   const [mode, setMode] = useState<Mode>('table')
   const [selected, setSelected] = useState<string | null>(null)

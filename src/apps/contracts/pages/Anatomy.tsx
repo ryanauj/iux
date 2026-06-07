@@ -1,3 +1,5 @@
+// ABOUTME: Anatomy — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Bar } from '../../../components/Bar/Bar'
 import { Donut } from '../../../components/Donut/Donut'
@@ -27,6 +29,7 @@ const GUARANTEE_INTENT: Record<ContractYear['guarantee'], 'success' | 'warning' 
   non: 'danger',
 }
 
+// ABOUTME: Anatomy — a React component.
 export function Anatomy() {
   const total = SAMPLE_CONTRACT.reduce((s, y) => s + y.salary, 0)
   const guaranteed = SAMPLE_CONTRACT

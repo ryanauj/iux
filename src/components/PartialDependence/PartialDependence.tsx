@@ -1,11 +1,16 @@
+// ABOUTME: PartialDependence — a React component (components).
+
 import { useMemo } from 'react'
 import './PartialDependence.css'
 
+// ABOUTME: PartialDependenceVariant — a type alias.
 export type PartialDependenceVariant = 'line' | 'band' | 'rug'
 
+// ABOUTME: PartialDependenceIntent — a type alias.
 export type PartialDependenceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: PartialPoint — an interface.
 export interface PartialPoint {
   x: number
   y: number
@@ -13,6 +18,7 @@ export interface PartialPoint {
   upper?: number
 }
 
+// ABOUTME: Props for PartialDependence.
 export interface PartialDependenceProps {
   variant?: PartialDependenceVariant
   /** Predicted Y across the range of the focal predictor, others held fixed. */
@@ -44,6 +50,7 @@ function scale(value: number, d0: number, d1: number, r0: number, r1: number): n
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: PartialDependence — a React component.
 export function PartialDependence({
   variant = 'band',
   curve,

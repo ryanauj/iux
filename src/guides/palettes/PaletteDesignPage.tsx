@@ -1,3 +1,5 @@
+// ABOUTME: Per-palette design page.
+
 /**
  * Per-palette design page. Renders the same content as
  * `docs/styles/<id>.md` directly in the SPA, with the page itself
@@ -281,6 +283,7 @@ function PaletteDesignPage({ palette }: PageProps) {
   )
 }
 
+// ABOUTME: PaletteDesignPageRoute — a React component.
 export function PaletteDesignPageRoute() {
   const { paletteId } = useParams<{ paletteId: string }>()
   if (!paletteId || !(paletteId in palettes)) {

@@ -1,11 +1,16 @@
+// ABOUTME: IndentTree — a React component (components).
+
 import { useMemo, type ReactNode } from 'react'
 import './IndentTree.css'
 
+// ABOUTME: IndentTreeVariant — a type alias.
 export type IndentTreeVariant = 'plain' | 'guides' | 'meta'
 
+// ABOUTME: IndentTreeIntent — a type alias.
 export type IndentTreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: IndentTreeNode — an interface.
 export interface IndentTreeNode {
   id: string
   label: string
@@ -17,6 +22,7 @@ export interface IndentTreeNode {
   children?: IndentTreeNode[]
 }
 
+// ABOUTME: Props for IndentTree.
 export interface IndentTreeProps {
   variant?: IndentTreeVariant
   root: IndentTreeNode
@@ -61,6 +67,7 @@ function maxWeight(rows: Row[]): number {
   return m || 1
 }
 
+// ABOUTME: IndentTree — a React component.
 export function IndentTree({
   variant = 'plain',
   root,

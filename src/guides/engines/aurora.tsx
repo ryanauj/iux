@@ -1,3 +1,5 @@
+// ABOUTME: aurora — part of the guides area.
+
 import { useState } from 'react'
 import { palette as aurora } from '../../../palettes/aurora'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -244,6 +246,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: auroraGuide — an exported value.
 export const auroraGuide: EngineGuideMeta = {
   engine: 'aurora',
   name: 'Aurora',

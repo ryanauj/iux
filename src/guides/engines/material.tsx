@@ -1,3 +1,5 @@
+// ABOUTME: material — part of the guides area.
+
 import { useState } from 'react'
 import { palette as material } from '../../../palettes/material'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -191,6 +193,7 @@ function CardComposition() {
   )
 }
 
+// ABOUTME: materialGuide — an exported value.
 export const materialGuide: EngineGuideMeta = {
   engine: 'material',
   name: 'Material',

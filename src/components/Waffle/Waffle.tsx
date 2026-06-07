@@ -1,11 +1,16 @@
+// ABOUTME: Waffle — a React component (components).
+
 import { useMemo } from 'react'
 import './Waffle.css'
 
+// ABOUTME: WaffleVariant — a type alias.
 export type WaffleVariant = 'dots' | 'blocks' | 'icons'
 
+// ABOUTME: WaffleIntent — a type alias.
 export type WaffleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: WaffleCategory — an interface.
 export interface WaffleCategory {
   key: string
   label: string
@@ -13,6 +18,7 @@ export interface WaffleCategory {
   intent?: WaffleIntent
 }
 
+// ABOUTME: Props for Waffle.
 export interface WaffleProps {
   variant?: WaffleVariant
   data: WaffleCategory[]
@@ -31,6 +37,7 @@ function intentFor(c: WaffleCategory, i: number): WaffleIntent {
   return c.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Waffle — a React component.
 export function Waffle({
   variant = 'dots',
   data,

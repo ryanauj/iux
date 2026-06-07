@@ -1,11 +1,16 @@
+// ABOUTME: DensityPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './DensityPlot.css'
 
+// ABOUTME: DensityPlotVariant — a type alias.
 export type DensityPlotVariant = 'single' | 'multiple' | 'filled'
 
+// ABOUTME: DensityIntent — a type alias.
 export type DensityIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: DensitySeries — an interface.
 export interface DensitySeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface DensitySeries {
   intent?: DensityIntent
 }
 
+// ABOUTME: Props for DensityPlot.
 export interface DensityPlotProps {
   variant?: DensityPlotVariant
   series: DensitySeries[]
@@ -63,6 +69,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: DensityPlot — a React component.
 export function DensityPlot({
   variant = 'single',
   series,

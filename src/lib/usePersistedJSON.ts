@@ -1,6 +1,9 @@
+// ABOUTME: usePersistedJSON — a React hook (lib).
+
 import { useEffect, useState } from 'react'
 import { notify, subscribe } from './_persistedShared'
 
+// ABOUTME: usePersistedJSON — a React hook.
 /**
  * localStorage-backed React state for JSON-serialisable values. Mirrors
  * `usePersistedPref` but with `JSON.parse` / `JSON.stringify` around the

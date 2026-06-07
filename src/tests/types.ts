@@ -1,5 +1,8 @@
+// ABOUTME: types — part of the tests area.
+
 import type { ReactNode } from 'react'
 
+// ABOUTME: Step — a type alias.
 export type Step =
   | { kind: 'click'; selector: string; label?: string }
   | { kind: 'type'; selector: string; text: string; label?: string }
@@ -10,8 +13,10 @@ export type Step =
   | { kind: 'assertCount'; selector: string; count: number; label?: string }
   | { kind: 'assertGone'; selector: string; label?: string }
 
+// ABOUTME: StepStatus — a type alias.
 export type StepStatus = 'pending' | 'running' | 'passed' | 'failed'
 
+// ABOUTME: StepResult — an interface.
 export interface StepResult {
   step: Step
   status: StepStatus
@@ -19,6 +24,7 @@ export interface StepResult {
   ms?: number
 }
 
+// ABOUTME: RunResult — an interface.
 export interface RunResult {
   testId: string
   passed: boolean
@@ -27,6 +33,7 @@ export interface RunResult {
   startedAt: number
 }
 
+// ABOUTME: IntegrationTest — an interface.
 export interface IntegrationTest {
   id: string
   name: string

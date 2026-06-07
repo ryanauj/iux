@@ -1,11 +1,16 @@
+// ABOUTME: RidgePlot — a React component (components).
+
 import { useMemo } from 'react'
 import './RidgePlot.css'
 
+// ABOUTME: RidgePlotVariant — a type alias.
 export type RidgePlotVariant = 'lines' | 'filled' | 'normalized'
 
+// ABOUTME: RidgeIntent — a type alias.
 export type RidgeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: RidgeSeries — an interface.
 export interface RidgeSeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface RidgeSeries {
   intent?: RidgeIntent
 }
 
+// ABOUTME: Props for RidgePlot.
 export interface RidgePlotProps {
   variant?: RidgePlotVariant
   /** Series rendered top → bottom. Order is the story. */
@@ -64,6 +70,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: RidgePlot — a React component.
 export function RidgePlot({
   variant = 'filled',
   series,

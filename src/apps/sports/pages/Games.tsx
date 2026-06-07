@@ -1,3 +1,5 @@
+// ABOUTME: Games — a React component (apps).
+
 import { useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
 import { EmptyState } from '../../../components/EmptyState/EmptyState'
@@ -8,6 +10,7 @@ import type { GameStatus } from '../types'
 
 type StatusFilter = 'all' | GameStatus
 
+// ABOUTME: Games — a React component.
 export function Games() {
   const [filter, setFilter] = useState<StatusFilter>('all')
   const filtered = filter === 'all' ? GAMES : GAMES.filter(g => g.status === filter)

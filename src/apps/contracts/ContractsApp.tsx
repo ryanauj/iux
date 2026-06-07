@@ -1,3 +1,5 @@
+// ABOUTME: ContractsApp — a React component (apps).
+
 import { useEffect, useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
@@ -36,6 +38,7 @@ interface ContractsAppProps {
   location: HashLocation
 }
 
+// ABOUTME: ContractsApp — a React component.
 export function ContractsApp({ location }: ContractsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

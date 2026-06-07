@@ -1,11 +1,16 @@
+// ABOUTME: HiveDiagram — a React component (components).
+
 import { useMemo } from 'react'
 import './HiveDiagram.css'
 
+// ABOUTME: HiveDiagramVariant — a type alias.
 export type HiveDiagramVariant = 'simple' | 'weighted' | 'directed'
 
+// ABOUTME: HiveIntent — a type alias.
 export type HiveIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: HiveNode — an interface.
 export interface HiveNode {
   id: string
   label: string
@@ -17,12 +22,14 @@ export interface HiveNode {
   intent?: HiveIntent
 }
 
+// ABOUTME: HiveEdge — an interface.
 export interface HiveEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for HiveDiagram.
 export interface HiveDiagramProps {
   variant?: HiveDiagramVariant
   nodes: HiveNode[]
@@ -36,6 +43,7 @@ const INTENTS: HiveIntent[] = ['primary', 'info', 'success', 'warning', 'danger'
 
 const AXIS_ANGLES_3 = [-Math.PI / 2, -Math.PI / 2 + (Math.PI * 2) / 3, -Math.PI / 2 + (Math.PI * 4) / 3]
 
+// ABOUTME: HiveDiagram — a React component.
 export function HiveDiagram({
   variant = 'simple',
   nodes,

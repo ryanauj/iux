@@ -1,3 +1,5 @@
+// ABOUTME: ToastProvider — a React component (apps).
+
 import { createContext, useContext, type ReactNode } from 'react'
 import { Toaster, useToastQueue, type ToastItem } from '../../../components/Toast/Toast'
 
@@ -9,6 +11,7 @@ type PushToast = (item: Omit<ToastItem, 'id'> & { id?: string }) => string
 
 const ToastContext = createContext<PushToast | null>(null)
 
+// ABOUTME: ToastProvider — a React component.
 export function ToastProvider({ children }: { children: ReactNode }) {
   const { toasts, push, dismiss } = useToastQueue()
   return (
@@ -19,6 +22,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// ABOUTME: useToast — a React hook.
 export function useToast(): PushToast {
   const ctx = useContext(ToastContext)
   if (!ctx) throw new Error('useToast must be used within ToastProvider')

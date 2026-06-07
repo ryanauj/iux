@@ -1,9 +1,12 @@
+// ABOUTME: Standings — a React component (apps).
+
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { getStandings } from '../data'
 import { gamesBehind, winPct } from '../format'
 import type { Team } from '../types'
 import { TeamChip } from '../components/TeamChip'
 
+// ABOUTME: Standings — a React component.
 export function Standings() {
   return (
     <>

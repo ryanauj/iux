@@ -1,3 +1,5 @@
+// ABOUTME: Drawer — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -14,16 +16,21 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Drawer.css'
 
+// ABOUTME: DrawerVariant — a type alias.
 export type DrawerVariant = 'side' | 'sectioned' | 'navigable' | 'sheet'
+// ABOUTME: DrawerSide — a type alias.
 export type DrawerSide = 'right' | 'left' | 'top' | 'bottom'
+// ABOUTME: DrawerSize — a type alias.
 export type DrawerSize = 'sm' | 'md' | 'lg'
 
+// ABOUTME: DrawerView — an interface.
 export interface DrawerView {
   id: string
   title: string
   render: (push: (id: string) => void, pop: () => void) => ReactNode
 }
 
+// ABOUTME: Props for Drawer.
 export interface DrawerProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: DrawerVariant
@@ -55,6 +62,7 @@ export interface DrawerProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: Drawer — a React component.
 export function Drawer(props: DrawerProps) {
   const {
     variant = 'side',

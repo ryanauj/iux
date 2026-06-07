@@ -1,3 +1,5 @@
+// ABOUTME: Domain types for the Cap School app.
+
 /**
  * Domain types for the Cap School app. Everything here describes the
  * *rules* of NBA contracts (thresholds, exceptions, tax brackets) rather
@@ -7,6 +9,7 @@
  */
 
 /** A single dollar threshold in the cap system for one league year. */
+// ABOUTME: CapSeason — an interface.
 export interface CapSeason {
   /** Display label for the league year, e.g. "2025–26". */
   label: string
@@ -22,6 +25,7 @@ export interface CapSeason {
   secondApron: number
 }
 
+// ABOUTME: CapThreshold — an interface.
 /** The four (well, five) horizontal lines a team's payroll is measured against. */
 export interface CapThreshold {
   id: string
@@ -33,6 +37,7 @@ export interface CapThreshold {
   intent: 'success' | 'neutral' | 'warning' | 'danger'
 }
 
+// ABOUTME: MaxTier — an interface.
 /** A maximum-salary tier keyed off years of service. */
 export interface MaxTier {
   id: string
@@ -46,6 +51,7 @@ export interface MaxTier {
   note: string
 }
 
+// ABOUTME: Exception — an interface.
 /** A salary-cap exception — a tool teams use to sign players over the cap. */
 export interface Exception {
   id: string
@@ -60,6 +66,7 @@ export interface Exception {
   apronLimited: 'none' | 'first' | 'second'
 }
 
+// ABOUTME: TaxBracket — an interface.
 /** One incremental luxury-tax bracket. */
 export interface TaxBracket {
   /** Lower edge of the bracket, measured in dollars over the tax line. */
@@ -72,6 +79,7 @@ export interface TaxBracket {
   repeaterRate: number
 }
 
+// ABOUTME: ContractYear — an interface.
 /** A contract year inside a single deal, for the anatomy walkthrough. */
 export interface ContractYear {
   label: string
@@ -80,6 +88,7 @@ export interface ContractYear {
   guarantee: 'full' | 'partial' | 'team-option' | 'player-option' | 'non'
 }
 
+// ABOUTME: RosterSpot — an interface.
 /** One roster line on the worked team cap sheet. */
 export interface RosterSpot {
   id: string
@@ -90,6 +99,7 @@ export interface RosterSpot {
   via: string
 }
 
+// ABOUTME: TradePiece — an interface.
 /** A single asset moving in a trade — a contract (with salary) or a pick. */
 export interface TradePiece {
   label: string
@@ -97,6 +107,7 @@ export interface TradePiece {
   salary?: number
 }
 
+// ABOUTME: TradeParty — an interface.
 /** One team's side of the worked multi-team trade. */
 export interface TradeParty {
   id: string

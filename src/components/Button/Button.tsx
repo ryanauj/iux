@@ -1,9 +1,14 @@
+// ABOUTME: Button — an exported value (components).
+
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import './Button.css'
 
+// ABOUTME: ButtonVariant — a type alias.
 export type ButtonVariant = 'solid' | 'neumorphic' | 'spring' | 'ai'
+// ABOUTME: ButtonIntent — a type alias.
 export type ButtonIntent = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
+// ABOUTME: Props for Button.
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ButtonVariant
@@ -18,6 +23,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   type?: 'button' | 'submit' | 'reset'
 }
 
+// ABOUTME: Button — an exported value.
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant = 'solid',

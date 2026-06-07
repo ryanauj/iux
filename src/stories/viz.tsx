@@ -1,6 +1,9 @@
+// ABOUTME: Viz — a React component (stories).
+
 import { VISUALIZATIONS } from '../showcase/components'
 import { ShowcasePage } from '../showcase/ShowcasePage'
 
+// ABOUTME: Viz — a React component.
 export function Viz() {
   return (
     <ShowcasePage

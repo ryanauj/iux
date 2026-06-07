@@ -1,11 +1,16 @@
+// ABOUTME: ConfidenceBand — a React component (components).
+
 import { useMemo } from 'react'
 import './ConfidenceBand.css'
 
+// ABOUTME: ConfidenceBandVariant — a type alias.
 export type ConfidenceBandVariant = 'band' | 'ribbon' | 'compare'
 
+// ABOUTME: ConfidenceIntent — a type alias.
 export type ConfidenceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ConfidencePoint — an interface.
 export interface ConfidencePoint {
   t: number
   /** Central estimate (mean / median / forecast). */
@@ -19,6 +24,7 @@ export interface ConfidencePoint {
   hi50?: number
 }
 
+// ABOUTME: ConfidenceSeries — an interface.
 export interface ConfidenceSeries {
   id: string
   label: string
@@ -26,6 +32,7 @@ export interface ConfidenceSeries {
   intent?: ConfidenceIntent
 }
 
+// ABOUTME: Props for ConfidenceBand.
 export interface ConfidenceBandProps {
   variant?: ConfidenceBandVariant
   series: ConfidenceSeries[]
@@ -58,6 +65,7 @@ function defaultFormatT(t: number): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+// ABOUTME: ConfidenceBand — a React component.
 export function ConfidenceBand({
   variant = 'band',
   series,

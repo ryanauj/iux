@@ -1,11 +1,16 @@
+// ABOUTME: EcdfPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './EcdfPlot.css'
 
+// ABOUTME: EcdfPlotVariant — a type alias.
 export type EcdfPlotVariant = 'single' | 'multiple' | 'percentiles'
 
+// ABOUTME: EcdfIntent — a type alias.
 export type EcdfIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: EcdfSeries — an interface.
 export interface EcdfSeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface EcdfSeries {
   intent?: EcdfIntent
 }
 
+// ABOUTME: Props for EcdfPlot.
 export interface EcdfPlotProps {
   variant?: EcdfPlotVariant
   series: EcdfSeries[]
@@ -45,6 +51,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: EcdfPlot — a React component.
 export function EcdfPlot({
   variant = 'single',
   series,

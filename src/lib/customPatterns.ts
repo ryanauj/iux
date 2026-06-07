@@ -1,8 +1,11 @@
+// ABOUTME: customPatterns — part of the lib area.
+
 import { palettes, type PaletteId } from '../../palettes'
 import type { Palette, SemanticTokens } from '../../tokens/semantic.contract'
 import { usePersistedJSON } from './usePersistedJSON'
 import { DEFAULT_SELECTED_STYLE, readSelectedStyle } from './persistedStyle'
 
+// ABOUTME: CUSTOM_PREFIX — an exported value.
 /**
  * Custom palette "patterns" — the prototype pattern for styles.
  *
@@ -23,32 +26,39 @@ import { DEFAULT_SELECTED_STYLE, readSelectedStyle } from './persistedStyle'
 
 export const CUSTOM_PREFIX = 'custom:'
 
+// ABOUTME: CustomPatternId — a type alias.
 /** A user-defined pattern id, namespaced so it never collides with a built-in. */
 export type CustomPatternId = `custom:${string}`
 
+// ABOUTME: StyleId — a type alias.
 /** Either a built-in palette id or a custom pattern id. */
 export type StyleId = PaletteId | CustomPatternId
 
+// ABOUTME: isCustomPatternId — a helper function.
 export function isCustomPatternId(value: string): value is CustomPatternId {
   return value.startsWith(CUSTOM_PREFIX) && value.length > CUSTOM_PREFIX.length
 }
 
 const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
+// ABOUTME: isBuiltInPaletteId — a helper function.
 /** Local built-in check that doesn't pull in the `persistedStyle` guard. */
 export function isBuiltInPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
 
+// ABOUTME: DeepPartial — a type alias.
 // ───────────────────────────── override types ───────────────────────────
 
 export type DeepPartial<T> = T extends object
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : T
 
+// ABOUTME: TokenOverrides — a type alias.
 /** A sparse patch over the token contract — only the edited leaves are present. */
 export type TokenOverrides = DeepPartial<SemanticTokens>
 
+// ABOUTME: CustomPattern — an interface.
 /** A stored custom pattern: a name, the built-in it clones, and the overrides. */
 export interface CustomPattern {
   id: CustomPatternId
@@ -57,14 +67,17 @@ export interface CustomPattern {
   overrides: TokenOverrides
 }
 
+// ABOUTME: CustomPatternMap — a type alias.
 export type CustomPatternMap = Record<string, CustomPattern>
 
+// ABOUTME: isPlainObject — a helper function.
 // ──────────────────────────── object utilities ──────────────────────────
 
 export function isPlainObject(x: unknown): x is Record<string, unknown> {
   return typeof x === 'object' && x !== null && !Array.isArray(x)
 }
 
+// ABOUTME: deepMerge — a helper function.
 /**
  * Deep-merge `overrides` onto `base`, returning a new object. Plain objects
  * are merged recursively; every other value (string, number — i.e. every
@@ -85,6 +98,7 @@ export function deepMerge<T>(base: T, overrides: DeepPartial<T> | undefined): T 
   return out as T
 }
 
+// ABOUTME: getAtPath — a helper function.
 /** Read a dotted path (`color.surface.base`) out of a nested object. */
 export function getAtPath(obj: unknown, path: string): unknown {
   let cur: unknown = obj
@@ -95,6 +109,7 @@ export function getAtPath(obj: unknown, path: string): unknown {
   return cur
 }
 
+// ABOUTME: setAtPath — a helper function.
 /**
  * Immutably set a dotted path, creating intermediate objects as needed.
  * Used to build the sparse override tree one edited leaf at a time.
@@ -113,6 +128,7 @@ export function setAtPath<T extends object>(obj: T, path: string, value: unknown
   return out as T
 }
 
+// ABOUTME: deleteAtPath — a helper function.
 /**
  * Immutably delete a dotted path, pruning any intermediate objects left
  * empty. Used when a knob is reset to its base value so overrides stay sparse.
@@ -135,6 +151,7 @@ export function deleteAtPath<T extends object>(obj: T, path: string): T {
   return out as T
 }
 
+// ABOUTME: customDataPaletteId — a helper function.
 // ─────────────────────────────── resolution ─────────────────────────────
 
 /**
@@ -148,6 +165,7 @@ export function customDataPaletteId(base: PaletteId): string {
   return `${base}--custom`
 }
 
+// ABOUTME: baseOf — a helper function.
 /**
  * Coerce any style id to a built-in `PaletteId` — itself if built-in, the
  * clone's base if it's a custom pattern, else the default. Used by catalog
@@ -163,6 +181,7 @@ export function baseOf(id: string, customs?: CustomPatternMap): PaletteId {
   return DEFAULT_SELECTED_STYLE
 }
 
+// ABOUTME: buildWorkingPalette — a helper function.
 /** Build the concrete `Palette` a base + name + overrides reconstruct to. */
 export function buildWorkingPalette(
   base: PaletteId,
@@ -178,6 +197,7 @@ export function buildWorkingPalette(
   }
 }
 
+// ABOUTME: resolveStyle — a helper function.
 /**
  * The single seam from a style id (built-in or custom) to a concrete
  * `Palette` ready for `<PaletteRoot>`. Pass `customs` to resolve without
@@ -199,6 +219,7 @@ export function resolveStyle(id: string, customs?: CustomPatternMap): Palette {
     ?? palettes[DEFAULT_SELECTED_STYLE]
 }
 
+// ABOUTME: CUSTOM_PATTERNS_KEY — an exported value.
 // ──────────────────────────────── storage ───────────────────────────────
 
 export const CUSTOM_PATTERNS_KEY = 'iux-custom-patterns'
@@ -215,11 +236,13 @@ function isCustomPattern(x: unknown): x is CustomPattern {
   )
 }
 
+// ABOUTME: isCustomPatternMap — a helper function.
 export function isCustomPatternMap(parsed: unknown): parsed is CustomPatternMap {
   if (!isPlainObject(parsed)) return false
   return Object.values(parsed).every(isCustomPattern)
 }
 
+// ABOUTME: readCustomPatterns — a helper function.
 /** Synchronous read for non-hook contexts (mirrors `readSelectedStyle`). */
 export function readCustomPatterns(): CustomPatternMap {
   if (typeof window === 'undefined') return {}
@@ -234,11 +257,13 @@ export function readCustomPatterns(): CustomPatternMap {
   return {}
 }
 
+// ABOUTME: useCustomPatterns — a React hook.
 /** localStorage-backed map of every custom pattern, synced across tabs. */
 export function useCustomPatterns() {
   return usePersistedJSON<CustomPatternMap>(CUSTOM_PATTERNS_KEY, {}, isCustomPatternMap)
 }
 
+// ABOUTME: slugify — a helper function.
 // ───────────────────────────── id generation ────────────────────────────
 
 export function slugify(name: string): string {
@@ -250,10 +275,12 @@ export function slugify(name: string): string {
   return slug || 'pattern'
 }
 
+// ABOUTME: makeCustomId — a helper function.
 export function makeCustomId(slug: string): CustomPatternId {
   return `${CUSTOM_PREFIX}${slug}`
 }
 
+// ABOUTME: uniqueCustomId — a helper function.
 /** A `custom:<slug>` id unique against `existing` (suffixes `-2`, `-3`, …). */
 export function uniqueCustomId(name: string, existing: CustomPatternMap): CustomPatternId {
   const slug = slugify(name)

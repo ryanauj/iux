@@ -1,3 +1,5 @@
+// ABOUTME: SportsApp — a React component (apps).
+
 import { useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
@@ -47,6 +49,7 @@ const NAV: NavItem[] = [
   { to: sportsRoutes.matchup(), label: 'Matchup', isActive: r => r.kind === 'matchup' },
 ]
 
+// ABOUTME: SportsApp — a React component.
 export function SportsApp({ location }: SportsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

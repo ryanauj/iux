@@ -1,3 +1,5 @@
+// ABOUTME: toggle — part of the tests area.
+
 import { useState } from 'react'
 import { Toggle } from '../../components/Toggle/Toggle'
 import type { IntegrationTest } from '../types'
@@ -52,6 +54,7 @@ function TristateComposition() {
   )
 }
 
+// ABOUTME: toggleTests — an exported value.
 export const toggleTests: IntegrationTest[] = [
   {
     id: 'toggle-rung-1-switch',

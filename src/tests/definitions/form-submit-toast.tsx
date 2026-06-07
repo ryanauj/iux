@@ -1,3 +1,5 @@
+// ABOUTME: form-submit-toast — part of the tests area.
+
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
 import { TextInput } from '../../components/TextInput/TextInput'
@@ -27,6 +29,7 @@ function FormSubmitToastComposition() {
   )
 }
 
+// ABOUTME: formSubmitToast — an exported value.
 export const formSubmitToast: IntegrationTest = {
   id: 'form-submit-toast',
   name: 'Form submit shows confirmation toast',

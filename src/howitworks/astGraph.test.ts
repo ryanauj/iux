@@ -37,6 +37,16 @@ describe('generated AST graph', () => {
     }
   })
 
+  it('reports aboutme coverage that matches the data', () => {
+    const docFiles = GRAPH.files.filter(f => typeof f.about === 'string' && f.about.length > 0).length
+    const docMembers = GRAPH.files.reduce(
+      (n, f) => n + f.members.filter(m => typeof m.about === 'string' && m.about!.length > 0).length,
+      0,
+    )
+    expect(GRAPH.stats.documentedFiles).toBe(docFiles)
+    expect(GRAPH.stats.documentedMembers).toBe(docMembers)
+  })
+
   it('is sorted deterministically', () => {
     const areaIds = GRAPH.areas.map(a => a.id)
     expect(areaIds).toEqual([...areaIds].sort((a, b) => a.localeCompare(b)))
@@ -91,5 +101,19 @@ describe('buildGraph layout', () => {
     const a = buildGraph(GRAPH, opts)
     const b = buildGraph(GRAPH, opts)
     expect(JSON.stringify(a)).toBe(JSON.stringify(b))
+  })
+
+  it('auto layout repositions clusters but stays deterministic', () => {
+    const stacked = buildGraph(GRAPH, empty)
+    const a = buildGraph(GRAPH, { ...empty, autoLayout: true })
+    const b = buildGraph(GRAPH, { ...empty, autoLayout: true })
+    // Deterministic: identical inputs → identical positions.
+    expect(JSON.stringify(a.nodes.map(n => n.position))).toBe(JSON.stringify(b.nodes.map(n => n.position)))
+    // And it actually moves nodes off the default vertical stack.
+    const moved = a.nodes.some((n, i) => {
+      const s = stacked.nodes[i]
+      return n.position.x !== s.position.x || n.position.y !== s.position.y
+    })
+    expect(moved).toBe(true)
   })
 })

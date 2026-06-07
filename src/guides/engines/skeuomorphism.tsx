@@ -1,3 +1,5 @@
+// ABOUTME: skeuomorphism — part of the guides area.
+
 import { useState } from 'react'
 import { palette as skeuomorphism } from '../../../palettes/skeuomorphism'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -262,6 +264,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: skeuomorphismGuide — an exported value.
 export const skeuomorphismGuide: EngineGuideMeta = {
   engine: 'skeuomorphism',
   name: 'Skeuomorphism',

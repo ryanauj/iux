@@ -1,3 +1,5 @@
+// ABOUTME: Modal — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -12,10 +14,14 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Modal.css'
 
+// ABOUTME: ModalVariant — a type alias.
 export type ModalVariant = 'centered' | 'sectioned' | 'wizard' | 'routed'
+// ABOUTME: ModalSize — a type alias.
 export type ModalSize = 'sm' | 'md' | 'lg'
+// ABOUTME: ModalIntent — a type alias.
 export type ModalIntent = 'primary' | 'danger'
 
+// ABOUTME: ModalAction — an interface.
 export interface ModalAction {
   label: string
   onClick?: () => void
@@ -23,6 +29,7 @@ export interface ModalAction {
   disabled?: boolean
 }
 
+// ABOUTME: WizardStep — an interface.
 export interface WizardStep {
   id: string
   title: string
@@ -30,6 +37,7 @@ export interface WizardStep {
   canAdvance?: boolean
 }
 
+// ABOUTME: Props for Modal.
 export interface ModalProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ModalVariant
@@ -74,6 +82,7 @@ function getFocusable(root: HTMLElement | null): HTMLElement[] {
     .filter(el => !el.hasAttribute('hidden'))
 }
 
+// ABOUTME: Modal — a React component.
 export function Modal(props: ModalProps) {
   const {
     variant = 'centered',

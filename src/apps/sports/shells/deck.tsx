@@ -1,3 +1,5 @@
+// ABOUTME: DeckShell — a React component (apps).
+
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import { replaceParams, useHashLocation } from '../../router'
@@ -442,6 +444,7 @@ function DeckBreadcrumb({ stack, index }: { stack: Stack; index: number }) {
   )
 }
 
+// ABOUTME: DeckShell — a React component.
 export function DeckShell(props: ShellProps): ReactNode {
   const location = useHashLocation()
   const { stack, index } = useMemo(

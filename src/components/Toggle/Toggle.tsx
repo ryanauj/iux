@@ -1,3 +1,5 @@
+// ABOUTME: Toggle — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -11,14 +13,17 @@ import {
 } from 'react'
 import './Toggle.css'
 
+// ABOUTME: ToggleVariant — a type alias.
 export type ToggleVariant = 'switch' | 'saving' | 'segmented' | 'tristate'
 
+// ABOUTME: ToggleOption — an interface.
 export interface ToggleOption {
   value: string
   label: ReactNode
   disabled?: boolean
 }
 
+// ABOUTME: Props for Toggle.
 export interface ToggleProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ToggleVariant
@@ -56,6 +61,7 @@ const TRISTATE_OPTIONS: ToggleOption[] = [
   { value: 'on', label: 'On' },
 ]
 
+// ABOUTME: Toggle — an exported value.
 export const Toggle = forwardRef<HTMLElement, ToggleProps>(function Toggle(
   {
     variant = 'switch',

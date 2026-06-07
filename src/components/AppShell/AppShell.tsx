@@ -1,9 +1,12 @@
+// ABOUTME: AppShell — a React component (components).
+
 import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { AppShellNavId, AppShellNavLink } from './navLinks'
 import type { NavLayoutId } from './navLayouts'
 import './AppShell.css'
 
+// ABOUTME: Props for AppShell.
 export interface AppShellProps {
   layoutId: NavLayoutId
   /** Page title bar contents (title text, info button, eyebrow etc.). */
@@ -18,6 +21,7 @@ export interface AppShellProps {
   brandExtra?: ReactNode
 }
 
+// ABOUTME: AppShell — a React component.
 /**
  * Renders the page chrome (brand + cross-page nav + main content) in
  * one of ten configurable nav locations. The brand bar is always

@@ -1,3 +1,5 @@
+// ABOUTME: TextInput — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -13,15 +15,19 @@ import {
 } from 'react'
 import './TextInput.css'
 
+// ABOUTME: TextInputVariant — a type alias.
 export type TextInputVariant = 'bordered' | 'floating' | 'validate' | 'command'
 
+// ABOUTME: ValidationStatus — a type alias.
 export type ValidationStatus = 'success' | 'warning' | 'danger'
 
+// ABOUTME: ValidationResult — an interface.
 export interface ValidationResult {
   status: ValidationStatus
   message?: string
 }
 
+// ABOUTME: Props for TextInput.
 export interface TextInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   /** Functional axis. The same prop, never a forked component. */
@@ -47,6 +53,7 @@ export interface TextInputProps
   stateLock?: 'hover' | 'focus' | 'filled'
 }
 
+// ABOUTME: TextInput — an exported value.
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInput(
   {
     variant = 'bordered',

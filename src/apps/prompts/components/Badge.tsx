@@ -1,5 +1,8 @@
+// ABOUTME: Badge — a React component (apps).
+
 import type { ReactNode } from 'react'
 
+// ABOUTME: BadgeTone — a type alias.
 export type BadgeTone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
 interface BadgeProps {
@@ -10,6 +13,7 @@ interface BadgeProps {
   className?: string
 }
 
+// ABOUTME: Badge — a React component.
 /** A small inline pill, toned via the contract intents. */
 export function Badge({ children, tone = 'neutral', outline = false, className }: BadgeProps) {
   const classes = [

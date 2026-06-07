@@ -1,11 +1,16 @@
+// ABOUTME: Funnel — a React component (components).
+
 import { useMemo } from 'react'
 import './Funnel.css'
 
+// ABOUTME: FunnelVariant — a type alias.
 export type FunnelVariant = 'stages' | 'dropoff' | 'mirrored'
 
+// ABOUTME: FunnelIntent — a type alias.
 export type FunnelIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: FunnelStage — an interface.
 export interface FunnelStage {
   key: string
   label: string
@@ -13,6 +18,7 @@ export interface FunnelStage {
   intent?: FunnelIntent
 }
 
+// ABOUTME: Props for Funnel.
 export interface FunnelProps {
   variant?: FunnelVariant
   stages: FunnelStage[]
@@ -35,6 +41,7 @@ function defaultFormat(n: number): string {
   return n.toString()
 }
 
+// ABOUTME: Funnel — a React component.
 export function Funnel({
   variant = 'stages',
   stages,

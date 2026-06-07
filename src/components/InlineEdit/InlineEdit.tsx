@@ -1,3 +1,5 @@
+// ABOUTME: InlineEdit — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -8,15 +10,19 @@ import {
 } from 'react'
 import './InlineEdit.css'
 
+// ABOUTME: InlineEditVariant — a type alias.
 export type InlineEditVariant = 'click' | 'validated' | 'autosave' | 'history'
 
+// ABOUTME: SaveStatus — a type alias.
 export type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error'
 
+// ABOUTME: HistoryEntry — an interface.
 export interface HistoryEntry {
   at: number
   value: string
 }
 
+// ABOUTME: Props for InlineEdit.
 export interface InlineEditProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: InlineEditVariant
@@ -40,6 +46,7 @@ export interface InlineEditProps {
   defaultEditing?: boolean
 }
 
+// ABOUTME: InlineEdit — a React component.
 export function InlineEdit({
   variant = 'click',
   value,

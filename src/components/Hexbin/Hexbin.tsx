@@ -1,13 +1,18 @@
+// ABOUTME: Hexbin — a React component (components).
+
 import { useMemo } from 'react'
 import './Hexbin.css'
 
+// ABOUTME: HexbinVariant — a type alias.
 export type HexbinVariant = 'density' | 'count' | 'sized'
 
+// ABOUTME: HexbinPoint — an interface.
 export interface HexbinPoint {
   x: number
   y: number
 }
 
+// ABOUTME: Props for Hexbin.
 export interface HexbinProps {
   variant?: HexbinVariant
   points: HexbinPoint[]
@@ -50,6 +55,7 @@ function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
+// ABOUTME: Hexbin — a React component.
 export function Hexbin({
   variant = 'density',
   points,

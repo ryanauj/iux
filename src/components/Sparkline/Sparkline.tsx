@@ -1,8 +1,12 @@
+// ABOUTME: Sparkline — a React component (components).
+
 import { useMemo } from 'react'
 import './Sparkline.css'
 
+// ABOUTME: SparklineVariant — a type alias.
 export type SparklineVariant = 'glyph' | 'labeled' | 'delta' | 'targeted'
 
+// ABOUTME: Props for Sparkline.
 export interface SparklineProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SparklineVariant
@@ -34,6 +38,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Sparkline — a React component.
 export function Sparkline({
   variant = 'glyph',
   values,

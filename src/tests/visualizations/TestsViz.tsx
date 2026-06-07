@@ -1,3 +1,5 @@
+// ABOUTME: TestsViz — a React component (tests).
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Segmented } from '../../components/Segmented/Segmented'
 import { INTEGRATION_TESTS } from '../registry'
@@ -20,6 +22,7 @@ interface Override {
   delayMs?: number
 }
 
+// ABOUTME: TestsViz — a React component.
 export function TestsViz({ results, runningId, runFor }: Props) {
   const [density, setDensity] = useState<Density>('storyboard')
   const [globalStepped, setGlobalStepped] = useState(false)

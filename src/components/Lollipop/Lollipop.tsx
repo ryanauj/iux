@@ -1,11 +1,16 @@
+// ABOUTME: Lollipop — a React component (components).
+
 import { useMemo } from 'react'
 import './Lollipop.css'
 
+// ABOUTME: LollipopVariant — a type alias.
 export type LollipopVariant = 'sticks' | 'ranked' | 'paired'
 
+// ABOUTME: LollipopIntent — a type alias.
 export type LollipopIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: LollipopDatum — an interface.
 export interface LollipopDatum {
   key: string
   label: string
@@ -15,6 +20,7 @@ export interface LollipopDatum {
   intent?: LollipopIntent
 }
 
+// ABOUTME: Props for Lollipop.
 export interface LollipopProps {
   variant?: LollipopVariant
   data: LollipopDatum[]
@@ -36,6 +42,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Lollipop — a React component.
 export function Lollipop({
   variant = 'sticks',
   data,

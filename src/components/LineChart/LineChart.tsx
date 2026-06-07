@@ -1,16 +1,22 @@
+// ABOUTME: LineChart — a React component (components).
+
 import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import './LineChart.css'
 
+// ABOUTME: LineChartVariant — a type alias.
 export type LineChartVariant = 'static' | 'hover' | 'multiples' | 'annotated'
 
+// ABOUTME: SeriesIntent — a type alias.
 export type SeriesIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: LinePoint — an interface.
 export interface LinePoint {
   t: number
   y: number
 }
 
+// ABOUTME: LineSeries — an interface.
 export interface LineSeries {
   id: string
   label: string
@@ -18,12 +24,14 @@ export interface LineSeries {
   intent?: SeriesIntent
 }
 
+// ABOUTME: LineAnnotation — an interface.
 export interface LineAnnotation {
   t: number
   label: string
   intent?: SeriesIntent
 }
 
+// ABOUTME: Props for LineChart.
 export interface LineChartProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: LineChartVariant
@@ -111,6 +119,7 @@ function buildScales(
   return { xDomain, yDomain, xs, ys }
 }
 
+// ABOUTME: LineChart — a React component.
 export function LineChart({
   variant = 'static',
   series,

@@ -1,17 +1,23 @@
+// ABOUTME: ObservedPredicted — a React component (components).
+
 import { useMemo } from 'react'
 import './ObservedPredicted.css'
 
+// ABOUTME: ObservedPredictedVariant — a type alias.
 export type ObservedPredictedVariant = 'identity' | 'metric' | 'errors'
 
+// ABOUTME: ObservedPredictedIntent — a type alias.
 export type ObservedPredictedIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ObservedPredictedPoint — an interface.
 export interface ObservedPredictedPoint {
   predicted: number
   observed: number
   label?: string
 }
 
+// ABOUTME: Props for ObservedPredicted.
 export interface ObservedPredictedProps {
   variant?: ObservedPredictedVariant
   points: ObservedPredictedPoint[]
@@ -36,6 +42,7 @@ function num(n: number): string {
   return n.toFixed(2)
 }
 
+// ABOUTME: ObservedPredicted — a React component.
 export function ObservedPredicted({
   variant = 'identity',
   points,

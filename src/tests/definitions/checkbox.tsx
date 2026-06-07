@@ -1,3 +1,5 @@
+// ABOUTME: checkbox — part of the tests area.
+
 import { useState } from 'react'
 import { Checkbox } from '../../components/Checkbox/Checkbox'
 import type { IntegrationTest } from '../types'
@@ -69,6 +71,7 @@ function GroupComposition() {
   )
 }
 
+// ABOUTME: checkboxTests — an exported value.
 export const checkboxTests: IntegrationTest[] = [
   {
     id: 'checkbox-rung-1-single',

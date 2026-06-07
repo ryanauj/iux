@@ -1,3 +1,5 @@
+// ABOUTME: Barrel entry for the guides module.
+
 import { Link } from 'react-router-dom'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, useSelectedStyle } from '../../lib/persistedStyle'
@@ -37,6 +39,7 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'terminal-tui', name: 'Terminal / TUI', available: true },
 ]
 
+// ABOUTME: EnginesIndex — a React component.
 export function EnginesIndex() {
   const [navLayout, setNavLayout] = useNavLayout()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

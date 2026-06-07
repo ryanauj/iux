@@ -1,6 +1,9 @@
+// ABOUTME: Barrel entry for the stories module.
+
 import { COMPONENTS } from '../showcase/components'
 import { ShowcasePage } from '../showcase/ShowcasePage'
 
+// ABOUTME: Stories — a React component.
 export function Stories() {
   return (
     <ShowcasePage

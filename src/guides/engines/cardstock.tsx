@@ -1,3 +1,5 @@
+// ABOUTME: cardstock — part of the guides area.
+
 import { useState } from 'react'
 import { palette as cardstockLayered } from '../../../palettes/cardstock-layered'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -230,6 +232,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: cardstockGuide — an exported value.
 export const cardstockGuide: EngineGuideMeta = {
   engine: 'cardstock',
   name: 'Cardstock',

@@ -1,3 +1,5 @@
+// ABOUTME: TokenField — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -11,8 +13,10 @@ import {
 } from 'react'
 import './TokenField.css'
 
+// ABOUTME: TokenFieldVariant — a type alias.
 export type TokenFieldVariant = 'split' | 'typeahead' | 'grouped' | 'structured'
 
+// ABOUTME: TokenOption — an interface.
 export interface TokenOption {
   value: string
   label: string
@@ -21,6 +25,7 @@ export interface TokenOption {
   meta?: Record<string, string>
 }
 
+// ABOUTME: Token — an interface.
 export interface Token {
   value: string
   label: string
@@ -28,6 +33,7 @@ export interface Token {
   meta?: Record<string, string>
 }
 
+// ABOUTME: Props for TokenField.
 export interface TokenFieldProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TokenFieldVariant
@@ -63,6 +69,7 @@ function uniqByValue(tokens: Token[]): Token[] {
   return out
 }
 
+// ABOUTME: TokenField — a React component.
 export function TokenField({
   variant = 'split',
   value,

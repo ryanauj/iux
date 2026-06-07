@@ -1,3 +1,5 @@
+// ABOUTME: TeamSheet — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { Bar } from '../../../components/Bar/Bar'
@@ -43,6 +45,7 @@ const columns: TableColumn<RosterSpot>[] = [
   },
 ]
 
+// ABOUTME: TeamSheet — a React component.
 export function TeamSheet() {
   const total = rosterTotal()
   const { total: tax, overage } = computeTax(total, 'standard')

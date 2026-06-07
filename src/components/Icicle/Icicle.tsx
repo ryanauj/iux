@@ -1,11 +1,16 @@
+// ABOUTME: Icicle — a React component (components).
+
 import { useMemo } from 'react'
 import './Icicle.css'
 
+// ABOUTME: IcicleVariant — a type alias.
 export type IcicleVariant = 'down' | 'right' | 'flame'
 
+// ABOUTME: IcicleIntent — a type alias.
 export type IcicleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: IcicleNode — an interface.
 export interface IcicleNode {
   id: string
   label: string
@@ -14,6 +19,7 @@ export interface IcicleNode {
   children?: IcicleNode[]
 }
 
+// ABOUTME: Props for Icicle.
 export interface IcicleProps {
   variant?: IcicleVariant
   root: IcicleNode
@@ -45,6 +51,7 @@ function maxDepth(n: IcicleNode): number {
   return 1 + Math.max(...n.children.map(maxDepth))
 }
 
+// ABOUTME: Icicle — a React component.
 export function Icicle({
   variant = 'down',
   root,

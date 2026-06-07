@@ -1,3 +1,5 @@
+// ABOUTME: Pagination — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -6,8 +8,10 @@ import {
 } from 'react'
 import './Pagination.css'
 
+// ABOUTME: PaginationVariant — a type alias.
 export type PaginationVariant = 'numbered' | 'rich' | 'load-more' | 'infinite'
 
+// ABOUTME: Props for Pagination.
 export interface PaginationProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PaginationVariant
@@ -47,6 +51,7 @@ function pageList(page: number, total: number): (number | 'gap')[] {
   return pages
 }
 
+// ABOUTME: Pagination — a React component.
 export function Pagination({
   variant = 'numbered',
   page = 1,

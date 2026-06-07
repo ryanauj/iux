@@ -1,3 +1,5 @@
+// ABOUTME: button — part of the tests area.
+
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
 import type { IntegrationTest } from '../types'
@@ -48,6 +50,7 @@ function IntentComposition() {
   )
 }
 
+// ABOUTME: buttonTests — an exported value.
 export const buttonTests: IntegrationTest[] = [
   {
     id: 'button-rung-1-click',

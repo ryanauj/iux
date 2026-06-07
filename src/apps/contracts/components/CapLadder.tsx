@@ -1,3 +1,5 @@
+// ABOUTME: CapLadder — a React component (apps).
+
 import { THRESHOLDS, SEASON } from '../data/cap'
 import { money } from '../format'
 import type { CapThreshold } from '../types'
@@ -17,6 +19,7 @@ interface CapLadderProps {
   className?: string
 }
 
+// ABOUTME: CapLadder — a React component.
 /**
  * The signature visual: the cap "ladder". Each threshold is a rung whose
  * vertical position is proportional to its dollar amount, so the spacing

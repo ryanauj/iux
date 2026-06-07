@@ -1,8 +1,12 @@
+// ABOUTME: Presence — a React component (components).
+
 import { useEffect, type CSSProperties } from 'react'
 import './Presence.css'
 
+// ABOUTME: PresenceVariant — a type alias.
 export type PresenceVariant = 'avatars' | 'cursors' | 'selections' | 'chat'
 
+// ABOUTME: PresenceUser — an interface.
 export interface PresenceUser {
   id: string
   name: string
@@ -16,6 +20,7 @@ export interface PresenceUser {
   chat?: { text: string; expiresAt: number }
 }
 
+// ABOUTME: Props for Presence.
 export interface PresenceProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PresenceVariant
@@ -35,6 +40,7 @@ function initials(name: string): string {
   return name.split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase()
 }
 
+// ABOUTME: Presence — a React component.
 export function Presence({
   variant = 'avatars',
   users,

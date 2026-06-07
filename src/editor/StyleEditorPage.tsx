@@ -1,3 +1,5 @@
+// ABOUTME: StyleEditorPage — a React component (editor).
+
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
@@ -84,6 +86,7 @@ function deriveInitial(
   return { base, name: `${palettes[base].name} copy`, overrides: {}, editingId: null }
 }
 
+// ABOUTME: StyleEditorPage — a React component.
 export function StyleEditorPage() {
   const location = useHashLocation()
   const editParam = location.params.get('edit')

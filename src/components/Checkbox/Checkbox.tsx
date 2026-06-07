@@ -1,3 +1,5 @@
+// ABOUTME: Checkbox — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -13,10 +15,13 @@ import {
 } from 'react'
 import './Checkbox.css'
 
+// ABOUTME: CheckboxVariant — a type alias.
 export type CheckboxVariant = 'single' | 'detailed' | 'tree' | 'group'
 
+// ABOUTME: CheckboxState — a type alias.
 export type CheckboxState = boolean | 'indeterminate'
 
+// ABOUTME: CheckboxOption — an interface.
 export interface CheckboxOption {
   value: string
   label: ReactNode
@@ -24,6 +29,7 @@ export interface CheckboxOption {
   disabled?: boolean
 }
 
+// ABOUTME: CheckboxTreeNode — an interface.
 export interface CheckboxTreeNode {
   id: string
   label: ReactNode
@@ -31,6 +37,7 @@ export interface CheckboxTreeNode {
   children?: CheckboxTreeNode[]
 }
 
+// ABOUTME: Props for Checkbox.
 export interface CheckboxProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CheckboxVariant
@@ -98,6 +105,7 @@ function toggleNode(node: CheckboxTreeNode, leafSet: Set<string>): Set<string> {
   return next
 }
 
+// ABOUTME: Checkbox — an exported value.
 // ---------- Component ----------
 
 export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Checkbox(

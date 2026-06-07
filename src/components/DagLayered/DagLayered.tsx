@@ -1,17 +1,23 @@
+// ABOUTME: DagLayered — a React component (components).
+
 import { useMemo } from 'react'
 import './DagLayered.css'
 
+// ABOUTME: DagLayeredVariant — a type alias.
 export type DagLayeredVariant = 'vertical' | 'horizontal' | 'highlighted'
 
+// ABOUTME: DagLayeredIntent — a type alias.
 export type DagLayeredIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: DagNode — an interface.
 export interface DagNode {
   id: string
   label: string
   intent?: DagLayeredIntent
 }
 
+// ABOUTME: DagEdge — an interface.
 export interface DagEdge {
   from: string
   to: string
@@ -19,6 +25,7 @@ export interface DagEdge {
   highlight?: boolean
 }
 
+// ABOUTME: Props for DagLayered.
 export interface DagLayeredProps {
   variant?: DagLayeredVariant
   nodes: DagNode[]
@@ -111,6 +118,7 @@ function orderWithinLayers(
   return layers
 }
 
+// ABOUTME: DagLayered — a React component.
 export function DagLayered({
   variant = 'vertical',
   nodes,

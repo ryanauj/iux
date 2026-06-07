@@ -1,3 +1,5 @@
+// ABOUTME: paletteTags — part of the lib area.
+
 import { useMemo } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
 import { paletteTags } from '../../palettes/tags'
@@ -23,6 +25,7 @@ const INFERRED_PREFIXES = ['pixel-art', 'cel-shaded', 'crt-phosphor', 'liquid-gl
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 const PALETTE_ID_SET = new Set<string>(PALETTE_IDS)
 
+// ABOUTME: isPaletteId — a helper function.
 export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
@@ -47,6 +50,7 @@ function tokenizeAliases(aliases: readonly string[] | undefined): string[] {
 
 const tagCache = new Map<PaletteId, string[]>()
 
+// ABOUTME: getPaletteTags — a helper function.
 export function getPaletteTags(id: PaletteId): string[] {
   const cached = tagCache.get(id)
   if (cached) return cached
@@ -63,6 +67,7 @@ export function getPaletteTags(id: PaletteId): string[] {
   return list
 }
 
+// ABOUTME: tagToPaletteIds — an exported value.
 /**
  * Map from tag → palette ids that carry it. Built once at module load
  * since the palette registry is static. Used by both the active-group
@@ -83,8 +88,10 @@ export const tagToPaletteIds: Map<string, PaletteId[]> = (() => {
   return map
 })()
 
+// ABOUTME: allTags — an exported value.
 export const allTags: string[] = Array.from(tagToPaletteIds.keys()).sort()
 
+// ABOUTME: searchPalettes — a helper function.
 /* ──────────────────────────── search ──────────────────────────── */
 
 /**
@@ -112,13 +119,18 @@ export function searchPalettes(query: string): PaletteId[] {
   return scored.map(s => s.id)
 }
 
+// ABOUTME: PINNED_GROUPS_KEY — an exported value.
 /* ─────────────────────────── persistence ─────────────────────────── */
 
 export const PINNED_GROUPS_KEY = 'iux-palette-pinned-groups'
+// ABOUTME: ACTIVE_GROUP_KEY — an exported value.
 export const ACTIVE_GROUP_KEY = 'iux-palette-active-group'
+// ABOUTME: CUSTOM_GROUPS_KEY — an exported value.
 export const CUSTOM_GROUPS_KEY = 'iux-palette-custom-groups'
+// ABOUTME: PINNING_MODE_KEY — an exported value.
 export const PINNING_MODE_KEY = 'iux-palette-pinning-mode'
 
+// ABOUTME: PinningMode — a type alias.
 export type PinningMode = 'pinned' | 'active' | 'both'
 
 const isPinningMode = (raw: string): raw is PinningMode =>
@@ -150,14 +162,17 @@ const isCustomGroups = (parsed: unknown): parsed is Record<string, StyleId[]> =>
 const isActiveGroupValue = (parsed: unknown): parsed is string | null =>
   parsed === null || typeof parsed === 'string'
 
+// ABOUTME: usePinnedGroups — a React hook.
 export function usePinnedGroups() {
   return usePersistedJSON<string[]>(PINNED_GROUPS_KEY, [], isStringArray)
 }
 
+// ABOUTME: useActiveGroup — a React hook.
 export function useActiveGroup() {
   return usePersistedJSON<string | null>(ACTIVE_GROUP_KEY, null, isActiveGroupValue)
 }
 
+// ABOUTME: useCustomGroups — a React hook.
 export function useCustomGroups() {
   return usePersistedJSON<Record<string, StyleId[]>>(
     CUSTOM_GROUPS_KEY,
@@ -166,10 +181,12 @@ export function useCustomGroups() {
   )
 }
 
+// ABOUTME: usePinningMode — a React hook.
 export function usePinningMode() {
   return usePersistedPref<PinningMode>(PINNING_MODE_KEY, 'both', isPinningMode)
 }
 
+// ABOUTME: resolveGroupMembers — a helper function.
 /**
  * Resolve a group name to its palette-id members. Custom (user-edited)
  * groups win over identically-named defaults so an override fully
@@ -183,6 +200,7 @@ export function resolveGroupMembers(
   return groups[name] ?? []
 }
 
+// ABOUTME: useGroups — a React hook.
 /* ───────────────────────── group helpers ───────────────────────── */
 
 /**
@@ -277,6 +295,7 @@ export function useGroups(): [Record<string, StyleId[]>, GroupsApi] {
   return [merged, api]
 }
 
+// ABOUTME: GroupsApi — an interface.
 export interface GroupsApi {
   toggleMembership(name: string, id: StyleId): void
   toggleFavorite(id: StyleId): void
@@ -287,6 +306,7 @@ export interface GroupsApi {
   resetDefaults(): void
 }
 
+// ABOUTME: isDefaultGroup — a helper function.
 export function isDefaultGroup(name: string): boolean {
   return DEFAULT_GROUP_NAMES.has(name)
 }
@@ -299,6 +319,7 @@ function sameIds(a: readonly StyleId[], b: readonly StyleId[]): boolean {
 
 export { FAVORITES_GROUP }
 
+// ABOUTME: cycleInGroup — a helper function.
 /**
  * Cycle within a group, wrapping at both ends. If the current palette
  * isn't in the group, arrow-right jumps to the first member and

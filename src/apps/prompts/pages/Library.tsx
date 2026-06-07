@@ -1,3 +1,5 @@
+// ABOUTME: Library — a React component (apps).
+
 import { useMemo, useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
 import { Select } from '../../../components/Select/Select'
@@ -20,6 +22,7 @@ const SORT_OPTIONS = [
   { value: 'favorites', label: 'Favorites first' },
 ]
 
+// ABOUTME: Library — a React component.
 export function Library() {
   const { prompts } = usePromptStore()
   const [query, setQuery] = useState('')

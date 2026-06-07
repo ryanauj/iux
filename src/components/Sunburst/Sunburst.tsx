@@ -1,11 +1,16 @@
+// ABOUTME: Sunburst — a React component (components).
+
 import { useMemo } from 'react'
 import './Sunburst.css'
 
+// ABOUTME: SunburstVariant — a type alias.
 export type SunburstVariant = 'flat' | 'nested' | 'labeled'
 
+// ABOUTME: SunburstIntent — a type alias.
 export type SunburstIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: SunburstNode — an interface.
 export interface SunburstNode {
   id: string
   label: string
@@ -14,6 +19,7 @@ export interface SunburstNode {
   children?: SunburstNode[]
 }
 
+// ABOUTME: Props for Sunburst.
 export interface SunburstProps {
   variant?: SunburstVariant
   root: SunburstNode
@@ -59,6 +65,7 @@ function ringPath(cx: number, cy: number, rIn: number, rOut: number, a0: number,
   return `M ${p0.x} ${p0.y} A ${rOut} ${rOut} 0 ${large} 1 ${p1.x} ${p1.y} L ${p2.x} ${p2.y} A ${rIn} ${rIn} 0 ${large} 0 ${p3.x} ${p3.y} Z`
 }
 
+// ABOUTME: Sunburst — a React component.
 export function Sunburst({
   variant = 'flat',
   root,

@@ -1,3 +1,5 @@
+// ABOUTME: sketch — part of the guides area.
+
 import { useState } from 'react'
 import { palette as sketchMarker } from '../../../palettes/sketch-marker'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -209,6 +211,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: sketchGuide — an exported value.
 export const sketchGuide: EngineGuideMeta = {
   engine: 'sketch',
   name: 'Sketch',

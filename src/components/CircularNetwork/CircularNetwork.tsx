@@ -1,11 +1,16 @@
+// ABOUTME: CircularNetwork — a React component (components).
+
 import { useMemo } from 'react'
 import './CircularNetwork.css'
 
+// ABOUTME: CircularNetworkVariant — a type alias.
 export type CircularNetworkVariant = 'simple' | 'weighted' | 'directed'
 
+// ABOUTME: CircularNetworkIntent — a type alias.
 export type CircularNetworkIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: CircularNode — an interface.
 export interface CircularNode {
   id: string
   label: string
@@ -14,12 +19,14 @@ export interface CircularNode {
   weight?: number
 }
 
+// ABOUTME: CircularEdge — an interface.
 export interface CircularEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for CircularNetwork.
 export interface CircularNetworkProps {
   variant?: CircularNetworkVariant
   nodes: CircularNode[]
@@ -31,6 +38,7 @@ export interface CircularNetworkProps {
 
 const INTENTS: CircularNetworkIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: CircularNetwork — a React component.
 export function CircularNetwork({
   variant = 'simple',
   nodes,

@@ -1,11 +1,16 @@
+// ABOUTME: CirclePack — a React component (components).
+
 import { useMemo } from 'react'
 import './CirclePack.css'
 
+// ABOUTME: CirclePackVariant — a type alias.
 export type CirclePackVariant = 'flat' | 'nested' | 'labeled'
 
+// ABOUTME: CirclePackIntent — a type alias.
 export type CirclePackIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: CirclePackNode — an interface.
 export interface CirclePackNode {
   id: string
   label: string
@@ -14,6 +19,7 @@ export interface CirclePackNode {
   children?: CirclePackNode[]
 }
 
+// ABOUTME: Props for CirclePack.
 export interface CirclePackProps {
   variant?: CirclePackVariant
   root: CirclePackNode
@@ -144,6 +150,7 @@ function packTree(root: CirclePackNode, cx: number, cy: number, R: number): Plac
   return out
 }
 
+// ABOUTME: CirclePack — a React component.
 export function CirclePack({
   variant = 'flat',
   root,

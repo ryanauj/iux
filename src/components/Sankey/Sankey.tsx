@@ -1,11 +1,16 @@
+// ABOUTME: Sankey — a React component (components).
+
 import { useMemo } from 'react'
 import './Sankey.css'
 
+// ABOUTME: SankeyVariant — a type alias.
 export type SankeyVariant = 'simple' | 'labeled' | 'highlighted'
 
+// ABOUTME: SankeyIntent — a type alias.
 export type SankeyIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: SankeyNode — an interface.
 export interface SankeyNode {
   key: string
   label: string
@@ -14,6 +19,7 @@ export interface SankeyNode {
   intent?: SankeyIntent
 }
 
+// ABOUTME: SankeyLink — an interface.
 export interface SankeyLink {
   from: string
   to: string
@@ -22,6 +28,7 @@ export interface SankeyLink {
   highlight?: boolean
 }
 
+// ABOUTME: Props for Sankey.
 export interface SankeyProps {
   variant?: SankeyVariant
   nodes: SankeyNode[]
@@ -53,6 +60,7 @@ function curvedLink(x0: number, y0: number, x1: number, y1: number, thickness: n
           C ${mx} ${y1 + half}, ${mx} ${y0 + half}, ${x0} ${y0 + half} Z`
 }
 
+// ABOUTME: Sankey — a React component.
 export function Sankey({
   variant = 'simple',
   nodes,

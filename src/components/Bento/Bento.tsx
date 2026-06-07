@@ -1,3 +1,5 @@
+// ABOUTME: Bento — a React component (components).
+
 import {
   useMemo,
   useRef,
@@ -7,8 +9,10 @@ import {
 } from 'react'
 import './Bento.css'
 
+// ABOUTME: BentoVariant — a type alias.
 export type BentoVariant = 'static' | 'reflow' | 'drag' | 'resize'
 
+// ABOUTME: BentoCell — an interface.
 export interface BentoCell {
   id: string
   title?: ReactNode
@@ -23,6 +27,7 @@ export interface BentoCell {
   legibleSizes?: Array<{ cols: number; rows: number }>
 }
 
+// ABOUTME: Props for Bento.
 export interface BentoProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: BentoVariant
@@ -38,6 +43,7 @@ function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, n))
 }
 
+// ABOUTME: Bento — a React component.
 export function Bento({
   variant = 'static',
   cells,

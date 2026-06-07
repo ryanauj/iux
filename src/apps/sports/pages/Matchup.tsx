@@ -1,3 +1,5 @@
+// ABOUTME: Matchup — a React component (apps).
+
 import { useState, type ReactNode } from 'react'
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Select } from '../../../components/Select/Select'
@@ -39,6 +41,7 @@ function maxAbsRate(rates: Record<StatKey, number>): number {
   return Math.max(0.01, ...STAT_DEFS.map(d => Math.abs(rates[d.key])))
 }
 
+// ABOUTME: Matchup — a React component.
 export function Matchup({ aSlug, bSlug }: MatchupProps) {
   const teamA = getTeamBySlug(aSlug ?? '') ?? getTeamBySlug(DEFAULT_A) ?? TEAMS[0]
   let teamB = getTeamBySlug(bSlug ?? '') ?? getTeamBySlug(DEFAULT_B) ?? TEAMS[1]

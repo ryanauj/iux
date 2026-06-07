@@ -1,11 +1,16 @@
+// ABOUTME: Violin — a React component (components).
+
 import { useMemo } from 'react'
 import './Violin.css'
 
+// ABOUTME: ViolinVariant — a type alias.
 export type ViolinVariant = 'simple' | 'withBox' | 'split'
 
+// ABOUTME: ViolinIntent — a type alias.
 export type ViolinIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ViolinSeries — an interface.
 export interface ViolinSeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface ViolinSeries {
   intent?: ViolinIntent
 }
 
+// ABOUTME: Props for Violin.
 export interface ViolinProps {
   variant?: ViolinVariant
   series: ViolinSeries[]
@@ -69,6 +75,7 @@ function kde(values: number[], yDom: [number, number], bins: number): Density[] 
   return out
 }
 
+// ABOUTME: Violin — a React component.
 export function Violin({
   variant = 'simple',
   series,

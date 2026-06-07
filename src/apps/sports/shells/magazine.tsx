@@ -1,3 +1,5 @@
+// ABOUTME: MagazineShell — a React component (apps).
+
 import { useCallback, useMemo, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import {
@@ -323,6 +325,7 @@ function SectionNav({ sections }: { sections: Section[] }) {
   )
 }
 
+// ABOUTME: MagazineShell — a React component.
 export function MagazineShell(props: ShellProps): ReactNode {
   const isHome = props.route.kind === 'home'
   const cover = useMemo(() => gameOfTheNight(), [])

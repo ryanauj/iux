@@ -1,3 +1,5 @@
+// ABOUTME: MaxDeals — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Lollipop } from '../../../components/Lollipop/Lollipop'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
@@ -5,6 +7,7 @@ import { contractsRoutes } from '../routes'
 import { MAX_TIERS, SUPERMAX_NOTE, SEASON } from '../data/cap'
 import { money, pct } from '../format'
 
+// ABOUTME: MaxDeals — a React component.
 export function MaxDeals() {
   return (
     <article className="cap-page">

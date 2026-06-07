@@ -1,3 +1,5 @@
+// ABOUTME: Exceptions — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
@@ -97,6 +99,7 @@ const CORE = [
   },
 ]
 
+// ABOUTME: Exceptions — a React component.
 export function Exceptions() {
   return (
     <article className="cap-page">

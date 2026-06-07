@@ -1,3 +1,5 @@
+// ABOUTME: Top-level router — maps every hash/route to its page surface.
+
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { Stories } from './stories'
 import { Viz } from './stories/viz'
@@ -54,6 +56,7 @@ function EngineGuideRoute() {
   return <EngineGuide guide={guide} />
 }
 
+// ABOUTME: The application root: wires routes to their page components.
 export default function App() {
   useSharedPatternHydration()
   return (

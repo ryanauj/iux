@@ -1,3 +1,5 @@
+// ABOUTME: Sidebar — a React component (components).
+
 import {
   useCallback,
   useMemo,
@@ -8,8 +10,10 @@ import {
 } from 'react'
 import './Sidebar.css'
 
+// ABOUTME: SidebarVariant — a type alias.
 export type SidebarVariant = 'links' | 'groups' | 'rail' | 'search'
 
+// ABOUTME: SidebarItem — an interface.
 export interface SidebarItem {
   id: string
   label: string
@@ -23,6 +27,7 @@ export interface SidebarItem {
   keywords?: string[]
 }
 
+// ABOUTME: SidebarGroup — an interface.
 export interface SidebarGroup {
   id: string
   label: string
@@ -31,6 +36,7 @@ export interface SidebarGroup {
   defaultCollapsed?: boolean
 }
 
+// ABOUTME: Props for Sidebar.
 export interface SidebarProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SidebarVariant
@@ -55,6 +61,7 @@ export interface SidebarProps {
   ariaLabel?: string
 }
 
+// ABOUTME: Sidebar — a React component.
 export function Sidebar({
   variant = 'links',
   items,

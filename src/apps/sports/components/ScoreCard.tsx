@@ -1,3 +1,5 @@
+// ABOUTME: ScoreCard — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
@@ -11,6 +13,7 @@ interface ScoreCardProps {
   highlightStatus?: boolean
 }
 
+// ABOUTME: ScoreCard — a React component.
 /**
  * Compact score / matchup card linking through to the game detail.
  * Renders three layouts depending on `game.status`.

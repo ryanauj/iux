@@ -1,3 +1,5 @@
+// ABOUTME: modal-with-form — part of the tests area.
+
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
 import { Modal } from '../../components/Modal/Modal'
@@ -45,6 +47,7 @@ function ModalWithFormComposition() {
   )
 }
 
+// ABOUTME: modalWithForm — an exported value.
 export const modalWithForm: IntegrationTest = {
   id: 'modal-with-form',
   name: 'Modal-with-form submission closes dialog and toasts',

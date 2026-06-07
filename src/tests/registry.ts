@@ -1,3 +1,5 @@
+// ABOUTME: registry — part of the tests area.
+
 import { commandPaletteFilter } from './definitions/command-palette'
 import { formSubmitToast } from './definitions/form-submit-toast'
 import { modalWithForm } from './definitions/modal-with-form'
@@ -14,6 +16,7 @@ import { paginationTests } from './definitions/pagination'
 import { emptyStateTests } from './definitions/empty-state'
 import type { IntegrationTest } from './types'
 
+// ABOUTME: INTEGRATION_TESTS — an exported value.
 export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
   // Composition tests (multi-component flows)
   formSubmitToast,
@@ -33,10 +36,12 @@ export const INTEGRATION_TESTS: readonly IntegrationTest[] = [
   ...emptyStateTests,
 ]
 
+// ABOUTME: findTest — a helper function.
 export function findTest(id: string): IntegrationTest | undefined {
   return INTEGRATION_TESTS.find(t => t.id === id)
 }
 
+// ABOUTME: involvedComponentIds — a helper function.
 /** All component ids referenced by at least one test, in stable order. */
 export function involvedComponentIds(): string[] {
   const seen = new Set<string>()

@@ -1,3 +1,5 @@
+// ABOUTME: ChatShell — a React component (apps).
+
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import {
@@ -502,6 +504,7 @@ function ChatNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] })
   )
 }
 
+// ABOUTME: ChatShell — a React component.
 export function ChatShell(props: ShellProps): ReactNode {
   const isHome = props.route.kind === 'home'
   return (

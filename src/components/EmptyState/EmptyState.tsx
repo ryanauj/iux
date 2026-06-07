@@ -1,8 +1,12 @@
+// ABOUTME: EmptyState — a React component (components).
+
 import { useState, type ReactNode } from 'react'
 import './EmptyState.css'
 
+// ABOUTME: EmptyStateVariant — a type alias.
 export type EmptyStateVariant = 'minimal' | 'illustrated' | 'checklist' | 'generative'
 
+// ABOUTME: ChecklistStep — an interface.
 export interface ChecklistStep {
   id: string
   label: ReactNode
@@ -12,6 +16,7 @@ export interface ChecklistStep {
   actionLabel?: string
 }
 
+// ABOUTME: GenerativeField — an interface.
 export interface GenerativeField {
   key: string
   label: string
@@ -19,6 +24,7 @@ export interface GenerativeField {
   defaultValue?: string
 }
 
+// ABOUTME: Props for EmptyState.
 export interface EmptyStateProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: EmptyStateVariant
@@ -38,6 +44,7 @@ export interface EmptyStateProps {
   className?: string
 }
 
+// ABOUTME: EmptyState — a React component.
 export function EmptyState({
   variant = 'minimal',
   title,

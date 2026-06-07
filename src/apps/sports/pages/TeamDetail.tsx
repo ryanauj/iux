@@ -1,3 +1,5 @@
+// ABOUTME: TeamDetail — a React component (apps).
+
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { Link } from '../../Link'
@@ -17,6 +19,7 @@ interface TeamDetailProps {
   slug: string
 }
 
+// ABOUTME: TeamDetail — a React component.
 export function TeamDetail({ slug }: TeamDetailProps) {
   const team = getTeamBySlug(slug)
   if (!team) return <NotFound message={`No team with slug "${slug}".`} />

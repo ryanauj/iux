@@ -1,8 +1,11 @@
+// ABOUTME: Best-effort clipboard write.
+
 /**
  * Best-effort clipboard write. Resolves true on success. Falls back to a
  * hidden textarea + execCommand for environments without the async
  * Clipboard API (older browsers, some embedded webviews).
  */
+// ABOUTME: copyText — a helper function.
 export async function copyText(text: string): Promise<boolean> {
   try {
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {

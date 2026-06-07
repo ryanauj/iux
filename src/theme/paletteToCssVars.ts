@@ -1,3 +1,5 @@
+// ABOUTME: paletteToCssVars — a helper function (theme).
+
 import type { SemanticTokens } from '../../tokens/semantic.contract'
 
 /**
@@ -21,6 +23,7 @@ function scaleDuration(value: string, scale: number): string {
   return `${n * scale}${match[2]}`
 }
 
+// ABOUTME: paletteToCssVars — a helper function.
 export function paletteToCssVars(
   tokens: SemanticTokens,
   motionScale = 1,

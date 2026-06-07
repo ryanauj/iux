@@ -1,6 +1,9 @@
+// ABOUTME: types — part of the guides area.
+
 import type { ReactNode } from 'react'
 import type { Engine, Palette } from '../../../tokens/semantic.contract'
 
+// ABOUTME: EngineStep — an interface.
 export interface EngineStep {
   id: string
   title: string
@@ -19,6 +22,7 @@ export interface EngineStep {
   demo: ReactNode
 }
 
+// ABOUTME: EngineGuideMeta — an interface.
 export interface EngineGuideMeta {
   engine: Engine
   /** Display name (e.g. "Flat"). */

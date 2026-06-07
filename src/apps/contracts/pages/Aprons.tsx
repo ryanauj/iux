@@ -1,3 +1,5 @@
+// ABOUTME: Aprons — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
 import { CapLadder } from '../components/CapLadder'
@@ -25,6 +27,7 @@ const SECOND_APRON: Restriction[] = [
   { text: 'Future first-round picks get frozen — and can be moved to the end of the draft if you stay over.' },
 ]
 
+// ABOUTME: Aprons — a React component.
 export function Aprons() {
   return (
     <article className="cap-page">

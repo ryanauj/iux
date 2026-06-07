@@ -1,3 +1,5 @@
+// ABOUTME: PromptCard — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
 import { Badge } from './Badge'
@@ -12,6 +14,7 @@ interface PromptCardProps {
   prompt: Prompt
 }
 
+// ABOUTME: PromptCard — a React component.
 export function PromptCard({ prompt }: PromptCardProps) {
   const { toggleFavorite } = usePromptStore()
   const vars = extractVariables(prompt.body)

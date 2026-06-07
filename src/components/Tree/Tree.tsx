@@ -1,11 +1,16 @@
+// ABOUTME: Tree — a React component (components).
+
 import { useMemo } from 'react'
 import './Tree.css'
 
+// ABOUTME: TreeVariant — a type alias.
 export type TreeVariant = 'vertical' | 'horizontal' | 'compact'
 
+// ABOUTME: TreeIntent — a type alias.
 export type TreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: TreeNode — an interface.
 export interface TreeNode {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface TreeNode {
   children?: TreeNode[]
 }
 
+// ABOUTME: Props for Tree.
 export interface TreeProps {
   variant?: TreeVariant
   root: TreeNode
@@ -60,6 +66,7 @@ function layoutTree(root: TreeNode, intentByDepth: TreeIntent[]): { nodes: Posit
   return { nodes: flat, leafSlots: Math.max(1, leaf), maxDepth }
 }
 
+// ABOUTME: Tree — a React component.
 export function Tree({
   variant = 'vertical',
   root,

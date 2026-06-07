@@ -1,3 +1,5 @@
+// ABOUTME: Modal ladder rungs: centered, sectioned, wizard, routed.
+
 // Modal ladder rungs: centered, sectioned, wizard, routed. Rung 4 (routed)
 // pushes to window.history and is skipped here — the runner has no easy way
 // to assert against URL state across compositions.
@@ -70,6 +72,7 @@ function WizardComposition() {
   )
 }
 
+// ABOUTME: modalTests — an exported value.
 export const modalTests: IntegrationTest[] = [
   {
     id: 'modal-rung-1-centered',

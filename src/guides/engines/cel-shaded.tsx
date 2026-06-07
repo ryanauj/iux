@@ -1,3 +1,5 @@
+// ABOUTME: cel-shaded — part of the guides area.
+
 import { useState } from 'react'
 import { palette as celShadedShonen } from '../../../palettes/cel-shaded-shonen'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -232,6 +234,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: celShadedGuide — an exported value.
 export const celShadedGuide: EngineGuideMeta = {
   engine: 'cel-shaded',
   name: 'Cel-shaded',

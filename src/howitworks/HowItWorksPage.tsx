@@ -1,3 +1,5 @@
+// ABOUTME: Page shell for the AST explorer: chrome, motion, and nav controls around the graph.
+
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
@@ -38,6 +40,7 @@ type UrlSettings = {
   motion: MotionScale
 }
 
+// ABOUTME: Renders the "how it works" page and its palette-aware chrome around the AST graph.
 export function HowItWorksPage() {
   // Mirror the Doctrine chrome contract: the site-wide selected style is the
   // fallback on a fresh visit so navigating in keeps the look, while a URL
@@ -179,10 +182,13 @@ export function HowItWorksPage() {
           source under <code>src/</code> is parsed and emitted as a graph —
           directories, files, and every top-level member (components,
           functions, classes, consts, types) — with file-to-file import
-          links between them. Tap a directory to open it, tap a file to
-          reveal its members, and pinch or scroll to zoom. It paints with
-          the active palette&apos;s tokens, so switch the Palette to watch
-          it re-theme.
+          links between them. Each file and exported member also carries a
+          plain-English summary, lifted from its <code>ABOUTME:</code>{' '}
+          comment and shown beside the name. Tap a directory to open it, tap
+          a file to reveal its members, hit <em>Auto layout</em> to arrange
+          clusters by their dependencies, and pinch or scroll to zoom. It
+          paints with the active palette&apos;s tokens, so switch the Palette
+          to watch it re-theme.
         </div>
       )}
     </>
@@ -212,8 +218,10 @@ export function HowItWorksPage() {
                   Every file under <code>src/</code> parsed at build into a
                   deterministic graph: {astGraph.stats.areas} directories,{' '}
                   {astGraph.stats.files} files, and {astGraph.stats.members}{' '}
-                  members, joined by {astGraph.stats.imports} import links. Tap
-                  a directory to open it, tap a file to reveal its members, and
+                  members, joined by {astGraph.stats.imports} import links.
+                  Every file and {astGraph.stats.documentedMembers} exported
+                  members carry a plain-English summary beside the name. Tap a
+                  directory to open it, tap a file to reveal its members, and
                   zoom to navigate.
                 </p>
               </header>
@@ -225,9 +233,11 @@ export function HowItWorksPage() {
               </figure>
 
               <p className="howitworks__note">
-                Generated at build by <code>scripts/generate-ast-graph.ts</code>{' '}
-                — no hand-authoring. Re-runs on every <code>pnpm run build</code>,
-                so the map always matches the source it ships with.
+                Generated at build by <code>scripts/generate-ast-graph.ts</code>,
+                which also lifts each <code>ABOUTME:</code> comment into the
+                graph as its English summary. Re-runs on every{' '}
+                <code>pnpm run build</code>, so the map always matches the
+                source it ships with.
               </p>
             </article>
           </PaletteRoot>

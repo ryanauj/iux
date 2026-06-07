@@ -1,3 +1,5 @@
+// ABOUTME: Shared types for the build-time AST graph.
+
 /**
  * Shared types for the build-time AST graph.
  *
@@ -14,6 +16,7 @@
  */
 
 /** The kind of a top-level declaration inside a file. */
+// ABOUTME: MemberKind — a type alias.
 export type MemberKind =
   | 'component' // PascalCase function / arrow (a React component)
   | 'function' // camelCase function / arrow
@@ -23,6 +26,7 @@ export type MemberKind =
   | 'interface'
   | 'enum'
 
+// ABOUTME: AstMember — an interface.
 /** A single top-level declaration inside a file. */
 export interface AstMember {
   name: string
@@ -31,8 +35,15 @@ export interface AstMember {
   exported: boolean
   /** 1-based line of the declaration, used for stable ordering. */
   line: number
+  /**
+   * Plain-English summary, lifted from the member's `ABOUTME:` comment
+   * (the line directly above the declaration). Absent when the member
+   * carries no such comment.
+   */
+  about?: string
 }
 
+// ABOUTME: AstFile — an interface.
 /** One source file — a parent node made up of its members. */
 export interface AstFile {
   /** Repo-relative path with forward slashes, e.g. `src/components/Button/Button.tsx`. */
@@ -43,6 +54,11 @@ export interface AstFile {
   dir: string
   /** Basename, e.g. `Button.tsx`. */
   name: string
+  /**
+   * Plain-English summary, lifted from the file's top-of-file `ABOUTME:`
+   * comment. Absent when the file carries no such comment.
+   */
+  about?: string
   /** Total line count of the file. */
   loc: number
   /** Number of imports that resolve to other files inside the graph. */
@@ -52,6 +68,7 @@ export interface AstFile {
   members: AstMember[]
 }
 
+// ABOUTME: AstArea — an interface.
 /** A directory cluster grouping files by their top-level `src/` segment. */
 export interface AstArea {
   id: string
@@ -60,12 +77,14 @@ export interface AstArea {
   memberCount: number
 }
 
+// ABOUTME: AstImport — an interface.
 /** A resolved file → file import edge (deduplicated, no self-edges). */
 export interface AstImport {
   source: string
   target: string
 }
 
+// ABOUTME: AstGraph — an interface.
 export interface AstGraph {
   schemaVersion: number
   stats: {
@@ -73,6 +92,10 @@ export interface AstGraph {
     files: number
     members: number
     imports: number
+    /** Files that carry an `ABOUTME:` summary. */
+    documentedFiles: number
+    /** Members that carry an `ABOUTME:` summary. */
+    documentedMembers: number
   }
   areas: AstArea[]
   files: AstFile[]

@@ -1,3 +1,5 @@
+// ABOUTME: PlayerDetail — a React component (apps).
+
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Link } from '../../Link'
 import {
@@ -15,6 +17,7 @@ interface PlayerDetailProps {
   slug: string
 }
 
+// ABOUTME: PlayerDetail — a React component.
 export function PlayerDetail({ slug }: PlayerDetailProps) {
   const player = getPlayerBySlug(slug)
   if (!player) return <NotFound message={`No player with slug "${slug}".`} />

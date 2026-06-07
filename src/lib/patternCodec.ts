@@ -1,3 +1,5 @@
+// ABOUTME: patternCodec — part of the lib area.
+
 import type { PaletteId } from '../../palettes'
 import {
   isBuiltInPaletteId,
@@ -6,6 +8,7 @@ import {
   type TokenOverrides,
 } from './customPatterns'
 
+// ABOUTME: SharedPattern — an interface.
 /**
  * URL encoding for shareable styles.
  *
@@ -23,6 +26,7 @@ export interface SharedPattern {
   overrides: TokenOverrides
 }
 
+// ABOUTME: DecodeResult — a type alias.
 export type DecodeResult =
   | { kind: 'builtin'; id: PaletteId }
   | { kind: 'custom'; share: SharedPattern }
@@ -38,6 +42,7 @@ function base64UrlDecode(token: string): string {
   return decodeURIComponent(escape(atob(b64)))
 }
 
+// ABOUTME: encodePattern — a helper function.
 /** Encode a built-in id (bare) or a custom pattern (base64url payload). */
 export function encodePattern(
   pattern: PaletteId | CustomPattern | SharedPattern,
@@ -51,6 +56,7 @@ export function encodePattern(
   return base64UrlEncode(payload)
 }
 
+// ABOUTME: decodePattern — a helper function.
 /**
  * Decode a `?palette=` token into a built-in id or a shared custom pattern.
  * Returns `null` for anything malformed — never throws.

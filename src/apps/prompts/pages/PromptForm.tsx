@@ -1,3 +1,5 @@
+// ABOUTME: PromptForm — a React component (apps).
+
 import { useMemo, useState } from 'react'
 import { TextInput } from '../../../components/TextInput/TextInput'
 import { Select } from '../../../components/Select/Select'
@@ -26,6 +28,7 @@ interface PromptFormProps {
   prefillStrategyId?: string
 }
 
+// ABOUTME: PromptForm — a React component.
 export function PromptForm({ editId, prefillStrategyId }: PromptFormProps) {
   const { get, add, update } = usePromptStore()
   const push = useToast()

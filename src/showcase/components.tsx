@@ -1,3 +1,5 @@
+// ABOUTME: components — part of the showcase area.
+
 import type { ReactNode } from 'react'
 import { ButtonStories, VARIANTS as ButtonVariants } from '../components/Button/Button.stories'
 import { TextInputStories, VARIANTS as TextInputVariants } from '../components/TextInput/TextInput.stories'
@@ -87,6 +89,7 @@ import { LeveragePlotStories, VARIANTS as LeveragePlotVariants } from '../compon
 import { InteractionPlotStories, VARIANTS as InteractionPlotVariants } from '../components/InteractionPlot/InteractionPlot.stories'
 import { CoefficientPathStories, VARIANTS as CoefficientPathVariants } from '../components/CoefficientPath/CoefficientPath.stories'
 
+// ABOUTME: Component — a type alias.
 export type Component =
   | 'button' | 'textinput' | 'card' | 'select' | 'toggle' | 'checkbox' | 'slider'
   | 'modal' | 'table' | 'tabs' | 'toast' | 'tooltip' | 'pagination' | 'datepicker'
@@ -105,8 +108,10 @@ export type Component =
   | 'coefplot' | 'partdep' | 'partreg' | 'residplot'
   | 'obspred' | 'splom' | 'regsurf' | 'leverage' | 'interaction' | 'coefpath'
 
+// ABOUTME: Tier — a type alias.
 export type Tier = 1 | 2 | 3
 
+// ABOUTME: StoryEntry — a type alias.
 export type StoryEntry = {
   id: Component
   label: string
@@ -115,6 +120,7 @@ export type StoryEntry = {
   render: (variant?: string) => ReactNode
 }
 
+// ABOUTME: COMPONENTS — an exported value.
 export const COMPONENTS: StoryEntry[] = [
   { id: 'button', label: 'Button', tier: 1, variants: ButtonVariants, render: v => <ButtonStories variant={v} /> },
   { id: 'textinput', label: 'Text input', tier: 1, variants: TextInputVariants, render: v => <TextInputStories variant={v} /> },
@@ -153,6 +159,7 @@ export const COMPONENTS: StoryEntry[] = [
   { id: 'canvas', label: 'Spatial canvas', tier: 3, variants: SpatialCanvasVariants, render: v => <SpatialCanvasStories variant={v} /> },
 ]
 
+// ABOUTME: VISUALIZATIONS — an exported value.
 /**
  * Parallel registry to COMPONENTS. Visualizations sit alongside components
  * as a separate dimension — see FINALIZED-VISUALIZATIONS.md. Both registries
@@ -214,5 +221,6 @@ export const VISUALIZATIONS: StoryEntry[] = [
   { id: 'coefpath',    label: 'Coefficient path',     tier: 3, variants: CoefficientPathVariants,    render: v => <CoefficientPathStories variant={v} /> },
 ]
 
+// ABOUTME: ALL_ENTRIES — an exported value.
 /** Convenience: every entry across both registries. Use for global lookups. */
 export const ALL_ENTRIES: StoryEntry[] = [...COMPONENTS, ...VISUALIZATIONS]

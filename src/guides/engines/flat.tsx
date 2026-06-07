@@ -1,3 +1,5 @@
+// ABOUTME: flat — part of the guides area.
+
 import { useState } from 'react'
 import { palette as flatClassic } from '../../../palettes/flat-classic'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -161,6 +163,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: flatGuide — an exported value.
 export const flatGuide: EngineGuideMeta = {
   engine: 'flat',
   name: 'Flat',

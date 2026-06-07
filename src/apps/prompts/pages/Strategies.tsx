@@ -1,3 +1,5 @@
+// ABOUTME: Strategies — a React component (apps).
+
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
 import { Segmented } from '../../../components/Segmented/Segmented'
@@ -10,6 +12,7 @@ import { STRATEGY_CATEGORIES, type StrategyCategory } from '../types'
 
 type CatFilter = 'all' | StrategyCategory
 
+// ABOUTME: Strategies — a React component.
 export function Strategies() {
   const [cat, setCat] = useState<CatFilter>('all')
   const list = cat === 'all' ? STRATEGIES : STRATEGIES.filter(s => s.category === cat)

@@ -1,3 +1,5 @@
+// ABOUTME: Timeline — a React component (components).
+
 import {
   useCallback,
   useMemo,
@@ -8,13 +10,16 @@ import {
 } from 'react'
 import './Timeline.css'
 
+// ABOUTME: TimelineVariant — a type alias.
 export type TimelineVariant = 'basic' | 'snap' | 'multi' | 'keyframes'
 
+// ABOUTME: TimelineMarker — an interface.
 export interface TimelineMarker {
   at: number
   label?: string
 }
 
+// ABOUTME: TimelineTrack — an interface.
 export interface TimelineTrack {
   id: string
   name: string
@@ -24,6 +29,7 @@ export interface TimelineTrack {
   soloed?: boolean
 }
 
+// ABOUTME: TimelineKeyframe — an interface.
 export interface TimelineKeyframe {
   trackId: string
   at: number
@@ -31,6 +37,7 @@ export interface TimelineKeyframe {
   value: number
 }
 
+// ABOUTME: Props for Timeline.
 export interface TimelineProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TimelineVariant
@@ -60,6 +67,7 @@ function fmt(t: number): string {
   return `${m}:${s.padStart(4, '0')}`
 }
 
+// ABOUTME: Timeline — a React component.
 export function Timeline({
   variant = 'basic',
   duration,

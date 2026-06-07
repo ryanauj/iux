@@ -1,3 +1,5 @@
+// ABOUTME: crt-phosphor — part of the guides area.
+
 import { useState } from 'react'
 import { palette as crtPhosphorGreen } from '../../../palettes/crt-phosphor-green'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -210,6 +212,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: crtPhosphorGuide — an exported value.
 export const crtPhosphorGuide: EngineGuideMeta = {
   engine: 'crt-phosphor',
   name: 'CRT / Phosphor',
