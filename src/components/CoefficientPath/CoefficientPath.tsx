@@ -1,16 +1,16 @@
-// ABOUTME: CoefficientPath — a React component (components).
+// ABOUTME: SVG regularization path chart that traces each coefficient's β value as λ varies, with optional log-scale x-axis, a selected-λ vertical marker, and highlighted or narrow-line variants.
 
 import { useMemo } from 'react'
 import './CoefficientPath.css'
 
-// ABOUTME: CoefficientPathVariant — a type alias.
+// ABOUTME: Display mode — 'paths' draws all lines at full weight, 'highlighted' dims low-magnitude paths and labels only the top ones, 'selected' renders all lines narrower and shows a vertical marker at `selectedLambda`.
 export type CoefficientPathVariant = 'paths' | 'highlighted' | 'selected'
 
-// ABOUTME: CoefficientPathIntent — a type alias.
+// ABOUTME: Semantic color token applied to a coefficient's path line and inline label, drawn from the six contract intents.
 export type CoefficientPathIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: CoefficientPathLine — an interface.
+// ABOUTME: One coefficient's regularization trajectory — an id, label, optional intent, and an array of (lambda, beta) points defining the path as λ increases.
 export interface CoefficientPathLine {
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface CoefficientPathLine {
   points: { lambda: number; beta: number }[]
 }
 
-// ABOUTME: Props for CoefficientPath.
+// ABOUTME: Props for CoefficientPath — supplies the path lines, variant, optional selected-λ reference value, SVG dimensions, a `logX` flag for log₁₀(λ) x-axis scaling, and className.
 export interface CoefficientPathProps {
   variant?: CoefficientPathVariant
   paths: CoefficientPathLine[]
@@ -51,7 +51,16 @@ function fmtLambda(n: number, log: boolean): string {
   return n.toFixed(3)
 }
 
-// ABOUTME: CoefficientPath — a React component.
+// ABOUTME: Transforms each path's lambda values to log₁₀ when `logX` is true, computes symmetric y-domain around zero (±110% of max |β|), then renders each line as an SVG `<path>`; 'highlighted' dims lines whose starting β is below 45% of the max and omits their labels.
+/**
+ * The x-domain is fitted to the (optionally log-scaled) lambda range of all
+ * combined points, padded by 4%. The y-domain is always symmetric around zero
+ * so positive and negative coefficients read at the same scale. On
+ * 'highlighted', inline labels are drawn only for paths whose `startBeta`
+ * exceeds 20% of the maximum absolute starting β, positioned at the path's
+ * final endpoint. The `selectedLambda` vertical line and λ_cv legend entry
+ * are rendered when `selectedLambda` is provided.
+ */
 export function CoefficientPath({
   variant = 'highlighted',
   paths,

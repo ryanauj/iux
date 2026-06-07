@@ -1,4 +1,4 @@
-// ABOUTME: Linkable team identifier with a color dot.
+// ABOUTME: Inline team identifier showing the team abbreviation in a colored badge and the team name, used in tables (Players, TeamDetail roster/schedule), score cards, and standings; renders as a Link to TeamDetail unless `linked={false}`.
 
 import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
@@ -11,10 +11,11 @@ interface TeamChipProps {
   linked?: boolean
 }
 
-// ABOUTME: Linkable team identifier with a color dot.
+// ABOUTME: Renders a `team-chip` span/link: a colored-background abbreviation badge (using `team.primaryColor`) followed by `team.name`; `size="lg"` adds the `--lg` modifier; `linked={false}` renders as a plain span (used when already inside an anchor, e.g. ScoreCard).
 /**
- * Linkable team identifier with a color dot. Used in tables, score cards,
- * roster lists, and anywhere a team needs to be referenced inline.
+ * When `linked` is true (the default), wraps the badge in a `Link` pointing to
+ * `sportsRoutes.teamDetail(team.slug)`. When false, renders an inert `<span>`
+ * so the chip can sit safely inside another anchor without nesting violations.
  */
 export function TeamChip({ team, size = 'sm', linked = true }: TeamChipProps) {
   const className = `team-chip ${size === 'lg' ? 'team-chip--lg' : ''}`

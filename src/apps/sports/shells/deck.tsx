@@ -1,4 +1,4 @@
-// ABOUTME: DeckShell — a React component (apps).
+// ABOUTME: DeckShell — card-swipe shell that replaces the Home page with three full-bleed stacks (teams alphabetically, players by PPG, games by date); arrow keys, touch swipes, and on-screen controls flip cards and switch stacks, with position persisted in `?deck=<stack>.<index>`.
 
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -444,7 +444,13 @@ function DeckBreadcrumb({ stack, index }: { stack: Stack; index: number }) {
   )
 }
 
-// ABOUTME: DeckShell — a React component.
+// ABOUTME: Shell that mounts DeckSurface (swipeable cards across teams / players / games stacks) on the Home route and a breadcrumb + detail page on other routes; stack and card index are kept in the `?deck=` URL param.
+/**
+ * On the Home route renders DeckSurface with full keyboard (←/→/↑/↓) and
+ * touch-swipe navigation. On non-Home routes renders a DeckBreadcrumb with a
+ * "Back to deck" link above props.children so the user can return to the exact
+ * card they left. Switching stacks always resets to card 0.
+ */
 export function DeckShell(props: ShellProps): ReactNode {
   const location = useHashLocation()
   const { stack, index } = useMemo(

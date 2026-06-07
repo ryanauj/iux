@@ -1,4 +1,4 @@
-// ABOUTME: TeamSheet — a React component (apps).
+// ABOUTME: Chapter 9 — "A team cap sheet": assembles all prior concepts on one illustrative 12-player roster (SAMPLE_ROSTER), placing the total payroll on the CapLadder and showing the resulting luxury-tax bill, with a sortable Table and Bar chart of individual cap hits.
 
 import { Card } from '../../../components/Card/Card'
 import { Table, type TableColumn } from '../../../components/Table/Table'
@@ -45,7 +45,14 @@ const columns: TableColumn<RosterSpot>[] = [
   },
 ]
 
-// ABOUTME: TeamSheet — a React component.
+// ABOUTME: Chapter 9 page that calls rosterTotal and computeTax (cap.ts) to derive payroll, cap overage, and tax bill, then renders a CapLadder with a payroll marker, a horizontal Bar of cap hits, and a sortable Table tagged by the signing tool used for each slot.
+/**
+ * Chapter 9 of Cap School — the synthesis chapter. Loads SAMPLE_ROSTER from
+ * cap.ts, computes the total payroll and standard-rate tax bill, and shows
+ * where the fictional Harbor City Foghorns land on the cap ladder. The "signed
+ * via" column names every exception or mechanism from earlier chapters so
+ * readers can trace the whole system in one place.
+ */
 export function TeamSheet() {
   const total = rosterTotal()
   const { total: tax, overage } = computeTax(total, 'standard')

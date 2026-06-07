@@ -1,16 +1,16 @@
-// ABOUTME: Sunburst — a React component (components).
+// ABOUTME: SVG sunburst chart that recursively partitions a tree of SunburstNode values into concentric arc rings; supports flat (first ring only), nested (full depth with lightness tinting), and labeled (arc-following text) variants.
 
 import { useMemo } from 'react'
 import './Sunburst.css'
 
-// ABOUTME: SunburstVariant — a type alias.
+// ABOUTME: Rendering mode: flat renders only the first ring of children; nested renders all depth levels with lightness tinting per depth; labeled adds arc-aligned text labels on each slice.
 export type SunburstVariant = 'flat' | 'nested' | 'labeled'
 
-// ABOUTME: SunburstIntent — a type alias.
+// ABOUTME: Semantic color intent applied to each arc slice, inheriting from parent when not explicitly set on the node.
 export type SunburstIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: SunburstNode — an interface.
+// ABOUTME: A tree node for the sunburst chart: leaf nodes carry a numeric value; branch nodes derive their value from the sum of their children; intent overrides the inherited color.
 export interface SunburstNode {
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface SunburstNode {
   children?: SunburstNode[]
 }
 
-// ABOUTME: Props for Sunburst.
+// ABOUTME: Props for Sunburst — passes the root node of the tree, optional pixel dimensions, variant mode, and an optional className.
 export interface SunburstProps {
   variant?: SunburstVariant
   root: SunburstNode
@@ -65,7 +65,14 @@ function ringPath(cx: number, cy: number, rIn: number, rOut: number, a0: number,
   return `M ${p0.x} ${p0.y} A ${rOut} ${rOut} 0 ${large} 1 ${p1.x} ${p1.y} L ${p2.x} ${p2.y} A ${rIn} ${rIn} 0 ${large} 0 ${p3.x} ${p3.y} Z`
 }
 
-// ABOUTME: Sunburst — a React component.
+// ABOUTME: Renders a proportional ring-chart SVG by recursively walking the node tree, computing arc angles from proportional values, and emitting SVG path elements via ringPath(); the labeled variant overlays rotated text at each arc midpoint.
+/**
+ * Traverses the root tree depth-first to accumulate a flat list of arc slices,
+ * then maps depth to ring band width. In `flat` mode only depth-1 slices are
+ * drawn. `nested` adds a depth-based tint class to show hierarchy. `labeled`
+ * renders rotated `<text>` elements at arc mid-radii, flipping text that would
+ * appear upside-down.
+ */
 export function Sunburst({
   variant = 'flat',
   root,

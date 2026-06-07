@@ -1,4 +1,4 @@
-// ABOUTME: TestsViz — a React component (tests).
+// ABOUTME: Card-workbench visualization for the integration test suite: renders each IntegrationTest as a card with a live sandbox, storyboard strip or compact step list, per-card delay/stepped overrides, and a "Run all" mode that can sweep tests live (with the focused sandbox visible) or fast (offscreen); reads INTEGRATION_TESTS from the registry and delegates execution to TestsPage via the RunFor callback.
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Segmented } from '../../components/Segmented/Segmented'
@@ -22,7 +22,7 @@ interface Override {
   delayMs?: number
 }
 
-// ABOUTME: TestsViz — a React component.
+// ABOUTME: Root component of the test card workbench: manages global stepped/delay settings, per-card overrides, the focused-card expanded sandbox, offscreen fast-run sandbox, and "Run all" with an AbortController; delegates rendering to TestCard for each test.
 export function TestsViz({ results, runningId, runFor }: Props) {
   const [density, setDensity] = useState<Density>('storyboard')
   const [globalStepped, setGlobalStepped] = useState(false)

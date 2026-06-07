@@ -1,4 +1,4 @@
-// ABOUTME: CoverageViz — a React component (tests).
+// ABOUTME: Coverage visualization for the integration test suite: renders a component × test matrix table (with per-row run buttons and a failure summary) and a force-directed network graph of component co-usage, toggled by a pill segmented control; reads INTEGRATION_TESTS and involvedComponentIds from the registry.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Segmented } from '../../components/Segmented/Segmented'
@@ -15,7 +15,7 @@ interface Props {
 type Mode = 'table' | 'network'
 type Status = 'idle' | 'running' | 'passed' | 'failed'
 
-// ABOUTME: CoverageViz — a React component.
+// ABOUTME: Root component that owns the coverage view: switches between TableMode (matrix of test rows × component columns with run-status glyphs) and NetworkMode (force-directed SVG of component co-usage), and runs tests against an offscreen sandbox div via the runFor callback from TestsPage.
 export function CoverageViz({ results, runningId, runFor }: Props) {
   const [mode, setMode] = useState<Mode>('table')
   const [selected, setSelected] = useState<string | null>(null)

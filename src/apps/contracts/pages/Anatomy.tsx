@@ -1,4 +1,4 @@
-// ABOUTME: Anatomy — a React component (apps).
+// ABOUTME: Chapter 3 — "The anatomy of a contract": walks a single 4-year Bird-rights deal through its raises, guarantees, and player option, using a Bar chart for salary-by-year and a Donut for guaranteed vs optional value.
 
 import { Card } from '../../../components/Card/Card'
 import { Bar } from '../../../components/Bar/Bar'
@@ -29,7 +29,14 @@ const GUARANTEE_INTENT: Record<ContractYear['guarantee'], 'success' | 'warning' 
   non: 'danger',
 }
 
-// ABOUTME: Anatomy — a React component.
+// ABOUTME: Chapter 3 page explaining raises, guarantees, team/player options, and trade kickers via SAMPLE_CONTRACT data from cap.ts; renders a Bar (salary by year) and Donut (guaranteed vs option year) with PageHeader and Pager from Bits.
+/**
+ * Chapter 3 of Cap School. Displays a worked four-year Bird-rights extension
+ * (SAMPLE_CONTRACT from cap.ts) and explains the three dimensions of a real
+ * deal: the 8% vs 5% raise rule, guarantee status (full / player-option), and
+ * ancillary wrinkles like trade kickers and incentives. Visualised with a Bar
+ * chart for year-by-year salary and a Donut breaking guaranteed vs optional value.
+ */
 export function Anatomy() {
   const total = SAMPLE_CONTRACT.reduce((s, y) => s + y.salary, 0)
   const guaranteed = SAMPLE_CONTRACT

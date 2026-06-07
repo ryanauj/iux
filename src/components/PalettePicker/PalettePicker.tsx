@@ -1,4 +1,4 @@
-// ABOUTME: PalettePicker — a React component (components).
+// ABOUTME: Palette and custom-pattern selector used in the DraggableControls strip and button tile; renders prev/next cycle arrows and a popover panel with search, group management, custom pattern CRUD, and favorite toggling — backed by `paletteTags` and `customPatterns` hooks.
 
 import {
   useCallback,
@@ -43,7 +43,7 @@ const LIST_OPEN_KEY = 'palette-picker:list-open'
 const CUSTOM_OPEN_KEY = 'palette-picker:custom-open'
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
-// ABOUTME: PalettePickerVariant — a type alias.
+// ABOUTME: Determines the layout context: 'button' manages its own open state and renders inside the button tile, 'strip' delegates open/close to the parent DraggableControls strip so only one slot popover is shown at a time.
 export type PalettePickerVariant = 'button' | 'strip'
 
 /**
@@ -84,7 +84,15 @@ interface PalettePickerProps {
   slotRect?: DOMRect | null
 }
 
-// ABOUTME: PalettePicker — a React component.
+// ABOUTME: Renders prev/next arrow buttons that cycle through the active group (or the full catalog when no group is active) and a trigger button that opens the `PalettePickerPanel` popover; the 'strip' variant proxies open state and click events to the parent, while 'button' manages its own `internalOpen`.
+/**
+ * Uses `useActiveGroup` and `useGroups` from `paletteTags` to determine which
+ * palette ids the arrows should cycle through. The `cycleInGroup` helper
+ * wraps the cycle so the current palette always advances to the next member
+ * without leaving the group. The popover panel is only mounted when `open`
+ * is true; the 'strip' variant positions it via `slotRect` and `popoverQuadrant`
+ * forwarded from DraggableControls.
+ */
 export function PalettePicker(props: PalettePickerProps) {
   const { field, variant } = props
   const current = field.value as StyleId

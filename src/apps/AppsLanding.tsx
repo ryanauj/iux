@@ -1,4 +1,4 @@
-// ABOUTME: AppsLanding — a React component (apps).
+// ABOUTME: Landing page for the /apps route — shows a card grid of all mini-apps with live palette, nav-layout, and motion controls.
 
 import { useRef } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
@@ -61,7 +61,13 @@ interface AppsLandingProps {
   location: HashLocation
 }
 
-// ABOUTME: AppsLanding — a React component.
+// ABOUTME: Renders the apps directory: a grid of app-tile cards for Hoops Hub, Cap School, and Promptbook, with a floating DraggableControls panel for palette, nav layout, and motion.
+/**
+ * Renders the apps directory: a grid of app-tile cards that each link to a
+ * mini-app, plus a floating DraggableControls panel for palette, nav layout,
+ * and motion. Seeds the persisted style store from a `?palette=` param on
+ * first mount so pasted permalinks win over the stored preference.
+ */
 export function AppsLanding({ location }: AppsLandingProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [navLayout, setNavLayout] = useNavLayout()

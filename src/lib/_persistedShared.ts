@@ -1,4 +1,4 @@
-// ABOUTME: _persistedShared — part of the lib area.
+// ABOUTME: In-tab pub/sub bus shared by usePersistedPref and usePersistedJSON so same-key hooks stay in sync without a storage event.
 
 type Listener = (raw: string) => void
 
@@ -15,12 +15,12 @@ type Listener = (raw: string) => void
  */
 export const listeners = new Map<string, Set<Listener>>()
 
-// ABOUTME: notify — a helper function.
+// ABOUTME: Broadcast a raw string value to every in-tab subscriber registered under `key`.
 export function notify(key: string, raw: string) {
   listeners.get(key)?.forEach(l => l(raw))
 }
 
-// ABOUTME: subscribe — a helper function.
+// ABOUTME: Register a listener for `key` and return an unsubscribe function; used by both persisted hooks to react to sibling writes within the same tab.
 export function subscribe(key: string, listener: Listener) {
   let bucket = listeners.get(key)
   if (!bucket) {

@@ -1,4 +1,4 @@
-// ABOUTME: skeuomorphism — part of the guides area.
+// ABOUTME: Engine guide definition for the Skeuomorphism rendering engine — the physical-material engine that evokes paper, leather, and brushed metal using warm parchment surfaces and a three-layer bevel per elevation slot (inset top highlight, inset bottom shade, outer drop shadow), with the flat rung retaining the inset pair so recessed inputs get a bevel without lifting off the surface.
 
 import { useState } from 'react'
 import { palette as skeuomorphism } from '../../../palettes/skeuomorphism'
@@ -264,7 +264,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: skeuomorphismGuide — an exported value.
+// ABOUTME: skeuomorphismGuide — the EngineGuideMeta for the Skeuomorphism engine: five steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the skeuomorphism palette, covering warm parchment tone hierarchy, the three-layer bevel recipe delivered through stacked shadow strings, warm-black ink borders, tight snap-physical motion, and brushed-tone intent fills with cream ink.
 export const skeuomorphismGuide: EngineGuideMeta = {
   engine: 'skeuomorphism',
   name: 'Skeuomorphism',

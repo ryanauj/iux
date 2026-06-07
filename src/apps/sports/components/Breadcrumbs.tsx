@@ -1,15 +1,15 @@
-// ABOUTME: Breadcrumbs — a React component (apps).
+// ABOUTME: Slim breadcrumb nav bar used at the top of every sports detail page to show the path back to parent sections.
 
 import { Fragment, type ReactNode } from 'react'
 import { Link } from '../../Link'
 
-// ABOUTME: Crumb — an interface.
+// ABOUTME: A single breadcrumb entry: a label (any ReactNode) and an optional `to` route; when `to` is omitted the crumb renders as plain text (current page).
 export interface Crumb {
   label: ReactNode
   to?: string
 }
 
-// ABOUTME: Breadcrumbs — a React component.
+// ABOUTME: Renders a slash-separated breadcrumb trail; each entry with a `to` becomes a Link, the last entry (no `to`) renders as a plain span marking the current page.
 export function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
   return (
     <nav className="sports-page__breadcrumbs" aria-label="Breadcrumb">

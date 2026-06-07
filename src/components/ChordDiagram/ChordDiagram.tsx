@@ -1,23 +1,23 @@
-// ABOUTME: ChordDiagram — a React component (components).
+// ABOUTME: SVG chord diagram that arranges nodes as arcs on a circle and draws bi-directional ribbon paths between them, with simple, value-weighted opacity, and highlighted accent variants.
 
 import { useMemo } from 'react'
 import './ChordDiagram.css'
 
-// ABOUTME: ChordDiagramVariant — a type alias.
+// ABOUTME: Display mode — 'simple' draws ribbons at uniform opacity, 'weighted' scales ribbon tint level (1–4) by link value relative to max, 'highlighted' elevates links with `highlight: true` to an accent class while dimming the rest.
 export type ChordDiagramVariant = 'simple' | 'weighted' | 'highlighted'
 
-// ABOUTME: ChordIntent — a type alias.
+// ABOUTME: Semantic color token applied to a node's arc segment and its outgoing ribbons, drawn from the six contract intents.
 export type ChordIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ChordNode — an interface.
+// ABOUTME: A chord diagram node — a unique id, display label, and optional explicit intent override (otherwise assigned by index from the intent rotation).
 export interface ChordNode {
   id: string
   label: string
   intent?: ChordIntent
 }
 
-// ABOUTME: ChordLink — an interface.
+// ABOUTME: A flow link between two node ids with a mandatory numeric value that determines arc sub-span and ribbon area; `highlight` flags the link for accent coloring on the 'highlighted' variant.
 export interface ChordLink {
   from: string
   to: string
@@ -25,7 +25,7 @@ export interface ChordLink {
   highlight?: boolean
 }
 
-// ABOUTME: Props for ChordDiagram.
+// ABOUTME: Props for ChordDiagram — supplies node and link data, variant, and SVG dimensions.
 export interface ChordDiagramProps {
   variant?: ChordDiagramVariant
   nodes: ChordNode[]
@@ -66,7 +66,16 @@ function ribbonPath(cx: number, cy: number, r: number, a0: number, a1: number, b
           Q ${cx} ${cy} ${p0.x} ${p0.y} Z`
 }
 
-// ABOUTME: ChordDiagram — a React component.
+// ABOUTME: Allocates each node a proportional arc on a circle based on its total flow, then subdivides each arc into per-link sub-spans and draws a `ribbonPath` cubic Bézier between matching sub-spans; arc labels are positioned radially outside each arc midpoint.
+/**
+ * Node arc spans are proportional to total flow (in + out), divided across
+ * `2π − gapTotal` radians. For each link, `offset` cursors track how much of
+ * each node's arc span has been consumed, so ribbons tile cleanly inside their
+ * parent arc. On 'weighted', the tint-level class (1–4) is computed as
+ * `ceil((value / maxValue) × 4)`. On 'highlighted', links without
+ * `highlight: true` render with the default class, accented ones get
+ * `iux-chord__ribbon--accent`.
+ */
 export function ChordDiagram({
   variant = 'simple',
   nodes,

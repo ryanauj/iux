@@ -1,14 +1,14 @@
-// ABOUTME: Button — an exported value (components).
+// ABOUTME: Accessible button element with solid, neumorphic, spring-animation, and AI-shimmer visual variants, each driven by six semantic intent colors.
 
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import './Button.css'
 
-// ABOUTME: ButtonVariant — a type alias.
+// ABOUTME: Visual style axis — 'solid' is the standard filled style, 'neumorphic' uses soft-shadow depth, 'spring' adds bounce animation, 'ai' overlays an animated shimmer layer.
 export type ButtonVariant = 'solid' | 'neumorphic' | 'spring' | 'ai'
-// ABOUTME: ButtonIntent — a type alias.
+// ABOUTME: Semantic color token that maps to the six contract intent palette entries for the button surface and label.
 export type ButtonIntent = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
-// ABOUTME: Props for Button.
+// ABOUTME: Props for Button — extends native button attributes with variant, intent, loading spinner, leading icon slot, and a story-only stateLock for pseudo-state previews.
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ButtonVariant
@@ -23,7 +23,14 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   type?: 'button' | 'submit' | 'reset'
 }
 
-// ABOUTME: Button — an exported value.
+// ABOUTME: A forwardRef-wrapped `<button>` that composes variant/intent/loading/stateLock CSS classes, renders an animated shimmer span for the 'ai' variant, swaps the leading icon for a spinner while loading, and disables itself when loading.
+/**
+ * Applies `iux-button--{variant}` and `iux-button--intent-{intent}` classes
+ * along with `iux-button--loading` and `is-{stateLock}` when relevant. The
+ * 'ai' variant gets an absolutely-positioned `<span class="iux-button__shimmer">`
+ * driven entirely by CSS animation. `loading` sets `aria-busy` and `disabled`
+ * simultaneously and replaces the leading icon with a CSS spinner.
+ */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant = 'solid',

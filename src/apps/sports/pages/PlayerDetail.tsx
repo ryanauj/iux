@@ -1,4 +1,4 @@
-// ABOUTME: PlayerDetail — a React component (apps).
+// ABOUTME: Player profile page with a header showing bio/physical/team info and three Tabs: Season stats, Shooting splits, and Recent games (ScoreCard grid from the player's team schedule).
 
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Link } from '../../Link'
@@ -17,7 +17,13 @@ interface PlayerDetailProps {
   slug: string
 }
 
-// ABOUTME: PlayerDetail — a React component.
+// ABOUTME: Resolves a player by slug via `getPlayerBySlug`, then fetches the team with `getTeamById` and the team's last three final games via `getGamesForTeam`; renders a coloured-avatar header, bio meta row, and three-tab stat/shooting/recent-games panel.
+/**
+ * The header shows a colour-coded avatar (team's primaryColor), jersey number,
+ * position, team link, height (formatted to ft/in), weight, age, and experience.
+ * The Stats tab uses `formatStat`; Shooting uses `formatPct`. The Recent games
+ * tab shows up to three `ScoreCard` tiles linking to `GameDetail`.
+ */
 export function PlayerDetail({ slug }: PlayerDetailProps) {
   const player = getPlayerBySlug(slug)
   if (!player) return <NotFound message={`No player with slug "${slug}".`} />

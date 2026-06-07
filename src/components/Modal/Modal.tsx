@@ -1,4 +1,4 @@
-// ABOUTME: Modal — a React component (components).
+// ABOUTME: Accessible dialog component portaled to the document body, supporting four variants: a centered dialog, a sectioned scrollable layout, a step-by-step wizard with a progress indicator, and a URL-query-string-routed dialog that syncs open state with browser history.
 
 import {
   useCallback,
@@ -14,14 +14,14 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Modal.css'
 
-// ABOUTME: ModalVariant — a type alias.
+// ABOUTME: Selects the modal layout: 'centered' is a plain dialog, 'sectioned' adds a sticky scrollable body and footer, 'wizard' drives a multi-step flow with Back/Next controls and a progress list, 'routed' syncs open state with a URL query parameter.
 export type ModalVariant = 'centered' | 'sectioned' | 'wizard' | 'routed'
-// ABOUTME: ModalSize — a type alias.
+// ABOUTME: Width preset for the modal panel: 'sm' is compact, 'md' is the default reading width, 'lg' is wide for forms or rich content.
 export type ModalSize = 'sm' | 'md' | 'lg'
-// ABOUTME: ModalIntent — a type alias.
+// ABOUTME: Intent colouring for modal action buttons: 'primary' for confirmations, 'danger' for destructive actions.
 export type ModalIntent = 'primary' | 'danger'
 
-// ABOUTME: ModalAction — an interface.
+// ABOUTME: Describes a footer action button: a display label, click handler, optional intent colouring, and disabled flag; used for `primaryAction` and `secondaryAction` on centered/sectioned variants.
 export interface ModalAction {
   label: string
   onClick?: () => void
@@ -29,7 +29,7 @@ export interface ModalAction {
   disabled?: boolean
 }
 
-// ABOUTME: WizardStep — an interface.
+// ABOUTME: One step in a wizard modal: a stable `id`, a title shown in the progress indicator, the step body as `content`, and an optional `canAdvance` gate that disables the Next button when false.
 export interface WizardStep {
   id: string
   title: string
@@ -37,7 +37,7 @@ export interface WizardStep {
   canAdvance?: boolean
 }
 
-// ABOUTME: Props for Modal.
+// ABOUTME: Configures Modal — controls open state (controlled via `open`/`onOpenChange` or uncontrolled via `defaultOpen`), variant, size, action buttons, wizard steps, and the query key/value for the 'routed' variant.
 export interface ModalProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ModalVariant
@@ -82,7 +82,16 @@ function getFocusable(root: HTMLElement | null): HTMLElement[] {
     .filter(el => !el.hasAttribute('hidden'))
 }
 
-// ABOUTME: Modal — a React component.
+// ABOUTME: Renders an accessible `role="dialog"` panel inside a scrim, portaled via `createPortal` to the app's portal target; manages focus trapping (Tab/Shift+Tab cycle), body scroll lock, Escape-to-close, and wizard step state.
+/**
+ * Open state is dual-mode: when `open` is provided the component is fully
+ * controlled; otherwise it manages `innerOpen` itself starting from
+ * `defaultOpen`. The 'routed' variant also syncs open state with
+ * `window.location.search` using `pushState`/`popstate` so the browser Back
+ * button closes the dialog. Character-border corners (`┌ ┐ └ ┘`) are always
+ * rendered but hidden by default, revealed only under the
+ * `--border-style: character` palette token (the Terminal-TUI palette engine).
+ */
 export function Modal(props: ModalProps) {
   const {
     variant = 'centered',

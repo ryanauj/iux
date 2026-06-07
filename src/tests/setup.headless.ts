@@ -1,4 +1,4 @@
-// ABOUTME: jsdom polyfills for the headless integration harness.
+// ABOUTME: jsdom polyfills for the headless integration harness: no-op stubs for ResizeObserver and IntersectionObserver (used by Pagination and Tabs), a requestAnimationFrame shim (needed by runner.ts to flush React updates), and a scrollIntoView stub.
 
 /**
  * jsdom polyfills for the headless integration harness.

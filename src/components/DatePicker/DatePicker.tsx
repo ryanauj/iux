@@ -1,4 +1,4 @@
-// ABOUTME: ---------- Component ----------
+// ABOUTME: Date input supporting four interaction modes — text field, calendar popover, two-date range picker with preset shortcuts, and natural-language entry (e.g., "next tue at 9am").
 
 import {
   useCallback,
@@ -12,18 +12,23 @@ import {
 } from 'react'
 import './DatePicker.css'
 
-// ABOUTME: React types in this file: ReactNode shows up in the public `label` prop.
-// React types in this file: ReactNode shows up in the public `label` prop.
-
+// ABOUTME: Interaction mode: 'input' for free-text entry, 'calendar' for a popover month grid, 'range' for a two-date popover with optional presets, 'nl' for natural-language phrases parsed into dates.
 export type DatePickerVariant = 'input' | 'calendar' | 'range' | 'nl'
 
-// ABOUTME: DatePreset — an interface.
+// ABOUTME: A named quick-select shortcut that returns a start/end Date pair; consumed by the 'range' variant's preset button row.
 export interface DatePreset {
   label: string
   getRange: () => [Date, Date]
 }
 
-// ABOUTME: Props for DatePicker.
+// ABOUTME: Props for DatePicker — variant selects the interaction mode; single-date state uses value/onValueChange, range state uses range/onRangeChange; presets, min/max, label, hint, and error complete the field API.
+/**
+ * Controlled or uncontrolled. Single-date modes (input, calendar) use `value` /
+ * `defaultValue` / `onValueChange`; range modes (range, nl) use `range` /
+ * `defaultRange` / `onRangeChange`. The `nl` variant parses phrases like
+ * "tomorrow at 9am" or "next tue" and accumulates a [start, end] range across
+ * two Enter presses. `timeZone` (IANA string) affects display formatting only.
+ */
 export interface DatePickerProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: DatePickerVariant
@@ -169,9 +174,15 @@ function monthMatrix(viewYear: number, viewMonth: number): Date[][] {
   return rows
 }
 
-// ABOUTME: ---------- Component ----------
-// ---------- Component ----------
-
+// ABOUTME: Date picker field that renders an input, calendar popover, range popover, or NL entry field depending on variant; manages both controlled and uncontrolled single-date and range states.
+/**
+ * For 'input': a text field that parses on blur. For 'calendar' and 'range': a
+ * button that opens a popover containing a navigable month grid with keyboard
+ * support (arrow keys, PageUp/Down, Home/End, Enter). For 'range': optional
+ * preset shortcuts and two-click selection with hover-highlight. For 'nl':
+ * a text input that interprets natural-language expressions on Enter, building
+ * a [start, end] pair across successive submissions.
+ */
 export function DatePicker(props: DatePickerProps) {
   const {
     variant = 'input',
@@ -497,12 +508,11 @@ export function DatePicker(props: DatePickerProps) {
   )
 }
 
-// ABOUTME: Helpers exported for stories / tests.
-// Helpers exported for stories / tests.
+// ABOUTME: Returns a DatePreset covering the last N calendar days (inclusive of today), suitable for the 'range' variant's preset list.
 export function presetLastNDays(n: number, label?: string): DatePreset {
   return { label: label ?? `Last ${n} days`, getRange: () => [addDays(startOfDay(new Date()), -n + 1), startOfDay(new Date())] }
 }
-// ABOUTME: presetThisMonth — a helper function.
+// ABOUTME: Returns a DatePreset spanning the first to last day of the current calendar month; suitable for the 'range' variant's preset list.
 export function presetThisMonth(): DatePreset {
   return {
     label: 'This month',

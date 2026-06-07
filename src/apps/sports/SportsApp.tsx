@@ -1,4 +1,4 @@
-// ABOUTME: SportsApp — a React component (apps).
+// ABOUTME: Root of the NBA-style Hoops Hub demo app — wires routing, palette/layout/motion controls, and the Shell nav to every sports page.
 
 import { useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -49,7 +49,14 @@ const NAV: NavItem[] = [
   { to: sportsRoutes.matchup(), label: 'Matchup', isActive: r => r.kind === 'matchup' },
 ]
 
-// ABOUTME: SportsApp — a React component.
+// ABOUTME: Top-level component that resolves the hash route, reads palette/layout/motion from URL params, wraps everything in PaletteRoot and Shell, and renders the active page via RouteContent.
+/**
+ * Top-level component for the sports demo. Strips the `apps/sports` prefix from
+ * the hash path and passes the remainder to `matchSportsRoute`, then renders the
+ * matched page inside the `Shell` layout. Palette, layout variant, and motion
+ * scale are all persisted in URL query params (with site-wide persisted style as
+ * a fallback) and exposed via the floating `DraggableControls` panel.
+ */
 export function SportsApp({ location }: SportsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

@@ -1,4 +1,4 @@
-// ABOUTME: crt-phosphor — part of the guides area.
+// ABOUTME: Engine guide definition for the CRT / Phosphor rendering engine — the vacuum-tube engine that paints horizontal scanlines via effect.overlay.image, renders every glyph and edge in a single phosphor colour with a bloom halo, and adds an 80 ms motion.decay tail to state transitions so hovers and focus moves fade out the way a real CRT fades.
 
 import { useState } from 'react'
 import { palette as crtPhosphorGreen } from '../../../palettes/crt-phosphor-green'
@@ -212,7 +212,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: crtPhosphorGuide — an exported value.
+// ABOUTME: crtPhosphorGuide — the EngineGuideMeta for the CRT / Phosphor engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the crt-phosphor-green palette, covering the scanline overlay, the inset-phosphor-stroke plus outer-bloom elevation recipe, the decay-tail motion regime, and the single-hue alpha-only intent differentiation.
 export const crtPhosphorGuide: EngineGuideMeta = {
   engine: 'crt-phosphor',
   name: 'CRT / Phosphor',

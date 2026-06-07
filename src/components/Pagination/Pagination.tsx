@@ -1,4 +1,4 @@
-// ABOUTME: Pagination — a React component (components).
+// ABOUTME: Navigation component covering four pagination patterns: numbered page buttons with ellipsis, a rich variant adding first/last buttons and a page-size selector, a manual load-more button, and an infinite-scroll variant that uses IntersectionObserver to auto-fire onLoadMore with a scroll-to-top affordance.
 
 import {
   useCallback,
@@ -8,10 +8,10 @@ import {
 } from 'react'
 import './Pagination.css'
 
-// ABOUTME: PaginationVariant — a type alias.
+// ABOUTME: Selects the pagination pattern: 'numbered' shows compact page buttons, 'rich' adds first/last jumps and a per-page select, 'load-more' renders a button the caller enables, 'infinite' uses IntersectionObserver to trigger loading automatically.
 export type PaginationVariant = 'numbered' | 'rich' | 'load-more' | 'infinite'
 
-// ABOUTME: Props for Pagination.
+// ABOUTME: Configures Pagination — page/pageCount/onPageChange drive the numbered and rich variants; hasMore/loading/onLoadMore/itemCount/totalCount drive load-more and infinite; scrollContainerRef overrides the scroll target for the infinite sentinel.
 export interface PaginationProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PaginationVariant
@@ -51,7 +51,15 @@ function pageList(page: number, total: number): (number | 'gap')[] {
   return pages
 }
 
-// ABOUTME: Pagination — a React component.
+// ABOUTME: Renders a `<nav>` whose content branches on variant: numbered/rich build a `pageList` with at most 7 visible buttons (collapsing distant pages to ellipsis gaps), load-more shows a single button, infinite attaches an IntersectionObserver to an invisible sentinel div and shows a "Back to top" button after 320 px of scroll.
+/**
+ * The `pageList` helper emits `'gap'` sentinels for ellipsis spans so the
+ * rendered sequence is always at most 7 slots wide regardless of total pages.
+ * The 'infinite' variant also listens to scroll events on `scrollContainerRef`
+ * or `window` to show the Back-to-top button once the user has scrolled past
+ * 320 px; the IntersectionObserver fires `onLoadMore` with a 120 px
+ * rootMargin so content loads before the sentinel is fully visible.
+ */
 export function Pagination({
   variant = 'numbered',
   page = 1,

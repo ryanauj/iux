@@ -1,4 +1,4 @@
-// ABOUTME: PartialDependence — a React component (components).
+// ABOUTME: SVG partial-dependence (PDP) plot showing predicted response across a focal predictor's range, with three variants: a plain line, a line with confidence-band fill, and a rug of observed data values below the axis.
 
 import { useMemo } from 'react'
 import './PartialDependence.css'

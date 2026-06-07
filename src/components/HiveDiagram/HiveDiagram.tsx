@@ -1,16 +1,16 @@
-// ABOUTME: HiveDiagram — a React component (components).
+// ABOUTME: SVG hive diagram component that places nodes on three radial axes by a named axis attribute and connects them with curved edges, supporting simple, weighted, and directed variants.
 
 import { useMemo } from 'react'
 import './HiveDiagram.css'
 
-// ABOUTME: HiveDiagramVariant — a type alias.
+// ABOUTME: Controls edge rendering: 'simple' uses uniform 1-px strokes, 'weighted' scales stroke width by edge value, 'directed' adds arrowhead markers.
 export type HiveDiagramVariant = 'simple' | 'weighted' | 'directed'
 
-// ABOUTME: HiveIntent — a type alias.
+// ABOUTME: Semantic colour intent applied to nodes and axes; assignment follows axis discovery order when not set explicitly on a node.
 export type HiveIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: HiveNode — an interface.
+// ABOUTME: A single node in the hive diagram: belongs to a named axis, carries a normalised [0, 1] position along that axis, and optionally overrides its colour intent.
 export interface HiveNode {
   id: string
   label: string
@@ -22,14 +22,14 @@ export interface HiveNode {
   intent?: HiveIntent
 }
 
-// ABOUTME: HiveEdge — an interface.
+// ABOUTME: A directed connection between two node ids; an optional numeric value drives stroke width in the 'weighted' and 'directed' variants.
 export interface HiveEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for HiveDiagram.
+// ABOUTME: Props for HiveDiagram — supplies the node and edge arrays, optional canvas size, and the rendering variant.
 export interface HiveDiagramProps {
   variant?: HiveDiagramVariant
   nodes: HiveNode[]
@@ -43,7 +43,16 @@ const INTENTS: HiveIntent[] = ['primary', 'info', 'success', 'warning', 'danger'
 
 const AXIS_ANGLES_3 = [-Math.PI / 2, -Math.PI / 2 + (Math.PI * 2) / 3, -Math.PI / 2 + (Math.PI * 4) / 3]
 
-// ABOUTME: HiveDiagram — a React component.
+// ABOUTME: Renders nodes on three evenly-spaced radial axes (excess axes collapse onto axis 3), connects them with quadratic Bézier curves that bow away from the centre, and labels each axis at its far end; edge stroke widths and an arrowhead marker are activated by the 'weighted'/'directed' variants.
+/**
+ * Layout is computed once in a `useMemo` block: node positions are derived
+ * from each node's `axis` string (up to three distinct values) and its
+ * normalised `position` in [0, 1]. Edges are drawn as quadratic curves whose
+ * control point pulls away from the centroid. In the 'directed' variant an
+ * SVG `<marker>` arrowhead is appended via `markerEnd`. Axis labels appear
+ * past the outer radius, and each node circle carries an SVG `<title>` with
+ * axis and position details.
+ */
 export function HiveDiagram({
   variant = 'simple',
   nodes,

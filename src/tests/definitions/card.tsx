@@ -1,4 +1,4 @@
-// ABOUTME: Card ladder rungs: static, expandable, bento (accent stripe), spatial (mouse- tilt parallax).
+// ABOUTME: Integration tests for the Card component covering four ladder rungs: static (title/body/footer slots render), expandable (click toggles aria-expanded and reveals hidden content), bento (data-accent and accent stripe element), and spatial (data-variant=spatial class; the tilt is mousemove-driven and not asserted).
 
 // Card ladder rungs: static, expandable, bento (accent stripe), spatial (mouse-
 // tilt parallax). Rung 4 only asserts the variant class — the tilt effect is
@@ -48,7 +48,7 @@ function SpatialComposition() {
   )
 }
 
-// ABOUTME: cardTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Card: static layout, expandable click-to-reveal, bento accent stripe, and spatial variant class.
 export const cardTests: IntegrationTest[] = [
   {
     id: 'card-rung-1-static',

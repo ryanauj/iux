@@ -1,23 +1,23 @@
-// ABOUTME: DagLayered — a React component (components).
+// ABOUTME: SVG directed-acyclic-graph renderer using longest-path layer assignment and barycentric within-layer ordering to minimise edge crossings.
 
 import { useMemo } from 'react'
 import './DagLayered.css'
 
-// ABOUTME: DagLayeredVariant — a type alias.
+// ABOUTME: Flow direction and edge emphasis mode: 'vertical' flows top-to-bottom, 'horizontal' left-to-right, 'highlighted' dims non-highlighted edges to show a critical path.
 export type DagLayeredVariant = 'vertical' | 'horizontal' | 'highlighted'
 
-// ABOUTME: DagLayeredIntent — a type alias.
+// ABOUTME: Semantic colour applied per-node; defaults to cycling through the intent palette by layer index when not set on the node.
 export type DagLayeredIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: DagNode — an interface.
+// ABOUTME: A graph node with a unique id, display label, and optional intent colour override.
 export interface DagNode {
   id: string
   label: string
   intent?: DagLayeredIntent
 }
 
-// ABOUTME: DagEdge — an interface.
+// ABOUTME: A directed edge from one node id to another, with optional numeric value that scales stroke width and a boolean highlight flag for the 'highlighted' variant.
 export interface DagEdge {
   from: string
   to: string
@@ -25,7 +25,7 @@ export interface DagEdge {
   highlight?: boolean
 }
 
-// ABOUTME: Props for DagLayered.
+// ABOUTME: Props for DagLayered — variant sets layout direction and edge highlight mode; nodes and edges describe the graph; width/height size the SVG viewport.
 export interface DagLayeredProps {
   variant?: DagLayeredVariant
   nodes: DagNode[]
@@ -118,7 +118,15 @@ function orderWithinLayers(
   return layers
 }
 
-// ABOUTME: DagLayered — a React component.
+// ABOUTME: Renders a layered DAG as pill-shaped nodes connected by sigmoid curves with arrowheads; computes layer positions via longest-path then reduces crossings with 4-pass barycentric sweep.
+/**
+ * Internally calls `assignLayers` to map each node to a depth level, then
+ * `orderWithinLayers` to sort siblings by their parents' mean position.
+ * Nodes are placed on a grid (layer × slot), drawn as rounded rects with
+ * intent-coloured CSS classes; edges are cubic Bézier curves (horizontal or
+ * vertical depending on variant) with a shared SVG arrowhead marker. Edge
+ * stroke width scales linearly with the optional `value` field.
+ */
 export function DagLayered({
   variant = 'vertical',
   nodes,

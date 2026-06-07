@@ -1,16 +1,16 @@
-// ABOUTME: CircularNetwork — a React component (components).
+// ABOUTME: SVG network graph that arranges nodes evenly on a circle and connects them with center-curving quadratic Bézier edges, with simple, weighted-stroke, and directed (arrowhead) variants.
 
 import { useMemo } from 'react'
 import './CircularNetwork.css'
 
-// ABOUTME: CircularNetworkVariant — a type alias.
+// ABOUTME: Display mode — 'simple' draws uniform-weight edges, 'weighted' scales stroke width by edge value, 'directed' adds an arrowhead marker at the target node.
 export type CircularNetworkVariant = 'simple' | 'weighted' | 'directed'
 
-// ABOUTME: CircularNetworkIntent — a type alias.
+// ABOUTME: Semantic color token applied to a node's circle and its outgoing edges, drawn from the six contract intents.
 export type CircularNetworkIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: CircularNode — an interface.
+// ABOUTME: A network node placed on the circle ring — id, label, optional group (drives intent color), optional explicit intent, and optional weight (drives node circle radius).
 export interface CircularNode {
   id: string
   label: string
@@ -19,14 +19,14 @@ export interface CircularNode {
   weight?: number
 }
 
-// ABOUTME: CircularEdge — an interface.
+// ABOUTME: A directed edge between two node ids with an optional numeric value used by the 'weighted' variant to scale stroke width.
 export interface CircularEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for CircularNetwork.
+// ABOUTME: Props for CircularNetwork — supplies node and edge data, variant, and SVG dimensions.
 export interface CircularNetworkProps {
   variant?: CircularNetworkVariant
   nodes: CircularNode[]
@@ -38,7 +38,16 @@ export interface CircularNetworkProps {
 
 const INTENTS: CircularNetworkIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
-// ABOUTME: CircularNetwork — a React component.
+// ABOUTME: Sorts nodes by group so clusters are adjacent on the ring, places each node at an equal angular step, scales node radius by `weight`, then draws quadratic Bézier edges that curve toward the center; 'directed' injects an SVG `<marker>` arrowhead.
+/**
+ * The layout memo sorts nodes by group (then label) so same-group nodes cluster
+ * adjacently on the ring. Edge control points are computed as the midpoint
+ * between endpoints pulled toward the center by a fraction of the chord length
+ * (`curl`), creating the characteristic inward curve. Edge endpoints are
+ * shortened by each node's radius so strokes don't overlap the circles.
+ * Labels are positioned radially just outside `r0` with text-anchor adjusted
+ * by the cosine of the node's angle.
+ */
 export function CircularNetwork({
   variant = 'simple',
   nodes,

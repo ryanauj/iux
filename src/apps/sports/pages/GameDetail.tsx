@@ -1,4 +1,4 @@
-// ABOUTME: GameDetail — a React component (apps).
+// ABOUTME: Full game detail page showing the scoreboard header, quarter-by-quarter score table, and top-performer stat lines for a single game looked up by id.
 
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { Link } from '../../Link'
@@ -17,7 +17,13 @@ interface GameDetailProps {
   id: string
 }
 
-// ABOUTME: GameDetail — a React component.
+// ABOUTME: Renders the full box for a game: a two-sided header with team crests and final scores, a quarter-by-quarter breakdown table (when present), and a sortable top-performers table linking to player detail pages; falls back to NotFound when the id is missing.
+/**
+ * Looks up the game via `getGameById`, then resolves both teams with
+ * `getTeamById`. Renders three sections: a stylised scoreboard header with
+ * status badge (Live/Final/Upcoming), an optional quarter-score table, and a
+ * top-performers table whose player names link to `PlayerDetail`.
+ */
 export function GameDetail({ id }: GameDetailProps) {
   const game = getGameById(id)
   if (!game) return <NotFound message={`No game with id "${id}".`} />

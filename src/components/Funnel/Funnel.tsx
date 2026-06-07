@@ -1,16 +1,16 @@
-// ABOUTME: Funnel — a React component (components).
+// ABOUTME: SVG funnel/conversion chart with three layouts — plain stages with proportional bars, drop-off mode that appends a red loss bar to each stage, and a mirrored layout that centres bars horizontally.
 
 import { useMemo } from 'react'
 import './Funnel.css'
 
-// ABOUTME: FunnelVariant — a type alias.
+// ABOUTME: Layout mode: 'stages' renders left-aligned proportional bars, 'dropoff' appends a secondary bar showing the absolute count lost versus the previous stage plus a step-conversion rate label, 'mirrored' centres each bar so the funnel narrows symmetrically.
 export type FunnelVariant = 'stages' | 'dropoff' | 'mirrored'
 
-// ABOUTME: FunnelIntent — a type alias.
+// ABOUTME: Semantic colour applied to a stage's bar fill; defaults to cycling through the intent palette by stage index.
 export type FunnelIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: FunnelStage — an interface.
+// ABOUTME: A single funnel stage with a unique key, display label, numeric value (e.g. user count), and optional intent colour override.
 export interface FunnelStage {
   key: string
   label: string
@@ -18,7 +18,7 @@ export interface FunnelStage {
   intent?: FunnelIntent
 }
 
-// ABOUTME: Props for Funnel.
+// ABOUTME: Props for Funnel — variant selects the layout, stages supplies the ordered data, showOverall controls whether the overall-conversion percentage appears beside each bar's value label.
 export interface FunnelProps {
   variant?: FunnelVariant
   stages: FunnelStage[]
@@ -41,7 +41,14 @@ function defaultFormat(n: number): string {
   return n.toString()
 }
 
-// ABOUTME: Funnel — a React component.
+// ABOUTME: Renders a horizontal bar funnel SVG where each stage's bar width is proportional to its value relative to the first stage; 'dropoff' appends a secondary drop bar and a step-conversion rate, 'mirrored' centres bars symmetrically.
+/**
+ * Computes each row's `overall` fraction (value / top), `dropFromPrev`, and
+ * `conversionFromPrev` in a `useMemo` pass. Bar x position shifts to
+ * `(plotW - w) / 2` in 'mirrored' mode. The 'dropoff' variant renders a
+ * secondary rect in the drop CSS class immediately after the main bar, plus a
+ * small step-rate text label below the stage name.
+ */
 export function Funnel({
   variant = 'stages',
   stages,

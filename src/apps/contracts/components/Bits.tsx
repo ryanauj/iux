@@ -1,17 +1,14 @@
-// ABOUTME: Small shared presentational bits used across the Cap School pages: a page header, a "key idea" callout, a stat tile, and the prev/next pa…
+// ABOUTME: Shared presentational primitives for Cap School pages: PageHeader, KeyIdea callout, StatTile, Disclaimer, and the chapter Pager nav.
 
 import type { ReactNode } from 'react'
 import { Link } from '../../Link'
 import { contractsRoutes } from '../routes'
 
-// ABOUTME: Small shared presentational bits used across the Cap School pages: a page header, a "key idea" callout, a stat tile, and the prev/next pa…
+// ABOUTME: Kicker + title + lede header block rendered at the top of every Cap School chapter.
 /**
- * Small shared presentational bits used across the Cap School pages:
- * a page header, a "key idea" callout, a stat tile, and the prev/next
- * pager that strings the chapters together. Keeping them here avoids
- * re-deriving the same markup on every page.
+ * Kicker + title + lede header block rendered at the top of every Cap School
+ * chapter. The kicker shows the chapter number and slug (e.g. "Chapter 2 · The thresholds").
  */
-
 export function PageHeader({
   kicker,
   title,
@@ -30,7 +27,7 @@ export function PageHeader({
   )
 }
 
-// ABOUTME: KeyIdea — a React component.
+// ABOUTME: Highlighted aside block used to surface the single most important idea in a section; toned with info/success/warning/danger to match urgency.
 export function KeyIdea({
   tone = 'info',
   title,
@@ -48,7 +45,7 @@ export function KeyIdea({
   )
 }
 
-// ABOUTME: StatTile — a React component.
+// ABOUTME: Small key-figure tile showing a large value, a label, and an optional sub-label — used in stat rows at the top of data-heavy chapters.
 export function StatTile({
   label,
   value,
@@ -85,7 +82,7 @@ interface PagerLink {
   to: string
 }
 
-// ABOUTME: Pager — a React component.
+// ABOUTME: Prev/next chapter navigation bar; when there is no next link it falls back to a "Back to start" link to the Overview.
 export function Pager({ prev, next }: { prev?: PagerLink; next?: PagerLink }) {
   return (
     <nav className="cap-pager" aria-label="Chapter navigation">

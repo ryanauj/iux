@@ -1,4 +1,4 @@
-// ABOUTME: FeedShell — a React component (apps).
+// ABOUTME: FeedShell — timeline-stream shell that replaces the Home page with a chronological feed of game and stat-leader cards (live first, then today's finals and upcoming, then the season leaders) with status, conference, and team filters; on detail routes the feed collapses to a persistent left rail beside the page.
 
 import { useMemo, useState } from 'react'
 import { Link } from '../../Link'
@@ -349,7 +349,15 @@ function FeedNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] })
   )
 }
 
-// ABOUTME: FeedShell — a React component.
+// ABOUTME: Shell that renders FeedStream full-width on Home and as a left rail alongside props.children on detail routes; filter state lives in the shell so it survives the Home ↔ detail transition.
+/**
+ * On the Home route: a one-column stream headed "Today around the league".
+ * On other routes: a two-column split — the feed rail on the left, the detail
+ * page on the right — so the user can see live scores while reading a team or
+ * player page. Filter state (status, conference, team) is kept in component
+ * state (not the URL) because these are transient browse filters, not saved
+ * views.
+ */
 export function FeedShell(props: ShellProps) {
   const isHome = props.route.kind === 'home'
   // Filter state lives in the shell so collapsing the feed to a rail on

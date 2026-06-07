@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 
-// ABOUTME: BadgeTone — a type alias.
+// ABOUTME: The set of semantic tones a Badge can render (maps to contract intent colours).
 export type BadgeTone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
 interface BadgeProps {

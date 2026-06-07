@@ -1,18 +1,18 @@
-// ABOUTME: CalendarHeatmap — a React component (components).
+// ABOUTME: SVG calendar heatmap that renders daily activity data as colored cells in month, year (53-week), or streak-counting layouts.
 
 import { useMemo } from 'react'
 import './CalendarHeatmap.css'
 
-// ABOUTME: CalendarHeatmapVariant — a type alias.
+// ABOUTME: Layout mode — 'month' shows one calendar-grid month, 'year' renders 53 weeks of columns, 'streak' uses the year layout and displays the best consecutive-day streak in the header.
 export type CalendarHeatmapVariant = 'month' | 'year' | 'streak'
 
-// ABOUTME: CalendarDatum — an interface.
+// ABOUTME: A single day's data point — ISO yyyy-mm-dd date string and a numeric activity value used to determine tint level (0–4).
 export interface CalendarDatum {
   date: string // ISO yyyy-mm-dd
   value: number
 }
 
-// ABOUTME: Props for CalendarHeatmap.
+// ABOUTME: Props for CalendarHeatmap — supplies daily data, variant, optional reference end date, cell pixel size, and a value formatter for tooltips and the scale legend.
 export interface CalendarHeatmapProps {
   variant?: CalendarHeatmapVariant
   data: CalendarDatum[]
@@ -55,7 +55,14 @@ function tintLevel(value: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
-// ABOUTME: CalendarHeatmap — a React component.
+// ABOUTME: Renders day cells as SVG `<rect>` elements colored at one of five tint levels relative to the data maximum; 'month' builds a 7-column grid padded to Monday start, 'year'/'streak' build a 53-column week grid ending on the Sunday of `endDate`'s week.
+/**
+ * Builds a `Map<isoKey, value>` from `data` for O(1) lookup. 'month' computes
+ * leading padding from the Monday-based weekday of the first day and renders a
+ * 7×N grid. 'year' and 'streak' build a 53-week grid; 'streak' additionally
+ * walks all 371 cells to count the longest consecutive non-zero run and
+ * displays it in the header. A `Scale` legend strip is appended to every header.
+ */
 export function CalendarHeatmap({
   variant = 'year',
   data,

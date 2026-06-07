@@ -1,4 +1,4 @@
-// ABOUTME: DocModeToggle — a React component (components).
+// ABOUTME: Two-button radio group that switches documentation voice between 'plain' (everyday English) and 'technical' (token names and code references); reads and writes a DocMode value via a controlled value/onChange pair.
 
 import type { DocMode } from '../../lib/useDocMode'
 import './DocModeToggle.css'
@@ -22,7 +22,7 @@ const OPTIONS: { value: DocMode; label: string; title: string }[] = [
   },
 ]
 
-// ABOUTME: DocModeToggle — a React component.
+// ABOUTME: Renders a radiogroup of two buttons ('Plain English' and 'Technical') that calls onChange with the selected DocMode; the active button receives the is-active CSS modifier.
 export function DocModeToggle({ value, onChange, className }: DocModeToggleProps) {
   return (
     <div

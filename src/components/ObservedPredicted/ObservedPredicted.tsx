@@ -1,23 +1,23 @@
-// ABOUTME: ObservedPredicted — a React component (components).
+// ABOUTME: SVG observed-vs-predicted scatter plot for regression model evaluation, with a 45° identity line, optional error bars, and an R²/RMSE/MAE metrics strip in the 'metric' and 'errors' variants.
 
 import { useMemo } from 'react'
 import './ObservedPredicted.css'
 
-// ABOUTME: ObservedPredictedVariant — a type alias.
+// ABOUTME: Controls what is shown beyond the scatter dots and identity line: 'identity' is plain, 'metric' adds R²/RMSE/MAE below the axes, 'errors' additionally draws a vertical residual line from each dot to the identity line.
 export type ObservedPredictedVariant = 'identity' | 'metric' | 'errors'
 
-// ABOUTME: ObservedPredictedIntent — a type alias.
+// ABOUTME: Semantic colour intent applied uniformly to all scatter dots; defaults to 'primary'.
 export type ObservedPredictedIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ObservedPredictedPoint — an interface.
+// ABOUTME: One observation in the scatter plot: the model's `predicted` value on the x-axis, the actual `observed` value on the y-axis, and an optional label shown in the SVG `<title>` tooltip.
 export interface ObservedPredictedPoint {
   predicted: number
   observed: number
   label?: string
 }
 
-// ABOUTME: Props for ObservedPredicted.
+// ABOUTME: Configures ObservedPredicted — the `points` array drives the scatter, `intent` colours the dots, `xLabel`/`yLabel` label the axes, and `variant` adds error lines or metric badges.
 export interface ObservedPredictedProps {
   variant?: ObservedPredictedVariant
   points: ObservedPredictedPoint[]
@@ -42,7 +42,15 @@ function num(n: number): string {
   return n.toFixed(2)
 }
 
-// ABOUTME: ObservedPredicted — a React component.
+// ABOUTME: Renders a square SVG scatter plot using a shared domain across both axes (with 6 % padding) so the 45° identity line is perfectly diagonal; computes R², RMSE, and MAE in a single `useMemo` pass and displays them in a caption strip for the 'metric' and 'errors' variants.
+/**
+ * Both x and y axes share the same domain derived from all predicted and
+ * observed values, guaranteeing that the identity line `y = x` always runs
+ * corner to corner. The 'errors' variant draws a vertical `<line>` from each
+ * point's predicted x up or down to its observed y, visualising individual
+ * residuals. Gridlines and axis-aligned tick labels are drawn at three evenly
+ * spaced positions; the `intent` class colours the dots.
+ */
 export function ObservedPredicted({
   variant = 'identity',
   points,

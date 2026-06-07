@@ -1,19 +1,19 @@
-// ABOUTME: Area — a React component (components).
+// ABOUTME: SVG area chart rendering a time-series as a filled shape below the line, with filled, baselined (above/below a reference value), and gradient variants.
 
 import { useMemo } from 'react'
 import './Area.css'
 
-// ABOUTME: AreaVariant — a type alias.
+// ABOUTME: Fill style — 'filled' anchors to y=0, 'baselined' anchors to a configurable reference value (above/below shading), 'gradient' fades the fill from top to transparent.
 export type AreaVariant = 'filled' | 'baselined' | 'gradient'
 
-// ABOUTME: AreaIntent — a type alias.
+// ABOUTME: Semantic color token applied to the area stroke and fill, matching the six contract intents.
 export type AreaIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: AreaPoint — an interface.
+// ABOUTME: A single data point with a timestamp (or numeric x-value) and a y-value.
 export interface AreaPoint { t: number; y: number }
 
-// ABOUTME: Props for Area.
+// ABOUTME: Props for Area — supplies point data, variant, intent color, axis domains, tick formatters, and optional label.
 export interface AreaProps {
   variant?: AreaVariant
   points: AreaPoint[]
@@ -48,7 +48,14 @@ function defaultFormatY(y: number): string {
   return y.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: Area — a React component.
+// ABOUTME: Renders a time-series as a filled SVG area chart; computes linear scales from point extents, draws horizontal gridlines and axis tick labels, and swaps fill strategy by variant (flat fill, above/below baseline fill, or top-to-transparent gradient).
+/**
+ * Computes x/y linear scales from the `points` extent (or `yDomain`),
+ * then renders an SVG `<path>` for the stroke and another for the filled
+ * region. On `baselined`, the fill splits above/below the `baseline` value.
+ * On `gradient`, a `<linearGradient>` def fades the fill downward using
+ * intent-keyed CSS classes.
+ */
 export function Area({
   variant = 'filled',
   points,

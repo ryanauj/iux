@@ -1,4 +1,4 @@
-// ABOUTME: button — part of the tests area.
+// ABOUTME: Integration tests for the Button component covering four ladder rungs: click fires handler (rung 1), disabled state blocks click (rung 1), loading shows spinner and blocks click (rung 2), and intent variants each surface the correct data-intent attribute (rung 2).
 
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
@@ -50,7 +50,7 @@ function IntentComposition() {
   )
 }
 
-// ABOUTME: buttonTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Button: click-counter, disabled blocks click, loading spinner + aria-busy, and intent data attributes.
 export const buttonTests: IntegrationTest[] = [
   {
     id: 'button-rung-1-click',

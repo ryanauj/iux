@@ -1,4 +1,4 @@
-// ABOUTME: MaxDeals — a React component (apps).
+// ABOUTME: Chapter 4 — "Max & rookie deals": explains the three service-tier max salary ceilings (25% / 30% / 35% of the cap), the supermax retention mechanism, and how rookie-scale contracts create a below-market window that funds a team's depth.
 
 import { Card } from '../../../components/Card/Card'
 import { Lollipop } from '../../../components/Lollipop/Lollipop'
@@ -7,7 +7,14 @@ import { contractsRoutes } from '../routes'
 import { MAX_TIERS, SUPERMAX_NOTE, SEASON } from '../data/cap'
 import { money, pct } from '../format'
 
-// ABOUTME: MaxDeals — a React component.
+// ABOUTME: Chapter 4 page rendering MAX_TIERS from cap.ts as three accent cards plus a Lollipop chart for first-year max by tier; covers the supermax (SUPERMAX_NOTE) as a retention-only tool, and explains rookie-scale and the Rose Rule extension jump.
+/**
+ * Chapter 4 of Cap School. Maps MAX_TIERS into tier cards (cap share %, first-year
+ * dollar amount, note) and a Lollipop chart, then explains the supermax as a
+ * Bird-rights-style retention instrument. The second half covers rookie-scale
+ * contracts — why the fixed slot price creates a surplus that funds roster depth,
+ * and how the Rose Rule lets an award-winning rookie skip a tier on extension.
+ */
 export function MaxDeals() {
   return (
     <article className="cap-page">

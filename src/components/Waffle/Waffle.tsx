@@ -1,16 +1,16 @@
-// ABOUTME: Waffle — a React component (components).
+// ABOUTME: SVG waffle (unit) chart that maps category proportions onto an N×N grid using a largest-remainder allocation; three cell styles: dots (full-radius circles), blocks (rounded rectangles with tighter gap), and icons (concentric circle pairs).
 
 import { useMemo } from 'react'
 import './Waffle.css'
 
-// ABOUTME: WaffleVariant — a type alias.
+// ABOUTME: Cell shape — dots renders fully-rounded SVG rects (appearing as circles); blocks renders lightly-rounded rects with a tighter 2 px gap; icons renders concentric circle pairs (outer tinted, inner accent).
 export type WaffleVariant = 'dots' | 'blocks' | 'icons'
 
-// ABOUTME: WaffleIntent — a type alias.
+// ABOUTME: Colour intent applied to each category's cells; falls back to the INTENTS palette cycling by category index when not set.
 export type WaffleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: WaffleCategory — an interface.
+// ABOUTME: One category in the waffle chart: unique key, display label, raw count/value, and optional intent override used to colour its allocated cells.
 export interface WaffleCategory {
   key: string
   label: string
@@ -18,7 +18,7 @@ export interface WaffleCategory {
   intent?: WaffleIntent
 }
 
-// ABOUTME: Props for Waffle.
+// ABOUTME: Props for Waffle — category data, grid side length (rows × rows total cells), cell size in pixels, variant, an optional caption line, and className.
 export interface WaffleProps {
   variant?: WaffleVariant
   data: WaffleCategory[]
@@ -37,7 +37,14 @@ function intentFor(c: WaffleCategory, i: number): WaffleIntent {
   return c.intent ?? INTENTS[i % INTENTS.length]
 }
 
-// ABOUTME: Waffle — a React component.
+// ABOUTME: Allocates totalCells cells to categories using a largest-remainder method so the grid always sums exactly to rows², then renders each cell as a <rect> or concentric <circle> group with an intent class derived from the category's assignment.
+/**
+ * The cell array is iterated left-to-right, top-to-bottom; unallocated cells
+ * (beyond the last category) receive an `--empty` modifier class. A `<legend>`
+ * below the SVG shows each category's swatch, label, and rounded percentage.
+ * The `icons` variant skips the <rect> path and renders two circles per cell
+ * to produce a target/bullseye look.
+ */
 export function Waffle({
   variant = 'dots',
   data,

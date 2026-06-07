@@ -1,16 +1,16 @@
-// ABOUTME: Tree — a React component (components).
+// ABOUTME: SVG tree diagram that lays out a TreeNode hierarchy using a Reingold-Tilford-style leaf-centering algorithm and renders right-angle edge paths; supports vertical (top-down), horizontal (left-right), and compact (tighter padding) variants.
 
 import { useMemo } from 'react'
 import './Tree.css'
 
-// ABOUTME: TreeVariant — a type alias.
+// ABOUTME: Layout axis — vertical draws the tree top-down; horizontal draws it left-right; compact uses smaller padding constants while keeping the same layout algorithm.
 export type TreeVariant = 'vertical' | 'horizontal' | 'compact'
 
-// ABOUTME: TreeIntent — a type alias.
+// ABOUTME: Semantic colour intent applied to a node's circle; inherits cycling through the INTENTS palette by depth when not explicitly set on the node.
 export type TreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: TreeNode — an interface.
+// ABOUTME: A single node in the tree hierarchy: a unique id, display label, optional intent override, and optional children array; leaf nodes have no children.
 export interface TreeNode {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface TreeNode {
   children?: TreeNode[]
 }
 
-// ABOUTME: Props for Tree.
+// ABOUTME: Props for Tree — the root node of the hierarchy, optional pixel dimensions, layout variant, and an optional className.
 export interface TreeProps {
   variant?: TreeVariant
   root: TreeNode
@@ -66,7 +66,14 @@ function layoutTree(root: TreeNode, intentByDepth: TreeIntent[]): { nodes: Posit
   return { nodes: flat, leafSlots: Math.max(1, leaf), maxDepth }
 }
 
-// ABOUTME: Tree — a React component.
+// ABOUTME: Runs the layoutTree algorithm in a useMemo, maps leaf-slot and depth units to pixel coordinates, then renders SVG right-angle path edges followed by intent-coloured circle + label groups for each node.
+/**
+ * The horizontal variant swaps x/y roles (depth drives the x axis, leaf-slot
+ * drives y). A node-id-keyed Map is built to look up parent pixel positions
+ * efficiently when drawing edges. Text anchoring and dominant-baseline are
+ * adjusted per variant so labels appear beside nodes in horizontal mode and
+ * below nodes in vertical/compact mode.
+ */
 export function Tree({
   variant = 'vertical',
   root,

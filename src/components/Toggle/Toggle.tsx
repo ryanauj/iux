@@ -1,4 +1,4 @@
-// ABOUTME: Toggle — an exported value (components).
+// ABOUTME: Multi-mode toggle control covering four variants: switch (binary on/off slider), saving (switch that shows a spinner and "Saving…" label while an async operation is in flight), segmented (radio-group button strip), and tristate (three-way segmented with default Off/Inherit/On options).
 
 import {
   forwardRef,
@@ -13,17 +13,17 @@ import {
 } from 'react'
 import './Toggle.css'
 
-// ABOUTME: ToggleVariant — a type alias.
+// ABOUTME: Interaction mode — switch and saving render a sliding track with role="switch"; segmented and tristate render a role="radiogroup" button strip with arrow-key navigation.
 export type ToggleVariant = 'switch' | 'saving' | 'segmented' | 'tristate'
 
-// ABOUTME: ToggleOption — an interface.
+// ABOUTME: A single option in the segmented or tristate variant: its string value, display label, and optional disabled state.
 export interface ToggleOption {
   value: string
   label: ReactNode
   disabled?: boolean
 }
 
-// ABOUTME: Props for Toggle.
+// ABOUTME: Props for Toggle — binary variants use checked/defaultChecked/onCheckedChange; multi-value variants use value/defaultValue/onValueChange with an options list; saving adds a saving busy flag; onLabel/offLabel override rail text.
 export interface ToggleProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: ToggleVariant
@@ -61,7 +61,14 @@ const TRISTATE_OPTIONS: ToggleOption[] = [
   { value: 'on', label: 'On' },
 ]
 
-// ABOUTME: Toggle — an exported value.
+// ABOUTME: forwardRef-wrapped control that branches on isBinary to render either a sliding switch button (role="switch", aria-busy during saving) or a segmented radio group (role="radiogroup") with keyboard arrow-key cycling that skips disabled options.
+/**
+ * Binary variants manage a boolean inner state; multi-value variants manage a
+ * string inner state defaulting to the first option. The tristate variant
+ * pre-populates options with Off/Inherit/On when none are supplied. The saving
+ * variant disables interaction and shows a CSS spinner in the thumb while
+ * `saving` is truthy.
+ */
 export const Toggle = forwardRef<HTMLElement, ToggleProps>(function Toggle(
   {
     variant = 'switch',

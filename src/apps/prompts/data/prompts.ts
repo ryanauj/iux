@@ -1,4 +1,4 @@
-// ABOUTME: prompts — part of the apps area.
+// ABOUTME: Starter prompt library: 12 ready-to-use prompts across coding, analysis, writing, research, roleplay, and meta categories, seeded into the in-session PromptStoreProvider on first render.
 
 import type { Prompt } from '../types'
 

@@ -1,16 +1,16 @@
-// ABOUTME: InteractionPlot — a React component (components).
+// ABOUTME: SVG interaction plot that draws one line per moderator level of a focal predictor, supporting plain lines, confidence-band shading, and thin spaghetti overdraw for many-level comparisons.
 
 import { useMemo } from 'react'
 import './InteractionPlot.css'
 
-// ABOUTME: InteractionPlotVariant — a type alias.
+// ABOUTME: Controls how lines are rendered: 'lines' draws standard strokes, 'bands' adds a lower/upper confidence fill around each line, 'spaghetti' thins all strokes for dense many-group overdraw.
 export type InteractionPlotVariant = 'lines' | 'bands' | 'spaghetti'
 
-// ABOUTME: InteractionIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per moderator line; cycles over the default palette when not set on an InteractionLine.
 export type InteractionIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: InteractionLine — an interface.
+// ABOUTME: One line in the interaction plot representing a moderator level; carries a label, an ordered array of (x, y) points, and optional lower/upper bounds used by the 'bands' variant.
 export interface InteractionLine {
   id: string
   /** label for this moderator level, e.g. "low", "median", "high" */
@@ -20,7 +20,7 @@ export interface InteractionLine {
   points: { x: number; y: number; lower?: number; upper?: number }[]
 }
 
-// ABOUTME: Props for InteractionPlot.
+// ABOUTME: Configures InteractionPlot — supplies the array of moderator lines, optional x/y/moderator axis labels, canvas dimensions, and the rendering variant.
 export interface InteractionPlotProps {
   variant?: InteractionPlotVariant
   lines: InteractionLine[]
@@ -50,7 +50,16 @@ function intentFor(l: InteractionLine, i: number): InteractionIntent {
   return l.intent ?? INTENTS[i % INTENTS.length]
 }
 
-// ABOUTME: InteractionPlot — a React component.
+// ABOUTME: Renders each InteractionLine as an SVG path with auto-padded axes, an inline end-label at the last point, and optional confidence-band fills; axis label captions appear below the SVG when xLabel, yLabel, or moderatorLabel are set.
+/**
+ * Computes a shared domain from all line points (with 4 % x-padding and
+ * 8 % y-padding) in a single `useMemo` pass, then scales all coordinates via
+ * a linear map. The 'bands' variant traces each line's upper-bound points
+ * forward and lower-bound points in reverse to form a closed fill path.
+ * The 'spaghetti' variant adds `iux-inter__line--thin` so CSS can reduce
+ * opacity for dense many-group charts. Each line gets a labelled dot at its
+ * terminal point to serve as an inline legend.
+ */
 export function InteractionPlot({
   variant = 'lines',
   lines,

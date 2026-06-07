@@ -1,4 +1,4 @@
-// ABOUTME: VirtualList — a React component (components).
+// ABOUTME: Windowed list renderer with four variants: fixed (constant row height, simple arithmetic window), variable (ResizeObserver-measured rows with binary-search offset lookup), sections (fixed-height rows with sticky section header and a jump-to-section nav), and grid (multi-column cell layout with fixed cell height).
 
 import {
   useCallback,
@@ -12,10 +12,10 @@ import {
 } from 'react'
 import './VirtualList.css'
 
-// ABOUTME: VirtualListVariant — a type alias.
+// ABOUTME: Windowing strategy — fixed uses uniform rowHeight arithmetic; variable measures each row after render and caches heights; sections treats items as fixed-height but adds sticky headers and nav; grid arranges items in a cols-wide multi-column layout.
 export type VirtualListVariant = 'fixed' | 'variable' | 'sections' | 'grid'
 
-// ABOUTME: SectionSpec — an interface.
+// ABOUTME: A labelled section descriptor for the sections variant: a unique id, a title rendered in the sticky header and the nav button, and an inclusive index range into the items array.
 export interface SectionSpec {
   id: string
   title: ReactNode
@@ -23,7 +23,7 @@ export interface SectionSpec {
   itemRange: [number, number]
 }
 
-// ABOUTME: Props for VirtualList.
+// ABOUTME: Props for VirtualList — generic item array with renderItem callback, viewport height, per-variant sizing (rowHeight, estimatedRowHeight, cols, cellHeight), optional section descriptors, and aria/className metadata.
 export interface VirtualListProps<T> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: VirtualListVariant
@@ -49,7 +49,16 @@ export interface VirtualListProps<T> {
   ariaLabel?: string
 }
 
-// ABOUTME: VirtualList — a React component.
+// ABOUTME: Renders only the visible slice of items inside a fixed-height scroll container; top and bottom virtual padding is applied via a tall padder div so the scrollbar reflects total content height.
+/**
+ * The variable variant accumulates per-row heights in `heightsRef` (populated
+ * by MeasuredRow via ResizeObserver) and uses a binary-search over the offset
+ * array to find the first visible row. The sections variant derives the active
+ * section from the first visible row index and renders a sticky header from
+ * `activeSection.title`; a nav bar above the scroll container lets users jump
+ * to section start offsets. The grid variant positions cells absolutely using
+ * column index × (100/cols)% and row index × cellHeight.
+ */
 export function VirtualList<T>({
   variant = 'fixed',
   items,

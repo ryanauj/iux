@@ -1,4 +1,4 @@
-// ABOUTME: Per-palette design page.
+// ABOUTME: Per-palette design page at /palettes/:paletteId/design — renders the palette's full structured description (summary, origin, signatures, anti-signatures, token evidence, lookalikes), a copy-pasteable CSS custom-properties block identical to what PaletteRoot applies inline, and a "Copy as markdown" button emitting the same text as the on-disk docs/styles/*.md file, all painted inside a PaletteRoot using the palette being documented.
 
 /**
  * Per-palette design page. Renders the same content as
@@ -283,7 +283,7 @@ function PaletteDesignPage({ palette }: PageProps) {
   )
 }
 
-// ABOUTME: PaletteDesignPageRoute — a React component.
+// ABOUTME: PaletteDesignPageRoute — the routed entry point at /palettes/:paletteId/design; extracts the paletteId param, redirects unknown ids to /palettes, and delegates to the internal PaletteDesignPage component.
 export function PaletteDesignPageRoute() {
   const { paletteId } = useParams<{ paletteId: string }>()
   if (!paletteId || !(paletteId in palettes)) {

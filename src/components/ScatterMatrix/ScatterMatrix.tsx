@@ -1,22 +1,22 @@
-// ABOUTME: ScatterMatrix — a React component (components).
+// ABOUTME: SVG scatterplot matrix (SPLOM) showing pairwise relationships between numeric fields: full grid with Pearson r in upper cells ('pairs'), lower triangle only ('lower'), or diagonal histograms only ('diagonal').
 
 import { useMemo } from 'react'
 import './ScatterMatrix.css'
 
-// ABOUTME: ScatterMatrixVariant — a type alias.
+// ABOUTME: Layout mode: 'pairs' fills all cells (lower=scatter, diagonal=histogram, upper=Pearson r), 'lower' renders only the lower triangle plus diagonal, 'diagonal' renders only the diagonal histograms.
 export type ScatterMatrixVariant = 'pairs' | 'lower' | 'diagonal'
 
-// ABOUTME: ScatterMatrixIntent — a type alias.
+// ABOUTME: Semantic intent color applied to scatter dots; maps to the standard intent palette.
 export type ScatterMatrixIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ScatterMatrixField — an interface.
+// ABOUTME: One numeric field in the matrix: 'key' indexes into each row record and 'label' is displayed on the diagonal cell.
 export interface ScatterMatrixField {
   key: string
   label: string
 }
 
-// ABOUTME: Props for ScatterMatrix.
+// ABOUTME: Configures ScatterMatrix: 'fields' declares the numeric variables, 'rows' provides the record array (one entry per observation), 'cellSize' sets the pixel size of each square cell, and 'intent' colors the scatter dots.
 export interface ScatterMatrixProps {
   variant?: ScatterMatrixVariant
   fields: ScatterMatrixField[]
@@ -71,7 +71,14 @@ function histPath(values: number[], w: number, h: number, bins = 14): string {
   return d
 }
 
-// ABOUTME: ScatterMatrix — a React component.
+// ABOUTME: Renders a square grid of SVG cells: lower-triangle cells show scatter points for each field pair, diagonal cells show a 14-bin histogram of that field's values, and upper-triangle cells (in 'pairs' mode) show the Pearson r coefficient scaled by magnitude.
+/**
+ * Per-field domain and values are memoized from `rows`. Diagonal histograms
+ * are constructed inline with a simple bin-count path. Upper-triangle r values
+ * are styled with font-size proportional to |r| and colored by sign. Cells are
+ * all `cellSize × cellSize` squares composed into a single SVG at `cellSize *
+ * fields.length` overall dimensions.
+ */
 export function ScatterMatrix({
   variant = 'pairs',
   fields,

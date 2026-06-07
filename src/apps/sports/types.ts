@@ -3,7 +3,7 @@
 // ABOUTME: A league conference: East or West.
 export type Conference = 'East' | 'West'
 
-// ABOUTME: Division — a type alias.
+// ABOUTME: One of the six NBA-style divisions teams belong to, used for standings grouping and display metadata.
 export type Division =
   | 'Atlantic'
   | 'Central'
@@ -12,13 +12,13 @@ export type Division =
   | 'Pacific'
   | 'Southwest'
 
-// ABOUTME: Position — a type alias.
+// ABOUTME: The five standard basketball positions a player can be assigned, displayed on roster and player-detail views.
 export type Position = 'PG' | 'SG' | 'SF' | 'PF' | 'C'
 
-// ABOUTME: GameStatus — a type alias.
+// ABOUTME: Lifecycle state of a game — drives score visibility, status badges, and "live" filtering across shells and the feed.
 export type GameStatus = 'final' | 'scheduled' | 'live'
 
-// ABOUTME: Team — an interface.
+// ABOUTME: A franchise record holding identity (name, colors, arena), standings (wins, losses, streak, last10), and the per-game box-score averages (points, rebounds, assists, steals, blocks, turnovers, possessions) the matchup model prices.
 export interface Team {
   id: string
   slug: string
@@ -60,7 +60,7 @@ export interface Team {
   streak: string
 }
 
-// ABOUTME: PlayerStats — an interface.
+// ABOUTME: Season averages for one player: the counting stats (ppg, rpg, apg, spg, bpg, minutesPerGame) and shooting percentages (fgPct, fg3Pct, ftPct) shown on player-detail and leaderboard views.
 export interface PlayerStats {
   gamesPlayed: number
   minutesPerGame: number
@@ -77,7 +77,7 @@ export interface PlayerStats {
   ftPct: number
 }
 
-// ABOUTME: Player — an interface.
+// ABOUTME: A player record with identity (name, jersey, position, age, experience), roster link (teamId), physical measurements, and their season PlayerStats used by leaderboard and comparison views.
 export interface Player {
   id: string
   slug: string
@@ -94,20 +94,20 @@ export interface Player {
   stats: PlayerStats
 }
 
-// ABOUTME: GamePerformer — an interface.
+// ABOUTME: A player's standout performance in one game — their id and a compact stat line like "32 PTS, 8 REB, 6 AST" — embedded in Game.topPerformers and rendered in box-score and feed views.
 export interface GamePerformer {
   playerId: string
   /** Compact stat line like "32 PTS, 8 REB, 6 AST". */
   line: string
 }
 
-// ABOUTME: QuarterScore — an interface.
+// ABOUTME: Home and away points for one quarter, stored in Game.quarterScores (4 entries for completed games) and rendered in the box-score quarter-by-quarter breakdown.
 export interface QuarterScore {
   home: number
   away: number
 }
 
-// ABOUTME: Game — an interface.
+// ABOUTME: A single game record: teams, date, status, optional live clock (quarter, timeRemaining), optional scores, optional quarter-by-quarter breakdown, and optional top-performer lines — the central entity all schedule, scoreboard, and feed views read.
 export interface Game {
   id: string
   /** ISO date string with no time component, e.g. "2026-05-21". */

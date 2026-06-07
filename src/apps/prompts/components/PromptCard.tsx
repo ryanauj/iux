@@ -1,4 +1,4 @@
-// ABOUTME: PromptCard — a React component (apps).
+// ABOUTME: Card component for a single saved prompt in the Library grid: shows category badge, favorite toggle, title link, body snippet, tags, model badges, variable count, updated date, a copy button, and an "Open" link.
 
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
@@ -14,7 +14,14 @@ interface PromptCardProps {
   prompt: Prompt
 }
 
-// ABOUTME: PromptCard — a React component.
+// ABOUTME: Renders a prompt summary card used in the Library grid; reads toggleFavorite from the store, computes variable count via extractVariables, and links to the prompt detail page.
+/**
+ * Renders a summary card for one `Prompt` in the Library grid. Shows the
+ * category badge, star favorite toggle (backed by `usePromptStore`), title
+ * linked to the detail page, a 140-char body snippet, hashtag row, target
+ * model badges, template variable count, last-updated date, a quick-copy
+ * button, and an "Open" link.
+ */
 export function PromptCard({ prompt }: PromptCardProps) {
   const { toggleFavorite } = usePromptStore()
   const vars = extractVariables(prompt.body)

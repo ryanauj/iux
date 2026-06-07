@@ -1,4 +1,4 @@
-// ABOUTME: TokenField — a React component (components).
+// ABOUTME: Multi-token chip input with four variants: split (Enter/comma splits raw text into chips), typeahead (filtered option dropdown as you type), grouped (typeahead options organised under group headings with optional maxCount ceiling and validate hook), and structured (chips open a popover editor on click for rich per-token field editing).
 
 import {
   useCallback,
@@ -13,10 +13,10 @@ import {
 } from 'react'
 import './TokenField.css'
 
-// ABOUTME: TokenFieldVariant — a type alias.
+// ABOUTME: Input behaviour — split creates a chip on Enter or comma; typeahead shows a filtered dropdown; grouped organises the dropdown under labelled section headings; structured opens a per-chip popover editor on click.
 export type TokenFieldVariant = 'split' | 'typeahead' | 'grouped' | 'structured'
 
-// ABOUTME: TokenOption — an interface.
+// ABOUTME: A candidate option shown in the typeahead/grouped dropdown: its canonical value/label pair, optional group key for the grouped variant, display description, and arbitrary key-value metadata passed through to the created Token.
 export interface TokenOption {
   value: string
   label: string
@@ -25,7 +25,7 @@ export interface TokenOption {
   meta?: Record<string, string>
 }
 
-// ABOUTME: Token — an interface.
+// ABOUTME: A created chip in the field: its value/label pair, an optional invalid flag set when the entry doesn't match any option or fails validate(), and passthrough metadata from the matched TokenOption.
 export interface Token {
   value: string
   label: string
@@ -33,7 +33,7 @@ export interface Token {
   meta?: Record<string, string>
 }
 
-// ABOUTME: Props for TokenField.
+// ABOUTME: Props for TokenField — controlled/uncontrolled token list, option candidates, maxCount cap, validate hook, structured chip editor renderer, and standard field metadata (label, hint, error, disabled).
 export interface TokenFieldProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TokenFieldVariant
@@ -69,7 +69,14 @@ function uniqByValue(tokens: Token[]): Token[] {
   return out
 }
 
-// ABOUTME: TokenField — a React component.
+// ABOUTME: Renders a chip-input field: chips are displayed inline with the text input, Enter/comma/blur commit typed text as tokens, Backspace removes the last chip, and comma-or-newline paste is split into multiple chips at once.
+/**
+ * Manages controlled/uncontrolled token arrays (deduped by value, capped at
+ * maxCount). The typeahead/grouped/structured variants show a popover listbox
+ * filtered by the current input text; arrow keys cycle the active option. The
+ * structured variant opens an inline editor dialog on chip click, using the
+ * `editor` render prop or a built-in label + meta key/value form.
+ */
 export function TokenField({
   variant = 'split',
   value,

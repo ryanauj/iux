@@ -1,16 +1,16 @@
-// ABOUTME: ConfidenceBand — a React component (components).
+// ABOUTME: SVG line chart with shaded uncertainty intervals; supports a single outer band, a dual ribbon (outer + 50% inner), and a multi-series compare mode.
 
 import { useMemo } from 'react'
 import './ConfidenceBand.css'
 
-// ABOUTME: ConfidenceBandVariant — a type alias.
+// ABOUTME: Display mode: 'band' shows one outer uncertainty region, 'ribbon' adds an inner 50% interval, 'compare' overlays multiple series with a shared axis.
 export type ConfidenceBandVariant = 'band' | 'ribbon' | 'compare'
 
-// ABOUTME: ConfidenceIntent — a type alias.
+// ABOUTME: Semantic colour token applied to a series' band and line — maps to the design-system intent palette.
 export type ConfidenceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ConfidencePoint — an interface.
+// ABOUTME: A single time-series observation: a timestamp `t`, central estimate `y`, outer interval bounds `lo`/`hi`, and optional inner 50% bounds `lo50`/`hi50` used by the ribbon variant.
 export interface ConfidencePoint {
   t: number
   /** Central estimate (mean / median / forecast). */
@@ -24,7 +24,7 @@ export interface ConfidencePoint {
   hi50?: number
 }
 
-// ABOUTME: ConfidenceSeries — an interface.
+// ABOUTME: One named data series consisting of an id, display label, ordered ConfidencePoint array, and optional intent override.
 export interface ConfidenceSeries {
   id: string
   label: string
@@ -32,7 +32,7 @@ export interface ConfidenceSeries {
   intent?: ConfidenceIntent
 }
 
-// ABOUTME: Props for ConfidenceBand.
+// ABOUTME: Props for ConfidenceBand — variant selects the band style, series supplies the data, optional yDomain clamps the y axis, and splitT draws a vertical "now" marker.
 export interface ConfidenceBandProps {
   variant?: ConfidenceBandVariant
   series: ConfidenceSeries[]
@@ -65,7 +65,14 @@ function defaultFormatT(t: number): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
-// ABOUTME: ConfidenceBand — a React component.
+// ABOUTME: Renders an SVG with grid lines, a horizontal baseline, per-series uncertainty bands and centre lines, an optional vertical split marker, x/y tick labels, and a multi-series legend.
+/**
+ * Computes the time and y domains from all series points, then scales coordinates
+ * into the plot area bounded by PAD constants. For each series it builds closed SVG
+ * polygon paths for the outer band (and inner 50% band in ribbon mode) plus a centre
+ * polyline. The split marker, tick labels, and intent-coloured legend are all drawn
+ * inline in the SVG or as a sibling div.
+ */
 export function ConfidenceBand({
   variant = 'band',
   series,

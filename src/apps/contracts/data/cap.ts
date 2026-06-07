@@ -1,4 +1,4 @@
-// ABOUTME: cap — part of the apps area.
+// ABOUTME: Official 2025–26 NBA cap numbers and all derived constants used across Cap School — season thresholds, max-salary tiers, cap exceptions, tax brackets, and worked example data for the Anatomy, TeamSheet, and Trades chapters.
 
 import type {
   CapSeason,
@@ -225,9 +225,9 @@ export const SAMPLE_CONTRACT: ContractYear[] = [
   { label: 'Year 4', salary: 37_200_000, guarantee: 'player-option' },
 ]
 
-// ABOUTME: SAMPLE_CONTRACT_RAISE — an exported value.
+// ABOUTME: The Bird-rights maximum annual raise used in the Anatomy chapter's worked deal (8% of Year 1, applied flat each season).
 export const SAMPLE_CONTRACT_RAISE = 0.08
-// ABOUTME: SAMPLE_CONTRACT_BASE — an exported value.
+// ABOUTME: Year 1 starting salary for the Anatomy chapter's worked contract ($30M), from which SAMPLE_CONTRACT_RAISE is applied to produce each subsequent year.
 export const SAMPLE_CONTRACT_BASE = 30_000_000
 
 // ABOUTME: Worked team cap sheet — a fictional contender ("Harbor City") built to sit between the first and second apron so the thresholds all come…
@@ -239,7 +239,7 @@ export const SAMPLE_CONTRACT_BASE = 30_000_000
  */
 export const SAMPLE_TEAM_NAME = 'Harbor City Foghorns'
 
-// ABOUTME: SAMPLE_ROSTER — an exported value.
+// ABOUTME: Twelve-player cap sheet for the fictional Harbor City Foghorns (TeamSheet chapter) — illustrates every signing mechanism: two Bird-rights max deals, a full MLE, Early Bird, sign-and-trade, rookie scale, and minimums.
 export const SAMPLE_ROSTER: RosterSpot[] = [
   { id: 'r1', player: 'Franchise wing', role: '35% max', salary: 52_000_000, via: 'Bird (re-signed)' },
   { id: 'r2', player: 'All-Star guard', role: '30% max', salary: 38_500_000, via: 'Bird (re-signed)' },
@@ -271,7 +271,7 @@ export function rosterTotal(roster: RosterSpot[] = SAMPLE_ROSTER): number {
  */
 export const TRADE_STAR_SALARY = 34_000_000
 
-// ABOUTME: SAMPLE_TRADE — an exported value.
+// ABOUTME: Three-party worked trade for the Trades chapter — contender, rebuilder, and cap-space team — each with their ledger (out/in pieces), cap situation, reason for joining, and the salary-matching rule that makes their side legal.
 export const SAMPLE_TRADE: TradeParty[] = [
   {
     id: 'contender',
@@ -329,7 +329,7 @@ export interface TaxBreakdownStep {
   tax: number
 }
 
-// ABOUTME: computeTax — a helper function.
+// ABOUTME: Walks the incremental tax brackets to compute the total luxury-tax bill and a per-bracket breakdown for a given payroll in standard or repeater mode; used by both LuxuryTax (interactive) and TeamSheet (summary).
 export function computeTax(
   payroll: number,
   mode: 'standard' | 'repeater' = 'standard',

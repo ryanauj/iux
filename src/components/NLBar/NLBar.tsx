@@ -1,12 +1,12 @@
-// ABOUTME: NLBar — a React component (components).
+// ABOUTME: Natural-language command bar that pipes typed text through a caller-supplied parser and renders the parsed intent as editable key/value chips, with variants for read-only display, chip editing, one-shot execution, and parse disambiguation.
 
 import { useCallback, useEffect, useId, useState } from 'react'
 import './NLBar.css'
 
-// ABOUTME: NLBarVariant — a type alias.
+// ABOUTME: Controls chip interactivity and commit behaviour: 'parsed' shows chips read-only, 'editable' lets users click chips to change values via select/input, 'execute' clears and shows a committed-action flash after Run, 'disambig' adds alternate-parse buttons below the chips.
 export type NLBarVariant = 'parsed' | 'editable' | 'execute' | 'disambig'
 
-// ABOUTME: ParsedChip — an interface.
+// ABOUTME: A key/value token extracted from the parsed intent: the `key` is a stable identifier, `label` is shown in the chip, `value` is the current string, and `options` supplies a select list for editable variants.
 export interface ParsedChip {
   key: string
   label: string
@@ -17,7 +17,7 @@ export interface ParsedChip {
   options?: string[]
 }
 
-// ABOUTME: ParsedIntent — an interface.
+// ABOUTME: The structured parse result returned by the caller's `parse` function: an `action` verb, an array of ParsedChips, and optional `alternatives` for the 'disambig' variant's "Did you mean?" row.
 export interface ParsedIntent {
   action: string
   chips: ParsedChip[]
@@ -25,7 +25,7 @@ export interface ParsedIntent {
   alternatives?: Array<{ label: string; chips: ParsedChip[]; action?: string }>
 }
 
-// ABOUTME: Props for NLBar.
+// ABOUTME: Configures NLBar — the required `parse` function transforms raw text into a ParsedIntent on every keystroke; `onExecute` receives the final (possibly chip-edited) intent when the user commits via Enter or the Run button.
 export interface NLBarProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: NLBarVariant
@@ -36,7 +36,16 @@ export interface NLBarProps {
   className?: string
 }
 
-// ABOUTME: NLBar — a React component.
+// ABOUTME: Renders a text input whose value is parsed on every change; the resulting action label and editable chip row appear in a live-region preview panel below, with a Run button that calls `onExecute` and resets the field in the 'execute' variant.
+/**
+ * The internal `editedChips` state is seeded from the latest parse result and
+ * can be mutated per-chip before commit. The 'disambig' variant shows
+ * `intent.alternatives` as buttons that swap the entire chip set.
+ * The 'execute' variant flashes a committed-action banner for 2 s after
+ * commit. The internal `ChipView` subcomponent renders each chip as a
+ * button that opens an `<input>` or `<select>` depending on whether the
+ * chip has `options`.
+ */
 export function NLBar({
   variant = 'parsed',
   parse,

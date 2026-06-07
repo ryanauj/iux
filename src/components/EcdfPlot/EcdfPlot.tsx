@@ -1,16 +1,16 @@
-// ABOUTME: EcdfPlot — a React component (components).
+// ABOUTME: SVG empirical cumulative distribution function chart that sorts raw values and draws a step-function curve from 0 to 100%; supports single, multi-series overlay, and percentile-annotated modes.
 
 import { useMemo } from 'react'
 import './EcdfPlot.css'
 
-// ABOUTME: EcdfPlotVariant — a type alias.
+// ABOUTME: Display mode: 'single' renders one ECDF step curve, 'multiple' overlays several series on a shared axis, 'percentiles' adds crosshair markers at p50/p90/p95/p99 for a single series.
 export type EcdfPlotVariant = 'single' | 'multiple' | 'percentiles'
 
-// ABOUTME: EcdfIntent — a type alias.
+// ABOUTME: Semantic colour applied to a series' step path and legend swatch; defaults to cycling through the intent palette by series index.
 export type EcdfIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: EcdfSeries — an interface.
+// ABOUTME: One named data series: an id, display label, raw unsorted numeric values array that will be sorted internally to produce the ECDF step curve, and optional intent colour.
 export interface EcdfSeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface EcdfSeries {
   intent?: EcdfIntent
 }
 
-// ABOUTME: Props for EcdfPlot.
+// ABOUTME: Props for EcdfPlot — variant selects display mode, series supplies the raw value arrays, xDomain optionally clamps the x axis, and formatX formats x-axis tick labels.
 export interface EcdfPlotProps {
   variant?: EcdfPlotVariant
   series: EcdfSeries[]
@@ -51,7 +51,14 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: EcdfPlot — a React component.
+// ABOUTME: Renders an SVG ECDF chart by sorting each series' values and building a vertical-then-horizontal step path; the 'percentiles' variant overlays crosshair lines and dot markers at p50/p90/p95/p99.
+/**
+ * For each series, sorts values in a `useMemo` and maps them to (x, cumulative
+ * fraction) step coordinates. The step path is built by alternating horizontal
+ * segments (holding the prior CDF value) with vertical jumps at each observed
+ * value. Five horizontal grid lines label 0%/25%/50%/75%/100% on the y axis.
+ * A colour-coded legend appears below for multi-series data.
+ */
 export function EcdfPlot({
   variant = 'single',
   series,

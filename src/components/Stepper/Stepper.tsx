@@ -1,4 +1,4 @@
-// ABOUTME: Stepper — a React component (components).
+// ABOUTME: Multi-step wizard with a horizontal progress strip and content panel, supporting four completion strategies: linear (sequential), validated (per-step validation gates Next), branching (dynamic next-step routing), and resumable (localStorage + URL-hash persistence across sessions).
 
 import {
   useCallback,
@@ -9,12 +9,12 @@ import {
 } from 'react'
 import './Stepper.css'
 
-// ABOUTME: StepperVariant — a type alias.
+// ABOUTME: Progression strategy: linear advances sequentially; validated runs each step's validate() before allowing Next; branching routes via step.next(); resumable stores position in localStorage and the URL hash.
 export type StepperVariant = 'linear' | 'validated' | 'branching' | 'resumable'
-// ABOUTME: StepStatus — a type alias.
+// ABOUTME: Visual and semantic state of a single step dot — drives CSS class and aria-current assignment.
 export type StepStatus = 'complete' | 'active' | 'error' | 'disabled'
 
-// ABOUTME: StepperStep — an interface.
+// ABOUTME: Definition of a single wizard step: its id, display text, rendered content panel, optional explicit status, a validate() hook for the validated variant, and a next() router for the branching variant.
 export interface StepperStep {
   id: string
   title: string
@@ -27,7 +27,7 @@ export interface StepperStep {
   next?: () => string | null
 }
 
-// ABOUTME: Props for Stepper.
+// ABOUTME: Props for Stepper — supplies the step list, optional controlled/uncontrolled current-step id, variant strategy, resumable storageKey, and a completion callback fired when the last step's Next is clicked.
 export interface StepperProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: StepperVariant
@@ -43,7 +43,14 @@ export interface StepperProps {
   ariaLabel?: string
 }
 
-// ABOUTME: Stepper — a React component.
+// ABOUTME: Renders a horizontal step-indicator strip above a content panel with Back/Next controls; handles validated blocking, branching routing, and resumable URL-hash/localStorage sync.
+/**
+ * The strip renders one `<li>` per step showing a numbered dot (✓ when
+ * complete, ! on error) connected by a line. Clicking a completed dot jumps
+ * back (disabled in branching mode). The panel below shows the active step's
+ * `content` with Back and Next/Done buttons. Validation errors from
+ * `validate()` are shown inline below the offending step title.
+ */
 export function Stepper({
   variant = 'linear',
   steps,

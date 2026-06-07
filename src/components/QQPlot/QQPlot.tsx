@@ -1,16 +1,16 @@
-// ABOUTME: QQPlot — a React component (components).
+// ABOUTME: SVG Q-Q plot for assessing distribution fit: compares a sample against theoretical normal quantiles ('normal'), two samples against each other ('sampleVsSample'), or normal with a 95% pointwise confidence band ('banded').
 
 import { useMemo } from 'react'
 import './QQPlot.css'
 
-// ABOUTME: QQPlotVariant — a type alias.
+// ABOUTME: Picks the Q-Q variant: 'normal' plots sample z-scores vs theoretical normal, 'sampleVsSample' interpolates both samples to common plotting positions, 'banded' adds a 95% Filliben-style confidence envelope.
 export type QQPlotVariant = 'normal' | 'sampleVsSample' | 'banded'
 
-// ABOUTME: QQIntent — a type alias.
+// ABOUTME: Semantic dot color drawn on the scatter points, matching the standard intent palette (primary, success, warning, danger, info, neutral).
 export type QQIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: Props for QQPlot.
+// ABOUTME: Configures QQPlot: 'sample' is always required; 'reference' is only used by 'sampleVsSample'; 'intent' colors the scatter dots; 'width'/'height' set SVG dimensions.
 export interface QQPlotProps {
   variant?: QQPlotVariant
   /** The sample being assessed; required in every variant. */
@@ -65,7 +65,14 @@ function stats(values: number[]) {
   return { mean, sd: Math.sqrt(Math.max(variance, 1e-9)), n }
 }
 
-// ABOUTME: QQPlot — a React component.
+// ABOUTME: Renders an SVG Q-Q plot using Beasley-Springer-Moro probit approximation for normal quantiles, a y=x reference line, and in 'banded' mode a filled 95% confidence envelope computed from the inverse-normal PDF standard error.
+/**
+ * Plots sample quantiles against theoretical (or reference-sample) quantiles
+ * to assess distributional fit. Quantiles are computed via (i+0.5)/n Hazen
+ * plotting positions. In `normal` and `banded` modes the sample is first
+ * standardized so the reference line is always y=x. In `banded` mode a
+ * filled envelope is drawn using the pointwise SE ≈ √(p(1-p)/n) / φ(z).
+ */
 export function QQPlot({
   variant = 'normal',
   sample,

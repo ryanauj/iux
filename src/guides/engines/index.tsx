@@ -1,4 +1,4 @@
-// ABOUTME: Barrel entry for the guides module.
+// ABOUTME: Landing page at /engines — lists all fifteen rendering engines with name and summary teaser, links to their individual walkthroughs, and respects the doc-mode toggle to switch between technical and plain-English descriptions.
 
 import { Link } from 'react-router-dom'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -39,7 +39,7 @@ const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'terminal-tui', name: 'Terminal / TUI', available: true },
 ]
 
-// ABOUTME: EnginesIndex — a React component.
+// ABOUTME: EnginesIndex — the /engines index page: renders the full engine list inside an AppShell, reads plain/technical summaries from ENGINE_GUIDES based on the current DocMode, and links each available engine to its walkthrough at /engines/:id.
 export function EnginesIndex() {
   const [navLayout, setNavLayout] = useNavLayout()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

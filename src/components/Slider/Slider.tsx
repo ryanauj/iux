@@ -1,4 +1,4 @@
-// ABOUTME: Slider — an exported value (components).
+// ABOUTME: Accessible range slider in four variants: single thumb ('single'), single thumb with visible tick marks and optional snap ('ticks'), dual-thumb range selection ('range'), and single thumb with a miniature line-chart backdrop ('curve').
 
 import {
   forwardRef,
@@ -14,10 +14,10 @@ import {
 } from 'react'
 import './Slider.css'
 
-// ABOUTME: SliderVariant — a type alias.
+// ABOUTME: The functional mode: 'single' is a plain thumb, 'ticks' adds dot markers and optional snap-to-tick, 'range' shows two thumbs for a [lo, hi] interval, 'curve' overlays a scaled polyline (e.g. a histogram or spectral curve) behind the track.
 export type SliderVariant = 'single' | 'ticks' | 'range' | 'curve'
 
-// ABOUTME: Props for Slider.
+// ABOUTME: Configures Slider: 'value'/'range' control the current position(s), 'min'/'max'/'step' define the domain, 'ticks'/'snap' configure tick marks and snapping for the 'ticks' variant, 'curve' provides the backdrop data array for the 'curve' variant, and 'formatValue' formats the readout and bubble text.
 export interface SliderProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SliderVariant
@@ -79,7 +79,14 @@ function pctOf(value: number, min: number, max: number): number {
   return ((value - min) / (max - min)) * 100
 }
 
-// ABOUTME: Slider — an exported value.
+// ABOUTME: Pointer-capture drag slider with full keyboard support (Arrow, Home, End, PageUp/Down); supports controlled and uncontrolled single-value and range modes; the 'curve' variant renders a normalized polyline SVG behind the track via CurveBackdrop.
+/**
+ * Pointer events use setPointerCapture so drags continue outside the track.
+ * The 'range' variant picks the closer thumb on track-click by comparing
+ * distances. Snapping (for 'ticks') is applied after step quantization.
+ * A value readout always shows in the header; a bubble tooltip appears on
+ * the thumb when `stateLock` is set (for story demos) or during drag focus.
+ */
 export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   {
     variant = 'single',

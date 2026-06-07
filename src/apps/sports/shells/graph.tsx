@@ -1,4 +1,4 @@
-// ABOUTME: GraphShell — a React component (apps).
+// ABOUTME: GraphShell — force-directed network shell that replaces the Home page with an SVG graph of teams (inner ring), players (outer fan), and games (between team pairs); hover highlights connected nodes, click navigates to the entity page, and filter chips show/hide node kinds; layout is computed once and cached.
 
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -372,7 +372,15 @@ function GraphNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
-// ABOUTME: GraphShell — a React component.
+// ABOUTME: Shell that mounts the force-directed GraphSurface on the Home route and the standard page on all other routes; the visible node-kind set is persisted in `?graph=` as a compact comma-joined code string.
+/**
+ * On the Home route renders GraphSurface — a 800×560 SVG with team, player,
+ * and game nodes laid out by a custom iterative spring algorithm (no D3).
+ * The layout is computed once at module level and cached across remounts.
+ * Filter chips let the user hide any node kind; the filter is synced to
+ * `?graph=` via replaceParams so it survives navigation. On other routes the
+ * graph is replaced by props.children.
+ */
 export function GraphShell(props: ShellProps): ReactNode {
   const location = useHashLocation()
   const filter = useMemo(

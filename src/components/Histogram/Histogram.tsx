@@ -1,12 +1,12 @@
-// ABOUTME: Histogram — a React component (components).
+// ABOUTME: SVG histogram component that displays a numeric distribution as binned bars with mean/median markers, supporting counts, density, and cumulative views.
 
 import { useMemo } from 'react'
 import './Histogram.css'
 
-// ABOUTME: HistogramVariant — a type alias.
+// ABOUTME: Selects how bar heights are scaled: raw bin counts, probability density, or cumulative proportion (0–1).
 export type HistogramVariant = 'counts' | 'density' | 'cumulative'
 
-// ABOUTME: Props for Histogram.
+// ABOUTME: Props for Histogram — configures the data array, bin count, optional domain clamp, display size, and a custom number formatter.
 export interface HistogramProps {
   variant?: HistogramVariant
   values: number[]
@@ -44,7 +44,16 @@ function binValues(values: number[], binCount: number, domain?: [number, number]
   return out
 }
 
-// ABOUTME: Histogram — a React component.
+// ABOUTME: Renders a binned SVG histogram of a numeric array; bins data internally, draws y-axis gridlines and x-axis tick labels, and overlays vertical mean/median marker lines with a legend (hidden on the cumulative variant).
+/**
+ * Accepts a flat `values` array and bins it into `bins` equal-width buckets
+ * (default 16) over the data range or an explicit `domain`. The `variant`
+ * prop switches the y-axis between raw counts, probability density, and
+ * running cumulative proportion. Mean and median markers are drawn as
+ * vertical lines and labelled in a below-chart legend for the counts and
+ * density variants. An SVG `<title>` on every bar provides an accessible
+ * tooltip with the bucket range and raw count.
+ */
 export function Histogram({
   variant = 'counts',
   values,

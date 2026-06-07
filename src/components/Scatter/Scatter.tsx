@@ -1,16 +1,16 @@
-// ABOUTME: Scatter — a React component (components).
+// ABOUTME: SVG scatter plot with three modes: single-color dots ('dots'), multi-series color-coded dots with a legend ('grouped'), and dots plus an OLS regression line with R² annotation ('regression').
 
 import { useMemo } from 'react'
 import './Scatter.css'
 
-// ABOUTME: ScatterVariant — a type alias.
+// ABOUTME: Controls display extras: 'dots' renders points only, 'grouped' adds a color legend per series, 'regression' adds a least-squares fit line and y=mx+b·R² annotation below the chart.
 export type ScatterVariant = 'dots' | 'grouped' | 'regression'
 
-// ABOUTME: ScatterIntent — a type alias.
+// ABOUTME: Semantic series color applied to dots; cycles through the standard intent palette by series index when not set per series.
 export type ScatterIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ScatterPoint — an interface.
+// ABOUTME: One data point: x/y coordinates, an optional 'size' radius override (defaults to 3), and an optional 'label' shown as an SVG tooltip on hover.
 export interface ScatterPoint {
   x: number
   y: number
@@ -19,7 +19,7 @@ export interface ScatterPoint {
   label?: string
 }
 
-// ABOUTME: ScatterSeries — an interface.
+// ABOUTME: One scatter series: a stable 'id', a display 'label' used in the legend, an optional intent color, and an array of data points.
 export interface ScatterSeries {
   id: string
   label: string
@@ -27,7 +27,7 @@ export interface ScatterSeries {
   points: ScatterPoint[]
 }
 
-// ABOUTME: Props for Scatter.
+// ABOUTME: Configures Scatter: 'series' provides one or more point groups, 'xDomain'/'yDomain' pin the axis extents (auto-padded from data otherwise), and 'formatX'/'formatY' control tick label formatting.
 export interface ScatterProps {
   variant?: ScatterVariant
   series: ScatterSeries[]
@@ -81,7 +81,13 @@ function leastSquares(pts: ScatterPoint[]): { m: number; b: number; r2: number }
   return { m, b, r2 }
 }
 
-// ABOUTME: Scatter — a React component.
+// ABOUTME: Renders an SVG scatter plot with grid lines, axis ticks, and colored series circles; in 'regression' mode fits a single OLS line across all series points using least-squares and renders the line plus an R² badge; in 'grouped' mode shows a color legend above the chart.
+/**
+ * Axes are auto-padded 4% beyond the data range unless `xDomain`/`yDomain`
+ * are pinned. The regression line is computed once per memoized data set and
+ * drawn from the x-axis minimum to maximum. A color legend appears whenever
+ * `variant` is `'grouped'` or more than one series is passed.
+ */
 export function Scatter({
   variant = 'dots',
   series,

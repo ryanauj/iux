@@ -1,4 +1,4 @@
-// ABOUTME: registry — part of the guides area.
+// ABOUTME: Central registry that collects all fifteen per-engine EngineGuideMeta objects into ENGINE_GUIDES and derives the ENGINE_GUIDE_IDS tuple used by the router and EnginesIndex.
 
 import { flatGuide } from './flat'
 import { materialGuide } from './material'
@@ -17,7 +17,7 @@ import { auroraGuide } from './aurora'
 import { terminalTuiGuide } from './terminal-tui'
 import type { EngineGuideMeta } from './types'
 
-// ABOUTME: ENGINE_GUIDES — an exported value.
+// ABOUTME: ENGINE_GUIDES — a keyed record mapping every engine id (e.g. 'flat', 'glassmorphism') to its EngineGuideMeta, consumed by EnginesIndex for the listing and by the per-engine route to pick the correct guide.
 export const ENGINE_GUIDES = {
   flat: flatGuide,
   material: materialGuide,
@@ -36,8 +36,8 @@ export const ENGINE_GUIDES = {
   'terminal-tui': terminalTuiGuide,
 } satisfies Record<string, EngineGuideMeta>
 
-// ABOUTME: EngineGuideId — a type alias.
+// ABOUTME: EngineGuideId — a union of every valid engine guide key (e.g. 'flat' | 'material' | 'glassmorphism' | …), derived from ENGINE_GUIDES so the type automatically stays in sync with the registry.
 export type EngineGuideId = keyof typeof ENGINE_GUIDES
 
-// ABOUTME: ENGINE_GUIDE_IDS — an exported value.
+// ABOUTME: ENGINE_GUIDE_IDS — the ordered array of every registered engine guide key, used by EnginesIndex to drive the full engine listing including availability checks.
 export const ENGINE_GUIDE_IDS = Object.keys(ENGINE_GUIDES) as EngineGuideId[]

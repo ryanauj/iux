@@ -1,4 +1,4 @@
-// ABOUTME: Teams — a React component (apps).
+// ABOUTME: Team browser page showing all 10 teams as Card tiles with a gradient banner, record, and streak, filterable by conference (All / East / West) via a Segmented pill control; each card links to TeamDetail.
 
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
@@ -12,7 +12,7 @@ import type { Conference } from '../types'
 
 type ConfFilter = 'all' | Conference
 
-// ABOUTME: Teams — a React component.
+// ABOUTME: Filters TEAMS by the chosen conference, renders each as a gradient-banner Card with city, division, W-L record, and current streak; shows an EmptyState when no teams match.
 export function Teams() {
   const [filter, setFilter] = useState<ConfFilter>('all')
   const teams = filter === 'all' ? TEAMS : TEAMS.filter(t => t.conference === filter)

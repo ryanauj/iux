@@ -1,4 +1,4 @@
-// ABOUTME: EngineGuide — a React component (guides).
+// ABOUTME: Shell component that renders a single engine's step-by-step walkthrough page — Stepper navigation, a PaletteRoot demo frame, the palette info panel, and a draggable controls overlay for switching chrome palette and nav layout.
 
 import { useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -69,7 +69,7 @@ interface EngineGuideProps {
   guide: EngineGuideMeta
 }
 
-// ABOUTME: EngineGuide — a React component.
+// ABOUTME: EngineGuide — renders one engine walkthrough given its EngineGuideMeta: wraps the Stepper in a PaletteRoot bound to the guide's demoPalette, syncs the active step to ?step= in the URL, and toggles technical vs. plain-English copy via DocModeToggle.
 export function EngineGuide({ guide }: EngineGuideProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

@@ -1,4 +1,4 @@
-// ABOUTME: PromptsApp — a React component (apps).
+// ABOUTME: Root shell for the Promptbook demo app: wraps pages in PaletteRoot and PromptStoreProvider, renders the top nav (Library / Strategies), and dispatches hash routes to Library, PromptDetail, PromptForm, Strategies, StrategyDetail, or NotFound.
 
 import { useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -50,7 +50,14 @@ const NAV: NavItem[] = [
   },
 ]
 
-// ABOUTME: PromptsApp — a React component.
+// ABOUTME: Root shell for the Promptbook app: provides PaletteRoot (palette + motion), PromptStoreProvider, and ToastProvider, renders the header with Library/Strategies nav, and delegates page content to RouteContent via matchPromptsRoute.
+/**
+ * Root shell for the Promptbook app. Wraps the entire subtree in
+ * `PaletteRoot` (resolving palette and motion from URL params or persisted
+ * style), `PromptStoreProvider`, and `ToastProvider`, then renders the brand
+ * header, primary nav, and a floating `DraggableControls` panel. Page routing
+ * is handled by `matchPromptsRoute` and delegated to `RouteContent`.
+ */
 export function PromptsApp({ location }: PromptsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

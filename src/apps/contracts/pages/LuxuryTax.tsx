@@ -1,4 +1,4 @@
-// ABOUTME: LuxuryTax — a React component (apps).
+// ABOUTME: Chapter 6 — "The luxury tax": interactive bracket explorer where readers pick an overage amount and toggle standard/repeater rates to watch the tax bill build bracket by bracket in a Waterfall chart.
 
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
@@ -41,7 +41,13 @@ const bracketColumns: TableColumn<TaxBracket>[] = [
   },
 ]
 
-// ABOUTME: LuxuryTax — a React component.
+// ABOUTME: Chapter 6 page with a Segmented control for overage amount and mode (standard/repeater), driving computeTax from cap.ts; renders TAX_BRACKETS in a static Table and the bracket-by-bracket breakdown in a Waterfall chart with a running-total subtotal bar.
+/**
+ * Chapter 6 of Cap School. Owns a useState for overage and mode; calls
+ * computeTax on each render to get the bracket breakdown, then maps it into
+ * WaterfallStep array for the Waterfall component. A separate static Table
+ * shows all brackets with both standard and repeater rates side-by-side.
+ */
 export function LuxuryTax() {
   const [mode, setMode] = useState<'standard' | 'repeater'>('standard')
   const [overageStr, setOverageStr] = useState('20000000')

@@ -1,16 +1,16 @@
-// ABOUTME: CoefficientPlot — a React component (components).
+// ABOUTME: SVG dot plot for regression coefficients that shows point estimates with optional confidence interval whiskers, colored by significance relative to a reference line, with point, interval, and value-sorted variants.
 
 import { useMemo } from 'react'
 import './CoefficientPlot.css'
 
-// ABOUTME: CoefficientPlotVariant — a type alias.
+// ABOUTME: Display mode — 'point' shows dots only, 'interval' adds capped whiskers for lower/upper confidence bounds, 'sorted' additionally orders rows by descending |estimate|.
 export type CoefficientPlotVariant = 'point' | 'interval' | 'sorted'
 
-// ABOUTME: CoefficientIntent — a type alias.
+// ABOUTME: Semantic color token applied to a coefficient row's dot and interval line; auto-assigned as 'success' when CI is entirely positive, 'danger' when entirely negative, 'neutral' when spanning zero, or sign-based for point-only rows.
 export type CoefficientIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: Coefficient — an interface.
+// ABOUTME: A single regression coefficient — a unique key, display label, point estimate, optional lower/upper confidence bounds, and an optional intent override that bypasses the auto-coloring logic.
 export interface Coefficient {
   key: string
   label: string
@@ -22,7 +22,7 @@ export interface Coefficient {
   intent?: CoefficientIntent
 }
 
-// ABOUTME: Props for CoefficientPlot.
+// ABOUTME: Props for CoefficientPlot — supplies coefficient data, variant, a reference line value (default 0), optional fixed x-domain, value formatter, optional x-axis label, and SVG width (height is auto-computed from row count).
 export interface CoefficientPlotProps {
   variant?: CoefficientPlotVariant
   coefficients: Coefficient[]
@@ -59,7 +59,14 @@ function intentFor(c: Coefficient): CoefficientIntent {
   return c.estimate >= 0 ? 'primary' : 'info'
 }
 
-// ABOUTME: CoefficientPlot — a React component.
+// ABOUTME: Renders one SVG row per coefficient with a left-axis predictor label, a centered dot at the estimate, capped interval whiskers when bounds are provided, a value annotation to the right, and a vertical reference line; auto-sizes height to `26 × rowCount`.
+/**
+ * The x-domain is derived from all estimate/lower/upper values and the
+ * `reference` value, padded by 10%. `intentFor` auto-assigns 'success' when
+ * the entire CI is above zero, 'danger' when entirely below, 'neutral' when
+ * spanning zero, and sign-based primary/info for point-only rows. On 'sorted',
+ * rows are ordered by descending `|estimate|` before rendering.
+ */
 export function CoefficientPlot({
   variant = 'interval',
   coefficients,

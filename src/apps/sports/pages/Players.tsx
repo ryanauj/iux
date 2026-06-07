@@ -1,4 +1,4 @@
-// ABOUTME: Players — a React component (apps).
+// ABOUTME: Sortable player roster page for all teams, filterable by position (PG/SG/SF/PF/C) via a Segmented pill, backed by a Table with per-column sort and PPG descending by default.
 
 import { useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
@@ -22,7 +22,7 @@ const POS_FILTERS: { value: PosFilter; label: string }[] = [
   { value: 'C', label: 'C' },
 ]
 
-// ABOUTME: Players — a React component.
+// ABOUTME: Renders a position-filterable, sortable table of all players across every team, defaulting to PPG descending; each player name links to PlayerDetail and each team is shown via TeamChip.
 export function Players() {
   const [filter, setFilter] = useState<PosFilter>('all')
   const players = filter === 'all' ? PLAYERS : PLAYERS.filter(p => p.position === filter)

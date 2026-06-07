@@ -1,4 +1,4 @@
-// ABOUTME: CommandPalette — a React component (components).
+// ABOUTME: Keyboard-driven command palette overlay supporting flat list, grouped-with-recents, multi-step wizard, and natural-language agentic modes.
 
 import {
   useCallback,
@@ -13,10 +13,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './CommandPalette.css'
 
-// ABOUTME: CommandPaletteVariant — a type alias.
+// ABOUTME: Layout/behaviour mode: 'flat' is a plain fuzzy-filtered list, 'grouped' adds Recent + group headers, 'wizard' prompts through multi-step CommandStep sequences, 'agentic' parses free text into a preview action list.
 export type CommandPaletteVariant = 'flat' | 'grouped' | 'wizard' | 'agentic'
 
-// ABOUTME: CommandStep — an interface.
+// ABOUTME: A single disambiguation step in a wizard-mode command sequence; type determines whether to render a select list, a free-text input, or a confirm prompt.
 export interface CommandStep {
   id: string
   prompt: string
@@ -24,7 +24,7 @@ export interface CommandStep {
   options?: Array<{ value: string; label: string }>
 }
 
-// ABOUTME: Command — an interface.
+// ABOUTME: A single command entry with an optional group, keyboard shortcut, icon, async run handler, and optional wizard steps for multi-step collection of arguments.
 export interface Command {
   id: string
   label: string
@@ -38,7 +38,13 @@ export interface Command {
   steps?: CommandStep[]
 }
 
-// ABOUTME: Props for CommandPalette.
+// ABOUTME: Props for CommandPalette — controls the variant, open state (controlled or uncontrolled), command list, recent ids, NL parser, hotkey, and placeholder text.
+/**
+ * Accepts the `variant` to select behaviour mode, `commands` as the full set of entries,
+ * optional `recents` (command ids shown first in 'grouped'), a `parseNl` function for
+ * 'agentic' that converts free text to a preview command list, and `hotkey` (default Cmd/Ctrl+K)
+ * to toggle open. Open state is controlled via `open`/`onOpenChange` or left uncontrolled.
+ */
 export interface CommandPaletteProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CommandPaletteVariant
@@ -69,7 +75,17 @@ function fuzzyScore(query: string, label: string): number {
   return qi === q.length ? 10 : 0
 }
 
-// ABOUTME: CommandPalette — a React component.
+// ABOUTME: Modal command palette rendered via a portal; fuzzy-scores commands on every keystroke, supports arrow-key navigation, wizard step-through, and an agentic NL-parse-then-run flow.
+/**
+ * Renders a full-screen scrim with a centred dialog containing a search input and a listbox.
+ * On each keystroke the input is scored against command labels via a char-subsequence
+ * algorithm; 'grouped' mode rebuilds sections with Recent at the top; 'wizard' mode
+ * replaces the list with a per-step widget (select / input / confirm) that collects
+ * `args` before calling `command.run(args)`; 'agentic' mode calls `parseNl` on Enter
+ * to produce a preview list that can be bulk-run. The Escape key walks back through
+ * wizard steps or agentic preview before closing. Portals to `getPortalTarget()` unless
+ * `inlineRender` is set (story use-case).
+ */
 export function CommandPalette({
   variant = 'flat',
   open,

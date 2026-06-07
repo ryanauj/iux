@@ -1,8 +1,8 @@
-// ABOUTME: navLayouts — part of the components area.
+// ABOUTME: Defines the ten AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar) and the persisted useNavLayout hook that shares the active choice across every showcase page.
 
 import { usePersistedPref } from '../../lib/usePersistedPref'
 
-// ABOUTME: App-shell nav locations.
+// ABOUTME: Ordered tuple of all ten nav-location ids that AppShell accepts as its `layoutId` prop.
 /**
  * App-shell nav locations. Ten variations that place the cross-page nav
  * (Components / Visualizations / Apps / Quiz / Tests / Engines) in
@@ -26,13 +26,13 @@ export const NAV_LAYOUT_IDS = [
   'tabbar',
 ] as const
 
-// ABOUTME: NavLayoutId — a type alias.
+// ABOUTME: Union of all ten nav-location id strings, derived from NAV_LAYOUT_IDS for exhaustive type safety.
 export type NavLayoutId = (typeof NAV_LAYOUT_IDS)[number]
 
-// ABOUTME: DEFAULT_NAV_LAYOUT — an exported value.
+// ABOUTME: Fallback layout id used when no persisted preference exists; set to 'topbar'.
 export const DEFAULT_NAV_LAYOUT: NavLayoutId = 'topbar'
 
-// ABOUTME: NAV_LAYOUT_OPTIONS — an exported value.
+// ABOUTME: Display-ready list of all ten nav layouts with human-readable labels, used to drive layout-picker UI (e.g. a `<select>` in the brand-extra slot).
 export const NAV_LAYOUT_OPTIONS: { value: NavLayoutId; label: string }[] = [
   { value: 'topbar',       label: 'Top bar — classic horizontal' },
   { value: 'sidebar-left', label: 'Sidebar — left rail' },
@@ -46,7 +46,7 @@ export const NAV_LAYOUT_OPTIONS: { value: NavLayoutId; label: string }[] = [
   { value: 'tabbar',       label: 'Tab bar — bottom equal-width' },
 ]
 
-// ABOUTME: resolveNavLayoutId — a helper function.
+// ABOUTME: Validates a raw string against NAV_LAYOUT_IDS and returns it as a NavLayoutId, or falls back to DEFAULT_NAV_LAYOUT for unknown or nullish values.
 export function resolveNavLayoutId(raw: string | null | undefined): NavLayoutId {
   if (raw && (NAV_LAYOUT_IDS as readonly string[]).includes(raw)) {
     return raw as NavLayoutId

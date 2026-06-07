@@ -1,16 +1,16 @@
-// ABOUTME: EdgeBundle — a React component (components).
+// ABOUTME: SVG hierarchical edge-bundling chart that arranges leaf nodes in a radial ring and routes edges through their least-common ancestor, producing smooth bundled curves that reveal community structure.
 
 import { useMemo } from 'react'
 import './EdgeBundle.css'
 
-// ABOUTME: EdgeBundleVariant — a type alias.
+// ABOUTME: Bundling mode: 'simple' draws straight lines (beta=0), 'bundled' pulls paths toward their LCA with beta=0.82 to bundle parallel edges, 'directional' uses beta=0.78 and colours each edge by the source node's intent.
 export type EdgeBundleVariant = 'simple' | 'bundled' | 'directional'
 
-// ABOUTME: EdgeBundleIntent — a type alias.
+// ABOUTME: Semantic colour applied per leaf node and, in 'directional' mode, to its outgoing edges.
 export type EdgeBundleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: EdgeBundleNode — an interface.
+// ABOUTME: A hierarchy node with an id, display label, optional intent colour, and optional children; leaf nodes (no children) participate in edges and are placed on the outer radial ring.
 export interface EdgeBundleNode {
   id: string
   label: string
@@ -18,14 +18,14 @@ export interface EdgeBundleNode {
   children?: EdgeBundleNode[]
 }
 
-// ABOUTME: EdgeBundleEdge — an interface.
+// ABOUTME: A connection between two leaf node ids with an optional numeric value shown in the SVG title tooltip.
 export interface EdgeBundleEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for EdgeBundle.
+// ABOUTME: Props for EdgeBundle — variant controls bundling strength and edge colouring; root is the hierarchy tree whose leaves will be placed on the ring; edges list the connections to draw between leaf ids.
 export interface EdgeBundleProps {
   variant?: EdgeBundleVariant
   /** Hierarchy root. Leaves are the nodes that participate in edges. */
@@ -142,7 +142,15 @@ function bundlePath(from: Placed, to: Placed, beta: number): string {
   return d
 }
 
-// ABOUTME: EdgeBundle — a React component.
+// ABOUTME: Renders a radial edge-bundling SVG: places leaf nodes evenly around a circle, then draws each edge as a Catmull-Rom-ish quadratic-spline path guided through the least-common-ancestor hierarchy nodes.
+/**
+ * Layout is computed by `layoutRadial`, which assigns each leaf an equal angular
+ * slice and internal nodes the angular range spanning their subtree. Edge paths
+ * use `bundlePath`, which walks up to the LCA then down to the target, optionally
+ * straightening the curve toward the direct line with `(1-beta)`. The `beta`
+ * parameter is 0 for 'simple', 0.82 for 'bundled', and 0.78 for 'directional'.
+ * Leaf labels are anchored outside the ring with text-anchor based on the angle.
+ */
 export function EdgeBundle({
   variant = 'bundled',
   root,

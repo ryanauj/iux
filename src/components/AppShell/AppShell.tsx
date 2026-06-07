@@ -6,7 +6,7 @@ import type { AppShellNavId, AppShellNavLink } from './navLinks'
 import type { NavLayoutId } from './navLayouts'
 import './AppShell.css'
 
-// ABOUTME: Props for AppShell.
+// ABOUTME: Props for AppShell — supplies the layout id, brand content, nav links, active nav id, and optional brand-extra slot for controls like a layout picker.
 export interface AppShellProps {
   layoutId: NavLayoutId
   /** Page title bar contents (title text, info button, eyebrow etc.). */
@@ -21,7 +21,7 @@ export interface AppShellProps {
   brandExtra?: ReactNode
 }
 
-// ABOUTME: Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations.
+// ABOUTME: Switches on `layoutId` to delegate to one of ten private shell components (TopbarShell, SidebarShell, DockShell, RailShell, DrawerShell, FabShell, FooterShell, TabbarShell), each placing nav, brand, and main slots differently.
 /**
  * Renders the page chrome (brand + cross-page nav + main content) in
  * one of ten configurable nav locations. The brand bar is always

@@ -1,4 +1,4 @@
-// ABOUTME: PaletteShell — a React component (apps).
+// ABOUTME: PaletteShell — command-palette shell that adds a persistent full-width search bar above every page; the bar searches sections, teams, players, and games simultaneously, is focusable with `/` or ⌘K from anywhere, and navigates on Enter or row click.
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { Link } from '../../Link'
@@ -73,7 +73,15 @@ function searchAll(q: string): PaletteResult[] {
   return out.slice(0, 20)
 }
 
-// ABOUTME: PaletteShell — a React component.
+// ABOUTME: Shell that renders a command-palette search box above the main content area on every route; unlike other shells it does not replace the Home page — it augments all pages with the palette affordance.
+/**
+ * Mounts a single-input search over all entity types (sections, teams,
+ * players, games). Arrow keys move the active row; Enter navigates; Escape
+ * clears. A global keydown listener captures `/` and ⌘K to focus the input
+ * from anywhere, skipping text fields that already own the key. The standard
+ * props.children page renders below the palette, so every route remains
+ * accessible via direct links.
+ */
 export function PaletteShell(props: ShellProps) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)

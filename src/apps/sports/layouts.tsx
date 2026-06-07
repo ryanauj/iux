@@ -1,4 +1,4 @@
-// ABOUTME: Shell — a React component (apps).
+// ABOUTME: Shell layout system for the sports app — defines the LayoutId union, LAYOUT_IDS/LAYOUT_OPTIONS arrays, ShellProps interface, and the Shell switcher that delegates to the correct shell component for each layout variant.
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
@@ -60,13 +60,13 @@ export const LAYOUT_IDS = [
   'graph',
   'chat',
 ] as const
-// ABOUTME: LayoutId — a type alias.
+// ABOUTME: Union of every valid layout identifier — the string the `?layout=` param holds.
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
-// ABOUTME: DEFAULT_LAYOUT — an exported value.
+// ABOUTME: The layout used when no `?layout=` param is present or the value is unrecognised.
 export const DEFAULT_LAYOUT: LayoutId = 'topbar'
 
-// ABOUTME: LAYOUT_OPTIONS — an exported value.
+// ABOUTME: Human-readable {value, label} pairs for every layout; drives the layout-picker dropdown in the shell selector UI.
 export const LAYOUT_OPTIONS = [
   { value: 'topbar', label: 'Classic — top bar' },
   { value: 'sidebar', label: 'Sidebar — left rail' },
@@ -85,20 +85,20 @@ export const LAYOUT_OPTIONS = [
   { value: 'chat', label: 'Chat — conversational' },
 ]
 
-// ABOUTME: resolveLayoutId — a helper function.
+// ABOUTME: Coerces an arbitrary string (from the URL param or localStorage) to a valid LayoutId, falling back to DEFAULT_LAYOUT if unrecognised or absent.
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
   if (raw && (LAYOUT_IDS as readonly string[]).includes(raw)) return raw as LayoutId
   return DEFAULT_LAYOUT
 }
 
-// ABOUTME: NavItem — an interface.
+// ABOUTME: A single entry in the primary navigation bar: the target path, display label, and a predicate that says whether it is currently active for a given route.
 export interface NavItem {
   to: string
   label: string
   isActive: (route: SportsRoute) => boolean
 }
 
-// ABOUTME: Props for Shell.
+// ABOUTME: Props passed from the sports app root into every shell: the active layout, brand node, navigation items, matched route, exit button, and child page content.
 export interface ShellProps {
   layoutId: LayoutId
   brand: ReactNode
@@ -136,7 +136,7 @@ function NavLinks({
   )
 }
 
-// ABOUTME: Shell — a React component.
+// ABOUTME: Top-level shell switcher — dispatches to the correct shell component (TopbarShell, SidebarShell, PaletteShell, etc.) based on props.layoutId; also contains the five built-in layout shells (topbar, sidebar, stadium, dock, drawer) that have no specialised Home page.
 export function Shell(props: ShellProps) {
   switch (props.layoutId) {
     case 'topbar':

@@ -1,4 +1,4 @@
-// ABOUTME: The signature visual: the cap "ladder".
+// ABOUTME: The cap "ladder" visualization — a vertical scale of NBA salary thresholds (floor → cap → tax → aprons) with optional payroll marker and highlight, built as a flex column so it reflows and inherits palette tokens.
 
 import { THRESHOLDS, SEASON } from '../data/cap'
 import { money } from '../format'

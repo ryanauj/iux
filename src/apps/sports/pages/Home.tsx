@@ -1,4 +1,4 @@
-// ABOUTME: Home — a React component (apps).
+// ABOUTME: Dashboard landing page composing three summary sections: featured game cards (today/upcoming/recent), per-stat leader tiles (PPG/RPG/APG), and a conference standings snapshot.
 
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
@@ -15,7 +15,14 @@ const STAT_TILES: { key: StatKey; label: string }[] = [
   { key: 'apg', label: 'Assists per game' },
 ]
 
-// ABOUTME: Home — a React component.
+// ABOUTME: Renders today's games (keyed off TODAY), falling back to upcoming then recent finals for up to six ScoreCard tiles; stat leaders come from `getStatLeaders` and standings from `getStandings`, both linking deeper into the app.
+/**
+ * The app landing page. "Featured games" shows today's live game first, then
+ * up to six cards across today/upcoming/recent-finals categories. The stat
+ * leaders block calls `getStatLeaders` for PPG, RPG, and APG and renders each
+ * as a Card with ranked player links. Standings tiles call `getStandings` for
+ * East and West, showing the top-5 with TeamChip and W-L record.
+ */
 export function Home() {
   const todayGames = GAMES.filter(g => g.date === TODAY)
   const recentFinals = GAMES.filter(g => g.status === 'final').slice(-3).reverse()

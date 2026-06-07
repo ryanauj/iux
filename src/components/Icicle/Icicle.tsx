@@ -1,16 +1,16 @@
-// ABOUTME: Icicle — a React component (components).
+// ABOUTME: SVG icicle/flame chart that recursively partitions a weighted tree into rectangular blocks, supporting top-down icicle, left-to-right, and bottom-up flame layouts.
 
 import { useMemo } from 'react'
 import './Icicle.css'
 
-// ABOUTME: IcicleVariant — a type alias.
+// ABOUTME: Sets the growth direction of the chart: 'down' fills from the root at the top, 'right' fans left-to-right, 'flame' flips so leaves are at the bottom.
 export type IcicleVariant = 'down' | 'right' | 'flame'
 
-// ABOUTME: IcicleIntent — a type alias.
+// ABOUTME: Semantic colour intent cycling applied to top-level children; each subtree inherits its root child's colour.
 export type IcicleIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: IcicleNode — an interface.
+// ABOUTME: A recursive tree node; leaf size is driven by `value`, branch size is the sum of its children's values; `intent` overrides the inherited colour, `children` nests subtrees.
 export interface IcicleNode {
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface IcicleNode {
   children?: IcicleNode[]
 }
 
-// ABOUTME: Props for Icicle.
+// ABOUTME: Props for Icicle — accepts the tree root, layout variant, and optional canvas dimensions.
 export interface IcicleProps {
   variant?: IcicleVariant
   root: IcicleNode
@@ -51,7 +51,16 @@ function maxDepth(n: IcicleNode): number {
   return 1 + Math.max(...n.children.map(maxDepth))
 }
 
-// ABOUTME: Icicle — a React component.
+// ABOUTME: Recursively partitions the tree into a flat list of screen-space blocks (via `visit`), then renders each as a `<rect>` labelled when wide/tall enough; the root block is always omitted so the chart shows only children.
+/**
+ * Layout walks the tree depth-first, allocating each node a band across the
+ * cross-axis proportional to its value fraction of its parent. Depth drives
+ * the layer along the main axis. The 'flame' variant mirrors the layer
+ * direction so depth 0 sits at the bottom. Intent cycles over the
+ * `INTENTS` palette for direct children of the root; all deeper descendants
+ * inherit their subtree root's intent. A depth-based `tintLevel` CSS class
+ * (`lv-1` … `lv-4`) provides progressive lightening.
+ */
 export function Icicle({
   variant = 'down',
   root,

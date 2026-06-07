@@ -1,16 +1,16 @@
-// ABOUTME: ForceCluster — a React component (components).
+// ABOUTME: SVG network graph that groups nodes by a string group key, runs a deterministic force-relaxation layout, and renders cluster convex-hull outlines in three modes — plain hull, shaded hull, and labelled clusters.
 
 import { useMemo } from 'react'
 import './ForceCluster.css'
 
-// ABOUTME: ForceClusterVariant — a type alias.
+// ABOUTME: Rendering style: 'hull' draws a smooth convex boundary around each cluster, 'shaded' fills those hulls with a translucent intent colour, 'labeled' additionally overlays the group name at each cluster's centroid.
 export type ForceClusterVariant = 'hull' | 'shaded' | 'labeled'
 
-// ABOUTME: ForceClusterIntent — a type alias.
+// ABOUTME: Semantic colour assigned to a group and all its nodes; one intent per group, cycling through the palette by group discovery order.
 export type ForceClusterIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ForceNode — an interface.
+// ABOUTME: A graph node with an id, display label, group key that determines cluster membership and intent colour, and optional numeric weight that scales the node's circle radius.
 export interface ForceNode {
   id: string
   label: string
@@ -18,14 +18,14 @@ export interface ForceNode {
   weight?: number
 }
 
-// ABOUTME: ForceEdge — an interface.
+// ABOUTME: A connection between two node ids with an optional numeric value that scales stroke width; intra-cluster and inter-cluster edges receive different CSS class modifiers.
 export interface ForceEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for ForceCluster.
+// ABOUTME: Props for ForceCluster — variant selects hull/shaded/labeled rendering; nodes carry group membership and optional weights; edges drive the force attraction used during layout relaxation.
 export interface ForceClusterProps {
   variant?: ForceClusterVariant
   nodes: ForceNode[]
@@ -180,7 +180,15 @@ function smoothHull(hull: Array<{ x: number; y: number }>): string {
   return d
 }
 
-// ABOUTME: ForceCluster — a React component.
+// ABOUTME: Renders a force-clustered network SVG: runs `relax` (80-iteration force simulation with all-pairs repulsion, cluster gravity, and edge attraction) then draws smooth inflated convex hulls behind edges and intent-coloured node circles.
+/**
+ * All layout is computed synchronously in `useMemo` — no animation loop.
+ * Node positions are seeded from a deterministic RNG (seed=7) so the layout
+ * is stable across re-renders with the same input. Hull paths are built by
+ * `convexHull` (Andrew's monotone chain) then inflated 14px outward and
+ * smoothed into a closed quadratic-curve path. Edge stroke width scales from
+ * 0.6 to 2.4 px proportional to the normalised edge value.
+ */
 export function ForceCluster({
   variant = 'hull',
   nodes,

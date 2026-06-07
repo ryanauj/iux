@@ -1,12 +1,12 @@
-// ABOUTME: Presence — a React component (components).
+// ABOUTME: Renders real-time collaborative presence in four modes: avatar stack (avatars), live cursors (cursors), selection overlays (selections), and floating chat bubbles with a "/" hotkey to post (chat).
 
 import { useEffect, type CSSProperties } from 'react'
 import './Presence.css'
 
-// ABOUTME: PresenceVariant — a type alias.
+// ABOUTME: Selects the visual/functional mode: 'avatars' shows a stacked avatar row, 'cursors' draws live cursor positions, 'selections' draws bounding-box overlays, 'chat' adds transient floating message bubbles.
 export type PresenceVariant = 'avatars' | 'cursors' | 'selections' | 'chat'
 
-// ABOUTME: PresenceUser — an interface.
+// ABOUTME: Describes one remote collaborator: identity, per-user color, and optional cursor/selection/chat payload for the non-avatar variants.
 export interface PresenceUser {
   id: string
   name: string
@@ -20,7 +20,7 @@ export interface PresenceUser {
   chat?: { text: string; expiresAt: number }
 }
 
-// ABOUTME: Props for Presence.
+// ABOUTME: Configures Presence: 'variant' drives the mode axis; 'users' supplies the remote participants; chat-specific props (selfId, onSelfChat, selfCursor) wire the local user's "/" key posting; 'avatarCap' sets how many avatars display before "+N".
 export interface PresenceProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PresenceVariant
@@ -40,7 +40,14 @@ function initials(name: string): string {
   return name.split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase()
 }
 
-// ABOUTME: Presence — a React component.
+// ABOUTME: Collaborative presence overlay covering four modes via a single 'variant' prop: a stacked avatar strip with overflow count, absolutely-positioned live cursors with name labels, selection bounding-box overlays, and cursor-anchored chat bubbles with "/" key capture for the local user.
+/**
+ * Renders real-time multi-user presence in the mode set by `variant`.
+ * In `avatars` mode it renders an inline strip of colored initials circles
+ * with a "+N" overflow pill. All other modes render an `aria-hidden` overlay
+ * layer meant to sit on top of a shared surface, positioning elements using
+ * 0–1 surface-relative coordinates from each `PresenceUser`.
+ */
 export function Presence({
   variant = 'avatars',
   users,

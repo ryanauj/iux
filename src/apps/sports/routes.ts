@@ -1,14 +1,14 @@
-// ABOUTME: Centralised route helpers for the sports app.
+// ABOUTME: Route definitions and URL helpers for the sports app — SPORTS_BASE prefix, sportsRoutes builders, the SportsRoute discriminated union, and the matchSportsRoute parser.
 
 /**
  * Centralised route helpers for the sports app. Every page builds links
  * through these functions so the route shape can change in one place.
  */
 
-// ABOUTME: Centralised route helpers for the sports app.
+// ABOUTME: Root path segment shared by every sports-app URL, e.g. "/apps/sports".
 export const SPORTS_BASE = '/apps/sports'
 
-// ABOUTME: sportsRoutes — an exported value.
+// ABOUTME: Typed URL-builder functions for every sports route; every Link in the app calls one of these so path shapes can change in a single place.
 export const sportsRoutes = {
   home: () => SPORTS_BASE,
   teams: () => `${SPORTS_BASE}/teams`,
@@ -23,7 +23,7 @@ export const sportsRoutes = {
     a && b ? `${SPORTS_BASE}/matchup/${a}/${b}` : `${SPORTS_BASE}/matchup`,
 } as const
 
-// ABOUTME: SportsRoute — a type alias.
+// ABOUTME: Discriminated union of every reachable sports route, consumed by pages and shells to render the correct content without string comparisons.
 export type SportsRoute =
   | { kind: 'home' }
   | { kind: 'teams' }

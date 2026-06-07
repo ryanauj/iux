@@ -1,4 +1,4 @@
-// ABOUTME: patternCodec — part of the lib area.
+// ABOUTME: URL codec for shareable palette links — encodes built-in ids as bare strings and custom patterns as base64url JSON payloads.
 
 import type { PaletteId } from '../../palettes'
 import {
@@ -26,7 +26,7 @@ export interface SharedPattern {
   overrides: TokenOverrides
 }
 
-// ABOUTME: DecodeResult — a type alias.
+// ABOUTME: The result of decoding a `?palette=` URL token: a built-in id, a shared custom pattern payload, or null for malformed input.
 export type DecodeResult =
   | { kind: 'builtin'; id: PaletteId }
   | { kind: 'custom'; share: SharedPattern }

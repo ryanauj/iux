@@ -1,16 +1,16 @@
-// ABOUTME: BoxPlot — a React component (components).
+// ABOUTME: SVG box-plot chart that shows Q1/median/Q3 boxes with Tukey whiskers, with optional outlier dots and raw-data jitter variants.
 
 import { useMemo } from 'react'
 import './BoxPlot.css'
 
-// ABOUTME: BoxPlotVariant — a type alias.
+// ABOUTME: Display mode — 'simple' shows boxes and whiskers only, 'outliers' also plots points outside the Tukey fences, 'jitter' overlays all raw data as jittered dots.
 export type BoxPlotVariant = 'simple' | 'outliers' | 'jitter'
 
-// ABOUTME: BoxIntent — a type alias.
+// ABOUTME: Semantic color token applied to each series' box and whiskers, matching the six contract intents.
 export type BoxIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: BoxSeries — an interface.
+// ABOUTME: A named data series with a raw values array and an optional intent override; quartile/whisker statistics are computed internally from the values.
 export interface BoxSeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface BoxSeries {
   intent?: BoxIntent
 }
 
-// ABOUTME: Props for BoxPlot.
+// ABOUTME: Props for BoxPlot — supplies series data, variant, optional y-axis domain, a value formatter, and SVG dimensions.
 export interface BoxPlotProps {
   variant?: BoxPlotVariant
   series: BoxSeries[]
@@ -69,7 +69,14 @@ function rng(seed: number) {
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
 }
 
-// ABOUTME: BoxPlot — a React component.
+// ABOUTME: Computes Tukey box statistics (Q1, median, Q3, 1.5×IQR whiskers) for each series, then renders SVG boxes, whisker lines, and caps; adds outlier circles on 'outliers' and seeded-jitter data dots on 'jitter'.
+/**
+ * Each series' raw `values` array is sorted and passed to `computeStats` which
+ * returns quartiles, fence bounds, whisker extents, and outliers. The y-axis
+ * domain is auto-fit to the widest whisker/outlier range, padded by 6%. On
+ * 'jitter', a deterministic seeded RNG spreads points horizontally within the
+ * box width to avoid overplotting.
+ */
 export function BoxPlot({
   variant = 'simple',
   series,

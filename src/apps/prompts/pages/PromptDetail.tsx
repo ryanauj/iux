@@ -1,4 +1,4 @@
-// ABOUTME: PromptDetail — a React component (apps).
+// ABOUTME: Prompt detail page: shows a single prompt's full body (via CodeBlock), a VariableFiller when template slots are present, notes, linked strategies in an aside, and Edit/Delete/Favorite actions backed by the prompt store.
 
 import { useMemo, useState } from 'react'
 import { Button } from '../../../components/Button/Button'
@@ -25,7 +25,16 @@ interface PromptDetailProps {
   id: string
 }
 
-// ABOUTME: PromptDetail — a React component.
+// ABOUTME: Full-page view for a single saved prompt: displays category/model badges, favorite toggle, CodeBlock with copy, an optional VariableFiller when `{{variables}}` are detected, notes, and a sidebar listing linked strategies; delete is confirmed via a Modal and removes the prompt from the store.
+/**
+ * Renders the detail view for a saved `Prompt`. Reads the prompt by `id`
+ * from `usePromptStore`; shows a 404 EmptyState when not found. The main
+ * column has the prompt `CodeBlock`, a `VariableFiller` section when
+ * `extractVariables` returns results, and optional notes. The aside lists
+ * linked `Strategy` entries (resolved via `getStrategy`). Edit navigates to
+ * `PromptForm`; delete triggers a confirmation `Modal` then calls
+ * `store.remove` and fires a success toast via `useToast`.
+ */
 export function PromptDetail({ id }: PromptDetailProps) {
   const { get, remove, toggleFavorite } = usePromptStore()
   const prompt = get(id)

@@ -1,4 +1,4 @@
-// ABOUTME: Trades — a React component (apps).
+// ABOUTME: Chapter 8 — "Trades & multi-team deals": walks a worked three-team trade (SAMPLE_TRADE) to show salary-matching, aggregation, cap-space absorption, and the role of draft picks in balancing the deal's fairness beyond its legality.
 
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
@@ -49,7 +49,14 @@ function PartyCard({ party }: { party: TradeParty }) {
   )
 }
 
-// ABOUTME: Trades — a React component.
+// ABOUTME: Chapter 8 page rendering SAMPLE_TRADE (three PartyCards) from cap.ts: the contender bundles two contracts to match a $34M star, the rebuilder takes a wing + pick, and the cap-space team absorbs the unwanted contract for a pick; KeyIdeas cover aggregation, apron limits, and the Stepien rule.
+/**
+ * Chapter 8 of Cap School. Renders SAMPLE_TRADE as three PartyCard components,
+ * each showing a team's ledger (sends / takes in, cap situation, legality rule).
+ * Prose sections explain the matching rule, salary aggregation, why third teams
+ * exist, and how draft picks settle the fairness side after salaries satisfy the
+ * legal side.
+ */
 export function Trades() {
   const contender = SAMPLE_TRADE[0]
   const matchOut = salaryTotal(contender.out)

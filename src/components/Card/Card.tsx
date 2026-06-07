@@ -1,4 +1,4 @@
-// ABOUTME: Card — an exported value (components).
+// ABOUTME: Surface container component with static, expandable (show-more toggle), bento (accent-stripe), and spatial (parallax tilt on hover) variants, plus an interactive clickable mode.
 
 import {
   forwardRef,
@@ -13,12 +13,12 @@ import {
 } from 'react'
 import './Card.css'
 
-// ABOUTME: CardVariant — a type alias.
+// ABOUTME: Display mode — 'static' is a plain surface, 'expandable' adds a show-more toggle button, 'bento' renders a colored accent stripe, 'spatial' applies pointer-driven CSS perspective tilt.
 export type CardVariant = 'static' | 'expandable' | 'bento' | 'spatial'
-// ABOUTME: CardAccent — a type alias.
+// ABOUTME: Accent stripe color on the 'bento' variant, drawn from the six contract intent palette.
 export type CardAccent = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
-// ABOUTME: Props for Card.
+// ABOUTME: Props for Card — configures variant, optional title/subtitle/footer slots, bento accent, expandable content with controlled/uncontrolled expanded state, click handler for interactive mode, and story-only stateLock.
 export interface CardProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CardVariant
@@ -44,7 +44,16 @@ export interface CardProps {
   stateLock?: 'hover' | 'active' | 'focus'
 }
 
-// ABOUTME: Card — an exported value.
+// ABOUTME: A forwardRef-wrapped `<div>` that composes variant/accent/interactive CSS classes; 'expandable' manages controlled/uncontrolled open state with a toggle button; 'spatial' tracks pointer position to set `--iux-card-tilt-x/y` CSS custom properties for a CSS-driven perspective transform.
+/**
+ * The 'expandable' variant renders a `<button>` that toggles `isExpanded`,
+ * revealing `expandedContent` in a hidden `div` via `aria-hidden`. The
+ * 'spatial' variant listens to `onMouseMove` to compute normalized cursor
+ * position and writes tilt angles as CSS custom properties; `prefers-reduced-motion`
+ * can suppress the transform in CSS without any JS change. Character-border
+ * corners (┌┐└┘) are always in the DOM but `display: none` until the
+ * Terminal-TUI palette's container-style query activates them.
+ */
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   {
     variant = 'static',

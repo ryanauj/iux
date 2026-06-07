@@ -1,4 +1,4 @@
-// ABOUTME: Drawer — a React component (components).
+// ABOUTME: Side-panel overlay component with four modes — plain slide-in, sectioned with footer action buttons, navigable with a push/pop view stack and breadcrumb, and a drag-snapping bottom sheet.
 
 import {
   useCallback,
@@ -16,21 +16,28 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Drawer.css'
 
-// ABOUTME: DrawerVariant — a type alias.
+// ABOUTME: Structural mode: 'side' is a plain panel, 'sectioned' adds a sticky footer with primary/secondary actions, 'navigable' manages a view-stack with breadcrumb and back button, 'sheet' slides up from the bottom with drag-to-snap and drag-to-dismiss.
 export type DrawerVariant = 'side' | 'sectioned' | 'navigable' | 'sheet'
-// ABOUTME: DrawerSide — a type alias.
+// ABOUTME: Which viewport edge the drawer slides in from; 'sheet' variant forces 'bottom' regardless of this prop.
 export type DrawerSide = 'right' | 'left' | 'top' | 'bottom'
-// ABOUTME: DrawerSize — a type alias.
+// ABOUTME: Panel width/height preset: 'sm' is narrow, 'md' is the default, 'lg' is wide; applied as a CSS modifier class on the dialog element.
 export type DrawerSize = 'sm' | 'md' | 'lg'
 
-// ABOUTME: DrawerView — an interface.
+// ABOUTME: A named screen for the 'navigable' variant: an id, title shown in the breadcrumb, and a render function that receives push/pop callbacks so its content can navigate deeper or back.
 export interface DrawerView {
   id: string
   title: string
   render: (push: (id: string) => void, pop: () => void) => ReactNode
 }
 
-// ABOUTME: Props for Drawer.
+// ABOUTME: Props for Drawer — variant and side define layout, open/defaultOpen/onOpenChange handle controlled or uncontrolled open state, views/initialViewId feed the navigable stack, snapPoints configure the sheet, and primaryAction/secondaryAction populate the sectioned footer.
+/**
+ * Controlled via `open`/`onOpenChange` or left uncontrolled with `defaultOpen`.
+ * The 'sheet' variant ignores `side` (always bottom) and uses `snapPoints` (0–1
+ * fractions of viewport height) with `defaultSnapIndex`; a drag downward past
+ * 25% of the sheet height dismisses it. The 'navigable' variant maintains an
+ * internal id-stack via `pushView`/`popView` passed to each `DrawerView.render`.
+ */
 export interface DrawerProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: DrawerVariant
@@ -62,7 +69,15 @@ export interface DrawerProps {
   inlineRender?: boolean
 }
 
-// ABOUTME: Drawer — a React component.
+// ABOUTME: Renders a scrim-backed dialog panel portaled to the page root; handles focus trap on open, body scroll-lock, Escape key dismissal, and — in sheet mode — pointer-drag snap-point cycling.
+/**
+ * Portals to `getPortalTarget()` unless `inlineRender` is set. On open,
+ * captures the previously focused element and restores focus to it on close.
+ * The 'sheet' variant uses pointer capture for smooth drag, snapping to the
+ * nearest `snapPoints` threshold on pointer-up. 'navigable' mode renders only
+ * the top-of-stack `DrawerView` and shows a back button and breadcrumb trail
+ * when depth > 1.
+ */
 export function Drawer(props: DrawerProps) {
   const {
     variant = 'side',

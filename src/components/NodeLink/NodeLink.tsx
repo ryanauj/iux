@@ -1,16 +1,16 @@
-// ABOUTME: NodeLink — a React component (components).
+// ABOUTME: SVG node-link network diagram with a deterministic force-relaxation layout, supporting simple uniform edges, weighted stroke-width scaling, and directed arrowhead edges; node radius scales with the optional `weight` field.
 
 import { useMemo } from 'react'
 import './NodeLink.css'
 
-// ABOUTME: NodeLinkVariant — a type alias.
+// ABOUTME: Controls edge rendering: 'simple' uses uniform 1-px strokes, 'weighted' scales stroke width by edge value, 'directed' adds an SVG arrowhead marker at each edge target.
 export type NodeLinkVariant = 'simple' | 'weighted' | 'directed'
 
-// ABOUTME: NodeLinkIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per node, derived from the node's `group` when no explicit `intent` is set; each distinct group receives the next intent in the rotation.
 export type NodeLinkIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: GraphNode — an interface.
+// ABOUTME: A node in the network: a stable `id`, a display `label` rendered below the circle, an optional `group` string for intent colouring and initial cluster placement, an optional `weight` that scales the circle radius, and optional explicit `x`/`y` in [0, 1] to override the force layout.
 export interface GraphNode {
   id: string
   label: string
@@ -24,7 +24,7 @@ export interface GraphNode {
   y?: number
 }
 
-// ABOUTME: GraphEdge — an interface.
+// ABOUTME: A directed connection between two node ids; the optional `value` drives stroke width in the 'weighted'/'directed' variants and appears in the SVG `<title>` tooltip.
 export interface GraphEdge {
   from: string
   to: string
@@ -32,7 +32,7 @@ export interface GraphEdge {
   value?: number
 }
 
-// ABOUTME: Props for NodeLink.
+// ABOUTME: Configures NodeLink — supplies the node and edge arrays, canvas dimensions, and the rendering variant.
 export interface NodeLinkProps {
   variant?: NodeLinkVariant
   nodes: GraphNode[]
@@ -137,7 +137,14 @@ function deterministicLayout(nodes: GraphNode[], edges: GraphEdge[], width: numb
   return ring
 }
 
-// ABOUTME: NodeLink — a React component.
+// ABOUTME: Computes node positions via `deterministicLayout` (group-clustered initial placement followed by 60 iterations of Fruchterman-Reingold repulsion+attraction), then renders edges as straight lines and nodes as intent-coloured circles with text labels.
+/**
+ * Layout is memoized on `[nodes, edges, width, height]`; explicit node `x`/`y`
+ * props bypass the force pass and are scaled from [0,1] to canvas coordinates.
+ * Circle radius is `6 + 10 * sqrt(weight / maxWeight)`, so heavier nodes are
+ * visually prominent. In the 'directed' variant an SVG `<marker>` arrowhead is
+ * defined once in `<defs>` and referenced by all edge `markerEnd` attributes.
+ */
 export function NodeLink({
   variant = 'simple',
   nodes,

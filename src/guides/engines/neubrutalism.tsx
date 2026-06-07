@@ -1,4 +1,4 @@
-// ABOUTME: neubrutalism — part of the guides area.
+// ABOUTME: Engine guide definition for the Neubrutalism rendering engine — the engine that strips every visual softener (zero radius, zero shadow, 4px near-black borders, snap-linear motion) and uses thick strokes and clashing fills as its sole hierarchy mechanism.
 
 import { useState } from 'react'
 import { palette as neubrutalism } from '../../../palettes/neubrutalism'
@@ -200,7 +200,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: neubrutalismGuide — an exported value.
+// ABOUTME: neubrutalismGuide — the EngineGuideMeta for the Neubrutalism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the neubrutalism palette, covering 4px borders as the sole hierarchy mechanism and all-none elevation.
 export const neubrutalismGuide: EngineGuideMeta = {
   engine: 'neubrutalism',
   name: 'Neubrutalism',

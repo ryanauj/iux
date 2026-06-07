@@ -1,4 +1,4 @@
-// ABOUTME: Shell — a React component (apps).
+// ABOUTME: Chrome for the Cap School app: the Shell component (sidebar or topbar layout), the chapter NAV array, layout constants, and resolveLayoutId — everything ContractsApp needs to wrap each chapter page.
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
@@ -13,24 +13,24 @@ import { contractsRoutes, type ContractsRoute } from './routes'
  * page content is untouched between them.
  */
 export const LAYOUT_IDS = ['sidebar', 'topbar'] as const
-// ABOUTME: LayoutId — a type alias.
+// ABOUTME: Union of the two Cap School layout identifiers ('sidebar' | 'topbar'), derived from LAYOUT_IDS.
 export type LayoutId = (typeof LAYOUT_IDS)[number]
-// ABOUTME: DEFAULT_LAYOUT — an exported value.
+// ABOUTME: Default layout for Cap School ('sidebar'); used by ContractsApp to omit the param from the URL when the user picks the default.
 export const DEFAULT_LAYOUT: LayoutId = 'sidebar'
 
-// ABOUTME: LAYOUT_OPTIONS — an exported value.
+// ABOUTME: Human-readable label/value pairs for the layout Segmented control in the DraggableControls panel.
 export const LAYOUT_OPTIONS = [
   { value: 'sidebar', label: 'Sidebar — chapter rail' },
   { value: 'topbar', label: 'Top bar — compact' },
 ]
 
-// ABOUTME: resolveLayoutId — a helper function.
+// ABOUTME: Coerces a raw URL param string (from `?layout=`) to a valid LayoutId, falling back to DEFAULT_LAYOUT for unknown or missing values.
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
   if (raw && (LAYOUT_IDS as readonly string[]).includes(raw)) return raw as LayoutId
   return DEFAULT_LAYOUT
 }
 
-// ABOUTME: NavItem — an interface.
+// ABOUTME: One entry in the Cap School chapter nav: a path, a display label, a step ordinal shown in the sidebar rail, and a predicate that marks it active for a given ContractsRoute.
 export interface NavItem {
   to: string
   label: string
@@ -39,7 +39,7 @@ export interface NavItem {
   isActive: (route: ContractsRoute) => boolean
 }
 
-// ABOUTME: NAV — an exported value.
+// ABOUTME: Ordered list of all nine Cap School chapters (steps 1–9) with their paths and active predicates; consumed by both Shell layouts for navigation and by Overview to render the chapter-card grid.
 export const NAV: NavItem[] = [
   { to: contractsRoutes.overview(), label: 'Overview', step: 1, isActive: r => r.kind === 'overview' },
   { to: contractsRoutes.ladder(), label: 'The cap ladder', step: 2, isActive: r => r.kind === 'ladder' },
@@ -98,7 +98,7 @@ function RailLinks({ route, variant }: { route: ContractsRoute; variant: 'rail' 
   )
 }
 
-// ABOUTME: Shell — a React component.
+// ABOUTME: Top-level layout switcher for Cap School — renders SidebarShell (left rail with step numbers) or TopbarShell (hamburger-collapsible bar) based on layoutId, wrapping the active chapter page as children.
 export function Shell({ layoutId, route, children }: ShellProps) {
   if (layoutId === 'topbar') return <TopbarShell route={route}>{children}</TopbarShell>
   return <SidebarShell route={route}>{children}</SidebarShell>

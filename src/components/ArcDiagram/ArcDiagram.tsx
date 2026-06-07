@@ -1,16 +1,16 @@
-// ABOUTME: ArcDiagram — a React component (components).
+// ABOUTME: SVG arc-diagram that plots nodes along one or two axes and draws curved arcs between connected pairs, supporting simple, weighted-stroke, and bipartite S-curve layouts.
 
 import { useMemo } from 'react'
 import './ArcDiagram.css'
 
-// ABOUTME: ArcDiagramVariant — a type alias.
+// ABOUTME: Layout mode — 'simple' places all nodes on one axis with uniform arcs; 'weighted' scales stroke width by edge value; 'bipartite' splits nodes onto two parallel axes connected by S-curves.
 export type ArcDiagramVariant = 'simple' | 'weighted' | 'bipartite'
 
-// ABOUTME: ArcDiagramIntent — a type alias.
+// ABOUTME: Semantic color token applied to arc edges and node dots, matching the six contract intents.
 export type ArcDiagramIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ArcNode — an interface.
+// ABOUTME: A graph node with an optional group (drives color assignment and bipartite axis placement) and explicit intent override.
 export interface ArcNode {
   id: string
   label: string
@@ -19,14 +19,14 @@ export interface ArcNode {
   intent?: ArcDiagramIntent
 }
 
-// ABOUTME: ArcEdge — an interface.
+// ABOUTME: A directed edge between two node ids with an optional numeric weight used by the 'weighted' variant to scale stroke thickness.
 export interface ArcEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for ArcDiagram.
+// ABOUTME: Props for ArcDiagram — supplies node/edge data, variant, optional SVG dimensions, and a className.
 export interface ArcDiagramProps {
   variant?: ArcDiagramVariant
   nodes: ArcNode[]
@@ -38,7 +38,14 @@ export interface ArcDiagramProps {
 
 const INTENTS: ArcDiagramIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
-// ABOUTME: ArcDiagram — a React component.
+// ABOUTME: Renders an SVG arc diagram: nodes are placed along one axis (or two axes for bipartite), with semicircular arcs (or S-curves) connecting related pairs; stroke width scales with edge value on 'weighted'.
+/**
+ * Positions nodes along a horizontal axis, grouped and sorted by `group`,
+ * then draws a semicircular SVG arc between each connected pair. On
+ * `bipartite`, two separate horizontal axes are used (one per group) and
+ * edges become cubic S-curves spanning the gap. On `weighted`, stroke
+ * width scales proportionally to `ArcEdge.value` relative to the maximum.
+ */
 export function ArcDiagram({
   variant = 'simple',
   nodes,
