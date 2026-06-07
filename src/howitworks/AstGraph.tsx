@@ -1,4 +1,4 @@
-// ABOUTME: Interactive React Flow viewer for the generated AST graph.
+// ABOUTME: The AST explorer's view switcher plus its interactive React Flow graph (the Outline/Focus/Matrix views live in their own files).
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -29,6 +29,7 @@ import './astGraph.css'
 
 const GRAPH = graphData as AstGraphData
 
+// ABOUTME: File ids whose name, dir, summary, or any member matches the search query — drives node highlighting and auto-open.
 /** Files whose name or any member name contains the query (case-insensitive). */
 function matchFiles(query: string): Set<string> {
   const q = query.trim().toLowerCase()
@@ -51,6 +52,7 @@ function matchFiles(query: string): Set<string> {
 
 const areaOfFileId = new Map(GRAPH.files.map(f => [f.id, f.area]))
 
+// ABOUTME: The interactive React Flow canvas: search, expand/collapse, auto-layout, selection highlighting, and palette-themed nodes.
 function GraphView() {
   const [expandedAreas, setExpandedAreas] = useState<Set<string>>(new Set())
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(new Set())
@@ -254,6 +256,7 @@ const VIEW_OPTIONS = [
 
 type ViewMode = (typeof VIEW_OPTIONS)[number]['id']
 
+// ABOUTME: Picks the initial view — Outline on phones (≤720px), the network Graph on wider screens.
 /** Lists (Outline/Focus/Matrix) read better than a network graph on a phone. */
 function defaultView(): ViewMode {
   if (typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches) return 'outline'

@@ -112,7 +112,10 @@ function aboutFromRanges(text: string, ranges: ts.CommentRange[] | undefined): s
   const out: string[] = []
   for (const r of ranges) {
     for (const rawLine of text.slice(r.pos, r.end).split(/\r?\n/)) {
-      const m = rawLine.match(/ABOUTME:\s?(.*)$/)
+      // Require the marker at the start of the comment line (after any `//`,
+      // `/*`, or `*` prefix) so prose that merely mentions the token — e.g.
+      // a JSDoc sentence about the `ABOUTME` convention — is never captured.
+      const m = rawLine.replace(/^\s*(?:\/\/+|\/?\*+)\s*/, '').match(/^ABOUTME:\s?(.*)$/)
       if (!m) continue
       const cleaned = m[1].replace(/\*\/\s*$/, '').trim()
       if (cleaned) out.push(cleaned)

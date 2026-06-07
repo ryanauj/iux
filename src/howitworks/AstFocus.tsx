@@ -12,12 +12,16 @@ import {
 } from './astViews'
 import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 
-// ABOUTME: A single focused file fills the screen — its summary and members — flanked by "Depends on" and "Used by" neighbour cards.
+// ABOUTME: Shows a single file's summary and members between "Depends on" / "Used by" neighbour cards (from importsOf / importedBy); tapping a card walks the import graph one hop at a time, with back history.
 /**
  * A single focused file fills the screen — its summary and members — flanked
- * by "Depends on" and "Used by" neighbour cards. Tapping a card moves focus
- * there and records the hop, so reading the graph becomes a familiar
- * drill-in / back navigation instead of a pan across a canvas.
+ * by "Depends on" ({@link importsOf}) and "Used by" ({@link importedBy})
+ * neighbour cards. It opens on {@link MOST_CONNECTED_FILE} so the first screen
+ * is the busiest hub; the jump box filters with {@link fileMatches}. Tapping a
+ * card moves focus there and pushes the previous file onto a history stack, so
+ * reading the graph becomes a familiar drill-in / Back navigation instead of a
+ * pan across a canvas — the same import links the Outline shows as chips and
+ * the Matrix aggregates by area, here walked one hop at a time.
  */
 export function AstFocus() {
   const [focusId, setFocusId] = useState(MOST_CONNECTED_FILE)

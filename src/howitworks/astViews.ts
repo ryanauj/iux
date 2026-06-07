@@ -14,14 +14,20 @@
 import graphData from './generated/ast-graph.json'
 import type { AstFile, AstGraph } from './generated/astGraph.types'
 
-// ABOUTME: GRAPH — an exported value.
+// ABOUTME: The generated graph JSON, typed as AstGraph — the one dataset every index and view below derives from.
+/**
+ * The generated graph JSON (`ast-graph.json`) widened to its `AstGraph`
+ * type. Everything else in this module — and the Outline, Focus, and Matrix
+ * views that import them — is derived from this single value, so the views
+ * never re-parse or re-shape the source data themselves.
+ */
 export const GRAPH = graphData as AstGraph
 
 // ABOUTME: Every file keyed by its repo-relative id.
 /** Every file keyed by its repo-relative id. */
 export const FILE_BY_ID: Map<string, AstFile> = new Map(GRAPH.files.map(f => [f.id, f]))
 
-// ABOUTME: The basename a file is shown as, e.g.
+// ABOUTME: The basename a file is shown as (e.g. Button.tsx), falling back to the id's last segment.
 /** The basename a file is shown as, e.g. `Button.tsx`. */
 export const fileLabel = (id: string): string => FILE_BY_ID.get(id)?.name ?? id.split('/').pop() ?? id
 
@@ -61,9 +67,15 @@ export const IMPORTED_BY: Map<string, string[]> = (() => {
   return m
 })()
 
-// ABOUTME: importsOf — a helper function.
+// ABOUTME: The files a given file depends on — backs the Outline's "Imports" chips and Focus's "Depends on" cards.
+/** Outgoing dependencies of `id` (the files it imports), or `[]` if none.
+ * The Outline renders these as "Imports" chips and Focus as "Depends on"
+ * cards, so this one lookup is the source for every outgoing link in both. */
 export const importsOf = (id: string): string[] => IMPORTS_OF.get(id) ?? []
-// ABOUTME: importedBy — a helper function.
+// ABOUTME: The files that depend on a given file — backs the Outline's "Imported by" chips and Focus's "Used by" cards.
+/** Incoming dependents of `id` (the files that import it), or `[]` if none.
+ * The Outline renders these as "Imported by" chips and Focus as "Used by"
+ * cards — the inverse direction of {@link importsOf}. */
 export const importedBy = (id: string): string[] => IMPORTED_BY.get(id) ?? []
 
 // ABOUTME: One directed area→area dependency, with the file links behind it.

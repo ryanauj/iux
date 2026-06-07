@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 872
+    "documentedMembers": 878
   },
   "areas": [
     {
@@ -2378,7 +2378,7 @@
           "kind": "function",
           "exported": true,
           "line": 254,
-          "about": "Two-decimal rate, e.g."
+          "about": "Formats a number as a fixed two-decimal rate string, e.g. 0.35 or -1.06."
         }
       ],
       "about": "Matchup analysis model — turning non-scoring box-score stats into points."
@@ -3850,7 +3850,7 @@
           "kind": "type",
           "exported": true,
           "line": 4,
-          "about": "Conference — a type alias."
+          "about": "A league conference: East or West."
         },
         {
           "name": "Division",
@@ -3916,7 +3916,7 @@
           "about": "Game — an interface."
         }
       ],
-      "about": "ABOUTME: Conference — a type alias."
+      "about": "Domain types for the sports matchup app — conferences, divisions, and the records the views render."
     },
     {
       "id": "src/components/AdjacencyMatrix/AdjacencyMatrix.tsx",
@@ -12218,7 +12218,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstFocus.tsx",
-      "loc": 151,
+      "loc": 165,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -12226,8 +12226,8 @@
           "name": "AstFocus",
           "kind": "component",
           "exported": true,
-          "line": 22,
-          "about": "A single focused file fills the screen — its summary and members — flanked by \"Depends on\" and \"Used by\" neighbour cards."
+          "line": 26,
+          "about": "Shows a single file's summary and members between \"Depends on\" / \"Used by\" neighbour cards (from importsOf / importedBy); tapping a card walks the import graph one hop at a time, with back history."
         }
       ],
       "about": "Focus view — one file at a time with its dependency neighbours as tappable cards, traversing the import graph one hop at a time."
@@ -12237,7 +12237,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstGraph.tsx",
-      "loc": 296,
+      "loc": 299,
       "importCount": 6,
       "externalCount": 5,
       "members": [
@@ -12251,47 +12251,50 @@
           "name": "matchFiles",
           "kind": "function",
           "exported": false,
-          "line": 33
+          "line": 34,
+          "about": "File ids whose name, dir, summary, or any member matches the search query — drives node highlighting and auto-open."
         },
         {
           "name": "areaOfFileId",
           "kind": "const",
           "exported": false,
-          "line": 52
+          "line": 53
         },
         {
           "name": "GraphView",
           "kind": "component",
           "exported": false,
-          "line": 54
+          "line": 56,
+          "about": "The interactive React Flow canvas: search, expand/collapse, auto-layout, selection highlighting, and palette-themed nodes."
         },
         {
           "name": "VIEW_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 248
+          "line": 250
         },
         {
           "name": "ViewMode",
           "kind": "type",
           "exported": false,
-          "line": 255
+          "line": 257
         },
         {
           "name": "defaultView",
           "kind": "function",
           "exported": false,
-          "line": 258
+          "line": 261,
+          "about": "Picks the initial view — Outline on phones (≤720px), the network Graph on wider screens."
         },
         {
           "name": "AstGraph",
           "kind": "component",
           "exported": true,
-          "line": 264,
+          "line": 267,
           "about": "The AST viewer shell: a view switcher over the graph, outline, focus, and matrix views."
         }
       ],
-      "about": "Interactive React Flow viewer for the generated AST graph."
+      "about": "The AST explorer's view switcher plus its interactive React Flow graph (the Outline/Focus/Matrix views live in their own files)."
     },
     {
       "id": "src/howitworks/astGraphLayout.ts",
@@ -12564,7 +12567,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstMatrix.tsx",
-      "loc": 122,
+      "loc": 127,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -12572,20 +12575,22 @@
           "name": "areaCode",
           "kind": "function",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Short axis code for an area label, e.g. components → cmp, (root) → rt — keeps the column headers narrow."
         },
         {
           "name": "AstMatrix",
           "kind": "component",
           "exported": true,
-          "line": 20,
-          "about": "Rows are the importing area, columns the imported area; a cell's shade is how many file→file imports cross from row to column."
+          "line": 24,
+          "about": "Renders AREA_MATRIX as a heat-grid (rows import columns, shade = link count); tapping a cell opens the exact file→file links behind it."
         },
         {
           "name": "Row",
           "kind": "component",
           "exported": false,
-          "line": 104
+          "line": 109,
+          "about": "One matrix row: the row-header area label followed by that area's cells (a fragment, so the cells join the parent CSS grid)."
         }
       ],
       "about": "Matrix view — a compact area×area dependency heat-grid that fits a phone, with a tap-to-expand drawer of the file links behind a cell."
@@ -12595,7 +12600,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstOutline.tsx",
-      "loc": 170,
+      "loc": 175,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -12603,14 +12608,15 @@
           "name": "elementId",
           "kind": "function",
           "exported": false,
-          "line": 16
+          "line": 17,
+          "about": "The DOM id of a file's outline row, so a jumped-to link can scroll it into view."
         },
         {
           "name": "AstOutline",
           "kind": "component",
           "exported": true,
-          "line": 25,
-          "about": "The graph as a nested list: tap an area to reveal its files, tap a file to reveal its members and the files it imports / is imported by."
+          "line": 30,
+          "about": "Renders areas → files → members as a nested list; each open file lists its members plus tappable Imports / Imported-by chips (from astViews) that jump to the linked file."
         }
       ],
       "about": "Outline view — an indented disclosure list of areas, files, members and each file's import links, built for vertical scrolling on mobile."
@@ -12620,7 +12626,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "astViews.ts",
-      "loc": 130,
+      "loc": 142,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -12628,91 +12634,91 @@
           "name": "GRAPH",
           "kind": "const",
           "exported": true,
-          "line": 18,
-          "about": "GRAPH — an exported value."
+          "line": 24,
+          "about": "The generated graph JSON, typed as AstGraph — the one dataset every index and view below derives from."
         },
         {
           "name": "FILE_BY_ID",
           "kind": "const",
           "exported": true,
-          "line": 22,
+          "line": 28,
           "about": "Every file keyed by its repo-relative id."
         },
         {
           "name": "fileLabel",
           "kind": "function",
           "exported": true,
-          "line": 26,
-          "about": "The basename a file is shown as, e.g."
+          "line": 32,
+          "about": "The basename a file is shown as (e.g. Button.tsx), falling back to the id's last segment."
         },
         {
           "name": "FILES_BY_AREA",
           "kind": "const",
           "exported": true,
-          "line": 30,
+          "line": 36,
           "about": "Files grouped by their top-level area, preserving the graph's stable order."
         },
         {
           "name": "IMPORTS_OF",
           "kind": "const",
           "exported": true,
-          "line": 42,
+          "line": 48,
           "about": "Outgoing import targets for each file (the files it depends on)."
         },
         {
           "name": "IMPORTED_BY",
           "kind": "const",
           "exported": true,
-          "line": 54,
+          "line": 60,
           "about": "Incoming import sources for each file (the files that depend on it)."
         },
         {
           "name": "importsOf",
           "kind": "function",
           "exported": true,
-          "line": 65,
-          "about": "importsOf — a helper function."
+          "line": 74,
+          "about": "The files a given file depends on — backs the Outline's \"Imports\" chips and Focus's \"Depends on\" cards."
         },
         {
           "name": "importedBy",
           "kind": "function",
           "exported": true,
-          "line": 67,
-          "about": "importedBy — a helper function."
+          "line": 79,
+          "about": "The files that depend on a given file — backs the Outline's \"Imported by\" chips and Focus's \"Used by\" cards."
         },
         {
           "name": "AreaLink",
           "kind": "interface",
           "exported": true,
-          "line": 71,
+          "line": 83,
           "about": "One directed area→area dependency, with the file links behind it."
         },
         {
           "name": "AREA_MATRIX",
           "kind": "const",
           "exported": true,
-          "line": 78,
+          "line": 90,
           "about": "Area→area dependency matrix: `AREA_MATRIX.get(from)?.get(to)`."
         },
         {
           "name": "AREA_MATRIX_MAX",
           "kind": "const",
           "exported": true,
-          "line": 96,
+          "line": 108,
           "about": "Largest single area→area count, for scaling the matrix heat."
         },
         {
           "name": "fileMatches",
           "kind": "function",
           "exported": true,
-          "line": 104,
+          "line": 116,
           "about": "Does a file match a free-text query across its name, dir, summary, members?"
         },
         {
           "name": "MOST_CONNECTED_FILE",
           "kind": "const",
           "exported": true,
-          "line": 118,
+          "line": 130,
           "about": "A sensible starting file for the focus view: the most-connected one."
         }
       ],
@@ -12723,7 +12729,7 @@
       "area": "howitworks",
       "dir": "howitworks/generated",
       "name": "astGraph.types.ts",
-      "loc": 104,
+      "loc": 110,
       "importCount": 0,
       "externalCount": 0,
       "members": [
@@ -12766,8 +12772,8 @@
           "name": "AstGraph",
           "kind": "interface",
           "exported": true,
-          "line": 88,
-          "about": "AstGraph — an interface."
+          "line": 94,
+          "about": "The whole graph: schema version, headline stats, and the areas/files/imports the viewer renders."
         }
       ],
       "about": "Shared types for the build-time AST graph."
@@ -15113,38 +15119,38 @@
           "kind": "const",
           "exported": true,
           "line": 4,
-          "about": "MOTION_SCALES — an exported value."
+          "about": "The selectable motion multipliers and their human labels (1× palette default … 5× debug)."
         },
         {
           "name": "MotionScale",
           "kind": "type",
           "exported": true,
           "line": 12,
-          "about": "MotionScale — a type alias."
+          "about": "A valid motion multiplier — the `value` of one of MOTION_SCALES."
         },
         {
           "name": "DEFAULT_MOTION_SCALE",
           "kind": "const",
           "exported": true,
           "line": 15,
-          "about": "DEFAULT_MOTION_SCALE — an exported value."
+          "about": "The motion multiplier used when none is chosen (2× — slightly slowed so transitions read clearly)."
         },
         {
           "name": "resolveMotionScale",
           "kind": "function",
           "exported": true,
           "line": 18,
-          "about": "resolveMotionScale — a helper function."
+          "about": "Coerces an unknown string/number (e.g. a URL param) to a valid MotionScale, falling back to the default."
         },
         {
           "name": "MOTION_FIELD_OPTIONS",
           "kind": "const",
           "exported": true,
           "line": 24,
-          "about": "MOTION_FIELD_OPTIONS — an exported value."
+          "about": "MOTION_SCALES reshaped as {value,label} string options for a DraggableControls field (used by the How-it-works Motion control)."
         }
       ],
-      "about": "ABOUTME: MOTION_SCALES — an exported value."
+      "about": "The motion-speed scale: the multiplier options, their labels, the default, and helpers to parse and present them."
     },
     {
       "id": "src/theme/PaletteRoot.tsx",

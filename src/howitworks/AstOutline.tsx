@@ -13,14 +13,19 @@ import {
 } from './astViews'
 import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 
+// ABOUTME: The DOM id of a file's outline row, so a jumped-to link can scroll it into view.
 const elementId = (fileId: string) => `astv-of-${fileId}`
 
-// ABOUTME: The graph as a nested list: tap an area to reveal its files, tap a file to reveal its members and the files it imports / is imported by.
+// ABOUTME: Renders areas → files → members as a nested list; each open file lists its members plus tappable Imports / Imported-by chips (from astViews) that jump to the linked file.
 /**
  * The graph as a nested list: tap an area to reveal its files, tap a file to
- * reveal its members and the files it imports / is imported by. Links are
- * tappable chips that jump to the target file, so the dependency structure is
- * navigable without ever leaving the vertical scroll.
+ * reveal its members and the files it imports / is imported by. The file rows
+ * come from {@link FILES_BY_AREA}; the dependency chips come from
+ * {@link importsOf} / {@link importedBy}; a free-text box filters via
+ * {@link fileMatches}, auto-opening matching areas and files. Every chip is a
+ * button that jumps to (and scrolls to) its target, so the dependency
+ * structure is fully navigable without ever leaving the vertical scroll —
+ * the mobile-friendly counterpart to the Graph's pan-and-zoom canvas.
  */
 export function AstOutline() {
   const [query, setQuery] = useState('')
