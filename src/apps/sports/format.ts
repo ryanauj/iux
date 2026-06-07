@@ -1,7 +1,7 @@
-// ABOUTME: Inches to "6'7\"" — basketball convention.
+// ABOUTME: Formatting helpers for the sports app — converts raw numbers (stat values, win/loss records, heights, dates) to display strings in basketball convention.
 
-/** Inches to "6'7\"" — basketball convention. */
-// ABOUTME: Inches to "6'7\"" — basketball convention.
+// ABOUTME: Converts inches to feet-and-inches format, e.g. 79 → "6'7\"".
+/** Converts a player height from inches to the "6'7\"" format basketball uses. */
 export function formatHeight(inches: number): string {
   const feet = Math.floor(inches / 12)
   const remaining = inches % 12

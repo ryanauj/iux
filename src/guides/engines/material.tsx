@@ -1,4 +1,4 @@
-// ABOUTME: material — part of the guides area.
+// ABOUTME: Engine guide definition for the Material rendering engine — the paper-and-ink engine, documenting its paired ambient+key shadow elevation ladder, opaque sheet surfaces, indigo accent, and deliberate press-weight motion timing.
 
 import { useState } from 'react'
 import { palette as material } from '../../../palettes/material'
@@ -193,7 +193,7 @@ function CardComposition() {
   )
 }
 
-// ABOUTME: materialGuide — an exported value.
+// ABOUTME: materialGuide — the EngineGuideMeta for the Material engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the material palette, covering the paper-stack metaphor and paired shadow recipe.
 export const materialGuide: EngineGuideMeta = {
   engine: 'material',
   name: 'Material',

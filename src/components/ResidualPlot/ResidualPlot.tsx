@@ -1,23 +1,23 @@
-// ABOUTME: ResidualPlot — a React component (components).
+// ABOUTME: SVG residuals-vs-fitted diagnostic plot with three variants: raw scatter ('scatter'), scatter plus a tricube-weighted smooth curve ('smoothed'), and scatter plus smooth plus a ±N·σ shaded band ('banded').
 
 import { useMemo } from 'react'
 import './ResidualPlot.css'
 
-// ABOUTME: ResidualPlotVariant — a type alias.
+// ABOUTME: Display mode for the residual plot: 'scatter' shows points only, 'smoothed' adds a tricube-weighted lowess-style curve, 'banded' also draws a ±sdBand·σ shaded rectangle and reports the σ estimate in the footer.
 export type ResidualPlotVariant = 'scatter' | 'smoothed' | 'banded'
 
-// ABOUTME: ResidualIntent — a type alias.
+// ABOUTME: Semantic intent color applied to scatter dots and the smooth curve; maps to the standard intent palette.
 export type ResidualIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ResidualPoint — an interface.
+// ABOUTME: One observation: fitted value on x, residual on y, and an optional tooltip label shown on hover.
 export interface ResidualPoint {
   fitted: number
   residual: number
   label?: string
 }
 
-// ABOUTME: Props for ResidualPlot.
+// ABOUTME: Configures ResidualPlot: 'points' supplies the fitted/residual pairs, 'smoothWindow' sets the tricube bandwidth as a fraction of the x range, 'sdBand' sets the ±N·σ multiplier for the 'banded' variant, and 'intent' colors the dots and smoother.
 export interface ResidualPlotProps {
   variant?: ResidualPlotVariant
   points: ResidualPoint[]
@@ -71,7 +71,14 @@ function smooth(pts: ResidualPoint[], windowFrac: number): { x: number; y: numbe
   return out
 }
 
-// ABOUTME: ResidualPlot — a React component.
+// ABOUTME: Renders an SVG residuals-vs-fitted plot: symmetric y domain centered at zero, a zero-reference line, scatter dots with optional tooltips, a tricube-weighted smooth (60-point grid) in 'smoothed'/'banded' modes, and a shaded ±sdBand·σ rectangle in 'banded' mode with the σ estimate in the footer.
+/**
+ * The y axis is always symmetric around zero so deviations above and below the
+ * reference line are visually comparable. The smoother is a kernel moving mean
+ * with tricube weights, evaluated on a 60-point evenly-spaced grid — a cheap
+ * lowess stand-in that is fast enough to recompute on each render without
+ * memoization concerns.
+ */
 export function ResidualPlot({
   variant = 'smoothed',
   points,

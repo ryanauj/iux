@@ -1,16 +1,16 @@
-// ABOUTME: Bar — a React component (components).
+// ABOUTME: SVG bar chart supporting vertical and horizontal orientations, with simple, value-sorted, and target-comparison variants.
 
 import { useMemo } from 'react'
 import './Bar.css'
 
-// ABOUTME: BarVariant — a type alias.
+// ABOUTME: Display mode — 'simple' shows bars in data order, 'sorted' ranks by value descending with value labels, 'targeted' colors each bar success/danger relative to a target line.
 export type BarVariant = 'simple' | 'sorted' | 'targeted'
 
-// ABOUTME: BarIntent — a type alias.
+// ABOUTME: Semantic color token applied to each bar, matching the six contract intents.
 export type BarIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: BarDatum — an interface.
+// ABOUTME: A single category datum with a unique key, display label, numeric value, and optional per-bar intent override.
 export interface BarDatum {
   key: string
   label: string
@@ -18,7 +18,7 @@ export interface BarDatum {
   intent?: BarIntent
 }
 
-// ABOUTME: Props for Bar.
+// ABOUTME: Props for Bar — supplies category data, variant, orientation (vertical/horizontal), optional target reference value, value formatter, and dimensions.
 export interface BarProps {
   variant?: BarVariant
   data: BarDatum[]
@@ -38,7 +38,14 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: Bar — a React component.
+// ABOUTME: Renders categorical data as an SVG bar chart in vertical or horizontal orientation; sorts and value-labels bars on 'sorted', and colors each bar success/danger against a target line on 'targeted'.
+/**
+ * Sorts `data` by value descending for 'sorted' and 'targeted' variants.
+ * On 'targeted', bars meeting or exceeding `target` are colored 'success',
+ * others 'danger', and a reference line marks the target. Supports both
+ * vertical (default) and horizontal layouts, each with its own internal
+ * padding and scale logic.
+ */
 export function Bar({
   variant = 'simple',
   data,

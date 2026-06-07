@@ -6,10 +6,10 @@
  * pattern the sibling sports app uses.
  */
 
-// ABOUTME: Centralised route helpers for the Cap School app.
+// ABOUTME: Root path prefix shared by all Cap School routes; all contractsRoutes helpers are built on this constant.
 export const CONTRACTS_BASE = '/apps/contracts'
 
-// ABOUTME: contractsRoutes — an exported value.
+// ABOUTME: Path-builder functions for every Cap School chapter (overview, ladder, anatomy, max, exceptions, tax, aprons, trades, team) — all pages use these so route shapes live in one place.
 export const contractsRoutes = {
   overview: () => CONTRACTS_BASE,
   ladder: () => `${CONTRACTS_BASE}/ladder`,
@@ -22,7 +22,7 @@ export const contractsRoutes = {
   team: () => `${CONTRACTS_BASE}/team`,
 } as const
 
-// ABOUTME: ContractsRoute — a type alias.
+// ABOUTME: Discriminated union of every valid Cap School route (nine chapters + notFound); ContractsApp switches on the `kind` field to render the correct page component.
 export type ContractsRoute =
   | { kind: 'overview' }
   | { kind: 'ladder' }

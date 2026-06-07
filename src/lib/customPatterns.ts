@@ -1,4 +1,4 @@
-// ABOUTME: customPatterns — part of the lib area.
+// ABOUTME: Custom palette patterns — storage, id types, deep-merge utilities, and the resolveStyle seam that turns a StyleId into a concrete Palette.
 
 import { palettes, type PaletteId } from '../../palettes'
 import type { Palette, SemanticTokens } from '../../tokens/semantic.contract'
@@ -24,6 +24,7 @@ import { DEFAULT_SELECTED_STYLE, readSelectedStyle } from './persistedStyle'
 
 // ─────────────────────────────── id types ───────────────────────────────
 
+// ABOUTME: The string prefix that namespaces every custom pattern id to avoid collision with built-in palette ids.
 export const CUSTOM_PREFIX = 'custom:'
 
 // ABOUTME: A user-defined pattern id, namespaced so it never collides with a built-in.
@@ -34,7 +35,7 @@ export type CustomPatternId = `custom:${string}`
 /** Either a built-in palette id or a custom pattern id. */
 export type StyleId = PaletteId | CustomPatternId
 
-// ABOUTME: isCustomPatternId — a helper function.
+// ABOUTME: Type guard — true when value starts with `custom:` and has a slug after the prefix.
 export function isCustomPatternId(value: string): value is CustomPatternId {
   return value.startsWith(CUSTOM_PREFIX) && value.length > CUSTOM_PREFIX.length
 }
@@ -50,6 +51,7 @@ export function isBuiltInPaletteId(value: string): value is PaletteId {
 // ABOUTME: ───────────────────────────── override types ───────────────────────────
 // ───────────────────────────── override types ───────────────────────────
 
+// ABOUTME: Recursively marks every property optional — used to type the sparse per-leaf override trees that custom patterns store.
 export type DeepPartial<T> = T extends object
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : T
@@ -67,12 +69,13 @@ export interface CustomPattern {
   overrides: TokenOverrides
 }
 
-// ABOUTME: CustomPatternMap — a type alias.
+// ABOUTME: A map from `custom:<slug>` to its CustomPattern record — the shape stored in localStorage and returned by useCustomPatterns.
 export type CustomPatternMap = Record<string, CustomPattern>
 
 // ABOUTME: ──────────────────────────── object utilities ──────────────────────────
 // ──────────────────────────── object utilities ──────────────────────────
 
+// ABOUTME: Type guard for plain objects (non-null, non-array) used throughout the deep-merge and path utilities.
 export function isPlainObject(x: unknown): x is Record<string, unknown> {
   return typeof x === 'object' && x !== null && !Array.isArray(x)
 }
@@ -222,6 +225,7 @@ export function resolveStyle(id: string, customs?: CustomPatternMap): Palette {
 // ABOUTME: ──────────────────────────────── storage ───────────────────────────────
 // ──────────────────────────────── storage ───────────────────────────────
 
+// ABOUTME: localStorage key under which the custom-pattern map is stored.
 export const CUSTOM_PATTERNS_KEY = 'iux-custom-patterns'
 
 function isCustomPattern(x: unknown): x is CustomPattern {
@@ -236,7 +240,7 @@ function isCustomPattern(x: unknown): x is CustomPattern {
   )
 }
 
-// ABOUTME: isCustomPatternMap — a helper function.
+// ABOUTME: Type guard for the stored custom-pattern map; validates every entry so corrupt localStorage never reaches callers.
 export function isCustomPatternMap(parsed: unknown): parsed is CustomPatternMap {
   if (!isPlainObject(parsed)) return false
   return Object.values(parsed).every(isCustomPattern)
@@ -266,6 +270,7 @@ export function useCustomPatterns() {
 // ABOUTME: ───────────────────────────── id generation ────────────────────────────
 // ───────────────────────────── id generation ────────────────────────────
 
+// ABOUTME: Convert a human name into a lowercase, hyphen-separated URL/storage slug, falling back to "pattern" when the result is empty.
 export function slugify(name: string): string {
   const slug = name
     .toLowerCase()
@@ -275,7 +280,7 @@ export function slugify(name: string): string {
   return slug || 'pattern'
 }
 
-// ABOUTME: makeCustomId — a helper function.
+// ABOUTME: Wrap a slug in the `custom:` prefix to produce a typed CustomPatternId; internal helper used by uniqueCustomId.
 export function makeCustomId(slug: string): CustomPatternId {
   return `${CUSTOM_PREFIX}${slug}`
 }

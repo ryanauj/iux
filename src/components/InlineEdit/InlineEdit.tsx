@@ -1,4 +1,4 @@
-// ABOUTME: InlineEdit — a React component (components).
+// ABOUTME: Click-to-edit text field with four behavioural modes: instant click-to-edit, validated commit, debounced autosave with status badge, and a history panel for reverting to prior values.
 
 import {
   useCallback,
@@ -10,19 +10,19 @@ import {
 } from 'react'
 import './InlineEdit.css'
 
-// ABOUTME: InlineEditVariant — a type alias.
+// ABOUTME: Selects the editing behaviour: 'click' commits on blur/Enter, 'validated' runs a validator before accepting, 'autosave' debounces and calls onSave automatically, 'history' adds a revert panel.
 export type InlineEditVariant = 'click' | 'validated' | 'autosave' | 'history'
 
-// ABOUTME: SaveStatus — a type alias.
+// ABOUTME: Tracks the async save lifecycle shown as a status badge in the 'autosave' variant: idle while unchanged, dirty before the debounce fires, saving during the async call, then saved or error.
 export type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error'
 
-// ABOUTME: HistoryEntry — an interface.
+// ABOUTME: One entry in the edit history supplied to the 'history' variant: a Unix-ms timestamp and the value that was current at that point, displayed newest-first in the revert panel.
 export interface HistoryEntry {
   at: number
   value: string
 }
 
-// ABOUTME: Props for InlineEdit.
+// ABOUTME: Configures InlineEdit — the controlled `value`, behavioural `variant`, async `onSave` with optional debounce, a `validate` function for the validated variant, and a `history` array for the history variant.
 export interface InlineEditProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: InlineEditVariant
@@ -46,7 +46,16 @@ export interface InlineEditProps {
   defaultEditing?: boolean
 }
 
-// ABOUTME: InlineEdit — a React component.
+// ABOUTME: Renders a read-only display button with a pencil icon that activates an auto-focused input on click; commit/cancel via Enter/Escape or blur, with variant-specific autosave debouncing, inline validation errors, and a history revert dialog.
+/**
+ * Displays the current value as a clickable button labelled with a pencil
+ * glyph. On activation it swaps to a text input that commits on blur or Enter
+ * and cancels on Escape. The 'autosave' variant debounces writes to `onSave`
+ * and shows a SaveStatus badge (dirty / saving / saved / error). The 'history'
+ * variant appends a togglable revert panel listing prior values from the
+ * `history` prop. Both controlled and uncontrolled usage are supported;
+ * `defaultEditing` forces edit mode on mount for story previews.
+ */
 export function InlineEdit({
   variant = 'click',
   value,

@@ -1,8 +1,8 @@
-// ABOUTME: useDocMode — a React hook (lib).
+// ABOUTME: Persisted documentation voice pref — plain prose vs. technical engineering language — shared across all doctrine and engine-guide surfaces.
 
 import { usePersistedPref } from './usePersistedPref'
 
-// ABOUTME: Two voices for the same content: - `plain` — everyday-English prose for readers who don't speak CSS.
+// ABOUTME: The two documentation voices available across doctrine and engine guides: plain everyday-English prose or technical engineering text with token names and CSS jargon.
 /**
  * Two voices for the same content:
  *  - `plain` — everyday-English prose for readers who don't speak CSS.
@@ -16,19 +16,19 @@ import { usePersistedPref } from './usePersistedPref'
  */
 export type DocMode = 'plain' | 'technical'
 
-// ABOUTME: DOC_MODE_KEY — an exported value.
+// ABOUTME: localStorage key under which the selected DocMode is stored.
 export const DOC_MODE_KEY = 'iux-doc-mode'
-// ABOUTME: DEFAULT_DOC_MODE — an exported value.
+// ABOUTME: The DocMode used when nothing has been persisted — opens every guide in the plain, everyday-English voice.
 export const DEFAULT_DOC_MODE: DocMode = 'plain'
 
 const DOC_MODES = new Set<string>(['plain', 'technical'])
 
-// ABOUTME: isDocMode — a helper function.
+// ABOUTME: Type guard for DocMode — passed to usePersistedPref to reject invalid storage values.
 export function isDocMode(value: string): value is DocMode {
   return DOC_MODES.has(value)
 }
 
-// ABOUTME: useDocMode — a React hook.
+// ABOUTME: Returns the persisted DocMode and a setter; persists across reloads and syncs across tabs via usePersistedPref.
 export function useDocMode() {
   return usePersistedPref<DocMode>(DOC_MODE_KEY, DEFAULT_DOC_MODE, isDocMode)
 }

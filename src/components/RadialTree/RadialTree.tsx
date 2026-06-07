@@ -1,16 +1,16 @@
-// ABOUTME: RadialTree — a React component (components).
+// ABOUTME: SVG radial tree layout with three edge styles: straight lines ('straight'), midpoint-quadratic curves ('curved'), and a compact mode with a guiding outer ring ('compact').
 
 import { useMemo } from 'react'
 import './RadialTree.css'
 
-// ABOUTME: RadialTreeVariant — a type alias.
+// ABOUTME: Controls edge rendering: 'straight' draws direct lines, 'curved' draws quadratic arcs through a midpoint, 'compact' uses straight lines and adds an outer ring guide for dense label reading.
 export type RadialTreeVariant = 'straight' | 'curved' | 'compact'
 
-// ABOUTME: RadialTreeIntent — a type alias.
+// ABOUTME: Semantic intent applied per node; leaf color inherits from the top-level child's intent, cycling through the standard palette when not set explicitly.
 export type RadialTreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: RadialTreeNode — an interface.
+// ABOUTME: One node in the tree: a stable 'id', 'label' shown at root and leaf positions, an optional intent color override, and optional 'children' array for inner nodes.
 export interface RadialTreeNode {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface RadialTreeNode {
   children?: RadialTreeNode[]
 }
 
-// ABOUTME: Props for RadialTree.
+// ABOUTME: Configures RadialTree: 'root' is the tree root node; 'variant' controls edge style; 'width'/'height' set SVG dimensions (square recommended); depth rings and leaf slots are computed automatically from the tree structure.
 export interface RadialTreeProps {
   variant?: RadialTreeVariant
   root: RadialTreeNode
@@ -63,7 +63,14 @@ function layout(root: RadialTreeNode): { nodes: Positioned[]; leafCount: number;
   return { nodes: flat, leafCount: Math.max(1, leaf), maxDepth: Math.max(1, maxDepth) }
 }
 
-// ABOUTME: RadialTree — a React component.
+// ABOUTME: Renders an SVG radial tree: assigns polar coordinates by counting leaves (one angular slot each), evenly distributes depth rings between center and edge, colors nodes by their top-level ancestor's intent, shows labels only at root and leaf nodes, and draws edges as straight lines or midpoint-quadratic curves depending on 'variant'.
+/**
+ * Layout is computed in a single DFS pass that assigns angular positions based
+ * on leaf count so siblings are spread evenly around the circle. Node
+ * coordinates start at −π/2 (12 o'clock) and rotate clockwise. Leaf labels
+ * are rotated and anchored so they always read left-to-right regardless of
+ * their position on the circle.
+ */
 export function RadialTree({
   variant = 'straight',
   root,

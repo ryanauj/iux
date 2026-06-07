@@ -1,4 +1,4 @@
-// ABOUTME: Sidebar — a React component (components).
+// ABOUTME: Navigation sidebar in four variants: a flat item list ('links'), items grouped into collapsible sections ('groups'), a pointer-resizable rail with icon-only collapsed state and a pinned section ('rail'), and a live-filter search sidebar with keyword matching ('search').
 
 import {
   useCallback,
@@ -10,10 +10,10 @@ import {
 } from 'react'
 import './Sidebar.css'
 
-// ABOUTME: SidebarVariant — a type alias.
+// ABOUTME: The functional axis: 'links' renders a flat list, 'groups' adds collapsible section headings, 'rail' adds pointer-drag resize and an icon-only collapsed state, 'search' adds a live filter input that matches labels and keywords.
 export type SidebarVariant = 'links' | 'groups' | 'rail' | 'search'
 
-// ABOUTME: SidebarItem — an interface.
+// ABOUTME: One navigation item: 'id' is the stable key for active state, 'label' and 'icon' are displayed, 'href' renders an <a> element, 'pinned' surfaces the item at the top of the 'rail' pinned section, and 'keywords' extends label matching in 'search' mode.
 export interface SidebarItem {
   id: string
   label: string
@@ -27,7 +27,7 @@ export interface SidebarItem {
   keywords?: string[]
 }
 
-// ABOUTME: SidebarGroup — an interface.
+// ABOUTME: A named group of sidebar items: 'collapsible' enables a toggle button, 'defaultCollapsed' sets the initial collapsed state, and 'items' are the items within the section.
 export interface SidebarGroup {
   id: string
   label: string
@@ -36,7 +36,7 @@ export interface SidebarGroup {
   defaultCollapsed?: boolean
 }
 
-// ABOUTME: Props for Sidebar.
+// ABOUTME: Configures Sidebar: 'items' or 'groups' supply the navigation data (groups used in 'groups' variant), 'activeId'/'defaultActiveId' control the highlighted item, and 'width'/'collapsed' control the 'rail' variant's resize and collapse state.
 export interface SidebarProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SidebarVariant
@@ -61,7 +61,14 @@ export interface SidebarProps {
   ariaLabel?: string
 }
 
-// ABOUTME: Sidebar — a React component.
+// ABOUTME: Renders a <nav> element with variant-specific layout: flat list, grouped collapsible sections, or a rail with pointer-capture resize handle (clamped 180–420px) and toggle between full and icon-only mode; 'search' variant filters all items by label and keywords in real time.
+/**
+ * Controlled and uncontrolled modes are both supported for activeId, collapsed,
+ * and width. Items render as <a> tags when `href` is set, otherwise <button>.
+ * In 'rail' mode, pinned items appear in their own "Pinned" section at the top
+ * when the sidebar is expanded. Group collapse state is maintained per-group in
+ * a local Set.
+ */
 export function Sidebar({
   variant = 'links',
   items,

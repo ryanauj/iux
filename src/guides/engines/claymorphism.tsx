@@ -1,4 +1,4 @@
-// ABOUTME: claymorphism — part of the guides area.
+// ABOUTME: Engine guide definition for the Claymorphism rendering engine — the inflated-gumdrop engine that stacks three shadow layers per elevation slot (inset bottom shade, inset top highlight, outer drop shadow) over a pastel violet host, uses large radii to turn every control into a cushion, and drives a spring-overshoot motion curve for a bouncy physical release.
 
 import { useState } from 'react'
 import { palette as claymorphism } from '../../../palettes/claymorphism'
@@ -256,7 +256,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: claymorphismGuide — an exported value.
+// ABOUTME: claymorphismGuide — the EngineGuideMeta for the Claymorphism engine: five steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the claymorphism palette, covering the three-layer shadow recipe, large-radius cushion surfaces, violet-alpha borders, spring-overshoot motion, and pastel candy intent fills with deep ink.
 export const claymorphismGuide: EngineGuideMeta = {
   engine: 'claymorphism',
   name: 'Claymorphism',

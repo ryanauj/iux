@@ -1,10 +1,10 @@
-// ABOUTME: NotFound — a React component (apps).
+// ABOUTME: Catch-all 404 page for unrecognised Promptbook routes: shows a minimal EmptyState with a "Back to library" action.
 
 import { EmptyState } from '../../../components/EmptyState/EmptyState'
 import { navigate } from '../../router'
 import { promptRoutes } from '../routes'
 
-// ABOUTME: NotFound — a React component.
+// ABOUTME: Catch-all 404 page rendered by PromptsApp when matchPromptsRoute returns `{ kind: 'notFound' }`; shows a minimal EmptyState with a "Back to library" navigation action.
 export function NotFound() {
   return (
     <div className="pb-page">

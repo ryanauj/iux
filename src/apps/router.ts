@@ -1,8 +1,8 @@
-// ABOUTME: router — part of the apps area.
+// ABOUTME: Hash-based client-side router: parses window.location.hash into a HashLocation, and provides navigate/replaceParams to update it while preserving sticky user-preference params.
 
 import { useEffect, useState } from 'react'
 
-// ABOUTME: HashLocation — an interface.
+// ABOUTME: Parsed representation of a hash URL: the path component and a URLSearchParams for the query string following `?`.
 export interface HashLocation {
   /** The path portion of the hash, always leading with `/` (e.g. `/apps/sports/teams`). Empty string when no hash. */
   path: string
@@ -20,13 +20,13 @@ function parseHash(raw: string): HashLocation {
   return { path: normalized, params: new URLSearchParams(query) }
 }
 
-// ABOUTME: readHash — a helper function.
+// ABOUTME: Reads and parses window.location.hash into a HashLocation; returns an empty path in non-browser environments.
 export function readHash(): HashLocation {
   if (typeof window === 'undefined') return { path: '', params: new URLSearchParams() }
   return parseHash(window.location.hash)
 }
 
-// ABOUTME: useHashLocation — a React hook.
+// ABOUTME: React hook that returns the current HashLocation and re-renders on every hashchange event.
 export function useHashLocation(): HashLocation {
   const [loc, setLoc] = useState<HashLocation>(() => readHash())
   useEffect(() => {
@@ -37,7 +37,7 @@ export function useHashLocation(): HashLocation {
   return loc
 }
 
-// ABOUTME: buildHash — a helper function.
+// ABOUTME: Builds a `#/path?key=value` string from a path and optional params map, omitting any undefined or empty values.
 export function buildHash(path: string, params?: Record<string, string | undefined>): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
   if (!params) return `#${normalized}`
@@ -70,7 +70,7 @@ export function getStickyParams(): Record<string, string> {
   return out
 }
 
-// ABOUTME: navigate — a helper function.
+// ABOUTME: Navigates to a new hash path, merging caller-supplied params over the current sticky params so palette/layout/motion survive navigation.
 export function navigate(path: string, params?: Record<string, string | undefined>): void {
   if (typeof window === 'undefined') return
   // Caller-supplied params win; sticky params backfill the rest.

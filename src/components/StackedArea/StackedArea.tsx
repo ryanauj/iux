@@ -1,16 +1,16 @@
-// ABOUTME: StackedArea — a React component (components).
+// ABOUTME: SVG stacked area chart in three modes: cumulative absolute stacking ('stacked'), 100% normalized proportional stacking ('normalized'), and a baseline-symmetric streamgraph centered around zero ('streamgraph').
 
 import { useMemo } from 'react'
 import './StackedArea.css'
 
-// ABOUTME: StackedAreaVariant — a type alias.
+// ABOUTME: The stacking mode: 'stacked' accumulates absolute values bottom-to-top, 'normalized' scales each column to 100% and labels y-axis as percentages, 'streamgraph' places the stack symmetrically around a zero baseline for organic flow visual.
 export type StackedAreaVariant = 'stacked' | 'normalized' | 'streamgraph'
 
-// ABOUTME: StackedAreaIntent — a type alias.
+// ABOUTME: Semantic intent color applied to a series' filled band and legend swatch; defaults cycle through the standard palette by series index.
 export type StackedAreaIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: StackedAreaSeries — an interface.
+// ABOUTME: One area series: a stable 'id', a display 'label' for the legend, an optional intent color, and 'values' aligned by index with the 'times' array.
 export interface StackedAreaSeries {
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface StackedAreaSeries {
   values: number[]
 }
 
-// ABOUTME: Props for StackedArea.
+// ABOUTME: Configures StackedArea: 'series' and 'times' supply the data (values[i] aligns with times[i]), 'formatT' formats x-axis timestamps (defaults to locale short date), and 'formatY' formats y-axis values (defaults to toLocaleString).
 export interface StackedAreaProps {
   variant?: StackedAreaVariant
   series: StackedAreaSeries[]
@@ -50,7 +50,13 @@ function defaultFormatT(t: number): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
-// ABOUTME: StackedArea — a React component.
+// ABOUTME: Renders colored filled area bands stacked atop each other: each band is an SVG closed path from the upper to lower cumulative boundary; in 'streamgraph' mode the baseline shifts to −totalSum/2 at each time point; in 'normalized' mode values are divided by the column total to always reach 1.
+/**
+ * All stacking modes iterate series in order, accumulating lower and upper
+ * boundaries per time point. The same `xs`/`ys` scale functions are used for
+ * all paths. A color legend appears above the chart. Y-axis tick format
+ * switches to percentage strings in 'normalized' mode.
+ */
 export function StackedArea({
   variant = 'stacked',
   series,

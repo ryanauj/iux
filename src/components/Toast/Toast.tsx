@@ -1,4 +1,4 @@
-// ABOUTME: Toast — a React component (components).
+// ABOUTME: Individual toast notification and Toaster stack container; Toast supports four variants (plain, action, severity, progress) with auto-dismiss timer, hover/focus pause, and optional portal rendering; Toaster stacks multiple Toasts in a fixed-position portal with optional severity ordering.
 
 import {
   useCallback,
@@ -11,12 +11,12 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Toast.css'
 
-// ABOUTME: ToastVariant — a type alias.
+// ABOUTME: Visual style for a toast: plain shows title + body only; action adds a labelled action button; severity prepends an intent-matched SVG glyph; progress shows a width-animated fill bar.
 export type ToastVariant = 'plain' | 'action' | 'severity' | 'progress'
-// ABOUTME: ToastIntent — a type alias.
+// ABOUTME: Semantic intent applied to a toast — controls colour tokens, the severity glyph, and ARIA role (danger/warning use role="alert"/aria-live="assertive"; others use role="status").
 export type ToastIntent = 'info' | 'success' | 'warning' | 'danger' | 'neutral'
 
-// ABOUTME: ToastItem — an interface.
+// ABOUTME: Data shape for one toast in a queue: id, variant, intent, optional title/body/icon, auto-dismiss durationMs (0 = sticky), an action button descriptor, and a 0–1 progress fraction for the progress variant.
 export interface ToastItem {
   id: string
   variant?: ToastVariant
@@ -31,7 +31,7 @@ export interface ToastItem {
   progress?: number
 }
 
-// ABOUTME: Props for Toast.
+// ABOUTME: Props for Toast — extends ToastItem with an onDismiss callback and an inlineRender flag that bypasses the portal for Storybook isolation.
 export interface ToastProps extends ToastItem {
   onDismiss?: (id: string) => void
   /** Story-only: render without a portal. */
@@ -42,12 +42,18 @@ const SEVERITY_RANK: Record<ToastIntent, number> = {
   danger: 0, warning: 1, info: 2, neutral: 3, success: 4,
 }
 
-// ABOUTME: sortBySeverity — a helper function.
+// ABOUTME: Sorts a ToastItem array by SEVERITY_RANK so danger appears first and success last; used by Toaster's severityOrder mode and re-exported for StackedToasts.
 export function sortBySeverity(items: ToastItem[]): ToastItem[] {
   return items.slice().sort((a, b) => SEVERITY_RANK[a.intent ?? 'neutral'] - SEVERITY_RANK[b.intent ?? 'neutral'])
 }
 
-// ABOUTME: Toast — a React component.
+// ABOUTME: Renders a single dismissible notification card with intent-coloured border, optional severity glyph, auto-dismiss countdown (paused on hover/focus), and an animated progress bar in the progress variant.
+/**
+ * Uses three refs to implement a hover-pauseable timer: `remainingRef` tracks
+ * time left, `startedAtRef` records when the current countdown began, and
+ * `timerRef` holds the active timeout handle. `inlineRender` passes through
+ * to child `<Toast>` to skip portal wrapping in stories.
+ */
 export function Toast({
   id, variant = 'plain', intent = 'neutral', title, body, icon, durationMs = 5000, action, progress, onDismiss, inlineRender,
 }: ToastProps) {
@@ -142,10 +148,10 @@ export function Toast({
   )
 }
 
-// ABOUTME: ToasterPosition — a type alias.
+// ABOUTME: Corner/edge anchor for the fixed-position Toaster stack — mirrors StackPosition in StackedToasts.
 export type ToasterPosition = 'top-right' | 'bottom-right' | 'top-center' | 'bottom-center'
 
-// ABOUTME: Props for Toaster.
+// ABOUTME: Props for Toaster — the toast list, dismiss callback, stack position, optional severity ordering, visible-item cap, and inlineRender bypass.
 export interface ToasterProps {
   toasts: ToastItem[]
   onDismiss: (id: string) => void
@@ -157,7 +163,7 @@ export interface ToasterProps {
   inlineRender?: boolean
 }
 
-// ABOUTME: Toaster — a React component.
+// ABOUTME: Portal-rendered fixed-position stack of Toast items; optionally sorts by intent severity and caps visible count, showing a "+N more" chip for overflow items.
 export function Toaster({ toasts, onDismiss, position = 'top-right', severityOrder = false, max = 6, inlineRender = false }: ToasterProps) {
   const ordered = severityOrder ? sortBySeverity(toasts) : toasts
   const visible = ordered.slice(0, max)
@@ -204,9 +210,9 @@ function IntentGlyph({ intent }: { intent: ToastIntent }) {
   )
 }
 
-// ABOUTME: ---------- minimal hook helper ----------
 // ---------- minimal hook helper ----------
 
+// ABOUTME: Minimal hook for managing a toast queue: returns the live toast list plus push (auto-generates id), dismiss (removes by id), and update (patches an existing toast by id) for use with Toaster or StackedToasts.
 export function useToastQueue() {
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const push = useCallback((item: Omit<ToastItem, 'id'> & { id?: string }) => {

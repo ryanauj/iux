@@ -1,4 +1,4 @@
-// ABOUTME: Games — a React component (apps).
+// ABOUTME: Schedule page showing all games grouped by date, filterable by status (All / Final / Live / Upcoming) using a Segmented pill control.
 
 import { useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
@@ -10,7 +10,12 @@ import type { GameStatus } from '../types'
 
 type StatusFilter = 'all' | GameStatus
 
-// ABOUTME: Games — a React component.
+// ABOUTME: Filters GAMES by the chosen status, groups the result by ISO date via `groupGamesByDate`, and renders each date section as a grid of ScoreCard tiles; shows an EmptyState when no games match.
+/**
+ * The full league schedule. Status filter state is local; filtered games are
+ * passed through `groupGamesByDate` so each date gets its own section heading.
+ * Each game tile is a `ScoreCard` linking to `GameDetail`.
+ */
 export function Games() {
   const [filter, setFilter] = useState<StatusFilter>('all')
   const filtered = filter === 'all' ? GAMES : GAMES.filter(g => g.status === filter)

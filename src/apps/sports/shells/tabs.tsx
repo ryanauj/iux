@@ -1,4 +1,4 @@
-// ABOUTME: TabsShell — a React component (apps).
+// ABOUTME: TabsShell — browser-tabs shell that maintains a persistent strip of open pages; every navigation appends the destination to the strip if not already there, tabs are closeable, and the full tab list is serialised into `?tabs=` so the workspace survives a refresh.
 
 import { useEffect, useMemo } from 'react'
 import { Link } from '../../Link'
@@ -73,7 +73,14 @@ function TabsNavMenu({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   )
 }
 
-// ABOUTME: TabsShell — a React component.
+// ABOUTME: Shell that renders a tab strip above a standard-page main area; opening a new route appends it to the strip, closing a tab focuses the neighbour and removes it from the `?tabs=` param, and the "+" button opens a fresh Home tab.
+/**
+ * Tab keys are URL path suffixes (the part after SPORTS_BASE), stored as a
+ * comma-joined `?tabs=` param. On each render the shell compares the current
+ * route to the strip and appends it via replaceParams if missing. Labels are
+ * derived from the route kind (e.g. "BOS @ NYK" for a game detail). Closing
+ * the last tab navigates Home and clears the param.
+ */
 export function TabsShell(props: ShellProps) {
   const location = useHashLocation()
   const tabsParam = location.params.get('tabs')

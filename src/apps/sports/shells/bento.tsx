@@ -1,4 +1,4 @@
-// ABOUTME: BentoShell — a React component (apps).
+// ABOUTME: BentoShell — configurable dashboard shell that replaces the Home page with a reorderable grid of five sports widgets (live scoreboard, stat leaders, standings, schedule, team spotlight), each expandable into a modal; on other routes renders the standard page.
 
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -243,7 +243,16 @@ function BentoNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
-// ABOUTME: BentoShell — a React component.
+// ABOUTME: Dashboard shell with a user-customisable widget grid on the Home route and a standard page layout on every other route; widget visibility and order persist in the `?bento=` URL param so the configuration survives navigation.
+/**
+ * On the Home route, renders five named widgets (live, leaders, standings,
+ * schedule, spotlight) in a CSS grid, each clickable to expand into a Modal
+ * that hosts the corresponding full page component. Clicking a widget's
+ * "Open full page" link navigates normally. A "Customize" toolbar lets the
+ * user reorder, hide, and restore widgets; the resulting order is serialised
+ * into `?bento=` and reflects immediately without a round-trip. On non-Home
+ * routes the grid is replaced by the standard `props.children` page.
+ */
 export function BentoShell(props: ShellProps) {
   const location = useHashLocation()
   const visible = useMemo(() => parseBento(location.params.get('bento')), [location.params])

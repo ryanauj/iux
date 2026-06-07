@@ -1,4 +1,4 @@
-// ABOUTME: Timeline — a React component (components).
+// ABOUTME: Scrubable playhead timeline with four variants: basic (single drag track), snap (tick-scale ruler with marker snap-to), multi (per-track lanes with mute/solo controls), and keyframes (per-track value curves with shift-click keyframe add and drag-to-move).
 
 import {
   useCallback,
@@ -10,16 +10,16 @@ import {
 } from 'react'
 import './Timeline.css'
 
-// ABOUTME: TimelineVariant — a type alias.
+// ABOUTME: Interaction mode — basic is a simple drag scrubber; snap adds a pixel-per-second tick ruler and snaps the playhead to nearby markers; multi shows per-track lanes with mute/solo; keyframes adds value-curve lanes with draggable diamond keyframes.
 export type TimelineVariant = 'basic' | 'snap' | 'multi' | 'keyframes'
 
-// ABOUTME: TimelineMarker — an interface.
+// ABOUTME: A named position marker on the timeline: a time in seconds and an optional label shown as a tooltip; used by the snap variant for magnet-snap zones.
 export interface TimelineMarker {
   at: number
   label?: string
 }
 
-// ABOUTME: TimelineTrack — an interface.
+// ABOUTME: A named lane in the multi or keyframes variant, with an optional CSS color, muted flag, and soloed flag; mute/solo state changes fire onTrackChange.
 export interface TimelineTrack {
   id: string
   name: string
@@ -29,7 +29,7 @@ export interface TimelineTrack {
   soloed?: boolean
 }
 
-// ABOUTME: TimelineKeyframe — an interface.
+// ABOUTME: A single keyframe on a track: its trackId, time position (seconds), and a 0–1 normalized value used for the vertical position on the curve lane.
 export interface TimelineKeyframe {
   trackId: string
   at: number
@@ -37,7 +37,7 @@ export interface TimelineKeyframe {
   value: number
 }
 
-// ABOUTME: Props for Timeline.
+// ABOUTME: Props for Timeline — total duration in seconds, controlled/uncontrolled playhead time, marker list with optional snap, per-track list with change callback, keyframe list with add/change callbacks, zoom scale, and variant.
 export interface TimelineProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TimelineVariant
@@ -67,7 +67,14 @@ function fmt(t: number): string {
   return `${m}:${s.padStart(4, '0')}`
 }
 
-// ABOUTME: Timeline — a React component.
+// ABOUTME: Renders a time readout header above a pointer-capture drag track; snap variant adds a computed tick array and marker pins; multi and keyframes variants render per-track lane rows with an overlaid playhead line.
+/**
+ * Uses a single `dragRef` to distinguish time-scrub drags from keyframe drags.
+ * The snap variant computes tick spacing from the `zoom` (px/s) prop and
+ * snaps the playhead within 4% of duration of the nearest marker.
+ * In the keyframes variant, Shift+click on empty lane area fires `onKeyframeAdd`
+ * and existing diamond markers are pointer-drag repositioned via `onKeyframeChange`.
+ */
 export function Timeline({
   variant = 'basic',
   duration,

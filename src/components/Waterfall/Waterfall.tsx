@@ -1,12 +1,12 @@
-// ABOUTME: Waterfall — a React component (components).
+// ABOUTME: SVG waterfall (bridge/cascade) chart that renders a running-total bar sequence; supports simple (all positive/negative steps), signed (colour-coded gain/loss bars), and subtotals (designated subtotal steps whose bars reset to zero and show the accumulated total) variants.
 
 import { useMemo } from 'react'
 import './Waterfall.css'
 
-// ABOUTME: WaterfallVariant — a type alias.
+// ABOUTME: Chart mode — simple treats all steps identically; signed colours bars by sign using pos/neg CSS classes; subtotals additionally respects the step.subtotal flag to draw total-bar anchored at zero.
 export type WaterfallVariant = 'simple' | 'signed' | 'subtotals'
 
-// ABOUTME: WaterfallStep — an interface.
+// ABOUTME: One step in the waterfall sequence: unique key, axis label, numeric delta (negative for decreases), and an optional subtotal flag that makes the bar span from zero to the current running total.
 export interface WaterfallStep {
   key: string
   label: string
@@ -16,7 +16,7 @@ export interface WaterfallStep {
   subtotal?: boolean
 }
 
-// ABOUTME: Props for Waterfall.
+// ABOUTME: Props for Waterfall — the ordered step array, optional pixel dimensions, variant, a formatValue callback for axis labels and value annotations, and className.
 export interface WaterfallProps {
   variant?: WaterfallVariant
   steps: WaterfallStep[]
@@ -34,7 +34,14 @@ function defaultFormat(n: number): string {
   return n > 0 ? `+${s}` : s
 }
 
-// ABOUTME: Waterfall — a React component.
+// ABOUTME: Computes each bar's y0/y1 extents and a pos/neg/total kind tag in a useMemo, derives a padded yDomain, then renders gridlines, a zero-axis baseline, and per-step bar rects with thin connector lines linking each bar's y1 to the next bar's y0.
+/**
+ * Subtotal steps set y0 = 0 and y1 = running total, and are tagged 'total'
+ * for neutral CSS colouring. A value annotation floats above each bar showing
+ * the step delta (or running total for subtotal steps). The yDomain is
+ * expanded by 8% padding above and below the extreme values to prevent bars
+ * from clipping the SVG boundary.
+ */
 export function Waterfall({
   variant = 'simple',
   steps,

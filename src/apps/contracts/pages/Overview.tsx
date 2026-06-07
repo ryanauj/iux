@@ -1,4 +1,4 @@
-// ABOUTME: Overview — a React component (apps).
+// ABOUTME: Chapter 1 — "How NBA contracts actually work": the narrative entry point that traces the cap's history from a hard wall to a soft cap, shows this season's real threshold numbers and CapLadder, and links each subsequent chapter.
 
 import { Card } from '../../../components/Card/Card'
 import { Bar } from '../../../components/Bar/Bar'
@@ -12,7 +12,14 @@ import { money, moneySigned, pct } from '../format'
 
 const CHAPTERS = NAV.slice(1) // everything after Overview
 
-// ABOUTME: Overview — a React component.
+// ABOUTME: Chapter 1 page combining prose on the soft-cap origin story with SEASON / PRIOR_CAP / THRESHOLDS data from cap.ts; renders StatTiles for this year's numbers, a Bar chart of all thresholds, the full CapLadder, and a chapter-card grid from NAV (shell.tsx).
+/**
+ * Chapter 1 of Cap School — the narrative foundation. Explains why the league
+ * moved from a hard cap (1983) to a soft cap by introducing Bird rights, then
+ * shows how every rule that follows is a patch on that original fix. Uses Bar
+ * to compare threshold amounts, CapLadder for the visual overview, and a grid
+ * of NAV-driven chapter cards so readers can jump directly to any section.
+ */
 export function Overview() {
   const capGrowth = (SEASON.salaryCap - PRIOR_CAP) / PRIOR_CAP
 

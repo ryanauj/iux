@@ -1,4 +1,4 @@
-// ABOUTME: cel-glass — part of the guides area.
+// ABOUTME: Engine guide definition for the Cel-Glass rendering engine — the hybrid engine that combines glassmorphism's frosted translucent surfaces (backdrop-filter blur, alpha-channel fills) with cel-shaded's hard ink outline (effect.outline.color/width) and pairs a glass inset top-highlight with a hard-offset cel block per elevation slot, shipping six palette registers in two families: saturated-host (Frost, Noir, Sunset) marked a11y experimental and light-ground (Mist, Bone, Orchid) marked a11y pass.
 
 import { useState } from 'react'
 import { palette as celGlassFrost } from '../../../palettes/cel-glass-frost'
@@ -245,7 +245,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: celGlassGuide — an exported value.
+// ABOUTME: celGlassGuide — the EngineGuideMeta for the Cel-Glass engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) plus a variations step showing all six palette registers, demonstrated against the cel-glass-frost palette, covering the dual outline-plus-backdrop-blur delivery, the paired glass-highlight plus hard-cel-block elevation recipe, and the saturated-host vs light-ground register families.
 export const celGlassGuide: EngineGuideMeta = {
   engine: 'cel-glass',
   name: 'Cel-Glass',

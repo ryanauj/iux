@@ -1,4 +1,4 @@
-// ABOUTME: Standings — a React component (apps).
+// ABOUTME: Conference standings page showing Eastern and Western conferences as separate sortable tables with W, L, PCT, GB, PF, PA, L10, and STRK columns, backed by `getStandings` sorted by winning percentage.
 
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { getStandings } from '../data'
@@ -6,7 +6,7 @@ import { gamesBehind, winPct } from '../format'
 import type { Team } from '../types'
 import { TeamChip } from '../components/TeamChip'
 
-// ABOUTME: Standings — a React component.
+// ABOUTME: Renders one sortable `Table` per conference using `getStandings`; GB is computed relative to the conference leader; team names render as `TeamChip` links to TeamDetail.
 export function Standings() {
   return (
     <>

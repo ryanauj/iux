@@ -1,18 +1,18 @@
-// ABOUTME: persistedStyle — part of the lib area.
+// ABOUTME: Site-wide selected-style persistence: the useSelectedStyle hook, the synchronous readSelectedStyle accessor, and the buildPaletteField factory for DraggableControls.
 
 import { palettes, type PaletteId } from '../../palettes'
 import type { Field } from '../components/DraggableControls/DraggableControls'
 import { usePersistedPref } from './usePersistedPref'
 import { isCustomPatternId, type StyleId } from './customPatterns'
 
-// ABOUTME: SELECTED_STYLE_KEY — an exported value.
+// ABOUTME: localStorage key under which the user's selected style id is stored.
 export const SELECTED_STYLE_KEY = 'iux-selected-style'
-// ABOUTME: DEFAULT_SELECTED_STYLE — an exported value.
+// ABOUTME: The built-in palette id used when no valid style has been persisted yet.
 export const DEFAULT_SELECTED_STYLE: PaletteId = 'flat-classic'
 
 const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
-// ABOUTME: isPaletteId — a helper function.
+// ABOUTME: Type guard — true when value is a key in the built-in palette registry; used to validate storage reads.
 export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }

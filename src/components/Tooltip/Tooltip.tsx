@@ -1,4 +1,4 @@
-// ABOUTME: Tooltip — a React component (components).
+// ABOUTME: Portal-anchored tooltip with four variants: plain (simple text bubble), shortcut (trailing keyboard shortcut chip), rich (thumbnail + title + optional click-to-pin), and coach (step-counter with Next/Skip buttons for guided tours); all variants attach via pointer/focus events on a single child element and compute absolute position with layout-time measurement.
 
 import {
   cloneElement,
@@ -17,12 +17,12 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Tooltip.css'
 
-// ABOUTME: TooltipVariant — a type alias.
+// ABOUTME: Rendering tier — plain shows a minimal bubble; shortcut appends a keyboard chip; rich adds a thumbnail, title, and pinnable close button; coach shows step progress and Next/Skip controls.
 export type TooltipVariant = 'plain' | 'shortcut' | 'rich' | 'coach'
-// ABOUTME: TooltipSide — a type alias.
+// ABOUTME: Which edge of the trigger the tooltip floats against; the component reads trigger and tooltip bounding rects at open time to compute the absolute page position.
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 
-// ABOUTME: CoachStep — an interface.
+// ABOUTME: Step-progress descriptor for the coach variant: current and total step numbers, plus optional onNext and onSkip callbacks wired to the action buttons.
 export interface CoachStep {
   current: number
   total: number
@@ -30,7 +30,7 @@ export interface CoachStep {
   onSkip?: () => void
 }
 
-// ABOUTME: Props for Tooltip.
+// ABOUTME: Props for Tooltip — variant, content, optional title/thumbnail/shortcut/step for richer variants, pinnable click-to-stay flag, preferred side, show delay, controlled/uncontrolled open state, and a single React element child that receives injected pointer/focus event handlers.
 export interface TooltipProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TooltipVariant
@@ -64,7 +64,15 @@ interface Position {
   side: TooltipSide
 }
 
-// ABOUTME: Tooltip — a React component.
+// ABOUTME: Clones its single child element to inject pointer-enter/leave, focus/blur, and click handlers; computes tooltip absolute position via a useLayoutEffect on the trigger and tooltip bounding rects; portals the bubble to the shared portal target.
+/**
+ * Touch interactions are handled separately from mouse: hover/focus events
+ * on touch are ignored in favour of tap-click to toggle. A global pointerdown
+ * listener dismisses the tooltip when a touch lands outside the trigger and tip.
+ * The `pinned` state (rich variant) prevents hide() from closing the bubble
+ * until the inline Close button is clicked. The coach variant uses role="dialog"
+ * rather than role="tooltip".
+ */
 export function Tooltip({
   variant = 'plain',
   content,

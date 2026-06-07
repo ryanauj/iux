@@ -1,4 +1,4 @@
-// ABOUTME: SpatialCanvas — a React component (components).
+// ABOUTME: Pan/zoom infinite canvas with four variants: pan-only ('pan'), pan+pinch+scroll zoom with minimap ('zoom'), zoom plus draggable objects and marquee selection ('objects'), and objects plus live remote-cursor overlays ('collab').
 
 import {
   useCallback,
@@ -12,10 +12,10 @@ import {
 } from 'react'
 import './SpatialCanvas.css'
 
-// ABOUTME: CanvasVariant — a type alias.
+// ABOUTME: Controls which interactions are enabled: 'pan' is scroll-only, 'zoom' adds ctrl+wheel and two-finger pinch with a minimap, 'objects' adds selectable/draggable objects and marquee selection, 'collab' adds remote cursor overlays on top of 'objects' capabilities.
 export type CanvasVariant = 'pan' | 'zoom' | 'objects' | 'collab'
 
-// ABOUTME: CanvasObject — an interface.
+// ABOUTME: One draggable/selectable canvas object in world-space coordinates: position (x, y), size (w, h), an optional label, a CSS color string, and a 'selected' hint (selection state is managed internally).
 export interface CanvasObject {
   id: string
   x: number
@@ -28,7 +28,7 @@ export interface CanvasObject {
   selected?: boolean
 }
 
-// ABOUTME: RemoteCursor — an interface.
+// ABOUTME: One remote collaborator's cursor in world-space coordinates; rendered as a colored SVG cursor with a name badge in 'collab' mode.
 export interface RemoteCursor {
   id: string
   name: string
@@ -38,7 +38,7 @@ export interface RemoteCursor {
   y: number
 }
 
-// ABOUTME: Props for SpatialCanvas.
+// ABOUTME: Configures SpatialCanvas: 'objects' and 'onObjectsChange' wire the object layer, 'selectedIds'/'onSelectedIdsChange' expose selection (controlled or uncontrolled), 'remoteCursors' feeds the 'collab' cursor overlay, and 'worldBounds' defines the scrollable world extent.
 export interface SpatialCanvasProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CanvasVariant
@@ -61,7 +61,14 @@ interface Transform {
   scale: number
 }
 
-// ABOUTME: SpatialCanvas — a React component.
+// ABOUTME: Renders a viewport div with a CSS-transform layer for pan/zoom; handles pointer-capture panning, two-finger pinch-to-zoom (zooming toward the pinch midpoint), ctrl+wheel zoom, marquee selection (world-space AABB test), object drag, and an optional Minimap that click-pans the viewport.
+/**
+ * The transform is `translate(tx, ty) scale(s)` with origin at (0,0), so
+ * world-space → screen-space is `screen = world * s + t`. Pointer events use
+ * `setPointerCapture` for smooth drags outside the element. Zoom clamps to
+ * 0.25–4× scale. The Minimap renders a 140×90 thumbnail with a viewport
+ * indicator and click-to-pan support.
+ */
 export function SpatialCanvas({
   variant = 'pan',
   objects = [],

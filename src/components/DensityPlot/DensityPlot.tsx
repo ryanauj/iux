@@ -1,16 +1,16 @@
-// ABOUTME: DensityPlot — a React component (components).
+// ABOUTME: SVG kernel density estimation plot that smooths raw value arrays into continuous curves using Silverman's bandwidth rule; supports single filled, multi-series overlay, and filled-area modes.
 
 import { useMemo } from 'react'
 import './DensityPlot.css'
 
-// ABOUTME: DensityPlotVariant — a type alias.
+// ABOUTME: Display mode: 'single' renders one filled KDE curve, 'multiple' overlays several unfilled curves on a shared axis, 'filled' forces shaded fill for all curves in a multi-series overlay.
 export type DensityPlotVariant = 'single' | 'multiple' | 'filled'
 
-// ABOUTME: DensityIntent — a type alias.
+// ABOUTME: Semantic colour applied to a series' curve and fill area; defaults to cycling through the intent palette by series index.
 export type DensityIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: DensitySeries — an interface.
+// ABOUTME: One named data series: an id, display label, raw numeric values array that will be smoothed by KDE, and optional intent colour override.
 export interface DensitySeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface DensitySeries {
   intent?: DensityIntent
 }
 
-// ABOUTME: Props for DensityPlot.
+// ABOUTME: Props for DensityPlot — variant selects fill/overlay mode, series supplies raw value arrays, xDomain clamps the x axis, and resolution controls how many KDE evaluation points are computed.
 export interface DensityPlotProps {
   variant?: DensityPlotVariant
   series: DensitySeries[]
@@ -69,7 +69,15 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: DensityPlot — a React component.
+// ABOUTME: Renders an SVG density plot by running Gaussian KDE (Silverman bandwidth) over each series' values, then drawing the resulting curve as an SVG polyline with an optional filled area beneath it.
+/**
+ * Auto-derives x domain from the union of all values, padding by 6%, then
+ * evaluates each curve at `resolution` equally-spaced points. 'single' and
+ * 'filled' render both a filled area path and a stroke line; 'multiple' renders
+ * only the stroke lines. The y-axis is normalised to the peak density across all
+ * series, with four horizontal grid lines at 25%/50%/75%/100%. A colour-coded
+ * legend with sample count appears below when more than one series is provided.
+ */
 export function DensityPlot({
   variant = 'single',
   series,

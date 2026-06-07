@@ -1,4 +1,4 @@
-// ABOUTME: Landing page at `/palettes`.
+// ABOUTME: Landing page at /palettes — lists every registered palette grouped by engine, linking each to its /palettes/:id/design page with a one-line tagline teaser, and shows how many of the total have structured descriptions so far.
 
 /**
  * Landing page at `/palettes`. Lists every palette grouped by engine
@@ -33,7 +33,7 @@ function groupByEngine(): Group[] {
     .sort((a, b) => a.engine.localeCompare(b.engine))
 }
 
-// ABOUTME: PalettesIndex — a React component.
+// ABOUTME: PalettesIndex — the /palettes index page: groups all palettes by engine using the palettes registry, renders each group as a section with engine-keyed headings, and links each entry to its design doc, falling back to "Description pending" for palettes without a structured descriptions entry.
 export function PalettesIndex() {
   const [navLayout] = useNavLayout()
   const [selectedStyle] = useSelectedStyle()

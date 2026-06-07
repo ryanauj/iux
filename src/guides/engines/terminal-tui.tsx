@@ -1,4 +1,4 @@
-// ABOUTME: terminal-tui — part of the guides area.
+// ABOUTME: Engine guide definition for the Terminal / TUI rendering engine — the character-grid engine that anchors spacing to ch/lh cells, sets monospace for every type role, zeros radius on every slot, replaces CSS border corners with real box-drawing glyphs via effect.borderStyle = 'character', collapses all elevation rungs to no-shadow, and uses linear easing at the tightest duration band in the showcase.
 
 import { useState } from 'react'
 import { palette as terminalTui } from '../../../palettes/terminal-tui'
@@ -240,7 +240,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: terminalTuiGuide — an exported value.
+// ABOUTME: terminalTuiGuide — the EngineGuideMeta for the Terminal / TUI engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the terminal-tui palette, covering the character-grid layout unit, near-black neutral surfaces, the box-drawing-glyph corner trick, all-none elevation, linear snap-fast motion with no decay, and colour-on-border intent encoding with a link-blue focus outline.
 export const terminalTuiGuide: EngineGuideMeta = {
   engine: 'terminal-tui',
   name: 'Terminal / TUI',

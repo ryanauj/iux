@@ -1,8 +1,8 @@
-// ABOUTME: players — part of the apps area.
+// ABOUTME: Static player seed data for the sports demo: 30 players (3 per team) covering all 10 teams, with full bio fields (jersey, position, height, weight, age, experience) and season stats (GP, MPG, PPG, RPG, APG, SPG, BPG, FG%, 3P%, FT%).
 
 import type { Player } from '../types'
 
-// ABOUTME: PLAYERS — an exported value.
+// ABOUTME: The complete 30-player roster array across all 10 demo teams, consumed by the data index module which builds lookup maps and filtering helpers.
 export const PLAYERS: Player[] = [
   // Boston Celtics
   {

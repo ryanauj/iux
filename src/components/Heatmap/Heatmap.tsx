@@ -1,12 +1,12 @@
-// ABOUTME: Heatmap — a React component (components).
+// ABOUTME: SVG grid heatmap that maps cell values to one of five tint levels in three colour schemes — continuous single-hue intensity, diverging positive/negative, and sparse (highlights only the top two intensity levels).
 
 import { useMemo } from 'react'
 import './Heatmap.css'
 
-// ABOUTME: HeatmapVariant — a type alias.
+// ABOUTME: Colour scheme: 'continuous' maps absolute magnitude to five tint levels (l0–l4) in a single hue, 'diverging' uses separate pos/neg hues scaled from a configurable centre, 'sparse' applies tinting only at levels l3–l4 and suppresses labels on low-intensity cells.
 export type HeatmapVariant = 'continuous' | 'diverging' | 'sparse'
 
-// ABOUTME: HeatmapCell — an interface.
+// ABOUTME: A single cell value at a named row/column intersection; missing row×col combinations render as a 'missing' placeholder rect.
 export interface HeatmapCell {
   row: string
   col: string

@@ -1,4 +1,4 @@
-// ABOUTME: TestsPage — a React component (tests).
+// ABOUTME: Shell page for the in-app integration test suite: runs tests via the runner, owns shared result state, and switches between TestsViz (card workbench) and CoverageViz (matrix/network) views.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { readHash, replaceParams, useHashLocation } from '../apps/router'
@@ -21,10 +21,10 @@ import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import { useNavLayout } from '../components/AppShell/navLayouts'
 
-// ABOUTME: VizId — a type alias.
+// ABOUTME: Discriminated union selecting which visualization is active: the test card workbench ('tests') or the coverage matrix/network ('coverage').
 export type VizId = 'tests' | 'coverage'
 
-// ABOUTME: RunFor — a type alias.
+// ABOUTME: Callback signature passed from TestsPage into each visualization so both TestsViz and CoverageViz can trigger a run against their own sandboxed DOM element.
 export type RunFor = (
   id: string,
   mountEl: HTMLElement,
@@ -41,7 +41,7 @@ const DEFAULT_VIZ: VizId = 'tests'
 
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
 
-// ABOUTME: TestsPage — a React component.
+// ABOUTME: Top-level page that hosts the integration test runner: manages shared result state, drives the autorun loop for CI/Playwright, and delegates rendering to TestsViz or CoverageViz based on the active viz segment.
 export function TestsPage() {
   const location = useHashLocation()
   const vizRaw = location.params.get('viz') ?? ''

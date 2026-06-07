@@ -1,4 +1,4 @@
-// ABOUTME: Bento — a React component (components).
+// ABOUTME: CSS grid layout container where each cell can span multiple columns/rows, with static, reflow, drag-reorder, and resize-handle variants.
 
 import {
   useMemo,
@@ -9,10 +9,10 @@ import {
 } from 'react'
 import './Bento.css'
 
-// ABOUTME: BentoVariant — a type alias.
+// ABOUTME: Layout mode — 'static' uses fixed spans, 'reflow' uses preferred spans, 'drag' enables pointer-driven cell reordering, 'resize' enables SE-corner drag to snap cell sizes.
 export type BentoVariant = 'static' | 'reflow' | 'drag' | 'resize'
 
-// ABOUTME: BentoCell — an interface.
+// ABOUTME: A single grid cell with content, optional title, explicit column/row spans, preferred spans for reflow, and a list of legible size presets for resize snapping.
 export interface BentoCell {
   id: string
   title?: ReactNode
@@ -27,7 +27,7 @@ export interface BentoCell {
   legibleSizes?: Array<{ cols: number; rows: number }>
 }
 
-// ABOUTME: Props for Bento.
+// ABOUTME: Props for Bento — supplies cell data, variant, column count, optional row height, and callbacks for reorder and resize events.
 export interface BentoProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: BentoVariant
@@ -43,7 +43,15 @@ function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, n))
 }
 
-// ABOUTME: Bento — a React component.
+// ABOUTME: Renders an N-column CSS grid where each BentoCell spans configurable columns and rows; the 'drag' variant enables pointer-captured reordering by hover-swap, and 'resize' adds a SE-corner handle that snaps to declared legible sizes.
+/**
+ * Uses `grid-template-columns: repeat(cols, 1fr)` and `gridAutoRows` for the
+ * container. On 'drag', pointer capture tracks which cell is being dragged and
+ * swaps it with the cell currently under the pointer, calling `onReorder` with
+ * the new order. On 'resize', a corner handle computes delta columns/rows from
+ * pointer movement and snaps to the nearest `legibleSizes` preset before
+ * calling `onResize`.
+ */
 export function Bento({
   variant = 'static',
   cells,

@@ -1,16 +1,16 @@
-// ABOUTME: IndentTree — a React component (components).
+// ABOUTME: Accessible tree list component that renders a nested node hierarchy as indented rows, with optional box-drawing connector guides and a proportional weight bar in the 'meta' variant.
 
 import { useMemo, type ReactNode } from 'react'
 import './IndentTree.css'
 
-// ABOUTME: IndentTreeVariant — a type alias.
+// ABOUTME: 'plain' indents by blank spacers only; 'guides' adds box-drawing pipe/elbow/tee connectors; 'meta' additionally renders a right-aligned proportion bar and meta string.
 export type IndentTreeVariant = 'plain' | 'guides' | 'meta'
 
-// ABOUTME: IndentTreeIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per row; inherited from the parent node when not set on a child.
 export type IndentTreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: IndentTreeNode — an interface.
+// ABOUTME: A tree node with an optional right-aligned `meta` string, a numeric `weight` that drives the 'meta' variant's proportion bar, and nested `children` for deeper levels.
 export interface IndentTreeNode {
   id: string
   label: string
@@ -22,7 +22,7 @@ export interface IndentTreeNode {
   children?: IndentTreeNode[]
 }
 
-// ABOUTME: Props for IndentTree.
+// ABOUTME: Props for IndentTree — supplies the root node, display variant, and optional container width.
 export interface IndentTreeProps {
   variant?: IndentTreeVariant
   root: IndentTreeNode
@@ -67,7 +67,16 @@ function maxWeight(rows: Row[]): number {
   return m || 1
 }
 
-// ABOUTME: IndentTree — a React component.
+// ABOUTME: Flattens the tree depth-first into a row array (tracking `isLast` and ancestor-last flags per level), then renders a `<ul role="tree">` where each `<li>` composes guide spans, a folder/leaf bullet, the label, and optionally a weight bar and meta string.
+/**
+ * The `flatten` helper records `ancestorsLast` booleans for every ancestor
+ * so the 'guides' variant can decide whether each depth column draws a
+ * vertical pipe or a blank. Intent rotates over the `INTENTS` palette for
+ * top-level children and is inherited downward. The 'meta' variant computes
+ * each node's weight as the sum of direct children weights (or its own
+ * weight for leaves), normalises against the global maximum, and maps to a
+ * fixed 80 px bar track.
+ */
 export function IndentTree({
   variant = 'plain',
   root,

@@ -1,4 +1,4 @@
-// ABOUTME: Tabs — a React component (components).
+// ABOUTME: Accessible tab bar with four variants: basic (simple label strip), rich (icon + badge chips), overflow (ResizeObserver-driven "More ▾" dropdown for overflowing tabs), and editable (pointer-drag reorder, close buttons, and a "+" add tab button).
 
 import {
   useCallback,
@@ -12,10 +12,10 @@ import {
 } from 'react'
 import './Tabs.css'
 
-// ABOUTME: TabsVariant — a type alias.
+// ABOUTME: Rendering strategy: basic shows plain text labels; rich supports icons and badges; overflow hides tabs that don't fit behind a "More ▾" menu; editable enables pointer-drag reorder, close buttons, and a "+" new-tab button.
 export type TabsVariant = 'basic' | 'rich' | 'overflow' | 'editable'
 
-// ABOUTME: TabItem — an interface.
+// ABOUTME: A single tab entry: id for controlled selection, label text, optional icon and badge content, and a disabled flag that prevents selection and keyboard focus.
 export interface TabItem {
   id: string
   label: ReactNode
@@ -24,7 +24,7 @@ export interface TabItem {
   disabled?: boolean
 }
 
-// ABOUTME: Props for Tabs.
+// ABOUTME: Props for Tabs — configures variant, controlled/uncontrolled active-tab id, the tab list, panel renderer, and editable-mode callbacks for close, reorder, and add.
 export interface TabsProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TabsVariant
@@ -44,7 +44,15 @@ export interface TabsProps {
   ariaLabel?: string
 }
 
-// ABOUTME: Tabs — a React component.
+// ABOUTME: Renders an ARIA-compliant tablist with arrow-key navigation, optional panel slot, and overflow or editable behaviours selected by variant; manages controlled/uncontrolled active-tab state and keeps inner selection valid when the tab list changes.
+/**
+ * Each tab is a `role="tab"` button tracked by ref for programmatic focus.
+ * Overflow detection uses a `ResizeObserver` on the list to measure which
+ * tab buttons overflow the container, then moves them into a dropdown menu.
+ * In editable mode each tab button is wrapped in a drag container that
+ * uses pointer capture to swap tab positions, firing `onReorder` with the
+ * full updated list.
+ */
 export function Tabs({
   variant = 'basic',
   tabs,

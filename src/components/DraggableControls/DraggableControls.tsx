@@ -1,4 +1,4 @@
-// ABOUTME: DraggableControls — a React component (components).
+// ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or a compact Edge Strip; persists position and open state to localStorage and adapts layout to phone-sized viewports.
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
@@ -13,7 +13,7 @@ import './DraggableControls.css'
  */
 const SEARCHABLE_THRESHOLD = 6
 
-// ABOUTME: ControlsStyle — a type alias.
+// ABOUTME: Presentation mode: 'button' is a circular FAB that opens a floating panel, 'strip' is a compact icon bar anchored to an edge with slot-level popovers.
 export type ControlsStyle = 'button' | 'strip'
 
 const CONTROLS_STYLE_KEY = 'iux-controls-style'
@@ -47,7 +47,7 @@ export function useControlsStyle() {
   )
 }
 
-// ABOUTME: Field — a type alias.
+// ABOUTME: A single control field descriptor: key, label, short label for the Strip icon, current value, options array, onChange callback, and an optional kind='palette' flag that substitutes PalettePicker for a generic select.
 export type Field = {
   key: string
   label: string
@@ -186,7 +186,14 @@ function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
   }, [ref, active])
 }
 
-// ABOUTME: DraggableControls — a React component.
+// ABOUTME: Root draggable container that handles pointer-based drag positioning, viewport clamping on resize/orientation-change, and localStorage persistence of position and open state; delegates to ButtonVariant or StripVariant based on the style prop.
+/**
+ * Uses pointer capture (`setPointerCapture`) for smooth drag without losing
+ * the pointer on fast movement. Position is stored per style key so Button and
+ * Strip remember independent locations. Delegates rendering to `ButtonVariant`
+ * (FAB + expandable panel) or `StripVariant` (icon row with per-slot popovers)
+ * according to the `style` prop; both sub-renderers receive shared drag handlers.
+ */
 export function DraggableControls({ style, onStyleChange, fields }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
   const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'button'))

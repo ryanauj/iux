@@ -1,4 +1,4 @@
-// ABOUTME: paletteTags — part of the lib area.
+// ABOUTME: Palette tag derivation, ranked search, persisted group management (custom groups, pinned groups, active group, pinning mode), and the useGroups hook that merges defaults with user overrides.
 
 import { useMemo } from 'react'
 import { palettes, type PaletteId } from '../../palettes'
@@ -25,7 +25,7 @@ const INFERRED_PREFIXES = ['pixel-art', 'cel-shaded', 'crt-phosphor', 'liquid-gl
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 const PALETTE_ID_SET = new Set<string>(PALETTE_IDS)
 
-// ABOUTME: isPaletteId — a helper function.
+// ABOUTME: Type guard — true when value is a key in the built-in palette registry.
 export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
@@ -50,7 +50,7 @@ function tokenizeAliases(aliases: readonly string[] | undefined): string[] {
 
 const tagCache = new Map<PaletteId, string[]>()
 
-// ABOUTME: getPaletteTags — a helper function.
+// ABOUTME: Return the full sorted tag list for a palette: explicit tags, engine id, a11y class, inferred family prefix, and recall aliases — cached after first call.
 export function getPaletteTags(id: PaletteId): string[] {
   const cached = tagCache.get(id)
   if (cached) return cached
@@ -88,7 +88,7 @@ export const tagToPaletteIds: Map<string, PaletteId[]> = (() => {
   return map
 })()
 
-// ABOUTME: allTags — an exported value.
+// ABOUTME: Sorted list of every tag across the whole palette registry — used to populate the tag-chip filter UI in the picker popover.
 export const allTags: string[] = Array.from(tagToPaletteIds.keys()).sort()
 
 // ABOUTME: Rank palette ids against a query, matching name + id + tags.
@@ -123,14 +123,14 @@ export function searchPalettes(query: string): PaletteId[] {
 /* ─────────────────────────── persistence ─────────────────────────── */
 
 export const PINNED_GROUPS_KEY = 'iux-palette-pinned-groups'
-// ABOUTME: ACTIVE_GROUP_KEY — an exported value.
+// ABOUTME: localStorage key for the name of the currently active palette group (used by arrow-key cycling).
 export const ACTIVE_GROUP_KEY = 'iux-palette-active-group'
-// ABOUTME: CUSTOM_GROUPS_KEY — an exported value.
+// ABOUTME: localStorage key for the user's custom and overridden palette groups (a JSON map of name → StyleId[]).
 export const CUSTOM_GROUPS_KEY = 'iux-palette-custom-groups'
-// ABOUTME: PINNING_MODE_KEY — an exported value.
+// ABOUTME: localStorage key for the pinning-mode pref — controls which groups (pinned, active, or both) appear in the picker's sidebar.
 export const PINNING_MODE_KEY = 'iux-palette-pinning-mode'
 
-// ABOUTME: PinningMode — a type alias.
+// ABOUTME: Which groups the picker sidebar shows: only pinned, only active, or both.
 export type PinningMode = 'pinned' | 'active' | 'both'
 
 const isPinningMode = (raw: string): raw is PinningMode =>
@@ -162,17 +162,17 @@ const isCustomGroups = (parsed: unknown): parsed is Record<string, StyleId[]> =>
 const isActiveGroupValue = (parsed: unknown): parsed is string | null =>
   parsed === null || typeof parsed === 'string'
 
-// ABOUTME: usePinnedGroups — a React hook.
+// ABOUTME: Persisted array of group names the user has pinned in the picker sidebar; synced across tabs.
 export function usePinnedGroups() {
   return usePersistedJSON<string[]>(PINNED_GROUPS_KEY, [], isStringArray)
 }
 
-// ABOUTME: useActiveGroup — a React hook.
+// ABOUTME: Persisted name of the group the picker is currently cycling through via arrow keys (null when cycling is off); synced across tabs.
 export function useActiveGroup() {
   return usePersistedJSON<string | null>(ACTIVE_GROUP_KEY, null, isActiveGroupValue)
 }
 
-// ABOUTME: useCustomGroups — a React hook.
+// ABOUTME: Persisted map of user-defined or user-overridden palette groups (name → StyleId[]); the raw storage layer useGroups builds on.
 export function useCustomGroups() {
   return usePersistedJSON<Record<string, StyleId[]>>(
     CUSTOM_GROUPS_KEY,
@@ -181,7 +181,7 @@ export function useCustomGroups() {
   )
 }
 
-// ABOUTME: usePinningMode — a React hook.
+// ABOUTME: Persisted PinningMode pref that controls which groups appear in the picker sidebar; synced across tabs.
 export function usePinningMode() {
   return usePersistedPref<PinningMode>(PINNING_MODE_KEY, 'both', isPinningMode)
 }
@@ -295,7 +295,7 @@ export function useGroups(): [Record<string, StyleId[]>, GroupsApi] {
   return [merged, api]
 }
 
-// ABOUTME: GroupsApi — an interface.
+// ABOUTME: Mutation methods returned by useGroups: toggle membership, manage favorites, create/delete groups, remove a style from all groups, and reset defaults.
 export interface GroupsApi {
   toggleMembership(name: string, id: StyleId): void
   toggleFavorite(id: StyleId): void
@@ -306,7 +306,7 @@ export interface GroupsApi {
   resetDefaults(): void
 }
 
-// ABOUTME: isDefaultGroup — a helper function.
+// ABOUTME: True when a group name belongs to the built-in default set — used by the picker UI to hide the delete button on default groups.
 export function isDefaultGroup(name: string): boolean {
   return DEFAULT_GROUP_NAMES.has(name)
 }

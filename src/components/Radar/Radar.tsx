@@ -1,16 +1,16 @@
-// ABOUTME: Radar — a React component (components).
+// ABOUTME: SVG radar/spider chart with three display modes: single filled polygon ('filled'), multiple overlapping series with a legend ('multiple'), and concentric ring scale labels ('rings').
 
 import { useMemo } from 'react'
 import './Radar.css'
 
-// ABOUTME: RadarVariant — a type alias.
+// ABOUTME: Controls radar presentation: 'filled' draws a single opaque polygon, 'multiple' overlays several transparent polygons each with its own legend swatch, 'rings' adds numeric value labels at each concentric ring.
 export type RadarVariant = 'filled' | 'multiple' | 'rings'
 
-// ABOUTME: RadarIntent — a type alias.
+// ABOUTME: Semantic series color drawn on each polygon and legend swatch, cycling through primary → info → success → warning → danger → neutral when not set per-series.
 export type RadarIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: RadarSeries — an interface.
+// ABOUTME: One data series for the radar: a stable 'id', a display 'label', 'values' aligned to the 'axes' array (clockwise from 12 o'clock), and an optional intent override for its color.
 export interface RadarSeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface RadarSeries {
   intent?: RadarIntent
 }
 
-// ABOUTME: Props for Radar.
+// ABOUTME: Configures Radar: 'axes' names the spokes (clockwise from 12 o'clock), 'series' supplies one or more value sets, 'max' sets an explicit domain ceiling (otherwise the peak value rounded up), 'rings' controls concentric reference polygon count.
 export interface RadarProps {
   variant?: RadarVariant
   /** Axis labels, ordered clockwise from 12 o'clock. */
@@ -39,7 +39,14 @@ function intentFor(s: RadarSeries, i: number): RadarIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
-// ABOUTME: Radar — a React component.
+// ABOUTME: Renders an SVG radar/spider chart: draws concentric polygon rings as the scale grid, radial spokes, per-series filled/stroked polygons clamped to the domain, dot markers with tooltips, axis labels, and an optional color legend for multi-series views.
+/**
+ * Each series is normalized to the computed (or explicit) `max` and mapped
+ * to polar coordinates starting at −π/2 (12 o'clock), rotating clockwise.
+ * The domain max auto-rounds up to the next power-of-10 multiple of the peak
+ * value so ring labels land on clean numbers. A legend appears whenever
+ * `variant` is `'multiple'` or more than one series is passed.
+ */
 export function Radar({
   variant = 'filled',
   axes,

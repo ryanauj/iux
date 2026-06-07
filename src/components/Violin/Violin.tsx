@@ -1,16 +1,16 @@
-// ABOUTME: Violin — a React component (components).
+// ABOUTME: SVG violin plot that estimates per-series density curves with a fast Gaussian KDE (Silverman bandwidth) and renders them as mirrored SVG paths; the withBox variant overlays a box-and-whisker summary, and the split variant places pairs of half-violins back-to-back for direct distribution comparison.
 
 import { useMemo } from 'react'
 import './Violin.css'
 
-// ABOUTME: ViolinVariant — a type alias.
+// ABOUTME: Rendering mode — simple draws full symmetric violin shapes; withBox adds quartile box, median line, and whiskers inside each violin; split places two half-violins side-by-side in one band for paired comparison.
 export type ViolinVariant = 'simple' | 'withBox' | 'split'
 
-// ABOUTME: ViolinIntent — a type alias.
+// ABOUTME: Colour intent applied to the violin fill; falls back to the INTENTS palette by series index when not set.
 export type ViolinIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: ViolinSeries — an interface.
+// ABOUTME: One data series for the violin plot: a unique id, display label, array of raw numeric values to estimate density from, and an optional intent override.
 export interface ViolinSeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface ViolinSeries {
   intent?: ViolinIntent
 }
 
-// ABOUTME: Props for Violin.
+// ABOUTME: Props for Violin — series array, optional pixel dimensions, optional explicit yDomain, KDE bin count, a formatY tick formatter, variant, and className.
 export interface ViolinProps {
   variant?: ViolinVariant
   series: ViolinSeries[]
@@ -75,7 +75,15 @@ function kde(values: number[], yDom: [number, number], bins: number): Density[] 
   return out
 }
 
-// ABOUTME: Violin — a React component.
+// ABOUTME: Computes KDE density curves and quartile statistics per series in a useMemo, then renders horizontal gridlines, an axis baseline, and one SVG <g> per series containing a filled density path and optional box-plot elements.
+/**
+ * The yDomain is auto-derived from the union of all series values with 6%
+ * padding unless `yDomain` is provided. In split mode, even-indexed series
+ * are drawn as left half-violins and odd-indexed as right half-violins sharing
+ * the same centre x, with a combined label. The `bins` prop controls the KDE
+ * grid resolution; density weights are normalised to [0, 1] per series so all
+ * violins reach the same max width.
+ */
 export function Violin({
   variant = 'simple',
   series,

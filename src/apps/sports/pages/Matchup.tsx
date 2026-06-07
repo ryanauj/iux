@@ -1,4 +1,4 @@
-// ABOUTME: Matchup — a React component (apps).
+// ABOUTME: Interactive matchup-analysis page that converts five non-scoring team stats (REB, AST, STL, BLK, TOV) into projected point differentials and displays them across five tabbed views with adjustable pricing sliders.
 
 import { useState, type ReactNode } from 'react'
 import { Tabs } from '../../../components/Tabs/Tabs'
@@ -41,7 +41,14 @@ function maxAbsRate(rates: Record<StatKey, number>): number {
   return Math.max(0.01, ...STAT_DEFS.map(d => Math.abs(rates[d.key])))
 }
 
-// ABOUTME: Matchup — a React component.
+// ABOUTME: Picks two teams from URL slugs (defaulting to Celtics vs Nuggets), computes `analyzeMatchup` with locally configurable per-stat rates, and renders a summary header plus five Tabs views: Projection bridge, Category battle, Conversion map, Build-up, and Points ledger.
+/**
+ * The two team slugs come from the URL and are resolved via `getTeamBySlug`.
+ * Per-stat point rates start at `DEFAULT_RATES` (derived from league PPP) and
+ * can be overridden with the `PricingPanel` sliders — every downstream view
+ * re-derives instantly. Changing either team navigates with `replaceParams` so
+ * the URL always reflects the current matchup.
+ */
 export function Matchup({ aSlug, bSlug }: MatchupProps) {
   const teamA = getTeamBySlug(aSlug ?? '') ?? getTeamBySlug(DEFAULT_A) ?? TEAMS[0]
   let teamB = getTeamBySlug(bSlug ?? '') ?? getTeamBySlug(DEFAULT_B) ?? TEAMS[1]

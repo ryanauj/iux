@@ -1,4 +1,4 @@
-// ABOUTME: Compact score / matchup card linking through to the game detail.
+// ABOUTME: Compact game card used across the Home dashboard, Games schedule, and PlayerDetail recent-games grid; renders three layouts (scheduled/live/final) with winner highlighting and links to GameDetail.
 
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
@@ -13,10 +13,11 @@ interface ScoreCardProps {
   highlightStatus?: boolean
 }
 
-// ABOUTME: Compact score / matchup card linking through to the game detail.
+// ABOUTME: Resolves both teams via `getTeamById`, then renders a Card with date/status meta and one of three score layouts: an "at" matchup chip pair for scheduled games, or mirrored team-score rows (winner highlighted) for live and final games.
 /**
- * Compact score / matchup card linking through to the game detail.
- * Renders three layouts depending on `game.status`.
+ * Wraps everything in a `Link` to `sportsRoutes.gameDetail(game.id)`.
+ * The status badge shows "Final", a live quarter/time string, or "Upcoming".
+ * Winner bolding is applied only when `game.status === 'final'` and both scores are present.
  */
 export function ScoreCard({ game }: ScoreCardProps) {
   const home = getTeamById(game.homeTeamId)

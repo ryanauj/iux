@@ -1,4 +1,4 @@
-// ABOUTME: Strategies — a React component (apps).
+// ABOUTME: Prompting strategies catalogue page: renders all STRATEGIES as filterable cards (by category via Segmented), each showing tagline, summary, tags, and an "Open" link to StrategyDetail.
 
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
@@ -12,7 +12,13 @@ import { STRATEGY_CATEGORIES, type StrategyCategory } from '../types'
 
 type CatFilter = 'all' | StrategyCategory
 
-// ABOUTME: Strategies — a React component.
+// ABOUTME: Strategies catalogue page: renders all entries from the static STRATEGIES array as Card tiles filterable by category via a Segmented pill; each card shows the category badge, name, tagline, summary excerpt, tags, and an "Open" link to StrategyDetail.
+/**
+ * Renders the Prompting Strategies catalogue. Reads `STRATEGIES` (static
+ * data) and lets the user filter by category via a `Segmented` pill control.
+ * Each strategy appears as a `Card` with its name linked to `StrategyDetail`,
+ * its tagline and summary, and a tag row.
+ */
 export function Strategies() {
   const [cat, setCat] = useState<CatFilter>('all')
   const list = cat === 'all' ? STRATEGIES : STRATEGIES.filter(s => s.category === cat)

@@ -1,4 +1,4 @@
-// ABOUTME: Cross-page nav for every showcase chrome.
+// ABOUTME: Defines the AppShellNavLink shape, AppShellNavId union, and the APP_SHELL_NAV array — the canonical cross-page nav shared by every showcase page (Components, Viz, Apps, Identify, Doctrine, How it works, Tests, Engines, Palettes, Styles, Settings).
 
 /**
  * Cross-page nav for every showcase chrome. One entry per landing
@@ -11,7 +11,7 @@
  * targets — AppShell renders them as anchors so the same array drives
  * Components, Viz, Quiz, Tests, Apps landing, and the Engines pages.
  */
-// ABOUTME: Cross-page nav for every showcase chrome.
+// ABOUTME: A single cross-page nav entry consumed by AppShell — holds a stable id, anchor href (hash or path), long label for spacious layouts, and a 1-2 char short glyph for icon-only layouts (rail, fab).
 export interface AppShellNavLink {
   /** Stable id, used to mark the current page active. */
   id: AppShellNavId
@@ -23,7 +23,7 @@ export interface AppShellNavLink {
   short: string
 }
 
-// ABOUTME: AppShellNavId — a type alias.
+// ABOUTME: Union of stable nav-entry ids used to mark the current page active in AppShell across all ten layout variants.
 export type AppShellNavId =
   | 'components'
   | 'visualizations'
@@ -37,7 +37,7 @@ export type AppShellNavId =
   | 'editor'
   | 'settings'
 
-// ABOUTME: APP_SHELL_NAV — an exported value.
+// ABOUTME: The canonical nav-link array shared by every showcase page — one entry per section (Components, Visualizations, Apps, Identify, Doctrine, How it works, Tests, Engines, Palettes, Styles, Settings).
 export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'components',     href: '#/',         label: 'Components',     short: 'Co' },
   { id: 'visualizations', href: '#/viz',      label: 'Visualizations', short: 'Vi' },

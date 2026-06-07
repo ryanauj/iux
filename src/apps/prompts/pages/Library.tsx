@@ -1,4 +1,4 @@
-// ABOUTME: Library — a React component (apps).
+// ABOUTME: Prompt library page: reads all prompts from usePromptStore, exposes full-text search, category pill filter, tag-cloud filter, favorites toggle, and sort controls, then renders results as a PromptCard grid.
 
 import { useMemo, useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
@@ -22,7 +22,14 @@ const SORT_OPTIONS = [
   { value: 'favorites', label: 'Favorites first' },
 ]
 
-// ABOUTME: Library — a React component.
+// ABOUTME: Prompt library page: renders a searchable, filterable grid of PromptCard items from the store, with category segmented filter, tag-cloud chip toggle, favorites toggle, and sort (recently updated / title / favorites first).
+/**
+ * Renders the main Prompt Library page. Reads the full prompt list from
+ * `usePromptStore`, applies full-text search (title + body + tags + models),
+ * category pill filter, tag-cloud chip toggle, favorites-only toggle, and
+ * three-way sort. Displays results as a `PromptCard` grid or an `EmptyState`
+ * with clear-filters / new-prompt actions.
+ */
 export function Library() {
   const { prompts } = usePromptStore()
   const [query, setQuery] = useState('')

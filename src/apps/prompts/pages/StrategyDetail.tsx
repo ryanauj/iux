@@ -1,4 +1,4 @@
-// ABOUTME: StrategyDetail — a React component (apps).
+// ABOUTME: Strategy detail page: shows a single prompting strategy's summary, when-to-use checklist, copy-paste template, and worked example via CodeBlock, plus sidebars listing related strategies and saved prompts that use it.
 
 import { useMemo } from 'react'
 import { Button } from '../../../components/Button/Button'
@@ -16,7 +16,17 @@ interface StrategyDetailProps {
   id: string
 }
 
-// ABOUTME: StrategyDetail — a React component.
+// ABOUTME: Full-page view for one prompting strategy: displays category badge + tags, summary prose, when-to-use checklist, template CodeBlock, worked example CodeBlock, and two aside sections — related strategies (from strategy.related) and saved prompts that link this strategy (from the store).
+/**
+ * Renders the detail view for a single `Strategy`, looked up by `id` via
+ * `getStrategy`. Shows a 404 EmptyState when not found. The main column
+ * walks through `summary`, `whenToUse`, `template`, and `example` sections
+ * using `CodeBlock` for copyable content. The aside has two cards:
+ * "Related strategies" (resolved via `getStrategy` from `strategy.related`)
+ * and "Prompts using this" (filtered from `usePromptStore().prompts`). A
+ * "Start a prompt from this" button navigates to `PromptForm` with
+ * `?from=<id>` so the form can seed its body from the strategy template.
+ */
 export function StrategyDetail({ id }: StrategyDetailProps) {
   const strategy = getStrategy(id)
   const { prompts } = usePromptStore()

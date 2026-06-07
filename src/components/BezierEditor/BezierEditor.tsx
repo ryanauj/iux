@@ -1,4 +1,4 @@
-// ABOUTME: BezierEditor — a React component (components).
+// ABOUTME: Interactive SVG cubic Bézier curve editor with pointer-drag anchor/handle manipulation, optional grid snapping, multi-anchor support, and a named-preset save/apply panel.
 
 import {
   useCallback,
@@ -10,10 +10,10 @@ import {
 } from 'react'
 import './BezierEditor.css'
 
-// ABOUTME: BezierVariant — a type alias.
+// ABOUTME: Interaction mode — 'single' edits one fixed pair of anchors, 'multi' allows clicking the canvas to add anchors, 'snap' adds grid snapping and anchor proximity snapping, 'presets' adds a save/apply named-curve panel.
 export type BezierVariant = 'single' | 'multi' | 'snap' | 'presets'
 
-// ABOUTME: BezierAnchor — an interface.
+// ABOUTME: A Bézier anchor point in normalized [0,1] coordinates with optional smooth flag (mirrors handles) and in/out control handle offsets.
 export interface BezierAnchor {
   id: string
   x: number
@@ -23,13 +23,13 @@ export interface BezierAnchor {
   outHandle?: { dx: number; dy: number }
 }
 
-// ABOUTME: BezierPreset — an interface.
+// ABOUTME: A named saved curve — a label and the full anchor array needed to restore the curve via the 'presets' panel.
 export interface BezierPreset {
   name: string
   anchors: BezierAnchor[]
 }
 
-// ABOUTME: Props for BezierEditor.
+// ABOUTME: Props for BezierEditor — supplies anchor data and change callback, controlled/uncontrolled selected anchor id, canvas dimensions, grid step size, and preset list with save/apply callbacks.
 export interface BezierEditorProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: BezierVariant
@@ -62,7 +62,14 @@ function snapToOtherAnchor(n: number, others: number[], tol: number): number {
   return n
 }
 
-// ABOUTME: BezierEditor — a React component.
+// ABOUTME: Renders a unit-square SVG canvas where pointer-drag moves anchors and their Bézier handles; 'snap' quantizes positions to a grid and snaps to nearby anchors; Delete/Backspace removes selected anchors; 'S' toggles smooth mode (mirrors handles).
+/**
+ * Maintains controlled or uncontrolled selected-anchor state. Pointer capture
+ * on each anchor/handle drives continuous position updates via `onAnchorsChange`.
+ * The cubic path string is built by `buildPath` from anchor positions and
+ * handle offsets. The aside panel shows the selected anchor's numeric fields;
+ * on 'presets' it also shows the `PresetPanel` for saving and restoring named curves.
+ */
 export function BezierEditor({
   variant = 'single',
   anchors,

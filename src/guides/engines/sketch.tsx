@@ -1,4 +1,4 @@
-// ABOUTME: sketch — part of the guides area.
+// ABOUTME: Engine guide definition for the Sketch rendering engine — the hand-drawn engine that applies a single SVG feTurbulence + feDisplacementMap filter at the palette root so every border, glyph outline, focus ring, and shadow stroke is recast as a wobbling hand-drawn line, with raised surfaces swapping to a heavier wobble variant and borders skewed thicker than flat because 1 px hairlines disappear under the displacement pass.
 
 import { useState } from 'react'
 import { palette as sketchMarker } from '../../../palettes/sketch-marker'
@@ -211,7 +211,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: sketchGuide — an exported value.
+// ABOUTME: sketchGuide — the EngineGuideMeta for the Sketch engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the sketch-marker palette, covering the SVG displacement filter, warm paper tone surfaces, thickened marker-line borders, ink-blue cast shadows with a heavier wobble on cards, ink-settling motion, and the five-marker intent set with a red-marker focus loop.
 export const sketchGuide: EngineGuideMeta = {
   engine: 'sketch',
   name: 'Sketch',

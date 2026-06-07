@@ -1,4 +1,4 @@
-// ABOUTME: glassmorphism — part of the guides area.
+// ABOUTME: Engine guide definition for the Glassmorphism rendering engine — the alpha-plus-blur engine, documenting translucent surfaces over a saturated host, hairline-white rim borders, the paired inset-highlight + outer-cast-shadow elevation recipe, and the a11y trade-offs of depending on backdrop content for contrast.
 
 import { useState } from 'react'
 import { palette as glassmorphism } from '../../../palettes/glassmorphism'
@@ -231,7 +231,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: glassmorphismGuide — an exported value.
+// ABOUTME: glassmorphismGuide — the EngineGuideMeta for the Glassmorphism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the glassmorphism palette, covering the alpha-plus-blur recipe, hairline white rim borders, the paired inset-highlight plus outer-cast-shadow elevation, and the a11y trade-offs of depending on backdrop content for contrast.
 export const glassmorphismGuide: EngineGuideMeta = {
   engine: 'glassmorphism',
   name: 'Glassmorphism',

@@ -1,16 +1,16 @@
-// ABOUTME: AdjacencyMatrix — a React component (components).
+// ABOUTME: SVG adjacency-matrix chart that renders node-to-node connections as a grid of colored cells, with binary, weighted, and clustered variants.
 
 import { useMemo } from 'react'
 import './AdjacencyMatrix.css'
 
-// ABOUTME: AdjacencyMatrixVariant — a type alias.
+// ABOUTME: Display style — 'binary' fills cells uniformly, 'weighted' tints by edge value, 'clustered' groups nodes and bands rows/columns by group intent.
 export type AdjacencyMatrixVariant = 'binary' | 'weighted' | 'clustered'
 
-// ABOUTME: AdjacencyMatrixIntent — a type alias.
+// ABOUTME: Semantic color token applied to matrix cells and cluster bands, matching the six contract intents.
 export type AdjacencyMatrixIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: AdjacencyNode — an interface.
+// ABOUTME: A graph node with an optional group id that drives cluster-band color on the 'clustered' variant.
 export interface AdjacencyNode {
   id: string
   label: string
@@ -18,14 +18,14 @@ export interface AdjacencyNode {
   group?: string
 }
 
-// ABOUTME: AdjacencyEdge — an interface.
+// ABOUTME: A directed edge between two node ids with an optional numeric weight used by the 'weighted' variant for tint-level scaling.
 export interface AdjacencyEdge {
   from: string
   to: string
   value?: number
 }
 
-// ABOUTME: Props for AdjacencyMatrix.
+// ABOUTME: Props for AdjacencyMatrix — supplies node/edge data, variant, symmetric-mirroring toggle, cell pixel size, and optional fixed width.
 export interface AdjacencyMatrixProps {
   variant?: AdjacencyMatrixVariant
   nodes: AdjacencyNode[]
@@ -48,7 +48,15 @@ function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
-// ABOUTME: AdjacencyMatrix — a React component.
+// ABOUTME: Renders a square SVG grid where each cell [row, col] is filled when an edge exists from the row node to the column node; supports binary presence, weighted tint levels, and cluster-banded color groupings.
+/**
+ * Computes a square matrix from `nodes` and `edges`, then renders each
+ * cell as an SVG `<rect>` colored by presence (binary), edge weight
+ * (weighted), or group membership (clustered). On `clustered`, nodes are
+ * sorted so same-group rows and columns are adjacent and colored accent
+ * bands mark each group boundary. `symmetric` mirrors every edge so the
+ * matrix stays symmetric for undirected graphs.
+ */
 export function AdjacencyMatrix({
   variant = 'binary',
   nodes,

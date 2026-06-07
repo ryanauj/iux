@@ -1,4 +1,4 @@
-// ABOUTME: aurora — part of the guides area.
+// ABOUTME: Engine guide definition for the Aurora rendering engine — the atmospheric engine that paints a slowly drifting multi-radial gradient at the palette root (effect.atmosphereGradient), reads surfaces by luminance density rather than border (effect.surfaceBy = 'luminance'), renders raised panels as translucent luminance lifts paired with backdrop blur, and freezes the drift at a designed static position under prefers-reduced-motion.
 
 import { useState } from 'react'
 import { palette as aurora } from '../../../palettes/aurora'
@@ -246,7 +246,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: auroraGuide — an exported value.
+// ABOUTME: auroraGuide — the EngineGuideMeta for the Aurora engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the aurora palette, covering the atmospheric drift mechanism, translucent luminance-lift surfaces with backdrop blur, recessive white borders backed by effect.surfaceBy = 'luminance', the paired outer-halo plus inner-lift elevation recipe, and the atmospheric-register intent fills with halo-bending focus.
 export const auroraGuide: EngineGuideMeta = {
   engine: 'aurora',
   name: 'Aurora',

@@ -1,8 +1,7 @@
-// ABOUTME: games — part of the apps area.
+// ABOUTME: Static game seed data for the sports demo: 9 final games (2026-05-15 to 05-22), one live game (2026-05-23 at Q3), and 5 scheduled future games; quarter scores and top-performer lines are included for all finished games.
 
 import type { Game } from '../types'
 
-// ABOUTME: drift with the host clock.
 // Anchor window: today's "live" game is 2026-05-23. Earlier dates are
 // final, later dates are scheduled. Dates are baked so the data doesn't
 // drift with the host clock.

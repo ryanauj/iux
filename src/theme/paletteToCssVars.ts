@@ -1,4 +1,4 @@
-// ABOUTME: paletteToCssVars — a helper function (theme).
+// ABOUTME: Converts a SemanticTokens object to a flat Record of CSS custom properties, covering every token category (color, space, radius, typography, motion, effects).
 
 import type { SemanticTokens } from '../../tokens/semantic.contract'
 
@@ -23,7 +23,7 @@ function scaleDuration(value: string, scale: number): string {
   return `${n * scale}${match[2]}`
 }
 
-// ABOUTME: paletteToCssVars — a helper function.
+// ABOUTME: Map a SemanticTokens tree to a flat `--name: value` Record for use as inline CSS custom properties; the sole gateway from typed tokens to runtime CSS that PaletteRoot applies.
 export function paletteToCssVars(
   tokens: SemanticTokens,
   motionScale = 1,

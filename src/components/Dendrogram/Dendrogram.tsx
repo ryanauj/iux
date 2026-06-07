@@ -1,16 +1,16 @@
-// ABOUTME: Dendrogram — a React component (components).
+// ABOUTME: SVG dendrogram renderer displaying a hierarchy of nodes as a tree with three layout modes: horizontal cluster, radial, and linkage-distance-weighted.
 
 import { useMemo } from 'react'
 import './Dendrogram.css'
 
-// ABOUTME: DendrogramVariant — a type alias.
+// ABOUTME: Layout mode: 'cluster' arranges leaves evenly on a horizontal axis with right-angle links, 'radial' fans them around a circle, 'weighted' positions internal nodes by their merge distance so link lengths encode similarity.
 export type DendrogramVariant = 'cluster' | 'radial' | 'weighted'
 
-// ABOUTME: DendrogramIntent — a type alias.
+// ABOUTME: Semantic colour applied to a node and its links; defaults to the intent palette cycling by depth level.
 export type DendrogramIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: DendrogramNode — an interface.
+// ABOUTME: A tree node with an id, display label, optional linkage distance for the 'weighted' variant, optional intent colour, and optional child array (leaf nodes have no children).
 export interface DendrogramNode {
   id: string
   label: string
@@ -20,7 +20,7 @@ export interface DendrogramNode {
   children?: DendrogramNode[]
 }
 
-// ABOUTME: Props for Dendrogram.
+// ABOUTME: Props for Dendrogram — variant chooses the layout algorithm, root supplies the full tree, and width/height size the SVG viewport.
 export interface DendrogramProps {
   variant?: DendrogramVariant
   root: DendrogramNode
@@ -61,7 +61,15 @@ function layout(root: DendrogramNode, intents: DendrogramIntent[]): { all: Place
   return { all, leafSlots: Math.max(1, leaf), maxDepth, maxDistance: maxDistance || 1 }
 }
 
-// ABOUTME: Dendrogram — a React component.
+// ABOUTME: Renders a dendrogram SVG from a DendrogramNode tree; places leaves evenly (cluster), radially, or by merge distance (weighted), connecting them with right-angle or arc links and intent-coloured dots.
+/**
+ * Internally runs a recursive `layout` pass to assign each node a depth and
+ * a fractional slot (leaves 0…n, internals = mean of children). Pixel positions
+ * are computed in a `useMemo` that applies the chosen variant's geometry: for
+ * 'cluster' and 'weighted' depth maps to x and slots to y; for 'radial' they
+ * map to radius and angle. Links between parent and child are right-angle
+ * "ㅁ" paths for horizontal variants, or arc-then-radial paths for radial mode.
+ */
 export function Dendrogram({
   variant = 'cluster',
   root,

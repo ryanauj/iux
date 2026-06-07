@@ -1,4 +1,4 @@
-// ABOUTME: Spotlight — a React component (components).
+// ABOUTME: Full-screen coachmark overlay that dims the page and cuts out a highlighted target element; supports single-step ('single'), multi-step sequence ('sequence'), DOM-mutation-tracked anchoring ('anchor-aware'), and feature-gate-filtered steps ('adaptive').
 
 import {
   useCallback,
@@ -12,10 +12,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Spotlight.css'
 
-// ABOUTME: SpotlightVariant — a type alias.
+// ABOUTME: Controls step progression and anchor tracking: 'single' shows one step only, 'sequence' shows step N-of-M progress, 'anchor-aware' auto-advances or closes when the target element leaves the DOM, 'adaptive' filters out steps whose 'feature' key appears in usedFeatures.
 export type SpotlightVariant = 'single' | 'sequence' | 'anchor-aware' | 'adaptive'
 
-// ABOUTME: SpotlightStep — an interface.
+// ABOUTME: One coachmark step: an 'id', optional 'title', a 'body' ReactNode, a 'target' (CSS selector, HTMLElement, or factory function) identifying the element to highlight, and an optional 'feature' key used by the 'adaptive' variant to skip already-exercised steps.
 export interface SpotlightStep {
   id: string
   title?: string
@@ -26,7 +26,7 @@ export interface SpotlightStep {
   feature?: string
 }
 
-// ABOUTME: Props for Spotlight.
+// ABOUTME: Configures Spotlight: 'steps' is the ordered coachmark array, 'open'/'defaultOpen' control visibility, 'stepIndex'/'defaultStepIndex' control the current step (both controlled and uncontrolled), and 'usedFeatures' drives the 'adaptive' step filter.
 export interface SpotlightProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SpotlightVariant
@@ -49,7 +49,13 @@ function resolveTarget(target: SpotlightStep['target']): HTMLElement | null {
   return target
 }
 
-// ABOUTME: Spotlight — a React component.
+// ABOUTME: Portals a full-screen SVG mask overlay to the palette root; measures the target element's rect on every scroll/resize/mutation frame (RAF-throttled), cuts an SVG clip-path cutout around it, and positions a tooltip card above or below with arrow/enter/escape keyboard navigation.
+/**
+ * In 'anchor-aware' mode a ResizeObserver and MutationObserver watch the
+ * target element; if it leaves the DOM the coachmark auto-advances or closes.
+ * The tooltip placement prefers below the cutout but flips above when space is
+ * tight. Left position is clamped to keep the 280px card on-screen.
+ */
 export function Spotlight({
   variant = 'single',
   open,

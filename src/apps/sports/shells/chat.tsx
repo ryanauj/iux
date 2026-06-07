@@ -1,4 +1,4 @@
-// ABOUTME: ChatShell — a React component (apps).
+// ABOUTME: ChatShell — conversational shell that replaces the Home page with a keyword-driven chat interface; responses render inline entity cards (team, player, game, leaderboard, standings, side-by-side comparison) with click-through routing, and the scrollback log persists for the session across remounts.
 
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -504,7 +504,14 @@ function ChatNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] })
   )
 }
 
-// ABOUTME: ChatShell — a React component.
+// ABOUTME: Conversational shell that renders the chat surface on the Home route and a back-link + detail page on every other route; the shared module-level LOG survives layout switches so the thread is never lost.
+/**
+ * On the Home route renders ChatSurface (the scrolling log + composer); on
+ * other routes collapses to a detail layout with a "← Back to chat" crumb
+ * above props.children. The chat state (LOG, SEQ) is held at module scope,
+ * not component state, so remounting the shell after a layout switch does not
+ * reset the conversation.
+ */
 export function ChatShell(props: ShellProps): ReactNode {
   const isHome = props.route.kind === 'home'
   return (

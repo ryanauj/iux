@@ -1,4 +1,4 @@
-// ABOUTME: PromptStoreProvider — a React component (apps).
+// ABOUTME: In-session prompt store: provides PromptStoreProvider (seeds from SEED_PROMPTS, holds add/update/remove/toggleFavorite actions in React state) and usePromptStore hook for any page or component in the Promptbook subtree.
 
 import {
   createContext,
@@ -11,18 +11,7 @@ import {
 import type { Prompt } from './types'
 import { SEED_PROMPTS } from './data/prompts'
 
-// ABOUTME: In-session prompt store.
-/**
- * In-session prompt store. Seeded from the static starter library; the
- * user can add, edit, delete, and favorite prompts while the app is open.
- *
- * Per the apps catalog convention (FINALIZED-APPS.md → "No localStorage,
- * no network"), this state is deliberately reload-safe: it lives in React
- * state only and resets on refresh. When the persistence contract's app
- * shell `Store` lands, this provider is the single seam to swap for a
- * persistent backend — every page already goes through these methods.
- */
-
+// ABOUTME: Input fields required when creating or editing a prompt (title, body, category, models, tags, strategyIds, and optional notes); passed to store.add and store.update by PromptForm.
 export interface NewPromptInput {
   title: string
   body: string
@@ -50,7 +39,15 @@ function makeId(): string {
   return `pr-user-${Date.now().toString(36)}-${idCounter}`
 }
 
-// ABOUTME: PromptStoreProvider — a React component.
+// ABOUTME: Context provider that seeds the prompt list from SEED_PROMPTS (newest-first), exposes get/add/update/remove/toggleFavorite via PromptStoreContext, and resets cleanly on page reload — no persistence by design.
+/**
+ * Context provider that initialises the in-session prompt list from
+ * `SEED_PROMPTS`, sorted newest-first, and exposes the full CRUD surface
+ * (`get`, `add`, `update`, `remove`, `toggleFavorite`) via
+ * `PromptStoreContext`. State lives in `useState` only and resets on reload,
+ * matching the apps catalog's no-persistence convention. This provider is the
+ * single seam to swap for a persistent backend when needed.
+ */
 export function PromptStoreProvider({ children }: { children: ReactNode }) {
   const [prompts, setPrompts] = useState<Prompt[]>(() =>
     // Newest first; the seed is authored oldest-first.
@@ -105,7 +102,7 @@ export function PromptStoreProvider({ children }: { children: ReactNode }) {
   )
 }
 
-// ABOUTME: usePromptStore — a React hook.
+// ABOUTME: Returns the PromptStore (prompts list + CRUD actions) from PromptStoreContext; throws if called outside PromptStoreProvider. Used by Library, PromptCard, PromptDetail, PromptForm, and StrategyDetail.
 export function usePromptStore(): PromptStore {
   const ctx = useContext(PromptStoreContext)
   if (!ctx) throw new Error('usePromptStore must be used within PromptStoreProvider')

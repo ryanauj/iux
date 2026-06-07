@@ -1,4 +1,4 @@
-// ABOUTME: OptimisticUndo — a React component (components).
+// ABOUTME: Portaled toast/queue component for optimistic-UI undo patterns: auto-commits pending actions after their expiry timer, lets users cancel via an Undo button, and optionally shows a revertible history log — four variants covering a single toast, a countdown ring, a full queue, and a log panel.
 
 import {
   useCallback,
@@ -10,10 +10,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './OptimisticUndo.css'
 
-// ABOUTME: OptimisticUndoVariant — a type alias.
+// ABOUTME: Controls the undo UI shape: 'toast' shows the newest action only, 'countdown' adds an SVG ring depleting until expiry, 'queue' lists all in-flight actions simultaneously, 'log' adds a collapsible committed-history panel.
 export type OptimisticUndoVariant = 'toast' | 'countdown' | 'queue' | 'log'
 
-// ABOUTME: UndoAction — an interface.
+// ABOUTME: A pending optimistic action: a stable `id`, a user-facing `label`, an `undo` callback to reverse the mutation, and an `expiresAt` timestamp in ms-since-epoch when the action auto-commits.
 export interface UndoAction {
   id: string
   label: string
@@ -24,7 +24,7 @@ export interface UndoAction {
   expiresAt: number
 }
 
-// ABOUTME: CommittedAction — an interface.
+// ABOUTME: A committed (no-longer-pending) action shown in the 'log' variant's history list; carries the commit timestamp and an optional `undo` handler so individual log entries can be reverted.
 export interface CommittedAction {
   id: string
   label: string
@@ -33,7 +33,7 @@ export interface CommittedAction {
   undo?: () => void | Promise<void>
 }
 
-// ABOUTME: Props for OptimisticUndo.
+// ABOUTME: Configures OptimisticUndo — `actions` is the live pending queue, `onCommit`/`onUndo` are callbacks fired by timer expiry or button press, `history` feeds the 'log' variant, and `position` controls the corner the stack anchors to.
 export interface OptimisticUndoProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: OptimisticUndoVariant
@@ -47,7 +47,15 @@ export interface OptimisticUndoProps {
   inlineRender?: boolean
 }
 
-// ABOUTME: OptimisticUndo — a React component.
+// ABOUTME: Manages per-action `setTimeout` handles in a ref, calling `onCommit` when each timer elapses; the 'countdown'/'queue' variants also run a 200 ms `setInterval` tick to refresh the SVG ring's `strokeDashoffset`; renders via `createPortal` unless `inlineRender` is set.
+/**
+ * Timer handles are stored in `timersRef` (a `Map<id, handle>`) so they
+ * survive re-renders without triggering new effects. Each new action in
+ * `actions` gets a fresh timer; stale timers for removed actions are cleared
+ * when the effect re-runs. The 'log' variant's togglable history list calls
+ * each `CommittedAction.undo` handler directly without going through the
+ * queue, since those actions have already committed.
+ */
 export function OptimisticUndo({
   variant = 'toast',
   actions,
@@ -160,8 +168,7 @@ export function OptimisticUndo({
   return createPortal(stack, getPortalTarget())
 }
 
-// ABOUTME: Minimal hook that owns the action queue + history.
-// Minimal hook that owns the action queue + history.
+// ABOUTME: React hook that owns the pending-action queue and committed history for use with OptimisticUndo; `push` enqueues a new undoable action, `commit` moves it to history, and `undo` removes it and invokes its reversal callback.
 export function useOptimisticUndo(defaultTtlMs: number = 5000) {
   const [actions, setActions] = useState<UndoAction[]>([])
   const [history, setHistory] = useState<CommittedAction[]>([])

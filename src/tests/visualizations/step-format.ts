@@ -1,8 +1,8 @@
-// ABOUTME: step-format — part of the tests area.
+// ABOUTME: Formatting helpers for Step values used by TestsViz: describeStep produces a dense one-liner for compact list rows, bubbleLabel extracts a short label for storyboard bubbles (which display kind separately), and stepIcon maps each step kind to a glyph.
 
 import type { Step } from '../types'
 
-// ABOUTME: One-line description that includes the kind context.
+// ABOUTME: Format a Step as a dense one-liner including its kind — used by the compact list and live step rows in TestsViz.
 /** One-line description that includes the kind context. Used in dense step rows. */
 export function describeStep(step: Step): string {
   switch (step.kind) {
@@ -32,7 +32,7 @@ export function bubbleLabel(step: Step): string {
   }
 }
 
-// ABOUTME: stepIcon — a helper function.
+// ABOUTME: Map each step kind to a single glyph used in storyboard bubbles in TestsViz (e.g. ▶ for click, ⌨ for type, ⏎ for press).
 export function stepIcon(step: Step): string {
   switch (step.kind) {
     case 'click': return '▶'

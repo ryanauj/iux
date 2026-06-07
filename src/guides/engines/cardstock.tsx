@@ -1,4 +1,4 @@
-// ABOUTME: cardstock — part of the guides area.
+// ABOUTME: Engine guide definition for the Cardstock rendering engine — the layered-paper engine where every raised surface reads as cut cardstock laid over another, with elevation baking a paired inset-slate cut-edge rule plus a zero-blur drop shadow per slot, engine-only paperEdgeColor / paperEdgeWidth tokens for future paper-aware components, and no decorative motion at all.
 
 import { useState } from 'react'
 import { palette as cardstockLayered } from '../../../palettes/cardstock-layered'
@@ -232,7 +232,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: cardstockGuide — an exported value.
+// ABOUTME: cardstockGuide — the EngineGuideMeta for the Cardstock engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the cardstock-layered palette, covering the paired cut-edge plus zero-blur drop elevation recipe, warm paper tone surfaces, quiet slate-cream borders, the paperEdgeColor / paperEdgeWidth engine signals, and the muted-pastel intent set with dusty-rose focus.
 export const cardstockGuide: EngineGuideMeta = {
   engine: 'cardstock',
   name: 'Cardstock',

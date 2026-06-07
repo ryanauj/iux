@@ -45,10 +45,10 @@
 import type { Team } from './types'
 import { TEAMS } from './data'
 
-// ABOUTME: StatKey — a type alias.
+// ABOUTME: The five non-scoring box-score stats the matchup model prices: rebounds, assists, steals, blocks, and turnovers.
 export type StatKey = 'reb' | 'ast' | 'stl' | 'blk' | 'tov'
 
-// ABOUTME: StatDef — an interface.
+// ABOUTME: Metadata for one modelled stat: its key, display labels, the Team field it reads, its possession weight, and the human-readable rationale shown in the pricing panel.
 export interface StatDef {
   key: StatKey
   /** Short axis/column label, e.g. "REB". */
@@ -70,7 +70,7 @@ export interface StatDef {
   rationale: string
 }
 
-// ABOUTME: STAT_DEFS — an exported value.
+// ABOUTME: Ordered array of the five StatDef descriptors; drives both the pricing panel UI and every loop that computes contributions across the modelled stats.
 export const STAT_DEFS: StatDef[] = [
   {
     key: 'reb', short: 'REB', label: 'Rebounds', field: 'reboundsPerGame',
@@ -133,7 +133,7 @@ export const LEAGUE_AVERAGES: Record<StatKey, number> = (() => {
 export const LEAGUE_BASELINE_POINTS: number =
   TEAMS.reduce((acc, t) => acc + t.pointsFor, 0) / TEAMS.length
 
-// ABOUTME: StatContribution — an interface.
+// ABOUTME: One team's contribution from a single stat: the raw value, league average, delta, the rate used, and both relative-points and absolute-points framings — the full per-cell data the matchup views render.
 export interface StatContribution {
   def: StatDef
   /** Points-per-event rate actually used for this contribution. */
@@ -150,7 +150,7 @@ export interface StatContribution {
   absolutePoints: number
 }
 
-// ABOUTME: TeamMatchup — an interface.
+// ABOUTME: One team's full matchup analysis: its StatContribution array, the net hidden-points sum versus a league-average opponent, and the resulting projected score.
 export interface TeamMatchup {
   team: Team
   contributions: StatContribution[]
@@ -179,7 +179,7 @@ function buildContribution(team: Team, def: StatDef, rate: number): StatContribu
   return { def, rate, value, leagueAverage, delta, relativePoints, absolutePoints }
 }
 
-// ABOUTME: analyzeTeam — a helper function.
+// ABOUTME: Builds a TeamMatchup for one team given a rate map — computes each stat's contribution, sums the net relative points, and projects a score above the league baseline.
 export function analyzeTeam(team: Team, rates: Record<StatKey, number>): TeamMatchup {
   const contributions = STAT_DEFS.map(def => buildContribution(team, def, rates[def.key]))
   const netRelativePoints = contributions.reduce((acc, c) => acc + c.relativePoints, 0)
@@ -187,7 +187,7 @@ export function analyzeTeam(team: Team, rates: Record<StatKey, number>): TeamMat
   return { team, contributions, netRelativePoints, projectedPoints }
 }
 
-// ABOUTME: StatEdge — an interface.
+// ABOUTME: Head-to-head advantage for one stat: team A's and B's relative points plus the signed edge (A minus B), used to populate the per-row winner indicators in the matchup comparison table.
 export interface StatEdge {
   def: StatDef
   /** Team A's relative points for this stat. */
@@ -198,7 +198,7 @@ export interface StatEdge {
   edge: number
 }
 
-// ABOUTME: MatchupAnalysis — an interface.
+// ABOUTME: Complete two-team matchup result returned by analyzeMatchup: both TeamMatchup objects, per-stat StatEdge array, total net edge, baseline, the rate map used, and normalisation maxima for bar-chart scaling.
 export interface MatchupAnalysis {
   a: TeamMatchup
   b: TeamMatchup

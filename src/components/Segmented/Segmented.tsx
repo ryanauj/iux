@@ -1,4 +1,4 @@
-// ABOUTME: Segmented — a React component (components).
+// ABOUTME: Accessible single-select button group in four variants: plain pill tabs ('pill'), icon+badge rich tabs ('rich'), CSS-animated sliding indicator ('animated'), and a ResizeObserver-driven overflow menu ('overflow').
 
 import {
   useCallback,
@@ -12,10 +12,10 @@ import {
 } from 'react'
 import './Segmented.css'
 
-// ABOUTME: SegmentedVariant — a type alias.
+// ABOUTME: Controls extras beyond the basic selected-state highlight: 'pill' is a simple pill strip, 'rich' renders icon+badge per segment, 'animated' slides a CSS-translated indicator behind the active segment, 'overflow' hides clipped segments behind a "▾" dropdown menu.
 export type SegmentedVariant = 'pill' | 'rich' | 'animated' | 'overflow'
 
-// ABOUTME: SegmentedItem — an interface.
+// ABOUTME: One selectable segment: a string 'value', a 'label' ReactNode, optional 'icon' and 'badge' nodes rendered in 'rich' mode, and a 'disabled' flag that excludes the item from keyboard navigation.
 export interface SegmentedItem {
   value: string
   label: ReactNode
@@ -24,7 +24,7 @@ export interface SegmentedItem {
   disabled?: boolean
 }
 
-// ABOUTME: Props for Segmented.
+// ABOUTME: Configures Segmented: 'items' defines the options, 'value'/'defaultValue' control selection (controlled or uncontrolled), 'size' sets the sm/md/lg density class, and 'variant' drives the visual/functional axis.
 export interface SegmentedProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SegmentedVariant
@@ -37,7 +37,14 @@ export interface SegmentedProps {
   className?: string
 }
 
-// ABOUTME: Segmented — a React component.
+// ABOUTME: Renders a radiogroup of buttons with full arrow-key / Home / End keyboard navigation; the 'animated' variant uses useLayoutEffect to measure the active button and translate a sliding indicator via inline transform; the 'overflow' variant uses ResizeObserver to detect clipped segments and collects them into a popup menu.
+/**
+ * Controlled and uncontrolled modes are both supported: pass `value` to
+ * control externally, or use `defaultValue` for internal state. Disabled items
+ * are still rendered but removed from keyboard navigation order. The overflow
+ * popup menu renders as a `role="menu"` with `role="menuitem"` children and
+ * closes on selection.
+ */
 export function Segmented({
   variant = 'pill',
   value,

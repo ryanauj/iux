@@ -1,16 +1,16 @@
-// ABOUTME: LeveragePlot — a React component (components).
+// ABOUTME: SVG regression diagnostic plot of studentized residuals vs leverage (hᵢᵢ), with optional Cook's-distance dot sizing and flagging of influential points beyond threshold lines.
 
 import { useMemo } from 'react'
 import './LeveragePlot.css'
 
-// ABOUTME: LeveragePlotVariant — a type alias.
+// ABOUTME: Controls point rendering: 'plain' draws uniform circles, 'sized' scales radius by √Cook's D, 'flagged' additionally highlights points that exceed the Cook's distance or residual threshold.
 export type LeveragePlotVariant = 'plain' | 'sized' | 'flagged'
 
-// ABOUTME: LeverageIntent — a type alias.
+// ABOUTME: Semantic colour intent applied to the dot layer; a single intent colours all points uniformly, defaulting to 'info'.
 export type LeverageIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: LeveragePoint — an interface.
+// ABOUTME: A single observation in the leverage plot: its hat-matrix diagonal leverage value, studentized residual, and Cook's distance which drives dot radius in the 'sized'/'flagged' variants.
 export interface LeveragePoint {
   leverage: number
   /** studentized residual */
@@ -20,7 +20,7 @@ export interface LeveragePoint {
   label?: string
 }
 
-// ABOUTME: Props for LeveragePlot.
+// ABOUTME: Configures LeveragePlot — provides the point array, variant, optional residual and Cook's distance thresholds that drive reference lines and flagging, and canvas dimensions.
 export interface LeveragePlotProps {
   variant?: LeveragePlotVariant
   points: LeveragePoint[]
@@ -47,7 +47,15 @@ function num(n: number): string {
   return n.toFixed(3)
 }
 
-// ABOUTME: LeveragePlot — a React component.
+// ABOUTME: Draws an SVG scatter plot of studentized residuals (y) vs leverage (x) with symmetric ±residualThreshold reference lines, a zero-residual baseline, and per-point Cook's distance encoding; axis labels and a "size ∝ √Cook's D" legend appear below the SVG.
+/**
+ * Computes the x-domain from leverage values (floored at 0) and the y-domain
+ * symmetrically around the larger of the data range or `residualThreshold + 0.5`.
+ * In the 'sized'/'flagged' variants, each circle's radius is `2 + sqrt(cook / cookMax) * 10`.
+ * The 'flagged' variant additionally applies `iux-lev__dot--flag` to any point
+ * whose Cook's D exceeds `cookThreshold` or whose absolute residual exceeds
+ * `residualThreshold`, allowing CSS to highlight them distinctly.
+ */
 export function LeveragePlot({
   variant = 'sized',
   points,

@@ -1,4 +1,4 @@
-// ABOUTME: PromptForm — a React component (apps).
+// ABOUTME: Create/edit prompt form: doubles as a new-prompt page (optionally seeded from a strategy template) and an edit page; collects title, body, category, models, tags, linked strategies, and notes, then calls store.add or store.update.
 
 import { useMemo, useState } from 'react'
 import { TextInput } from '../../../components/TextInput/TextInput'
@@ -28,7 +28,16 @@ interface PromptFormProps {
   prefillStrategyId?: string
 }
 
-// ABOUTME: PromptForm — a React component.
+// ABOUTME: Dual-mode form used by both the "New prompt" and "Edit prompt" routes: when given `editId` it loads the existing prompt from the store; when given `prefillStrategyId` it seeds body and tags from the strategy template. Validates title + body, detects `{{variable}}` slots live, and calls `store.add` or `store.update` on save.
+/**
+ * Create / edit form for a `Prompt`. In edit mode (`editId` present) it
+ * pre-fills from the store; in new mode it optionally seeds `body` and `tags`
+ * from a strategy template (`prefillStrategyId`). Fields: title, prompt body
+ * (textarea with live `{{variable}}` detection via `extractVariables`),
+ * category Select, target-models TokenField, tags TokenField, strategy
+ * multi-toggle picker, and optional notes. On save calls `store.add` or
+ * `store.update`, fires a success toast, and navigates to the detail page.
+ */
 export function PromptForm({ editId, prefillStrategyId }: PromptFormProps) {
   const { get, add, update } = usePromptStore()
   const push = useToast()

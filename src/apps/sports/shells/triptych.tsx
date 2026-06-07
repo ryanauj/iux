@@ -1,4 +1,4 @@
-// ABOUTME: TriptychShell — a React component (apps).
+// ABOUTME: TriptychShell — three-column shell with a list browser (col 1), inline summary (col 2), and full detail page (col 3); col 1 selection swaps the summary without navigating, a link in the summary navigates and fills col 3, and deep links from other shells drive all three columns simultaneously via the `?tri=` param.
 
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -379,7 +379,17 @@ function TriNav({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   )
 }
 
-// ABOUTME: TriptychShell — a React component.
+// ABOUTME: Shell that arranges the sports app as a macOS-Finder-style triptych: a section-tab list (col 1) drives an inline summary (col 2), and the full route page renders in col 3; the active section is kept in `?tri=` and deep links override it when the route's entity lives in a different section.
+/**
+ * Col 1: a section switcher (Teams / Players / Games) above a scrollable
+ * list. Clicking a row sets selectedId in component state — not a navigate —
+ * so col 2 updates without touching the URL. Col 2: a summary panel
+ * (TeamSummary / PlayerSummary / GameSummary) with stats, sub-lists, and a
+ * link that navigates into col 3. Col 3: props.children — the standard route
+ * page, or a placeholder on the Home route. The `?tri=` param persists the
+ * active section; a useEffect reconciles it when a direct link implies a
+ * different section.
+ */
 export function TriptychShell(props: ShellProps) {
   const location = useHashLocation()
   const triParam = location.params.get('tri')

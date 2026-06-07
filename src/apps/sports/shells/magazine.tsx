@@ -1,4 +1,4 @@
-// ABOUTME: MagazineShell — a React component (apps).
+// ABOUTME: MagazineShell — editorial-layout shell that replaces the Home page with a print-magazine cover: a marquee game (live → tonight's best scheduled → latest final), a PPG pull-quote, a three-column leaderboard, and an "Inside the East" feature with inline standings; on other routes renders the standard page at a wider type scale.
 
 import { useCallback, useMemo, type ReactNode } from 'react'
 import { Link } from '../../Link'
@@ -325,7 +325,14 @@ function SectionNav({ sections }: { sections: Section[] }) {
   )
 }
 
-// ABOUTME: MagazineShell — a React component.
+// ABOUTME: Shell that renders a long-scroll editorial cover on the Home route and a single-column article layout on other routes; the in-page section nav scrolls to anchors without clobbering the hash router.
+/**
+ * On the Home route assembles four sections — MagazineCover (marquee game),
+ * PullQuote (PPG leader's stat), Leaderboard (scoring / rebounding / playmaking
+ * top-5), and InsideTheEast (Eastern Conference feature + standings sidebar) —
+ * each scroll-targeted by the SectionNav. On non-Home routes the shell wraps
+ * props.children in a magazine-article container for wider measure styling.
+ */
 export function MagazineShell(props: ShellProps): ReactNode {
   const isHome = props.route.kind === 'home'
   const cover = useMemo(() => gameOfTheNight(), [])

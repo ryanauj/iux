@@ -1,22 +1,22 @@
-// ABOUTME: LineChart — a React component (components).
+// ABOUTME: Multi-series SVG line chart with four variants: static axes-only, crosshair hover readout, small-multiples grid with pointer brushing, and annotated event bands — all sharing a common linear scale and formatting layer.
 
 import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import './LineChart.css'
 
-// ABOUTME: LineChartVariant — a type alias.
+// ABOUTME: Selects the chart mode: 'static' renders plain lines with minimal axes, 'hover' adds a crosshair and live readout, 'multiples' arranges each series in its own panel with a brush interaction, 'annotated' overlays event markers as vertical lines with labelled flags.
 export type LineChartVariant = 'static' | 'hover' | 'multiples' | 'annotated'
 
-// ABOUTME: SeriesIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per series; auto-assigned from the DEFAULT_INTENTS rotation when not set on a LineSeries.
 export type SeriesIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: LinePoint — an interface.
+// ABOUTME: A single time-series data point: `t` is a Unix-ms timestamp (or any numeric x) and `y` is the measured value.
 export interface LinePoint {
   t: number
   y: number
 }
 
-// ABOUTME: LineSeries — an interface.
+// ABOUTME: A named series of LinePoints to render as one SVG path; the optional `intent` overrides the auto-assigned palette colour.
 export interface LineSeries {
   id: string
   label: string
@@ -24,14 +24,14 @@ export interface LineSeries {
   intent?: SeriesIntent
 }
 
-// ABOUTME: LineAnnotation — an interface.
+// ABOUTME: A vertical event marker for the 'annotated' variant: rendered as a coloured line at `t` with a labelled flag that auto-flips left when near the right edge.
 export interface LineAnnotation {
   t: number
   label: string
   intent?: SeriesIntent
 }
 
-// ABOUTME: Props for LineChart.
+// ABOUTME: Configures LineChart — provides the series array, optional annotations, canvas dimensions, an optional y-domain override, custom t/y formatters, and an onBrush callback for the 'multiples' variant.
 export interface LineChartProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: LineChartVariant
@@ -119,7 +119,14 @@ function buildScales(
   return { xDomain, yDomain, xs, ys }
 }
 
-// ABOUTME: LineChart — a React component.
+// ABOUTME: Entry-point component that routes to MultiplesChart when variant is 'multiples' and series.length > 1, otherwise delegates to SingleChart; handles default formatters and passes through all props.
+/**
+ * When variant is 'multiples' with more than one series, each series gets its
+ * own `MultiplesPanel` in a CSS grid, with a shared y-domain and optional
+ * pointer-drag brush that fires `onBrush([t0, t1])`. All other variants render
+ * through `SingleChart`, which supports a pointer-move crosshair ('hover'),
+ * inline event annotations ('annotated'), and a standard static view.
+ */
 export function LineChart({
   variant = 'static',
   series,

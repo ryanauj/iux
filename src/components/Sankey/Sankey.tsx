@@ -1,16 +1,16 @@
-// ABOUTME: Sankey — a React component (components).
+// ABOUTME: SVG Sankey flow diagram with three display modes: plain flow ribbons ('simple'), ribbons with node labels and flow totals ('labeled'), and ribbons with an accent color on flagged flows ('highlighted').
 
 import { useMemo } from 'react'
 import './Sankey.css'
 
-// ABOUTME: SankeyVariant — a type alias.
+// ABOUTME: Controls what is shown beside nodes: 'simple' renders ribbons only, 'labeled' adds node labels with total flow values, 'highlighted' adds labels and highlights links where link.highlight is true.
 export type SankeyVariant = 'simple' | 'labeled' | 'highlighted'
 
-// ABOUTME: SankeyIntent — a type alias.
+// ABOUTME: Semantic intent color applied to node bars and outgoing ribbons; defaults cycle through the standard palette by stage index when not set per node.
 export type SankeyIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: SankeyNode — an interface.
+// ABOUTME: One Sankey node: a stable 'key', display 'label', integer 'stage' (column index left-to-right), and optional intent override for its bar and outgoing ribbon color.
 export interface SankeyNode {
   key: string
   label: string
@@ -19,7 +19,7 @@ export interface SankeyNode {
   intent?: SankeyIntent
 }
 
-// ABOUTME: SankeyLink — an interface.
+// ABOUTME: One flow between two nodes: 'from'/'to' node keys, a numeric 'value' that determines ribbon thickness, and an optional 'highlight' flag used by the 'highlighted' variant to draw the accent color.
 export interface SankeyLink {
   from: string
   to: string
@@ -28,7 +28,7 @@ export interface SankeyLink {
   highlight?: boolean
 }
 
-// ABOUTME: Props for Sankey.
+// ABOUTME: Configures Sankey: 'nodes' and 'links' define the graph; nodes are auto-laid out within columns based on total flow; 'formatValue' controls the number format used in 'labeled' mode tooltips and labels.
 export interface SankeyProps {
   variant?: SankeyVariant
   nodes: SankeyNode[]
@@ -60,7 +60,14 @@ function curvedLink(x0: number, y0: number, x1: number, y1: number, thickness: n
           C ${mx} ${y1 + half}, ${mx} ${y0 + half}, ${x0} ${y0 + half} Z`
 }
 
-// ABOUTME: Sankey — a React component.
+// ABOUTME: Renders an SVG Sankey diagram: column-lays nodes by stage (vertically centered, sorted by total flow), scales node bar heights to flow volume, and draws bicubic ribbon paths between nodes whose thickness is proportional to the link's share of the source/target node's total.
+/**
+ * Node heights are computed by scaling max-of-inflow-outflow so the tallest
+ * column fills the available height. Ribbon y-positions are stacked in
+ * link-source-y order using running offsets per node, preventing overlaps.
+ * The ribbon shape is a closed cubic Bézier path that tapers from source
+ * thickness to target thickness.
+ */
 export function Sankey({
   variant = 'simple',
   nodes,

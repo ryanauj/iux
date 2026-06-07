@@ -1,4 +1,4 @@
-// ABOUTME: Exceptions — a React component (apps).
+// ABOUTME: Chapter 5 — "Exceptions & tools": presents the eight salary-cap exceptions with a sortable Table and three featured cards for Bird rights, the full mid-level, and veteran minimums — the tools that explain most offseason signings.
 
 import { Card } from '../../../components/Card/Card'
 import { Table, type TableColumn } from '../../../components/Table/Table'
@@ -99,7 +99,14 @@ const CORE = [
   },
 ]
 
-// ABOUTME: Exceptions — a React component.
+// ABOUTME: Chapter 5 page rendering the EXCEPTIONS data from cap.ts: three featured-tool cards (Bird, full MLE, minimum) explain the core patterns, then a sortable Table lists all eight exceptions with max salary, max years, and the apron that kills each one.
+/**
+ * Chapter 5 of Cap School. Surfaces EXCEPTIONS from cap.ts in two layers: a
+ * trio of explanation cards for the three tools (Bird rights, non-taxpayer MLE,
+ * veteran minimum) that cover the majority of real signings, plus a sortable
+ * Table for the full eight-exception reference. A KeyIdea callout also covers
+ * sign-and-trade and its first-apron hard-cap consequence.
+ */
 export function Exceptions() {
   return (
     <article className="cap-page">

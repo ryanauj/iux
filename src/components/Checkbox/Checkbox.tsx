@@ -1,4 +1,4 @@
-// ABOUTME: ---------- Component ----------
+// ABOUTME: Multi-mode checkbox control supporting a single toggle, a detailed description variant, a recursive tree with indeterminate parent states, and a Shift+click range-select group.
 
 import {
   forwardRef,
@@ -15,13 +15,13 @@ import {
 } from 'react'
 import './Checkbox.css'
 
-// ABOUTME: CheckboxVariant — a type alias.
+// ABOUTME: Interaction mode — 'single' is a plain toggle, 'detailed' adds description and inline error, 'tree' renders a recursive node hierarchy with propagated indeterminate states, 'group' renders a labeled multi-select list with Shift+click range selection.
 export type CheckboxVariant = 'single' | 'detailed' | 'tree' | 'group'
 
-// ABOUTME: CheckboxState — a type alias.
+// ABOUTME: The three possible checkbox states: true (checked), false (unchecked), or 'indeterminate' (rendered as a dash, used for partially-checked tree branch nodes).
 export type CheckboxState = boolean | 'indeterminate'
 
-// ABOUTME: CheckboxOption — an interface.
+// ABOUTME: A single option in the 'group' variant — a value key, display label, optional description, and disabled flag.
 export interface CheckboxOption {
   value: string
   label: ReactNode
@@ -29,7 +29,7 @@ export interface CheckboxOption {
   disabled?: boolean
 }
 
-// ABOUTME: CheckboxTreeNode — an interface.
+// ABOUTME: A node in the 'tree' variant — carries an id, label, optional disabled flag, and optional children array for recursive nesting.
 export interface CheckboxTreeNode {
   id: string
   label: ReactNode
@@ -37,7 +37,7 @@ export interface CheckboxTreeNode {
   children?: CheckboxTreeNode[]
 }
 
-// ABOUTME: Props for Checkbox.
+// ABOUTME: Props for Checkbox — variant selects the mode; single/detailed use checked/defaultChecked; tree uses treeValue (leaf id array); group uses values/options; all share label, description, error, disabled, and stateLock.
 export interface CheckboxProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CheckboxVariant
@@ -105,7 +105,16 @@ function toggleNode(node: CheckboxTreeNode, leafSet: Set<string>): Set<string> {
   return next
 }
 
-// ABOUTME: ---------- Component ----------
+// ABOUTME: A forwardRef-wrapped container that delegates to single-row, group, or tree rendering based on variant; manages controlled/uncontrolled state for each mode and propagates indeterminate parent states in the tree via leaf-set arithmetic.
+/**
+ * 'single' and 'detailed' share `CheckboxRow` with controlled/uncontrolled
+ * `checked` state. 'group' uses a `Set<string>` of selected values and
+ * handles Shift+click range-selection via `lastClickIndexRef`. 'tree' uses a
+ * flat `Set<string>` of leaf ids; `nodeState` derives each branch's checked/
+ * indeterminate state, and `toggleNode` bulk-adds or bulk-removes the branch's
+ * leaves. A hidden native `<input type="checkbox">` preserves form semantics
+ * and screen-reader support in every mode.
+ */
 // ---------- Component ----------
 
 export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Checkbox(

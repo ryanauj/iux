@@ -1,8 +1,8 @@
-// ABOUTME: teams — part of the apps area.
+// ABOUTME: Static team seed data for the sports demo: 10 teams (5 East, 5 West) with full identity fields (colors, arena, coach, founded), season record (W, L, PF, PA, last10, streak), and per-game non-scoring stats used by the Matchup analysis.
 
 import type { Team } from '../types'
 
-// ABOUTME: TEAMS — an exported value.
+// ABOUTME: The complete 10-team array for the demo league, consumed by the data index module which builds id/slug Maps and provides filtering and standings helpers.
 export const TEAMS: Team[] = [
   {
     id: 'team-bos',

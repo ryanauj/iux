@@ -1,4 +1,4 @@
-// ABOUTME: format — part of the apps area.
+// ABOUTME: Pure formatting helpers for the Promptbook app: variable extraction and template filling for `{{slot}}` syntax, body snippet truncation, category label lookup, ISO date formatting, and variable-name humanisation.
 
 import { PROMPT_CATEGORIES, STRATEGY_CATEGORIES } from './types'
 import type { PromptCategory, StrategyCategory } from './types'
@@ -36,12 +36,12 @@ export function snippet(body: string, max = 140): string {
   return oneLine.length > max ? `${oneLine.slice(0, max - 1).trimEnd()}…` : oneLine
 }
 
-// ABOUTME: promptCategoryLabel — a helper function.
+// ABOUTME: Returns the display label for a PromptCategory value (e.g. 'roleplay' → 'Role-play'), used by PromptCard and PromptDetail badges.
 export function promptCategoryLabel(c: PromptCategory): string {
   return PROMPT_CATEGORIES.find(x => x.value === c)?.label ?? c
 }
 
-// ABOUTME: strategyCategoryLabel — a helper function.
+// ABOUTME: Returns the display label for a StrategyCategory value (e.g. 'reasoning' → 'Reasoning'), used by Strategies, StrategyDetail, and PromptForm badges.
 export function strategyCategoryLabel(c: StrategyCategory): string {
   return STRATEGY_CATEGORIES.find(x => x.value === c)?.label ?? c
 }
@@ -52,7 +52,7 @@ const DATE_FMT = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 })
 
-// ABOUTME: formatDate — a helper function.
+// ABOUTME: Formats an ISO date string as a short US locale date (e.g. "May 20, 2026"); returns the raw string if parsing fails. Used by PromptCard and PromptDetail to display created/updated timestamps.
 export function formatDate(iso: string): string {
   const d = new Date(iso)
   return Number.isNaN(d.getTime()) ? iso : DATE_FMT.format(d)

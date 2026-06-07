@@ -1,4 +1,4 @@
-// ABOUTME: Select — an exported value (components).
+// ABOUTME: Accessible single-value select in four variants: a native <select> element ('native'), a custom keyboard-navigable dropdown ('dropdown'), a type-to-filter combobox ('combobox'), and a debounced async search combobox with optional creatable item ('async').
 
 import {
   forwardRef,
@@ -18,10 +18,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Select.css'
 
-// ABOUTME: SelectVariant — a type alias.
+// ABOUTME: The four functional modes: 'native' renders a plain <select>, 'dropdown' renders a button-triggered custom listbox, 'combobox' adds a type-to-filter text input, 'async' debounces input through loadOptions and optionally adds a "+ Create" row.
 export type SelectVariant = 'native' | 'dropdown' | 'combobox' | 'async'
 
-// ABOUTME: SelectOption — an interface.
+// ABOUTME: One selectable option: a string 'value', a display 'label', an optional 'group' for <optgroup>-style headings, a 'disabled' flag, and a 'description' shown as secondary text in dropdown/combobox/async mode.
 export interface SelectOption {
   value: string
   label: string
@@ -31,7 +31,7 @@ export interface SelectOption {
   description?: string
 }
 
-// ABOUTME: Props for Select.
+// ABOUTME: Configures Select: 'variant' is the functional axis; 'options' supplies static choices; 'loadOptions' is the async fetcher (async mode only); 'creatable'/'onCreate' enable the "+ Create" row; 'error'/'hint' show inline validation text; 'stateLock' pins a visual pseudo-state for stories.
 export interface SelectProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SelectVariant
@@ -66,7 +66,7 @@ export interface SelectProps {
   defaultQuery?: string
 }
 
-// ABOUTME: SelectHandle — an interface.
+// ABOUTME: Imperative ref handle exposed via forwardRef: 'focus' moves focus to the trigger element, 'open' opens the listbox, 'close' closes it — useful for programmatic control from parent components.
 export interface SelectHandle {
   focus: () => void
   open: () => void
@@ -97,7 +97,15 @@ function findIndexByValue(options: SelectOption[], value: string | undefined): n
   return options.findIndex(o => o.value === value)
 }
 
-// ABOUTME: Select — an exported value.
+// ABOUTME: Four-variant select component exposing an imperative focus/open/close handle; portals the listbox to the palette root to avoid containing-block issues from ancestor transforms or backdrop-filter, and uses visualViewport for correct above-keyboard positioning on mobile.
+/**
+ * The listbox is portaled via `getPortalTarget()` so `position: fixed`
+ * coordinates are viewport-relative even under ancestor `transform` or
+ * `backdrop-filter` (e.g., a DraggableControls panel). The drop direction is
+ * chosen by available space (combobox/async always open downward). The async
+ * variant debounces `loadOptions` by `debounceMs` milliseconds and can insert
+ * a "+ Create '...'" tail row when `creatable` is true.
+ */
 export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
   {
     variant = 'dropdown',

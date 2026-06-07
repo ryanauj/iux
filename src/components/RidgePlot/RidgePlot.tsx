@@ -1,16 +1,16 @@
-// ABOUTME: RidgePlot — a React component (components).
+// ABOUTME: SVG ridge plot (joy plot) stacking KDE density curves for multiple series, with three modes: outline-only ('lines'), filled areas ('filled'), and per-series normalized peaks ('normalized').
 
 import { useMemo } from 'react'
 import './RidgePlot.css'
 
-// ABOUTME: RidgePlotVariant — a type alias.
+// ABOUTME: Display mode: 'lines' draws only the KDE outline path, 'filled' fills the area under each curve, 'normalized' scales each series to its own peak so small-n series are visually comparable to large ones.
 export type RidgePlotVariant = 'lines' | 'filled' | 'normalized'
 
-// ABOUTME: RidgeIntent — a type alias.
+// ABOUTME: Semantic color intent applied to a series' curve and fill; falls back to the cycling intent palette when not set.
 export type RidgeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: RidgeSeries — an interface.
+// ABOUTME: One density series: stable 'id', display 'label', raw 'values' (the KDE is computed internally), and an optional intent color override.
 export interface RidgeSeries {
   id: string
   label: string
@@ -18,7 +18,7 @@ export interface RidgeSeries {
   intent?: RidgeIntent
 }
 
-// ABOUTME: Props for RidgePlot.
+// ABOUTME: Configures RidgePlot: 'series' are drawn top-to-bottom, 'overlap' controls how far each ridge overshoots into the row above (in row-height units), 'resolution' is the number of KDE sample points, and 'xDomain' pins the shared x axis.
 export interface RidgePlotProps {
   variant?: RidgePlotVariant
   /** Series rendered top → bottom. Order is the story. */
@@ -70,7 +70,14 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: RidgePlot — a React component.
+// ABOUTME: Renders stacked Gaussian KDE ridges using Silverman's rule-of-thumb bandwidth; each series occupies one row, curves can overlap into the row above by the 'overlap' factor, and in 'normalized' mode each curve is scaled to its own peak so amplitudes are independent.
+/**
+ * KDE is computed with a Gaussian kernel at `resolution` evenly-spaced x
+ * points across the shared domain. In `filled` and `lines` modes a global
+ * peak is used so amplitudes are comparable across series. In `normalized`
+ * mode each series uses its own peak, making the shape — not the magnitude —
+ * the visual story. Series labels appear left of their baseline.
+ */
 export function RidgePlot({
   variant = 'filled',
   series,

@@ -1,4 +1,4 @@
-// ABOUTME: TextInput — an exported value (components).
+// ABOUTME: Single-line text input with four variants: bordered (standard outlined field), floating (CSS :placeholder-shown animated floating label), validate (live validate() hook with inline success/warning/danger icon and message), and command (ghost-text tab-completion bar).
 
 import {
   forwardRef,
@@ -15,19 +15,19 @@ import {
 } from 'react'
 import './TextInput.css'
 
-// ABOUTME: TextInputVariant — a type alias.
+// ABOUTME: Layout/behaviour mode — bordered is the default outlined field; floating animates the label above the input when filled; validate shows a live status icon; command renders ghost-text tab-completion.
 export type TextInputVariant = 'bordered' | 'floating' | 'validate' | 'command'
 
-// ABOUTME: ValidationStatus — a type alias.
+// ABOUTME: Outcome of a live validate() call — success, warning, or danger — used to colour the status icon and the validation message.
 export type ValidationStatus = 'success' | 'warning' | 'danger'
 
-// ABOUTME: ValidationResult — an interface.
+// ABOUTME: Return value of the validate prop: a status code and an optional inline message shown below the field in the validate variant.
 export interface ValidationResult {
   status: ValidationStatus
   message?: string
 }
 
-// ABOUTME: Props for TextInput.
+// ABOUTME: Props for TextInput — extends native input attributes with variant, label, hint, inline error, live validate hook, command-bar suggestion + acceptance callback, leading/trailing icon slots, and a stateLock for pseudo-state story fixtures.
 export interface TextInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   /** Functional axis. The same prop, never a forked component. */
@@ -53,7 +53,14 @@ export interface TextInputProps
   stateLock?: 'hover' | 'focus' | 'filled'
 }
 
-// ABOUTME: TextInput — an exported value.
+// ABOUTME: forwardRef-wrapped input field supporting controlled/uncontrolled value, live validation, floating-label CSS trick (injects a single-space placeholder), and Tab-to-accept ghost text in command mode.
+/**
+ * Derives a composite className from variant, validation status, filled state,
+ * and optional stateLock. Fires `validate` on every value change and renders
+ * the result as an inline message and an SVG status glyph (validate variant).
+ * In command mode, splits the `suggestion` prop into already-typed prefix and
+ * ghost-text suffix, completing on Tab via `onAcceptSuggestion`.
+ */
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInput(
   {
     variant = 'bordered',

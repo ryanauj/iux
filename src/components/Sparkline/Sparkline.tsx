@@ -1,12 +1,12 @@
-// ABOUTME: Sparkline — a React component (components).
+// ABOUTME: Compact inline SVG trend line in four variants: bare glyph ('glyph'), glyph with label and current value ('labeled'), labeled plus delta arrow with percentage change and min/max dots ('delta'), and delta plus a target line with on-/below-target pill ('targeted').
 
 import { useMemo } from 'react'
 import './Sparkline.css'
 
-// ABOUTME: SparklineVariant — a type alias.
+// ABOUTME: Controls what metadata appears above the SVG line: 'glyph' renders the line only, 'labeled' adds label and current value, 'delta' adds a directional arrow with absolute and percentage change plus min/max dots, 'targeted' further adds a target reference line and an on-/below-target status pill.
 export type SparklineVariant = 'glyph' | 'labeled' | 'delta' | 'targeted'
 
-// ABOUTME: Props for Sparkline.
+// ABOUTME: Configures Sparkline: 'values' is the time-ordered series (last value is "current"), 'target' adds a reference line in 'targeted' mode, 'unit' is appended to numeric displays, and 'formatValue' overrides the default locale-based number format.
 export interface SparklineProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SparklineVariant
@@ -38,7 +38,13 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: Sparkline — a React component.
+// ABOUTME: Renders a compact SVG polyline trend: maps values to an (x, y) path scaled to the padded bounding box including target when present; computes delta vs the previous value for 'delta'/'targeted' modes; marks min/max dots; and shows an on-/below-target pill colored by comparison to target.
+/**
+ * The y domain expands to include the target value so the reference line
+ * never clips. Delta intent (success/danger/neutral) is set by sign of the
+ * last-to-previous change. The `preserveAspectRatio="none"` SVG scales freely
+ * to the given width/height without letterboxing.
+ */
 export function Sparkline({
   variant = 'glyph',
   values,

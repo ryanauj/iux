@@ -1,12 +1,12 @@
-// ABOUTME: ---------- Component ----------
+// ABOUTME: Text diff viewer with four presentation modes — side-by-side panes, unified inline with char-level highlighting, interactive chunk-accept/reject editor, and three-way merge picker.
 
 import { useMemo, useState } from 'react'
 import './DiffView.css'
 
-// ABOUTME: DiffViewVariant — a type alias.
+// ABOUTME: Presentation mode: 'side-by-side' shows original and modified in two panes, 'inline' interleaves changed lines with char-level highlights, 'chunked' lets the user accept/reject each change block, 'three-way' presents base/ours/theirs columns with per-chunk picks.
 export type DiffViewVariant = 'side-by-side' | 'inline' | 'chunked' | 'three-way'
 
-// ABOUTME: Props for DiffView.
+// ABOUTME: Props for DiffView — variant selects the presentation mode; two-way variants use a/b strings, three-way uses base/ours/theirs strings.
 export interface DiffViewProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: DiffViewVariant
@@ -30,7 +30,7 @@ export type LineOp =
   | { type: 'del'; line: string }
   | { type: 'add'; line: string }
 
-// ABOUTME: diffLines — a helper function.
+// ABOUTME: Computes a line-level LCS diff between two strings, returning an array of LineOp tokens tagged as 'eq', 'del', or 'add'; used by all variants to produce the base sequence of changes.
 export function diffLines(aText: string, bText: string): LineOp[] {
   const a = aText.split('\n')
   const b = bText.split('\n')
@@ -129,9 +129,16 @@ function chunkOps(ops: LineOp[]): DiffChunk[] {
   return out
 }
 
-// ABOUTME: ---------- Component ----------
-// ---------- Component ----------
-
+// ABOUTME: Renders a diff in the chosen mode: side-by-side panes, inline with char-level span highlights for adjacent del+add pairs, a chunked accept/reject UI with a live merged preview, or a three-column three-way picker.
+/**
+ * Two-way variants (side-by-side, inline, chunked) run `diffLines(a, b)` and
+ * chunk the result into eq/changed blocks. In 'chunked' mode each changed block
+ * stores a pick ('a' to reject or 'b' to accept) in local state, and the
+ * merged result is shown in a `<details>` disclosure. The 'three-way' variant
+ * independently diffs base→ours and base→theirs, then renders three `Column`
+ * sub-components that let the user pick which side's version of each chunk to
+ * keep. The `LineOp` union and `diffLines` are exported for external use.
+ */
 export function DiffView({
   variant = 'side-by-side',
   a = '',

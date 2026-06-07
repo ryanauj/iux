@@ -1,16 +1,16 @@
-// ABOUTME: Lollipop — a React component (components).
+// ABOUTME: Horizontal SVG lollipop chart showing per-category values as stick-and-dot marks, with three variants: plain sticks, rank-sorted with value labels, and paired before/after comparison with a legend.
 
 import { useMemo } from 'react'
 import './Lollipop.css'
 
-// ABOUTME: LollipopVariant — a type alias.
+// ABOUTME: Controls layout and decoration: 'sticks' draws plain marks in data order, 'ranked' sorts descending by value and adds formatted labels, 'paired' adds a second compare-value dot with a legend.
 export type LollipopVariant = 'sticks' | 'ranked' | 'paired'
 
-// ABOUTME: LollipopIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per row via the `intent` field of LollipopDatum; defaults to 'primary' when not set.
 export type LollipopIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: LollipopDatum — an interface.
+// ABOUTME: One category row in the lollipop chart: a display label, the primary value, an optional `compare` value for the 'paired' variant, and an optional per-row colour intent.
 export interface LollipopDatum {
   key: string
   label: string
@@ -20,7 +20,7 @@ export interface LollipopDatum {
   intent?: LollipopIntent
 }
 
-// ABOUTME: Props for Lollipop.
+// ABOUTME: Configures Lollipop — supplies the data array, variant, canvas size, an optional value formatter, and series labels for the 'paired' legend.
 export interface LollipopProps {
   variant?: LollipopVariant
   data: LollipopDatum[]
@@ -42,7 +42,14 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
-// ABOUTME: Lollipop — a React component.
+// ABOUTME: Renders horizontal stick-and-dot marks from a shared zero baseline, with category labels to the left; the 'ranked' variant sorts data descending and appends formatted value text, and the 'paired' variant draws a secondary lighter dot and shows a two-series legend above.
+/**
+ * Computes the shared domain from all primary and compare values (flooring to 0),
+ * distributes rows evenly across the plot height, and maps each value to an
+ * x-coordinate. The 'paired' variant draws a dimmer compare stick/dot first
+ * so the primary dot renders on top. Each dot carries an SVG `<title>` with
+ * the raw formatted value for accessible tooltips.
+ */
 export function Lollipop({
   variant = 'sticks',
   data,

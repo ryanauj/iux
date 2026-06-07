@@ -1,4 +1,4 @@
-// ABOUTME: CourtShell — a React component (apps).
+// ABOUTME: CourtShell — spatial navigation shell that replaces the Home page with an interactive SVG basketball court; hotspot pucks positioned around the key, arc, and half-court navigate to players, standings, and games on click or keyboard activation.
 
 import { Link } from '../../Link'
 import { navigate } from '../../router'
@@ -115,7 +115,13 @@ function CourtNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
-// ABOUTME: CourtShell — a React component.
+// ABOUTME: Shell that shows an SVG court with labelled hotspot pucks on the Home route and renders the standard page on all other routes; hotspots are keyboard-accessible (Enter/Space triggers navigate).
+/**
+ * On the Home route renders CourtMap — a to-scale half-court SVG with six
+ * interactive pucks placed at basketball-meaningful positions (hoop, paint,
+ * wings, arc, half-court). Each puck navigates to a sports route. On non-Home
+ * routes the court is replaced by props.children.
+ */
 export function CourtShell(props: ShellProps) {
   const isHome = props.route.kind === 'home'
   return (

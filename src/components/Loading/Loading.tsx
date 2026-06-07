@@ -1,16 +1,16 @@
-// ABOUTME: Loading — a React component (components).
+// ABOUTME: Unified loading-state component covering four patterns: CSS spinner, animated shimmer bars, shape-based skeleton placeholders, and an optimistic-UI wrapper that shows just-submitted content with a sync/saved/failed status tag.
 
 import type { ReactNode } from 'react'
 import './Loading.css'
 
-// ABOUTME: LoadingVariant — a type alias.
+// ABOUTME: Selects the loading pattern: 'spinner' shows an animated ring with a label, 'shimmer' draws staggered gradient bars, 'skeleton' renders a named shape preset repeated N times, 'optimistic' wraps children with a sync-status tag.
 export type LoadingVariant = 'spinner' | 'shimmer' | 'skeleton' | 'optimistic'
 
 // ABOUTME: Built-in skeleton shapes that variants 'skeleton' draws.
 /** Built-in skeleton shapes that variants 'skeleton' draws. */
 export type SkeletonShape = 'card' | 'table-row' | 'list-row' | 'avatar-text' | 'paragraph'
 
-// ABOUTME: Props for Loading.
+// ABOUTME: Configures Loading — the `variant` selects the pattern; `bars`/`shape`/`rows` tune the shimmer and skeleton shapes; `children` and `status` drive the optimistic variant; `label` doubles as the aria-label for all variants.
 export interface LoadingProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: LoadingVariant
@@ -29,7 +29,15 @@ export interface LoadingProps {
   className?: string
 }
 
-// ABOUTME: Loading — a React component.
+// ABOUTME: Branches on `variant` to render a spinner div, a set of animated shimmer bars, repeated SkeletonShapeNode presets, or an optimistic wrapper around children with a 'syncing / synced / failed' badge.
+/**
+ * The 'skeleton' variant delegates each row to the internal `SkeletonShapeNode`
+ * helper which renders one of five structural presets (card, table-row,
+ * list-row, avatar-text, paragraph) as aria-hidden placeholders.
+ * The 'optimistic' variant renders its `children` immediately alongside a
+ * `role="status"` tag whose text reflects the `status` prop, providing
+ * perceived-instant feedback while a network request is in flight.
+ */
 export function Loading({
   variant = 'spinner',
   label = 'Loading',

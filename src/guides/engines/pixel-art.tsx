@@ -1,4 +1,4 @@
-// ABOUTME: pixel-art — part of the guides area.
+// ABOUTME: Engine guide definition for the Pixel-art rendering engine — the integer-grid engine that zeros radius everywhere, uses whole-pixel border widths, casts hard solid offset shadows with no blur, snaps motion to a 60 Hz per-frame duration ladder with steps(1, end) easing so there is never an interpolated middle frame, and pins image-rendering: pixelated at the palette root.
 
 import { useState } from 'react'
 import { palette as pixelArtGameboy } from '../../../palettes/pixel-art-gameboy'
@@ -222,7 +222,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: pixelArtGuide — an exported value.
+// ABOUTME: pixelArtGuide — the EngineGuideMeta for the Pixel-art engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the pixel-art-gameboy palette, covering the four-shade DMG register, whole-pixel hairlines, hard-offset elevation, stepped per-frame motion, and the four-shade intent palette that forces affordance to ride iconography rather than colour.
 export const pixelArtGuide: EngineGuideMeta = {
   engine: 'pixel-art',
   name: 'Pixel-art',

@@ -1,4 +1,4 @@
-// ABOUTME: command-palette — part of the tests area.
+// ABOUTME: Composition integration test for CommandPalette + Button: opens the palette via a button click, types to narrow the command list to a single match, presses Enter to run the highlighted command, and asserts the command's result appears in the DOM.
 
 import { useMemo, useState } from 'react'
 import { Button } from '../../components/Button/Button'
@@ -34,7 +34,7 @@ function CommandPaletteComposition() {
   )
 }
 
-// ABOUTME: commandPaletteFilter — an exported value.
+// ABOUTME: Single IntegrationTest that exercises the filter-and-run flow: open palette, type "say" to narrow to one match, press Enter, assert the command's output appears — exercises CommandPalette and Button together.
 export const commandPaletteFilter: IntegrationTest = {
   id: 'command-palette-filter',
   name: 'Command palette filters and runs selection',

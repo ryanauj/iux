@@ -1,4 +1,4 @@
-// ABOUTME: Table — a React component (components).
+// ABOUTME: Generic data table with four progressive variants: static (display only), sortable (clickable column headers cycle asc/desc/unsorted), resizable (pointer-drag column-width handles plus a column-visibility menu), and editable (double-click inline cell editing with async save states and optional scroll-virtualization).
 
 import {
   useCallback,
@@ -13,10 +13,10 @@ import {
 } from 'react'
 import './Table.css'
 
-// ABOUTME: TableVariant — a type alias.
+// ABOUTME: Feature tier for the table: static is read-only; sortable adds header-button sort cycling; resizable adds pointer-drag column widths and a column-visibility menu; editable adds inline cell editing with async onCellSave and optional virtualization.
 export type TableVariant = 'static' | 'sortable' | 'resizable' | 'editable'
 
-// ABOUTME: TableColumn — an interface.
+// ABOUTME: Column descriptor for a Table: accessor reads the display value, sortBy provides a comparator, editor renders an inline input for the editable variant, and hiddenByDefault pre-hides the column behind the visibility menu.
 export interface TableColumn<T> {
   key: string
   header: ReactNode
@@ -35,7 +35,7 @@ export interface TableColumn<T> {
   align?: 'start' | 'end' | 'center'
 }
 
-// ABOUTME: Props for Table.
+// ABOUTME: Props for Table — provides data rows, column definitions, optional controlled/uncontrolled row selection, async onCellSave for editable, virtualization height, and a default sort state.
 export interface TableProps<T> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TableVariant
@@ -75,7 +75,15 @@ function defaultGetId(_row: unknown, index: number): string {
   return String(index)
 }
 
-// ABOUTME: Table — a React component.
+// ABOUTME: Renders a full-featured HTML table with sort, column-resize, visibility, row selection, inline cell editing with dirty/saving/saved/error dot indicators, and scroll-window virtualization for the editable variant.
+/**
+ * Internally manages sort state, per-column widths (pointer-capture drag),
+ * hidden-column sets, selection sets (controlled or uncontrolled), and per-cell
+ * save states keyed by `rowId:columnKey`. The editable variant virtualizes rows
+ * when a `height` prop is given, rendering only the visible slice and padding
+ * the remainder with spacer `<tr>` elements. The resizable variant renders
+ * character corner glyphs (┌ ┐ └ ┘) for the terminal palette border style.
+ */
 export function Table<T>(props: TableProps<T>) {
   const {
     variant = 'static',

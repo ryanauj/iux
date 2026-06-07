@@ -1,23 +1,23 @@
-// ABOUTME: Gauge — a React component (components).
+// ABOUTME: SVG arc gauge with three modes — plain arc fill, coloured zone bands with an intent-coloured needle, and a full-circle ring; supports an optional target notch and a centre value label.
 
 import { useMemo } from 'react'
 import './Gauge.css'
 
-// ABOUTME: GaugeVariant — a type alias.
+// ABOUTME: Display mode: 'arc' fills a single arc from min to value, 'zones' paints the track with coloured GaugeZone bands and colours the needle by the zone it falls in, 'full' renders a complete 360° ring instead of a 270° arc.
 export type GaugeVariant = 'arc' | 'zones' | 'full'
 
-// ABOUTME: GaugeIntent — a type alias.
+// ABOUTME: Semantic colour used for zone bands, the value arc, and the needle dot; in 'zones' mode the value's intent is inferred from which zone the current value falls into.
 export type GaugeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: GaugeZone — an interface.
+// ABOUTME: A coloured segment of the 'zones' gauge track: a fraction of the total arc length (0–1, zones run low to high) and the intent colour to fill that segment.
 export interface GaugeZone {
   /** Fraction of the range this zone covers, [0..1]. Zones run low → high. */
   fraction: number
   intent: GaugeIntent
 }
 
-// ABOUTME: Props for Gauge.
+// ABOUTME: Props for Gauge — variant selects arc style, value/min/max define the range, zones configures the 'zones' colour bands, target draws an optional notch at a goal value, and caption is a short label shown under the centre value.
 export interface GaugeProps {
   variant?: GaugeVariant
   value: number
@@ -55,7 +55,15 @@ function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: num
   return `M ${x0o} ${y0o} A ${rOuter} ${rOuter} 0 ${large} 1 ${x1o} ${y1o} L ${x0i} ${y0i} A ${rInner} ${rInner} 0 ${large} 0 ${x1i} ${y1i} Z`
 }
 
-// ABOUTME: Gauge — a React component.
+// ABOUTME: Renders an arc-shaped gauge SVG with a grey track, an intent-coloured filled arc or zone bands, a small circle needle, an optional target line notch, and a centre value label with optional caption.
+/**
+ * Arc geometry spans 270° (from ~154° to ~26°) for 'arc' and 'zones', or a
+ * full 360° starting at top for 'full'. The filled arc or needle position is
+ * derived from `(value - min) / (max - min)`. In 'zones' mode, `arcBands` maps
+ * each GaugeZone fraction to a start/end angle pair; the needle's intent is
+ * determined by which band contains the current value fraction. The SVG height
+ * is 78% of width for partial-arc variants to clip whitespace below the arc.
+ */
 export function Gauge({
   variant = 'arc',
   value,

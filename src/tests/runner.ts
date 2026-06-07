@@ -1,8 +1,8 @@
-// ABOUTME: runner — part of the tests area.
+// ABOUTME: Integration-test runner: executes an IntegrationTest's steps sequentially against a sandboxed DOM root, supporting step delays, stepped (manual-advance) mode, abort signals, and portal-aware element queries.
 
 import type { IntegrationTest, RunResult, Step, StepResult } from './types'
 
-// ABOUTME: RunOptions — an interface.
+// ABOUTME: Options controlling how runTest drives a test: per-step delay, a step-event callback for live status streaming, an AbortSignal for cancellation, and an awaitContinue gate for stepped (manual-advance) mode.
 export interface RunOptions {
   /** Delay between steps in ms, for human-watchable execution. 0 = as fast as possible. */
   stepDelayMs?: number
@@ -20,9 +20,9 @@ export interface RunOptions {
 
 const DEFAULT_TIMEOUT_MS = 2000
 
-// ABOUTME: Drive a test's steps against a mounted DOM root.
+// ABOUTME: Execute all steps of an IntegrationTest against the given DOM root, returning a RunResult with per-step status, timing, and error details; queries are scoped to the root plus the nearest palette-root portal target.
 /**
- * Drive a test's steps against a mounted DOM root.
+ * Execute all steps of an IntegrationTest against the given DOM root, returning a RunResult with per-step status, timing, and error details; queries are scoped to the root plus the nearest palette-root portal target.
  *
  * Selectors are scoped to `root`, not `document` — every test composition is
  * self-contained, and overlay components (Modal, Toast, CommandPalette) are
@@ -210,7 +210,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-// ABOUTME: summarizeResults — a helper function.
+// ABOUTME: Reduce an array of RunResults to a `{ total, passed, failed }` counts object; used for displaying suite-level summary in visualizations.
 export function summarizeResults(results: RunResult[]): { total: number; passed: number; failed: number } {
   return {
     total: results.length,

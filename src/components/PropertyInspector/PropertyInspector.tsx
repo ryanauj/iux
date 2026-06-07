@@ -1,15 +1,15 @@
-// ABOUTME: PropertyInspector — a React component (components).
+// ABOUTME: Editable property panel for one or more selected objects, supporting flat, grouped, multi-select (mixed values), and constraint-driven field layouts, with localStorage-persisted group collapse state.
 
 import { useMemo, useState, type ReactNode } from 'react'
 import './PropertyInspector.css'
 
-// ABOUTME: PropertyInspectorVariant — a type alias.
+// ABOUTME: Selects the layout mode: 'flat' is a simple list, 'grouped' adds collapsible sections, 'multi' shows a "N selected" count header, 'constrained' runs computeConstraints to disable or override field values.
 export type PropertyInspectorVariant = 'flat' | 'grouped' | 'multi' | 'constrained'
 
-// ABOUTME: PropertyFieldType — a type alias.
+// ABOUTME: The input control type rendered for a field: text, number (with optional unit), select dropdown, checkbox toggle, or color swatch.
 export type PropertyFieldType = 'text' | 'number' | 'select' | 'toggle' | 'color'
 
-// ABOUTME: PropertyField — an interface.
+// ABOUTME: Declares one editable property: its key into the selection record, the label, an optional group heading for 'grouped' variant, the control type, and supporting metadata (options, unit, defaultValue).
 export interface PropertyField {
   key: string
   label: ReactNode
@@ -21,14 +21,14 @@ export interface PropertyField {
   defaultValue?: unknown
 }
 
-// ABOUTME: ComputedConstraint — an interface.
+// ABOUTME: Returned per-field by computeConstraints in the 'constrained' variant to disable a control or substitute a derived display value overriding what the selection holds.
 export interface ComputedConstraint {
   disabled?: boolean
   /** Override the displayed value (e.g., derived value when a sibling is auto). */
   valueOverride?: unknown
 }
 
-// ABOUTME: Props for PropertyInspector.
+// ABOUTME: Configures PropertyInspector: 'fields' declares the schema, 'selection' is the current object array (0 = empty, 1 = single, 2+ = multi-edit with mixed-value detection), 'groupKey' scopes localStorage collapse state, and 'computeConstraints' drives the 'constrained' variant's disabled/override logic.
 export interface PropertyInspectorProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PropertyInspectorVariant
@@ -55,7 +55,16 @@ function sharedValue(selection: Array<Record<string, unknown>>, key: string, fal
   return first
 }
 
-// ABOUTME: PropertyInspector — a React component.
+// ABOUTME: Renders an <aside> property panel for selected objects with per-field controls (text, number, select, toggle, color), multi-select mixed-value handling, collapsible groups persisted to localStorage, and constraint-driven disabled/override states.
+/**
+ * Displays an editable set of fields for the current selection.
+ * When the selection has more than one object, values differing across
+ * objects show a "Mixed" placeholder and commit the typed value to all.
+ * In `grouped` mode each group is independently collapsible, with collapsed
+ * state stored under `iux:inspector:<groupKey>`. In `constrained` mode,
+ * `computeConstraints` is called on the effective first-object values and its
+ * result disables or overrides individual field controls.
+ */
 export function PropertyInspector({
   variant = 'flat',
   fields,

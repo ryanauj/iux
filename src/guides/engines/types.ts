@@ -1,9 +1,9 @@
-// ABOUTME: types — part of the guides area.
+// ABOUTME: Shared TypeScript types for the engine guide system — EngineStep and EngineGuideMeta describe the shape every per-engine module must satisfy.
 
 import type { ReactNode } from 'react'
 import type { Engine, Palette } from '../../../tokens/semantic.contract'
 
-// ABOUTME: EngineStep — an interface.
+// ABOUTME: EngineStep — one titled walkthrough step inside an engine guide, carrying a technical body, an optional plain-English body, and a live demo node rendered inside a PaletteRoot.
 export interface EngineStep {
   id: string
   title: string
@@ -22,7 +22,7 @@ export interface EngineStep {
   demo: ReactNode
 }
 
-// ABOUTME: EngineGuideMeta — an interface.
+// ABOUTME: EngineGuideMeta — the complete definition for one rendering-engine guide: its engine id, display name, technical and plain-English summaries, demo palette, and the ordered list of EngineStep walkthrough steps that EngineGuide renders.
 export interface EngineGuideMeta {
   engine: Engine
   /** Display name (e.g. "Flat"). */

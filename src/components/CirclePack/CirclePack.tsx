@@ -1,16 +1,16 @@
-// ABOUTME: CirclePack — a React component (components).
+// ABOUTME: SVG circle-packing visualization that recursively packs a tree of nodes into nested or flat circles using a front-chain layout algorithm, with flat, nested, and labeled display variants.
 
 import { useMemo } from 'react'
 import './CirclePack.css'
 
-// ABOUTME: CirclePackVariant — a type alias.
+// ABOUTME: Display mode — 'flat' fills only leaf circles (parents shown as outlines), 'nested' fills every depth level, 'labeled' fills all levels and overlays text labels on circles larger than 14px radius.
 export type CirclePackVariant = 'flat' | 'nested' | 'labeled'
 
-// ABOUTME: CirclePackIntent — a type alias.
+// ABOUTME: Semantic color token applied to a node's circle fill, inherited by children unless overridden, drawn from the six contract intents.
 export type CirclePackIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: CirclePackNode — an interface.
+// ABOUTME: A tree node with a unique id, display label, optional numeric value (leaf size), optional explicit intent, and optional children for recursive nesting.
 export interface CirclePackNode {
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface CirclePackNode {
   children?: CirclePackNode[]
 }
 
-// ABOUTME: Props for CirclePack.
+// ABOUTME: Props for CirclePack — supplies the root tree node, variant, and SVG dimensions; the entire hierarchy is packed from a single `root`.
 export interface CirclePackProps {
   variant?: CirclePackVariant
   root: CirclePackNode
@@ -150,7 +150,16 @@ function packTree(root: CirclePackNode, cx: number, cy: number, R: number): Plac
   return out
 }
 
-// ABOUTME: CirclePack — a React component.
+// ABOUTME: Runs `packTree` to produce a flat `Placed[]` array of (x, y, r, intent, depth) via `packChildren`'s front-chain algorithm, then maps each entry to an SVG `<circle>`, coloring by intent and depth-relative tint level; 'labeled' adds centered `<text>` for circles with r > 14.
+/**
+ * `packChildren` scales children radii so their summed area equals 75% of the
+ * parent circle's area, then places them using a front-chain algorithm: the
+ * first two are placed on the x-axis; subsequent circles are tangent to the
+ * best (lowest-distance-to-origin, non-overlapping) adjacent chain pair. The
+ * result is centered and scaled to fit in the parent radius. `packTree`
+ * recurses this for every branch node, passing the parent's intent down as the
+ * default for children.
+ */
 export function CirclePack({
   variant = 'flat',
   root,

@@ -1,4 +1,4 @@
-// ABOUTME: Ladder — a React component (apps).
+// ABOUTME: Chapter 2 — "The cap ladder": names every payroll threshold and explains why the bunching of lines near the top (tax → first apron → second apron) makes the climb feel steeper the higher a team goes.
 
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
@@ -7,7 +7,14 @@ import { contractsRoutes } from '../routes'
 import { THRESHOLDS, SEASON } from '../data/cap'
 import { money } from '../format'
 
-// ABOUTME: Ladder — a React component.
+// ABOUTME: Chapter 2 page pairing CapLadder (full scale, no highlight) with a prose section showing the dollar gaps between rungs, plus an ordered list of all five thresholds from THRESHOLDS (cap.ts) with their one-line blurbs as an index for the chapters ahead.
+/**
+ * Chapter 2 of Cap School. Shows the CapLadder beside computed gap figures
+ * (e.g. cap-to-tax vs tax-to-first-apron vs first-to-second-apron) to make
+ * the visual spacing meaningful, then renders an <ol> of every threshold from
+ * THRESHOLDS so readers have a named-rung reference before the later chapters
+ * each take one rung in depth.
+ */
 export function Ladder() {
   return (
     <article className="cap-page">

@@ -1,9 +1,9 @@
-// ABOUTME: NotFound — a React component (apps).
+// ABOUTME: 404 fallback page for unrecognised Cap School routes — shows a short message and a link back to the Overview chapter.
 
 import { Link } from '../../Link'
 import { contractsRoutes } from '../routes'
 
-// ABOUTME: NotFound — a React component.
+// ABOUTME: 404 fallback rendered by RouteContent in ContractsApp when matchContractsRoute returns { kind: 'notFound' }; displays a 404 kicker and a direct link to the Overview.
 export function NotFound() {
   return (
     <article className="cap-page cap-page--notfound">

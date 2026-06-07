@@ -1,4 +1,4 @@
-// ABOUTME: form-submit-toast — part of the tests area.
+// ABOUTME: Composition integration test for TextInput + Button + Toast: types a name into a text field, clicks Submit, waits for a success toast, and asserts the toast title contains the entered value — exercises three components together.
 
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
@@ -29,7 +29,7 @@ function FormSubmitToastComposition() {
   )
 }
 
-// ABOUTME: formSubmitToast — an exported value.
+// ABOUTME: Single IntegrationTest for the form-submit → confirmation toast flow: type into TextInput, click Button, assert Toast title contains the typed value.
 export const formSubmitToast: IntegrationTest = {
   id: 'form-submit-toast',
   name: 'Form submit shows confirmation toast',

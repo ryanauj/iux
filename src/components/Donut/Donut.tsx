@@ -1,16 +1,16 @@
-// ABOUTME: Donut — a React component (components).
+// ABOUTME: SVG pie/donut chart with three modes — solid filled pie, ring donut with a centre total, and ring donut with per-slice percentage labels — plus an intent-coloured legend.
 
 import { useMemo } from 'react'
 import './Donut.css'
 
-// ABOUTME: DonutVariant — a type alias.
+// ABOUTME: Display mode: 'solid' renders filled pie wedges (no centre hole), 'donut' draws a ring with an optional centre total and legend, 'labeled' adds a percentage label inside each wedge wider than 5% of the circle.
 export type DonutVariant = 'solid' | 'donut' | 'labeled'
 
-// ABOUTME: DonutIntent — a type alias.
+// ABOUTME: Semantic colour applied to a slice and its legend swatch; defaults to cycling through the intent palette by slice index.
 export type DonutIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: DonutSlice — an interface.
+// ABOUTME: A single pie/donut segment with a unique key, display label, numeric value, and optional intent colour override.
 export interface DonutSlice {
   key: string
   label: string
@@ -18,7 +18,7 @@ export interface DonutSlice {
   intent?: DonutIntent
 }
 
-// ABOUTME: Props for Donut.
+// ABOUTME: Props for Donut — variant selects pie vs. ring vs. labeled-ring, data supplies the slices, caption is an optional centre subtitle, and showTotal controls whether the summed total appears in the centre hole.
 export interface DonutProps {
   variant?: DonutVariant
   data: DonutSlice[]
@@ -59,7 +59,14 @@ function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: num
   return `M ${x0o} ${y0o} A ${rOuter} ${rOuter} 0 ${large} 1 ${x1o} ${y1o} L ${x0i} ${y0i} A ${rInner} ${rInner} 0 ${large} 0 ${x1i} ${y1i} Z`
 }
 
-// ABOUTME: Donut — a React component.
+// ABOUTME: Renders a pie or donut SVG with arc paths computed from fractional slice values, a centre numeric total and caption in ring modes, per-slice percentage labels in 'labeled' mode, and an intent-coloured legend list beneath the chart.
+/**
+ * Computes each slice's start/end angle in a `useMemo` pass, starting at −π/2
+ * (top). Inner radius is 62% of outer for ring variants (0 for 'solid'). The
+ * centre total and needle circle both inherit the intent of the zone they fall
+ * in (or 'primary' by default). The legend is shown for 'donut' and 'labeled'
+ * variants, listing label, formatted value, and percentage.
+ */
 export function Donut({
   variant = 'donut',
   data,

@@ -1,4 +1,4 @@
-// ABOUTME: TeamDetail — a React component (apps).
+// ABOUTME: Team profile page with a coloured-border header (record, conference, coach, arena) and three Tabs: Roster (sortable player table linking to PlayerDetail), Schedule (all games with W/L result and box-score links), and Team stats (PF, PA, net, streaks).
 
 import { Tabs } from '../../../components/Tabs/Tabs'
 import { Table, type TableColumn } from '../../../components/Table/Table'
@@ -19,7 +19,13 @@ interface TeamDetailProps {
   slug: string
 }
 
-// ABOUTME: TeamDetail — a React component.
+// ABOUTME: Resolves a team by slug via `getTeamBySlug`, fetches its roster with `getPlayersForTeam` and full schedule with `getGamesForTeam`, then renders a header and three-tab Tabs panel; falls back to NotFound when the slug is missing.
+/**
+ * The Roster tab uses a sortable Table with `formatHeight` and `formatStat`; the
+ * Schedule tab resolves the opponent via `getTeamById` and shows home/away
+ * context with a link to `GameDetail`; the Team stats tab shows aggregate
+ * season numbers computed from the team's data fields.
+ */
 export function TeamDetail({ slug }: TeamDetailProps) {
   const team = getTeamBySlug(slug)
   if (!team) return <NotFound message={`No team with slug "${slug}".`} />

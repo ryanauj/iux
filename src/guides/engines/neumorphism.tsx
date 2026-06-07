@@ -1,4 +1,4 @@
-// ABOUTME: neumorphism — part of the guides area.
+// ABOUTME: Engine guide definition for the Neumorphism rendering engine — the soft-UI engine that uses a paired top-left-highlight / bottom-right-shade shadow recipe to make surfaces read as extruded from the page itself, refusing borders and tonal hierarchy in favour of the shadow pair, with the flat rung inverted inset to convey pressed state.
 
 import { useState } from 'react'
 import { palette as neumorphism } from '../../../palettes/neumorphism'
@@ -272,7 +272,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: neumorphismGuide — an exported value.
+// ABOUTME: neumorphismGuide — the EngineGuideMeta for the Neumorphism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the neumorphism palette, covering the one-field-colour approach, the invisible-border choice, the paired-shadow extrusion recipe, and the a11y cost of refusing borders and tonal hierarchy.
 export const neumorphismGuide: EngineGuideMeta = {
   engine: 'neumorphism',
   name: 'Neumorphism',

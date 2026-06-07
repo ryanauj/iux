@@ -1,16 +1,16 @@
-// ABOUTME: Treemap — a React component (components).
+// ABOUTME: SVG treemap chart using a squarified layout algorithm; supports flat (single-level rectangles), grouped (recursive child rectangles inset inside parents), and labeled (adds a formatted value line below each cell label) variants.
 
 import { useMemo } from 'react'
 import './Treemap.css'
 
-// ABOUTME: TreemapVariant — a type alias.
+// ABOUTME: Layout tier — flat draws only the top-level nodes; grouped recurses into children, inset inside their parent rect; labeled adds a second text line showing the formatted value below the node label.
 export type TreemapVariant = 'flat' | 'grouped' | 'labeled'
 
-// ABOUTME: TreemapIntent — a type alias.
+// ABOUTME: Colour intent applied to a treemap cell; inherited from parent when absent; cycles through INTENTS by sibling index when not specified.
 export type TreemapIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: TreemapNode — an interface.
+// ABOUTME: A node in the treemap data tree: unique key, display label, numeric value (used directly for leaves; branch nodes derive their size from child sums), optional intent, and optional children for grouped/labeled variants.
 export interface TreemapNode {
   key: string
   label: string
@@ -19,7 +19,7 @@ export interface TreemapNode {
   children?: TreemapNode[]
 }
 
-// ABOUTME: Props for Treemap.
+// ABOUTME: Props for Treemap — the flat top-level node array, optional pixel dimensions, variant, an optional formatValue formatter for the labeled variant's value lines, and className.
 export interface TreemapProps {
   variant?: TreemapVariant
   data: TreemapNode[]
@@ -128,7 +128,15 @@ function buildLayout(
   })
 }
 
-// ABOUTME: Treemap — a React component.
+// ABOUTME: Runs buildLayout (squarify + optional recursion) in a useMemo, then maps the resulting LaidOutNode list to SVG <g> elements each containing a <rect>, a label <text>, and a value <text> for large-enough cells.
+/**
+ * Each cell is sized by the squarified algorithm (Bruls/Huijing/van Wijk)
+ * which iterates over nodes placing them into rows while minimising the
+ * worst aspect ratio. In grouped/labeled mode, children are recursed with a
+ * 2 px horizontal and 14 px top inset so the parent label remains visible.
+ * The `<title>` element on each `<rect>` provides a screen-reader-accessible
+ * label showing the node's name, formatted value, and percentage of total.
+ */
 export function Treemap({
   variant = 'flat',
   data,

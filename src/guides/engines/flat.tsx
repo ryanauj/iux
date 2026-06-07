@@ -1,4 +1,4 @@
-// ABOUTME: flat — part of the guides area.
+// ABOUTME: Engine guide definition for the Flat rendering engine — the reference engine against which all others are described, covering its opaque surfaces, hairline borders, soft drop shadows, six intent fills, and motion-as-softening philosophy.
 
 import { useState } from 'react'
 import { palette as flatClassic } from '../../../palettes/flat-classic'
@@ -163,7 +163,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: flatGuide — an exported value.
+// ABOUTME: flatGuide — the EngineGuideMeta for the Flat engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the flat-classic palette, with full plain-English copy for every step.
 export const flatGuide: EngineGuideMeta = {
   engine: 'flat',
   name: 'Flat',

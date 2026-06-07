@@ -1,4 +1,4 @@
-// ABOUTME: Aprons — a React component (apps).
+// ABOUTME: Chapter 7 — "The aprons": explains the two tool-stripping thresholds above the luxury-tax line, showing what each removes and clarifying the difference between an apron threshold and a true hard cap.
 
 import { Card } from '../../../components/Card/Card'
 import { PageHeader, KeyIdea, Pager, Disclaimer } from '../components/Bits'
@@ -27,7 +27,13 @@ const SECOND_APRON: Restriction[] = [
   { text: 'Future first-round picks get frozen — and can be moved to the end of the draft if you stay over.' },
 ]
 
-// ABOUTME: Aprons — a React component.
+// ABOUTME: Chapter 7 page detailing the first ($195.9M) and second ($207.8M) apron: restriction bullet lists per tier, a CapLadder with the second apron highlighted, and a KeyIdea dispelling the "hard cap" misconception.
+/**
+ * Chapter 7 of Cap School. Uses SEASON constants from cap.ts and the CapLadder
+ * component (highlightId="apron2") to explain that the aprons are tool-stripping
+ * thresholds — not dollar walls — and that the only true hard cap in the system
+ * is imposed voluntarily when a team uses the full MLE, sign-and-trade, or BAE.
+ */
 export function Aprons() {
   return (
     <article className="cap-page">

@@ -1,4 +1,4 @@
-// ABOUTME: ContractsApp — a React component (apps).
+// ABOUTME: Root component for the Cap School app — resolves the active chapter from the URL, applies the palette and motion scale, and renders the Shell with the matched page.
 
 import { useEffect, useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -38,7 +38,14 @@ interface ContractsAppProps {
   location: HashLocation
 }
 
-// ABOUTME: ContractsApp — a React component.
+// ABOUTME: Root component for the Cap School app — strips the `/apps/contracts` prefix, matches the remaining path to a ContractsRoute, and passes the result to Shell and RouteContent alongside palette, layout, and motion controls.
+/**
+ * Root component for the Cap School app. Strips the `/apps/contracts`
+ * prefix from the hash path, calls matchContractsRoute to get a typed
+ * ContractsRoute, and renders the Shell (sidebar or topbar layout) with the
+ * active chapter component. Also owns the floating DraggableControls panel
+ * and seeds the persisted palette from a URL param on first mount.
+ */
 export function ContractsApp({ location }: ContractsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

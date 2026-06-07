@@ -1,4 +1,4 @@
-// ABOUTME: EmptyState ladder rungs: minimal, illustrated (icon + CTA), checklist (onboarding steps), generative (editable seed fields → onGenerate).
+// ABOUTME: Integration tests for the EmptyState component covering four ladder rungs: minimal (centered title/description), illustrated (icon + primary/secondary CTA fires callback), checklist (progress count and per-step action buttons), and generative (editable seed inputs submit values via onGenerate).
 
 // EmptyState ladder rungs: minimal, illustrated (icon + CTA), checklist
 // (onboarding steps), generative (editable seed fields → onGenerate).
@@ -70,7 +70,7 @@ function GenerativeComposition() {
   )
 }
 
-// ABOUTME: emptyStateTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for EmptyState: minimal layout, illustrated CTA, checklist step actions, and generative seed field submission.
 export const emptyStateTests: IntegrationTest[] = [
   {
     id: 'empty-rung-1-minimal',

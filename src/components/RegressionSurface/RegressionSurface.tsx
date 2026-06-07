@@ -1,16 +1,16 @@
-// ABOUTME: RegressionSurface — a React component (components).
+// ABOUTME: SVG visualization of a fitted 2D regression surface in three modes: iso-contour lines with value labels ('contour'), opacity-scaled heat cells ('heat'), or both combined with observed data points sized by response value ('overlay').
 
 import { useMemo } from 'react'
 import './RegressionSurface.css'
 
-// ABOUTME: RegressionSurfaceVariant — a type alias.
+// ABOUTME: Display mode: 'contour' draws isolines with numeric labels, 'heat' rasterizes predicted values as opacity-scaled rectangles, 'overlay' combines both plus scatter circles sized by observed y.
 export type RegressionSurfaceVariant = 'contour' | 'heat' | 'overlay'
 
-// ABOUTME: RegressionSurfaceIntent — a type alias.
+// ABOUTME: Semantic intent color applied to contour strokes, heat cells, and overlay points; maps to the standard intent palette.
 export type RegressionSurfaceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: SurfacePoint — an interface.
+// ABOUTME: One observed sample point with feature coordinates (x1, x2) and an observed response (y); used only in 'overlay' mode where y drives the circle's radius.
 export interface SurfacePoint {
   x1: number
   x2: number
@@ -18,7 +18,7 @@ export interface SurfacePoint {
   y: number
 }
 
-// ABOUTME: Props for RegressionSurface.
+// ABOUTME: Configures RegressionSurface: 'predict' is the fitted model function ŷ=f(x1,x2), 'x1Domain'/'x2Domain' set the feature axes, 'resolution' controls the sampling grid density, 'levels' sets the number of isolines, and 'points' adds observed data to 'overlay' mode.
 export interface RegressionSurfaceProps {
   variant?: RegressionSurfaceVariant
   /** Fitted surface evaluator: ŷ = f(x1, x2). */
@@ -53,7 +53,14 @@ function num(n: number): string {
   return n.toFixed(2)
 }
 
-// ABOUTME: RegressionSurface — a React component.
+// ABOUTME: Evaluates the predict function on an NxN grid, computes marching-squares contours at evenly spaced level values, and renders the surface as an SVG with optional heat-map cells and observed-point scatter; shows a ŷ range footer and labeled axes.
+/**
+ * The grid is sampled at `resolution × resolution` points across the feature
+ * domains. Contours are extracted per cell using a 16-case marching-squares
+ * lookup table. Heat cells use opacity interpolated over [gMin, gMax]. In
+ * `overlay` mode, each observed point's radius scales linearly with its y
+ * relative to the sample's own [min, max].
+ */
 export function RegressionSurface({
   variant = 'contour',
   predict,

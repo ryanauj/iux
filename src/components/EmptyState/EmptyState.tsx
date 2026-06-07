@@ -1,12 +1,12 @@
-// ABOUTME: EmptyState — a React component (components).
+// ABOUTME: Zero-data placeholder supporting four formats — minimal text+icon, illustrated with primary/secondary CTAs, an onboarding checklist with progress, and a generative seed-field form that lets the user create their first record.
 
 import { useState, type ReactNode } from 'react'
 import './EmptyState.css'
 
-// ABOUTME: EmptyStateVariant — a type alias.
+// ABOUTME: Presentation mode: 'minimal' shows only a title and optional description, 'illustrated' adds an illustration node and action buttons, 'checklist' lists onboarding steps with done markers and inline action buttons, 'generative' renders editable seed fields and a create button.
 export type EmptyStateVariant = 'minimal' | 'illustrated' | 'checklist' | 'generative'
 
-// ABOUTME: ChecklistStep — an interface.
+// ABOUTME: One onboarding step for the 'checklist' variant: an id, label, optional description, a done boolean for the checkmark, and an optional action button label/handler.
 export interface ChecklistStep {
   id: string
   label: ReactNode
@@ -16,7 +16,7 @@ export interface ChecklistStep {
   actionLabel?: string
 }
 
-// ABOUTME: GenerativeField — an interface.
+// ABOUTME: An editable seed field for the 'generative' variant; the user can change its default value before calling onGenerate to create their first record.
 export interface GenerativeField {
   key: string
   label: string
@@ -24,7 +24,7 @@ export interface GenerativeField {
   defaultValue?: string
 }
 
-// ABOUTME: Props for EmptyState.
+// ABOUTME: Props for EmptyState — variant selects the layout, title and description are always shown, illustration feeds the illustrated/generative modes, steps feeds the checklist, and fields/onGenerate feed the generative form.
 export interface EmptyStateProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: EmptyStateVariant
@@ -44,7 +44,13 @@ export interface EmptyStateProps {
   className?: string
 }
 
-// ABOUTME: EmptyState — a React component.
+// ABOUTME: Renders a centred empty-state block with role="status"; shows a title/description block in all modes, then conditionally renders the illustration, CTA buttons, checklist with step counter, or generative seed-field form depending on variant.
+/**
+ * The 'checklist' variant computes done/total counts and marks each step with a
+ * ✓ or ○ glyph. The 'generative' variant initialises local state from field
+ * defaultValues and calls `onGenerate(values)` when the create button is clicked.
+ * CTA buttons ('illustrated' only) are rendered as primary and ghost variants.
+ */
 export function EmptyState({
   variant = 'minimal',
   title,

@@ -1,4 +1,4 @@
-// ABOUTME: cel-shaded — part of the guides area.
+// ABOUTME: Engine guide definition for the Cel-shaded rendering engine — the anime-cel engine that refuses gradients and wraps every surface and interactive control in a near-black ink outline delivered through both border tokens and a literal CSS outline halo (effect.outline.color/width), uses hard-offset block shadows with no blur (effect.shadowStyle = 'hard'), and shifts the focus ring colour rather than its thickness as an always-present boundary cue.
 
 import { useState } from 'react'
 import { palette as celShadedShonen } from '../../../palettes/cel-shaded-shonen'
@@ -234,7 +234,7 @@ function IntentDemo() {
   )
 }
 
-// ABOUTME: celShadedGuide — an exported value.
+// ABOUTME: celShadedGuide — the EngineGuideMeta for the Cel-shaded engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the cel-shaded-shonen palette, covering the two-path ink-outline delivery, hard-offset block shadow elevation, snap-fast motion with press-jiggle spring, and the shonen colour triad with a colour-shift focus ring.
 export const celShadedGuide: EngineGuideMeta = {
   engine: 'cel-shaded',
   name: 'Cel-shaded',

@@ -1,4 +1,4 @@
-// ABOUTME: checkbox — part of the tests area.
+// ABOUTME: Integration tests for the Checkbox component covering four ladder rungs: single toggle on click (rung 1), detailed variant shows description and error (rung 2), tree parent cascades to all leaves (rung 3), and group multi-select via independent clicks (rung 3).
 
 import { useState } from 'react'
 import { Checkbox } from '../../components/Checkbox/Checkbox'
@@ -71,7 +71,7 @@ function GroupComposition() {
   )
 }
 
-// ABOUTME: checkboxTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Checkbox: single toggle, detailed with description/error, tree parent-cascades, and group multi-select.
 export const checkboxTests: IntegrationTest[] = [
   {
     id: 'checkbox-rung-1-single',

@@ -1,4 +1,4 @@
-// ABOUTME: StackedToasts — a React component (components).
+// ABOUTME: Multi-toast container that renders a portal-anchored stack of Toast items with four layout strategies: cap (newest N visible), dedupe (duplicate messages collapsed into a count badge), severity (danger-first ordering with intent-tuned auto-dismiss), and tray (collapsible notification drawer).
 
 import {
   useCallback,
@@ -11,12 +11,12 @@ import { Toast, type ToastIntent, type ToastItem } from '../Toast/Toast'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './StackedToasts.css'
 
-// ABOUTME: StackedToastsVariant — a type alias.
+// ABOUTME: Layout strategy for the toast stack — cap keeps the newest N, dedupe collapses identical messages, severity sorts by danger level with intent-tuned timers, tray shows a collapsible drawer.
 export type StackedToastsVariant = 'cap' | 'dedupe' | 'severity' | 'tray'
-// ABOUTME: StackPosition — a type alias.
+// ABOUTME: Corner/center anchor for the fixed-position stack container.
 export type StackPosition = 'top-right' | 'bottom-right' | 'top-center' | 'bottom-center'
 
-// ABOUTME: Props for StackedToasts.
+// ABOUTME: Props for StackedToasts — configures layout variant, the toast list, dismiss callback, screen position, visible cap, and an inline-render escape hatch for stories.
 export interface StackedToastsProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: StackedToastsVariant
@@ -46,7 +46,15 @@ function fingerprint(t: ToastItem): string {
   return `${t.intent ?? 'neutral'}::${String(t.title ?? '')}::${String(t.body ?? '')}`
 }
 
-// ABOUTME: StackedToasts — a React component.
+// ABOUTME: Portal-rendered container that orchestrates multiple Toast items under one of four stack strategies; dispatches onDismiss per id and renders into a shared portal target so it floats above all page content.
+/**
+ * Renders a positioned, aria-live container of Toast items via a DOM portal.
+ * The `variant` prop selects the stacking strategy: `cap` shows the newest
+ * `max` toasts; `dedupe` groups identical fingerprints into a single chip with
+ * a +N count; `severity` sorts by intent severity and applies per-intent
+ * auto-dismiss durations; `tray` wraps everything in a collapsible drawer with
+ * "Clear all". `inlineRender` skips the portal for Storybook isolation.
+ */
 export function StackedToasts({
   variant = 'cap',
   toasts,

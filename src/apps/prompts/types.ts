@@ -15,7 +15,7 @@ export type PromptCategory =
   | 'roleplay'
   | 'meta'
 
-// ABOUTME: PROMPT_CATEGORIES — an exported value.
+// ABOUTME: Ordered list of all prompt categories with their display labels, used by Library filters and PromptForm's category Select.
 export const PROMPT_CATEGORIES: { value: PromptCategory; label: string }[] = [
   { value: 'writing', label: 'Writing' },
   { value: 'coding', label: 'Coding' },
@@ -46,15 +46,14 @@ export interface Prompt {
   updatedAt: string
 }
 
-// ABOUTME: A reusable prompting technique with a template and worked example.
-/** A reusable prompting technique with a template and worked example. */
+// ABOUTME: The four top-level groupings for prompting strategies (reasoning, structure, context, reliability).
 export type StrategyCategory =
   | 'reasoning'
   | 'structure'
   | 'context'
   | 'reliability'
 
-// ABOUTME: STRATEGY_CATEGORIES — an exported value.
+// ABOUTME: Ordered list of all strategy categories with their display labels, used by the Strategies page filter and StrategyDetail badge.
 export const STRATEGY_CATEGORIES: { value: StrategyCategory; label: string }[] = [
   { value: 'reasoning', label: 'Reasoning' },
   { value: 'structure', label: 'Structure' },
@@ -62,7 +61,7 @@ export const STRATEGY_CATEGORIES: { value: StrategyCategory; label: string }[] =
   { value: 'reliability', label: 'Reliability' },
 ]
 
-// ABOUTME: Strategy — an interface.
+// ABOUTME: A static prompting strategy entry: name, tagline, category, summary prose, when-to-use bullets, a copy-paste template with `{{variable}}` slots, a worked example, tags, and related strategy ids.
 export interface Strategy {
   id: string
   name: string
