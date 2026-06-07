@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "stats": {
     "areas": 14,
-    "files": 251,
-    "members": 1852,
-    "imports": 754,
-    "documentedFiles": 251,
-    "documentedMembers": 856
+    "files": 255,
+    "members": 1874,
+    "imports": 763,
+    "documentedFiles": 255,
+    "documentedMembers": 872
   },
   "areas": [
     {
@@ -48,8 +48,8 @@
     {
       "id": "howitworks",
       "label": "howitworks",
-      "fileCount": 5,
-      "memberCount": 52
+      "fileCount": 9,
+      "memberCount": 74
     },
     {
       "id": "lib",
@@ -12214,44 +12214,81 @@
       "about": "Landing page at `/palettes`."
     },
     {
+      "id": "src/howitworks/AstFocus.tsx",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "AstFocus.tsx",
+      "loc": 151,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "AstFocus",
+          "kind": "component",
+          "exported": true,
+          "line": 22,
+          "about": "AstFocus — a React component."
+        }
+      ],
+      "about": "Focus view — one file at a time with its dependency neighbours as tappable cards, traversing the import graph one hop at a time."
+    },
+    {
       "id": "src/howitworks/AstGraph.tsx",
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstGraph.tsx",
-      "loc": 248,
-      "importCount": 3,
+      "loc": 296,
+      "importCount": 6,
       "externalCount": 5,
       "members": [
         {
           "name": "GRAPH",
           "kind": "const",
           "exported": false,
-          "line": 27
+          "line": 30
         },
         {
           "name": "matchFiles",
           "kind": "function",
           "exported": false,
-          "line": 30
+          "line": 33
         },
         {
           "name": "areaOfFileId",
           "kind": "const",
           "exported": false,
-          "line": 49
+          "line": 52
         },
         {
-          "name": "AstGraphInner",
+          "name": "GraphView",
           "kind": "component",
           "exported": false,
-          "line": 51
+          "line": 54
+        },
+        {
+          "name": "VIEW_OPTIONS",
+          "kind": "const",
+          "exported": false,
+          "line": 248
+        },
+        {
+          "name": "ViewMode",
+          "kind": "type",
+          "exported": false,
+          "line": 255
+        },
+        {
+          "name": "defaultView",
+          "kind": "function",
+          "exported": false,
+          "line": 258
         },
         {
           "name": "AstGraph",
           "kind": "component",
           "exported": true,
-          "line": 241,
-          "about": "The AST graph viewer: search, expand/collapse, auto-layout, and palette-themed nodes."
+          "line": 264,
+          "about": "The AST viewer shell: a view switcher over the graph, outline, focus, and matrix views."
         }
       ],
       "about": "Interactive React Flow viewer for the generated AST graph."
@@ -12261,7 +12298,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "astGraphLayout.ts",
-      "loc": 347,
+      "loc": 379,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -12523,6 +12560,165 @@
       "about": "Custom React Flow node renderers for areas, regions, and files."
     },
     {
+      "id": "src/howitworks/AstMatrix.tsx",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "AstMatrix.tsx",
+      "loc": 122,
+      "importCount": 1,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "areaCode",
+          "kind": "function",
+          "exported": false,
+          "line": 8
+        },
+        {
+          "name": "AstMatrix",
+          "kind": "component",
+          "exported": true,
+          "line": 20,
+          "about": "AstMatrix — a React component."
+        },
+        {
+          "name": "Row",
+          "kind": "component",
+          "exported": false,
+          "line": 104
+        }
+      ],
+      "about": "Matrix view — a compact area×area dependency heat-grid that fits a phone, with a tap-to-expand drawer of the file links behind a cell."
+    },
+    {
+      "id": "src/howitworks/AstOutline.tsx",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "AstOutline.tsx",
+      "loc": 170,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "elementId",
+          "kind": "function",
+          "exported": false,
+          "line": 16
+        },
+        {
+          "name": "AstOutline",
+          "kind": "component",
+          "exported": true,
+          "line": 25,
+          "about": "AstOutline — a React component."
+        }
+      ],
+      "about": "Outline view — an indented disclosure list of areas, files, members and each file's import links, built for vertical scrolling on mobile."
+    },
+    {
+      "id": "src/howitworks/astViews.ts",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "astViews.ts",
+      "loc": 130,
+      "importCount": 1,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "GRAPH",
+          "kind": "const",
+          "exported": true,
+          "line": 18,
+          "about": "GRAPH — an exported value."
+        },
+        {
+          "name": "FILE_BY_ID",
+          "kind": "const",
+          "exported": true,
+          "line": 22,
+          "about": "FILE_BY_ID — an exported value."
+        },
+        {
+          "name": "fileLabel",
+          "kind": "function",
+          "exported": true,
+          "line": 26,
+          "about": "fileLabel — a helper function."
+        },
+        {
+          "name": "FILES_BY_AREA",
+          "kind": "const",
+          "exported": true,
+          "line": 30,
+          "about": "FILES_BY_AREA — an exported value."
+        },
+        {
+          "name": "IMPORTS_OF",
+          "kind": "const",
+          "exported": true,
+          "line": 42,
+          "about": "IMPORTS_OF — an exported value."
+        },
+        {
+          "name": "IMPORTED_BY",
+          "kind": "const",
+          "exported": true,
+          "line": 54,
+          "about": "IMPORTED_BY — an exported value."
+        },
+        {
+          "name": "importsOf",
+          "kind": "function",
+          "exported": true,
+          "line": 65,
+          "about": "importsOf — a helper function."
+        },
+        {
+          "name": "importedBy",
+          "kind": "function",
+          "exported": true,
+          "line": 67,
+          "about": "importedBy — a helper function."
+        },
+        {
+          "name": "AreaLink",
+          "kind": "interface",
+          "exported": true,
+          "line": 71,
+          "about": "AreaLink — an interface."
+        },
+        {
+          "name": "AREA_MATRIX",
+          "kind": "const",
+          "exported": true,
+          "line": 78,
+          "about": "AREA_MATRIX — an exported value."
+        },
+        {
+          "name": "AREA_MATRIX_MAX",
+          "kind": "const",
+          "exported": true,
+          "line": 96,
+          "about": "AREA_MATRIX_MAX — an exported value."
+        },
+        {
+          "name": "fileMatches",
+          "kind": "function",
+          "exported": true,
+          "line": 104,
+          "about": "fileMatches — a helper function."
+        },
+        {
+          "name": "MOST_CONNECTED_FILE",
+          "kind": "const",
+          "exported": true,
+          "line": 118,
+          "about": "MOST_CONNECTED_FILE — an exported value."
+        }
+      ],
+      "about": "Shared graph indexes and helpers for the alternative (mobile) AST views — outline, focus, and matrix — derived from the graph."
+    },
+    {
       "id": "src/howitworks/generated/astGraph.types.ts",
       "area": "howitworks",
       "dir": "howitworks/generated",
@@ -12581,7 +12777,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "HowItWorksPage.tsx",
-      "loc": 249,
+      "loc": 251,
       "importCount": 8,
       "externalCount": 4,
       "members": [
@@ -17494,12 +17690,32 @@
       "target": "src/theme/PaletteRoot.tsx"
     },
     {
+      "source": "src/howitworks/AstFocus.tsx",
+      "target": "src/howitworks/astGraphNodes.tsx"
+    },
+    {
+      "source": "src/howitworks/AstFocus.tsx",
+      "target": "src/howitworks/astViews.ts"
+    },
+    {
+      "source": "src/howitworks/AstGraph.tsx",
+      "target": "src/howitworks/AstFocus.tsx"
+    },
+    {
       "source": "src/howitworks/AstGraph.tsx",
       "target": "src/howitworks/astGraphLayout.ts"
     },
     {
       "source": "src/howitworks/AstGraph.tsx",
       "target": "src/howitworks/astGraphNodes.tsx"
+    },
+    {
+      "source": "src/howitworks/AstGraph.tsx",
+      "target": "src/howitworks/AstMatrix.tsx"
+    },
+    {
+      "source": "src/howitworks/AstGraph.tsx",
+      "target": "src/howitworks/AstOutline.tsx"
     },
     {
       "source": "src/howitworks/AstGraph.tsx",
@@ -17515,6 +17731,22 @@
     },
     {
       "source": "src/howitworks/astGraphNodes.tsx",
+      "target": "src/howitworks/generated/astGraph.types.ts"
+    },
+    {
+      "source": "src/howitworks/AstMatrix.tsx",
+      "target": "src/howitworks/astViews.ts"
+    },
+    {
+      "source": "src/howitworks/AstOutline.tsx",
+      "target": "src/howitworks/astGraphNodes.tsx"
+    },
+    {
+      "source": "src/howitworks/AstOutline.tsx",
+      "target": "src/howitworks/astViews.ts"
+    },
+    {
+      "source": "src/howitworks/astViews.ts",
       "target": "src/howitworks/generated/astGraph.types.ts"
     },
     {
