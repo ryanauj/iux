@@ -1,4 +1,4 @@
-// ABOUTME: pages — part of the doctrine area.
+// ABOUTME: Doctrine page content and registry: defines the four article pages (Layout, Component selection, App composition, Modalities), each rendered in plain-English and technical voice, with live component demos pulled from component story files, and exports the DOCTRINE_PAGES array that DoctrinePage iterates.
 
 import type { ReactNode } from 'react'
 import type { DocMode } from '../lib/useDocMode'
@@ -25,13 +25,13 @@ import { SidebarStories } from '../components/Sidebar/Sidebar.stories'
 import { EmptyStateStories } from '../components/EmptyState/EmptyState.stories'
 import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
 
-// ABOUTME: DoctrineId — a type alias.
+// ABOUTME: Union of the four doctrine page identifiers used as URL params and DOCTRINE_PAGES keys.
 export type DoctrineId = 'layout' | 'selection' | 'composition' | 'modalities'
 
-// ABOUTME: DoctrineNav — a type alias.
+// ABOUTME: Callback type passed into each doctrine article so prev/next links and cross-references can navigate between pages without a full route change.
 export type DoctrineNav = (id: DoctrineId) => void
 
-// ABOUTME: DoctrinePage — a type alias.
+// ABOUTME: Shape of one doctrine article entry: its id, display label, eyebrow text, title, source markdown filename, and a render factory that receives a nav callback and the current doc mode.
 export type DoctrinePage = {
   id: DoctrineId
   label: string
@@ -1359,7 +1359,7 @@ function ModalitiesPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   )
 }
 
-// ABOUTME: DOCTRINE_PAGES — an exported value.
+// ABOUTME: Ordered array of the four doctrine articles (Layout → Component selection → App composition → Modalities) consumed by DoctrinePage to render the active page and populate the Doc field options.
 export const DOCTRINE_PAGES: DoctrinePage[] = [
   { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: (nav, mode) => <LayoutPage nav={nav} mode={mode} /> },
   { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: (nav, mode) => <SelectionPage nav={nav} mode={mode} /> },
@@ -1367,6 +1367,6 @@ export const DOCTRINE_PAGES: DoctrinePage[] = [
   { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: (nav, mode) => <ModalitiesPage nav={nav} mode={mode} /> },
 ]
 
-// ABOUTME: isDoctrineId — a helper function.
+// ABOUTME: Type guard that returns true when a string is one of the four valid DoctrineId values; used by DoctrinePage to validate URL params.
 export const isDoctrineId = (v: string): v is DoctrineId =>
   DOCTRINE_PAGES.some(p => p.id === v)

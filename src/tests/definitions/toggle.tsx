@@ -1,4 +1,4 @@
-// ABOUTME: toggle — part of the tests area.
+// ABOUTME: Integration tests for the Toggle component covering four ladder rungs: plain switch flips on click and updates aria-checked (rung 1), saving microstate shows aria-busy spinner while saving (rung 2), segmented picks one option and updates aria-checked across the group (rung 3), and tristate exposes on/off/inherit with three segments (rung 4).
 
 import { useState } from 'react'
 import { Toggle } from '../../components/Toggle/Toggle'
@@ -54,7 +54,7 @@ function TristateComposition() {
   )
 }
 
-// ABOUTME: toggleTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for Toggle: switch flip, saving spinner, segmented single-select, and tristate three-segment.
 export const toggleTests: IntegrationTest[] = [
   {
     id: 'toggle-rung-1-switch',

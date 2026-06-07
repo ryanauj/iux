@@ -5733,7 +5733,7 @@
       "area": "components",
       "dir": "components/DiffView",
       "name": "DiffView.tsx",
-      "loc": 346,
+      "loc": 344,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -5755,58 +5755,58 @@
           "name": "LineOp",
           "kind": "type",
           "exported": true,
-          "line": 28,
-          "about": "---------- Line LCS ----------"
+          "line": 26,
+          "about": "A tagged-union token produced by diffLines: 'eq' for unchanged lines, 'del' for lines removed from a, 'add' for lines inserted in b."
         },
         {
           "name": "diffLines",
           "kind": "function",
           "exported": true,
-          "line": 34,
+          "line": 32,
           "about": "Computes a line-level LCS diff between two strings, returning an array of LineOp tokens tagged as 'eq', 'del', or 'add'; used by all variants to produce the base sequence of changes."
         },
         {
           "name": "CharSpan",
           "kind": "interface",
           "exported": false,
-          "line": 61
+          "line": 59
         },
         {
           "name": "diffChars",
           "kind": "function",
           "exported": false,
-          "line": 63
+          "line": 61
         },
         {
           "name": "DiffChunk",
           "kind": "interface",
           "exported": false,
-          "line": 106
+          "line": 104
         },
         {
           "name": "chunkOps",
           "kind": "function",
           "exported": false,
-          "line": 113
+          "line": 111
         },
         {
           "name": "DiffView",
           "kind": "component",
           "exported": true,
-          "line": 142,
+          "line": 140,
           "about": "Renders a diff in the chosen mode: side-by-side panes, inline with char-level span highlights for adjacent del+add pairs, a chunked accept/reject UI with a live merged preview, or a three-column three-way picker."
         },
         {
           "name": "ColumnProps",
           "kind": "interface",
           "exported": false,
-          "line": 309
+          "line": 307
         },
         {
           "name": "Column",
           "kind": "component",
           "exported": false,
-          "line": 317
+          "line": 315
         }
       ],
       "about": "Text diff viewer with four presentation modes — side-by-side panes, unified inline with char-level highlighting, interactive chunk-accept/reject editor, and three-way merge picker."
@@ -8037,7 +8037,7 @@
       "area": "components",
       "dir": "components/PartialRegression",
       "name": "PartialRegression.tsx",
-      "loc": 136,
+      "loc": 144,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -8074,7 +8074,7 @@
           "kind": "interface",
           "exported": true,
           "line": 33,
-          "about": "Props for PartialRegression."
+          "about": "Configures PartialRegression — `facets` is the per-predictor data array, `facetWidth`/`facetHeight` set each panel's SVG canvas, `columns` overrides the auto column count, and `variant` controls layout and annotation."
         },
         {
           "name": "PAD",
@@ -8116,8 +8116,8 @@
           "name": "PartialRegression",
           "kind": "component",
           "exported": true,
-          "line": 115,
-          "about": "PartialRegression — a React component."
+          "line": 123,
+          "about": "Slices the `facets` array (only the first for 'single'), computes the column count from `columns` or capping at 3, then renders a grid of internal `Facet` components with the active variant's `annotated` flag forwarded."
         }
       ],
       "about": "Added-variable (partial regression) plot collection that renders one scatter facet per predictor, each showing residualized x vs residualized y with the partial slope (beta) as a fit line, supporting single-panel, CSS-grid, and annotated variants."
@@ -10525,10 +10525,10 @@
           "kind": "component",
           "exported": true,
           "line": 44,
-          "about": "DoctrinePage — a React component."
+          "about": "Root component for the Doctrine surface: reads chrome/doc/motion URL params, syncs the persisted style store, renders the active DOCTRINE_PAGES entry inside a nested PaletteRoot so live demos respond to palette changes, and provides a DraggableControls panel for switching doc, chrome, nav layout, and motion scale."
         }
       ],
-      "about": "DoctrinePage — a React component (doctrine)."
+      "about": "Page that renders the UX doctrine articles: manages chrome palette, selected doctrine page, motion scale, and nav layout in URL state; wraps DOCTRINE_PAGES in a PaletteRoot so switching the chrome palette makes all live demos update in real time, with a DocModeToggle to switch between plain-English and technical voices."
     },
     {
       "id": "src/doctrine/pages.tsx",
@@ -10731,7 +10731,7 @@
           "about": "isDoctrineId — a helper function."
         }
       ],
-      "about": "pages — part of the doctrine area."
+      "about": "Doctrine page content and registry: defines the four article pages (Layout, Component selection, App composition, Modalities), each rendered in plain-English and technical voice, with live component demos pulled from component story files, and exports the DOCTRINE_PAGES array that DoctrinePage iterates."
     },
     {
       "id": "src/editor/knobRegistry.ts",
@@ -14526,7 +14526,7 @@
           "kind": "const",
           "exported": true,
           "line": 69,
-          "about": "textInputTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for TextInput: bare echo, labeled with hint/required, live validation danger→success, and command ghost suggestion."
         }
       ],
       "about": "Integration tests for the TextInput component covering four ladder rungs: bare input echoes typed value to state (rung 1), labeled input with hint text and required marker (rung 2), validate variant surfaces danger then success messages on live input (rung 3), and command variant renders a ghost suggestion for a typed prefix (rung 4)."
@@ -14569,10 +14569,10 @@
           "kind": "const",
           "exported": true,
           "line": 80,
-          "about": "toastTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for Toast: plain push and close, action Undo button, severity-ordered stack, and progress bar."
         }
       ],
-      "about": "Toast ladder rungs: plain (auto-dismiss + manual close), action (inline undo), severity (severity-ordered stack), progress (progress bar…"
+      "about": "Integration tests for the Toast component covering four ladder rungs: plain toast pushed and manually closed (rung 1), action variant with inline Undo button (rung 2), severity-ordered stack puts danger at the top regardless of insertion order (rung 3), and progress variant renders a progress bar that persists after update (rung 4); inline rendering keeps portals inside the sandbox."
     },
     {
       "id": "src/tests/definitions/toggle.tsx",
@@ -14612,10 +14612,10 @@
           "kind": "const",
           "exported": true,
           "line": 58,
-          "about": "toggleTests — an exported value."
+          "about": "Array of four IntegrationTest definitions for Toggle: switch flip, saving spinner, segmented single-select, and tristate three-segment."
         }
       ],
-      "about": "toggle — part of the tests area."
+      "about": "Integration tests for the Toggle component covering four ladder rungs: plain switch flips on click and updates aria-checked (rung 1), saving microstate shows aria-busy spinner while saving (rung 2), segmented picks one option and updates aria-checked across the group (rung 3), and tristate exposes on/off/inherit with three segments (rung 4)."
     },
     {
       "id": "src/tests/registry.ts",

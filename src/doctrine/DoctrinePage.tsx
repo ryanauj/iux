@@ -1,4 +1,4 @@
-// ABOUTME: DoctrinePage — a React component (doctrine).
+// ABOUTME: Page that renders the UX doctrine articles: manages chrome palette, selected doctrine page, motion scale, and nav layout in URL state; wraps DOCTRINE_PAGES in a PaletteRoot so switching the chrome palette makes all live demos update in real time, with a DocModeToggle to switch between plain-English and technical voices.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
@@ -40,7 +40,7 @@ type UrlSettings = {
   motion: MotionScale
 }
 
-// ABOUTME: DoctrinePage — a React component.
+// ABOUTME: Root component for the Doctrine surface: reads chrome/doc/motion URL params, syncs the persisted style store, renders the active DOCTRINE_PAGES entry inside a nested PaletteRoot so live demos respond to palette changes, and provides a DraggableControls panel for switching doc, chrome, nav layout, and motion scale.
 export function DoctrinePage() {
   // Site-wide selected style is the fallback chrome on a fresh visit,
   // so navigating in from Stories / Apps / Quiz / Engine guides keeps
