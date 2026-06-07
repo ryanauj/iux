@@ -1,18 +1,18 @@
-// ABOUTME: Hexbin — a React component (components).
+// ABOUTME: SVG hexagonal binning chart that aggregates 2D scatter points into a pointy-top hex grid and encodes per-bin count as tint intensity, hex size, or inline count labels depending on variant.
 
 import { useMemo } from 'react'
 import './Hexbin.css'
 
-// ABOUTME: HexbinVariant — a type alias.
+// ABOUTME: Encoding mode: 'density' uses tint level (l0–l4) to show relative count with fixed hex size, 'count' shows the raw count as a text label inside each hex, 'sized' scales each hex radius proportionally to the square root of its count.
 export type HexbinVariant = 'density' | 'count' | 'sized'
 
-// ABOUTME: HexbinPoint — an interface.
+// ABOUTME: A single data point in data-space coordinates; the component projects it into pixel space and snaps it to the nearest hex grid cell.
 export interface HexbinPoint {
   x: number
   y: number
 }
 
-// ABOUTME: Props for Hexbin.
+// ABOUTME: Props for Hexbin — variant selects the count encoding, points is the raw (x,y) array, radius sets the hex circumradius in plot pixels, and xDomain/yDomain optionally clamp the data extents used for projection.
 export interface HexbinProps {
   variant?: HexbinVariant
   points: HexbinPoint[]
@@ -55,7 +55,15 @@ function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
-// ABOUTME: Hexbin — a React component.
+// ABOUTME: Renders a hexbin SVG by projecting each point through linear x/y scales then snapping to axial hex-grid coordinates; bins are tinted by count level, sized by sqrt(count), or labelled with raw counts depending on variant.
+/**
+ * Bin assignment: each pixel point is converted to (col, row) axial coordinates
+ * on a pointy-top grid (odd rows offset by dx/2). Bins accumulate counts in a
+ * Map keyed by `"col|row"`. The 'sized' variant scales each hex radius from
+ * `max(2, radius * sqrt(n/max))`. The 'count' variant draws full-radius hexes
+ * and overlays an `n` text label when both n > 0 and radius >= 12. X/Y axis
+ * tick lines and labels are drawn for three evenly-spaced domain values.
+ */
 export function Hexbin({
   variant = 'density',
   points,

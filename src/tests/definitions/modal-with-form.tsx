@@ -1,4 +1,4 @@
-// ABOUTME: modal-with-form — part of the tests area.
+// ABOUTME: Composition integration test for Modal + TextInput + Button + Toast: opens a centered modal, types a note into a text input inside it, clicks Save, asserts the modal closes and a success toast appears with the entered value — exercises four components together.
 
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
@@ -47,7 +47,7 @@ function ModalWithFormComposition() {
   )
 }
 
-// ABOUTME: modalWithForm — an exported value.
+// ABOUTME: Single IntegrationTest for the modal-form-submit flow: open Modal, type into TextInput, click Save, assert modal closes and Toast confirms the note — exercises Button, Modal, TextInput, and Toast.
 export const modalWithForm: IntegrationTest = {
   id: 'modal-with-form',
   name: 'Modal-with-form submission closes dialog and toasts',

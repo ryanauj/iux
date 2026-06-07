@@ -19,15 +19,14 @@ interface CapLadderProps {
   className?: string
 }
 
-// ABOUTME: The signature visual: the cap "ladder".
+// ABOUTME: Renders all five THRESHOLDS (floor → cap → tax → first apron → second apron) as vertically proportional rungs; accepts an optional payroll marker (used by TeamSheet) and a highlightId to dim all other rungs (used by Aprons).
 /**
- * The signature visual: the cap "ladder". Each threshold is a rung whose
- * vertical position is proportional to its dollar amount, so the spacing
- * between the tax line and the aprons reads at a glance. An optional
- * payroll marker slides up the scale to show where a team sits.
- *
- * Built as a flex column of rungs (top = most money) rather than an SVG so
- * it reflows cleanly and inherits palette tokens with no per-engine work.
+ * The signature visual shared across Cap School chapters. Each threshold from
+ * THRESHOLDS (cap.ts) is a rung whose vertical gap is proportional to its dollar
+ * amount, so the bunching near the top reads at a glance. An optional payroll
+ * marker (TeamSheet) slides up the scale; highlightId dims the other rungs
+ * (Aprons page). Built as a flex column rather than SVG so it reflows and
+ * inherits palette tokens without per-engine work.
  */
 export function CapLadder({ payroll, highlightId, detailed = false, className }: CapLadderProps) {
   const rungs = [...THRESHOLDS].reverse() // top of the ladder = most money

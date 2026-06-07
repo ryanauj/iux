@@ -1,4 +1,4 @@
-// ABOUTME: Tabs ladder rungs: basic, rich, overflow, editable.
+// ABOUTME: Integration tests for the Tabs component covering four ladder rungs: basic click-to-switch and ArrowRight/End keyboard navigation (rung 1), rich variant with icons, badge counts, and aria-disabled (rung 2), overflow variant renders a More button (rung 3), and editable variant supports close and add (rung 4); drag-to-reorder and overflow auto-collapse are not asserted.
 
 // Tabs ladder rungs: basic, rich, overflow, editable. Rung 3 (overflow) drives
 // its "More" menu off a ResizeObserver — asserting the auto-collapse requires
@@ -79,7 +79,7 @@ function EditableComposition() {
   )
 }
 
-// ABOUTME: tabsTests — an exported value.
+// ABOUTME: Array of five IntegrationTest definitions for Tabs: click-switch, ArrowRight/End keyboard navigation, rich icons/badges/disabled, overflow More button, and editable close/add.
 export const tabsTests: IntegrationTest[] = [
   {
     id: 'tabs-rung-1-click',

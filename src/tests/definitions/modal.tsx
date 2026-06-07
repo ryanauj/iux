@@ -1,4 +1,4 @@
-// ABOUTME: Modal ladder rungs: centered, sectioned, wizard, routed.
+// ABOUTME: Integration tests for the Modal component covering three ladder rungs: centered primary action closes the modal and fires the callback (rung 1), sectioned variant has a scroll body and sticky footer (rung 2), and wizard variant walks three steps and fires onComplete after the final Next (rung 3); rung 4 (routed) is skipped as URL-state assertion is impractical in the sandbox.
 
 // Modal ladder rungs: centered, sectioned, wizard, routed. Rung 4 (routed)
 // pushes to window.history and is skipped here — the runner has no easy way
@@ -72,7 +72,7 @@ function WizardComposition() {
   )
 }
 
-// ABOUTME: modalTests — an exported value.
+// ABOUTME: Array of three IntegrationTest definitions for Modal: centered (dismiss + callback), sectioned (scroll body + sticky footer), and wizard (three-step walk + onComplete).
 export const modalTests: IntegrationTest[] = [
   {
     id: 'modal-rung-1-centered',

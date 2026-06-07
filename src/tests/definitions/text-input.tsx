@@ -1,4 +1,4 @@
-// ABOUTME: text-input — part of the tests area.
+// ABOUTME: Integration tests for the TextInput component covering four ladder rungs: bare input echoes typed value to state (rung 1), labeled input with hint text and required marker (rung 2), validate variant surfaces danger then success messages on live input (rung 3), and command variant renders a ghost suggestion for a typed prefix (rung 4).
 
 import { useState } from 'react'
 import { TextInput } from '../../components/TextInput/TextInput'
@@ -65,7 +65,7 @@ function CommandSuggestionComposition() {
   )
 }
 
-// ABOUTME: textInputTests — an exported value.
+// ABOUTME: Array of four IntegrationTest definitions for TextInput: bare echo, labeled with hint/required, live validation danger→success, and command ghost suggestion.
 export const textInputTests: IntegrationTest[] = [
   {
     id: 'text-input-rung-1-bare',

@@ -1,16 +1,16 @@
-// ABOUTME: PartialRegression — a React component (components).
+// ABOUTME: Added-variable (partial regression) plot collection that renders one scatter facet per predictor, each showing residualized x vs residualized y with the partial slope (beta) as a fit line, supporting single-panel, CSS-grid, and annotated variants.
 
 import { useMemo } from 'react'
 import './PartialRegression.css'
 
-// ABOUTME: PartialRegressionVariant — a type alias.
+// ABOUTME: Controls the facet layout and annotation level: 'single' renders only the first facet, 'grid' arranges all facets in a CSS grid up to 3 columns wide, 'annotated' is like 'grid' but adds a "slope = β" label inside each SVG panel.
 export type PartialRegressionVariant = 'single' | 'grid' | 'annotated'
 
-// ABOUTME: PartialRegressionIntent — a type alias.
+// ABOUTME: Semantic colour intent applied per facet panel; cycles over the INTENTS palette when not set on a PartialFacet.
 export type PartialRegressionIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
-// ABOUTME: PartialResidualPoint — an interface.
+// ABOUTME: One observation in an added-variable plot: `xRes` is the residual of the focal predictor after partialling out the other predictors, and `yRes` is the residual of y after partialling them out — their slope equals the multiple-regression coefficient.
 export interface PartialResidualPoint {
   /** residual of the focal predictor after regressing on the others */
   xRes: number
@@ -19,7 +19,7 @@ export interface PartialResidualPoint {
   label?: string
 }
 
-// ABOUTME: PartialFacet — an interface.
+// ABOUTME: One predictor facet in the partial regression display: a display `label`, the regression `beta` coefficient shown in the panel header, and an array of PartialResidualPoints that form the scatter and the fit line.
 export interface PartialFacet {
   id: string
   label: string
@@ -29,7 +29,7 @@ export interface PartialFacet {
   intent?: PartialRegressionIntent
 }
 
-// ABOUTME: Props for PartialRegression.
+// ABOUTME: Configures PartialRegression — `facets` is the per-predictor data array, `facetWidth`/`facetHeight` set each panel's SVG canvas, `columns` overrides the auto column count, and `variant` controls layout and annotation.
 export interface PartialRegressionProps {
   variant?: PartialRegressionVariant
   facets: PartialFacet[]
@@ -111,7 +111,15 @@ function Facet({ facet, index, w, h, annotated }: { facet: PartialFacet; index: 
   )
 }
 
-// ABOUTME: PartialRegression — a React component.
+// ABOUTME: Slices the `facets` array (only the first for 'single'), computes the column count from `columns` or capping at 3, then renders a grid of internal `Facet` components with the active variant's `annotated` flag forwarded.
+/**
+ * Each `Facet` sub-component independently computes its own per-predictor
+ * axis domain (padded 6 % on both axes, floored to include 0), derives
+ * the fit line from `beta` across the full x range, and draws horizontal
+ * and vertical zero-reference lines through the origin. The 'annotated'
+ * variant adds a "slope = β" text label inside the SVG near the upper-right
+ * corner. Axis-residual labels below each panel read "resid(label)" / "resid(y)".
+ */
 export function PartialRegression({
   variant = 'grid',
   facets,
