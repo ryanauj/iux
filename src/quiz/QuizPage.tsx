@@ -1,4 +1,4 @@
-// ABOUTME: QuizPage — a React component (quiz).
+// ABOUTME: Shell page for the palette-guessing quiz: generates a stable random seed per page mount, manages chrome palette and controls-style URL state, syncs with the cross-surface persisted style store, and renders QuizView inside an AppShell with a DraggableControls panel.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
@@ -46,7 +46,7 @@ function readUrlSettings(persistedChrome: StyleId): UrlSettings {
   return { chrome, controls }
 }
 
-// ABOUTME: QuizPage — a React component.
+// ABOUTME: Root component of the quiz page: reads chrome/controls URL params, seeds the persisted style on first mount, follows cross-surface style changes, and passes a stable seed to QuizView so the endless question sequence is reproducible within a session but fresh each reload.
 export function QuizPage() {
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
   const initial = useMemo(() => readUrlSettings(readSelectedStyle()), [])

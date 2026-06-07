@@ -1,4 +1,4 @@
-// ABOUTME: The curated set of token "knobs" the style editor exposes.
+// ABOUTME: Curated registry of token knobs for the style editor: defines the Knob type and the KNOBS array (surface colors, content colors, borders, intent backgrounds, radius, spacing, border widths, font families, motion durations, shadow style) grouped under KNOB_GROUPS; adding a knob is a one-line append with no editor or codec change required.
 
 /**
  * The curated set of token "knobs" the style editor exposes.
@@ -12,16 +12,16 @@
  * any of which can be slotted in the same way.
  */
 
-// ABOUTME: The curated set of token "knobs" the style editor exposes.
+// ABOUTME: Discriminant for how the style editor renders and interprets a knob value: color (swatch + hex text), length (text with optional slider + unit picker), text (plain text input), select (dropdown), or font (reorderable font-stack builder).
 export type KnobKind = 'color' | 'length' | 'text' | 'select' | 'font'
 
-// ABOUTME: KnobOption — an interface.
+// ABOUTME: A single value/label pair used by select-kind knobs to populate their dropdown options.
 export interface KnobOption {
   value: string
   label: string
 }
 
-// ABOUTME: Knob — an interface.
+// ABOUTME: Descriptor for a single editable token: a dotted path into SemanticTokens (e.g. "color.surface.base"), a display label, the group heading it appears under, the knob kind controlling the control widget, and optional select options.
 export interface Knob {
   /** Dotted path into `SemanticTokens`, e.g. `color.surface.base`. */
   path: string
@@ -33,12 +33,12 @@ export interface Knob {
   options?: KnobOption[]
 }
 
-// ABOUTME: Units the length-knob slider can pick, with a sensible slider range and step for each.
+// ABOUTME: Descriptor for one supported CSS unit in the length knob: the suffix string (e.g. "px", "rem", ""), display label, and slider min/max/step defaults; the editor raises max at runtime to accommodate values larger than the default range.
 /**
- * Units the length-knob slider can pick, with a sensible slider range and
- * step for each. The editor raises `max` to fit a larger current value (e.g.
- * a `999px` pill radius) so the slider stays usable, and falls back to the
- * text input for values that don't parse as `<number><unit>`.
+ * Descriptor for one supported CSS unit in the length knob. The editor raises
+ * `max` to fit a larger current value (e.g. a `999px` pill radius) so the
+ * slider stays usable, and falls back to the text input for values that don't
+ * parse as `<number><unit>`.
  */
 export interface LengthUnit {
   /** The unit suffix appended to the number. `''` = unitless (e.g. `0`). */
@@ -49,7 +49,7 @@ export interface LengthUnit {
   step: number
 }
 
-// ABOUTME: LENGTH_UNITS — an exported value.
+// ABOUTME: Ordered list of supported CSS units for the length knob slider, each with a sensible min/max/step for its slider range; the editor raises max dynamically when the current value exceeds it.
 export const LENGTH_UNITS: LengthUnit[] = [
   { value: 'px', label: 'px', min: 0, max: 96, step: 1 },
   { value: 'rem', label: 'rem', min: 0, max: 6, step: 0.0625 },
@@ -62,11 +62,12 @@ export const LENGTH_UNITS: LengthUnit[] = [
   { value: '', label: '—', min: 0, max: 100, step: 1 },
 ]
 
-// ABOUTME: Curated single-family options for the font-stack builder.
+// ABOUTME: Curated font-family options for the style editor's font-stack builder knob: system, web-safe, and specialty families (pixel-art, handwriting, monospace) that can be combined into an ordered CSS stack; the knob injects any family already in the current value that isn't on this list so no data is lost on edit.
 /**
- * Curated single-family options for the font-stack builder. The `font` knob
- * composes an ordered, rearrangeable list of these into a CSS stack; the
- * current value's families are injected as options too so nothing is lost.
+ * Curated font-family options for the style editor's font-stack builder knob.
+ * The `font` knob composes an ordered, rearrangeable list of these into a CSS
+ * stack; the current value's families are injected as options too so nothing
+ * is lost on edit.
  */
 export const FONT_FAMILY_OPTIONS: KnobOption[] = [
   { value: 'system-ui', label: 'System UI' },
@@ -91,7 +92,7 @@ export const FONT_FAMILY_OPTIONS: KnobOption[] = [
   { value: 'cursive', label: 'cursive (generic)' },
 ]
 
-// ABOUTME: KNOB_GROUPS — an exported value.
+// ABOUTME: Ordered list of section headings under which the style editor groups its knobs; StyleEditorPage iterates this array to render one fieldset per group.
 export const KNOB_GROUPS = [
   'Surface',
   'Content',
@@ -107,7 +108,7 @@ export const KNOB_GROUPS = [
 
 const INTENTS = ['primary', 'neutral', 'success', 'warning', 'danger', 'info'] as const
 
-// ABOUTME: KNOBS — an exported value.
+// ABOUTME: The master array of editable token knobs rendered by StyleEditorPage: surface colors, content colors, border/focus ring colors, six intent backgrounds, radius scale, spacing scale (space.2–5), border widths, font family stacks, motion durations, and shadow style.
 export const KNOBS: Knob[] = [
   // ── Surface ──
   { path: 'color.surface.base', label: 'Page background', group: 'Surface', kind: 'color' },

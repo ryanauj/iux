@@ -1,4 +1,4 @@
-// ABOUTME: generators — part of the quiz area.
+// ABOUTME: Question generators for the palette-guessing quiz: makeRng initialises a Mulberry32 deterministic PRNG from a seed, and nextQuestion picks a target palette, selects three distractors (preferring same-engine peers so users must discriminate within a family), shuffles all four options, and returns an IdentifyQuestion.
 
 import { palettes, type PaletteId } from '../../palettes'
 import type { IdentifyQuestion, StimulusKind } from './types'
@@ -31,7 +31,7 @@ function shuffle<T>(arr: readonly T[], rng: () => number): T[] {
   return out
 }
 
-// ABOUTME: makeRng — a helper function.
+// ABOUTME: Initialise a Mulberry32 PRNG from a 32-bit seed and return a stateful function that produces uniformly distributed floats in [0, 1); used by QuizView so questions are reproducible within a session.
 export function makeRng(seed: number): () => number {
   return mulberry32(seed)
 }
