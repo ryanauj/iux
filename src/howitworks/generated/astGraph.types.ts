@@ -84,7 +84,13 @@ export interface AstImport {
   target: string
 }
 
-// ABOUTME: AstGraph — an interface.
+// ABOUTME: The whole graph: schema version, headline stats, and the areas/files/imports the viewer renders.
+/**
+ * The root document the generator emits and the viewer reads. `stats` are
+ * the headline counts shown in the page lede (including how many files and
+ * members carry a lifted summary); `areas`, `files`, and `imports` are
+ * the three collections every view walks.
+ */
 export interface AstGraph {
   schemaVersion: number
   stats: {

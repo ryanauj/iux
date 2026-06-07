@@ -4,18 +4,22 @@
 import { useState, type ReactNode } from 'react'
 import { GRAPH, AREA_MATRIX, AREA_MATRIX_MAX, fileLabel } from './astViews'
 
+// ABOUTME: Short axis code for an area label, e.g. components → cmp, (root) → rt — keeps the column headers narrow.
 /** Short axis code for an area, e.g. `components` → `cmp`, `(root)` → `rt`. */
 function areaCode(id: string): string {
   if (id === '(root)') return 'rt'
   return id.replace(/[^a-z]/gi, '').slice(0, 3).toLowerCase()
 }
 
-// ABOUTME: Rows are the importing area, columns the imported area; a cell's shade is how many file→file imports cross from row to column.
+// ABOUTME: Renders AREA_MATRIX as a heat-grid (rows import columns, shade = link count); tapping a cell opens the exact file→file links behind it.
 /**
  * Rows are the importing area, columns the imported area; a cell's shade is how
- * many file→file imports cross from row to column. The whole 14×14 grid fits a
- * narrow screen with no panning, giving a bird's-eye of which parts of the
- * codebase lean on which. Tapping a cell opens the exact file links behind it.
+ * many file→file imports cross from row to column, read straight from
+ * {@link AREA_MATRIX} and scaled against {@link AREA_MATRIX_MAX}. The whole
+ * grid fits a narrow screen with no panning, giving a bird's-eye of which
+ * parts of the codebase lean on which — the area-level summary of the same
+ * dependencies the Outline and Focus views show file-by-file. Tapping a cell
+ * opens a drawer listing the exact `source → target` file pairs behind it.
  */
 export function AstMatrix() {
   const areas = GRAPH.areas
@@ -101,6 +105,7 @@ export function AstMatrix() {
   )
 }
 
+// ABOUTME: One matrix row: the row-header area label followed by that area's cells (a fragment, so the cells join the parent CSS grid).
 function Row({
   fromId,
   fromLabel,

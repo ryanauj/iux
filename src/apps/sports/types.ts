@@ -1,6 +1,6 @@
-// ABOUTME: ABOUTME: Conference — a type alias.
+// ABOUTME: Domain types for the sports matchup app — conferences, divisions, and the records the views render.
 
-// ABOUTME: Conference — a type alias.
+// ABOUTME: A league conference: East or West.
 export type Conference = 'East' | 'West'
 
 // ABOUTME: Division — a type alias.

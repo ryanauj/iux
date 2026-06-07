@@ -249,7 +249,7 @@ export function formatValue(n: number): string {
   return n.toFixed(1)
 }
 
-// ABOUTME: Two-decimal rate, e.g.
+// ABOUTME: Formats a number as a fixed two-decimal rate string, e.g. 0.35 or -1.06.
 /** Two-decimal rate, e.g. 0.35 or -1.06. */
 export function formatRate(n: number): string {
   return n.toFixed(2)
