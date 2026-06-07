@@ -1,11 +1,16 @@
+// ABOUTME: AdjacencyMatrix — a React component (components).
+
 import { useMemo } from 'react'
 import './AdjacencyMatrix.css'
 
+// ABOUTME: AdjacencyMatrixVariant — a type alias.
 export type AdjacencyMatrixVariant = 'binary' | 'weighted' | 'clustered'
 
+// ABOUTME: AdjacencyMatrixIntent — a type alias.
 export type AdjacencyMatrixIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: AdjacencyNode — an interface.
 export interface AdjacencyNode {
   id: string
   label: string
@@ -13,12 +18,14 @@ export interface AdjacencyNode {
   group?: string
 }
 
+// ABOUTME: AdjacencyEdge — an interface.
 export interface AdjacencyEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for AdjacencyMatrix.
 export interface AdjacencyMatrixProps {
   variant?: AdjacencyMatrixVariant
   nodes: AdjacencyNode[]
@@ -41,6 +48,7 @@ function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
+// ABOUTME: AdjacencyMatrix — a React component.
 export function AdjacencyMatrix({
   variant = 'binary',
   nodes,

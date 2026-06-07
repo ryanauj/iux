@@ -1,13 +1,19 @@
+// ABOUTME: Area — a React component (components).
+
 import { useMemo } from 'react'
 import './Area.css'
 
+// ABOUTME: AreaVariant — a type alias.
 export type AreaVariant = 'filled' | 'baselined' | 'gradient'
 
+// ABOUTME: AreaIntent — a type alias.
 export type AreaIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: AreaPoint — an interface.
 export interface AreaPoint { t: number; y: number }
 
+// ABOUTME: Props for Area.
 export interface AreaProps {
   variant?: AreaVariant
   points: AreaPoint[]
@@ -42,6 +48,7 @@ function defaultFormatY(y: number): string {
   return y.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Area — a React component.
 export function Area({
   variant = 'filled',
   points,

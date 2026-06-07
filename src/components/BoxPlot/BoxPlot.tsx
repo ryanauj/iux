@@ -1,11 +1,16 @@
+// ABOUTME: BoxPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './BoxPlot.css'
 
+// ABOUTME: BoxPlotVariant — a type alias.
 export type BoxPlotVariant = 'simple' | 'outliers' | 'jitter'
 
+// ABOUTME: BoxIntent — a type alias.
 export type BoxIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: BoxSeries — an interface.
 export interface BoxSeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface BoxSeries {
   intent?: BoxIntent
 }
 
+// ABOUTME: Props for BoxPlot.
 export interface BoxPlotProps {
   variant?: BoxPlotVariant
   series: BoxSeries[]
@@ -63,6 +69,7 @@ function rng(seed: number) {
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
 }
 
+// ABOUTME: BoxPlot — a React component.
 export function BoxPlot({
   variant = 'simple',
   series,

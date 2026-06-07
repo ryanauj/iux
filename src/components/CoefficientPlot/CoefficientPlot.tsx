@@ -1,11 +1,16 @@
+// ABOUTME: CoefficientPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './CoefficientPlot.css'
 
+// ABOUTME: CoefficientPlotVariant — a type alias.
 export type CoefficientPlotVariant = 'point' | 'interval' | 'sorted'
 
+// ABOUTME: CoefficientIntent — a type alias.
 export type CoefficientIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: Coefficient — an interface.
 export interface Coefficient {
   key: string
   label: string
@@ -17,6 +22,7 @@ export interface Coefficient {
   intent?: CoefficientIntent
 }
 
+// ABOUTME: Props for CoefficientPlot.
 export interface CoefficientPlotProps {
   variant?: CoefficientPlotVariant
   coefficients: Coefficient[]
@@ -53,6 +59,7 @@ function intentFor(c: Coefficient): CoefficientIntent {
   return c.estimate >= 0 ? 'primary' : 'info'
 }
 
+// ABOUTME: CoefficientPlot — a React component.
 export function CoefficientPlot({
   variant = 'interval',
   coefficients,

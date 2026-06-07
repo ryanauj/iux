@@ -1,5 +1,8 @@
+// ABOUTME: prompts — part of the apps area.
+
 import type { Prompt } from '../types'
 
+// ABOUTME: SEED_PROMPTS — an exported value.
 /**
  * The starter prompt library. These seed the in-session store; the user
  * can favorite, edit, add to, or delete from this set while the app is

@@ -1,11 +1,16 @@
+// ABOUTME: LeveragePlot — a React component (components).
+
 import { useMemo } from 'react'
 import './LeveragePlot.css'
 
+// ABOUTME: LeveragePlotVariant — a type alias.
 export type LeveragePlotVariant = 'plain' | 'sized' | 'flagged'
 
+// ABOUTME: LeverageIntent — a type alias.
 export type LeverageIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: LeveragePoint — an interface.
 export interface LeveragePoint {
   leverage: number
   /** studentized residual */
@@ -15,6 +20,7 @@ export interface LeveragePoint {
   label?: string
 }
 
+// ABOUTME: Props for LeveragePlot.
 export interface LeveragePlotProps {
   variant?: LeveragePlotVariant
   points: LeveragePoint[]
@@ -41,6 +47,7 @@ function num(n: number): string {
   return n.toFixed(3)
 }
 
+// ABOUTME: LeveragePlot — a React component.
 export function LeveragePlot({
   variant = 'sized',
   points,

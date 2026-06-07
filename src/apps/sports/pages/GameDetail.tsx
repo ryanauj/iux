@@ -1,3 +1,5 @@
+// ABOUTME: GameDetail — a React component (apps).
+
 import { Table, type TableColumn } from '../../../components/Table/Table'
 import { Link } from '../../Link'
 import {
@@ -15,6 +17,7 @@ interface GameDetailProps {
   id: string
 }
 
+// ABOUTME: GameDetail — a React component.
 export function GameDetail({ id }: GameDetailProps) {
   const game = getGameById(id)
   if (!game) return <NotFound message={`No game with id "${id}".`} />

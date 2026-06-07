@@ -1,3 +1,5 @@
+// ABOUTME: ShowcasePage — a React component (showcase).
+
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { palettes, type PaletteId } from '../../palettes'
@@ -41,6 +43,7 @@ const URL_PARAM = {
   motion: 'motion',
 } as const
 
+// ABOUTME: Props for ShowcasePage.
 export interface ShowcasePageProps {
   /** Stories rendered by this showcase. */
   entries: StoryEntry[]
@@ -58,6 +61,7 @@ export interface ShowcasePageProps {
   infoText: ReactNode
 }
 
+// ABOUTME: ShowcasePage — a React component.
 export function ShowcasePage({
   entries,
   itemLabel,

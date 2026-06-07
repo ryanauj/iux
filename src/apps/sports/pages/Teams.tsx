@@ -1,3 +1,5 @@
+// ABOUTME: Teams — a React component (apps).
+
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
 import { Segmented } from '../../../components/Segmented/Segmented'
@@ -10,6 +12,7 @@ import type { Conference } from '../types'
 
 type ConfFilter = 'all' | Conference
 
+// ABOUTME: Teams — a React component.
 export function Teams() {
   const [filter, setFilter] = useState<ConfFilter>('all')
   const teams = filter === 'all' ? TEAMS : TEAMS.filter(t => t.conference === filter)

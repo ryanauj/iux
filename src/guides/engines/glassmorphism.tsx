@@ -1,3 +1,5 @@
+// ABOUTME: glassmorphism — part of the guides area.
+
 import { useState } from 'react'
 import { palette as glassmorphism } from '../../../palettes/glassmorphism'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -229,6 +231,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: glassmorphismGuide — an exported value.
 export const glassmorphismGuide: EngineGuideMeta = {
   engine: 'glassmorphism',
   name: 'Glassmorphism',

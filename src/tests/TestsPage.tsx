@@ -1,3 +1,5 @@
+// ABOUTME: TestsPage — a React component (tests).
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { readHash, replaceParams, useHashLocation } from '../apps/router'
 import { Segmented } from '../components/Segmented/Segmented'
@@ -19,8 +21,10 @@ import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import { useNavLayout } from '../components/AppShell/navLayouts'
 
+// ABOUTME: VizId — a type alias.
 export type VizId = 'tests' | 'coverage'
 
+// ABOUTME: RunFor — a type alias.
 export type RunFor = (
   id: string,
   mountEl: HTMLElement,
@@ -37,6 +41,7 @@ const DEFAULT_VIZ: VizId = 'tests'
 
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
 
+// ABOUTME: TestsPage — a React component.
 export function TestsPage() {
   const location = useHashLocation()
   const vizRaw = location.params.get('viz') ?? ''

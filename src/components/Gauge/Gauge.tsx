@@ -1,17 +1,23 @@
+// ABOUTME: Gauge — a React component (components).
+
 import { useMemo } from 'react'
 import './Gauge.css'
 
+// ABOUTME: GaugeVariant — a type alias.
 export type GaugeVariant = 'arc' | 'zones' | 'full'
 
+// ABOUTME: GaugeIntent — a type alias.
 export type GaugeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: GaugeZone — an interface.
 export interface GaugeZone {
   /** Fraction of the range this zone covers, [0..1]. Zones run low → high. */
   fraction: number
   intent: GaugeIntent
 }
 
+// ABOUTME: Props for Gauge.
 export interface GaugeProps {
   variant?: GaugeVariant
   value: number
@@ -49,6 +55,7 @@ function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: num
   return `M ${x0o} ${y0o} A ${rOuter} ${rOuter} 0 ${large} 1 ${x1o} ${y1o} L ${x0i} ${y0i} A ${rInner} ${rInner} 0 ${large} 0 ${x1i} ${y1i} Z`
 }
 
+// ABOUTME: Gauge — a React component.
 export function Gauge({
   variant = 'arc',
   value,

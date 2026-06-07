@@ -1,3 +1,5 @@
+// ABOUTME: Shared style-description renderer.
+
 /**
  * Shared style-description renderer. Lifted from
  * `scripts/generate-style-docs.ts` so the SPA's per-palette design page
@@ -61,6 +63,7 @@ function renderLookalikes(
     .join('\n\n')
 }
 
+// ABOUTME: renderStyleDescriptionMarkdown — a helper function.
 /**
  * Renders the canonical `docs/styles/<id>.md` body for a palette.
  *
@@ -145,6 +148,7 @@ export function renderStyleDescriptionMarkdown(
   return lines.join('\n') + '\n'
 }
 
+// ABOUTME: renderCssVarsBlock — a helper function.
 /**
  * Renders the palette's CSS custom properties as a copy-pasteable block
  * for external projects. `selector` defaults to `:root` but can be any

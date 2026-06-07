@@ -1,3 +1,5 @@
+// ABOUTME: AppsLanding — a React component (apps).
+
 import { useRef } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { Card } from '../components/Card/Card'
@@ -59,6 +61,7 @@ interface AppsLandingProps {
   location: HashLocation
 }
 
+// ABOUTME: AppsLanding — a React component.
 export function AppsLanding({ location }: AppsLandingProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [navLayout, setNavLayout] = useNavLayout()

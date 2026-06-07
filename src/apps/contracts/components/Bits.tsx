@@ -1,7 +1,10 @@
+// ABOUTME: PageHeader — a React component (apps).
+
 import type { ReactNode } from 'react'
 import { Link } from '../../Link'
 import { contractsRoutes } from '../routes'
 
+// ABOUTME: PageHeader — a React component.
 /**
  * Small shared presentational bits used across the Cap School pages:
  * a page header, a "key idea" callout, a stat tile, and the prev/next
@@ -27,6 +30,7 @@ export function PageHeader({
   )
 }
 
+// ABOUTME: KeyIdea — a React component.
 export function KeyIdea({
   tone = 'info',
   title,
@@ -44,6 +48,7 @@ export function KeyIdea({
   )
 }
 
+// ABOUTME: StatTile — a React component.
 export function StatTile({
   label,
   value,
@@ -62,6 +67,7 @@ export function StatTile({
   )
 }
 
+// ABOUTME: Disclaimer — a React component.
 /** Educational disclaimer reused on data-heavy pages. */
 export function Disclaimer() {
   return (
@@ -79,6 +85,7 @@ interface PagerLink {
   to: string
 }
 
+// ABOUTME: Pager — a React component.
 export function Pager({ prev, next }: { prev?: PagerLink; next?: PagerLink }) {
   return (
     <nav className="cap-pager" aria-label="Chapter navigation">

@@ -1,3 +1,5 @@
+// ABOUTME: TabsShell — a React component (apps).
+
 import { useEffect, useMemo } from 'react'
 import { Link } from '../../Link'
 import {
@@ -71,6 +73,7 @@ function TabsNavMenu({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   )
 }
 
+// ABOUTME: TabsShell — a React component.
 export function TabsShell(props: ShellProps) {
   const location = useHashLocation()
   const tabsParam = location.params.get('tabs')

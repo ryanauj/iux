@@ -1,3 +1,5 @@
+// ABOUTME: OptimisticUndo — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -8,8 +10,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './OptimisticUndo.css'
 
+// ABOUTME: OptimisticUndoVariant — a type alias.
 export type OptimisticUndoVariant = 'toast' | 'countdown' | 'queue' | 'log'
 
+// ABOUTME: UndoAction — an interface.
 export interface UndoAction {
   id: string
   label: string
@@ -20,6 +24,7 @@ export interface UndoAction {
   expiresAt: number
 }
 
+// ABOUTME: CommittedAction — an interface.
 export interface CommittedAction {
   id: string
   label: string
@@ -28,6 +33,7 @@ export interface CommittedAction {
   undo?: () => void | Promise<void>
 }
 
+// ABOUTME: Props for OptimisticUndo.
 export interface OptimisticUndoProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: OptimisticUndoVariant
@@ -41,6 +47,7 @@ export interface OptimisticUndoProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: OptimisticUndo — a React component.
 export function OptimisticUndo({
   variant = 'toast',
   actions,
@@ -153,6 +160,7 @@ export function OptimisticUndo({
   return createPortal(stack, getPortalTarget())
 }
 
+// ABOUTME: useOptimisticUndo — a React hook.
 // Minimal hook that owns the action queue + history.
 export function useOptimisticUndo(defaultTtlMs: number = 5000) {
   const [actions, setActions] = useState<UndoAction[]>([])

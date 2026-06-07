@@ -1,6 +1,9 @@
+// ABOUTME: NotFound — a React component (apps).
+
 import { Link } from '../../Link'
 import { contractsRoutes } from '../routes'
 
+// ABOUTME: NotFound — a React component.
 export function NotFound() {
   return (
     <article className="cap-page cap-page--notfound">

@@ -1,11 +1,16 @@
+// ABOUTME: Dendrogram — a React component (components).
+
 import { useMemo } from 'react'
 import './Dendrogram.css'
 
+// ABOUTME: DendrogramVariant — a type alias.
 export type DendrogramVariant = 'cluster' | 'radial' | 'weighted'
 
+// ABOUTME: DendrogramIntent — a type alias.
 export type DendrogramIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: DendrogramNode — an interface.
 export interface DendrogramNode {
   id: string
   label: string
@@ -15,6 +20,7 @@ export interface DendrogramNode {
   children?: DendrogramNode[]
 }
 
+// ABOUTME: Props for Dendrogram.
 export interface DendrogramProps {
   variant?: DendrogramVariant
   root: DendrogramNode
@@ -55,6 +61,7 @@ function layout(root: DendrogramNode, intents: DendrogramIntent[]): { all: Place
   return { all, leafSlots: Math.max(1, leaf), maxDepth, maxDistance: maxDistance || 1 }
 }
 
+// ABOUTME: Dendrogram — a React component.
 export function Dendrogram({
   variant = 'cluster',
   root,

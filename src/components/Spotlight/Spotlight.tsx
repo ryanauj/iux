@@ -1,3 +1,5 @@
+// ABOUTME: Spotlight — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -10,8 +12,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Spotlight.css'
 
+// ABOUTME: SpotlightVariant — a type alias.
 export type SpotlightVariant = 'single' | 'sequence' | 'anchor-aware' | 'adaptive'
 
+// ABOUTME: SpotlightStep — an interface.
 export interface SpotlightStep {
   id: string
   title?: string
@@ -22,6 +26,7 @@ export interface SpotlightStep {
   feature?: string
 }
 
+// ABOUTME: Props for Spotlight.
 export interface SpotlightProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SpotlightVariant
@@ -44,6 +49,7 @@ function resolveTarget(target: SpotlightStep['target']): HTMLElement | null {
   return target
 }
 
+// ABOUTME: Spotlight — a React component.
 export function Spotlight({
   variant = 'single',
   open,

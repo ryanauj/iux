@@ -1,3 +1,5 @@
+// ABOUTME: Stepper — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -7,9 +9,12 @@ import {
 } from 'react'
 import './Stepper.css'
 
+// ABOUTME: StepperVariant — a type alias.
 export type StepperVariant = 'linear' | 'validated' | 'branching' | 'resumable'
+// ABOUTME: StepStatus — a type alias.
 export type StepStatus = 'complete' | 'active' | 'error' | 'disabled'
 
+// ABOUTME: StepperStep — an interface.
 export interface StepperStep {
   id: string
   title: string
@@ -22,6 +27,7 @@ export interface StepperStep {
   next?: () => string | null
 }
 
+// ABOUTME: Props for Stepper.
 export interface StepperProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: StepperVariant
@@ -37,6 +43,7 @@ export interface StepperProps {
   ariaLabel?: string
 }
 
+// ABOUTME: Stepper — a React component.
 export function Stepper({
   variant = 'linear',
   steps,

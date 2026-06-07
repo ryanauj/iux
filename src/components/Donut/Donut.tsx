@@ -1,11 +1,16 @@
+// ABOUTME: Donut — a React component (components).
+
 import { useMemo } from 'react'
 import './Donut.css'
 
+// ABOUTME: DonutVariant — a type alias.
 export type DonutVariant = 'solid' | 'donut' | 'labeled'
 
+// ABOUTME: DonutIntent — a type alias.
 export type DonutIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: DonutSlice — an interface.
 export interface DonutSlice {
   key: string
   label: string
@@ -13,6 +18,7 @@ export interface DonutSlice {
   intent?: DonutIntent
 }
 
+// ABOUTME: Props for Donut.
 export interface DonutProps {
   variant?: DonutVariant
   data: DonutSlice[]
@@ -53,6 +59,7 @@ function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: num
   return `M ${x0o} ${y0o} A ${rOuter} ${rOuter} 0 ${large} 1 ${x1o} ${y1o} L ${x0i} ${y0i} A ${rInner} ${rInner} 0 ${large} 0 ${x1i} ${y1i} Z`
 }
 
+// ABOUTME: Donut — a React component.
 export function Donut({
   variant = 'donut',
   data,

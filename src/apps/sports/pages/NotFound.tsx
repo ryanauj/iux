@@ -1,3 +1,5 @@
+// ABOUTME: NotFound — a React component (apps).
+
 import { EmptyState } from '../../../components/EmptyState/EmptyState'
 import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
@@ -7,6 +9,7 @@ interface NotFoundProps {
   message?: string
 }
 
+// ABOUTME: NotFound — a React component.
 export function NotFound({ message }: NotFoundProps) {
   return (
     <>

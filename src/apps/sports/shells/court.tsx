@@ -1,3 +1,5 @@
+// ABOUTME: CourtShell — a React component (apps).
+
 import { Link } from '../../Link'
 import { navigate } from '../../router'
 import { sportsRoutes } from '../routes'
@@ -113,6 +115,7 @@ function CourtNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }
   )
 }
 
+// ABOUTME: CourtShell — a React component.
 export function CourtShell(props: ShellProps) {
   const isHome = props.route.kind === 'home'
   return (

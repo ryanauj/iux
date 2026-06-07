@@ -1,11 +1,16 @@
+// ABOUTME: Scatter — a React component (components).
+
 import { useMemo } from 'react'
 import './Scatter.css'
 
+// ABOUTME: ScatterVariant — a type alias.
 export type ScatterVariant = 'dots' | 'grouped' | 'regression'
 
+// ABOUTME: ScatterIntent — a type alias.
 export type ScatterIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ScatterPoint — an interface.
 export interface ScatterPoint {
   x: number
   y: number
@@ -14,6 +19,7 @@ export interface ScatterPoint {
   label?: string
 }
 
+// ABOUTME: ScatterSeries — an interface.
 export interface ScatterSeries {
   id: string
   label: string
@@ -21,6 +27,7 @@ export interface ScatterSeries {
   points: ScatterPoint[]
 }
 
+// ABOUTME: Props for Scatter.
 export interface ScatterProps {
   variant?: ScatterVariant
   series: ScatterSeries[]
@@ -74,6 +81,7 @@ function leastSquares(pts: ScatterPoint[]): { m: number; b: number; r2: number }
   return { m, b, r2 }
 }
 
+// ABOUTME: Scatter — a React component.
 export function Scatter({
   variant = 'dots',
   series,

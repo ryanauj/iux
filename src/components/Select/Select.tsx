@@ -1,3 +1,5 @@
+// ABOUTME: Select — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -16,8 +18,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Select.css'
 
+// ABOUTME: SelectVariant — a type alias.
 export type SelectVariant = 'native' | 'dropdown' | 'combobox' | 'async'
 
+// ABOUTME: SelectOption — an interface.
 export interface SelectOption {
   value: string
   label: string
@@ -27,6 +31,7 @@ export interface SelectOption {
   description?: string
 }
 
+// ABOUTME: Props for Select.
 export interface SelectProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SelectVariant
@@ -61,6 +66,7 @@ export interface SelectProps {
   defaultQuery?: string
 }
 
+// ABOUTME: SelectHandle — an interface.
 export interface SelectHandle {
   focus: () => void
   open: () => void
@@ -91,6 +97,7 @@ function findIndexByValue(options: SelectOption[], value: string | undefined): n
   return options.findIndex(o => o.value === value)
 }
 
+// ABOUTME: Select — an exported value.
 export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
   {
     variant = 'dropdown',

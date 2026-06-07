@@ -1,3 +1,5 @@
+// ABOUTME: claymorphism — part of the guides area.
+
 import { useState } from 'react'
 import { palette as claymorphism } from '../../../palettes/claymorphism'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -254,6 +256,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: claymorphismGuide — an exported value.
 export const claymorphismGuide: EngineGuideMeta = {
   engine: 'claymorphism',
   name: 'Claymorphism',

@@ -1,3 +1,5 @@
+// ABOUTME: neumorphism — part of the guides area.
+
 import { useState } from 'react'
 import { palette as neumorphism } from '../../../palettes/neumorphism'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -270,6 +272,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: neumorphismGuide — an exported value.
 export const neumorphismGuide: EngineGuideMeta = {
   engine: 'neumorphism',
   name: 'Neumorphism',

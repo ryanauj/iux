@@ -1,3 +1,5 @@
+// ABOUTME: DraggableControls — a React component (components).
+
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { PalettePicker } from '../PalettePicker/PalettePicker'
@@ -11,6 +13,7 @@ import './DraggableControls.css'
  */
 const SEARCHABLE_THRESHOLD = 6
 
+// ABOUTME: ControlsStyle — a type alias.
 export type ControlsStyle = 'button' | 'strip'
 
 const CONTROLS_STYLE_KEY = 'iux-controls-style'
@@ -29,6 +32,7 @@ const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
   raw === 'button' || raw === 'strip'
 
+// ABOUTME: useControlsStyle — a React hook.
 /**
  * Shared user preference for the floating controls' style (Button FAB vs
  * Edge Strip). Backed by localStorage so the choice survives navigation
@@ -43,6 +47,7 @@ export function useControlsStyle() {
   )
 }
 
+// ABOUTME: Field — a type alias.
 export type Field = {
   key: string
   label: string
@@ -181,6 +186,7 @@ function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
   }, [ref, active])
 }
 
+// ABOUTME: DraggableControls — a React component.
 export function DraggableControls({ style, onStyleChange, fields }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
   const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'button'))

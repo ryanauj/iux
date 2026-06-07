@@ -1,11 +1,16 @@
+// ABOUTME: ForceCluster — a React component (components).
+
 import { useMemo } from 'react'
 import './ForceCluster.css'
 
+// ABOUTME: ForceClusterVariant — a type alias.
 export type ForceClusterVariant = 'hull' | 'shaded' | 'labeled'
 
+// ABOUTME: ForceClusterIntent — a type alias.
 export type ForceClusterIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ForceNode — an interface.
 export interface ForceNode {
   id: string
   label: string
@@ -13,12 +18,14 @@ export interface ForceNode {
   weight?: number
 }
 
+// ABOUTME: ForceEdge — an interface.
 export interface ForceEdge {
   from: string
   to: string
   value?: number
 }
 
+// ABOUTME: Props for ForceCluster.
 export interface ForceClusterProps {
   variant?: ForceClusterVariant
   nodes: ForceNode[]
@@ -173,6 +180,7 @@ function smoothHull(hull: Array<{ x: number; y: number }>): string {
   return d
 }
 
+// ABOUTME: ForceCluster — a React component.
 export function ForceCluster({
   variant = 'hull',
   nodes,

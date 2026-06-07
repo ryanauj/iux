@@ -1,3 +1,5 @@
+// ABOUTME: Tabs — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -10,8 +12,10 @@ import {
 } from 'react'
 import './Tabs.css'
 
+// ABOUTME: TabsVariant — a type alias.
 export type TabsVariant = 'basic' | 'rich' | 'overflow' | 'editable'
 
+// ABOUTME: TabItem — an interface.
 export interface TabItem {
   id: string
   label: ReactNode
@@ -20,6 +24,7 @@ export interface TabItem {
   disabled?: boolean
 }
 
+// ABOUTME: Props for Tabs.
 export interface TabsProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TabsVariant
@@ -39,6 +44,7 @@ export interface TabsProps {
   ariaLabel?: string
 }
 
+// ABOUTME: Tabs — a React component.
 export function Tabs({
   variant = 'basic',
   tabs,

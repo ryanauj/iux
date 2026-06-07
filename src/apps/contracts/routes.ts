@@ -1,11 +1,15 @@
+// ABOUTME: Centralised route helpers for the Cap School app.
+
 /**
  * Centralised route helpers for the Cap School app. Pages build links
  * through these so the route shape lives in one place — mirrors the
  * pattern the sibling sports app uses.
  */
 
+// ABOUTME: CONTRACTS_BASE — an exported value.
 export const CONTRACTS_BASE = '/apps/contracts'
 
+// ABOUTME: contractsRoutes — an exported value.
 export const contractsRoutes = {
   overview: () => CONTRACTS_BASE,
   ladder: () => `${CONTRACTS_BASE}/ladder`,
@@ -18,6 +22,7 @@ export const contractsRoutes = {
   team: () => `${CONTRACTS_BASE}/team`,
 } as const
 
+// ABOUTME: ContractsRoute — a type alias.
 export type ContractsRoute =
   | { kind: 'overview' }
   | { kind: 'ladder' }
@@ -30,6 +35,7 @@ export type ContractsRoute =
   | { kind: 'team' }
   | { kind: 'notFound' }
 
+// ABOUTME: matchContractsRoute — a helper function.
 /** Parses the segments AFTER `apps/contracts` and returns a discriminated route. */
 export function matchContractsRoute(segments: string[]): ContractsRoute {
   if (segments.length === 0) return { kind: 'overview' }

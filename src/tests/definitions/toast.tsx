@@ -1,3 +1,5 @@
+// ABOUTME: Toast ladder rungs: plain (auto-dismiss + manual close), action (inline undo), severity (severity-ordered stack), progress (progress bar…
+
 // Toast ladder rungs: plain (auto-dismiss + manual close), action (inline
 // undo), severity (severity-ordered stack), progress (progress bar tied to a
 // real number). Inline rendering keeps the portal inside the sandbox so the
@@ -74,6 +76,7 @@ function ProgressComposition() {
   )
 }
 
+// ABOUTME: toastTests — an exported value.
 export const toastTests: IntegrationTest[] = [
   {
     id: 'toast-rung-1-manual-close',

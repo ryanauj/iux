@@ -1,3 +1,5 @@
+// ABOUTME: FeedShell — a React component (apps).
+
 import { useMemo, useState } from 'react'
 import { Link } from '../../Link'
 import {
@@ -347,6 +349,7 @@ function FeedNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] })
   )
 }
 
+// ABOUTME: FeedShell — a React component.
 export function FeedShell(props: ShellProps) {
   const isHome = props.route.kind === 'home'
   // Filter state lives in the shell so collapsing the feed to a rail on

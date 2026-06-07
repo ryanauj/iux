@@ -1,11 +1,16 @@
+// ABOUTME: Loading — a React component (components).
+
 import type { ReactNode } from 'react'
 import './Loading.css'
 
+// ABOUTME: LoadingVariant — a type alias.
 export type LoadingVariant = 'spinner' | 'shimmer' | 'skeleton' | 'optimistic'
 
+// ABOUTME: SkeletonShape — a type alias.
 /** Built-in skeleton shapes that variants 'skeleton' draws. */
 export type SkeletonShape = 'card' | 'table-row' | 'list-row' | 'avatar-text' | 'paragraph'
 
+// ABOUTME: Props for Loading.
 export interface LoadingProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: LoadingVariant
@@ -24,6 +29,7 @@ export interface LoadingProps {
   className?: string
 }
 
+// ABOUTME: Loading — a React component.
 export function Loading({
   variant = 'spinner',
   label = 'Loading',

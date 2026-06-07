@@ -1,3 +1,5 @@
+// ABOUTME: slider — part of the tests area.
+
 import { useState } from 'react'
 import { Slider } from '../../components/Slider/Slider'
 import type { IntegrationTest } from '../types'
@@ -54,6 +56,7 @@ function CurveComposition() {
   )
 }
 
+// ABOUTME: sliderTests — an exported value.
 export const sliderTests: IntegrationTest[] = [
   {
     id: 'slider-rung-1-arrow',

@@ -1,3 +1,5 @@
+// ABOUTME: EngineGuide — a React component (guides).
+
 import { useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -67,6 +69,7 @@ interface EngineGuideProps {
   guide: EngineGuideMeta
 }
 
+// ABOUTME: EngineGuide — a React component.
 export function EngineGuide({ guide }: EngineGuideProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

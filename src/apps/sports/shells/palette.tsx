@@ -1,3 +1,5 @@
+// ABOUTME: PaletteShell — a React component (apps).
+
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { Link } from '../../Link'
 import { navigate } from '../../router'
@@ -71,6 +73,7 @@ function searchAll(q: string): PaletteResult[] {
   return out.slice(0, 20)
 }
 
+// ABOUTME: PaletteShell — a React component.
 export function PaletteShell(props: ShellProps) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)

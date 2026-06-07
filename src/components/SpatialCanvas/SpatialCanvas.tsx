@@ -1,3 +1,5 @@
+// ABOUTME: SpatialCanvas — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -10,8 +12,10 @@ import {
 } from 'react'
 import './SpatialCanvas.css'
 
+// ABOUTME: CanvasVariant — a type alias.
 export type CanvasVariant = 'pan' | 'zoom' | 'objects' | 'collab'
 
+// ABOUTME: CanvasObject — an interface.
 export interface CanvasObject {
   id: string
   x: number
@@ -24,6 +28,7 @@ export interface CanvasObject {
   selected?: boolean
 }
 
+// ABOUTME: RemoteCursor — an interface.
 export interface RemoteCursor {
   id: string
   name: string
@@ -33,6 +38,7 @@ export interface RemoteCursor {
   y: number
 }
 
+// ABOUTME: Props for SpatialCanvas.
 export interface SpatialCanvasProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CanvasVariant
@@ -55,6 +61,7 @@ interface Transform {
   scale: number
 }
 
+// ABOUTME: SpatialCanvas — a React component.
 export function SpatialCanvas({
   variant = 'pan',
   objects = [],

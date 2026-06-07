@@ -1,3 +1,5 @@
+// ABOUTME: pages — part of the doctrine area.
+
 import type { ReactNode } from 'react'
 import type { DocMode } from '../lib/useDocMode'
 import { palettes, type PaletteId } from '../../palettes'
@@ -23,10 +25,13 @@ import { SidebarStories } from '../components/Sidebar/Sidebar.stories'
 import { EmptyStateStories } from '../components/EmptyState/EmptyState.stories'
 import { InlineEditStories } from '../components/InlineEdit/InlineEdit.stories'
 
+// ABOUTME: DoctrineId — a type alias.
 export type DoctrineId = 'layout' | 'selection' | 'composition' | 'modalities'
 
+// ABOUTME: DoctrineNav — a type alias.
 export type DoctrineNav = (id: DoctrineId) => void
 
+// ABOUTME: DoctrinePage — a type alias.
 export type DoctrinePage = {
   id: DoctrineId
   label: string
@@ -1354,6 +1359,7 @@ function ModalitiesPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   )
 }
 
+// ABOUTME: DOCTRINE_PAGES — an exported value.
 export const DOCTRINE_PAGES: DoctrinePage[] = [
   { id: 'layout', label: 'Layout', eyebrow: 'Doctrine · 00', title: 'Layout', source: '00-layout.md', render: (nav, mode) => <LayoutPage nav={nav} mode={mode} /> },
   { id: 'selection', label: 'Component selection', eyebrow: 'Doctrine · 01', title: 'Component selection', source: '01-component-selection.md', render: (nav, mode) => <SelectionPage nav={nav} mode={mode} /> },
@@ -1361,5 +1367,6 @@ export const DOCTRINE_PAGES: DoctrinePage[] = [
   { id: 'modalities', label: 'Modalities', eyebrow: 'Doctrine · 03', title: 'Modalities', source: '03-modalities.md', render: (nav, mode) => <ModalitiesPage nav={nav} mode={mode} /> },
 ]
 
+// ABOUTME: isDoctrineId — a helper function.
 export const isDoctrineId = (v: string): v is DoctrineId =>
   DOCTRINE_PAGES.some(p => p.id === v)

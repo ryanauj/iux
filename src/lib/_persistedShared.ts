@@ -1,5 +1,8 @@
+// ABOUTME: _persistedShared — part of the lib area.
+
 type Listener = (raw: string) => void
 
+// ABOUTME: listeners — an exported value.
 /**
  * In-memory subscribers keyed by storage key. Lets multiple React tree
  * instances (e.g. a floating picker mounted on both the showcase and an
@@ -12,10 +15,12 @@ type Listener = (raw: string) => void
  */
 export const listeners = new Map<string, Set<Listener>>()
 
+// ABOUTME: notify — a helper function.
 export function notify(key: string, raw: string) {
   listeners.get(key)?.forEach(l => l(raw))
 }
 
+// ABOUTME: subscribe — a helper function.
 export function subscribe(key: string, listener: Listener) {
   let bucket = listeners.get(key)
   if (!bucket) {

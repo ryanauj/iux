@@ -1,3 +1,5 @@
+// ABOUTME: TriptychShell — a React component (apps).
+
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link } from '../../Link'
 import { replaceParams, useHashLocation } from '../../router'
@@ -377,6 +379,7 @@ function TriNav({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   )
 }
 
+// ABOUTME: TriptychShell — a React component.
 export function TriptychShell(props: ShellProps) {
   const location = useHashLocation()
   const triParam = location.params.get('tri')

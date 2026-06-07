@@ -1,3 +1,5 @@
+// ABOUTME: Pagination ladder rungs: numbered (prev/next + ellipsis), rich (first/last jump + page-size selector), load-more (button + item count), i…
+
 // Pagination ladder rungs: numbered (prev/next + ellipsis), rich (first/last
 // jump + page-size selector), load-more (button + item count), infinite (scroll
 // sentinel). Rung 4 (infinite) is driven by IntersectionObserver and
@@ -52,6 +54,7 @@ function LoadMoreComposition() {
   )
 }
 
+// ABOUTME: paginationTests — an exported value.
 export const paginationTests: IntegrationTest[] = [
   {
     id: 'pagination-rung-1-numbered',

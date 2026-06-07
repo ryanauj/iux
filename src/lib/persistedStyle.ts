@@ -1,17 +1,23 @@
+// ABOUTME: persistedStyle — part of the lib area.
+
 import { palettes, type PaletteId } from '../../palettes'
 import type { Field } from '../components/DraggableControls/DraggableControls'
 import { usePersistedPref } from './usePersistedPref'
 import { isCustomPatternId, type StyleId } from './customPatterns'
 
+// ABOUTME: SELECTED_STYLE_KEY — an exported value.
 export const SELECTED_STYLE_KEY = 'iux-selected-style'
+// ABOUTME: DEFAULT_SELECTED_STYLE — an exported value.
 export const DEFAULT_SELECTED_STYLE: PaletteId = 'flat-classic'
 
 const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
+// ABOUTME: isPaletteId — a helper function.
 export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
 
+// ABOUTME: isStyleId — a helper function.
 /**
  * Either a built-in palette id or a `custom:<slug>` pattern id. The selected
  * style and the palette picker accept both; `resolveStyle` (in
@@ -21,6 +27,7 @@ export function isStyleId(value: string): value is StyleId {
   return isPaletteId(value) || isCustomPatternId(value)
 }
 
+// ABOUTME: useSelectedStyle — a React hook.
 /**
  * Site-wide "selected style" — the palette the user has most recently
  * picked anywhere on the site. Backed by localStorage so the choice
@@ -42,6 +49,7 @@ export function useSelectedStyle() {
   )
 }
 
+// ABOUTME: readSelectedStyle — a helper function.
 /**
  * Synchronous accessor for the persisted selected style. Used by surfaces
  * that resolve their initial chrome from the URL but want to fall back
@@ -59,6 +67,7 @@ export function readSelectedStyle(): StyleId {
   return DEFAULT_SELECTED_STYLE
 }
 
+// ABOUTME: buildPaletteField — a helper function.
 /**
  * Build the canonical "chrome" Field for `DraggableControls`. Tagged
  * with `kind: 'palette'` so both DraggableControls variants substitute

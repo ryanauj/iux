@@ -1,3 +1,5 @@
+// ABOUTME: The curated set of token "knobs" the style editor exposes.
+
 /**
  * The curated set of token "knobs" the style editor exposes.
  *
@@ -10,13 +12,16 @@
  * any of which can be slotted in the same way.
  */
 
+// ABOUTME: KnobKind — a type alias.
 export type KnobKind = 'color' | 'length' | 'text' | 'select' | 'font'
 
+// ABOUTME: KnobOption — an interface.
 export interface KnobOption {
   value: string
   label: string
 }
 
+// ABOUTME: Knob — an interface.
 export interface Knob {
   /** Dotted path into `SemanticTokens`, e.g. `color.surface.base`. */
   path: string
@@ -28,6 +33,7 @@ export interface Knob {
   options?: KnobOption[]
 }
 
+// ABOUTME: LengthUnit — an interface.
 /**
  * Units the length-knob slider can pick, with a sensible slider range and
  * step for each. The editor raises `max` to fit a larger current value (e.g.
@@ -43,6 +49,7 @@ export interface LengthUnit {
   step: number
 }
 
+// ABOUTME: LENGTH_UNITS — an exported value.
 export const LENGTH_UNITS: LengthUnit[] = [
   { value: 'px', label: 'px', min: 0, max: 96, step: 1 },
   { value: 'rem', label: 'rem', min: 0, max: 6, step: 0.0625 },
@@ -55,6 +62,7 @@ export const LENGTH_UNITS: LengthUnit[] = [
   { value: '', label: '—', min: 0, max: 100, step: 1 },
 ]
 
+// ABOUTME: FONT_FAMILY_OPTIONS — an exported value.
 /**
  * Curated single-family options for the font-stack builder. The `font` knob
  * composes an ordered, rearrangeable list of these into a CSS stack; the
@@ -83,6 +91,7 @@ export const FONT_FAMILY_OPTIONS: KnobOption[] = [
   { value: 'cursive', label: 'cursive (generic)' },
 ]
 
+// ABOUTME: KNOB_GROUPS — an exported value.
 export const KNOB_GROUPS = [
   'Surface',
   'Content',
@@ -98,6 +107,7 @@ export const KNOB_GROUPS = [
 
 const INTENTS = ['primary', 'neutral', 'success', 'warning', 'danger', 'info'] as const
 
+// ABOUTME: KNOBS — an exported value.
 export const KNOBS: Knob[] = [
   // ── Surface ──
   { path: 'color.surface.base', label: 'Page background', group: 'Surface', kind: 'color' },

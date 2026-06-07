@@ -1,11 +1,16 @@
+// ABOUTME: Bar — a React component (components).
+
 import { useMemo } from 'react'
 import './Bar.css'
 
+// ABOUTME: BarVariant — a type alias.
 export type BarVariant = 'simple' | 'sorted' | 'targeted'
 
+// ABOUTME: BarIntent — a type alias.
 export type BarIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: BarDatum — an interface.
 export interface BarDatum {
   key: string
   label: string
@@ -13,6 +18,7 @@ export interface BarDatum {
   intent?: BarIntent
 }
 
+// ABOUTME: Props for Bar.
 export interface BarProps {
   variant?: BarVariant
   data: BarDatum[]
@@ -32,6 +38,7 @@ function defaultFormat(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Bar — a React component.
 export function Bar({
   variant = 'simple',
   data,

@@ -1,3 +1,5 @@
+// ABOUTME: registry — part of the guides area.
+
 import { flatGuide } from './flat'
 import { materialGuide } from './material'
 import { neubrutalismGuide } from './neubrutalism'
@@ -15,6 +17,7 @@ import { auroraGuide } from './aurora'
 import { terminalTuiGuide } from './terminal-tui'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: ENGINE_GUIDES — an exported value.
 export const ENGINE_GUIDES = {
   flat: flatGuide,
   material: materialGuide,
@@ -33,6 +36,8 @@ export const ENGINE_GUIDES = {
   'terminal-tui': terminalTuiGuide,
 } satisfies Record<string, EngineGuideMeta>
 
+// ABOUTME: EngineGuideId — a type alias.
 export type EngineGuideId = keyof typeof ENGINE_GUIDES
 
+// ABOUTME: ENGINE_GUIDE_IDS — an exported value.
 export const ENGINE_GUIDE_IDS = Object.keys(ENGINE_GUIDES) as EngineGuideId[]

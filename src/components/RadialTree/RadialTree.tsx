@@ -1,11 +1,16 @@
+// ABOUTME: RadialTree — a React component (components).
+
 import { useMemo } from 'react'
 import './RadialTree.css'
 
+// ABOUTME: RadialTreeVariant — a type alias.
 export type RadialTreeVariant = 'straight' | 'curved' | 'compact'
 
+// ABOUTME: RadialTreeIntent — a type alias.
 export type RadialTreeIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: RadialTreeNode — an interface.
 export interface RadialTreeNode {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface RadialTreeNode {
   children?: RadialTreeNode[]
 }
 
+// ABOUTME: Props for RadialTree.
 export interface RadialTreeProps {
   variant?: RadialTreeVariant
   root: RadialTreeNode
@@ -57,6 +63,7 @@ function layout(root: RadialTreeNode): { nodes: Positioned[]; leafCount: number;
   return { nodes: flat, leafCount: Math.max(1, leaf), maxDepth: Math.max(1, maxDepth) }
 }
 
+// ABOUTME: RadialTree — a React component.
 export function RadialTree({
   variant = 'straight',
   root,

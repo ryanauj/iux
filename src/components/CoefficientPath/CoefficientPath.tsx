@@ -1,11 +1,16 @@
+// ABOUTME: CoefficientPath — a React component (components).
+
 import { useMemo } from 'react'
 import './CoefficientPath.css'
 
+// ABOUTME: CoefficientPathVariant — a type alias.
 export type CoefficientPathVariant = 'paths' | 'highlighted' | 'selected'
 
+// ABOUTME: CoefficientPathIntent — a type alias.
 export type CoefficientPathIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: CoefficientPathLine — an interface.
 export interface CoefficientPathLine {
   id: string
   label: string
@@ -14,6 +19,7 @@ export interface CoefficientPathLine {
   points: { lambda: number; beta: number }[]
 }
 
+// ABOUTME: Props for CoefficientPath.
 export interface CoefficientPathProps {
   variant?: CoefficientPathVariant
   paths: CoefficientPathLine[]
@@ -45,6 +51,7 @@ function fmtLambda(n: number, log: boolean): string {
   return n.toFixed(3)
 }
 
+// ABOUTME: CoefficientPath — a React component.
 export function CoefficientPath({
   variant = 'highlighted',
   paths,

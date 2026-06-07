@@ -1,3 +1,5 @@
+// ABOUTME: Tooltip — a React component (components).
+
 import {
   cloneElement,
   isValidElement,
@@ -15,9 +17,12 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Tooltip.css'
 
+// ABOUTME: TooltipVariant — a type alias.
 export type TooltipVariant = 'plain' | 'shortcut' | 'rich' | 'coach'
+// ABOUTME: TooltipSide — a type alias.
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 
+// ABOUTME: CoachStep — an interface.
 export interface CoachStep {
   current: number
   total: number
@@ -25,6 +30,7 @@ export interface CoachStep {
   onSkip?: () => void
 }
 
+// ABOUTME: Props for Tooltip.
 export interface TooltipProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: TooltipVariant
@@ -58,6 +64,7 @@ interface Position {
   side: TooltipSide
 }
 
+// ABOUTME: Tooltip — a React component.
 export function Tooltip({
   variant = 'plain',
   content,

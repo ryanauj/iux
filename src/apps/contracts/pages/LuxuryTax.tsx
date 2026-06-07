@@ -1,3 +1,5 @@
+// ABOUTME: LuxuryTax — a React component (apps).
+
 import { useState } from 'react'
 import { Card } from '../../../components/Card/Card'
 import { Waterfall, type WaterfallStep } from '../../../components/Waterfall/Waterfall'
@@ -39,6 +41,7 @@ const bracketColumns: TableColumn<TaxBracket>[] = [
   },
 ]
 
+// ABOUTME: LuxuryTax — a React component.
 export function LuxuryTax() {
   const [mode, setMode] = useState<'standard' | 'repeater'>('standard')
   const [overageStr, setOverageStr] = useState('20000000')

@@ -1,14 +1,19 @@
+// ABOUTME: Heatmap — a React component (components).
+
 import { useMemo } from 'react'
 import './Heatmap.css'
 
+// ABOUTME: HeatmapVariant — a type alias.
 export type HeatmapVariant = 'continuous' | 'diverging' | 'sparse'
 
+// ABOUTME: HeatmapCell — an interface.
 export interface HeatmapCell {
   row: string
   col: string
   value: number
 }
 
+// ABOUTME: Props for Heatmap.
 export interface HeatmapProps {
   variant?: HeatmapVariant
   cells: HeatmapCell[]
@@ -46,6 +51,7 @@ function discoveryOrder(list: string[]): string[] {
   return out
 }
 
+// ABOUTME: Heatmap — a React component.
 export function Heatmap({
   variant = 'continuous',
   cells,

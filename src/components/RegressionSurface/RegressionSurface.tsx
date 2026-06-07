@@ -1,11 +1,16 @@
+// ABOUTME: RegressionSurface — a React component (components).
+
 import { useMemo } from 'react'
 import './RegressionSurface.css'
 
+// ABOUTME: RegressionSurfaceVariant — a type alias.
 export type RegressionSurfaceVariant = 'contour' | 'heat' | 'overlay'
 
+// ABOUTME: RegressionSurfaceIntent — a type alias.
 export type RegressionSurfaceIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: SurfacePoint — an interface.
 export interface SurfacePoint {
   x1: number
   x2: number
@@ -13,6 +18,7 @@ export interface SurfacePoint {
   y: number
 }
 
+// ABOUTME: Props for RegressionSurface.
 export interface RegressionSurfaceProps {
   variant?: RegressionSurfaceVariant
   /** Fitted surface evaluator: ŷ = f(x1, x2). */
@@ -47,6 +53,7 @@ function num(n: number): string {
   return n.toFixed(2)
 }
 
+// ABOUTME: RegressionSurface — a React component.
 export function RegressionSurface({
   variant = 'contour',
   predict,

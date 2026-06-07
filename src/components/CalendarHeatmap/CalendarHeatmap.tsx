@@ -1,13 +1,18 @@
+// ABOUTME: CalendarHeatmap — a React component (components).
+
 import { useMemo } from 'react'
 import './CalendarHeatmap.css'
 
+// ABOUTME: CalendarHeatmapVariant — a type alias.
 export type CalendarHeatmapVariant = 'month' | 'year' | 'streak'
 
+// ABOUTME: CalendarDatum — an interface.
 export interface CalendarDatum {
   date: string // ISO yyyy-mm-dd
   value: number
 }
 
+// ABOUTME: Props for CalendarHeatmap.
 export interface CalendarHeatmapProps {
   variant?: CalendarHeatmapVariant
   data: CalendarDatum[]
@@ -50,6 +55,7 @@ function tintLevel(value: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
+// ABOUTME: CalendarHeatmap — a React component.
 export function CalendarHeatmap({
   variant = 'year',
   data,

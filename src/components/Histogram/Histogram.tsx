@@ -1,8 +1,12 @@
+// ABOUTME: Histogram — a React component (components).
+
 import { useMemo } from 'react'
 import './Histogram.css'
 
+// ABOUTME: HistogramVariant — a type alias.
 export type HistogramVariant = 'counts' | 'density' | 'cumulative'
 
+// ABOUTME: Props for Histogram.
 export interface HistogramProps {
   variant?: HistogramVariant
   values: number[]
@@ -40,6 +44,7 @@ function binValues(values: number[], binCount: number, domain?: [number, number]
   return out
 }
 
+// ABOUTME: Histogram — a React component.
 export function Histogram({
   variant = 'counts',
   values,

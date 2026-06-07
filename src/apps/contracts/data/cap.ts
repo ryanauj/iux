@@ -1,3 +1,5 @@
+// ABOUTME: cap — part of the apps area.
+
 import type {
   CapSeason,
   CapThreshold,
@@ -9,6 +11,7 @@ import type {
   TradeParty,
 } from '../types'
 
+// ABOUTME: SEASON — an exported value.
 /**
  * All figures below are the official 2025–26 NBA cap numbers (salary cap
  * $154.647M and the tax / apron lines that key off it) plus the standard
@@ -27,9 +30,11 @@ export const SEASON: CapSeason = {
   secondApron: 207_824_000,
 }
 
+// ABOUTME: PRIOR_CAP — an exported value.
 /** Last season's cap, used to show year-over-year growth on the overview. */
 export const PRIOR_CAP = 140_588_000
 
+// ABOUTME: THRESHOLDS — an exported value.
 /**
  * The ladder of lines a payroll climbs. Ordered low → high; the pages
  * render them bottom-to-top so "higher payroll = higher up the ladder"
@@ -73,6 +78,7 @@ export const THRESHOLDS: CapThreshold[] = [
   },
 ]
 
+// ABOUTME: MAX_TIERS — an exported value.
 /** Max-salary tiers for the active season (25% / 30% / 35% of the cap). */
 export const MAX_TIERS: MaxTier[] = [
   {
@@ -101,6 +107,7 @@ export const MAX_TIERS: MaxTier[] = [
   },
 ]
 
+// ABOUTME: SUPERMAX_NOTE — an exported value.
 /**
  * The supermax (Designated Veteran) lets a 35%-eligible player who hits
  * the awards criteria re-sign with their own team for the full 35% even
@@ -109,6 +116,7 @@ export const MAX_TIERS: MaxTier[] = [
 export const SUPERMAX_NOTE =
   'A player with the service time for the 30% tier who makes an All-NBA team, wins MVP, or wins Defensive Player of the Year can open at the 35% supermax tier instead — but only by re-signing with the team that drafted him (or traded for him on his rookie deal).'
 
+// ABOUTME: EXCEPTIONS — an exported value.
 /** Salary-cap exceptions, ordered roughly largest → smallest. */
 export const EXCEPTIONS: Exception[] = [
   {
@@ -189,6 +197,7 @@ export const EXCEPTIONS: Exception[] = [
   },
 ]
 
+// ABOUTME: TAX_BRACKETS — an exported value.
 /**
  * Standard and repeater luxury-tax brackets. Rates are dollars of tax per
  * dollar spent inside the bracket; the top bracket repeats, climbing
@@ -202,6 +211,7 @@ export const TAX_BRACKETS: TaxBracket[] = [
   { from: 20_000_000, to: null, standardRate: 3.75, repeaterRate: 4.75 },
 ]
 
+// ABOUTME: SAMPLE_CONTRACT — an exported value.
 /**
  * Worked single contract for the anatomy page: a 4-year veteran extension
  * re-signed with Bird rights (8% raises off a $30M starting salary), with
@@ -215,9 +225,12 @@ export const SAMPLE_CONTRACT: ContractYear[] = [
   { label: 'Year 4', salary: 37_200_000, guarantee: 'player-option' },
 ]
 
+// ABOUTME: SAMPLE_CONTRACT_RAISE — an exported value.
 export const SAMPLE_CONTRACT_RAISE = 0.08
+// ABOUTME: SAMPLE_CONTRACT_BASE — an exported value.
 export const SAMPLE_CONTRACT_BASE = 30_000_000
 
+// ABOUTME: SAMPLE_TEAM_NAME — an exported value.
 /**
  * Worked team cap sheet — a fictional contender ("Harbor City") built to
  * sit between the first and second apron so the thresholds all come into
@@ -226,6 +239,7 @@ export const SAMPLE_CONTRACT_BASE = 30_000_000
  */
 export const SAMPLE_TEAM_NAME = 'Harbor City Foghorns'
 
+// ABOUTME: SAMPLE_ROSTER — an exported value.
 export const SAMPLE_ROSTER: RosterSpot[] = [
   { id: 'r1', player: 'Franchise wing', role: '35% max', salary: 52_000_000, via: 'Bird (re-signed)' },
   { id: 'r2', player: 'All-Star guard', role: '30% max', salary: 38_500_000, via: 'Bird (re-signed)' },
@@ -241,11 +255,13 @@ export const SAMPLE_ROSTER: RosterSpot[] = [
   { id: 'r12', player: 'Veteran center', role: 'Bench', salary: 2_100_000, via: 'Minimum' },
 ]
 
+// ABOUTME: rosterTotal — a helper function.
 /** Total of the worked roster — recomputed rather than hard-coded. */
 export function rosterTotal(roster: RosterSpot[] = SAMPLE_ROSTER): number {
   return roster.reduce((sum, spot) => sum + spot.salary, 0)
 }
 
+// ABOUTME: TRADE_STAR_SALARY — an exported value.
 /**
  * Worked three-team trade for the Trades chapter. A contender over the first
  * apron lands a $34M star; it has to send out matching salary by bundling two
@@ -255,6 +271,7 @@ export function rosterTotal(roster: RosterSpot[] = SAMPLE_ROSTER): number {
  */
 export const TRADE_STAR_SALARY = 34_000_000
 
+// ABOUTME: SAMPLE_TRADE — an exported value.
 export const SAMPLE_TRADE: TradeParty[] = [
   {
     id: 'contender',
@@ -299,6 +316,7 @@ export const SAMPLE_TRADE: TradeParty[] = [
   },
 ]
 
+// ABOUTME: TaxBreakdownStep — an interface.
 /**
  * Computes the standard or repeater luxury-tax bill for a given payroll,
  * walking the incremental brackets. Returns both the total and the
@@ -311,6 +329,7 @@ export interface TaxBreakdownStep {
   tax: number
 }
 
+// ABOUTME: computeTax — a helper function.
 export function computeTax(
   payroll: number,
   mode: 'standard' | 'repeater' = 'standard',

@@ -1,3 +1,5 @@
+// ABOUTME: CopyButton — a React component (apps).
+
 import { useEffect, useRef, useState } from 'react'
 import { Button, type ButtonProps } from '../../../components/Button/Button'
 import { copyText } from './clipboard'
@@ -15,6 +17,7 @@ interface CopyButtonProps {
   className?: string
 }
 
+// ABOUTME: CopyButton — a React component.
 /** A Button that copies `text` and confirms with a transient label + toast. */
 export function CopyButton({
   text,

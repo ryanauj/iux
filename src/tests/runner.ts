@@ -1,5 +1,8 @@
+// ABOUTME: runner — part of the tests area.
+
 import type { IntegrationTest, RunResult, Step, StepResult } from './types'
 
+// ABOUTME: RunOptions — an interface.
 export interface RunOptions {
   /** Delay between steps in ms, for human-watchable execution. 0 = as fast as possible. */
   stepDelayMs?: number
@@ -17,6 +20,7 @@ export interface RunOptions {
 
 const DEFAULT_TIMEOUT_MS = 2000
 
+// ABOUTME: runTest — a helper function.
 /**
  * Drive a test's steps against a mounted DOM root.
  *
@@ -206,6 +210,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// ABOUTME: summarizeResults — a helper function.
 export function summarizeResults(results: RunResult[]): { total: number; passed: number; failed: number } {
   return {
     total: results.length,

@@ -1,3 +1,5 @@
+// ABOUTME: CommandPalette — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -11,8 +13,10 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './CommandPalette.css'
 
+// ABOUTME: CommandPaletteVariant — a type alias.
 export type CommandPaletteVariant = 'flat' | 'grouped' | 'wizard' | 'agentic'
 
+// ABOUTME: CommandStep — an interface.
 export interface CommandStep {
   id: string
   prompt: string
@@ -20,6 +24,7 @@ export interface CommandStep {
   options?: Array<{ value: string; label: string }>
 }
 
+// ABOUTME: Command — an interface.
 export interface Command {
   id: string
   label: string
@@ -33,6 +38,7 @@ export interface Command {
   steps?: CommandStep[]
 }
 
+// ABOUTME: Props for CommandPalette.
 export interface CommandPaletteProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CommandPaletteVariant
@@ -63,6 +69,7 @@ function fuzzyScore(query: string, label: string): number {
   return qi === q.length ? 10 : 0
 }
 
+// ABOUTME: CommandPalette — a React component.
 export function CommandPalette({
   variant = 'flat',
   open,

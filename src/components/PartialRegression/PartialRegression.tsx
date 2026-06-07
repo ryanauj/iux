@@ -1,11 +1,16 @@
+// ABOUTME: PartialRegression — a React component (components).
+
 import { useMemo } from 'react'
 import './PartialRegression.css'
 
+// ABOUTME: PartialRegressionVariant — a type alias.
 export type PartialRegressionVariant = 'single' | 'grid' | 'annotated'
 
+// ABOUTME: PartialRegressionIntent — a type alias.
 export type PartialRegressionIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: PartialResidualPoint — an interface.
 export interface PartialResidualPoint {
   /** residual of the focal predictor after regressing on the others */
   xRes: number
@@ -14,6 +19,7 @@ export interface PartialResidualPoint {
   label?: string
 }
 
+// ABOUTME: PartialFacet — an interface.
 export interface PartialFacet {
   id: string
   label: string
@@ -23,6 +29,7 @@ export interface PartialFacet {
   intent?: PartialRegressionIntent
 }
 
+// ABOUTME: Props for PartialRegression.
 export interface PartialRegressionProps {
   variant?: PartialRegressionVariant
   facets: PartialFacet[]
@@ -104,6 +111,7 @@ function Facet({ facet, index, w, h, annotated }: { facet: PartialFacet; index: 
   )
 }
 
+// ABOUTME: PartialRegression — a React component.
 export function PartialRegression({
   variant = 'grid',
   facets,

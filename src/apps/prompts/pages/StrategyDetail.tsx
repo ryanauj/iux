@@ -1,3 +1,5 @@
+// ABOUTME: StrategyDetail — a React component (apps).
+
 import { useMemo } from 'react'
 import { Button } from '../../../components/Button/Button'
 import { EmptyState } from '../../../components/EmptyState/EmptyState'
@@ -14,6 +16,7 @@ interface StrategyDetailProps {
   id: string
 }
 
+// ABOUTME: StrategyDetail — a React component.
 export function StrategyDetail({ id }: StrategyDetailProps) {
   const strategy = getStrategy(id)
   const { prompts } = usePromptStore()

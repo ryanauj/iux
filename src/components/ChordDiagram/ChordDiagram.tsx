@@ -1,17 +1,23 @@
+// ABOUTME: ChordDiagram — a React component (components).
+
 import { useMemo } from 'react'
 import './ChordDiagram.css'
 
+// ABOUTME: ChordDiagramVariant — a type alias.
 export type ChordDiagramVariant = 'simple' | 'weighted' | 'highlighted'
 
+// ABOUTME: ChordIntent — a type alias.
 export type ChordIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ChordNode — an interface.
 export interface ChordNode {
   id: string
   label: string
   intent?: ChordIntent
 }
 
+// ABOUTME: ChordLink — an interface.
 export interface ChordLink {
   from: string
   to: string
@@ -19,6 +25,7 @@ export interface ChordLink {
   highlight?: boolean
 }
 
+// ABOUTME: Props for ChordDiagram.
 export interface ChordDiagramProps {
   variant?: ChordDiagramVariant
   nodes: ChordNode[]
@@ -59,6 +66,7 @@ function ribbonPath(cx: number, cy: number, r: number, a0: number, a1: number, b
           Q ${cx} ${cy} ${p0.x} ${p0.y} Z`
 }
 
+// ABOUTME: ChordDiagram — a React component.
 export function ChordDiagram({
   variant = 'simple',
   nodes,

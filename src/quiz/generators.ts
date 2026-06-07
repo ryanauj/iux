@@ -1,3 +1,5 @@
+// ABOUTME: generators — part of the quiz area.
+
 import { palettes, type PaletteId } from '../../palettes'
 import type { IdentifyQuestion, StimulusKind } from './types'
 
@@ -29,10 +31,12 @@ function shuffle<T>(arr: readonly T[], rng: () => number): T[] {
   return out
 }
 
+// ABOUTME: makeRng — a helper function.
 export function makeRng(seed: number): () => number {
   return mulberry32(seed)
 }
 
+// ABOUTME: nextQuestion — a helper function.
 /**
  * Generate one identify question. Distractors prefer the same engine as the
  * target so the question forces you to discriminate within an engine family

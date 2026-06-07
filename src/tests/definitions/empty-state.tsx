@@ -1,3 +1,5 @@
+// ABOUTME: EmptyState ladder rungs: minimal, illustrated (icon + CTA), checklist (onboarding steps), generative (editable seed fields → onGenerate).
+
 // EmptyState ladder rungs: minimal, illustrated (icon + CTA), checklist
 // (onboarding steps), generative (editable seed fields → onGenerate).
 import { useState } from 'react'
@@ -68,6 +70,7 @@ function GenerativeComposition() {
   )
 }
 
+// ABOUTME: emptyStateTests — an exported value.
 export const emptyStateTests: IntegrationTest[] = [
   {
     id: 'empty-rung-1-minimal',

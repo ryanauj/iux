@@ -1,7 +1,10 @@
+// ABOUTME: NotFound — a React component (apps).
+
 import { EmptyState } from '../../../components/EmptyState/EmptyState'
 import { navigate } from '../../router'
 import { promptRoutes } from '../routes'
 
+// ABOUTME: NotFound — a React component.
 export function NotFound() {
   return (
     <div className="pb-page">

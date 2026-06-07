@@ -1,3 +1,5 @@
+// ABOUTME: Cross-page nav for every showcase chrome.
+
 /**
  * Cross-page nav for every showcase chrome. One entry per landing
  * route — Engines was added so the rendering-engine guides are reachable
@@ -9,6 +11,7 @@
  * targets — AppShell renders them as anchors so the same array drives
  * Components, Viz, Quiz, Tests, Apps landing, and the Engines pages.
  */
+// ABOUTME: AppShellNavLink — an interface.
 export interface AppShellNavLink {
   /** Stable id, used to mark the current page active. */
   id: AppShellNavId
@@ -20,6 +23,7 @@ export interface AppShellNavLink {
   short: string
 }
 
+// ABOUTME: AppShellNavId — a type alias.
 export type AppShellNavId =
   | 'components'
   | 'visualizations'
@@ -33,6 +37,7 @@ export type AppShellNavId =
   | 'editor'
   | 'settings'
 
+// ABOUTME: APP_SHELL_NAV — an exported value.
 export const APP_SHELL_NAV: AppShellNavLink[] = [
   { id: 'components',     href: '#/',         label: 'Components',     short: 'Co' },
   { id: 'visualizations', href: '#/viz',      label: 'Visualizations', short: 'Vi' },

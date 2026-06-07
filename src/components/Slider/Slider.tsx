@@ -1,3 +1,5 @@
+// ABOUTME: Slider — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -12,8 +14,10 @@ import {
 } from 'react'
 import './Slider.css'
 
+// ABOUTME: SliderVariant — a type alias.
 export type SliderVariant = 'single' | 'ticks' | 'range' | 'curve'
 
+// ABOUTME: Props for Slider.
 export interface SliderProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: SliderVariant
@@ -75,6 +79,7 @@ function pctOf(value: number, min: number, max: number): number {
   return ((value - min) / (max - min)) * 100
 }
 
+// ABOUTME: Slider — an exported value.
 export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   {
     variant = 'single',

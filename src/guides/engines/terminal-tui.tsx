@@ -1,3 +1,5 @@
+// ABOUTME: terminal-tui — part of the guides area.
+
 import { useState } from 'react'
 import { palette as terminalTui } from '../../../palettes/terminal-tui'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -238,6 +240,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: terminalTuiGuide — an exported value.
 export const terminalTuiGuide: EngineGuideMeta = {
   engine: 'terminal-tui',
   name: 'Terminal / TUI',

@@ -1,9 +1,12 @@
+// ABOUTME: Domain types for the Promptbook app — a library for saving and displaying prompts and the prompting strategies behind them.
+
 /**
  * Domain types for the Promptbook app — a library for saving and
  * displaying prompts and the prompting strategies behind them.
  */
 
 /** Top-level grouping for a saved prompt. */
+// ABOUTME: PromptCategory — a type alias.
 export type PromptCategory =
   | 'writing'
   | 'coding'
@@ -12,6 +15,7 @@ export type PromptCategory =
   | 'roleplay'
   | 'meta'
 
+// ABOUTME: PROMPT_CATEGORIES — an exported value.
 export const PROMPT_CATEGORIES: { value: PromptCategory; label: string }[] = [
   { value: 'writing', label: 'Writing' },
   { value: 'coding', label: 'Coding' },
@@ -21,6 +25,7 @@ export const PROMPT_CATEGORIES: { value: PromptCategory; label: string }[] = [
   { value: 'meta', label: 'Meta' },
 ]
 
+// ABOUTME: Prompt — an interface.
 /** A saved prompt the user can read, copy, fill, and edit. */
 export interface Prompt {
   id: string
@@ -41,6 +46,7 @@ export interface Prompt {
   updatedAt: string
 }
 
+// ABOUTME: StrategyCategory — a type alias.
 /** A reusable prompting technique with a template and worked example. */
 export type StrategyCategory =
   | 'reasoning'
@@ -48,6 +54,7 @@ export type StrategyCategory =
   | 'context'
   | 'reliability'
 
+// ABOUTME: STRATEGY_CATEGORIES — an exported value.
 export const STRATEGY_CATEGORIES: { value: StrategyCategory; label: string }[] = [
   { value: 'reasoning', label: 'Reasoning' },
   { value: 'structure', label: 'Structure' },
@@ -55,6 +62,7 @@ export const STRATEGY_CATEGORIES: { value: StrategyCategory; label: string }[] =
   { value: 'reliability', label: 'Reliability' },
 ]
 
+// ABOUTME: Strategy — an interface.
 export interface Strategy {
   id: string
   name: string

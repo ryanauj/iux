@@ -1,5 +1,8 @@
+// ABOUTME: router — part of the apps area.
+
 import { useEffect, useState } from 'react'
 
+// ABOUTME: HashLocation — an interface.
 export interface HashLocation {
   /** The path portion of the hash, always leading with `/` (e.g. `/apps/sports/teams`). Empty string when no hash. */
   path: string
@@ -17,11 +20,13 @@ function parseHash(raw: string): HashLocation {
   return { path: normalized, params: new URLSearchParams(query) }
 }
 
+// ABOUTME: readHash — a helper function.
 export function readHash(): HashLocation {
   if (typeof window === 'undefined') return { path: '', params: new URLSearchParams() }
   return parseHash(window.location.hash)
 }
 
+// ABOUTME: useHashLocation — a React hook.
 export function useHashLocation(): HashLocation {
   const [loc, setLoc] = useState<HashLocation>(() => readHash())
   useEffect(() => {
@@ -32,6 +37,7 @@ export function useHashLocation(): HashLocation {
   return loc
 }
 
+// ABOUTME: buildHash — a helper function.
 export function buildHash(path: string, params?: Record<string, string | undefined>): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
   if (!params) return `#${normalized}`
@@ -52,6 +58,7 @@ export function buildHash(path: string, params?: Record<string, string | undefin
  */
 const STICKY_PARAMS = ['layout', 'palette', 'motion', 'tabs', 'tri', 'bento', 'deck', 'graph'] as const
 
+// ABOUTME: getStickyParams — a helper function.
 /** Read the current values of any sticky params from the URL hash. */
 export function getStickyParams(): Record<string, string> {
   const current = readHash()
@@ -63,6 +70,7 @@ export function getStickyParams(): Record<string, string> {
   return out
 }
 
+// ABOUTME: navigate — a helper function.
 export function navigate(path: string, params?: Record<string, string | undefined>): void {
   if (typeof window === 'undefined') return
   // Caller-supplied params win; sticky params backfill the rest.
@@ -73,6 +81,7 @@ export function navigate(path: string, params?: Record<string, string | undefine
   }
 }
 
+// ABOUTME: replaceParams — a helper function.
 /**
  * Replace just the query params on the current hash without touching the
  * path. Used by in-app pickers (e.g. the palette picker) that want to
@@ -92,6 +101,7 @@ export function replaceParams(params: Record<string, string | undefined>): void 
   }
 }
 
+// ABOUTME: pathSegments — a helper function.
 /** Split a path into segments, dropping empties. `/apps/sports/teams` → `['apps','sports','teams']`. */
 export function pathSegments(path: string): string[] {
   return path.split('/').filter(Boolean)

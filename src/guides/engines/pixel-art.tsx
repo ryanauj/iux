@@ -1,3 +1,5 @@
+// ABOUTME: pixel-art — part of the guides area.
+
 import { useState } from 'react'
 import { palette as pixelArtGameboy } from '../../../palettes/pixel-art-gameboy'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -220,6 +222,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: pixelArtGuide — an exported value.
 export const pixelArtGuide: EngineGuideMeta = {
   engine: 'pixel-art',
   name: 'Pixel-art',

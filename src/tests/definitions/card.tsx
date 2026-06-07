@@ -1,3 +1,5 @@
+// ABOUTME: Card ladder rungs: static, expandable, bento (accent stripe), spatial (mouse- tilt parallax).
+
 // Card ladder rungs: static, expandable, bento (accent stripe), spatial (mouse-
 // tilt parallax). Rung 4 only asserts the variant class — the tilt effect is
 // driven by mousemove and the test runner has no pointer-move step.
@@ -46,6 +48,7 @@ function SpatialComposition() {
   )
 }
 
+// ABOUTME: cardTests — an exported value.
 export const cardTests: IntegrationTest[] = [
   {
     id: 'card-rung-1-static',

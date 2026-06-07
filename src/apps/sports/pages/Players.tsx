@@ -1,3 +1,5 @@
+// ABOUTME: Players — a React component (apps).
+
 import { useState } from 'react'
 import { Segmented } from '../../../components/Segmented/Segmented'
 import { Table, type TableColumn } from '../../../components/Table/Table'
@@ -20,6 +22,7 @@ const POS_FILTERS: { value: PosFilter; label: string }[] = [
   { value: 'C', label: 'C' },
 ]
 
+// ABOUTME: Players — a React component.
 export function Players() {
   const [filter, setFilter] = useState<PosFilter>('all')
   const players = filter === 'all' ? PLAYERS : PLAYERS.filter(p => p.position === filter)

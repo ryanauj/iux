@@ -1,11 +1,16 @@
+// ABOUTME: StackedArea — a React component (components).
+
 import { useMemo } from 'react'
 import './StackedArea.css'
 
+// ABOUTME: StackedAreaVariant — a type alias.
 export type StackedAreaVariant = 'stacked' | 'normalized' | 'streamgraph'
 
+// ABOUTME: StackedAreaIntent — a type alias.
 export type StackedAreaIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: StackedAreaSeries — an interface.
 export interface StackedAreaSeries {
   id: string
   label: string
@@ -14,6 +19,7 @@ export interface StackedAreaSeries {
   values: number[]
 }
 
+// ABOUTME: Props for StackedArea.
 export interface StackedAreaProps {
   variant?: StackedAreaVariant
   series: StackedAreaSeries[]
@@ -44,6 +50,7 @@ function defaultFormatT(t: number): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+// ABOUTME: StackedArea — a React component.
 export function StackedArea({
   variant = 'stacked',
   series,

@@ -1,3 +1,5 @@
+// ABOUTME: cel-glass — part of the guides area.
+
 import { useState } from 'react'
 import { palette as celGlassFrost } from '../../../palettes/cel-glass-frost'
 import { palette as celGlassNoir } from '../../../palettes/cel-glass-noir'
@@ -243,6 +245,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: celGlassGuide — an exported value.
 export const celGlassGuide: EngineGuideMeta = {
   engine: 'cel-glass',
   name: 'Cel-Glass',

@@ -1,3 +1,5 @@
+// ABOUTME: DoctrinePage — a React component (doctrine).
+
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
@@ -38,6 +40,7 @@ type UrlSettings = {
   motion: MotionScale
 }
 
+// ABOUTME: DoctrinePage — a React component.
 export function DoctrinePage() {
   // Site-wide selected style is the fallback chrome on a fresh visit,
   // so navigating in from Stories / Apps / Quiz / Engine guides keeps

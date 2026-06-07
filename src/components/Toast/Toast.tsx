@@ -1,3 +1,5 @@
+// ABOUTME: Toast — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -9,9 +11,12 @@ import { createPortal } from 'react-dom'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './Toast.css'
 
+// ABOUTME: ToastVariant — a type alias.
 export type ToastVariant = 'plain' | 'action' | 'severity' | 'progress'
+// ABOUTME: ToastIntent — a type alias.
 export type ToastIntent = 'info' | 'success' | 'warning' | 'danger' | 'neutral'
 
+// ABOUTME: ToastItem — an interface.
 export interface ToastItem {
   id: string
   variant?: ToastVariant
@@ -26,6 +31,7 @@ export interface ToastItem {
   progress?: number
 }
 
+// ABOUTME: Props for Toast.
 export interface ToastProps extends ToastItem {
   onDismiss?: (id: string) => void
   /** Story-only: render without a portal. */
@@ -36,10 +42,12 @@ const SEVERITY_RANK: Record<ToastIntent, number> = {
   danger: 0, warning: 1, info: 2, neutral: 3, success: 4,
 }
 
+// ABOUTME: sortBySeverity — a helper function.
 export function sortBySeverity(items: ToastItem[]): ToastItem[] {
   return items.slice().sort((a, b) => SEVERITY_RANK[a.intent ?? 'neutral'] - SEVERITY_RANK[b.intent ?? 'neutral'])
 }
 
+// ABOUTME: Toast — a React component.
 export function Toast({
   id, variant = 'plain', intent = 'neutral', title, body, icon, durationMs = 5000, action, progress, onDismiss, inlineRender,
 }: ToastProps) {
@@ -134,8 +142,10 @@ export function Toast({
   )
 }
 
+// ABOUTME: ToasterPosition — a type alias.
 export type ToasterPosition = 'top-right' | 'bottom-right' | 'top-center' | 'bottom-center'
 
+// ABOUTME: Props for Toaster.
 export interface ToasterProps {
   toasts: ToastItem[]
   onDismiss: (id: string) => void
@@ -147,6 +157,7 @@ export interface ToasterProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: Toaster — a React component.
 export function Toaster({ toasts, onDismiss, position = 'top-right', severityOrder = false, max = 6, inlineRender = false }: ToasterProps) {
   const ordered = severityOrder ? sortBySeverity(toasts) : toasts
   const visible = ordered.slice(0, max)
@@ -193,6 +204,7 @@ function IntentGlyph({ intent }: { intent: ToastIntent }) {
   )
 }
 
+// ABOUTME: useToastQueue — a React hook.
 // ---------- minimal hook helper ----------
 
 export function useToastQueue() {

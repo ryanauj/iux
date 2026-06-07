@@ -1,3 +1,5 @@
+// ABOUTME: VirtualList — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -10,8 +12,10 @@ import {
 } from 'react'
 import './VirtualList.css'
 
+// ABOUTME: VirtualListVariant — a type alias.
 export type VirtualListVariant = 'fixed' | 'variable' | 'sections' | 'grid'
 
+// ABOUTME: SectionSpec — an interface.
 export interface SectionSpec {
   id: string
   title: ReactNode
@@ -19,6 +23,7 @@ export interface SectionSpec {
   itemRange: [number, number]
 }
 
+// ABOUTME: Props for VirtualList.
 export interface VirtualListProps<T> {
   /** Functional axis. The same prop, never a forked component. */
   variant?: VirtualListVariant
@@ -44,6 +49,7 @@ export interface VirtualListProps<T> {
   ariaLabel?: string
 }
 
+// ABOUTME: VirtualList — a React component.
 export function VirtualList<T>({
   variant = 'fixed',
   items,

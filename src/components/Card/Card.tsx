@@ -1,3 +1,5 @@
+// ABOUTME: Card — an exported value (components).
+
 import {
   forwardRef,
   useCallback,
@@ -11,9 +13,12 @@ import {
 } from 'react'
 import './Card.css'
 
+// ABOUTME: CardVariant — a type alias.
 export type CardVariant = 'static' | 'expandable' | 'bento' | 'spatial'
+// ABOUTME: CardAccent — a type alias.
 export type CardAccent = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
+// ABOUTME: Props for Card.
 export interface CardProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: CardVariant
@@ -39,6 +44,7 @@ export interface CardProps {
   stateLock?: 'hover' | 'active' | 'focus'
 }
 
+// ABOUTME: Card — an exported value.
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   {
     variant = 'static',

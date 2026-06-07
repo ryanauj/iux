@@ -1,8 +1,12 @@
+// ABOUTME: NLBar — a React component (components).
+
 import { useCallback, useEffect, useId, useState } from 'react'
 import './NLBar.css'
 
+// ABOUTME: NLBarVariant — a type alias.
 export type NLBarVariant = 'parsed' | 'editable' | 'execute' | 'disambig'
 
+// ABOUTME: ParsedChip — an interface.
 export interface ParsedChip {
   key: string
   label: string
@@ -13,6 +17,7 @@ export interface ParsedChip {
   options?: string[]
 }
 
+// ABOUTME: ParsedIntent — an interface.
 export interface ParsedIntent {
   action: string
   chips: ParsedChip[]
@@ -20,6 +25,7 @@ export interface ParsedIntent {
   alternatives?: Array<{ label: string; chips: ParsedChip[]; action?: string }>
 }
 
+// ABOUTME: Props for NLBar.
 export interface NLBarProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: NLBarVariant
@@ -30,6 +36,7 @@ export interface NLBarProps {
   className?: string
 }
 
+// ABOUTME: NLBar — a React component.
 export function NLBar({
   variant = 'parsed',
   parse,

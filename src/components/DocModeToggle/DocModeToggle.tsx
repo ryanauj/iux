@@ -1,3 +1,5 @@
+// ABOUTME: DocModeToggle — a React component (components).
+
 import type { DocMode } from '../../lib/useDocMode'
 import './DocModeToggle.css'
 
@@ -20,6 +22,7 @@ const OPTIONS: { value: DocMode; label: string; title: string }[] = [
   },
 ]
 
+// ABOUTME: DocModeToggle — a React component.
 export function DocModeToggle({ value, onChange, className }: DocModeToggleProps) {
   return (
     <div

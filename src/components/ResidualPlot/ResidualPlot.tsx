@@ -1,17 +1,23 @@
+// ABOUTME: ResidualPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './ResidualPlot.css'
 
+// ABOUTME: ResidualPlotVariant — a type alias.
 export type ResidualPlotVariant = 'scatter' | 'smoothed' | 'banded'
 
+// ABOUTME: ResidualIntent — a type alias.
 export type ResidualIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: ResidualPoint — an interface.
 export interface ResidualPoint {
   fitted: number
   residual: number
   label?: string
 }
 
+// ABOUTME: Props for ResidualPlot.
 export interface ResidualPlotProps {
   variant?: ResidualPlotVariant
   points: ResidualPoint[]
@@ -65,6 +71,7 @@ function smooth(pts: ResidualPoint[], windowFrac: number): { x: number; y: numbe
   return out
 }
 
+// ABOUTME: ResidualPlot — a React component.
 export function ResidualPlot({
   variant = 'smoothed',
   points,

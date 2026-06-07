@@ -1,3 +1,5 @@
+// ABOUTME: PalettePicker — a React component (components).
+
 import {
   useCallback,
   useEffect,
@@ -41,6 +43,7 @@ const LIST_OPEN_KEY = 'palette-picker:list-open'
 const CUSTOM_OPEN_KEY = 'palette-picker:custom-open'
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
+// ABOUTME: PalettePickerVariant — a type alias.
 export type PalettePickerVariant = 'button' | 'strip'
 
 /**
@@ -81,6 +84,7 @@ interface PalettePickerProps {
   slotRect?: DOMRect | null
 }
 
+// ABOUTME: PalettePicker — a React component.
 export function PalettePicker(props: PalettePickerProps) {
   const { field, variant } = props
   const current = field.value as StyleId

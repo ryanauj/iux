@@ -1,5 +1,8 @@
+// ABOUTME: step-format — part of the tests area.
+
 import type { Step } from '../types'
 
+// ABOUTME: describeStep — a helper function.
 /** One-line description that includes the kind context. Used in dense step rows. */
 export function describeStep(step: Step): string {
   switch (step.kind) {
@@ -14,6 +17,7 @@ export function describeStep(step: Step): string {
   }
 }
 
+// ABOUTME: bubbleLabel — a helper function.
 /** Short label for a storyboard bubble — the bubble already shows the kind separately. */
 export function bubbleLabel(step: Step): string {
   switch (step.kind) {
@@ -28,6 +32,7 @@ export function bubbleLabel(step: Step): string {
   }
 }
 
+// ABOUTME: stepIcon — a helper function.
 export function stepIcon(step: Step): string {
   switch (step.kind) {
     case 'click': return '▶'

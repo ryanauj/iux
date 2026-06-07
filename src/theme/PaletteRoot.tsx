@@ -1,3 +1,5 @@
+// ABOUTME: PaletteRoot — a React component (theme).
+
 import type { CSSProperties, ReactNode } from 'react'
 import type { Palette } from '../../tokens/semantic.contract'
 import { paletteToCssVars } from './paletteToCssVars'
@@ -11,6 +13,7 @@ interface PaletteRootProps {
   motionScale?: number
 }
 
+// ABOUTME: PaletteRoot — a React component.
 /**
  * Applies a palette's tokens as CSS custom properties on a wrapping element.
  * Components inside read only `var(--...)` references; the palette is the

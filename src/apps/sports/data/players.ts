@@ -1,5 +1,8 @@
+// ABOUTME: players — part of the apps area.
+
 import type { Player } from '../types'
 
+// ABOUTME: PLAYERS — an exported value.
 export const PLAYERS: Player[] = [
   // Boston Celtics
   {

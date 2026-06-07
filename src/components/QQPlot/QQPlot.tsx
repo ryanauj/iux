@@ -1,11 +1,16 @@
+// ABOUTME: QQPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './QQPlot.css'
 
+// ABOUTME: QQPlotVariant — a type alias.
 export type QQPlotVariant = 'normal' | 'sampleVsSample' | 'banded'
 
+// ABOUTME: QQIntent — a type alias.
 export type QQIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: Props for QQPlot.
 export interface QQPlotProps {
   variant?: QQPlotVariant
   /** The sample being assessed; required in every variant. */
@@ -60,6 +65,7 @@ function stats(values: number[]) {
   return { mean, sd: Math.sqrt(Math.max(variance, 1e-9)), n }
 }
 
+// ABOUTME: QQPlot — a React component.
 export function QQPlot({
   variant = 'normal',
   sample,

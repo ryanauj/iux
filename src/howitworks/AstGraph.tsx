@@ -1,3 +1,5 @@
+// ABOUTME: Interactive React Flow viewer for the generated AST graph.
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Background,
@@ -30,11 +32,16 @@ function matchFiles(query: string): Set<string> {
   if (!q) return new Set()
   const out = new Set<string>()
   for (const f of GRAPH.files) {
-    if (f.name.toLowerCase().includes(q) || f.dir.toLowerCase().includes(q)) {
+    if (
+      f.name.toLowerCase().includes(q) ||
+      f.dir.toLowerCase().includes(q) ||
+      (f.about?.toLowerCase().includes(q) ?? false)
+    ) {
       out.add(f.id)
       continue
     }
-    if (f.members.some(m => m.name.toLowerCase().includes(q))) out.add(f.id)
+    if (f.members.some(m => m.name.toLowerCase().includes(q) || (m.about?.toLowerCase().includes(q) ?? false)))
+      out.add(f.id)
   }
   return out
 }
@@ -46,6 +53,7 @@ function AstGraphInner() {
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(new Set())
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [autoLayout, setAutoLayout] = useState(false)
   const [fitToken, setFitToken] = useState(0)
   const rf = useRef<ReactFlowInstance<AstNode, AstEdge> | null>(null)
 
@@ -70,8 +78,8 @@ function AstGraphInner() {
   }, [expandedFiles, matchedFiles])
 
   const built = useMemo(
-    () => buildGraph(GRAPH, { expandedAreas: effectiveAreas, expandedFiles: effectiveFiles, matchedFiles }),
-    [effectiveAreas, effectiveFiles, matchedFiles],
+    () => buildGraph(GRAPH, { expandedAreas: effectiveAreas, expandedFiles: effectiveFiles, matchedFiles, autoLayout }),
+    [effectiveAreas, effectiveFiles, matchedFiles, autoLayout],
   )
 
   // Re-point edge styling to the current selection: the selected node's
@@ -144,6 +152,11 @@ function AstGraphInner() {
     setFitToken(t => t + 1)
   }, [])
 
+  const toggleAutoLayout = useCallback(() => {
+    setAutoLayout(v => !v)
+    setFitToken(t => t + 1)
+  }, [])
+
   useEffect(() => {
     if (fitToken === 0) return
     const id = window.setTimeout(() => rf.current?.fitView({ duration: 400, padding: 0.12 }), 0)
@@ -163,6 +176,15 @@ function AstGraphInner() {
           aria-label="Search files and members"
         />
         <div className="astg__toolbar-actions">
+          <button
+            type="button"
+            className={`astg__btn${autoLayout ? ' is-active' : ''}`}
+            onClick={toggleAutoLayout}
+            aria-pressed={autoLayout}
+            title="Arrange clusters by their import dependencies"
+          >
+            Auto layout
+          </button>
           <button type="button" className="astg__btn" onClick={expandAllAreas}>
             Expand all
           </button>
@@ -215,6 +237,7 @@ function AstGraphInner() {
   )
 }
 
+// ABOUTME: The AST graph viewer: search, expand/collapse, auto-layout, and palette-themed nodes.
 export function AstGraph() {
   return (
     <ReactFlowProvider>

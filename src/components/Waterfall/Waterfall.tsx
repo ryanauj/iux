@@ -1,8 +1,12 @@
+// ABOUTME: Waterfall — a React component (components).
+
 import { useMemo } from 'react'
 import './Waterfall.css'
 
+// ABOUTME: WaterfallVariant — a type alias.
 export type WaterfallVariant = 'simple' | 'signed' | 'subtotals'
 
+// ABOUTME: WaterfallStep — an interface.
 export interface WaterfallStep {
   key: string
   label: string
@@ -12,6 +16,7 @@ export interface WaterfallStep {
   subtotal?: boolean
 }
 
+// ABOUTME: Props for Waterfall.
 export interface WaterfallProps {
   variant?: WaterfallVariant
   steps: WaterfallStep[]
@@ -29,6 +34,7 @@ function defaultFormat(n: number): string {
   return n > 0 ? `+${s}` : s
 }
 
+// ABOUTME: Waterfall — a React component.
 export function Waterfall({
   variant = 'simple',
   steps,

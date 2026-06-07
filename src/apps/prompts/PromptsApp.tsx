@@ -1,3 +1,5 @@
+// ABOUTME: PromptsApp — a React component (apps).
+
 import { useMemo, useRef } from 'react'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
@@ -48,6 +50,7 @@ const NAV: NavItem[] = [
   },
 ]
 
+// ABOUTME: PromptsApp — a React component.
 export function PromptsApp({ location }: PromptsAppProps) {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()

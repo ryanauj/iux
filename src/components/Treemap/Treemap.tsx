@@ -1,11 +1,16 @@
+// ABOUTME: Treemap — a React component (components).
+
 import { useMemo } from 'react'
 import './Treemap.css'
 
+// ABOUTME: TreemapVariant — a type alias.
 export type TreemapVariant = 'flat' | 'grouped' | 'labeled'
 
+// ABOUTME: TreemapIntent — a type alias.
 export type TreemapIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: TreemapNode — an interface.
 export interface TreemapNode {
   key: string
   label: string
@@ -14,6 +19,7 @@ export interface TreemapNode {
   children?: TreemapNode[]
 }
 
+// ABOUTME: Props for Treemap.
 export interface TreemapProps {
   variant?: TreemapVariant
   data: TreemapNode[]
@@ -122,6 +128,7 @@ function buildLayout(
   })
 }
 
+// ABOUTME: Treemap — a React component.
 export function Treemap({
   variant = 'flat',
   data,

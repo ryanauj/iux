@@ -1,3 +1,5 @@
+// ABOUTME: Shell — a React component (apps).
+
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
 import { type SportsRoute } from './routes'
@@ -12,6 +14,7 @@ import { DeckShell } from './shells/deck'
 import { GraphShell } from './shells/graph'
 import { ChatShell } from './shells/chat'
 
+// ABOUTME: LAYOUT_IDS — an exported value.
 /**
  * Layout = the **shell** that wraps the app: brand, navigation, and where
  * page content lands. Most layouts only restyle the chrome (topbar,
@@ -57,10 +60,13 @@ export const LAYOUT_IDS = [
   'graph',
   'chat',
 ] as const
+// ABOUTME: LayoutId — a type alias.
 export type LayoutId = (typeof LAYOUT_IDS)[number]
 
+// ABOUTME: DEFAULT_LAYOUT — an exported value.
 export const DEFAULT_LAYOUT: LayoutId = 'topbar'
 
+// ABOUTME: LAYOUT_OPTIONS — an exported value.
 export const LAYOUT_OPTIONS = [
   { value: 'topbar', label: 'Classic — top bar' },
   { value: 'sidebar', label: 'Sidebar — left rail' },
@@ -79,17 +85,20 @@ export const LAYOUT_OPTIONS = [
   { value: 'chat', label: 'Chat — conversational' },
 ]
 
+// ABOUTME: resolveLayoutId — a helper function.
 export function resolveLayoutId(raw: string | null | undefined): LayoutId {
   if (raw && (LAYOUT_IDS as readonly string[]).includes(raw)) return raw as LayoutId
   return DEFAULT_LAYOUT
 }
 
+// ABOUTME: NavItem — an interface.
 export interface NavItem {
   to: string
   label: string
   isActive: (route: SportsRoute) => boolean
 }
 
+// ABOUTME: Props for Shell.
 export interface ShellProps {
   layoutId: LayoutId
   brand: ReactNode
@@ -127,6 +136,7 @@ function NavLinks({
   )
 }
 
+// ABOUTME: Shell — a React component.
 export function Shell(props: ShellProps) {
   switch (props.layoutId) {
     case 'topbar':

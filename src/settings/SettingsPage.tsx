@@ -1,3 +1,5 @@
+// ABOUTME: SettingsPage — a React component (settings).
+
 import { useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -13,6 +15,7 @@ import { resolveStyle, type StyleId } from '../lib/customPatterns'
 import { useGroups } from '../lib/paletteTags'
 import './settings.css'
 
+// ABOUTME: SettingsPage — a React component.
 /**
  * Home for rarely-used settings that don't belong in the everyday floating
  * controls. Today that's just "Reset default groups" — pulled out of the

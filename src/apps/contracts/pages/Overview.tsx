@@ -1,3 +1,5 @@
+// ABOUTME: Overview — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Bar } from '../../../components/Bar/Bar'
 import { Link } from '../../Link'
@@ -10,6 +12,7 @@ import { money, moneySigned, pct } from '../format'
 
 const CHAPTERS = NAV.slice(1) // everything after Overview
 
+// ABOUTME: Overview — a React component.
 export function Overview() {
   const capGrowth = (SEASON.salaryCap - PRIOR_CAP) / PRIOR_CAP
 

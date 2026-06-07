@@ -1,3 +1,5 @@
+// ABOUTME: Color helpers for the style editor's color picker.
+
 /**
  * Color helpers for the style editor's color picker.
  *
@@ -88,6 +90,7 @@ function parseColor(value: string): Rgba | null {
   return parseHex(value) ?? parseRgbFunc(value)
 }
 
+// ABOUTME: isPickableColor — a helper function.
 /**
  * Whether the value is a color the native picker can edit (hex, rgb, or rgba).
  */
@@ -95,6 +98,7 @@ export function isPickableColor(value: string): boolean {
   return parseColor(value) !== null
 }
 
+// ABOUTME: toPickerHex — a helper function.
 /** Convert a supported color value to `#rrggbb` for `<input type="color">`. */
 export function toPickerHex(value: string): string | null {
   const rgba = parseColor(value)
@@ -102,6 +106,7 @@ export function toPickerHex(value: string): string | null {
   return `#${toHexPair(rgba.r)}${toHexPair(rgba.g)}${toHexPair(rgba.b)}`
 }
 
+// ABOUTME: applyPickedHex — a helper function.
 /**
  * Apply a new `#rrggbb` from the picker, preserving the original value's
  * format (hex / rgb / rgba) and alpha channel.

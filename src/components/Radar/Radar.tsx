@@ -1,11 +1,16 @@
+// ABOUTME: Radar — a React component (components).
+
 import { useMemo } from 'react'
 import './Radar.css'
 
+// ABOUTME: RadarVariant — a type alias.
 export type RadarVariant = 'filled' | 'multiple' | 'rings'
 
+// ABOUTME: RadarIntent — a type alias.
 export type RadarIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: RadarSeries — an interface.
 export interface RadarSeries {
   id: string
   label: string
@@ -13,6 +18,7 @@ export interface RadarSeries {
   intent?: RadarIntent
 }
 
+// ABOUTME: Props for Radar.
 export interface RadarProps {
   variant?: RadarVariant
   /** Axis labels, ordered clockwise from 12 o'clock. */
@@ -33,6 +39,7 @@ function intentFor(s: RadarSeries, i: number): RadarIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Radar — a React component.
 export function Radar({
   variant = 'filled',
   axes,

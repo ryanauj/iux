@@ -1,3 +1,5 @@
+// ABOUTME: Home — a React component (apps).
+
 import { Card } from '../../../components/Card/Card'
 import { Link } from '../../Link'
 import { GAMES, TODAY, getStatLeaders, getStandings } from '../data'
@@ -13,6 +15,7 @@ const STAT_TILES: { key: StatKey; label: string }[] = [
   { key: 'apg', label: 'Assists per game' },
 ]
 
+// ABOUTME: Home — a React component.
 export function Home() {
   const todayGames = GAMES.filter(g => g.date === TODAY)
   const recentFinals = GAMES.filter(g => g.status === 'final').slice(-3).reverse()

@@ -1,5 +1,8 @@
+// ABOUTME: navLayouts — part of the components area.
+
 import { usePersistedPref } from '../../lib/usePersistedPref'
 
+// ABOUTME: NAV_LAYOUT_IDS — an exported value.
 /**
  * App-shell nav locations. Ten variations that place the cross-page nav
  * (Components / Visualizations / Apps / Quiz / Tests / Engines) in
@@ -23,10 +26,13 @@ export const NAV_LAYOUT_IDS = [
   'tabbar',
 ] as const
 
+// ABOUTME: NavLayoutId — a type alias.
 export type NavLayoutId = (typeof NAV_LAYOUT_IDS)[number]
 
+// ABOUTME: DEFAULT_NAV_LAYOUT — an exported value.
 export const DEFAULT_NAV_LAYOUT: NavLayoutId = 'topbar'
 
+// ABOUTME: NAV_LAYOUT_OPTIONS — an exported value.
 export const NAV_LAYOUT_OPTIONS: { value: NavLayoutId; label: string }[] = [
   { value: 'topbar',       label: 'Top bar — classic horizontal' },
   { value: 'sidebar-left', label: 'Sidebar — left rail' },
@@ -40,6 +46,7 @@ export const NAV_LAYOUT_OPTIONS: { value: NavLayoutId; label: string }[] = [
   { value: 'tabbar',       label: 'Tab bar — bottom equal-width' },
 ]
 
+// ABOUTME: resolveNavLayoutId — a helper function.
 export function resolveNavLayoutId(raw: string | null | undefined): NavLayoutId {
   if (raw && (NAV_LAYOUT_IDS as readonly string[]).includes(raw)) {
     return raw as NavLayoutId
@@ -52,6 +59,7 @@ const NAV_LAYOUT_KEY = 'iux-nav-layout'
 const isNavLayoutId = (raw: string): raw is NavLayoutId =>
   (NAV_LAYOUT_IDS as readonly string[]).includes(raw)
 
+// ABOUTME: useNavLayout — a React hook.
 /**
  * Persistent nav layout preference, shared across every page that
  * mounts an `<AppShell>`. localStorage-backed so a layout chosen on the

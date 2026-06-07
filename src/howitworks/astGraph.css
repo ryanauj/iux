@@ -72,6 +72,12 @@
   border-color: var(--color-border-strong, var(--color-border-default));
 }
 
+.astg__btn.is-active {
+  color: var(--color-intent-primary-on, var(--color-content-primary));
+  background: var(--color-intent-primary-surface, var(--color-surface-sunken));
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+}
+
 .astg__btn:focus-visible {
   outline-width: var(--border-width-thick, var(--border-width-thin));
   outline-style: solid;
@@ -311,6 +317,19 @@
   text-overflow: ellipsis;
 }
 
+.astg-file__about {
+  margin: var(--space-2) 0 0;
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  line-height: 1.35;
+  color: var(--color-content-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .astg-file__count {
   font-family: var(--type-code-family, monospace);
   font-size: var(--type-caption-size);
@@ -351,9 +370,9 @@
 
 .astg-file__member {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-2);
-  height: 24px;
+  height: 40px;
 }
 
 .astg-file__member-dot {
@@ -362,6 +381,14 @@
   width: 1.1rem;
   text-align: center;
   flex: none;
+  line-height: 1.5;
+}
+
+.astg-file__member-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
 }
 
 .astg-file__member-name {
@@ -376,6 +403,16 @@
 .astg-file__member-name.is-exported {
   color: var(--color-content-primary);
   font-weight: 600;
+}
+
+.astg-file__member-about {
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  line-height: 1.25;
+  color: var(--color-content-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Narrow screens: drop the minimap, give the canvas more height. */

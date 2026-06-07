@@ -1,8 +1,12 @@
+// ABOUTME: DiffView — a React component (components).
+
 import { useMemo, useState } from 'react'
 import './DiffView.css'
 
+// ABOUTME: DiffViewVariant — a type alias.
 export type DiffViewVariant = 'side-by-side' | 'inline' | 'chunked' | 'three-way'
 
+// ABOUTME: Props for DiffView.
 export interface DiffViewProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: DiffViewVariant
@@ -18,6 +22,7 @@ export interface DiffViewProps {
   className?: string
 }
 
+// ABOUTME: LineOp — a type alias.
 // ---------- Line LCS ----------
 
 export type LineOp =
@@ -25,6 +30,7 @@ export type LineOp =
   | { type: 'del'; line: string }
   | { type: 'add'; line: string }
 
+// ABOUTME: diffLines — a helper function.
 export function diffLines(aText: string, bText: string): LineOp[] {
   const a = aText.split('\n')
   const b = bText.split('\n')
@@ -123,6 +129,7 @@ function chunkOps(ops: LineOp[]): DiffChunk[] {
   return out
 }
 
+// ABOUTME: DiffView — a React component.
 // ---------- Component ----------
 
 export function DiffView({

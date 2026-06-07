@@ -1,3 +1,5 @@
+// ABOUTME: PromptDetail — a React component (apps).
+
 import { useMemo, useState } from 'react'
 import { Button } from '../../../components/Button/Button'
 import { Modal } from '../../../components/Modal/Modal'
@@ -23,6 +25,7 @@ interface PromptDetailProps {
   id: string
 }
 
+// ABOUTME: PromptDetail — a React component.
 export function PromptDetail({ id }: PromptDetailProps) {
   const { get, remove, toggleFavorite } = usePromptStore()
   const prompt = get(id)

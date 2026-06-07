@@ -1,3 +1,5 @@
+// ABOUTME: neubrutalism — part of the guides area.
+
 import { useState } from 'react'
 import { palette as neubrutalism } from '../../../palettes/neubrutalism'
 import { PaletteRoot } from '../../theme/PaletteRoot'
@@ -198,6 +200,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: neubrutalismGuide — an exported value.
 export const neubrutalismGuide: EngineGuideMeta = {
   engine: 'neubrutalism',
   name: 'Neubrutalism',

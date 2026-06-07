@@ -1,3 +1,5 @@
+// ABOUTME: Tabs ladder rungs: basic, rich, overflow, editable.
+
 // Tabs ladder rungs: basic, rich, overflow, editable. Rung 3 (overflow) drives
 // its "More" menu off a ResizeObserver — asserting the auto-collapse requires
 // constraining width in CSS pixels, which is brittle in the test sandbox, so
@@ -77,6 +79,7 @@ function EditableComposition() {
   )
 }
 
+// ABOUTME: tabsTests — an exported value.
 export const tabsTests: IntegrationTest[] = [
   {
     id: 'tabs-rung-1-click',

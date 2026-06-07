@@ -1,11 +1,16 @@
+// ABOUTME: InteractionPlot — a React component (components).
+
 import { useMemo } from 'react'
 import './InteractionPlot.css'
 
+// ABOUTME: InteractionPlotVariant — a type alias.
 export type InteractionPlotVariant = 'lines' | 'bands' | 'spaghetti'
 
+// ABOUTME: InteractionIntent — a type alias.
 export type InteractionIntent =
   | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
 
+// ABOUTME: InteractionLine — an interface.
 export interface InteractionLine {
   id: string
   /** label for this moderator level, e.g. "low", "median", "high" */
@@ -15,6 +20,7 @@ export interface InteractionLine {
   points: { x: number; y: number; lower?: number; upper?: number }[]
 }
 
+// ABOUTME: Props for InteractionPlot.
 export interface InteractionPlotProps {
   variant?: InteractionPlotVariant
   lines: InteractionLine[]
@@ -44,6 +50,7 @@ function intentFor(l: InteractionLine, i: number): InteractionIntent {
   return l.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: InteractionPlot — a React component.
 export function InteractionPlot({
   variant = 'lines',
   lines,

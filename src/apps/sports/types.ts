@@ -1,5 +1,9 @@
+// ABOUTME: types — part of the apps area.
+
+// ABOUTME: Conference — a type alias.
 export type Conference = 'East' | 'West'
 
+// ABOUTME: Division — a type alias.
 export type Division =
   | 'Atlantic'
   | 'Central'
@@ -8,10 +12,13 @@ export type Division =
   | 'Pacific'
   | 'Southwest'
 
+// ABOUTME: Position — a type alias.
 export type Position = 'PG' | 'SG' | 'SF' | 'PF' | 'C'
 
+// ABOUTME: GameStatus — a type alias.
 export type GameStatus = 'final' | 'scheduled' | 'live'
 
+// ABOUTME: Team — an interface.
 export interface Team {
   id: string
   slug: string
@@ -53,6 +60,7 @@ export interface Team {
   streak: string
 }
 
+// ABOUTME: PlayerStats — an interface.
 export interface PlayerStats {
   gamesPlayed: number
   minutesPerGame: number
@@ -69,6 +77,7 @@ export interface PlayerStats {
   ftPct: number
 }
 
+// ABOUTME: Player — an interface.
 export interface Player {
   id: string
   slug: string
@@ -85,17 +94,20 @@ export interface Player {
   stats: PlayerStats
 }
 
+// ABOUTME: GamePerformer — an interface.
 export interface GamePerformer {
   playerId: string
   /** Compact stat line like "32 PTS, 8 REB, 6 AST". */
   line: string
 }
 
+// ABOUTME: QuarterScore — an interface.
 export interface QuarterScore {
   home: number
   away: number
 }
 
+// ABOUTME: Game — an interface.
 export interface Game {
   id: string
   /** ISO date string with no time component, e.g. "2026-05-21". */

@@ -1,3 +1,5 @@
+// ABOUTME: StackedToasts — a React component (components).
+
 import {
   useCallback,
   useMemo,
@@ -9,9 +11,12 @@ import { Toast, type ToastIntent, type ToastItem } from '../Toast/Toast'
 import { getPortalTarget } from '../../theme/portalTarget'
 import './StackedToasts.css'
 
+// ABOUTME: StackedToastsVariant — a type alias.
 export type StackedToastsVariant = 'cap' | 'dedupe' | 'severity' | 'tray'
+// ABOUTME: StackPosition — a type alias.
 export type StackPosition = 'top-right' | 'bottom-right' | 'top-center' | 'bottom-center'
 
+// ABOUTME: Props for StackedToasts.
 export interface StackedToastsProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: StackedToastsVariant
@@ -41,6 +46,7 @@ function fingerprint(t: ToastItem): string {
   return `${t.intent ?? 'neutral'}::${String(t.title ?? '')}::${String(t.body ?? '')}`
 }
 
+// ABOUTME: StackedToasts — a React component.
 export function StackedToasts({
   variant = 'cap',
   toasts,

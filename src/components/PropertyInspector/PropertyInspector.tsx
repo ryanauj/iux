@@ -1,10 +1,15 @@
+// ABOUTME: PropertyInspector — a React component (components).
+
 import { useMemo, useState, type ReactNode } from 'react'
 import './PropertyInspector.css'
 
+// ABOUTME: PropertyInspectorVariant — a type alias.
 export type PropertyInspectorVariant = 'flat' | 'grouped' | 'multi' | 'constrained'
 
+// ABOUTME: PropertyFieldType — a type alias.
 export type PropertyFieldType = 'text' | 'number' | 'select' | 'toggle' | 'color'
 
+// ABOUTME: PropertyField — an interface.
 export interface PropertyField {
   key: string
   label: ReactNode
@@ -16,12 +21,14 @@ export interface PropertyField {
   defaultValue?: unknown
 }
 
+// ABOUTME: ComputedConstraint — an interface.
 export interface ComputedConstraint {
   disabled?: boolean
   /** Override the displayed value (e.g., derived value when a sibling is auto). */
   valueOverride?: unknown
 }
 
+// ABOUTME: Props for PropertyInspector.
 export interface PropertyInspectorProps {
   /** Functional axis. The same prop, never a forked component. */
   variant?: PropertyInspectorVariant
@@ -48,6 +55,7 @@ function sharedValue(selection: Array<Record<string, unknown>>, key: string, fal
   return first
 }
 
+// ABOUTME: PropertyInspector — a React component.
 export function PropertyInspector({
   variant = 'flat',
   fields,

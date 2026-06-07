@@ -1,5 +1,8 @@
+// ABOUTME: teams — part of the apps area.
+
 import type { Team } from '../types'
 
+// ABOUTME: TEAMS — an exported value.
 export const TEAMS: Team[] = [
   {
     id: 'team-bos',

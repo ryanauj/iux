@@ -1,3 +1,5 @@
+// ABOUTME: Custom React Flow node renderers for areas, regions, and files.
+
 import { Handle, Position, type NodeProps } from '@xyflow/react'
 import type { MemberKind } from './generated/astGraph.types'
 import type { AreaNodeData, AreaRegionNodeData, FileNodeData } from './astGraphLayout'
@@ -33,6 +35,7 @@ const KIND_GLYPH: Record<MemberKind, string> = {
   enum: 'E',
 }
 
+// ABOUTME: Display order for member kinds in the legend.
 export const MEMBER_KIND_ORDER: MemberKind[] = [
   'component',
   'function',
@@ -43,7 +46,9 @@ export const MEMBER_KIND_ORDER: MemberKind[] = [
   'enum',
 ]
 
+// ABOUTME: Returns the token-based colour for a member kind.
 export const memberKindColor = (kind: MemberKind) => KIND_COLOR[kind]
+// ABOUTME: Returns the single-character glyph for a member kind.
 export const memberKindGlyph = (kind: MemberKind) => KIND_GLYPH[kind]
 
 /** Centre-pinned, visually-hidden handles shared by connectable nodes. */
@@ -57,6 +62,7 @@ function CenterHandles() {
   )
 }
 
+// ABOUTME: Renders a collapsed directory cluster node.
 export function AreaNode({ data, selected }: NodeProps) {
   const d = data as AreaNodeData
   return (
@@ -74,6 +80,7 @@ export function AreaNode({ data, selected }: NodeProps) {
   )
 }
 
+// ABOUTME: Renders the container header for an expanded area.
 export function RegionNode({ data }: NodeProps) {
   const d = data as AreaRegionNodeData
   return (
@@ -91,6 +98,7 @@ export function RegionNode({ data }: NodeProps) {
   )
 }
 
+// ABOUTME: Renders a file node with its name, English summary, badges, and members.
 export function FileNode({ data, selected }: NodeProps) {
   const d = data as FileNodeData
   const { file, expanded, matched } = d
@@ -113,6 +121,11 @@ export function FileNode({ data, selected }: NodeProps) {
           {file.members.length}
         </span>
       </div>
+      {file.about && (
+        <p className="astg-file__about" title={file.about}>
+          {file.about}
+        </p>
+      )}
       <div className="astg-file__badges">
         <span className="astg-file__badge" title="lines of code">
           {file.loc} loc
@@ -140,7 +153,14 @@ export function FileNode({ data, selected }: NodeProps) {
               >
                 {KIND_GLYPH[m.kind]}
               </span>
-              <span className={`astg-file__member-name${m.exported ? ' is-exported' : ''}`}>{m.name}</span>
+              <span className="astg-file__member-text">
+                <span className={`astg-file__member-name${m.exported ? ' is-exported' : ''}`}>{m.name}</span>
+                {m.about && (
+                  <span className="astg-file__member-about" title={m.about}>
+                    {m.about}
+                  </span>
+                )}
+              </span>
             </li>
           ))}
         </ul>
@@ -149,6 +169,7 @@ export function FileNode({ data, selected }: NodeProps) {
   )
 }
 
+// ABOUTME: Maps node-type keys to their renderer components for React Flow.
 export const astNodeTypes = {
   area: AreaNode,
   region: RegionNode,
