@@ -22,6 +22,9 @@ import {
   type AstNodeData,
 } from './astGraphLayout'
 import { astNodeTypes, MEMBER_KIND_ORDER, memberKindColor, memberKindGlyph } from './astGraphNodes'
+import { AstOutline } from './AstOutline'
+import { AstFocus } from './AstFocus'
+import { AstMatrix } from './AstMatrix'
 import './astGraph.css'
 
 const GRAPH = graphData as AstGraphData
@@ -48,7 +51,7 @@ function matchFiles(query: string): Set<string> {
 
 const areaOfFileId = new Map(GRAPH.files.map(f => [f.id, f.area]))
 
-function AstGraphInner() {
+function GraphView() {
   const [expandedAreas, setExpandedAreas] = useState<Set<string>>(new Set())
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(new Set())
   const [query, setQuery] = useState('')
@@ -169,7 +172,7 @@ function AstGraphInner() {
   }, [fitToken])
 
   return (
-    <div className="astg">
+    <>
       <div className="astg__toolbar">
         <input
           className="astg__search"
@@ -238,15 +241,55 @@ function AstGraphInner() {
           <MiniMap pannable zoomable className="astg__minimap" nodeStrokeWidth={2} />
         </ReactFlow>
       </div>
-    </div>
+    </>
   )
 }
 
-// ABOUTME: The AST graph viewer: search, expand/collapse, auto-layout, and palette-themed nodes.
+const VIEW_OPTIONS = [
+  { id: 'graph', label: 'Graph', hint: 'Force-directed network' },
+  { id: 'outline', label: 'Outline', hint: 'Nested list of areas, files, links' },
+  { id: 'focus', label: 'Focus', hint: 'One file and its neighbours' },
+  { id: 'matrix', label: 'Matrix', hint: 'Area-to-area dependency grid' },
+] as const
+
+type ViewMode = (typeof VIEW_OPTIONS)[number]['id']
+
+/** Lists (Outline/Focus/Matrix) read better than a network graph on a phone. */
+function defaultView(): ViewMode {
+  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches) return 'outline'
+  return 'graph'
+}
+
+// ABOUTME: The AST viewer shell: a view switcher over the graph, outline, focus, and matrix views.
 export function AstGraph() {
+  const [view, setView] = useState<ViewMode>(defaultView)
+
   return (
-    <ReactFlowProvider>
-      <AstGraphInner />
-    </ReactFlowProvider>
+    <div className="astg">
+      <div className="astg__views" role="tablist" aria-label="View mode">
+        {VIEW_OPTIONS.map(opt => (
+          <button
+            key={opt.id}
+            type="button"
+            role="tab"
+            aria-selected={view === opt.id}
+            className={`astg__view-btn${view === opt.id ? ' is-active' : ''}`}
+            onClick={() => setView(opt.id)}
+            title={opt.hint}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {view === 'graph' && (
+        <ReactFlowProvider>
+          <GraphView />
+        </ReactFlowProvider>
+      )}
+      {view === 'outline' && <AstOutline />}
+      {view === 'focus' && <AstFocus />}
+      {view === 'matrix' && <AstMatrix />}
+    </div>
   )
 }
