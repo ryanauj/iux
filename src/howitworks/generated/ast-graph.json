@@ -10058,7 +10058,7 @@
           "kind": "const",
           "exported": false,
           "line": 39,
-          "about": "Auto-dismiss duration in milliseconds per intent for the severity variant; danger uses 0 (never auto-dismiss) while info fades quickest at 2000ms."
+          "about": "Auto-dismiss delay in milliseconds per intent for the severity variant; danger uses 0 (never auto-dismiss) while info fades quickest, after two seconds."
         },
         {
           "name": "fingerprint",
@@ -16181,7 +16181,7 @@
           "kind": "function",
           "exported": false,
           "line": 18,
-          "about": "Multiply the numeric part of a CSS duration string (e.g. \"150ms\", \"0.3s\") by scale, leaving zero values and non-duration strings unchanged; used by paletteToCssVars to apply the motionScale multiplier."
+          "about": "Multiply the numeric part of a CSS duration string (a millisecond or second value) by scale, leaving zero values and non-duration strings unchanged; used by paletteToCssVars to apply the motionScale multiplier."
         },
         {
           "name": "paletteToCssVars",

@@ -14,7 +14,7 @@ import type { SemanticTokens } from '../../tokens/semantic.contract'
  * slots (e.g. AAA) remain at zero. Used by the stories harness to slow
  * demo animations to a legible speed without touching palette source.
  */
-// ABOUTME: Multiply the numeric part of a CSS duration string (e.g. "150ms", "0.3s") by scale, leaving zero values and non-duration strings unchanged; used by paletteToCssVars to apply the motionScale multiplier.
+// ABOUTME: Multiply the numeric part of a CSS duration string (a millisecond or second value) by scale, leaving zero values and non-duration strings unchanged; used by paletteToCssVars to apply the motionScale multiplier.
 function scaleDuration(value: string, scale: number): string {
   if (scale === 1) return value
   const match = value.match(/^(-?\d*\.?\d+)(ms|s)$/)

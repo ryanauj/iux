@@ -35,7 +35,7 @@ const SEVERITY_RANK: Record<ToastIntent, number> = {
 
 // Decay (override durationMs) per intent for severity variant: info fades
 // fastest, danger sticks.
-// ABOUTME: Auto-dismiss duration in milliseconds per intent for the severity variant; danger uses 0 (never auto-dismiss) while info fades quickest at 2000ms.
+// ABOUTME: Auto-dismiss delay in milliseconds per intent for the severity variant; danger uses 0 (never auto-dismiss) while info fades quickest, after two seconds.
 const SEVERITY_FADE: Record<ToastIntent, number> = {
   info: 2000,
   success: 3000,
