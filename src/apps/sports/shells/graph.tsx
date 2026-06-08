@@ -8,8 +8,10 @@ import { formatDate, formatStat } from '../format'
 import { sportsRoutes } from '../routes'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Union of the three node categories in the force-directed graph: teams, players, and games.
 type NodeKind = 'team' | 'player' | 'game'
 
+// ABOUTME: All data needed to render and interact with one node: its kind, display text, team colour, route link, radius, and computed x/y position.
 interface GraphNode {
   id: string
   kind: NodeKind
@@ -22,15 +24,22 @@ interface GraphNode {
   y: number
 }
 
+// ABOUTME: A directed connection between two node ids used to draw SVG lines and build the neighbour lookup for hover highlighting.
 interface GraphEdge { a: string; b: string }
 
+// ABOUTME: SVG viewport width in pixels for the force-directed graph canvas.
 const W = 800
+// ABOUTME: SVG viewport height in pixels for the force-directed graph canvas.
 const H = 560
+// ABOUTME: Horizontal centre of the SVG viewport, used as the gravity anchor for the spring layout.
 const CX = W / 2
+// ABOUTME: Vertical centre of the SVG viewport, used as the gravity anchor for the spring layout.
 const CY = H / 2
 
+// ABOUTME: Circle radius in pixels for each node kind: teams are largest (22), games medium (13), players smallest (11).
 const NODE_RADIUS: Record<NodeKind, number> = { team: 22, player: 11, game: 13 }
 
+// ABOUTME: Constructs the initial node and edge lists: teams on an inner ring, players fanned around their team at a larger radius, games placed between their two home/away team nodes.
 function buildGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
   const nodes: GraphNode[] = []
   const edges: GraphEdge[] = []
@@ -112,6 +121,7 @@ function buildGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
 // Plain iterative spring layout — no D3, no dependencies. The radial
 // seeding above does most of the work; this just relaxes the result so
 // overlapping clusters spread out and edges shrink toward their rest length.
+// ABOUTME: Runs 120 iterations of a spring/repulsion simulation to spread overlapping nodes and pull connected pairs toward a rest distance of 88px; returns nodes with updated x/y positions.
 function relax(nodes: GraphNode[], edges: GraphEdge[]): GraphNode[] {
   const pos = new Map(nodes.map(n => [n.id, { x: n.x, y: n.y }]))
   const ITERATIONS = 120
@@ -173,7 +183,9 @@ function relax(nodes: GraphNode[], edges: GraphEdge[]): GraphNode[] {
 // Cache the (expensive) layout pass. The dataset is static at module
 // load, so we only need to compute positions once per page session — even
 // across remounts of the shell (e.g. layout switched away and back).
+// ABOUTME: Module-level cache for the relaxed node positions, edge list, and neighbour sets; null until first call to getLayout, then reused across remounts.
 let LAYOUT_CACHE: { nodes: GraphNode[]; edges: GraphEdge[]; neighbors: Map<string, Set<string>> } | null = null
+// ABOUTME: Returns the cached layout (building and relaxing it on first call), including the neighbour map used for hover-highlight diffusion.
 function getLayout() {
   if (LAYOUT_CACHE) return LAYOUT_CACHE
   const built = buildGraph()
@@ -188,9 +200,12 @@ function getLayout() {
   return LAYOUT_CACHE
 }
 
+// ABOUTME: Short single-character codes for each NodeKind used in the `?graph=` URL param (e.g. `t,p` means teams and players only).
 const FILTER_CODES: Record<NodeKind, string> = { team: 't', player: 'p', game: 'g' }
+// ABOUTME: Canonical ordered list of all three node kinds, used for iteration order in filter parsing and chip rendering.
 const ALL_KINDS: NodeKind[] = ['team', 'player', 'game']
 
+// ABOUTME: Parses the `?graph=` comma-joined code string into a Set of visible NodeKinds, returning all three kinds when the param is absent or would leave the canvas empty.
 function parseFilter(raw: string | null): Set<NodeKind> {
   if (!raw) return new Set(ALL_KINDS)
   const codes = raw.split(',').filter(Boolean)
@@ -200,11 +215,13 @@ function parseFilter(raw: string | null): Set<NodeKind> {
   return out
 }
 
+// ABOUTME: Serialises a NodeKind Set back to the `?graph=` code string, returning undefined when all three kinds are visible so the URL stays clean.
 function serializeFilter(filter: Set<NodeKind>): string | undefined {
   if (filter.size === ALL_KINDS.length) return undefined
   return ALL_KINDS.filter(k => filter.has(k)).map(k => FILTER_CODES[k]).join(',')
 }
 
+// ABOUTME: SVG graph canvas with filter chips; renders edges and node circles from the cached layout, dims non-neighbours on hover, and delegates click/keyboard to navigate; placed on the Home route by GraphShell.
 function GraphSurface({
   filter,
   onFilterChange,
@@ -352,6 +369,7 @@ function GraphSurface({
   )
 }
 
+// ABOUTME: Primary navigation bar rendered in the GraphShell header; links to all sports sections with `is-active` on the current route.
 function GraphNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__graph-nav" aria-label="Primary">

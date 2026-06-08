@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 1632
+    "documentedMembers": 1816
   },
   "areas": [
     {
@@ -3069,7 +3069,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "chat.tsx",
-      "loc": 544,
+      "loc": 548,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3105,103 +3105,107 @@
           "name": "SEQ",
           "kind": "const",
           "exported": false,
-          "line": 62
+          "line": 63,
+          "about": "Monotonically-increasing message id counter; incremented every time answer() or the user push creates a new Message so each item has a stable React key."
         },
         {
           "name": "LOG",
           "kind": "const",
           "exported": false,
-          "line": 63
+          "line": 65,
+          "about": "Module-level scrollback log holding all messages for the current page session; persists across ChatShell remounts because it lives outside React state."
         },
         {
           "name": "classifyStat",
           "kind": "function",
           "exported": false,
-          "line": 72
+          "line": 75,
+          "about": "Regex-based classifier that maps free-text query words (e.g. \"scoring\", \"ppg\", \"rebound\") to a StatKey, returning null when no stat keyword is recognised."
         },
         {
           "name": "findTeam",
           "kind": "function",
           "exported": false,
-          "line": 81
+          "line": 85,
+          "about": "Searches the TEAMS array for any team whose name, city, or abbreviation appears in the lowercased query text, returning the first match or undefined."
         },
         {
           "name": "findPlayers",
           "kind": "function",
           "exported": false,
-          "line": 90
+          "line": 94
         },
         {
           "name": "answer",
           "kind": "function",
           "exported": false,
-          "line": 102
+          "line": 106
         },
         {
           "name": "TeamCardView",
           "kind": "component",
           "exported": false,
-          "line": 233
+          "line": 237
         },
         {
           "name": "PlayerCardView",
           "kind": "component",
           "exported": false,
-          "line": 249
+          "line": 253
         },
         {
           "name": "GameCardView",
           "kind": "component",
           "exported": false,
-          "line": 268
+          "line": 272
         },
         {
           "name": "LeaderboardView",
           "kind": "component",
           "exported": false,
-          "line": 294
+          "line": 298
         },
         {
           "name": "StandingsView",
           "kind": "component",
           "exported": false,
-          "line": 312
+          "line": 316
         },
         {
           "name": "ComparisonView",
           "kind": "component",
           "exported": false,
-          "line": 336
+          "line": 340
         },
         {
           "name": "CardView",
           "kind": "component",
           "exported": false,
-          "line": 381
+          "line": 385
         },
         {
           "name": "MessageView",
           "kind": "component",
           "exported": false,
-          "line": 399
+          "line": 403
         },
         {
           "name": "ChatSurface",
           "kind": "component",
           "exported": false,
-          "line": 423
+          "line": 427
         },
         {
           "name": "ChatNav",
           "kind": "component",
           "exported": false,
-          "line": 491
+          "line": 495
         },
         {
           "name": "ChatShell",
           "kind": "component",
           "exported": true,
-          "line": 519,
+          "line": 523,
           "about": "Conversational shell that renders the chat surface on the Home route and a back-link + detail page on every other route; the shared module-level LOG survives layout switches so the thread is never lost."
         }
       ],
@@ -3255,7 +3259,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "deck.tsx",
-      "loc": 503,
+      "loc": 522,
       "importCount": 7,
       "externalCount": 1,
       "members": [
@@ -3263,121 +3267,140 @@
           "name": "Stack",
           "kind": "type",
           "exported": false,
-          "line": 18
+          "line": 19,
+          "about": "Union of the three card stacks the deck can show: teams alphabetically, players by PPG, games by date."
         },
         {
           "name": "STACKS",
           "kind": "const",
           "exported": false,
-          "line": 20
+          "line": 22,
+          "about": "Ordered metadata for each stack: its id, button label, and pluralised noun used in empty-state messages."
         },
         {
           "name": "parseDeck",
           "kind": "function",
           "exported": false,
-          "line": 30
+          "line": 33,
+          "about": "Parses the `?deck=<stack>.<index>` URL param into a typed stack id and a non-negative integer index, defaulting to `teams` at 0 when the param is absent or malformed."
         },
         {
           "name": "serializeDeck",
           "kind": "function",
           "exported": false,
-          "line": 41
+          "line": 45,
+          "about": "Serialises stack and card index back to the `?deck=` string, returning undefined (omit the param) when the values match the canonical default so the URL stays clean before the user interacts."
         },
         {
           "name": "TEAMS_SORTED",
           "kind": "const",
           "exported": false,
-          "line": 50
+          "line": 55,
+          "about": "All teams sorted alphabetically by city — the traversal order for the Teams card stack."
         },
         {
           "name": "PLAYERS_SORTED",
           "kind": "const",
           "exported": false,
-          "line": 51
+          "line": 57,
+          "about": "All players sorted by PPG descending — the traversal order for the Players card stack."
         },
         {
           "name": "GAMES_SORTED",
           "kind": "const",
           "exported": false,
-          "line": 52
+          "line": 59,
+          "about": "All games sorted by date descending (most recent first) — the traversal order for the Games card stack."
         },
         {
           "name": "stackLength",
           "kind": "function",
           "exported": false,
-          "line": 54
+          "line": 62,
+          "about": "Returns the total number of cards in the given stack by consulting the matching sorted array."
         },
         {
           "name": "clampIndex",
           "kind": "function",
           "exported": false,
-          "line": 60
+          "line": 69,
+          "about": "Clamps an arbitrary index into the valid range [0, stackLength − 1], returning 0 for an empty stack."
         },
         {
           "name": "TeamCard",
           "kind": "component",
           "exported": false,
-          "line": 68
+          "line": 78,
+          "about": "Full-bleed card for a single team showing the crest, conference/division kicker, record stats, the top-3 scorers by PPG, and the team's most recent final game; placed in the Teams stack by CardFor."
         },
         {
           "name": "PlayerCard",
           "kind": "component",
           "exported": false,
-          "line": 129
+          "line": 140,
+          "about": "Full-bleed card for a single player showing initials crest in team colour, jersey/position kicker, six per-game stat tiles, and a link to the full player page; placed in the Players stack by CardFor."
         },
         {
           "name": "GameCard",
           "kind": "component",
           "exported": false,
-          "line": 177
+          "line": 189,
+          "about": "Full-bleed card for a single game showing status/quarter kicker, a two-row matchup block with scores, and up to three top-performer rows; placed in the Games stack by CardFor."
         },
         {
           "name": "RecentGameRow",
           "kind": "component",
           "exported": false,
-          "line": 247
+          "line": 260,
+          "about": "Compact one-row summary of a single game (away abbreviation, scores, home abbreviation, and formatted date) rendered as a link inside TeamCard's \"Most recent final\" section."
         },
         {
           "name": "Stat",
           "kind": "component",
           "exported": false,
-          "line": 261
+          "line": 275,
+          "about": "Single label/value tile used inside card stat grids; renders a small kicker label above a bold numeric value."
         },
         {
           "name": "CardFor",
           "kind": "component",
           "exported": false,
-          "line": 270
+          "line": 285,
+          "about": "Dispatcher that picks the correct card component (TeamCard, PlayerCard, or GameCard) for the current stack and index, returning null when the index falls out of range."
         },
         {
           "name": "DeckNav",
           "kind": "component",
           "exported": false,
-          "line": 283
+          "line": 299,
+          "about": "Primary navigation bar rendered in the DeckShell header; links to all sports sections, marking the active route with `is-active`."
         },
         {
           "name": "DeckProps",
           "kind": "interface",
           "exported": false,
-          "line": 303
+          "line": 320,
+          "about": "Props for DeckSurface: the current stack id and card index, plus callbacks to change either when the user navigates."
         },
         {
           "name": "DeckSurface",
           "kind": "component",
           "exported": false,
-          "line": 310
+          "line": 328,
+          "about": "Interactive swipe/keyboard surface that renders the stack-selector tab bar, the active card (via CardFor), prev/next arrow controls, and touch-swipe handlers; keyboard ←/→ flips cards, ↑/↓ cycles stacks."
         },
         {
           "name": "DeckBreadcrumb",
           "kind": "component",
           "exported": false,
-          "line": 432
+          "line": 451,
+          "about": "Breadcrumb bar shown on detail routes with a \"← Back to deck\" link and a position indicator (e.g. \"Players · 3 of 12\") so the user knows which card they left before navigating away."
         },
         {
           "name": "DeckShell",
           "kind": "component",
           "exported": true,
-          "line": 454,
+          "line": 473,
           "about": "Shell that mounts DeckSurface (swipeable cards across teams / players / games stacks) on the Home route and a breadcrumb + detail page on other routes; stack and card index are kept in the `?deck=` URL param."
         }
       ],
@@ -3388,7 +3411,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "feed.tsx",
-      "loc": 404,
+      "loc": 421,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3396,109 +3419,126 @@
           "name": "EntryKind",
           "kind": "type",
           "exported": false,
-          "line": 18
+          "line": 19,
+          "about": "The four visual kinds of feed card: live game, completed final, upcoming scheduled game, and a stat-leader highlight."
         },
         {
           "name": "StatusFilter",
           "kind": "type",
           "exported": false,
-          "line": 19
+          "line": 21,
+          "about": "Status filter values for the feed chip strip: all games, live-only, finals-only, or upcoming-only."
         },
         {
           "name": "ConferenceFilter",
           "kind": "type",
           "exported": false,
-          "line": 20
+          "line": 23,
+          "about": "Conference filter values for the feed: show all teams, East only, or West only."
         },
         {
           "name": "GameEntry",
           "kind": "interface",
           "exported": false,
-          "line": 22
+          "line": 26,
+          "about": "Feed entry representing a game; carries pre-resolved home/away Team objects, a sort timestamp that encodes both priority and date, and the game's kind category."
         },
         {
           "name": "LeaderEntry",
           "kind": "interface",
           "exported": false,
-          "line": 31
+          "line": 36,
+          "about": "Feed entry representing a season stat leader; carries the player, their team, a human-readable stat label (e.g. \"PPG leader\"), and the formatted value."
         },
         {
           "name": "FeedEntry",
           "kind": "type",
           "exported": false,
-          "line": 41
+          "line": 47,
+          "about": "Discriminated union of the two concrete feed entry types, used by applyFilters and the GameRow/LeaderRow dispatch in FeedStream."
         },
         {
           "name": "STATUS_FILTERS",
           "kind": "const",
           "exported": false,
-          "line": 43
+          "line": 50,
+          "about": "Ordered chip options for the status filter strip; the `all` option resets the filter and re-shows leader cards."
         },
         {
           "name": "CONFERENCE_FILTERS",
           "kind": "const",
           "exported": false,
-          "line": 50
+          "line": 58,
+          "about": "Ordered chip options for the conference filter strip; selecting East or West hides games and leaders from the other conference."
         },
         {
           "name": "dateOrdinal",
           "kind": "function",
           "exported": false,
-          "line": 56
+          "line": 65,
+          "about": "Converts a \"YYYY-MM-DD\" date string to a UTC millisecond timestamp used for sort comparisons in buildEntries."
         },
         {
           "name": "buildEntries",
           "kind": "function",
           "exported": false,
-          "line": 61
+          "line": 71,
+          "about": "Builds the full unsorted feed by classifying every game into a priority bucket and appending one leader card each for PPG, RPG, and APG; returns entries sorted by descending sortTs so live games always appear first."
         },
         {
           "name": "FilterState",
           "kind": "interface",
           "exported": false,
-          "line": 126
+          "line": 137,
+          "about": "Snapshot of all three active filter dimensions held in FeedShell state; passed to applyFilters on every render."
         },
         {
           "name": "applyFilters",
           "kind": "function",
           "exported": false,
-          "line": 132
+          "line": 144,
+          "about": "Filters a FeedEntry array against all three filter dimensions; leader cards are hidden whenever any narrowing filter is active, since they represent league-wide highlights rather than per-team data."
         },
         {
           "name": "statusBadgeLabel",
           "kind": "function",
           "exported": false,
-          "line": 157
+          "line": 170,
+          "about": "Computes the human-readable badge text for a feed entry: for live games includes quarter and time-remaining, for finals/upcoming/leaders returns a fixed string."
         },
         {
           "name": "GameRow",
           "kind": "component",
           "exported": false,
-          "line": 168
+          "line": 182,
+          "about": "Card-style link for a single game entry showing status badge, date, two team rows with abbreviation swatches and conditional scores, and a top-performers footnote for finals; styled with a kind-specific CSS modifier."
         },
         {
           "name": "LeaderRow",
           "kind": "component",
           "exported": false,
-          "line": 227
+          "line": 242,
+          "about": "Card-style link for a stat-leader entry showing a coloured initials avatar, player name, position and team, and the formatted season stat value; navigates to the player's detail page."
         },
         {
           "name": "FeedStream",
           "kind": "component",
           "exported": false,
-          "line": 261
+          "line": 277,
+          "about": "Stateless list of feed entries with the status/conference/team filter controls above; builds the full entry list once via useMemo and delegates rendering to GameRow or LeaderRow per entry kind."
         },
         {
           "name": "FeedNav",
           "kind": "component",
           "exported": false,
-          "line": 332
+          "line": 349,
+          "about": "Primary navigation bar rendered in the FeedShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "FeedShell",
           "kind": "component",
           "exported": true,
-          "line": 361,
+          "line": 378,
           "about": "Shell that renders FeedStream full-width on Home and as a left rail alongside props.children on detail routes; filter state lives in the shell so it survives the Home ↔ detail transition."
         }
       ],
@@ -3509,7 +3549,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "graph.tsx",
-      "loc": 410,
+      "loc": 428,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3517,115 +3557,133 @@
           "name": "NodeKind",
           "kind": "type",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Union of the three node categories in the force-directed graph: teams, players, and games."
         },
         {
           "name": "GraphNode",
           "kind": "interface",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "All data needed to render and interact with one node: its kind, display text, team colour, route link, radius, and computed x/y position."
         },
         {
           "name": "GraphEdge",
           "kind": "interface",
           "exported": false,
-          "line": 25
+          "line": 28,
+          "about": "A directed connection between two node ids used to draw SVG lines and build the neighbour lookup for hover highlighting."
         },
         {
           "name": "W",
           "kind": "const",
           "exported": false,
-          "line": 27
+          "line": 31,
+          "about": "SVG viewport width in pixels for the force-directed graph canvas."
         },
         {
           "name": "H",
           "kind": "const",
           "exported": false,
-          "line": 28
+          "line": 33,
+          "about": "SVG viewport height in pixels for the force-directed graph canvas."
         },
         {
           "name": "CX",
           "kind": "const",
           "exported": false,
-          "line": 29
+          "line": 35,
+          "about": "Horizontal centre of the SVG viewport, used as the gravity anchor for the spring layout."
         },
         {
           "name": "CY",
           "kind": "const",
           "exported": false,
-          "line": 30
+          "line": 37,
+          "about": "Vertical centre of the SVG viewport, used as the gravity anchor for the spring layout."
         },
         {
           "name": "NODE_RADIUS",
           "kind": "const",
           "exported": false,
-          "line": 32
+          "line": 40,
+          "about": "Circle radius in pixels for each node kind: teams are largest (22), games medium (13), players smallest (11)."
         },
         {
           "name": "buildGraph",
           "kind": "function",
           "exported": false,
-          "line": 34
+          "line": 43,
+          "about": "Constructs the initial node and edge lists: teams on an inner ring, players fanned around their team at a larger radius, games placed between their two home/away team nodes."
         },
         {
           "name": "relax",
           "kind": "function",
           "exported": false,
-          "line": 115
+          "line": 125,
+          "about": "Runs 120 iterations of a spring/repulsion simulation to spread overlapping nodes and pull connected pairs toward a rest distance of 88px; returns nodes with updated x/y positions."
         },
         {
           "name": "LAYOUT_CACHE",
           "kind": "const",
           "exported": false,
-          "line": 176
+          "line": 187,
+          "about": "Module-level cache for the relaxed node positions, edge list, and neighbour sets; null until first call to getLayout, then reused across remounts."
         },
         {
           "name": "getLayout",
           "kind": "function",
           "exported": false,
-          "line": 177
+          "line": 189,
+          "about": "Returns the cached layout (building and relaxing it on first call), including the neighbour map used for hover-highlight diffusion."
         },
         {
           "name": "FILTER_CODES",
           "kind": "const",
           "exported": false,
-          "line": 191
+          "line": 204,
+          "about": "Short single-character codes for each NodeKind used in the `?graph=` URL param (e.g. `t,p` means teams and players only)."
         },
         {
           "name": "ALL_KINDS",
           "kind": "const",
           "exported": false,
-          "line": 192
+          "line": 206,
+          "about": "Canonical ordered list of all three node kinds, used for iteration order in filter parsing and chip rendering."
         },
         {
           "name": "parseFilter",
           "kind": "function",
           "exported": false,
-          "line": 194
+          "line": 209,
+          "about": "Parses the `?graph=` comma-joined code string into a Set of visible NodeKinds, returning all three kinds when the param is absent or would leave the canvas empty."
         },
         {
           "name": "serializeFilter",
           "kind": "function",
           "exported": false,
-          "line": 203
+          "line": 219,
+          "about": "Serialises a NodeKind Set back to the `?graph=` code string, returning undefined when all three kinds are visible so the URL stays clean."
         },
         {
           "name": "GraphSurface",
           "kind": "component",
           "exported": false,
-          "line": 208
+          "line": 225,
+          "about": "SVG graph canvas with filter chips; renders edges and node circles from the cached layout, dims non-neighbours on hover, and delegates click/keyboard to navigate; placed on the Home route by GraphShell."
         },
         {
           "name": "GraphNav",
           "kind": "component",
           "exported": false,
-          "line": 355
+          "line": 373,
+          "about": "Primary navigation bar rendered in the GraphShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "GraphShell",
           "kind": "component",
           "exported": true,
-          "line": 384,
+          "line": 402,
           "about": "Shell that mounts the force-directed GraphSurface on the Home route and the standard page on all other routes; the visible node-kind set is persisted in `?graph=` as a compact comma-joined code string."
         }
       ],
@@ -3819,7 +3877,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "triptych.tsx",
-      "loc": 503,
+      "loc": 520,
       "importCount": 7,
       "externalCount": 1,
       "members": [
@@ -3827,109 +3885,126 @@
           "name": "Section",
           "kind": "type",
           "exported": false,
-          "line": 23
+          "line": 24,
+          "about": "Union of the three browseable sections in col-1 of the triptych: teams, players, and games."
         },
         {
           "name": "SECTIONS",
           "kind": "const",
           "exported": false,
-          "line": 24
+          "line": 26,
+          "about": "Ordered metadata for the three section tabs rendered in col-1's section switcher."
         },
         {
           "name": "sectionFromRoute",
           "kind": "function",
           "exported": false,
-          "line": 30
+          "line": 33,
+          "about": "Infers which triptych section (teams/players/games) best matches a given route, defaulting to teams for home and list routes."
         },
         {
           "name": "entityIdFromRoute",
           "kind": "function",
           "exported": false,
-          "line": 36
+          "line": 40,
+          "about": "Extracts the entity id (team id, player id, or game id) implied by the current route so col-1 and col-2 can pre-select the matching item when navigating via a deep link."
         },
         {
           "name": "ListItem",
           "kind": "interface",
           "exported": false,
-          "line": 43
+          "line": 48,
+          "about": "Normalised row shape for the col-1 scrollable list: entity id, display label, secondary meta string, and optional colour swatch."
         },
         {
           "name": "listForSection",
           "kind": "function",
           "exported": false,
-          "line": 50
+          "line": 56,
+          "about": "Builds the col-1 list for a given section: teams sorted alphabetically by city, players sorted by PPG descending, games sorted by date descending."
         },
         {
           "name": "isInSection",
           "kind": "function",
           "exported": false,
-          "line": 88
+          "line": 95,
+          "about": "Returns true if the given entity id belongs to the specified section's data set, used to validate selectedId after a section switch."
         },
         {
           "name": "Stats",
           "kind": "component",
           "exported": false,
-          "line": 94
+          "line": 102,
+          "about": "Grid of label/value stat tiles used inside TeamSummary and PlayerSummary panels in col-2."
         },
         {
           "name": "SubLink",
           "kind": "interface",
           "exported": false,
-          "line": 107
+          "line": 116,
+          "about": "Shape for a sub-list row in col-2 summary panels: a unique key, a route destination, and label/meta ReactNodes."
         },
         {
           "name": "SubList",
           "kind": "component",
           "exported": false,
-          "line": 114
+          "line": 124,
+          "about": "Titled linked list used inside summary panels (col-2) to show sub-entities such as top scorers under a TeamSummary or recent games under a PlayerSummary."
         },
         {
           "name": "SummaryHead",
           "kind": "component",
           "exported": false,
-          "line": 133
+          "line": 144,
+          "about": "Header block shared by all three summary types (team/player/game) in col-2; renders an optional coloured crest, a kicker line, the entity name, and a meta line with an optional accent border."
         },
         {
           "name": "gameLink",
           "kind": "function",
           "exported": false,
-          "line": 169
+          "line": 181,
+          "about": "Converts a Game into a SubLink (away@home label + formatted date) for use in TeamSummary and PlayerSummary sub-lists; returns null if either team is missing."
         },
         {
           "name": "TeamSummary",
           "kind": "component",
           "exported": false,
-          "line": 181
+          "line": 194,
+          "about": "Col-2 panel for a selected team showing crest/header, six record stats, a top-5 scorers sub-list, a recent-games sub-list, and a link to open the full team page in col-3."
         },
         {
           "name": "PlayerSummary",
           "kind": "component",
           "exported": false,
-          "line": 231
+          "line": 245,
+          "about": "Col-2 panel for a selected player showing initials crest, jersey/position kicker, six per-game stat tiles, a recent-games sub-list for the player's team, and a link to open the full player page in col-3."
         },
         {
           "name": "GameSummary",
           "kind": "component",
           "exported": false,
-          "line": 281
+          "line": 296,
+          "about": "Col-2 panel for a selected game showing status kicker, a two-row matchup board with scores, a top-performers sub-list, and a link to open the full game page in col-3."
         },
         {
           "name": "SummaryFor",
           "kind": "component",
           "exported": false,
-          "line": 339
+          "line": 355,
+          "about": "Dispatcher that renders the correct summary panel (TeamSummary, PlayerSummary, or GameSummary) for the current col-1 selection, or a prompt when nothing is selected."
         },
         {
           "name": "TriNav",
           "kind": "component",
           "exported": false,
-          "line": 362
+          "line": 379,
+          "about": "Primary navigation bar rendered in the TriptychShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "TriptychShell",
           "kind": "component",
           "exported": true,
-          "line": 393,
+          "line": 410,
           "about": "Shell that arranges the sports app as a macOS-Finder-style triptych: a section-tab list (col 1) drives an inline summary (col 2), and the full route page renders in col 3; the active section is kept in `?tri=` and deep links override it when the route's entity lives in a different section."
         }
       ],
@@ -11023,7 +11098,7 @@
       "area": "doctrine",
       "dir": "doctrine",
       "name": "DoctrinePage.tsx",
-      "loc": 249,
+      "loc": 251,
       "importCount": 11,
       "externalCount": 3,
       "members": [
@@ -11031,19 +11106,21 @@
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 31
+          "line": 32,
+          "about": "Canonical URL search-parameter names for DoctrinePage's three URL-driven state values: the chrome palette, the active doctrine article, and the motion scale."
         },
         {
           "name": "UrlSettings",
           "kind": "type",
           "exported": false,
-          "line": 37
+          "line": 39,
+          "about": "Shape of the URL-derived settings parsed on load and on popstate: the chrome style id, the active doctrine article id, and the motion scale multiplier."
         },
         {
           "name": "DoctrinePage",
           "kind": "component",
           "exported": true,
-          "line": 44,
+          "line": 46,
           "about": "Root component for the Doctrine surface: reads chrome/doc/motion URL params, syncs the persisted style store, renders the active DOCTRINE_PAGES entry inside a nested PaletteRoot so live demos respond to palette changes, and provides a DraggableControls panel for switching doc, chrome, nav layout, and motion scale."
         }
       ],
@@ -11283,7 +11360,7 @@
       "area": "editor",
       "dir": "editor",
       "name": "knobRegistry.ts",
-      "loc": 173,
+      "loc": 174,
       "importCount": 0,
       "externalCount": 0,
       "members": [
@@ -11340,13 +11417,14 @@
           "name": "INTENTS",
           "kind": "const",
           "exported": false,
-          "line": 109
+          "line": 110,
+          "about": "The six semantic intent names used to generate one color knob per intent background in the KNOBS array; keyed to color.intent.<name>.bg token paths."
         },
         {
           "name": "KNOBS",
           "kind": "const",
           "exported": true,
-          "line": 112,
+          "line": 113,
           "about": "The master array of editable token knobs rendered by StyleEditorPage: surface colors, content colors, border/focus ring colors, six intent backgrounds, radius scale, spacing scale (space.2–5), border widths, font family stacks, motion durations, and shadow style."
         }
       ],
@@ -11357,7 +11435,7 @@
       "area": "editor",
       "dir": "editor",
       "name": "StyleEditorPage.tsx",
-      "loc": 645,
+      "loc": 657,
       "importCount": 16,
       "externalCount": 3,
       "members": [
@@ -11400,73 +11478,85 @@
           "name": "KnobControl",
           "kind": "component",
           "exported": false,
-          "line": 305
+          "line": 306,
+          "about": "Dispatcher that routes a knob descriptor to the correct control widget: LengthKnob for length tokens, BlockKnob+FontControl for font stacks, or SimpleKnob for colors/text/select."
         },
         {
           "name": "ResetButton",
           "kind": "component",
           "exported": false,
-          "line": 317
+          "line": 319,
+          "about": "Small circular reset button that clears a single knob's override back to its base-palette value; disabled when the knob is already at the base value."
         },
         {
           "name": "SimpleKnob",
           "kind": "component",
           "exported": false,
-          "line": 333
+          "line": 336,
+          "about": "Compact two-column knob row (label | control) for color, text, and select kinds; highlights the row when the value differs from the base palette."
         },
         {
           "name": "BlockKnob",
           "kind": "component",
           "exported": false,
-          "line": 364
+          "line": 368,
+          "about": "Full-width knob layout with a head row (label + optional actions + reset button) above a control body that spans the full width; used by LengthKnob in slider mode and FontControl, both of which need the extra horizontal space."
         },
         {
           "name": "ColorControl",
           "kind": "component",
           "exported": false,
-          "line": 393
+          "line": 398,
+          "about": "Color knob control: a native color-picker swatch when the value parses as a hex color (with applyPickedHex to preserve alpha), plus a free-text input for arbitrary CSS values like oklch() or var()."
         },
         {
           "name": "parseLength",
           "kind": "function",
           "exported": false,
-          "line": 424
+          "line": 430,
+          "about": "Parses a CSS length string like \"12px\" or \"1.5rem\" into a numeric value and unit suffix; returns null for values that can't be cleanly split (e.g. calc() expressions), disabling the slider mode."
         },
         {
           "name": "tidy",
           "kind": "function",
           "exported": false,
-          "line": 432
+          "line": 439,
+          "about": "Rounds a float to at most 4 decimal places and strips trailing zeros, keeping slider output values compact (e.g. 0.5 not 0.5000)."
         },
         {
           "name": "LengthKnob",
           "kind": "component",
           "exported": false,
-          "line": 442
+          "line": 450,
+          "about": "Length knob that defaults to a text input (accepting calc(), clamp(), etc.) with a toggle into a full-width BlockKnob slider + unit-picker via SliderUnit; the slider toggle is disabled when parseLength returns null."
         },
         {
           "name": "SliderUnit",
           "kind": "component",
           "exported": false,
-          "line": 488
+          "line": 497,
+          "about": "Slider-plus-unit-picker control used inside LengthKnob's block mode: a Slider component for the numeric part and a Select dropdown for the unit suffix, emitting combined CSS length strings on every change."
         },
         {
           "name": "splitStack",
           "kind": "function",
           "exported": false,
-          "line": 527
+          "line": 537,
+          "about": "Splits a CSS font-family stack string (comma-separated) into individual trimmed family tokens for FontControl to render as a reorderable list."
         },
         {
           "name": "FontControl",
           "kind": "component",
           "exported": false,
-          "line": 536
+          "line": 547,
+          "about": "Font-stack builder used inside the font knob's BlockKnob: renders each CSS family as a Select dropdown with up/down/remove buttons; injects unknown families from the current value as options so nothing is lost, and emits the full comma-joined stack on every change."
         },
         {
           "name": "PreviewSampler",
           "kind": "component",
           "exported": false,
-          "line": 618
+          "line": 630,
+          "about": "Live preview panel rendered inside a nested PaletteRoot that uses the working (edited) palette: shows headings, body text, a link, all six intent buttons, and two Card variants so token changes are visible immediately."
         }
       ],
       "about": "Page for creating and editing custom palette patterns: lets users clone a built-in palette, tweak token knobs (colors, radius, spacing, fonts, motion), preview changes live in a PreviewSampler, and save/share/delete the result; URL params drive initial state and are kept in sync as the user edits."
@@ -12055,7 +12145,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "glassmorphism.tsx",
-      "loc": 501,
+      "loc": 511,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12063,67 +12153,77 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "BlurRung",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union of the four backdrop-blur step names exposed by the glassmorphism palette, used in MotionDemo."
         },
         {
           "name": "BLURS",
           "kind": "const",
           "exported": false,
-          "line": 15
+          "line": 19,
+          "about": "Ordered array of BlurRung values so the segmented Toggle in MotionDemo can cycle through blur steps."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 22,
+          "about": "Renders the philosophy step demo: a single frosted Card on the saturated indigo host with Save/Cancel buttons, illustrating the alpha-plus-blur recipe."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 36
+          "line": 42,
+          "about": "Renders the surfaces step demo: a four-swatch grid showing base through overlay at their alpha values against the indigo host with backdrop-blur applied."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 72
+          "line": 79,
+          "about": "Renders the borders step demo: three stacked bordered panels showing subtle, default, and strong hairline-white rim borders against the frosted glass host."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 93
+          "line": 101,
+          "about": "Renders the elevation step demo: a Slider scrubs through the five elevation rungs, showing the paired inset-highlight plus outer-cast-shadow growing against the indigo host."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 140
+          "line": 149,
+          "about": "Renders the motion step demo: a motion toggle and blur-rung segmented control let the user feel the engine's wide 260 ms base duration and scrub backdrop-blur from none to lg."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 210
+          "line": 220,
+          "about": "Renders the intent step demo: all six intent buttons against the glass host, showing near-opaque fills for five intents and the fully glassy neutral chip."
         },
         {
           "name": "glassmorphismGuide",
           "kind": "const",
           "exported": true,
-          "line": 235,
+          "line": 245,
           "about": "glassmorphismGuide — the EngineGuideMeta for the Glassmorphism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the glassmorphism palette, covering the alpha-plus-blur recipe, hairline white rim borders, the paired inset-highlight plus outer-cast-shadow elevation, and the a11y trade-offs of depending on backdrop content for contrast."
         }
       ],
@@ -12159,7 +12259,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "material.tsx",
-      "loc": 462,
+      "loc": 471,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12167,61 +12267,70 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 18,
+          "about": "Renders the philosophy step demo: three stacked identical-colour sheets at low/medium/high elevation, proving that shadow alone encodes z-order in the Material engine."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 36
+          "line": 40,
+          "about": "Renders the surfaces step demo: a four-swatch grid of opaque near-identical paper tones, showing that base is a hair grey so white raised sheets read as lifted."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 65
+          "line": 70,
+          "about": "Renders the borders step demo: three stacked divs showing subtle, default, and strong alpha-over-ink border rungs, with a caption noting Material rarely leans on them because shadow already separates levels."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 86
+          "line": 92,
+          "about": "Renders the elevation step demo: a Slider scrubs through five rungs showing the paired ambient + key shadow growing together as the sheet lifts off the page."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 122
+          "line": 129,
+          "about": "Renders the motion step demo: a motion toggle controls the material palette's 250 ms standard-curve base duration, showing the deliberate press-weight feel on hover."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 158
+          "line": 166,
+          "about": "Renders the intent step demo: all six intent buttons showing saturated fills with white inverse text and a uniform indigo focus ring, plus the grey neutral chip."
         },
         {
           "name": "CardComposition",
           "kind": "component",
           "exported": false,
-          "line": 179
+          "line": 188,
+          "about": "Renders a static Card composition inlined inside the philosophy step body, showing a canonical Material card with elevation.low, indigo accent, and Save/Cancel buttons."
         },
         {
           "name": "materialGuide",
           "kind": "const",
           "exported": true,
-          "line": 197,
+          "line": 206,
           "about": "materialGuide — the EngineGuideMeta for the Material engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the material palette, covering the paper-stack metaphor and paired shadow recipe."
         }
       ],
@@ -12232,7 +12341,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "neubrutalism.tsx",
-      "loc": 467,
+      "loc": 477,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12240,67 +12349,77 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "BorderRung",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union of the four border-width step names in the neubrutalism palette, from hairline dividers to the canonical 4px heavy stroke."
         },
         {
           "name": "BORDERS",
           "kind": "const",
           "exported": false,
-          "line": 15
+          "line": 19,
+          "about": "Ordered array of BorderRung values so the segmented Toggle in BordersDemo can cycle through all four width steps."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 22,
+          "about": "Renders the philosophy step demo: a card with zero radius, near-black 4px border, and clashing-colour Save/Cancel buttons, illustrating the engine's single structural language."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 35
+          "line": 41,
+          "about": "Renders the surfaces step demo: a four-swatch grid showing the cream base and the three identical-white raised/sunken/overlay surfaces, each wrapped in the heavy near-black border."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 64
+          "line": 71,
+          "about": "Renders the borders step demo: a segmented control cycles through hairline/thin/thick/heavy widths on a zero-radius bordered div, demonstrating that all three colour rungs are the same near-black."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 100
+          "line": 108,
+          "about": "Renders the elevation step demo: a Slider scrubs through five rungs but the card never changes because every elevation token is set to none in this palette."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 144
+          "line": 153,
+          "about": "Renders the motion step demo: a motion toggle controls the neubrutalism palette's 40–90 ms linear snap durations, showing how removing motion barely affects the experience."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 180
+          "line": 190,
+          "about": "Renders the intent step demo: all six intent buttons with clashing fills and near-black content, showing each wrapped in the same 4px black border with the flush magenta focus ring."
         },
         {
           "name": "neubrutalismGuide",
           "kind": "const",
           "exported": true,
-          "line": 204,
+          "line": 214,
           "about": "neubrutalismGuide — the EngineGuideMeta for the Neubrutalism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the neubrutalism palette, covering 4px borders as the sole hierarchy mechanism and all-none elevation."
         }
       ],
@@ -12311,7 +12430,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "neumorphism.tsx",
-      "loc": 444,
+      "loc": 453,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12319,61 +12438,70 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "PressState",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union of the two interactive press states used in MotionDemo to toggle between elevation.low (extruded) and elevation.flat (inset)."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 16
+          "line": 20,
+          "about": "Renders the philosophy step demo: a Card with paired outer shadows on the same-grey field, illustrating the extrusion illusion where no colour edge separates surface from host."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 44
+          "line": 49,
+          "about": "Renders the surfaces step demo: a four-swatch grid where all tokens resolve to the same near-grey, demonstrating that without the elevation shadow the swatches are indistinguishable from the host."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 80
+          "line": 86,
+          "about": "Renders the borders step demo: two panels showing the invisible subtle/default border (same colour as surface) alongside the barely-darker strong rung, illustrating the engine's border-refusal strategy."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 125
+          "line": 132,
+          "about": "Renders the elevation step demo: a Slider scrubs five rungs showing the paired top-left-highlight / bottom-right-shade recipe growing outward, with the flat rung flipping inset to convey pressed state."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 180
+          "line": 188,
+          "about": "Renders the motion step demo: a motion toggle and press-state picker crossfade between elevation.low (extruded) and elevation.flat (inset), showing the four-shadow simultaneous transition that requires the engine's wider 260 ms base duration."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 250
+          "line": 259,
+          "about": "Renders the intent step demo: all six intent buttons with the same monochrome surface fill, showing that intent lives entirely in content ink colour, plus the indigo focus ring at 4px offset."
         },
         {
           "name": "neumorphismGuide",
           "kind": "const",
           "exported": true,
-          "line": 276,
+          "line": 285,
           "about": "neumorphismGuide — the EngineGuideMeta for the Neumorphism engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the neumorphism palette, covering the one-field-colour approach, the invisible-border choice, the paired-shadow extrusion recipe, and the a11y cost of refusing borders and tonal hierarchy."
         }
       ],
@@ -12384,7 +12512,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "pixel-art.tsx",
-      "loc": 393,
+      "loc": 403,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12392,67 +12520,77 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "BorderRung",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union of the four whole-pixel border-width step names in the pixel-art palette, from 1px hairline to 4px heavy sprite-frame outline."
         },
         {
           "name": "BORDERS",
           "kind": "const",
           "exported": false,
-          "line": 15
+          "line": 19,
+          "about": "Ordered array of BorderRung values so the segmented Toggle in BordersDemo can cycle through the four whole-pixel line widths."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 22,
+          "about": "Renders the philosophy step demo: a card on the DMG green host with zero radius, bitmap-style OK/Cancel buttons, illustrating the integer-grid layout contract."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 36
+          "line": 42,
+          "about": "Renders the surfaces step demo: a four-swatch grid mapping the DMG four-shade register, with three surface tokens collapsing onto the lightest LCD field shade."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 72
+          "line": 79,
+          "about": "Renders the borders step demo: a segmented control cycles through all four whole-pixel widths inside the DMG green host, showing that every line snaps to an integer and antialiasing is off."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 111
+          "line": 119,
+          "about": "Renders the elevation step demo: a Slider walks five rungs showing hard-offset no-blur pixel shadows that snap from cell to cell, with the overlay rung using an inset frame instead of a cast."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 159
+          "line": 168,
+          "about": "Renders the motion step demo: a motion toggle shows the per-frame steps(1,end) easing where hover colours appear on the next frame with no interpolated middle state."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 199
+          "line": 209,
+          "about": "Renders the intent step demo: all six intent buttons inside the DMG host, illustrating how the four-shade register collapses multiple intents onto the same fill shade."
         },
         {
           "name": "pixelArtGuide",
           "kind": "const",
           "exported": true,
-          "line": 226,
+          "line": 236,
           "about": "pixelArtGuide — the EngineGuideMeta for the Pixel-art engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the pixel-art-gameboy palette, covering the four-shade DMG register, whole-pixel hairlines, hard-offset elevation, stepped per-frame motion, and the four-shade intent palette that forces affordance to ride iconography rather than colour."
         }
       ],
@@ -12496,7 +12634,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "sketch.tsx",
-      "loc": 385,
+      "loc": 390,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12504,55 +12642,60 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 18,
+          "about": "Renders the philosophy step demo: a Card on the cream paper field where every border and shadow is already displaced by the root SVG turbulence filter, illustrating that a single filter pass wobbles all components uniformly."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 35
+          "line": 39,
+          "about": "Renders the surfaces step demo: a four-swatch grid of warm paper tones where the displacement filter visibly loosens every corner even on a perfectly square swatch."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 69
+          "line": 74,
+          "about": "Renders the borders step demo: a segmented control picks between three ink-intensity rungs on a bordered div displaced by the wobble filter, showing that width steps up to survive the displacement pass."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 109
+          "line": 114
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 152
+          "line": 157
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 189
+          "line": 194
         },
         {
           "name": "sketchGuide",
           "kind": "const",
           "exported": true,
-          "line": 215,
+          "line": 220,
           "about": "sketchGuide — the EngineGuideMeta for the Sketch engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the sketch-marker palette, covering the SVG displacement filter, warm paper tone surfaces, thickened marker-line borders, ink-blue cast shadows with a heavier wobble on cards, ink-settling motion, and the five-marker intent set with a red-marker focus loop."
         }
       ],
@@ -12563,7 +12706,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "skeuomorphism.tsx",
-      "loc": 435,
+      "loc": 445,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12571,67 +12714,77 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "BevelRung",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union of the four bevel rung names available for the segmented bevel picker in MotionDemo (flat through high, excluding overlay which has no bevel step)."
         },
         {
           "name": "BEVELS",
           "kind": "const",
           "exported": false,
-          "line": 15
+          "line": 19,
+          "about": "Ordered array of BevelRung values so the segmented Toggle in MotionDemo can cycle through the four bevelled elevation slots."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 22,
+          "about": "Renders the philosophy step demo: a warm-parchment Card with bevelled elevation, illustrating that the engine evokes physical material through stacked shadow strings alone, without a CSS gradient."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 37
+          "line": 43,
+          "about": "Renders the surfaces step demo: a four-swatch grid showing the warm parchment tone ladder from desk-base through overlay-sheet, each with a low-elevation bevel."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 73
+          "line": 80,
+          "about": "Renders the borders step demo: three stacked panels showing warm-black ink-alpha borders at subtle, default, and strong opacities, each already carrying a low-elevation bevel."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 126
+          "line": 134,
+          "about": "Renders the elevation step demo: a Slider scrubs through five rungs to show the three-layer bevel (inset top highlight, inset bottom shade, outer drop) thickening with each step."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 175
+          "line": 184,
+          "about": "Renders the motion step demo: a motion toggle and bevel-rung picker let the user watch the highlight and shade thicken in lockstep through the engine's tight 200 ms base curve."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 240
+          "line": 250,
+          "about": "Renders the intent step demo: all six intent buttons showing brushed-tone fills with cream ink for five intents and the parchment-tile neutral, plus the umber focus ring."
         },
         {
           "name": "skeuomorphismGuide",
           "kind": "const",
           "exported": true,
-          "line": 268,
+          "line": 278,
           "about": "skeuomorphismGuide — the EngineGuideMeta for the Skeuomorphism engine: five steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the skeuomorphism palette, covering warm parchment tone hierarchy, the three-layer bevel recipe delivered through stacked shadow strings, warm-black ink borders, tight snap-physical motion, and brushed-tone intent fills with cream ink."
         }
       ],
@@ -14012,7 +14165,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "patternCodec.ts",
-      "loc": 84,
+      "loc": 86,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -14034,26 +14187,28 @@
           "name": "base64UrlEncode",
           "kind": "function",
           "exported": false,
-          "line": 35
+          "line": 36,
+          "about": "Encodes a UTF-8 string to URL-safe base64 (RFC 4648 §5) by converting + to -, / to _, and stripping trailing = padding; used by encodePattern for custom palette payloads."
         },
         {
           "name": "base64UrlDecode",
           "kind": "function",
           "exported": false,
-          "line": 40
+          "line": 42,
+          "about": "Reverses base64UrlEncode: restores standard base64 characters then decodes via atob and decodeURIComponent; used by decodePattern to recover the JSON payload."
         },
         {
           "name": "encodePattern",
           "kind": "function",
           "exported": true,
-          "line": 47,
+          "line": 49,
           "about": "Encode a built-in id (bare) or a custom pattern (base64url payload)."
         },
         {
           "name": "decodePattern",
           "kind": "function",
           "exported": true,
-          "line": 64,
+          "line": 66,
           "about": "Decode a `?palette=` token into a built-in id or a shared custom pattern."
         }
       ],
@@ -14064,7 +14219,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "persistedStyle.ts",
-      "loc": 95,
+      "loc": 96,
       "importCount": 3,
       "externalCount": 1,
       "members": [
@@ -14086,41 +14241,42 @@
           "name": "PALETTE_ID_SET",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Pre-built Set of all built-in palette id strings; used by isPaletteId for O(1) membership tests when validating stored or URL-supplied style ids."
         },
         {
           "name": "isPaletteId",
           "kind": "function",
           "exported": true,
-          "line": 16,
+          "line": 17,
           "about": "Type guard — true when value is a key in the built-in palette registry; used to validate storage reads."
         },
         {
           "name": "isStyleId",
           "kind": "function",
           "exported": true,
-          "line": 26,
+          "line": 27,
           "about": "Either a built-in palette id or a `custom:<slug>` pattern id."
         },
         {
           "name": "useSelectedStyle",
           "kind": "function",
           "exported": true,
-          "line": 44,
+          "line": 45,
           "about": "Site-wide \"selected style\" — the palette the user has most recently picked anywhere on the site."
         },
         {
           "name": "readSelectedStyle",
           "kind": "function",
           "exported": true,
-          "line": 59,
+          "line": 60,
           "about": "Synchronous accessor for the persisted selected style."
         },
         {
           "name": "buildPaletteField",
           "kind": "function",
           "exported": true,
-          "line": 79,
+          "line": 80,
           "about": "Build the canonical \"chrome\" Field for `DraggableControls`."
         }
       ],
@@ -14131,7 +14287,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "useDocMode.ts",
-      "loc": 35,
+      "loc": 36,
       "importCount": 1,
       "externalCount": 0,
       "members": [
@@ -14160,20 +14316,21 @@
           "name": "DOC_MODES",
           "kind": "const",
           "exported": false,
-          "line": 24
+          "line": 25,
+          "about": "Pre-built Set of valid DocMode strings used by isDocMode to reject arbitrary values read from localStorage."
         },
         {
           "name": "isDocMode",
           "kind": "function",
           "exported": true,
-          "line": 27,
+          "line": 28,
           "about": "Type guard for DocMode — passed to usePersistedPref to reject invalid storage values."
         },
         {
           "name": "useDocMode",
           "kind": "function",
           "exported": true,
-          "line": 32,
+          "line": 33,
           "about": "Returns the persisted DocMode and a setter; persists across reloads and syncs across tabs via usePersistedPref."
         }
       ],
@@ -14281,7 +14438,7 @@
       "area": "quiz",
       "dir": "quiz",
       "name": "generators.ts",
-      "loc": 74,
+      "loc": 79,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -14289,44 +14446,49 @@
           "name": "ALL_IDS",
           "kind": "const",
           "exported": false,
-          "line": 6
+          "line": 7,
+          "about": "All built-in palette ids drawn from the palettes registry; nextQuestion picks its target and distractors from this array."
         },
         {
           "name": "STIMULUS_KINDS",
           "kind": "const",
           "exported": false,
-          "line": 7
+          "line": 9,
+          "about": "The three stimulus kinds the quiz cycles through when picking what to show the user: component grid, visualization grid, or sample sports app."
         },
         {
           "name": "mulberry32",
           "kind": "function",
           "exported": false,
-          "line": 10
+          "line": 13,
+          "about": "Mulberry32 PRNG implementation — takes a 32-bit seed and returns a stateful closure that produces uniformly distributed floats in [0, 1); chosen because it is tiny, fast, and produces reproducible sequences from the same seed."
         },
         {
           "name": "pick",
           "kind": "function",
           "exported": false,
-          "line": 21
+          "line": 25,
+          "about": "Picks a uniformly random element from a non-empty array using the provided PRNG; used by nextQuestion to choose the target palette and the stimulus kind."
         },
         {
           "name": "shuffle",
           "kind": "function",
           "exported": false,
-          "line": 25
+          "line": 30,
+          "about": "Returns a Fisher-Yates shuffled copy of an array using the provided PRNG; used to randomise distractor order and the final four-option list in nextQuestion."
         },
         {
           "name": "makeRng",
           "kind": "function",
           "exported": true,
-          "line": 35,
+          "line": 40,
           "about": "Initialise a Mulberry32 PRNG from a 32-bit seed and return a stateful function that produces uniformly distributed floats in [0, 1); used by QuizView so questions are reproducible within a session."
         },
         {
           "name": "nextQuestion",
           "kind": "function",
           "exported": true,
-          "line": 46,
+          "line": 51,
           "about": "Generate one identify question."
         }
       ],
@@ -14337,7 +14499,7 @@
       "area": "quiz",
       "dir": "quiz",
       "name": "QuizPage.tsx",
-      "loc": 197,
+      "loc": 201,
       "importCount": 8,
       "externalCount": 2,
       "members": [
@@ -14345,31 +14507,35 @@
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 22
+          "line": 23,
+          "about": "Canonical URL search-parameter names for the quiz page's chrome palette and controls-style state."
         },
         {
           "name": "DEFAULT_CONTROLS",
           "kind": "const",
           "exported": false,
-          "line": 27
+          "line": 29,
+          "about": "The controls-style used when the URL has no controls= param: show the floating button rather than the strip."
         },
         {
           "name": "UrlSettings",
           "kind": "type",
           "exported": false,
-          "line": 29
+          "line": 32,
+          "about": "Shape of URL-derived settings read by readUrlSettings: the chrome palette id and the DraggableControls display mode."
         },
         {
           "name": "readUrlSettings",
           "kind": "function",
           "exported": false,
-          "line": 34
+          "line": 38,
+          "about": "Parses chrome and controls URL search params, falling back to the persisted chrome and the default controls style for any missing or invalid value."
         },
         {
           "name": "QuizPage",
           "kind": "component",
           "exported": true,
-          "line": 50,
+          "line": 54,
           "about": "Root component of the quiz page: reads chrome/controls URL params, seeds the persisted style on first mount, follows cross-surface style changes, and passes a stable seed to QuizView so the endless question sequence is reproducible within a session but fresh each reload."
         }
       ],
@@ -14380,7 +14546,7 @@
       "area": "quiz",
       "dir": "quiz",
       "name": "QuizView.tsx",
-      "loc": 145,
+      "loc": 150,
       "importCount": 6,
       "externalCount": 4,
       "members": [
@@ -14388,38 +14554,43 @@
           "name": "Props",
           "kind": "interface",
           "exported": false,
-          "line": 14
+          "line": 15,
+          "about": "Props for QuizView: a numeric seed used to initialise the Mulberry32 PRNG so the question sequence is reproducible within a page session."
         },
         {
           "name": "AnswerState",
           "kind": "interface",
           "exported": false,
-          "line": 18
+          "line": 20,
+          "about": "Records the user's answer for the current question: whether it was correct and which palette id they picked, used to drive feedback styling on the option buttons."
         },
         {
           "name": "QuizView",
           "kind": "component",
           "exported": true,
-          "line": 24,
+          "line": 26,
           "about": "Stateful quiz interaction loop: holds the current IdentifyQuestion and the user's AnswerState, renders a Stimulus inside a shield div, four palette-name option buttons, feedback text after answering, and a Next button that calls nextQuestion to advance the seeded RNG."
         },
         {
           "name": "Stimulus",
           "kind": "component",
           "exported": false,
-          "line": 94
+          "line": 97,
+          "about": "Renders one quiz stimulus inside a shield div that hides the palette name: shows a PaletteShowcase grid for components or visualizations, or a PaletteRoot-wrapped SportsHome for the app kind."
         },
         {
           "name": "stimulusLabel",
           "kind": "function",
           "exported": false,
-          "line": 126
+          "line": 130,
+          "about": "Maps a StimulusKind to the human-readable hint shown in parentheses beside the quiz prompt so users know what they are looking at."
         },
         {
           "name": "optionClass",
           "kind": "function",
           "exported": false,
-          "line": 132
+          "line": 137,
+          "about": "Computes the CSS class string for an option button based on post-answer state: correct answer gets --correct, wrong pick gets --wrong, unchosen wrong answers get --dim; no modifier before the user answers."
         }
       ],
       "about": "Interactive view for the palette-guessing quiz: renders a Stimulus (components grid, visualizations grid, or a sample sports app) in the target palette, shows four multiple-choice palette buttons, reveals correct/wrong feedback on answer, and advances to the next seeded question via nextQuestion from generators.ts."
@@ -14528,7 +14699,7 @@
       "area": "showcase",
       "dir": "showcase",
       "name": "PaletteShowcase.tsx",
-      "loc": 293,
+      "loc": 299,
       "importCount": 3,
       "externalCount": 3,
       "members": [
@@ -14543,44 +14714,50 @@
           "name": "Props",
           "kind": "interface",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Props for PaletteShowcase: the palette to render inside, which layout to use, an optional motion scale multiplier, the story entries to display, a plural kind label for the header meta line, and a flag to suppress the palette name/engine header (used by QuizView to avoid revealing the answer)."
         },
         {
           "name": "PaletteShowcase",
           "kind": "component",
           "exported": true,
-          "line": 28,
+          "line": 29,
           "about": "Wraps entries in a PaletteRoot and dispatches to FeedLayout, DeckLayout, or GridLayout; omits the palette header when showHeader=false (used by QuizView to hide the answer)."
         },
         {
           "name": "TierBadge",
           "kind": "component",
           "exported": false,
-          "line": 69
+          "line": 71,
+          "about": "Small inline badge that displays a story entry's tier number (1, 2, or 3) with a tier-specific CSS modifier class; shown in card headers across all three layout modes."
         },
         {
           "name": "FeedLayout",
           "kind": "component",
           "exported": false,
-          "line": 75
+          "line": 78,
+          "about": "Stacked masonry feed layout: renders each story entry as a card with variant chip tabs; clicking a chip swaps the rendered variant inside the card without navigation."
         },
         {
           "name": "DeckLayout",
           "kind": "component",
           "exported": false,
-          "line": 119
+          "line": 123,
+          "about": "Horizontal swipeable deck layout: renders each entry as a DeckCard with a scrollable slide track; the active slide index drives the dot indicators and prev/next arrow buttons."
         },
         {
           "name": "DeckCard",
           "kind": "component",
           "exported": false,
-          "line": 129
+          "line": 134,
+          "about": "Individual card in the DeckLayout: a scroll-snap track of variant slides with prev/next arrow buttons, a dot-tab row, and a counter; detects the active slide via a scroll listener on the track element."
         },
         {
           "name": "GridLayout",
           "kind": "component",
           "exported": false,
-          "line": 219
+          "line": 225,
+          "about": "Tap-to-expand tile grid: initially shows each entry as a compact button tile with tier badge and variant count; clicking expands it into a full showcase-card panel in place, with Escape and a close button to collapse."
         }
       ],
       "about": "Renders all story entries for one palette in the chosen layout (feed, deck, or grid) inside a PaletteRoot, with an optional header showing palette name/engine and an engine-guide link; used by ShowcasePage in per-palette mode and by QuizView as the components and visualizations stimulus."
@@ -14590,7 +14767,7 @@
       "area": "showcase",
       "dir": "showcase",
       "name": "ShowcasePage.tsx",
-      "loc": 435,
+      "loc": 441,
       "importCount": 11,
       "externalCount": 4,
       "members": [
@@ -14598,50 +14775,56 @@
           "name": "PALETTE_IDS",
           "kind": "const",
           "exported": false,
-          "line": 23
+          "line": 24,
+          "about": "All built-in palette ids in insertion order; used to iterate palettes in per-component mode and validate the palette= URL param."
         },
         {
           "name": "ViewMode",
           "kind": "type",
           "exported": false,
-          "line": 25
+          "line": 27,
+          "about": "The two top-level display modes: per-component shows one story across all palettes as stacked rows; per-palette feeds all stories through a single palette in feed/deck/grid layout."
         },
         {
           "name": "PaletteChoice",
           "kind": "type",
           "exported": false,
-          "line": 26
+          "line": 29,
+          "about": "The palette filter value for per-component mode: either a specific built-in palette id or 'all' to show every palette row."
         },
         {
           "name": "VariantChoice",
           "kind": "type",
           "exported": false,
-          "line": 27
+          "line": 31,
+          "about": "The variant filter for per-component mode: either a specific variant name from the active entry or 'all' to render every variant."
         },
         {
           "name": "LAYOUTS",
           "kind": "const",
           "exported": false,
-          "line": 29
+          "line": 34,
+          "about": "The three available per-palette layout options surfaced in the DraggableControls Layout field, passed as options to the layout Field and used to select the PaletteShowcase layout prop."
         },
         {
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 35
+          "line": 41,
+          "about": "Canonical URL search-parameter names for all of ShowcasePage's URL-driven state: view mode, selected component, variant filter, palette filter, chrome palette, showcase palette, layout, and motion scale."
         },
         {
           "name": "ShowcasePageProps",
           "kind": "interface",
           "exported": true,
-          "line": 47,
+          "line": 53,
           "about": "Configuration props for ShowcasePage: the story entries to display, singular/plural noun labels, page title, default selected entry id, the nav link to mark active, and the info popover body text."
         },
         {
           "name": "ShowcasePage",
           "kind": "component",
           "exported": true,
-          "line": 65,
+          "line": 71,
           "about": "Root component of the showcase surface: reads and writes view/component/variant/palette/chrome/layout/motion URL params, syncs with the persisted style store, renders DraggableControls with context-appropriate fields, and delegates to per-component PaletteRoot rows or a full PaletteShowcase depending on the active view mode."
         }
       ],
@@ -15905,7 +16088,7 @@
       "area": "theme",
       "dir": "theme",
       "name": "PaletteRoot.tsx",
-      "loc": 31,
+      "loc": 32,
       "importCount": 1,
       "externalCount": 2,
       "members": [
@@ -15913,13 +16096,14 @@
           "name": "PaletteRootProps",
           "kind": "interface",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Props for PaletteRoot: the palette whose tokens will be applied as CSS variables, children to render inside, an optional className, which HTML element to render as (div/section/article), and an optional motion scale multiplier."
         },
         {
           "name": "PaletteRoot",
           "kind": "component",
           "exported": true,
-          "line": 22,
+          "line": 23,
           "about": "Applies a palette's tokens as CSS custom properties on a wrapping element."
         }
       ],

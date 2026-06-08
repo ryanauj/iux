@@ -9,10 +9,14 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union of the two interactive press states used in MotionDemo to toggle between elevation.low (extruded) and elevation.flat (inset).
 type PressState = 'rest' | 'pressed'
 
+// ABOUTME: Renders the philosophy step demo: a Card with paired outer shadows on the same-grey field, illustrating the extrusion illusion where no colour edge separates surface from host.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -41,6 +45,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid where all tokens resolve to the same near-grey, demonstrating that without the elevation shadow the swatches are indistinguishable from the host.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -77,6 +82,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: two panels showing the invisible subtle/default border (same colour as surface) alongside the barely-darker strong rung, illustrating the engine's border-refusal strategy.
 function BordersDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -122,6 +128,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs five rungs showing the paired top-left-highlight / bottom-right-shade recipe growing outward, with the flat rung flipping inset to convey pressed state.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -177,6 +184,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle and press-state picker crossfade between elevation.low (extruded) and elevation.flat (inset), showing the four-shadow simultaneous transition that requires the engine's wider 260 ms base duration.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   const [press, setPress] = useState<PressState>('rest')
@@ -247,6 +255,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons with the same monochrome surface fill, showing that intent lives entirely in content ink colour, plus the indigo focus ring at 4px offset.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

@@ -15,10 +15,14 @@ import { sportsRoutes } from '../routes'
 import type { Game, Player, Team } from '../types'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: The four visual kinds of feed card: live game, completed final, upcoming scheduled game, and a stat-leader highlight.
 type EntryKind = 'live' | 'final' | 'upcoming' | 'leader'
+// ABOUTME: Status filter values for the feed chip strip: all games, live-only, finals-only, or upcoming-only.
 type StatusFilter = 'all' | 'live' | 'final' | 'upcoming'
+// ABOUTME: Conference filter values for the feed: show all teams, East only, or West only.
 type ConferenceFilter = 'all' | 'East' | 'West'
 
+// ABOUTME: Feed entry representing a game; carries pre-resolved home/away Team objects, a sort timestamp that encodes both priority and date, and the game's kind category.
 interface GameEntry {
   key: string
   kind: 'live' | 'final' | 'upcoming'
@@ -28,6 +32,7 @@ interface GameEntry {
   away: Team
 }
 
+// ABOUTME: Feed entry representing a season stat leader; carries the player, their team, a human-readable stat label (e.g. "PPG leader"), and the formatted value.
 interface LeaderEntry {
   key: string
   kind: 'leader'
@@ -38,8 +43,10 @@ interface LeaderEntry {
   statValue: string
 }
 
+// ABOUTME: Discriminated union of the two concrete feed entry types, used by applyFilters and the GameRow/LeaderRow dispatch in FeedStream.
 type FeedEntry = GameEntry | LeaderEntry
 
+// ABOUTME: Ordered chip options for the status filter strip; the `all` option resets the filter and re-shows leader cards.
 const STATUS_FILTERS: { id: StatusFilter; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'live', label: 'Live' },
@@ -47,17 +54,20 @@ const STATUS_FILTERS: { id: StatusFilter; label: string }[] = [
   { id: 'upcoming', label: 'Upcoming' },
 ]
 
+// ABOUTME: Ordered chip options for the conference filter strip; selecting East or West hides games and leaders from the other conference.
 const CONFERENCE_FILTERS: { id: ConferenceFilter; label: string }[] = [
   { id: 'all', label: 'Both confs' },
   { id: 'East', label: 'East' },
   { id: 'West', label: 'West' },
 ]
 
+// ABOUTME: Converts a "YYYY-MM-DD" date string to a UTC millisecond timestamp used for sort comparisons in buildEntries.
 function dateOrdinal(dateStr: string): number {
   const [y, m, d] = dateStr.split('-').map(Number)
   return new Date(y, m - 1, d).getTime()
 }
 
+// ABOUTME: Builds the full unsorted feed by classifying every game into a priority bucket and appending one leader card each for PPG, RPG, and APG; returns entries sorted by descending sortTs so live games always appear first.
 function buildEntries(): FeedEntry[] {
   const out: FeedEntry[] = []
   const todayTs = dateOrdinal(TODAY)
@@ -123,12 +133,14 @@ function buildEntries(): FeedEntry[] {
   return out.sort((a, b) => b.sortTs - a.sortTs)
 }
 
+// ABOUTME: Snapshot of all three active filter dimensions held in FeedShell state; passed to applyFilters on every render.
 interface FilterState {
   status: StatusFilter
   conference: ConferenceFilter
   teamId: string | 'all'
 }
 
+// ABOUTME: Filters a FeedEntry array against all three filter dimensions; leader cards are hidden whenever any narrowing filter is active, since they represent league-wide highlights rather than per-team data.
 function applyFilters(entries: FeedEntry[], f: FilterState): FeedEntry[] {
   return entries.filter(e => {
     if (e.kind === 'leader') {
@@ -154,6 +166,7 @@ function applyFilters(entries: FeedEntry[], f: FilterState): FeedEntry[] {
   })
 }
 
+// ABOUTME: Computes the human-readable badge text for a feed entry: for live games includes quarter and time-remaining, for finals/upcoming/leaders returns a fixed string.
 function statusBadgeLabel(kind: EntryKind, game?: Game): string {
   if (kind === 'live') {
     const q = game?.quarter ? `Q${game.quarter}` : 'Live'
@@ -165,6 +178,7 @@ function statusBadgeLabel(kind: EntryKind, game?: Game): string {
   return 'Notable'
 }
 
+// ABOUTME: Card-style link for a single game entry showing status badge, date, two team rows with abbreviation swatches and conditional scores, and a top-performers footnote for finals; styled with a kind-specific CSS modifier.
 function GameRow({ entry }: { entry: GameEntry }) {
   const { game, home, away, kind } = entry
   const isFinal = kind === 'final'
@@ -224,6 +238,7 @@ function GameRow({ entry }: { entry: GameEntry }) {
   )
 }
 
+// ABOUTME: Card-style link for a stat-leader entry showing a coloured initials avatar, player name, position and team, and the formatted season stat value; navigates to the player's detail page.
 function LeaderRow({ entry }: { entry: LeaderEntry }) {
   const { player, team, statLabel, statValue } = entry
   return (
@@ -258,6 +273,7 @@ function LeaderRow({ entry }: { entry: LeaderEntry }) {
   )
 }
 
+// ABOUTME: Stateless list of feed entries with the status/conference/team filter controls above; builds the full entry list once via useMemo and delegates rendering to GameRow or LeaderRow per entry kind.
 function FeedStream({ filters, onFilters }: {
   filters: FilterState
   onFilters: (next: FilterState) => void
@@ -329,6 +345,7 @@ function FeedStream({ filters, onFilters }: {
   )
 }
 
+// ABOUTME: Primary navigation bar rendered in the FeedShell header; links to all sports sections with `is-active` on the current route.
 function FeedNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__feed-nav" aria-label="Primary">

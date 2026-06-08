@@ -3,9 +3,12 @@
 import { palettes, type PaletteId } from '../../palettes'
 import type { IdentifyQuestion, StimulusKind } from './types'
 
+// ABOUTME: All built-in palette ids drawn from the palettes registry; nextQuestion picks its target and distractors from this array.
 const ALL_IDS = Object.keys(palettes) as PaletteId[]
+// ABOUTME: The three stimulus kinds the quiz cycles through when picking what to show the user: component grid, visualization grid, or sample sports app.
 const STIMULUS_KINDS: StimulusKind[] = ['components', 'visualizations', 'app']
 
+// ABOUTME: Mulberry32 PRNG implementation — takes a 32-bit seed and returns a stateful closure that produces uniformly distributed floats in [0, 1); chosen because it is tiny, fast, and produces reproducible sequences from the same seed.
 // Mulberry32 — small deterministic PRNG, kept so seeds are reproducible.
 function mulberry32(seed: number): () => number {
   let a = seed >>> 0
@@ -18,10 +21,12 @@ function mulberry32(seed: number): () => number {
   }
 }
 
+// ABOUTME: Picks a uniformly random element from a non-empty array using the provided PRNG; used by nextQuestion to choose the target palette and the stimulus kind.
 function pick<T>(arr: readonly T[], rng: () => number): T {
   return arr[Math.floor(rng() * arr.length)]
 }
 
+// ABOUTME: Returns a Fisher-Yates shuffled copy of an array using the provided PRNG; used to randomise distractor order and the final four-option list in nextQuestion.
 function shuffle<T>(arr: readonly T[], rng: () => number): T[] {
   const out = arr.slice()
   for (let i = out.length - 1; i > 0; i--) {

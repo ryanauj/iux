@@ -21,6 +21,7 @@ export const DOC_MODE_KEY = 'iux-doc-mode'
 // ABOUTME: The DocMode used when nothing has been persisted — opens every guide in the plain, everyday-English voice.
 export const DEFAULT_DOC_MODE: DocMode = 'plain'
 
+// ABOUTME: Pre-built Set of valid DocMode strings used by isDocMode to reject arbitrary values read from localStorage.
 const DOC_MODES = new Set<string>(['plain', 'technical'])
 
 // ABOUTME: Type guard for DocMode — passed to usePersistedPref to reject invalid storage values.

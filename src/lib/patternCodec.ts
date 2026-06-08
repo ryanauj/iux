@@ -32,11 +32,13 @@ export type DecodeResult =
   | { kind: 'custom'; share: SharedPattern }
   | null
 
+// ABOUTME: Encodes a UTF-8 string to URL-safe base64 (RFC 4648 §5) by converting + to -, / to _, and stripping trailing = padding; used by encodePattern for custom palette payloads.
 function base64UrlEncode(input: string): string {
   const b64 = btoa(unescape(encodeURIComponent(input)))
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
+// ABOUTME: Reverses base64UrlEncode: restores standard base64 characters then decodes via atob and decodeURIComponent; used by decodePattern to recover the JSON payload.
 function base64UrlDecode(token: string): string {
   const b64 = token.replace(/-/g, '+').replace(/_/g, '/')
   return decodeURIComponent(escape(atob(b64)))

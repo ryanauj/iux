@@ -59,7 +59,9 @@ const STAT_LABELS: Record<StatKey, string> = {
 // Scrollback survives layout switches & remounts — the chat is the
 // session's running thread, not a per-mount state. The greeting seeds
 // the log on first import.
+// ABOUTME: Monotonically-increasing message id counter; incremented every time answer() or the user push creates a new Message so each item has a stable React key.
 let SEQ = 1
+// ABOUTME: Module-level scrollback log holding all messages for the current page session; persists across ChatShell remounts because it lives outside React state.
 const LOG: Message[] = [
   {
     id: SEQ++,
@@ -69,6 +71,7 @@ const LOG: Message[] = [
   },
 ]
 
+// ABOUTME: Regex-based classifier that maps free-text query words (e.g. "scoring", "ppg", "rebound") to a StatKey, returning null when no stat keyword is recognised.
 function classifyStat(text: string): StatKey | null {
   if (/scor|points|\bppg\b/.test(text)) return 'ppg'
   if (/rebound|\brpg\b/.test(text)) return 'rpg'
@@ -78,6 +81,7 @@ function classifyStat(text: string): StatKey | null {
   return null
 }
 
+// ABOUTME: Searches the TEAMS array for any team whose name, city, or abbreviation appears in the lowercased query text, returning the first match or undefined.
 function findTeam(text: string): Team | undefined {
   return TEAMS.find(
     t =>

@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: Renders the philosophy step demo: a Card on the cream paper field where every border and shadow is already displaced by the root SVG turbulence filter, illustrating that a single filter pass wobbles all components uniformly.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -32,6 +35,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid of warm paper tones where the displacement filter visibly loosens every corner even on a perfectly square swatch.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -66,6 +70,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: a segmented control picks between three ink-intensity rungs on a bordered div displaced by the wobble filter, showing that width steps up to survive the displacement pass.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (

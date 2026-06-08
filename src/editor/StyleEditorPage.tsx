@@ -302,6 +302,7 @@ interface KnobControlProps {
   onReset: () => void
 }
 
+// ABOUTME: Dispatcher that routes a knob descriptor to the correct control widget: LengthKnob for length tokens, BlockKnob+FontControl for font stacks, or SimpleKnob for colors/text/select.
 function KnobControl(props: KnobControlProps) {
   if (props.knob.kind === 'length') return <LengthKnob {...props} />
   if (props.knob.kind === 'font') {
@@ -314,6 +315,7 @@ function KnobControl(props: KnobControlProps) {
   return <SimpleKnob {...props} />
 }
 
+// ABOUTME: Small circular reset button that clears a single knob's override back to its base-palette value; disabled when the knob is already at the base value.
 function ResetButton({ knob, overridden, onReset }: { knob: Knob; overridden: boolean; onReset: () => void }) {
   return (
     <button
@@ -329,6 +331,7 @@ function ResetButton({ knob, overridden, onReset }: { knob: Knob; overridden: bo
   )
 }
 
+// ABOUTME: Compact two-column knob row (label | control) for color, text, and select kinds; highlights the row when the value differs from the base palette.
 /** Compact two-column knob (label | control) for color / text / select. */
 function SimpleKnob({ knob, value, overridden, onChange, onReset }: KnobControlProps) {
   return (
@@ -356,6 +359,7 @@ function SimpleKnob({ knob, value, overridden, onChange, onReset }: KnobControlP
   )
 }
 
+// ABOUTME: Full-width knob layout with a head row (label + optional actions + reset button) above a control body that spans the full width; used by LengthKnob in slider mode and FontControl, both of which need the extra horizontal space.
 /**
  * Full-width knob: a head row (label + actions + reset) over a control body
  * that owns the whole row. Used for the font-stack builder and for length
@@ -390,6 +394,7 @@ function BlockKnob({
   )
 }
 
+// ABOUTME: Color knob control: a native color-picker swatch when the value parses as a hex color (with applyPickedHex to preserve alpha), plus a free-text input for arbitrary CSS values like oklch() or var().
 function ColorControl({ knob, value, onChange }: { knob: Knob; value: string; onChange: (v: string) => void }) {
   const pickerHex = toPickerHex(value)
   return (
@@ -420,6 +425,7 @@ function ColorControl({ knob, value, onChange }: { knob: Knob; value: string; on
   )
 }
 
+// ABOUTME: Parses a CSS length string like "12px" or "1.5rem" into a numeric value and unit suffix; returns null for values that can't be cleanly split (e.g. calc() expressions), disabling the slider mode.
 /** Split a CSS `<number><unit>` value (e.g. `12px`, `1.5rem`, `0`). */
 function parseLength(value: string): { num: number; unit: string } | null {
   const m = /^(-?\d*\.?\d+)([a-z%]*)$/i.exec(value.trim())
@@ -429,10 +435,12 @@ function parseLength(value: string): { num: number; unit: string } | null {
   return { num, unit: m[2] }
 }
 
+// ABOUTME: Rounds a float to at most 4 decimal places and strips trailing zeros, keeping slider output values compact (e.g. 0.5 not 0.5000).
 function tidy(n: number): number {
   return Number.parseFloat(n.toFixed(4))
 }
 
+// ABOUTME: Length knob that defaults to a text input (accepting calc(), clamp(), etc.) with a toggle into a full-width BlockKnob slider + unit-picker via SliderUnit; the slider toggle is disabled when parseLength returns null.
 /**
  * Length knob: a text input by default, with a toggle into a full-width
  * slider + unit picker. The text input stays the source of truth (it accepts
@@ -485,6 +493,7 @@ function LengthKnob({ knob, value, overridden, onChange, onReset }: KnobControlP
   )
 }
 
+// ABOUTME: Slider-plus-unit-picker control used inside LengthKnob's block mode: a Slider component for the numeric part and a Select dropdown for the unit suffix, emitting combined CSS length strings on every change.
 function SliderUnit({
   num,
   unit,
@@ -523,11 +532,13 @@ function SliderUnit({
   )
 }
 
+// ABOUTME: Splits a CSS font-family stack string (comma-separated) into individual trimmed family tokens for FontControl to render as a reorderable list.
 /** Split a font stack into its ordered family tokens. */
 function splitStack(value: string): string[] {
   return value.split(',').map(s => s.trim()).filter(Boolean)
 }
 
+// ABOUTME: Font-stack builder used inside the font knob's BlockKnob: renders each CSS family as a Select dropdown with up/down/remove buttons; injects unknown families from the current value as options so nothing is lost, and emits the full comma-joined stack on every change.
 /**
  * Font knob: an ordered, rearrangeable list of family dropdowns that compose
  * a CSS font stack. Families from the current value that aren't in the
@@ -614,6 +625,7 @@ function FontControl({ value, onChange }: { value: string; onChange: (v: string)
   )
 }
 
+// ABOUTME: Live preview panel rendered inside a nested PaletteRoot that uses the working (edited) palette: shows headings, body text, a link, all six intent buttons, and two Card variants so token changes are visible immediately.
 /** A compact spread of components so token edits are visible immediately. */
 function PreviewSampler() {
   const intents = ['primary', 'neutral', 'success', 'warning', 'danger', 'info'] as const

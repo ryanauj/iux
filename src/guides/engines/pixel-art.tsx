@@ -9,11 +9,16 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union of the four whole-pixel border-width step names in the pixel-art palette, from 1px hairline to 4px heavy sprite-frame outline.
 type BorderRung = 'hairline' | 'thin' | 'thick' | 'heavy'
+// ABOUTME: Ordered array of BorderRung values so the segmented Toggle in BordersDemo can cycle through the four whole-pixel line widths.
 const BORDERS: BorderRung[] = ['hairline', 'thin', 'thick', 'heavy']
 
+// ABOUTME: Renders the philosophy step demo: a card on the DMG green host with zero radius, bitmap-style OK/Cancel buttons, illustrating the integer-grid layout contract.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__pixel-host">
@@ -33,6 +38,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid mapping the DMG four-shade register, with three surface tokens collapsing onto the lightest LCD field shade.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -69,6 +75,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: a segmented control cycles through all four whole-pixel widths inside the DMG green host, showing that every line snaps to an integer and antialiasing is off.
 function BordersDemo() {
   const [width, setWidth] = useState<BorderRung>('thin')
   return (
@@ -108,6 +115,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider walks five rungs showing hard-offset no-blur pixel shadows that snap from cell to cell, with the overlay rung using an inset frame instead of a cast.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -156,6 +164,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle shows the per-frame steps(1,end) easing where hover colours appear on the next frame with no interpolated middle state.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -196,6 +205,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons inside the DMG host, illustrating how the four-shade register collapses multiple intents onto the same fill shade.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__pixel-host">

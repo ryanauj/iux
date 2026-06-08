@@ -28,12 +28,14 @@ import { DOCTRINE_PAGES, isDoctrineId, type DoctrineId } from './pages'
 import '../showcase/showcase.css'
 import './doctrine.css'
 
+// ABOUTME: Canonical URL search-parameter names for DoctrinePage's three URL-driven state values: the chrome palette, the active doctrine article, and the motion scale.
 const URL_PARAM = {
   chrome: 'chrome',
   doc: 'doc',
   motion: 'motion',
 } as const
 
+// ABOUTME: Shape of the URL-derived settings parsed on load and on popstate: the chrome style id, the active doctrine article id, and the motion scale multiplier.
 type UrlSettings = {
   chrome: StyleId
   doc: DoctrineId
