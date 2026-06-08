@@ -1,5 +1,6 @@
 // ABOUTME: A star toggle that marks a prompt as a favorite.
 
+// ABOUTME: Props for FavoriteButton: the current starred state, a toggle callback, the prompt name (for the accessible aria-label), and an extra className.
 interface FavoriteButtonProps {
   active: boolean
   onToggle: () => void

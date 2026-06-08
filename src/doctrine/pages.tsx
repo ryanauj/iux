@@ -202,6 +202,7 @@ function SpacingCompare() {
 // ABOUTME: Size sequence for the AlignmentCompare demo — mixed s/m/l marks in a row whose non-uniform sizes make box-alignment vs optical-center alignment visibly different.
 const ALIGN_MARKS = ['s', 'l', 'm', 'l', 's'] as const
 
+// ABOUTME: Two-row visual demo showing the same ALIGN_MARKS row aligned to the bounding box (top edges flush, centers stagger) versus aligned to the optical center (reads even); illustrates the optical-over-metric alignment rule.
 function AlignmentCompare() {
   const row = (mod: string) => (
     <div className={`doctrine__align-row doctrine__align-row--${mod}`}>
@@ -234,8 +235,10 @@ function AlignmentCompare() {
 // as its OWN width — not the viewport — crosses the threshold. This is the
 // technique the section preaches; nothing in the component library actually
 // uses a size container query, so the demo carries the rule on its own.
+// ABOUTME: The three fixed widths used by ContainerCompare to show the same panel component responding to its container width via `@container (min-width)` rather than viewport breakpoints.
 const CONTAINER_WIDTHS = ['240px', '360px', '520px'] as const
 
+// ABOUTME: Demo that renders the same panel at the three CONTAINER_WIDTHS side by side on the page, proving that the layout switches on container width rather than viewport width.
 function ContainerCompare() {
   return (
     <div className="doctrine__cq">
@@ -255,6 +258,7 @@ function ContainerCompare() {
   )
 }
 
+// ABOUTME: Plain-English version of the Layout doctrine article: five everyday rules (named gaps, one axis, density is the style's job, names over pixels, baseline/edge alignment), SpacingCompare and AlignmentCompare demos, container-query panel, and palette-misfit warning.
 function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -380,6 +384,7 @@ function LayoutPagePlain({ nav }: { nav: DoctrineNav }) {
   )
 }
 
+// ABOUTME: Dispatcher for the Layout doctrine article — renders LayoutPagePlain in plain mode or the technical version with code references and counterexamples in technical mode.
 function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   if (mode === 'plain') return <LayoutPagePlain nav={nav} />
   return (
@@ -521,6 +526,7 @@ function LayoutPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   )
 }
 
+// ABOUTME: Plain-English version of the Component Selection doctrine article: three simple rules, then side-by-side Demo pairs (Drawer/Modal, Toast/StackedToasts, Tabs/Segmented, Tooltip/Coachmark, Select/CommandPalette) so readers feel the difference without needing vocabulary.
 function SelectionPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -662,6 +668,7 @@ function SelectionPagePlain({ nav }: { nav: DoctrineNav }) {
   )
 }
 
+// ABOUTME: Dispatcher for the Component Selection article — renders the plain-English side-by-side version or the technical version with FINALIZED-COMPONENTS reference, affordance-load rules, and Stepper/Wizard and Sidebar/Tabs disambiguation.
 function SelectionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   if (mode === 'plain') return <SelectionPagePlain nav={nav} />
   return (
@@ -874,6 +881,7 @@ function SelectionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   )
 }
 
+// ABOUTME: Plain-English version of the App Composition doctrine article: four simple rules, the five-step pipeline (what → core idea → must-work component → everything else → look), and kanban Card / EmptyState demos.
 function CompositionPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -984,6 +992,7 @@ function CompositionPagePlain({ nav }: { nav: DoctrineNav }) {
   )
 }
 
+// ABOUTME: Dispatcher for the App Composition article — renders the plain-English pipeline walkthrough or the technical version with FINALIZED-APPS links, kanban and outliner case studies, and palette-fit rationale.
 function CompositionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   if (mode === 'plain') return <CompositionPagePlain nav={nav} />
   return (
@@ -1129,6 +1138,7 @@ function CompositionPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   )
 }
 
+// ABOUTME: Plain-English version of the Modalities doctrine article: five simple rules, then OptimisticUndo/CommandPalette/NLBar demos showing the same action reachable by click, Cmd+K, and natural language.
 function ModalitiesPagePlain({ nav }: { nav: DoctrineNav }) {
   return (
     <article className="doctrine">
@@ -1240,6 +1250,7 @@ function ModalitiesPagePlain({ nav }: { nav: DoctrineNav }) {
   )
 }
 
+// ABOUTME: Dispatcher for the Modalities article — renders the plain-English intent-parity explanation or the technical version with intent-parity hard rules, state-sync analysis, single-Store contract, and per-action promotion decision rules.
 function ModalitiesPage({ nav, mode }: { nav: DoctrineNav; mode: DocMode }) {
   if (mode === 'plain') return <ModalitiesPagePlain nav={nav} />
   return (

@@ -21,6 +21,7 @@ import {
   strategyCategoryLabel,
 } from '../format'
 
+// ABOUTME: Props for PromptDetail; the prompt id string used to look up the prompt in the store.
 interface PromptDetailProps {
   id: string
 }

@@ -10,6 +10,7 @@ import { promptCategoryLabel, snippet, formatDate, extractVariables } from '../f
 import { usePromptStore } from '../store'
 import type { Prompt } from '../types'
 
+// ABOUTME: Props for PromptCard; carries the full Prompt object so the card can render all metadata without any additional lookups.
 interface PromptCardProps {
   prompt: Prompt
 }

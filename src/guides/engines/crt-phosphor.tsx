@@ -106,6 +106,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five CRT elevation rungs, showing the paired inset-phosphor-stroke plus outer-phosphor-bloom recipe and noting that the flat rung still paints the inset stroke so no card ever loses its edge.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -150,6 +151,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — switch-controlled motion demo on the CRT phosphor palette, letting the user hover buttons to feel the 80 ms decay tail that lingers hover colour like a phosphor trail, and toggle motion off to confirm scanlines stay (decoration, not motion).
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -191,6 +193,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — six intent buttons inside the CRT host showing that every fill and border is the same phosphor colour with only alpha differentiating them, and describing the decay-regime pulsing glow focus halo.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__crt-host">

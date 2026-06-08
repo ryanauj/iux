@@ -41,11 +41,13 @@ import {
 } from './knobRegistry'
 import './style-editor.css'
 
+// ABOUTME: Select options list for the "Clone of" built-in palette dropdown, mapping every palette id to a "Name (engine)" label.
 const BASE_OPTIONS = (Object.keys(palettes) as PaletteId[]).map(id => ({
   value: id,
   label: `${palettes[id].name} (${palettes[id].engine})`,
 }))
 
+// ABOUTME: Local editor state: the built-in base palette, the pattern name, the sparse token overrides, and the id of the pattern being edited in place (null for a new clone).
 interface WorkingState {
   base: PaletteId
   name: string
@@ -54,6 +56,7 @@ interface WorkingState {
   editingId: CustomPatternId | null
 }
 
+// ABOUTME: Derive the editor's initial WorkingState from URL params and the selected style: prefers ?edit= (edit in place) over ?palette= (shared token clone) over the current selected style (silent clone).
 /**
  * Derive the editor's starting state from the URL and the selected style:
  *   1. `?edit=custom:slug` — edit an existing custom pattern in place.
@@ -290,6 +293,7 @@ export function StyleEditorPage() {
   )
 }
 
+// ABOUTME: Props shared by all KnobControl variants: the knob descriptor, the current resolved value, whether the value is overridden from the base, and change/reset callbacks.
 interface KnobControlProps {
   knob: Knob
   value: string

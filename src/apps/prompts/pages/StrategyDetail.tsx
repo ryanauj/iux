@@ -12,6 +12,7 @@ import { usePromptStore } from '../store'
 import { promptRoutes } from '../routes'
 import { strategyCategoryLabel } from '../format'
 
+// ABOUTME: Props for StrategyDetail; the strategy id string used to look up the entry via getStrategy.
 interface StrategyDetailProps {
   id: string
 }

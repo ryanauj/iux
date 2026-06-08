@@ -7,16 +7,21 @@ import type { RunFor } from '../TestsPage'
 import type { IntegrationTest, RunResult, StepResult } from '../types'
 import { bubbleLabel, describeStep, stepIcon } from './step-format'
 
+// ABOUTME: Props for TestsViz: the accumulated result map, which test id is currently running (or null), and the runFor callback to trigger execution.
 interface Props {
   results: Record<string, RunResult>
   runningId: string | null
   runFor: RunFor
 }
 
+// ABOUTME: Controls whether the collapsed card shows the storyboard bubble strip or the compact numbered step list.
 type Density = 'storyboard' | 'compact'
+// ABOUTME: Per-card run status used to drive CSS modifiers and the StatusPill label in TestsViz.
 type Status = 'idle' | 'running' | 'passed' | 'failed'
+// ABOUTME: Run-all strategy: 'live' focuses each card sequentially with the sandbox visible; 'fast' runs each test offscreen without switching focus.
 type RunAllMode = 'live' | 'fast'
 
+// ABOUTME: Per-card overrides that shadow the global stepped/delay settings for a specific test card.
 interface Override {
   stepped?: boolean
   delayMs?: number
@@ -298,6 +303,7 @@ export function TestsViz({ results, runningId, runFor }: Props) {
   )
 }
 
+// ABOUTME: Full prop surface for TestCard: test definition, last result, run/focus/step callbacks, override settings, and the shared sandbox ref used when the card is focused.
 interface CardProps {
   test: IntegrationTest
   result: RunResult | undefined
@@ -321,6 +327,7 @@ interface CardProps {
   mountKey: number
 }
 
+// ABOUTME: Individual test card showing name, description, component chips, run status, and — when focused — a live sandbox, override controls, step controls, and a LiveSteps list; collapses to StoryboardStrip or CompactSteps otherwise.
 function TestCard({
   test,
   result,
@@ -423,6 +430,7 @@ function TestCard({
   )
 }
 
+// ABOUTME: Card-level stepped/delay override controls with 'override' badges when they differ from the global settings, and a 'Match global' reset button.
 function CardOverrides({
   effective,
   override,
@@ -485,6 +493,7 @@ function CardOverrides({
   )
 }
 
+// ABOUTME: Ordered list of live step rows for the focused card workbench, highlighting the next-up step when paused and showing timing and error details per step.
 function LiveSteps({ steps, pausedAt }: { steps: StepResult[]; pausedAt: number | null }) {
   return (
     <ol className="viz-card__steps">
@@ -515,6 +524,7 @@ function LiveSteps({ steps, pausedAt }: { steps: StepResult[]; pausedAt: number 
   )
 }
 
+// ABOUTME: Horizontal strip of bubble cells showing each step's kind, icon, and detail label — the storyboard density view for collapsed test cards.
 function StoryboardStrip({ test, result }: { test: IntegrationTest; result: RunResult | undefined }) {
   return (
     <ol className="viz-sequence__strip" aria-label="Steps">
@@ -532,6 +542,7 @@ function StoryboardStrip({ test, result }: { test: IntegrationTest; result: RunR
   )
 }
 
+// ABOUTME: Compact numbered list of step rows showing kind, label, and any error — the compact density view for collapsed test cards.
 function CompactSteps({ test, result }: { test: IntegrationTest; result: RunResult | undefined }) {
   return (
     <ol className="viz-card__steps">
@@ -550,6 +561,7 @@ function CompactSteps({ test, result }: { test: IntegrationTest; result: RunResu
   )
 }
 
+// ABOUTME: Small colored pill badge in the card header showing the run status label ('Not run', 'Running', 'Passed', or 'Failed').
 function StatusPill({ status }: { status: Status }) {
   const label = status === 'idle' ? 'Not run' : status[0].toUpperCase() + status.slice(1)
   return <span className={`viz-pill viz-pill--${status}`}>{label}</span>

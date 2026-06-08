@@ -19,6 +19,7 @@ import { sportsRoutes } from '../routes'
 import type { Conference, Game, Player, Team } from '../types'
 import type { NavItem, ShellProps } from '../layouts'
 
+// ABOUTME: Discriminated union of the six inline entity card variants the chat bot can emit: team, player, game, leaderboard, standings, and player comparison.
 type Card =
   | { kind: 'team'; teamId: string }
   | { kind: 'player'; playerId: string }
@@ -27,6 +28,7 @@ type Card =
   | { kind: 'standings'; conference: Conference }
   | { kind: 'comparison'; playerIds: string[] }
 
+// ABOUTME: One entry in the chat log: a numeric id, sender role (user/bot), the text bubble, optional entity cards, and optional follow-up chip prompts.
 interface Message {
   id: number
   role: 'user' | 'bot'
@@ -35,6 +37,7 @@ interface Message {
   followups?: string[]
 }
 
+// ABOUTME: Pre-seeded quick-prompt strings shown as chips on first load and as follow-up suggestions after bot responses.
 const SUGGESTIONS = [
   "tonight's games",
   'live games',
@@ -44,6 +47,7 @@ const SUGGESTIONS = [
   'compare Jokic & Embiid',
 ]
 
+// ABOUTME: Human-readable labels for each StatKey used in bot response text (e.g. "points per game" for ppg).
 const STAT_LABELS: Record<StatKey, string> = {
   ppg: 'points per game',
   rpg: 'rebounds per game',
