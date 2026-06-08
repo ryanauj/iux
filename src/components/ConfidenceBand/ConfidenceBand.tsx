@@ -46,19 +46,24 @@ export interface ConfidenceBandProps {
   className?: string
 }
 
+// ABOUTME: SVG padding insets (px) — left accommodates y-axis tick labels, bottom the time-axis labels.
 const PAD = { top: 16, right: 16, bottom: 28, left: 44 }
+// ABOUTME: Default rotation through the six intent tokens applied to series when no per-series intent is provided.
 const INTENTS: ConfidenceIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a series at index i — uses the explicit series.intent override if set, otherwise cycles through INTENTS.
 function intentFor(s: ConfidenceSeries, i: number): ConfidenceIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Default y-value formatter — locale-aware with 0 fraction digits for ≥1000, 1 for ≥10, 2 otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Default time-axis formatter — formats a Unix-ms timestamp as a short month + day string; falls back to String(t) for non-finite timestamps.
 function defaultFormatT(t: number): string {
   const d = new Date(t)
   if (!Number.isFinite(d.getTime())) return String(t)

@@ -8,6 +8,7 @@ import { formatDate } from '../format'
 import type { Game } from '../types'
 import { TeamChip } from './TeamChip'
 
+// ABOUTME: Props for ScoreCard — the game to render and an optional flag to visually emphasise the live/final status badge.
 interface ScoreCardProps {
   game: Game
   highlightStatus?: boolean

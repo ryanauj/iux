@@ -54,8 +54,10 @@ export function resolveNavLayoutId(raw: string | null | undefined): NavLayoutId 
   return DEFAULT_NAV_LAYOUT
 }
 
+// ABOUTME: localStorage key under which the user's chosen nav layout is persisted across pages.
 const NAV_LAYOUT_KEY = 'iux-nav-layout'
 
+// ABOUTME: Type predicate that checks whether a raw string is a member of `NAV_LAYOUT_IDS`, used as the validator argument to `usePersistedPref`.
 const isNavLayoutId = (raw: string): raw is NavLayoutId =>
   (NAV_LAYOUT_IDS as readonly string[]).includes(raw)
 

@@ -62,8 +62,10 @@ export interface TableProps<T> {
   className?: string
 }
 
+// ABOUTME: Active sort state — null means unsorted; otherwise records which column key is sorted and the direction.
 type SortState = { key: string; dir: 'asc' | 'desc' } | null
 
+// ABOUTME: Per-cell async save lifecycle — tracks whether a cell is idle, locally changed (dirty), in-flight (saving), settled (saved), or failed (error), and stores the pending or committed value for optimistic display.
 interface CellSaveState {
   /** 'dirty' = locally changed; 'saving' = in-flight; 'saved' = settled OK; 'error' = rejected. */
   status: 'idle' | 'dirty' | 'saving' | 'saved' | 'error'
@@ -71,6 +73,7 @@ interface CellSaveState {
   pendingValue?: unknown
 }
 
+// ABOUTME: Fallback row-id getter that converts the row's array index to a string when no custom getRowId is provided.
 function defaultGetId(_row: unknown, index: number): string {
   return String(index)
 }
@@ -464,6 +467,7 @@ export function Table<T>(props: TableProps<T>) {
   )
 }
 
+// ABOUTME: Renders a two-arrow SVG sort glyph in the column header; highlights the up arrow when dir is 'asc' and the down arrow when 'desc', both muted when unsorted.
 function SortGlyph({ dir }: { dir?: 'asc' | 'desc' }) {
   return (
     <svg viewBox="0 0 16 16" width="0.85em" height="0.85em" aria-hidden="true" className="iux-table__sort-glyph" data-dir={dir ?? 'none'}>
@@ -473,6 +477,7 @@ function SortGlyph({ dir }: { dir?: 'asc' | 'desc' }) {
   )
 }
 
+// ABOUTME: Renders a small colored status dot beside an edited cell value to show its async save lifecycle state — dirty (yellow), saving (pulsing), saved (green), or error (red); renders nothing for idle.
 function SaveDot({ status }: { status: CellSaveState['status'] }) {
   if (status === 'idle') return null
   const tone =

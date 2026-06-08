@@ -39,24 +39,30 @@ export interface PartialRegressionProps {
   className?: string
 }
 
+// ABOUTME: Pixel inset for each facet's SVG plot area, leaving room for axis tick labels and the residual-label footer below.
 const PAD = { top: 14, right: 12, bottom: 28, left: 36 }
+// ABOUTME: Ordered intent cycle used to assign distinct colors to facets when no explicit intent is set on a PartialFacet; wraps modularly.
 const INTENTS: PartialRegressionIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a facet: uses the facet's own intent if set, otherwise picks from the INTENTS cycle by index.
 function intentFor(f: PartialFacet, i: number): PartialRegressionIntent {
   return f.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Linear interpolation from a domain interval to a pixel range; returns the midpoint when the domain is degenerate (d0 === d1) to avoid division by zero.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a regression coefficient or residual value for display: one decimal for |n|≥10, two for |n|≥1, three decimals otherwise.
 function num(n: number): string {
   if (Math.abs(n) >= 10) return n.toFixed(1)
   if (Math.abs(n) >= 1)  return n.toFixed(2)
   return n.toFixed(3)
 }
 
+// ABOUTME: Renders a single added-variable facet panel: computes per-predictor axis domains with 6% padding floored to include zero, draws horizontal/vertical zero lines, the partial-slope fit line, scatter dots, and optionally a "slope = β" annotation text.
 function Facet({ facet, index, w, h, annotated }: { facet: PartialFacet; index: number; w: number; h: number; annotated: boolean }) {
   const intent = intentFor(facet, index)
   const dom = useMemo(() => {

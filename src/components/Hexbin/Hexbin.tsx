@@ -29,14 +29,17 @@ export interface HexbinProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding around the plot area: top/right/bottom/left margins that reserve space for axis tick labels.
 const PAD = { top: 16, right: 16, bottom: 32, left: 44 }
 
+// ABOUTME: Formats axis tick values: locale thousands for ≥ 1000, one decimal for ≥ 10, two decimals otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toFixed(1)
   return n.toFixed(2)
 }
 
+// ABOUTME: Returns an SVG path string for a pointy-top regular hexagon centred at (cx, cy) with circumradius r.
 function hexPath(cx: number, cy: number, r: number): string {
   const pts: string[] = []
   for (let i = 0; i < 6; i++) {
@@ -46,6 +49,7 @@ function hexPath(cx: number, cy: number, r: number): string {
   return `M${pts.join('L')}Z`
 }
 
+// ABOUTME: Maps a bin count to a discrete tint level (0–4) relative to the peak bin count, driving the CSS fill class on density and count hexes.
 function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   if (max <= 0 || v <= 0) return 0
   const r = v / max

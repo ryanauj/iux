@@ -39,8 +39,10 @@ export interface HiveDiagramProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent palette used to assign a distinct colour to each axis and its nodes in discovery order.
 const INTENTS: HiveIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Fixed angles (in radians) for the three hive axes: pointing up, lower-right, and lower-left — evenly spaced 120° apart.
 const AXIS_ANGLES_3 = [-Math.PI / 2, -Math.PI / 2 + (Math.PI * 2) / 3, -Math.PI / 2 + (Math.PI * 4) / 3]
 
 // ABOUTME: Renders nodes on three evenly-spaced radial axes (excess axes collapse onto axis 3), connects them with quadratic Bézier curves that bow away from the centre, and labels each axis at its far end; edge stroke widths and an arrowhead marker are activated by the 'weighted'/'directed' variants.

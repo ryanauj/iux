@@ -58,6 +58,7 @@ export interface TokenFieldProps {
   id?: string
 }
 
+// ABOUTME: Deduplicates a Token array by value, preserving the first occurrence of each value and discarding subsequent duplicates.
 function uniqByValue(tokens: Token[]): Token[] {
   const seen = new Set<string>()
   const out: Token[] = []
@@ -321,6 +322,7 @@ export function TokenField({
   )
 }
 
+// ABOUTME: Fallback popover editor for the structured variant when no custom editor render prop is supplied; shows a label text input and editable key/value inputs for each meta field, with Remove and Save action buttons.
 function DefaultStructuredEditor({ token, commit, remove }: { token: Token; commit: (t: Token) => void; remove: () => void }) {
   const [draft, setDraft] = useState<Token>(token)
   return (

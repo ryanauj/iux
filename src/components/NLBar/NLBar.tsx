@@ -150,6 +150,7 @@ export function NLBar({
   )
 }
 
+// ABOUTME: Props passed from NLBar to ChipView: the chip data, current variant (determines editability), the currently-editing key, the open/close callback, and the value-change callback.
 interface ChipViewProps {
   chip: ParsedChip
   variant: NLBarVariant
@@ -158,6 +159,7 @@ interface ChipViewProps {
   onChange: (v: string) => void
 }
 
+// ABOUTME: Renders a single parsed chip as either a read-only disabled button, a focused `<select>` (when the chip has options and is being edited), or a focused `<input>` (free-text edit mode); commits the new value on blur or Enter and collapses back to button form.
 function ChipView({ chip, variant, isEditing, onSetEditing, onChange }: ChipViewProps) {
   const editable = (variant === 'editable' || variant === 'disambig') && chip.editable !== false
 

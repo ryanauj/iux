@@ -42,6 +42,7 @@ export interface SpotlightProps {
   usedFeatures?: Set<string>
 }
 
+// ABOUTME: Resolves a SpotlightStep target to an HTMLElement by querying a CSS selector string, calling a factory function, or returning the element directly; returns null when the target is absent or not found.
 function resolveTarget(target: SpotlightStep['target']): HTMLElement | null {
   if (!target) return null
   if (typeof target === 'string') return document.querySelector(target) as HTMLElement | null

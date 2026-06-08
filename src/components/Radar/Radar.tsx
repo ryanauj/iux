@@ -33,8 +33,10 @@ export interface RadarProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent cycle used to assign distinct colors to radar series when no explicit intent is set; wraps modularly for any number of series.
 const INTENTS: RadarIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a radar series: uses the series' own intent if set, otherwise picks from the INTENTS cycle by index.
 function intentFor(s: RadarSeries, i: number): RadarIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }

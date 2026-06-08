@@ -36,6 +36,7 @@ export interface ArcDiagramProps {
   className?: string
 }
 
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to node groups when no explicit intent is provided.
 const INTENTS: ArcDiagramIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
 // ABOUTME: Renders an SVG arc diagram: nodes are placed along one axis (or two axes for bipartite), with semicircular arcs (or S-curves) connecting related pairs; stroke width scales with edge value on 'weighted'.

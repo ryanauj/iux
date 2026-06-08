@@ -7,6 +7,7 @@ import { SportsApp } from './sports/SportsApp'
 import { ContractsApp } from './contracts/ContractsApp'
 import { PromptsApp } from './prompts/PromptsApp'
 
+// ABOUTME: Props for AppsRouter; carries the full HashLocation so sub-apps can read their own path segments and query params.
 interface AppsRouterProps {
   location: HashLocation
 }

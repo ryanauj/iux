@@ -73,11 +73,13 @@ export interface SelectHandle {
   close: () => void
 }
 
+// ABOUTME: Internal grouping record pairing a group heading (null for ungrouped) with its member options in insertion order.
 interface GroupedOptions {
   group: string | null
   options: SelectOption[]
 }
 
+// ABOUTME: Partitions a flat options array into GroupedOptions buckets in first-seen group order, preserving the null bucket for options without a group.
 function groupOptions(options: SelectOption[]): GroupedOptions[] {
   const order: (string | null)[] = []
   const bucket = new Map<string | null, SelectOption[]>()
@@ -92,6 +94,7 @@ function groupOptions(options: SelectOption[]): GroupedOptions[] {
   return order.map(group => ({ group, options: bucket.get(group)! }))
 }
 
+// ABOUTME: Returns the flat index of the option matching the given value string, or -1 when value is undefined or not found.
 function findIndexByValue(options: SelectOption[], value: string | undefined): number {
   if (value === undefined) return -1
   return options.findIndex(o => o.value === value)
@@ -682,6 +685,7 @@ export const Select = forwardRef<SelectHandle, SelectProps>(function Select(
   )
 })
 
+// ABOUTME: Internal props threading label/value/options/state down to the NativeSelect sub-component without re-exposing the full public SelectProps surface.
 interface NativeSelectProps {
   inputId: string
   name?: string
@@ -695,6 +699,7 @@ interface NativeSelectProps {
   onChange: (value: string) => void
 }
 
+// ABOUTME: Renders a native <select> element with optgroup support derived from groupOptions; used only when variant is 'native'.
 function NativeSelect({
   inputId, name, value, placeholder, options, disabled, required, ariaDescribedBy, status, onChange,
 }: NativeSelectProps) {
@@ -734,6 +739,7 @@ function NativeSelect({
   )
 }
 
+// ABOUTME: Internal props for GroupRender — the grouped option list, the active keyboard index, the selected value, and callbacks for selection and hover.
 interface GroupRenderProps {
   group: GroupedOptions
   inputId: string
@@ -744,6 +750,7 @@ interface GroupRenderProps {
   filteredOptions: SelectOption[]
 }
 
+// ABOUTME: Renders one option group as a fragment — a heading <li> if named, then an <li> per option with ARIA roles and is-selected/is-active/is-disabled class marks.
 function GroupRender({
   group, inputId, activeIndex, selectedValue, onSelect, onHover, filteredOptions,
 }: GroupRenderProps) {
@@ -785,6 +792,7 @@ function GroupRender({
   )
 }
 
+// ABOUTME: Renders the down-chevron SVG icon shown at the trailing edge of the trigger button or native select wrapper.
 function Caret() {
   return (
     <svg className="iux-select__caret" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true">
@@ -793,6 +801,7 @@ function Caret() {
   )
 }
 
+// ABOUTME: Renders the checkmark SVG icon shown beside the currently selected option in the open listbox.
 function Check() {
   return (
     <svg className="iux-select__check" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true">

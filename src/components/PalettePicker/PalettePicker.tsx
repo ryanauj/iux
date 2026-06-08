@@ -31,21 +31,27 @@ import {
 import { navigate } from '../../apps/router'
 import './PalettePicker.css'
 
+// ABOUTME: Full list of built-in palette ids derived from the palettes registry at module load; used as the fallback cycle list when no active group narrows the arrow-key selection.
 const ALL_PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
+// ABOUTME: Returns the human-readable display name for a style id: looks up custom pattern names first, then falls back to the built-in palette registry, then returns the raw id.
 /** Display name for either a built-in palette or a custom pattern id. */
 function styleName(id: string, customs: CustomPatternMap): string {
   if (isCustomPatternId(id)) return customs[id]?.name ?? id
   return palettes[id as PaletteId]?.name ?? id
 }
 
+// ABOUTME: localStorage key used by usePersistedPref to remember whether the Browse palette list section is expanded across sessions.
 const LIST_OPEN_KEY = 'palette-picker:list-open'
+// ABOUTME: localStorage key used by usePersistedPref to remember whether the Custom patterns section is expanded across sessions.
 const CUSTOM_OPEN_KEY = 'palette-picker:custom-open'
+// ABOUTME: Type guard for the '0'/'1' string preference values stored by usePersistedPref; rejects any other string so the hook falls back to the default.
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
 // ABOUTME: Determines the layout context: 'button' manages its own open state and renders inside the button tile, 'strip' delegates open/close to the parent DraggableControls strip so only one slot popover is shown at a time.
 export type PalettePickerVariant = 'button' | 'strip'
 
+// ABOUTME: Quadrant of the viewport where the DraggableControls strip slot sits; used by the strip variant to position the popover so it opens toward available screen space rather than off-edge.
 /**
  * Quadrant identifier from DraggableControls — re-declared locally to
  * keep PalettePicker independent of DraggableControls's internal types
@@ -53,6 +59,7 @@ export type PalettePickerVariant = 'button' | 'strip'
  */
 type StripQuadrant = 'right-down' | 'right-up' | 'left-down' | 'left-up'
 
+// ABOUTME: Minimal field descriptor passed into PalettePicker: the current style id as 'value', the setter as 'onChange', an optional human label, and a short abbreviation for the strip icon slot.
 interface FieldShape {
   value: string
   onChange: (next: string) => void
@@ -60,6 +67,7 @@ interface FieldShape {
   short?: string
 }
 
+// ABOUTME: Internal props for PalettePicker: wraps the FieldShape plus variant-specific controlled-open, slot-click, and close callbacks for the strip variant, and popover positioning data forwarded from DraggableControls.
 interface PalettePickerProps {
   field: FieldShape
   variant: PalettePickerVariant
@@ -235,6 +243,7 @@ export function PalettePicker(props: PalettePickerProps) {
 
 /* ────────────────────────── Panel ────────────────────────── */
 
+// ABOUTME: Props forwarded from PalettePicker to PalettePickerPanel: the full group/API state, the current StyleId, popover-positioning geometry, and the onClose callback.
 interface PanelProps {
   field: FieldShape
   current: StyleId
@@ -249,6 +258,7 @@ interface PanelProps {
   onClose: () => void
 }
 
+// ABOUTME: The popover dialog body rendered when the picker is open: contains a current-style quick-action row (favorite, add-to-list, edit for custom), the active-group selector, the collapsible custom-patterns list, and the collapsible search + full-catalog browse list; positions itself via CSS custom property for the strip variant.
 function PalettePickerPanel(props: PanelProps) {
   const {
     field,

@@ -10,6 +10,7 @@
  * value's original format, preserving its alpha channel.
  */
 
+// ABOUTME: Internal parsed color representation — red/green/blue channels as integers 0-255 and alpha 0-1, or null when the source format carries no alpha.
 /** Parsed RGB(A) color with channels 0-255 and alpha 0-1. */
 interface Rgba {
   r: number
@@ -19,14 +20,17 @@ interface Rgba {
   a: number | null
 }
 
+// ABOUTME: Clamp a channel value to the 0-255 integer range; used by all parsers to guard against out-of-range percentages and floats.
 function clampChannel(n: number): number {
   return Math.max(0, Math.min(255, Math.round(n)))
 }
 
+// ABOUTME: Convert a 0-255 channel value to a two-character lowercase hex string, clamping and rounding first.
 function toHexPair(n: number): string {
   return clampChannel(n).toString(16).padStart(2, '0')
 }
 
+// ABOUTME: Parse any supported hex color notation (#rgb, #rgba, #rrggbb, #rrggbbaa) into an Rgba struct, returning null for non-hex input.
 /** Parse a hex color (`#rgb`, `#rgba`, `#rrggbb`, `#rrggbbaa`) into RGBA. */
 function parseHex(value: string): Rgba | null {
   const m = /^#([0-9a-f]{3,8})$/i.exec(value.trim())
@@ -47,6 +51,7 @@ function parseHex(value: string): Rgba | null {
   }
 }
 
+// ABOUTME: Build an Rgba from a 6-character hex string and an explicit alpha (null = no alpha); shared by parseHex's 3-, 4-, 6-, and 8-char branches.
 function rgbaFromHex6(hex6: string, a: number | null): Rgba {
   return {
     r: parseInt(hex6.slice(0, 2), 16),
@@ -56,6 +61,7 @@ function rgbaFromHex6(hex6: string, a: number | null): Rgba {
   }
 }
 
+// ABOUTME: Parse an rgb() or rgba() CSS function (comma- or slash/space-separated) into an Rgba struct, returning null for malformed input.
 /** Parse an `rgb()` / `rgba()` color (comma- or space-separated) into RGBA. */
 function parseRgbFunc(value: string): Rgba | null {
   const m = /^rgba?\(\s*([^)]+?)\s*\)$/i.exec(value.trim())
@@ -85,6 +91,7 @@ function parseRgbFunc(value: string): Rgba | null {
   return { r, g, b, a }
 }
 
+// ABOUTME: Entry-point parser — tries hex first, then rgb/rgba, returning null when neither matches; used by isPickableColor, toPickerHex, and applyPickedHex.
 /** Parse any supported color value into RGBA, or null if unsupported. */
 function parseColor(value: string): Rgba | null {
   return parseHex(value) ?? parseRgbFunc(value)
@@ -135,6 +142,7 @@ export function applyPickedHex(originalValue: string, pickedHex: string): string
   return `#${toHexPair(picked.r)}${toHexPair(picked.g)}${toHexPair(picked.b)}`
 }
 
+// ABOUTME: Format an alpha 0-1 value as a compact decimal string (no trailing zeros) suitable for embedding in rgba() output.
 /** Format an alpha 0-1 value compactly (no trailing zeros). */
 function formatAlpha(a: number): string {
   return String(Math.round(Math.max(0, Math.min(1, a)) * 1000) / 1000)

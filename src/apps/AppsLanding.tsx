@@ -25,6 +25,7 @@ import {
 } from '../components/AppShell/navLayouts'
 import './apps.css'
 
+// ABOUTME: Shape of one entry in the APPS registry: id, display name, tagline, href, and icon text abbreviation.
 interface AppEntry {
   id: string
   name: string
@@ -33,6 +34,7 @@ interface AppEntry {
   iconText: string
 }
 
+// ABOUTME: Registry of the three mini-apps (Hoops Hub, Cap School, Promptbook) rendered as tiles on the landing grid.
 const APPS: AppEntry[] = [
   {
     id: 'sports',
@@ -57,6 +59,7 @@ const APPS: AppEntry[] = [
   },
 ]
 
+// ABOUTME: Props for AppsLanding; passes the current HashLocation so the component can read palette/motion params and seed the persisted style store.
 interface AppsLandingProps {
   location: HashLocation
 }

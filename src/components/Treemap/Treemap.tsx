@@ -29,16 +29,21 @@ export interface TreemapProps {
   className?: string
 }
 
+// ABOUTME: Ordered palette of intent tokens cycled by sibling index when a TreemapNode carries no explicit intent.
 const INTENTS: TreemapIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Axis-aligned bounding rectangle in SVG pixel space used as input and output currency for the squarify algorithm.
 interface Rect { x: number; y: number; w: number; h: number }
+// ABOUTME: A TreemapNode augmented with its computed Rect, nesting depth, and resolved intent after palette cycling — the unit Treemap renders.
 interface LaidOutNode extends TreemapNode { rect: Rect; depth: number; resolvedIntent: TreemapIntent }
 
+// ABOUTME: Returns the effective numeric size of a node: the recursive sum of children's values for branch nodes, or the node's own value (clamped to 0) for leaves.
 function nodeValue(n: TreemapNode): number {
   if (n.children && n.children.length > 0) return n.children.reduce((s, c) => s + nodeValue(c), 0)
   return Math.max(0, n.value)
 }
 
+// ABOUTME: Implements the squarified treemap layout (Bruls/Huijing/van Wijk): greedily accumulates nodes into a row while adding the next node improves the worst aspect ratio, then places the row and recurses on the remaining space.
 /** Squarified treemap (Bruls/Huijing/van Wijk, simplified). */
 function squarify(nodes: TreemapNode[], rect: Rect): { node: TreemapNode; rect: Rect }[] {
   const total = nodes.reduce((s, n) => s + nodeValue(n), 0) || 1
@@ -83,6 +88,7 @@ function squarify(nodes: TreemapNode[], rect: Rect): { node: TreemapNode; rect: 
   return out
 }
 
+// ABOUTME: Sizes and positions one row of nodes within a rect: chooses vertical strips when the rect is wider than tall, horizontal strips otherwise, and returns the placed rects plus the unused remaining sub-rect.
 function layoutRow(row: { node: TreemapNode; area: number }[], rect: Rect): { rects: { node: TreemapNode; rect: Rect }[]; remaining: Rect } {
   const sum = row.reduce((s, r) => s + r.area, 0)
   if (rect.w >= rect.h) {
@@ -108,6 +114,7 @@ function layoutRow(row: { node: TreemapNode; area: number }[], rect: Rect): { re
   }
 }
 
+// ABOUTME: Recursively squarifies nodes into a Rect, resolves each node's intent from its own setting or the parent's, pushes results into the out array, and recurses into children with a 2 px / 14 px inset when recurse is true and the cell is large enough.
 function buildLayout(
   data: TreemapNode[],
   rect: Rect,

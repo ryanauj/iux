@@ -23,8 +23,10 @@ export interface QQPlotProps {
   className?: string
 }
 
+// ABOUTME: Pixel inset for the SVG plot area, reserving space for axis tick labels and the x-axis labels below.
 const PAD = { top: 16, right: 16, bottom: 32, left: 44 }
 
+// ABOUTME: Inverse normal CDF using the Beasley-Springer-Moro rational polynomial approximation; clamps input probability to [1e-6, 1-1e-6] before use.
 /** Inverse normal CDF via Beasley-Springer-Moro approximation. Good enough
  * for plotting positions; the bounds get clamped before use. */
 function probit(p: number): number {
@@ -50,6 +52,7 @@ function probit(p: number): number {
   }
 }
 
+// ABOUTME: Linear-interpolation quantile function on a pre-sorted array; used to map Hazen plotting positions to reference-sample values in the 'sampleVsSample' variant.
 function quantile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0
   const idx = (sorted.length - 1) * p
@@ -58,6 +61,7 @@ function quantile(sorted: number[], p: number): number {
   return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)
 }
 
+// ABOUTME: Computes the mean, sample standard deviation, and count of an array; the sd is clamped to at least 1e-9 to prevent division by zero when all values are equal.
 function stats(values: number[]) {
   const n = values.length
   const mean = values.reduce((s, v) => s + v, 0) / Math.max(1, n)

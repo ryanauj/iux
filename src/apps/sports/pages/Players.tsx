@@ -13,6 +13,7 @@ import { TeamChip } from '../components/TeamChip'
 
 type PosFilter = 'all' | Position
 
+// ABOUTME: All + the five basketball positions available as pill filters on the Players page, fed directly to the Segmented component.
 const POS_FILTERS: { value: PosFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'PG', label: 'PG' },

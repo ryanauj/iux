@@ -28,6 +28,7 @@ export interface HeatmapProps {
   className?: string
 }
 
+// ABOUTME: Maps a positive value to a tint level (0–4) relative to the dataset maximum, where 0 is blank and 4 is full intensity — used by the 'continuous' and 'sparse' variants.
 function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   if (max <= 0 || v <= 0) return 0
   const r = v / max
@@ -37,6 +38,7 @@ function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
+// ABOUTME: Maps a value to a signed tint level for the 'diverging' variant: returns the hue side ('pos'/'neg'/'zero') and a 0–4 intensity based on distance from the user-supplied center.
 function divergingLevel(v: number, center: number, span: number): { side: 'pos' | 'neg' | 'zero'; level: 0 | 1 | 2 | 3 | 4 } {
   if (span <= 0 || v === center) return { side: 'zero', level: 0 }
   const r = Math.min(1, Math.abs(v - center) / span)
@@ -44,6 +46,7 @@ function divergingLevel(v: number, center: number, span: number): { side: 'pos' 
   return { side: v > center ? 'pos' : 'neg', level }
 }
 
+// ABOUTME: Returns unique strings in first-seen order from a list, used to derive the default row/column order from the flat cells array.
 function discoveryOrder(list: string[]): string[] {
   const seen = new Set<string>()
   const out: string[] = []

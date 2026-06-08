@@ -21,8 +21,10 @@ export interface SparklineProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding applied to each edge of the SVG bounding box so dots and endpoints aren't clipped.
 const PAD = 4
 
+// ABOUTME: Maps a value from a numeric domain to a pixel range via linear interpolation; returns the midpoint for a degenerate domain.
 function scaleLinear(value: number, domain: [number, number], range: [number, number]): number {
   const [d0, d1] = domain
   const [r0, r1] = range
@@ -30,6 +32,7 @@ function scaleLinear(value: number, domain: [number, number], range: [number, nu
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a numeric value with adaptive precision — em-dash for non-finite, no decimals ≥1000, one decimal ≥10, two decimals otherwise.
 function defaultFormat(n: number): string {
   if (!Number.isFinite(n)) return '—'
   const abs = Math.abs(n)

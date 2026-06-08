@@ -62,6 +62,7 @@ export interface CommandPaletteProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: Scores a command label against a query string — exact match returns 1000, prefix 500, substring 100, char-subsequence 10, no match 0; used to rank the filtered command list.
 function fuzzyScore(query: string, label: string): number {
   if (!query) return 1
   const q = query.toLowerCase()
@@ -349,6 +350,7 @@ export function CommandPalette({
   return createPortal(node, getPortalTarget())
 }
 
+// ABOUTME: Props for the WizardStep sub-component — passes the active command, current step descriptor, controlled input value, change/commit/back callbacks.
 interface WizardStepViewProps {
   command: Command
   step: CommandStep
@@ -358,6 +360,7 @@ interface WizardStepViewProps {
   onBack: () => void
 }
 
+// ABOUTME: Renders the wizard step widget inside the palette dialog — a breadcrumb header plus either a text input, a select listbox, or a confirm button pair depending on step.type.
 function WizardStep({ command, step, value, onChange, onCommit, onBack }: WizardStepViewProps) {
   return (
     <div className="iux-cmdk__wizard">

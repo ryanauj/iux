@@ -38,6 +38,7 @@ export interface ToastProps extends ToastItem {
   inlineRender?: boolean
 }
 
+// ABOUTME: Numeric sort key for each intent level; lower values sort first so danger bubbles to the top of the Toaster stack in severityOrder mode.
 const SEVERITY_RANK: Record<ToastIntent, number> = {
   danger: 0, warning: 1, info: 2, neutral: 3, success: 4,
 }
@@ -183,6 +184,7 @@ export function Toaster({ toasts, onDismiss, position = 'top-right', severityOrd
   return createPortal(node, getPortalTarget())
 }
 
+// ABOUTME: Renders a small inline SVG icon matching the toast intent: a warning/danger circle-exclamation, a success circle-check, or a neutral circle-info.
 function IntentGlyph({ intent }: { intent: ToastIntent }) {
   if (intent === 'danger' || intent === 'warning') {
     return (

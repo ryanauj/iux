@@ -9,6 +9,7 @@ import type { StatKey } from '../data'
 import { ScoreCard } from '../components/ScoreCard'
 import { TeamChip } from '../components/TeamChip'
 
+// ABOUTME: The three stat categories shown as leader tiles on the Home dashboard — points, rebounds, and assists per game.
 const STAT_TILES: { key: StatKey; label: string }[] = [
   { key: 'ppg', label: 'Points per game' },
   { key: 'rpg', label: 'Rebounds per game' },

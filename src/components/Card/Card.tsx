@@ -228,6 +228,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   )
 })
 
+// ABOUTME: Renders a small SVG chevron icon that rotates 180° when `expanded` is true, used as the visual affordance on the 'expandable' card's toggle button.
 function Chevron({ expanded }: { expanded: boolean }) {
   return (
     <svg

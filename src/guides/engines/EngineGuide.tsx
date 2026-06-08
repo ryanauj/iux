@@ -26,12 +26,14 @@ import type { DocMode } from '../../lib/useDocMode'
 import type { EngineGuideMeta } from './types'
 import './guides.css'
 
+// ABOUTME: Props for PalettePanel — holds the structured StyleDescription, the display name of the palette, and the current doc mode (technical vs plain).
 interface PalettePanelProps {
   description: StyleDescription
   paletteName: string
   mode: DocMode
 }
 
+// ABOUTME: PalettePanel — sidebar block that renders a palette's tagline, summary, and "what to look for" list; switches between plain-English and technical copy based on the doc mode.
 function PalettePanel({ description, paletteName, mode }: PalettePanelProps) {
   if (mode === 'plain' && description.plain) {
     const { tagline, summary, lookingLike } = description.plain
@@ -65,6 +67,7 @@ function PalettePanel({ description, paletteName, mode }: PalettePanelProps) {
   )
 }
 
+// ABOUTME: Props for EngineGuide — carries the EngineGuideMeta describing the engine's name, steps, palette, and summaries.
 interface EngineGuideProps {
   guide: EngineGuideMeta
 }

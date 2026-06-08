@@ -30,6 +30,7 @@ export interface IndentTreeProps {
   className?: string
 }
 
+// ABOUTME: Internal flat record for one rendered tree row: carries the source node, its nesting depth, whether it is its parent's last child (for elbow vs tee guide), an ancestor-last boolean list (for pipe vs blank column guides), its resolved intent, and effective weight.
 interface Row {
   node: IndentTreeNode
   depth: number
@@ -39,8 +40,10 @@ interface Row {
   weight: number
 }
 
+// ABOUTME: Intent palette cycled over top-level children; each node's colour is inherited by its descendants unless overridden.
 const INTENTS: IndentTreeIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Performs a depth-first traversal of the tree, emitting one Row per node with its guide metadata (isLast, ancestorsLast), resolved intent, and aggregated weight.
 function flatten(root: IndentTreeNode): Row[] {
   const out: Row[] = []
   function visit(n: IndentTreeNode, depth: number, isLast: boolean, ancestorsLast: boolean[], parentIntent?: IndentTreeIntent, idx = 0) {
@@ -61,6 +64,7 @@ function flatten(root: IndentTreeNode): Row[] {
   return out
 }
 
+// ABOUTME: Scans all rows for the maximum weight value, returning at least 1 so the 'meta' bar proportions are safe to compute.
 function maxWeight(rows: Row[]): number {
   let m = 0
   for (const r of rows) if (r.weight > m) m = r.weight

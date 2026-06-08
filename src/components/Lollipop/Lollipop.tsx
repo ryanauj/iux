@@ -34,8 +34,10 @@ export interface LollipopProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding around the plot area: left margin reserves space for category label text, right margin provides room for value labels past the rightmost dot.
 const PAD = { top: 12, right: 56, bottom: 12, left: 112 }
 
+// ABOUTME: Locale-aware number formatter for dot value labels: 0 decimals ≥ 1000, 1 decimal ≥ 10, 2 decimals otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })

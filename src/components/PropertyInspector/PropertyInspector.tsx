@@ -43,8 +43,10 @@ export interface PropertyInspectorProps {
   className?: string
 }
 
+// ABOUTME: Sentinel symbol used to signal that a field key has differing values across the current multi-selection; checked against to show "Mixed" placeholder text and commit to all objects.
 const MIXED = Symbol('mixed')
 
+// ABOUTME: Returns the common value for 'key' across all selected objects (using 'fallback' when absent), or the MIXED sentinel if any two objects disagree.
 function sharedValue(selection: Array<Record<string, unknown>>, key: string, fallback: unknown): unknown | typeof MIXED {
   if (selection.length === 0) return fallback
   const first = selection[0]?.[key] ?? fallback
@@ -174,6 +176,7 @@ export function PropertyInspector({
   )
 }
 
+// ABOUTME: Internal props for the FieldRow sub-component: the field schema, the resolved display value, whether the value is mixed across multiple selected objects, the constraint-driven disabled state, and the change callback.
 interface FieldRowProps {
   field: PropertyField
   mixed: boolean
@@ -182,6 +185,7 @@ interface FieldRowProps {
   onChange: (key: string, value: unknown) => void
 }
 
+// ABOUTME: Renders a single labeled property row with the appropriate control for the field type (select, toggle/checkbox, number with optional unit, color swatch, or text); shows "Mixed" placeholder when values differ across a multi-selection.
 function FieldRow({ field, mixed, disabled, value, onChange }: FieldRowProps) {
   const baseProps = {
     id: `inspector-${field.key}`,

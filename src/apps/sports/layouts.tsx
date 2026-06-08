@@ -108,6 +108,7 @@ export interface ShellProps {
   children: ReactNode
 }
 
+// ABOUTME: Renders a flat list of navigation Links, applying `is-active` and `aria-current` to the item whose `isActive` predicate matches the current route; className is set by the parent shell so each layout can style its own nav links.
 function NavLinks({
   nav,
   route,
@@ -172,6 +173,7 @@ export function Shell(props: ShellProps) {
   }
 }
 
+// ABOUTME: Classic horizontal top-bar layout: brand + nav links on the left, exit on the right, full-width main below.
 function TopbarShell(props: ShellProps) {
   return (
     <div className="sports-app sports-app--topbar">
@@ -188,6 +190,7 @@ function TopbarShell(props: ShellProps) {
   )
 }
 
+// ABOUTME: Left-rail sidebar layout: brand and nav stack vertically in a fixed-width aside, exit pinned at the bottom, main content fills the remaining width.
 function SidebarShell(props: ShellProps) {
   return (
     <div className="sports-app sports-app--sidebar">
@@ -211,6 +214,7 @@ function SidebarShell(props: ShellProps) {
   )
 }
 
+// ABOUTME: Full-width stadium-banner layout: a tall hero header with brand, exit, and a wide horizontal nav row across the bottom edge of the banner, above the content area.
 function StadiumShell(props: ShellProps) {
   return (
     <div className="sports-app sports-app--stadium">
@@ -233,6 +237,7 @@ function StadiumShell(props: ShellProps) {
   )
 }
 
+// ABOUTME: Floating-dock layout: a minimal header with brand and exit, main content occupies all vertical space, and the primary nav lives in a bottom dock bar — mirrors a mobile tab bar.
 function DockShell(props: ShellProps) {
   return (
     <div className="sports-app sports-app--dock">
@@ -249,6 +254,7 @@ function DockShell(props: ShellProps) {
   )
 }
 
+// ABOUTME: Hamburger-drawer layout: a minimal topbar with a ☰/✕ toggle button; pressing it slides in an off-canvas nav panel with a scrim; the drawer auto-closes on route change and locks body scroll while open.
 function DrawerShell(props: ShellProps) {
   const [open, setOpen] = useState(false)
 

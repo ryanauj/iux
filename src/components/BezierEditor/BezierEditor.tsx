@@ -50,13 +50,16 @@ export interface BezierEditorProps {
   className?: string
 }
 
+// ABOUTME: Clamps a normalized coordinate to [0, 1] so anchors and handles cannot be dragged outside the unit canvas.
 function clamp01(n: number) { return Math.max(0, Math.min(1, n)) }
 
+// ABOUTME: Rounds `n` to the nearest multiple of `step`; returns `n` unchanged when `step` is zero (snapping disabled).
 function snap(n: number, step: number) {
   if (step <= 0) return n
   return Math.round(n / step) * step
 }
 
+// ABOUTME: If any value in `others` is within `tol` of `n`, returns that value to snap the coordinate; otherwise returns `n` unchanged.
 function snapToOtherAnchor(n: number, others: number[], tol: number): number {
   for (const o of others) if (Math.abs(o - n) <= tol) return o
   return n
@@ -281,6 +284,7 @@ export function BezierEditor({
   )
 }
 
+// ABOUTME: A labeled `<input type="number">` row used in the aside panel to display and edit a single anchor coordinate or value (x, y) with three-decimal precision.
 function NumericRow({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
     <label className="iux-bezier__row">
@@ -295,6 +299,7 @@ function NumericRow({ label, value, onChange }: { label: string; value: number; 
   )
 }
 
+// ABOUTME: Props for PresetPanel — supplies the current anchor array, the saved preset list, and apply/save callbacks.
 interface PresetPanelProps {
   anchors: BezierAnchor[]
   presets: BezierPreset[]
@@ -302,6 +307,7 @@ interface PresetPanelProps {
   onSave: (name: string) => void
 }
 
+// ABOUTME: Aside panel shown on the 'presets' variant — lists saved named curves as buttons that restore their anchor arrays, and provides a name input with a "Save current" button to persist the current curve.
 function PresetPanel({ presets, onApply, onSave }: PresetPanelProps) {
   const [name, setName] = useState('myCurve')
   return (
@@ -324,6 +330,7 @@ function PresetPanel({ presets, onApply, onSave }: PresetPanelProps) {
   )
 }
 
+// ABOUTME: Converts the ordered anchor array into an SVG path string: moves to the first anchor then emits a cubic Bézier segment for each consecutive pair using each anchor's out/in handle offsets as the two control points.
 function buildPath(anchors: BezierAnchor[]): string {
   if (anchors.length === 0) return ''
   const out: string[] = []

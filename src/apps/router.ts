@@ -10,6 +10,7 @@ export interface HashLocation {
   params: URLSearchParams
 }
 
+// ABOUTME: Parses a raw hash string (e.g. `#/apps/sports?palette=bold`) into a HashLocation with a normalised path and a URLSearchParams; returns an empty location for a blank or bare `#`.
 function parseHash(raw: string): HashLocation {
   if (!raw || raw === '#') return { path: '', params: new URLSearchParams() }
   const stripped = raw.startsWith('#') ? raw.slice(1) : raw
@@ -56,6 +57,7 @@ export function buildHash(path: string, params?: Record<string, string | undefin
  * Link rebuilds the hash with only its own params. Callers can still
  * clear a sticky key by passing it explicitly as `undefined`.
  */
+// ABOUTME: The set of URL query-param keys that survive every navigate() and replaceParams() call so user-preference settings (palette, layout, motion, etc.) are not lost when a Link updates the path.
 const STICKY_PARAMS = ['layout', 'palette', 'motion', 'tabs', 'tri', 'bento', 'deck', 'graph'] as const
 
 // ABOUTME: Read the current values of any sticky params from the URL hash.

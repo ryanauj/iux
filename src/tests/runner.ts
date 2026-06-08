@@ -18,6 +18,7 @@ export interface RunOptions {
   awaitContinue?: (index: number) => Promise<void>
 }
 
+// ABOUTME: Maximum milliseconds waitFor polls before throwing a timeout error.
 const DEFAULT_TIMEOUT_MS = 2000
 
 // ABOUTME: Execute all steps of an IntegrationTest against the given DOM root, returning a RunResult with per-step status, timing, and error details; queries are scoped to the root plus the nearest palette-root portal target.
@@ -83,6 +84,7 @@ export async function runTest(
   }
 }
 
+// ABOUTME: Dispatches a single Step to its handler branch (click, type, press, waitFor, assert*); throws on assertion failure or element not found.
 async function executeStep(step: Step, root: HTMLElement): Promise<void> {
   switch (step.kind) {
     case 'click': {
@@ -158,10 +160,12 @@ async function executeStep(step: Step, root: HTMLElement): Promise<void> {
  * portal target, filtering out anything that's still inside `root`
  * (those matches would have come back from the first query already).
  */
+// ABOUTME: Returns the first element matching selector within the sandbox root or its nearest palette-root portal, falling back to null; delegates to scopedQueryAll.
 function scopedQuery<T extends Element>(root: HTMLElement, selector: string): T | null {
   return scopedQueryAll<T>(root, selector)[0] ?? null
 }
 
+// ABOUTME: Returns all elements matching selector within the sandbox root and, if present, within the palette-root portal target (excluding elements already inside root).
 function scopedQueryAll<T extends Element>(root: HTMLElement, selector: string): T[] {
   const inRoot = Array.from(root.querySelectorAll<T>(selector))
   if (typeof document === 'undefined') return inRoot
@@ -173,6 +177,7 @@ function scopedQueryAll<T extends Element>(root: HTMLElement, selector: string):
   return [...inRoot, ...portaled]
 }
 
+// ABOUTME: Wraps scopedQuery and throws a descriptive error if the element is not found, rather than returning null.
 function mustFind<T extends Element>(root: HTMLElement, selector: string): T {
   const el = scopedQuery<T>(root, selector)
   if (!el) throw new Error(`Element not found: ${selector}`)
@@ -184,6 +189,7 @@ function mustFind<T extends Element>(root: HTMLElement, selector: string): T {
  * Setting `el.value = x` directly bypasses React's change detection — we have
  * to invoke the prototype setter and dispatch an `input` event manually.
  */
+// ABOUTME: Sets a React-controlled input's value by invoking the native prototype setter and dispatching an 'input' event, bypassing React's change-detection trap.
 function setReactInputValue(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
   const proto = el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype
   const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set
@@ -192,6 +198,7 @@ function setReactInputValue(el: HTMLInputElement | HTMLTextAreaElement, value: s
   el.dispatchEvent(new Event('input', { bubbles: true }))
 }
 
+// ABOUTME: Polls root.querySelector every 16 ms until the selector matches or the timeout elapses, then throws a timeout error.
 async function waitForSelector(root: HTMLElement, selector: string, timeoutMs: number): Promise<void> {
   const deadline = performance.now() + timeoutMs
   while (performance.now() < deadline) {
@@ -201,11 +208,13 @@ async function waitForSelector(root: HTMLElement, selector: string, timeoutMs: n
   throw new Error(`Timed out waiting for: ${selector}`)
 }
 
+// ABOUTME: Defers one animation frame so React can commit pending state updates before the next step assertion runs.
 /** Let React commit pending updates before the next step. */
 function flush(): Promise<void> {
   return new Promise(resolve => requestAnimationFrame(() => resolve()))
 }
 
+// ABOUTME: Resolves after the given number of milliseconds; used to insert per-step delays between test steps.
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

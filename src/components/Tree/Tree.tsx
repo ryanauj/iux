@@ -27,8 +27,10 @@ export interface TreeProps {
   className?: string
 }
 
+// ABOUTME: Ordered palette of intent tokens cycled by node depth when no explicit intent is set on a TreeNode.
 const INTENTS: TreeIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Internal layout record produced by layoutTree: mirrors TreeNode but adds the computed leaf-slot x position, depth level, resolved intent colour, and recursively linked positioned children.
 interface PositionedNode {
   node: TreeNode
   depth: number
@@ -39,6 +41,7 @@ interface PositionedNode {
   intent: TreeIntent
 }
 
+// ABOUTME: Walks the TreeNode hierarchy recursively, assigning incrementing leaf-slot x positions to leaf nodes and centering parent nodes between their children's x extents; returns the flat node list, total leaf slot count, and tree depth.
 /** Reingold-Tilford-ish simple layout: leaves get incrementing x, parents
  * are centered between their children. */
 function layoutTree(root: TreeNode, intentByDepth: TreeIntent[]): { nodes: PositionedNode[]; leafSlots: number; maxDepth: number } {

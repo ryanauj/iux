@@ -34,13 +34,16 @@ export interface LeveragePlotProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding around the plot area: top/right/bottom/left margins that reserve space for y-axis tick labels and the x-axis tick labels below.
 const PAD = { top: 16, right: 16, bottom: 32, left: 44 }
 
+// ABOUTME: Maps a data-space value to a pixel coordinate via linear interpolation between domain [d0, d1] and range [r0, r1]; returns the midpoint when the domain collapses.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats axis tick values for the leverage/residual axes: 1 decimal for ≥ 10, 2 decimals for ≥ 1, 3 decimals for small values near zero.
 function num(n: number): string {
   if (Math.abs(n) >= 10) return n.toFixed(1)
   if (Math.abs(n) >= 1)  return n.toFixed(2)

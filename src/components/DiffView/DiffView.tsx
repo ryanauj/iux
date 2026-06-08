@@ -56,8 +56,10 @@ export function diffLines(aText: string, bText: string): LineOp[] {
 
 // ---------- Char LCS (within a changed line) ----------
 
+// ABOUTME: A contiguous run of characters tagged as 'eq' (unchanged), 'del' (removed from a), or 'add' (inserted in b); paired arrays of these are produced by diffChars and rendered as highlighted spans in the inline variant.
 interface CharSpan { type: 'eq' | 'del' | 'add'; text: string }
 
+// ABOUTME: Computes character-level LCS diff between two strings, returning parallel delSpans and addSpans arrays used by the 'inline' variant to highlight intra-line changes.
 function diffChars(a: string, b: string): { delSpans: CharSpan[]; addSpans: CharSpan[] } {
   const n = a.length
   const m = b.length
@@ -101,6 +103,7 @@ function diffChars(a: string, b: string): { delSpans: CharSpan[]; addSpans: Char
 
 // ---------- Chunking ----------
 
+// ABOUTME: A contiguous block of related LineOp tokens, tagged as changed (contains del or add lines) or unchanged; used as the unit of accept/reject interaction in chunked mode and column rendering in three-way mode.
 interface DiffChunk {
   id: string
   ops: LineOp[]
@@ -108,6 +111,7 @@ interface DiffChunk {
   changed: boolean
 }
 
+// ABOUTME: Groups a flat LineOp array into DiffChunk blocks — each run of non-eq operations forms one changed chunk, each eq line its own unchanged chunk; provides the unit of interaction for chunked and three-way variants.
 function chunkOps(ops: LineOp[]): DiffChunk[] {
   const out: DiffChunk[] = []
   let buf: LineOp[] = []
@@ -304,6 +308,7 @@ export function DiffView({
   )
 }
 
+// ABOUTME: Props for the Column sub-component in three-way mode — the column title, the DiffChunk array to render, a shared picks record keyed by chunk id, the side this column represents, and an onPick callback.
 interface ColumnProps {
   title: string
   chunks: DiffChunk[]
@@ -312,6 +317,7 @@ interface ColumnProps {
   onPick: (id: string, side: 'ours' | 'theirs' | 'base') => void
 }
 
+// ABOUTME: Renders one column in the three-way merge UI — a titled section containing diff lines for each chunk, with a "Pick <side>" button on changed chunks that fires onPick and highlights the chosen version.
 function Column({ title, chunks, picks, side, onPick }: ColumnProps) {
   return (
     <section className="iux-diff__column">

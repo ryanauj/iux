@@ -36,6 +36,7 @@ export interface CircularNetworkProps {
   className?: string
 }
 
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to node groups when no explicit intent is provided.
 const INTENTS: CircularNetworkIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
 // ABOUTME: Sorts nodes by group so clusters are adjacent on the ring, places each node at an equal angular step, scales node radius by `weight`, then draws quadratic Bézier edges that curve toward the center; 'directed' injects an SVG `<marker>` arrowhead.

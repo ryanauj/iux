@@ -18,16 +18,20 @@ export interface HistogramProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding around the plot area reserving space for y-axis tick labels on the left and x-axis tick labels on the bottom.
 const PAD = { top: 12, right: 12, bottom: 28, left: 40 }
 
+// ABOUTME: Locale-aware number formatter for axis ticks and tooltip values: 0 decimals ≥ 1000, 1 decimal ≥ 10, 2 decimals otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Represents one histogram bucket with its left edge (x0), right edge (x1), and raw point count; produced by `binValues`.
 interface Bin { x0: number; x1: number; count: number }
 
+// ABOUTME: Divides `values` into `binCount` equal-width buckets over the data range (or explicit `domain`), returning a Bin array with per-bucket counts.
 function binValues(values: number[], binCount: number, domain?: [number, number]): Bin[] {
   if (values.length === 0) return []
   const lo = domain ? domain[0] : Math.min(...values)

@@ -27,8 +27,10 @@ export interface RadialTreeProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent cycle used to assign a distinct color to each top-level child subtree; all nodes within a subtree inherit their top ancestor's intent.
 const INTENTS: RadialTreeIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: A node after the layout pass: carries the original RadialTreeNode plus its tree depth, angular slot (in leaf-count units), resolved intent, and already-positioned children.
 interface Positioned {
   node: RadialTreeNode
   depth: number
@@ -38,6 +40,7 @@ interface Positioned {
   children: Positioned[]
 }
 
+// ABOUTME: Computes angular positions for every node via a DFS that assigns each leaf an integer slot and averages children's slots for inner nodes; returns the flat node list, total leaf count for angle scaling, and tree depth for ring spacing.
 function layout(root: RadialTreeNode): { nodes: Positioned[]; leafCount: number; maxDepth: number } {
   let leaf = 0
   let maxDepth = 0

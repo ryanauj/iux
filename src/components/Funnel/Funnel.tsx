@@ -30,12 +30,15 @@ export interface FunnelProps {
   className?: string
 }
 
+// ABOUTME: Ordered palette of intent colours used to colour-cycle stages that have no explicit intent set.
 const INTENTS: FunnelIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the effective intent for a stage, using the stage's own intent if set, otherwise cycling through INTENTS by index.
 function intentFor(s: FunnelStage, i: number): FunnelIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Formats a numeric value for display: uses locale thousands separators for values ≥ 1000, otherwise plain string conversion.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   return n.toString()

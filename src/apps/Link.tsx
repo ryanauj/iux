@@ -3,6 +3,7 @@
 import { useCallback, type AnchorHTMLAttributes, type MouseEvent } from 'react'
 import { getStickyParams, navigate } from './router'
 
+// ABOUTME: Props for the Link component: the destination path, optional query params to merge, and an optional pre-navigation onClick handler.
 interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> {
   /** Path to navigate to (`/apps/sports/teams/lakers`). Becomes `#<path>` in the URL. */
   to: string

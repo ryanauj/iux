@@ -27,13 +27,16 @@ export interface ScatterMatrixProps {
   className?: string
 }
 
+// ABOUTME: Inner padding (pixels) applied to each edge of a cell's coordinate area.
 const PAD = 8
 
+// ABOUTME: Linear interpolation from domain [d0, d1] to range [r0, r1]; returns the midpoint for a degenerate domain.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Computes the Pearson correlation coefficient between two equal-length numeric arrays; returns 0 when fewer than two points or zero variance.
 function pearson(xs: number[], ys: number[]): number {
   const n = xs.length
   if (n < 2) return 0
@@ -49,6 +52,7 @@ function pearson(xs: number[], ys: number[]): number {
   return denom === 0 ? 0 : num / denom
 }
 
+// ABOUTME: Builds a filled SVG step-path for a histogram of the given values using the specified bin count; returns an empty string when values are empty or all equal.
 function histPath(values: number[], w: number, h: number, bins = 14): string {
   if (!values.length) return ''
   const lo = Math.min(...values), hi = Math.max(...values)

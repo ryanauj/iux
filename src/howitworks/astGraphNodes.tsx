@@ -15,6 +15,7 @@ import type { AreaNodeData, AreaRegionNodeData, FileNodeData } from './astGraphL
  * custom edge renderer.
  */
 
+// ABOUTME: Maps each member kind to a palette-token colour, so member dots re-theme with the active palette.
 const KIND_COLOR: Record<MemberKind, string> = {
   component: 'var(--color-intent-info-border, var(--color-border-strong))',
   function: 'var(--color-intent-primary-border, var(--color-border-strong))',
@@ -25,6 +26,7 @@ const KIND_COLOR: Record<MemberKind, string> = {
   enum: 'var(--color-intent-danger-border, var(--color-border-strong))',
 }
 
+// ABOUTME: Maps each member kind to its single-character glyph (C, ƒ, K, v, T, I, E) shown in the member dot and legend.
 const KIND_GLYPH: Record<MemberKind, string> = {
   component: 'C',
   function: 'ƒ',
@@ -51,6 +53,7 @@ export const memberKindColor = (kind: MemberKind) => KIND_COLOR[kind]
 // ABOUTME: Returns the single-character glyph for a member kind.
 export const memberKindGlyph = (kind: MemberKind) => KIND_GLYPH[kind]
 
+// ABOUTME: Centre-pinned, invisible source/target handles so edges anchor to each node's middle (the floating-line trick).
 /** Centre-pinned, visually-hidden handles shared by connectable nodes. */
 function CenterHandles() {
   const style = { left: '50%', top: '50%', opacity: 0, pointerEvents: 'none' as const }

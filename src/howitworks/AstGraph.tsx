@@ -27,6 +27,7 @@ import { AstFocus } from './AstFocus'
 import { AstMatrix } from './AstMatrix'
 import './astGraph.css'
 
+// ABOUTME: The generated graph JSON typed as AstGraph — the dataset this viewer reads.
 const GRAPH = graphData as AstGraphData
 
 // ABOUTME: File ids whose name, dir, summary, or any member matches the search query — drives node highlighting and auto-open.
@@ -50,6 +51,7 @@ function matchFiles(query: string): Set<string> {
   return out
 }
 
+// ABOUTME: Lookup from file id to its area, used to auto-open the areas that contain search matches.
 const areaOfFileId = new Map(GRAPH.files.map(f => [f.id, f.area]))
 
 // ABOUTME: The interactive React Flow canvas: search, expand/collapse, auto-layout, selection highlighting, and palette-themed nodes.
@@ -247,6 +249,7 @@ function GraphView() {
   )
 }
 
+// ABOUTME: The four view modes and their tab labels/hints, rendered by the AstGraph switcher.
 const VIEW_OPTIONS = [
   { id: 'graph', label: 'Graph', hint: 'Force-directed network' },
   { id: 'outline', label: 'Outline', hint: 'Nested list of areas, files, links' },
@@ -254,6 +257,7 @@ const VIEW_OPTIONS = [
   { id: 'matrix', label: 'Matrix', hint: 'Area-to-area dependency grid' },
 ] as const
 
+// ABOUTME: The id of one of the four views ('graph' | 'outline' | 'focus' | 'matrix').
 type ViewMode = (typeof VIEW_OPTIONS)[number]['id']
 
 // ABOUTME: Picks the initial view — Outline on phones (≤720px), the network Graph on wider screens.

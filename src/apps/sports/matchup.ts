@@ -108,6 +108,7 @@ export const STAT_DEFS: StatDef[] = [
 export const LEAGUE_PPP: number =
   TEAMS.reduce((acc, t) => acc + t.pointsFor / t.possessionsPerGame, 0) / TEAMS.length
 
+// ABOUTME: Rounds a number to two decimal places; used to store DEFAULT_RATES as tidy display-friendly values.
 const round2 = (n: number) => Math.round(n * 100) / 100
 
 // ABOUTME: Data-derived default rate for each stat: `LEAGUE_PPP × possessionWeight`.
@@ -164,9 +165,11 @@ export interface TeamMatchup {
   projectedPoints: number
 }
 
+// ABOUTME: Highest turnover rate across all teams, used as the reference ceiling so "ball security" (TOV absolute points) reads as bigger-is-better rather than smaller-is-better.
 /** Turnover baseline for the ABSOLUTE framing: the league's highest-turnover team. */
 const TOV_BASELINE = Math.max(...TEAMS.map(t => t.turnoversPerGame))
 
+// ABOUTME: Computes one StatContribution for a (team, stat, rate) triple: pulls the team's per-game value, subtracts the league average, multiplies by rate for relative points, and applies the TOV-inversion for absolute points.
 function buildContribution(team: Team, def: StatDef, rate: number): StatContribution {
   const value = team[def.field] as number
   const leagueAverage = LEAGUE_AVERAGES[def.key]

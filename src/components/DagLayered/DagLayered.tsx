@@ -35,6 +35,7 @@ export interface DagLayeredProps {
   className?: string
 }
 
+// ABOUTME: Internal representation of a node after layout — holds the original node, its assigned layer and slot indices, final pixel coordinates, and resolved intent colour.
 interface PlacedNode {
   node: DagNode
   layer: number
@@ -44,8 +45,10 @@ interface PlacedNode {
   intent: DagLayeredIntent
 }
 
+// ABOUTME: Default rotation through the six intent tokens applied per layer index when no node-level intent is set.
 const INTENTS: DagLayeredIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Assigns each graph node a depth layer using longest-path ordering — roots (no incoming edges) land at layer 0, every other node at max(parent layer) + 1; cycles are tolerated by skipping revisited nodes.
 /** Longest-path layer assignment for a DAG. Nodes with no incoming edges go to
  * layer 0; everything else lands at `max(parent.layer) + 1`. Ignores cycles
  * by stopping at the first revisit — safe for input that is, by contract, a DAG. */
@@ -76,6 +79,7 @@ function assignLayers(nodes: DagNode[], edges: DagEdge[]): Map<string, number> {
   return layer
 }
 
+// ABOUTME: Runs four top-to-bottom barycentric sweep passes to sort nodes within each layer by the mean position of their parent nodes, reducing edge crossings.
 /** One pass of barycentric reordering within each layer to reduce crossings. */
 function orderWithinLayers(
   nodes: DagNode[],

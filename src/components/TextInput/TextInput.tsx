@@ -270,6 +270,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
   )
 })
 
+// ABOUTME: Renders a small SVG icon matching the validation status — a checkmark for success, a vertical bar with dot for warning, and an X cross for danger; used in the validate variant's trailing icon slot.
 function StatusGlyph({ status }: { status: ValidationStatus }) {
   if (status === 'success') {
     return (

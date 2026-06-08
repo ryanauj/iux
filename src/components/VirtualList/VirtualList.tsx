@@ -224,6 +224,7 @@ export function VirtualList<T>({
   )
 }
 
+// ABOUTME: Absolutely-positioned cell wrapper for the grid variant; derives its horizontal lane from index modulo cols and its vertical position from the pre-computed top offset.
 function GridCell({ index, cols, cellHeight, top, children }: {
   index: number
   cols: number
@@ -247,6 +248,7 @@ function GridCell({ index, cols, cellHeight, top, children }: {
   )
 }
 
+// ABOUTME: Row wrapper for the variable variant that reports its rendered height to the VirtualList via onMeasure on every layout and via a ResizeObserver whenever content resizes.
 function MeasuredRow({ index, top, onMeasure, children }: {
   index: number
   top: number
@@ -274,6 +276,7 @@ function MeasuredRow({ index, top, onMeasure, children }: {
   )
 }
 
+// ABOUTME: Binary searches a prefix-sum offsets array for the largest index whose cumulative offset is less than scrollTop; used by the variable variant to find the first visible row without scanning the full array.
 function binarySearchOffset(offsets: number[], scrollTop: number): number {
   let lo = 0
   let hi = offsets.length - 1

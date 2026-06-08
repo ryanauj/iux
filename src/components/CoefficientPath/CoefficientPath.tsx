@@ -32,20 +32,25 @@ export interface CoefficientPathProps {
   className?: string
 }
 
+// ABOUTME: SVG padding insets (px) for the chart area — top, right (space for inline labels), bottom (x-axis), left (y-axis ticks).
 const PAD = { top: 16, right: 96, bottom: 36, left: 48 }
+// ABOUTME: Default rotation through the six intent tokens applied to coefficient lines when no per-line intent is provided.
 const INTENTS: CoefficientPathIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Linear interpolation from data domain [d0, d1] to pixel range [r0, r1]; returns the midpoint when the domain is degenerate.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a β coefficient value as a fixed-decimal string — 0 decimals for |n|≥100, 2 for |n|≥1, otherwise 3.
 function num(n: number): string {
   if (Math.abs(n) >= 100) return n.toFixed(0)
   if (Math.abs(n) >= 1)   return n.toFixed(2)
   return n.toFixed(3)
 }
 
+// ABOUTME: Formats a λ tick label — one decimal place in log mode, three in linear mode.
 function fmtLambda(n: number, log: boolean): string {
   if (log) return n.toFixed(1)
   return n.toFixed(3)

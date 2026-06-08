@@ -26,8 +26,10 @@ export interface WaterfallProps {
   className?: string
 }
 
+// ABOUTME: Fixed pixel margins around the SVG plot area reserving space for axis tick labels on the left and category labels at the bottom.
 const PAD = { top: 24, right: 16, bottom: 36, left: 56 }
 
+// ABOUTME: Default value formatter: shows integers with thousand-separator and a leading "+" for positive values; used when no formatValue prop is provided.
 function defaultFormat(n: number): string {
   const abs = Math.abs(n)
   const s = abs >= 1000 ? n.toLocaleString(undefined, { maximumFractionDigits: 0 }) : n.toFixed(0)

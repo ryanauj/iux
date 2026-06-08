@@ -47,12 +47,17 @@ export interface LineChartProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent palette cycled over series when no explicit intent is set on a LineSeries.
 const DEFAULT_INTENTS: SeriesIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Named padding record type used by both the standard (PAD) and dense (PAD_DENSE) margin presets.
 interface Padding { top: number; right: number; bottom: number; left: number }
+// ABOUTME: Standard chart margins providing space for y-axis labels on the left and x-axis labels at the bottom.
 const PAD: Padding = { top: 12, right: 12, bottom: 24, left: 40 }
+// ABOUTME: Tighter chart margins for small-multiples panels where axis labels are condensed.
 const PAD_DENSE: Padding = { top: 8, right: 8, bottom: 18, left: 28 }
 
+// ABOUTME: Maps a value in domain [d0, d1] to a pixel in range [r0, r1] via linear interpolation; returns the midpoint when the domain is degenerate.
 function scaleLinear(value: number, domain: [number, number], range: [number, number]): number {
   const [d0, d1] = domain
   const [r0, r1] = range
@@ -60,6 +65,7 @@ function scaleLinear(value: number, domain: [number, number], range: [number, nu
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Generates `count` evenly-spaced tick values across a domain; returns a single-element array when the domain has zero span.
 function niceTicks(domain: [number, number], count: number): number[] {
   const [d0, d1] = domain
   if (d0 === d1) return [d0]
@@ -69,22 +75,26 @@ function niceTicks(domain: [number, number], count: number): number[] {
   return out
 }
 
+// ABOUTME: Default x-axis formatter: converts a Unix-ms timestamp to a locale short date string (e.g. "Jun 8"); falls back to String(t) for non-finite values.
 function defaultFormatT(t: number): string {
   const d = new Date(t)
   if (!Number.isFinite(d.getTime())) return String(t)
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+// ABOUTME: Default y-axis formatter: locale thousands for ≥ 1000, 1 decimal for ≥ 10, 2 decimals otherwise.
 function defaultFormatY(y: number): string {
   if (Math.abs(y) >= 1000) return y.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(y) >= 10) return y.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return y.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Returns the resolved intent for a series, cycling through DEFAULT_INTENTS by index when no explicit intent is set.
 function intentFor(s: LineSeries, idx: number): SeriesIntent {
   return s.intent ?? DEFAULT_INTENTS[idx % DEFAULT_INTENTS.length]
 }
 
+// ABOUTME: Converts an array of LinePoints to an SVG path `d` string using M for the first point and L for subsequent ones; returns an empty string when points is empty.
 function buildPath(points: LinePoint[], xs: (t: number) => number, ys: (y: number) => number): string {
   if (points.length === 0) return ''
   const parts: string[] = []
@@ -92,6 +102,7 @@ function buildPath(points: LinePoint[], xs: (t: number) => number, ys: (y: numbe
   return parts.join(' ')
 }
 
+// ABOUTME: Holds the computed x/y domains and the two scale functions (xs, ys) mapping data space to pixel space; produced by `buildScales` and consumed by SingleChart and MultiplesPanel.
 interface Scales {
   xDomain: [number, number]
   yDomain: [number, number]
@@ -99,6 +110,7 @@ interface Scales {
   ys: (y: number) => number
 }
 
+// ABOUTME: Derives the x-domain from all series timestamps and the y-domain from all series values (or a supplied override), then returns linear scale functions and both domains as a Scales record.
 function buildScales(
   series: LineSeries[],
   width: number,
@@ -172,6 +184,7 @@ export function LineChart({
   )
 }
 
+// ABOUTME: Internal props for SingleChart, carrying the resolved variant, series, annotations, canvas size, optional y-domain, and pre-bound formatters.
 interface SingleChartProps {
   variant: LineChartVariant
   series: LineSeries[]
@@ -184,6 +197,7 @@ interface SingleChartProps {
   className?: string
 }
 
+// ABOUTME: Renders a single-panel line chart SVG supporting a static view, a pointer-move crosshair with live readout, annotation event lines with flag labels, and auto-detected two-annotation bands; does not handle the 'multiples' variant.
 function SingleChart({
   variant,
   series,
@@ -395,6 +409,7 @@ function SingleChart({
   )
 }
 
+// ABOUTME: Internal props for MultiplesChart: the full series array, canvas dimensions, optional shared y-domain, formatters, and an optional brush callback.
 interface MultiplesChartProps {
   series: LineSeries[]
   width: number
@@ -406,6 +421,7 @@ interface MultiplesChartProps {
   className?: string
 }
 
+// ABOUTME: Lays out each LineSeries as its own MultiplesPanel in a CSS grid (up to 2 columns), sharing a common y-domain computed across all series; delegates per-panel rendering and brush interaction to MultiplesPanel.
 function MultiplesChart({
   series,
   width,
@@ -456,6 +472,7 @@ function MultiplesChart({
   )
 }
 
+// ABOUTME: Internal props for a single small-multiples panel: one series, its resolved intent, panel dimensions, the shared y-domain, formatters, and the optional brush callback.
 interface MultiplesPanelProps {
   series: LineSeries
   intent: SeriesIntent
@@ -467,6 +484,7 @@ interface MultiplesPanelProps {
   onBrush?: (range: [number, number] | null) => void
 }
 
+// ABOUTME: Renders one small-multiples panel for a single LineSeries: a labelled header, a compact SVG with y-bounds and 2-tick x-axis, the series path, and a pointer-drag brush overlay that fires `onBrush([t0, t1])` on mouse-up.
 function MultiplesPanel({
   series,
   intent,

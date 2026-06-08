@@ -20,6 +20,7 @@ import { isCustomPatternId, type StyleId } from './customPatterns'
  * palette. Surfaced as auto-tags so the user can pick "show me all
  * pixel-art" without us hand-authoring it in `palettes/tags.ts`.
  */
+// ABOUTME: Id prefixes whose presence on a palette id signals membership in a named engine family; used to auto-generate implicit tags without manual entries in palettes/tags.ts.
 const INFERRED_PREFIXES = ['pixel-art', 'cel-shaded', 'crt-phosphor', 'liquid-glass'] as const
 
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]

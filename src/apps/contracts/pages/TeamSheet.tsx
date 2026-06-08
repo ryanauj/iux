@@ -16,6 +16,7 @@ import {
 import { money, moneyFull } from '../format'
 import type { RosterSpot } from '../types'
 
+// ABOUTME: Column definitions for the sortable cap-sheet Table: player name + role, signing tool ("via"), and cap hit amount.
 const columns: TableColumn<RosterSpot>[] = [
   {
     key: 'player',

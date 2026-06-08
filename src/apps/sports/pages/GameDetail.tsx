@@ -13,6 +13,7 @@ import { sportsRoutes } from '../routes'
 import { NotFound } from './NotFound'
 import type { GamePerformer } from '../types'
 
+// ABOUTME: Props for GameDetail — the game id string looked up via `getGameById`.
 interface GameDetailProps {
   id: string
 }

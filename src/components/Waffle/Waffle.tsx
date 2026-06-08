@@ -31,8 +31,10 @@ export interface WaffleProps {
   className?: string
 }
 
+// ABOUTME: Ordered palette of intent tokens cycled by category index when a WaffleCategory carries no explicit intent.
 const INTENTS: WaffleIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a category, falling back to the INTENTS palette cycled by category index when no intent is explicitly set.
 function intentFor(c: WaffleCategory, i: number): WaffleIntent {
   return c.intent ?? INTENTS[i % INTENTS.length]
 }

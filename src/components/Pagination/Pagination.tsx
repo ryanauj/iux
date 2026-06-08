@@ -40,6 +40,7 @@ export interface PaginationProps {
   ariaLabel?: string
 }
 
+// ABOUTME: Produces the sequence of page numbers and ellipsis markers rendered by the numbered/rich variants; always seven slots or fewer, inserting 'gap' sentinels around skipped ranges when the current page is far from the ends.
 function pageList(page: number, total: number): (number | 'gap')[] {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
   const pages: (number | 'gap')[] = []

@@ -32,18 +32,23 @@ export interface StackedAreaProps {
   className?: string
 }
 
+// ABOUTME: SVG plot area padding in pixels; left is wider to accommodate y-axis tick labels.
 const PAD = { top: 12, right: 12, bottom: 28, left: 44 }
+// ABOUTME: Ordered intent palette cycled by series index when a series has no explicit intent.
 const INTENTS: StackedAreaIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the resolved intent for a series — the series' own intent if set, otherwise the next palette entry by index.
 function intentFor(s: StackedAreaSeries, i: number): StackedAreaIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Linear interpolation from domain [d0, d1] to range [r0, r1]; returns the midpoint for a degenerate domain.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a Unix-millisecond timestamp as a locale short-date string ("Jan 1"); returns the raw number string for non-finite timestamps.
 function defaultFormatT(t: number): string {
   const d = new Date(t)
   if (!Number.isFinite(d.getTime())) return String(t)

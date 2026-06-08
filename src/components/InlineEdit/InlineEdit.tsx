@@ -238,6 +238,7 @@ export function InlineEdit({
   )
 }
 
+// ABOUTME: Renders a small inline badge reflecting the current autosave lifecycle state — 'unsaved', 'saving…', 'saved', or 'save failed' — with appropriate ARIA live-region roles.
 function StatusBadge({ status }: { status: SaveStatus }) {
   if (status === 'dirty') return <span className="iux-inline-edit__badge iux-inline-edit__badge--dirty" role="status">unsaved</span>
   if (status === 'saving') return <span className="iux-inline-edit__badge iux-inline-edit__badge--saving" role="status" aria-live="polite">saving…</span>
@@ -246,6 +247,7 @@ function StatusBadge({ status }: { status: SaveStatus }) {
   return null
 }
 
+// ABOUTME: Renders a small aria-hidden SVG pencil icon used as the edit affordance button inside the read-only display state.
 function PencilGlyph() {
   return (
     <svg className="iux-inline-edit__pencil" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">

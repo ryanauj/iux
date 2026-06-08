@@ -10,6 +10,7 @@ import { NAV } from '../shell'
 import { SEASON, PRIOR_CAP, THRESHOLDS } from '../data/cap'
 import { money, moneySigned, pct } from '../format'
 
+// ABOUTME: NAV entries for chapters 2–9 (everything after Overview), used to render the "What's ahead" chapter-card grid at the bottom of the Overview page.
 const CHAPTERS = NAV.slice(1) // everything after Overview
 
 // ABOUTME: Chapter 1 page combining prose on the soft-cap origin story with SEASON / PRIOR_CAP / THRESHOLDS data from cap.ts; renders StatTiles for this year's numbers, a Bar chart of all thresholds, the full CapLadder, and a chapter-card grid from NAV (shell.tsx).

@@ -267,6 +267,7 @@ export function Sidebar({
   )
 }
 
+// ABOUTME: Renders a single navigation item as a <li> containing either an <a> (when href is set) or a <button>; applies is-active, is-disabled, and is-icon-only classes and hides badge/label text when iconOnly is true.
 function renderItem(
   item: SidebarItem,
   activeId: string | undefined,
@@ -325,6 +326,7 @@ function renderItem(
   )
 }
 
+// ABOUTME: Renders a small SVG chevron that rotates 180° when expanded is true, used as a collapse toggle indicator on collapsible group headings.
 function Chevron({ expanded }: { expanded: boolean }) {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined, transition: `transform var(--motion-duration-fast) var(--motion-easing-standard)` }}>

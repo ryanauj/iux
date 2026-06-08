@@ -42,10 +42,13 @@ export interface NodeLinkProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent cycle used to assign distinct colors to node groups when no explicit intent is set on a node; wraps modularly so any number of groups is handled.
 const INTENTS: NodeLinkIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Internal record produced by the layout pass: combines the original GraphNode with its computed canvas pixel position, circle radius, and resolved intent.
 interface Placed { node: GraphNode; x: number; y: number; r: number; intent: NodeLinkIntent }
 
+// ABOUTME: Places nodes on a canvas by clustering them on concentric arcs by group, then iterates 60 steps of Fruchterman-Reingold repulsion+spring attraction with linear cooling; returns a map from node id to pixel x/y.
 function deterministicLayout(nodes: GraphNode[], edges: GraphEdge[], width: number, height: number): Map<string, { x: number; y: number }> {
   // Pre-position by group on concentric arcs, then run a few iterations of
   // a simple repulsion / spring relaxation (no animation, deterministic).

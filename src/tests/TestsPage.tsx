@@ -31,14 +31,18 @@ export type RunFor = (
   opts?: RunOptions,
 ) => Promise<RunResult | undefined>
 
+// ABOUTME: Segmented control options for the visualization switcher, pairing each VizId with a label and tooltip hint string.
 const VIZ_OPTIONS: { value: VizId; label: string; hint: string }[] = [
   { value: 'tests', label: 'Tests', hint: 'Browse tests as cards — click Run to expand a card into a live workbench with sandbox and stepped playback' },
   { value: 'coverage', label: 'Coverage', hint: 'See which components each test exercises, as a table or as a network graph' },
 ]
 
+// ABOUTME: Flat array of all valid VizId strings derived from VIZ_OPTIONS, used by isVizId for URL param validation.
 const VIZ_VALUES: VizId[] = VIZ_OPTIONS.map(v => v.value)
+// ABOUTME: Fallback visualization shown when the URL carries no 'viz' param or an unrecognised value.
 const DEFAULT_VIZ: VizId = 'tests'
 
+// ABOUTME: Type predicate that narrows a raw URL param string to VizId by checking membership in VIZ_VALUES.
 const isVizId = (v: string): v is VizId => (VIZ_VALUES as string[]).includes(v)
 
 // ABOUTME: Top-level page that hosts the integration test runner: manages shared result state, drives the autorun loop for CI/Playwright, and delegates rendering to TestsViz or CoverageViz based on the active viz segment.
