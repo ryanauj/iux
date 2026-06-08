@@ -9,7 +9,9 @@ import {
   fileLabel,
   fileMatches,
   importedBy,
+  importersOfMember,
   importsOf,
+  memberNodeId,
 } from './astViews'
 import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 
@@ -31,6 +33,8 @@ export function AstOutline() {
   const [query, setQuery] = useState('')
   const [openAreas, setOpenAreas] = useState<Set<string>>(new Set())
   const [openFiles, setOpenFiles] = useState<Set<string>>(new Set())
+  // Member node ids whose "imported by" chip list is expanded.
+  const [openMembers, setOpenMembers] = useState<Set<string>>(new Set())
 
   const q = query.trim().toLowerCase()
 
@@ -50,6 +54,12 @@ export function AstOutline() {
     })
   const toggleFile = (id: string) =>
     setOpenFiles(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  const toggleMember = (id: string) =>
+    setOpenMembers(prev => {
       const next = new Set(prev)
       next.has(id) ? next.delete(id) : next.add(id)
       return next
@@ -136,24 +146,57 @@ export function AstOutline() {
                           <div className="astv-file__body">
                             {file.members.length > 0 && (
                               <ul className="astv-members">
-                                {file.members.map(m => (
-                                  <li className="astv-member" key={m.name}>
-                                    <span
-                                      className="astv-member__dot"
-                                      style={{ color: memberKindColor(m.kind) }}
-                                      title={m.kind}
-                                      aria-hidden="true"
-                                    >
-                                      {memberKindGlyph(m.kind)}
-                                    </span>
-                                    <span className="astv-member__text">
-                                      <span className={`astv-member__name${m.exported ? ' is-exported' : ''}`}>
-                                        {m.name}
-                                      </span>
-                                      {m.about && <span className="astv-member__about">{m.about}</span>}
-                                    </span>
-                                  </li>
-                                ))}
+                                {file.members.map(m => {
+                                  const memberId = memberNodeId(file.id, m.name)
+                                  const importers = importersOfMember(memberId)
+                                  const mopen = openMembers.has(memberId)
+                                  return (
+                                    <li className="astv-member" key={m.name}>
+                                      <div className="astv-member__row">
+                                        <span
+                                          className="astv-member__dot"
+                                          style={{ color: memberKindColor(m.kind) }}
+                                          title={m.kind}
+                                          aria-hidden="true"
+                                        >
+                                          {memberKindGlyph(m.kind)}
+                                        </span>
+                                        <span className="astv-member__text">
+                                          <span className={`astv-member__name${m.exported ? ' is-exported' : ''}`}>
+                                            {m.name}
+                                          </span>
+                                          {m.about && <span className="astv-member__about">{m.about}</span>}
+                                        </span>
+                                        {importers.length > 0 && (
+                                          <button
+                                            type="button"
+                                            className={`astv-member__used-btn${mopen ? ' is-open' : ''}`}
+                                            onClick={() => toggleMember(memberId)}
+                                            aria-expanded={mopen}
+                                            title={`Imported by ${importers.length} file(s)`}
+                                          >
+                                            ↩ {importers.length}
+                                          </button>
+                                        )}
+                                      </div>
+                                      {mopen && importers.length > 0 && (
+                                        <div className="astv-links__chips astv-member__chips">
+                                          {importers.map(id => (
+                                            <button
+                                              key={id}
+                                              type="button"
+                                              className="astv-chip"
+                                              onClick={() => jumpTo(id)}
+                                              title={id}
+                                            >
+                                              {fileLabel(id)}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      )}
+                                    </li>
+                                  )
+                                })}
                               </ul>
                             )}
                             <LinkRow label="Imports" ids={deps} />

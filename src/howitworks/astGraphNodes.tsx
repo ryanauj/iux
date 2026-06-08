@@ -101,10 +101,10 @@ export function RegionNode({ data }: NodeProps) {
   )
 }
 
-// ABOUTME: Renders a file node with its name, English summary, badges, and members.
+// ABOUTME: Renders a file node with its name, English summary, badges, and selectable members.
 export function FileNode({ data, selected }: NodeProps) {
   const d = data as FileNodeData
-  const { file, expanded, matched } = d
+  const { file, expanded, matched, selectedMember, onMemberClick } = d
   const cls = ['astg-file']
   if (selected) cls.push('is-selected')
   if (matched) cls.push('is-matched')
@@ -146,26 +146,41 @@ export function FileNode({ data, selected }: NodeProps) {
       </div>
       {expanded && (
         <ul className="astg-file__members">
-          {file.members.map(m => (
-            <li key={m.name} className="astg-file__member">
-              <span
-                className="astg-file__member-dot"
-                style={{ color: KIND_COLOR[m.kind] }}
-                title={m.kind}
-                aria-hidden="true"
-              >
-                {KIND_GLYPH[m.kind]}
-              </span>
-              <span className="astg-file__member-text">
-                <span className={`astg-file__member-name${m.exported ? ' is-exported' : ''}`}>{m.name}</span>
-                {m.about && (
-                  <span className="astg-file__member-about" title={m.about}>
-                    {m.about}
+          {file.members.map(m => {
+            const memberId = `${file.id}#${m.name}`
+            const isSelected = selectedMember === memberId
+            return (
+              <li key={m.name} className="astg-file__member">
+                <button
+                  type="button"
+                  className={`astg-file__member-btn${isSelected ? ' is-selected' : ''}`}
+                  // Stop the click from reaching the node (which would toggle the
+                  // file's expand state); selecting a member is its own action.
+                  onClick={evt => {
+                    evt.stopPropagation()
+                    onMemberClick?.(memberId)
+                  }}
+                  title={`${m.name} — ${m.kind} · tap to light up the files that import it`}
+                >
+                  <span
+                    className="astg-file__member-dot"
+                    style={{ color: KIND_COLOR[m.kind] }}
+                    aria-hidden="true"
+                  >
+                    {KIND_GLYPH[m.kind]}
                   </span>
-                )}
-              </span>
-            </li>
-          ))}
+                  <span className="astg-file__member-text">
+                    <span className={`astg-file__member-name${m.exported ? ' is-exported' : ''}`}>{m.name}</span>
+                    {m.about && (
+                      <span className="astg-file__member-about" title={m.about}>
+                        {m.about}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
         </ul>
       )}
     </div>

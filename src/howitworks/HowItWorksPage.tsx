@@ -189,7 +189,8 @@ export function HowItWorksPage() {
           plain-English summary, lifted from its <code>ABOUTME:</code>{' '}
           comment and shown beside the name. It opens in <em>Focus</em> on the
           app entry point: walk outward through <em>Depends on</em> /{' '}
-          <em>Used by</em> cards and your path builds up as breadcrumbs you can
+          <em>Used by</em> cards — drilling into the exact method, class, or type
+          imported via its chip — and your path builds up as breadcrumbs you can
           save as a reusable <em>flow</em>, replayed end-to-end under the{' '}
           <em>Flows</em> tab. The <em>Graph</em>, <em>Outline</em>, and{' '}
           <em>Matrix</em> tabs show the same data as a whole map. It
@@ -224,11 +225,14 @@ export function HowItWorksPage() {
                   Every file under <code>src/</code> parsed at build into a
                   deterministic graph: {astGraph.stats.areas} directories,{' '}
                   {astGraph.stats.files} files, and {astGraph.stats.members}{' '}
-                  members, joined by {astGraph.stats.imports} import links.
-                  Every file and {astGraph.stats.documentedMembers} exported
-                  members carry a plain-English summary beside the name. Start
-                  in Focus at the entry point, walk the imports one hop at a
-                  time, and save the trails you care about as flows.
+                  members, joined by {astGraph.stats.imports} import links that
+                  resolve to {astGraph.stats.memberEdges} member-level
+                  dependencies. Every file and {astGraph.stats.documentedMembers}{' '}
+                  exported members carry a plain-English summary beside the name.
+                  Start in Focus at the entry point, walk the imports one hop at
+                  a time — drilling into the exact methods, classes, and types
+                  each file depends on — and save the trails you care about as
+                  flows.
                 </p>
               </header>
 

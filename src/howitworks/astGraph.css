@@ -79,8 +79,32 @@
 
 .astv-member {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* The horizontal part of a member entry: the kind dot, name/summary, and any
+   trailing affordance. Used as a div (Outline) or a button (Focus). */
+.astv-member__row,
+.astv-member__btn {
+  display: flex;
   align-items: flex-start;
   gap: var(--space-2);
+  width: 100%;
+  text-align: left;
+}
+
+.astv-member__btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  margin: calc(-1 * var(--space-1));
+  cursor: pointer;
+}
+
+.astv-member__btn:hover {
+  background: var(--color-surface-sunken);
 }
 
 .astv-member__dot {
@@ -114,6 +138,38 @@
   font-size: var(--type-caption-size);
   line-height: 1.3;
   color: var(--color-content-muted);
+}
+
+/* Trailing "imported by N" affordance on a member row. The Focus list shows it
+   as a static badge; the Outline shows it as a toggle that reveals importers. */
+.astv-member__used,
+.astv-member__used-btn {
+  margin-left: auto;
+  flex: none;
+  align-self: flex-start;
+  font-family: var(--type-code-family, monospace);
+  font-size: var(--type-caption-size);
+  color: var(--color-content-secondary);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill, var(--radius-sm));
+  padding: 0 var(--space-2);
+  white-space: nowrap;
+}
+
+.astv-member__used-btn {
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  cursor: pointer;
+}
+
+.astv-member__used-btn:hover,
+.astv-member__used-btn.is-open {
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+  color: var(--color-content-primary);
+}
+
+/* The importer chips revealed under a member in the Outline. */
+.astv-member__chips {
+  padding-left: calc(1.1rem + var(--space-2));
 }
 
 /* Link chips, shared. */
@@ -492,6 +548,106 @@
   border-color: var(--color-intent-primary-border, var(--color-border-strong));
 }
 
+/* A "Depends on" entry: the dependency file card plus the exact members
+   imported from it as selectable chips. */
+.astv-dep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.astv-dep__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding-left: var(--space-3);
+}
+
+/* A selectable member chip (method/class/type) inside a "Depends on" card. */
+.astv-mchip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--type-code-family, var(--type-label-family));
+  font-size: var(--type-caption-size);
+  color: var(--color-content-primary);
+  background: var(--color-surface-sunken);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  min-height: 1.75rem;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.astv-mchip:hover {
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+}
+
+.astv-mchip.is-on-trail {
+  border-style: dashed;
+  border-color: var(--color-intent-primary-border, var(--color-border-strong));
+}
+
+.astv-mchip__dot {
+  font-family: var(--type-code-family, monospace);
+  font-weight: 700;
+  flex: none;
+}
+
+.astv-mchip__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Member-focus header: the kind tag, the name, and the "in <file>" jump-back. */
+.astv-focus__head--member {
+  border-left: var(--border-width-thick, var(--border-width-thin)) solid
+    var(--color-intent-primary-border, var(--color-border-strong));
+}
+
+.astv-focus__member-kind {
+  align-self: flex-start;
+  font-family: var(--type-code-family, var(--type-label-family));
+  font-size: var(--type-label-size);
+  text-transform: lowercase;
+  font-weight: 600;
+}
+
+.astv-focus__in-file {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--type-code-family, var(--type-body-family));
+  font-size: inherit;
+  color: var(--color-content-secondary);
+  text-decoration: underline;
+}
+
+.astv-focus__in-file:hover {
+  color: var(--color-content-primary);
+}
+
+/* A breadcrumb that points at a member rather than a file. */
+.astv-focus__crumb.is-member {
+  font-style: italic;
+}
+
+/* The kind glyph beside a member hit in the jump-box results. */
+.astv-focus__result-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.astv-focus__result-dot {
+  font-family: var(--type-code-family, monospace);
+  font-weight: 700;
+  flex: none;
+}
+
 /* ── Focus breadcrumbs + save flow ───────────────────────────────────────── */
 .astv-focus__crumbs {
   display: flex;
@@ -701,6 +857,12 @@
   font-size: var(--type-body-size);
   font-weight: 600;
   color: var(--color-content-primary);
+}
+
+.astv-flows__step-dot {
+  font-family: var(--type-code-family, monospace);
+  font-weight: 700;
+  flex: none;
 }
 
 .astv-flows__step-area {
@@ -1226,6 +1388,31 @@
   align-items: flex-start;
   gap: var(--space-2);
   height: 40px;
+}
+
+/* Each member is a button so it can be selected to light up its importers. */
+.astg-file__member-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.astg-file__member-btn:hover {
+  background: var(--color-surface-sunken);
+}
+
+.astg-file__member-btn.is-selected {
+  background: var(--color-surface-sunken);
+  box-shadow: inset var(--space-1) 0 0 0 var(--color-intent-primary-border, var(--color-border-strong));
 }
 
 .astg-file__member-dot {
