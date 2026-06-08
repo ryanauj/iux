@@ -68,13 +68,14 @@ export const ABOUTME_OVERRIDES: Record<string, FileOverride> = {
       AREA_MATRIX: 'The area→area dependency matrix the Matrix view renders, keyed [from][to].',
       AREA_MATRIX_MAX: 'The largest single area→area count, used to scale the Matrix\'s heat shading.',
       fileMatches: 'Whether a file matches a free-text query across its name, dir, summary, and member names — the search predicate shared by every view.',
-      MOST_CONNECTED_FILE: 'The most-connected file; the Focus view starts here so the first screen is the busiest hub.',
+      MOST_CONNECTED_FILE: 'The most-connected file; the fallback start for Focus when there is no entry point.',
+      DEFAULT_FOCUS_FILE: 'The file Focus opens on — the app entry point src/main.tsx when present (so every breadcrumb trail starts at boot), else the most-connected file.',
     },
   },
   'src/howitworks/AstGraph.tsx': {
-    file: 'The AST explorer\'s view switcher plus its interactive React Flow graph; Outline/Focus/Matrix live in their own files.',
+    file: 'The AST explorer\'s view switcher plus its interactive React Flow graph; Focus/Flows/Outline/Matrix live in their own files.',
     members: {
-      AstGraph: 'The AST viewer shell: a tablist that switches between the Graph, Outline, Focus, and Matrix views (defaulting to Outline on narrow screens).',
+      AstGraph: 'The AST viewer shell: a tablist defaulting to Focus that switches between the Focus, Flows, Graph, Outline, and Matrix views; owns the Focus breadcrumb trail so a saved flow can be replayed in Focus.',
     },
   },
   'src/howitworks/AstOutline.tsx': {
@@ -84,9 +85,27 @@ export const ABOUTME_OVERRIDES: Record<string, FileOverride> = {
     },
   },
   'src/howitworks/AstFocus.tsx': {
-    file: 'Focus view: one file at a time, flanked by its dependency neighbours as tappable cards.',
+    file: 'Focus view: one file at a time, flanked by its dependency neighbours as tappable cards, with the walked path kept as saveable breadcrumbs.',
     members: {
-      AstFocus: 'Shows a single file\'s summary and members between "Depends on" / "Used by" neighbour cards (from importsOf / importedBy); tapping a card walks the import graph one hop at a time, with back history.',
+      AstFocus: 'Shows a single file\'s summary and members between "Depends on" / "Used by" neighbour cards (from importsOf / importedBy); tapping a card extends a breadcrumb trail you can click to backtrack and save to localStorage as a reusable flow.',
+      AstFocusProps: 'Props for AstFocus: the controlled breadcrumb trail (file ids, root first) and a callback to replace it.',
+    },
+  },
+  'src/howitworks/AstFlows.tsx': {
+    file: 'Flows view: saved Focus breadcrumb trails replayed as numbered, end-to-end walks through the import graph.',
+    members: {
+      AstFlows: 'Lists every saved flow from localStorage (via useFlows) and unrolls its trail into a numbered file-by-file story — each step\'s name, area, and summary; each flow can be reopened in Focus or deleted.',
+      AstFlowsProps: 'Props for AstFlows: a callback that drops a saved trail back into the Focus view.',
+    },
+  },
+  'src/howitworks/flows.ts': {
+    file: 'localStorage-backed saved Focus trails ("flows") plus a useSyncExternalStore hook that keeps the Focus view and Flows section on one live list.',
+    members: {
+      Flow: 'One saved Focus trail: a stable id, a human name, the ordered file ids walked, and when it was saved.',
+      listFlows: 'Returns the current saved flows, newest first.',
+      saveFlow: 'Saves a named breadcrumb trail as a new flow and returns it; ignores trails shorter than two files.',
+      deleteFlow: 'Deletes the flow with the given id.',
+      useFlows: 'React hook returning the live saved-flow list, re-rendering whenever any surface saves or deletes one.',
     },
   },
   'src/howitworks/AstMatrix.tsx': {

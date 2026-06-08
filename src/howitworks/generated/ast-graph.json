@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "stats": {
     "areas": 14,
-    "files": 255,
-    "members": 1874,
-    "imports": 763,
-    "documentedFiles": 255,
-    "documentedMembers": 1874
+    "files": 257,
+    "members": 1889,
+    "imports": 768,
+    "documentedFiles": 257,
+    "documentedMembers": 1887
   },
   "areas": [
     {
@@ -48,8 +48,8 @@
     {
       "id": "howitworks",
       "label": "howitworks",
-      "fileCount": 9,
-      "memberCount": 74
+      "fileCount": 11,
+      "memberCount": 89
     },
     {
       "id": "lib",
@@ -13034,88 +13034,114 @@
       "about": "Landing page at /palettes — lists every registered palette grouped by engine, linking each to its /palettes/:id/design page with a one-line tagline teaser, and shows how many of the total have structured descriptions so far."
     },
     {
-      "id": "src/howitworks/AstFocus.tsx",
+      "id": "src/howitworks/AstFlows.tsx",
       "area": "howitworks",
       "dir": "howitworks",
-      "name": "AstFocus.tsx",
-      "loc": 165,
+      "name": "AstFlows.tsx",
+      "loc": 107,
       "importCount": 2,
       "externalCount": 1,
       "members": [
         {
+          "name": "AstFlowsProps",
+          "kind": "interface",
+          "exported": true,
+          "line": 11,
+          "about": "Props for AstFlows: a callback that drops a saved trail back into the Focus view."
+        },
+        {
+          "name": "AstFlows",
+          "kind": "component",
+          "exported": true,
+          "line": 25,
+          "about": "Lists every saved flow from localStorage and unrolls its trail into a numbered file-by-file story (each step's name, area, and summary); each flow can be reopened in Focus or deleted."
+        }
+      ],
+      "about": "Flows view — saved Focus breadcrumb trails replayed as numbered, end-to-end walks through the import graph, reopenable in Focus."
+    },
+    {
+      "id": "src/howitworks/AstFocus.tsx",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "AstFocus.tsx",
+      "loc": 261,
+      "importCount": 3,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "AstFocusProps",
+          "kind": "interface",
+          "exported": true,
+          "line": 19,
+          "about": "Props for AstFocus: the controlled breadcrumb trail (file ids, root first) and a callback to replace it."
+        },
+        {
           "name": "AstFocus",
           "kind": "component",
           "exported": true,
-          "line": 26,
-          "about": "Shows a single file's summary and members between \"Depends on\" / \"Used by\" neighbour cards (from importsOf / importedBy); tapping a card walks the import graph one hop at a time, with back history."
+          "line": 38,
+          "about": "Shows a single file's summary and members between \"Depends on\" / \"Used by\" neighbour cards (from importsOf / importedBy); tapping a card extends a breadcrumb trail you can click to backtrack and save to localStorage as a reusable flow."
         }
       ],
-      "about": "Focus view — one file at a time with its dependency neighbours as tappable cards, traversing the import graph one hop at a time."
+      "about": "Focus view — one file at a time with its dependency neighbours as tappable cards, the walked path kept as saveable breadcrumbs."
     },
     {
       "id": "src/howitworks/AstGraph.tsx",
       "area": "howitworks",
       "dir": "howitworks",
       "name": "AstGraph.tsx",
-      "loc": 303,
-      "importCount": 6,
+      "loc": 313,
+      "importCount": 8,
       "externalCount": 5,
       "members": [
         {
           "name": "GRAPH",
           "kind": "const",
           "exported": false,
-          "line": 31,
+          "line": 33,
           "about": "The generated graph JSON typed as AstGraph — the dataset this viewer reads."
         },
         {
           "name": "matchFiles",
           "kind": "function",
           "exported": false,
-          "line": 35,
+          "line": 37,
           "about": "File ids whose name, dir, summary, or any member matches the search query — drives node highlighting and auto-open."
         },
         {
           "name": "areaOfFileId",
           "kind": "const",
           "exported": false,
-          "line": 55,
+          "line": 57,
           "about": "Lookup from file id to its area, used to auto-open the areas that contain search matches."
         },
         {
           "name": "GraphView",
           "kind": "component",
           "exported": false,
-          "line": 58,
+          "line": 60,
           "about": "The interactive React Flow canvas: search, expand/collapse, auto-layout, selection highlighting, and palette-themed nodes."
         },
         {
           "name": "VIEW_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 253,
-          "about": "The four view modes and their tab labels/hints, rendered by the AstGraph switcher."
+          "line": 255,
+          "about": "The five view modes and their tab labels/hints, rendered by the AstGraph switcher."
         },
         {
           "name": "ViewMode",
           "kind": "type",
           "exported": false,
-          "line": 261,
-          "about": "The id of one of the four views ('graph' | 'outline' | 'focus' | 'matrix')."
-        },
-        {
-          "name": "defaultView",
-          "kind": "function",
-          "exported": false,
-          "line": 265,
-          "about": "Picks the initial view — Outline on phones (≤720px), the network Graph on wider screens."
+          "line": 264,
+          "about": "The id of one of the five views ('focus' | 'flows' | 'graph' | 'outline' | 'matrix')."
         },
         {
           "name": "AstGraph",
           "kind": "component",
           "exported": true,
-          "line": 271,
-          "about": "The AST viewer shell: a view switcher over the graph, outline, focus, and matrix views."
+          "line": 274,
+          "about": "The AST viewer shell: a view switcher defaulting to Focus, over the focus, flows, graph, outline, and matrix views; owns the Focus breadcrumb trail so a saved flow can be replayed in Focus."
         }
       ],
       "about": "The AST explorer's view switcher plus its interactive React Flow graph (the Outline/Focus/Matrix views live in their own files)."
@@ -13467,7 +13493,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "astViews.ts",
-      "loc": 142,
+      "loc": 155,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -13561,9 +13587,110 @@
           "exported": true,
           "line": 130,
           "about": "A sensible starting file for the focus view: the most-connected one."
+        },
+        {
+          "name": "DEFAULT_FOCUS_FILE",
+          "kind": "const",
+          "exported": true,
+          "line": 152,
+          "about": "The file the Focus view opens on — the app entry point (src/main.tsx) when present, so every breadcrumb trail starts where the app boots; falls back to the most-connected file."
         }
       ],
       "about": "Shared graph indexes and helpers for the alternative (mobile) AST views — outline, focus, and matrix — derived from the graph."
+    },
+    {
+      "id": "src/howitworks/flows.ts",
+      "area": "howitworks",
+      "dir": "howitworks",
+      "name": "flows.ts",
+      "loc": 131,
+      "importCount": 0,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "Flow",
+          "kind": "interface",
+          "exported": true,
+          "line": 16,
+          "about": "One saved Focus trail: a stable id, a human name, the ordered file ids walked, and when it was saved."
+        },
+        {
+          "name": "FLOWS_KEY",
+          "kind": "const",
+          "exported": false,
+          "line": 24,
+          "about": "The localStorage key all saved flows live under."
+        },
+        {
+          "name": "FLOWS_EVENT",
+          "kind": "const",
+          "exported": false,
+          "line": 26,
+          "about": "Window event fired after any flow write so same-tab subscribers re-read immediately."
+        },
+        {
+          "name": "EMPTY",
+          "kind": "const",
+          "exported": false,
+          "line": 30
+        },
+        {
+          "name": "read",
+          "kind": "function",
+          "exported": false,
+          "line": 33,
+          "about": "Reads and validates the saved flows from localStorage, tolerating absent/corrupt data."
+        },
+        {
+          "name": "snapshot",
+          "kind": "const",
+          "exported": false,
+          "line": 56
+        },
+        {
+          "name": "write",
+          "kind": "function",
+          "exported": false,
+          "line": 59,
+          "about": "Persists the flow list, refreshes the cached snapshot, and notifies same-tab subscribers."
+        },
+        {
+          "name": "listFlows",
+          "kind": "function",
+          "exported": true,
+          "line": 68,
+          "about": "Returns the current saved flows, newest first."
+        },
+        {
+          "name": "saveFlow",
+          "kind": "function",
+          "exported": true,
+          "line": 78,
+          "about": "Saves a named breadcrumb trail as a new flow and returns it; ignores trails shorter than two files."
+        },
+        {
+          "name": "deleteFlow",
+          "kind": "function",
+          "exported": true,
+          "line": 92,
+          "about": "Deletes the flow with the given id."
+        },
+        {
+          "name": "subscribe",
+          "kind": "function",
+          "exported": false,
+          "line": 97,
+          "about": "Subscribes to flow changes (same-tab custom event + cross-tab storage event), re-reading the cache on each."
+        },
+        {
+          "name": "useFlows",
+          "kind": "function",
+          "exported": true,
+          "line": 124,
+          "about": "React hook returning the live saved-flow list, re-rendering whenever any surface saves or deletes one."
+        }
+      ],
+      "about": "localStorage-backed \"flows\" — saved Focus breadcrumb trails — plus a useSyncExternalStore hook so the Focus view and Flows section share one live list."
     },
     {
       "id": "src/howitworks/generated/astGraph.types.ts",
@@ -13624,7 +13751,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "HowItWorksPage.tsx",
-      "loc": 254,
+      "loc": 255,
       "importCount": 8,
       "externalCount": 4,
       "members": [
@@ -18692,12 +18819,28 @@
       "target": "src/theme/PaletteRoot.tsx"
     },
     {
+      "source": "src/howitworks/AstFlows.tsx",
+      "target": "src/howitworks/astViews.ts"
+    },
+    {
+      "source": "src/howitworks/AstFlows.tsx",
+      "target": "src/howitworks/flows.ts"
+    },
+    {
       "source": "src/howitworks/AstFocus.tsx",
       "target": "src/howitworks/astGraphNodes.tsx"
     },
     {
       "source": "src/howitworks/AstFocus.tsx",
       "target": "src/howitworks/astViews.ts"
+    },
+    {
+      "source": "src/howitworks/AstFocus.tsx",
+      "target": "src/howitworks/flows.ts"
+    },
+    {
+      "source": "src/howitworks/AstGraph.tsx",
+      "target": "src/howitworks/AstFlows.tsx"
     },
     {
       "source": "src/howitworks/AstGraph.tsx",
@@ -18718,6 +18861,10 @@
     {
       "source": "src/howitworks/AstGraph.tsx",
       "target": "src/howitworks/AstOutline.tsx"
+    },
+    {
+      "source": "src/howitworks/AstGraph.tsx",
+      "target": "src/howitworks/astViews.ts"
     },
     {
       "source": "src/howitworks/AstGraph.tsx",
