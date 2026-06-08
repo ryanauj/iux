@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Slider } from '../../components/Slider/Slider'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the single-thumb slider test: a Slider starting at 40 with a state span echoing the current value.
 function SingleComposition() {
   const [value, setValue] = useState(40)
   return (
@@ -14,6 +15,7 @@ function SingleComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the ticks-variant slider test: a Slider with step=20 tick marks and a state span to assert step-aligned jumps.
 function TicksComposition() {
   const [value, setValue] = useState(20)
   return (
@@ -32,6 +34,7 @@ function TicksComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the range-slider test: a Slider with range variant holding a [20, 80] tuple and a state span echoing min-max.
 function RangeComposition() {
   const [range, setRange] = useState<[number, number]>([20, 80])
   return (
@@ -46,6 +49,7 @@ function RangeComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the curve-variant slider test: a Slider with a 16-point sine curve backdrop to verify the SVG polyline renders.
 function CurveComposition() {
   const [value, setValue] = useState(50)
   const curve = Array.from({ length: 16 }, (_, i) => Math.sin((i / 15) * Math.PI) * 100)

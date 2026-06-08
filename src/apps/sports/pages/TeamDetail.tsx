@@ -15,6 +15,7 @@ import { formatHeight, formatStat, formatDate, winPct } from '../format'
 import { NotFound } from './NotFound'
 import type { Player, Game } from '../types'
 
+// ABOUTME: Props for TeamDetail — the URL slug string resolved via `getTeamBySlug`.
 interface TeamDetailProps {
   slug: string
 }
@@ -206,6 +207,7 @@ export function TeamDetail({ slug }: TeamDetailProps) {
   )
 }
 
+// ABOUTME: Single stat cell in the Team stats tab: a small label above a larger value; returns null for an empty label so the grid can be padded with blank entries.
 function StatCell({ label, value }: { label: string; value: string }) {
   if (!label) return null
   return (

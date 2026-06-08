@@ -46,6 +46,7 @@ export function strategyCategoryLabel(c: StrategyCategory): string {
   return STRATEGY_CATEGORIES.find(x => x.value === c)?.label ?? c
 }
 
+// ABOUTME: Intl.DateTimeFormat instance configured for short US dates (e.g. "May 20, 2026"), shared by formatDate to avoid re-creating the formatter on every call.
 const DATE_FMT = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',

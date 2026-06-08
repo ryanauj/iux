@@ -27,16 +27,19 @@ import { StrategyDetail } from './pages/StrategyDetail'
 import { NotFound } from './pages/NotFound'
 import './promptbook-app.css'
 
+// ABOUTME: Props for PromptsApp; carries the full HashLocation so the app can match the sub-route and read palette/motion params.
 interface PromptsAppProps {
   location: HashLocation
 }
 
+// ABOUTME: Shape of one top-level nav entry in the Promptbook header: destination path, display label, and an active-state predicate over the current PromptsRoute.
 interface NavItem {
   to: string
   label: string
   isActive: (route: PromptsRoute) => boolean
 }
 
+// ABOUTME: Two primary nav entries for the Promptbook app (Library and Strategies), each marking itself active for its own route cluster.
 const NAV: NavItem[] = [
   {
     to: promptRoutes.library(),
@@ -145,6 +148,7 @@ export function PromptsApp({ location }: PromptsAppProps) {
   )
 }
 
+// ABOUTME: Switches on the matched PromptsRoute kind and returns the appropriate page component (Library, PromptDetail, PromptForm, Strategies, StrategyDetail, or NotFound).
 function RouteContent({ route, location }: { route: PromptsRoute; location: HashLocation }) {
   switch (route.kind) {
     case 'library': return <Library />

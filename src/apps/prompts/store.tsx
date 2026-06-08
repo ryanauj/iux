@@ -22,6 +22,7 @@ export interface NewPromptInput {
   notes?: string
 }
 
+// ABOUTME: Shape of the prompt store value exposed through PromptStoreContext: the live prompts array plus the five CRUD/toggle actions used by Library, PromptDetail, PromptForm, and PromptCard.
 interface PromptStore {
   prompts: Prompt[]
   get: (id: string) => Prompt | undefined
@@ -31,9 +32,12 @@ interface PromptStore {
   toggleFavorite: (id: string) => void
 }
 
+// ABOUTME: React context holding the PromptStore; null outside PromptStoreProvider so usePromptStore can detect misuse.
 const PromptStoreContext = createContext<PromptStore | null>(null)
 
+// ABOUTME: Module-level counter used by makeId to ensure generated prompt ids are unique within a session even if multiple prompts are created in the same millisecond.
 let idCounter = 0
+// ABOUTME: Generates a unique prompt id by combining the current timestamp (base-36) with a monotonically incrementing counter.
 function makeId(): string {
   idCounter += 1
   return `pr-user-${Date.now().toString(36)}-${idCounter}`

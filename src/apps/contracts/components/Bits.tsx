@@ -77,6 +77,7 @@ export function Disclaimer() {
   )
 }
 
+// ABOUTME: A single prev or next link in the Pager component: a display label and the destination path.
 interface PagerLink {
   label: string
   to: string

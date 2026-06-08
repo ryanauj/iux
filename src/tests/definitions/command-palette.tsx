@@ -5,6 +5,7 @@ import { Button } from '../../components/Button/Button'
 import { CommandPalette, type Command } from '../../components/CommandPalette/CommandPalette'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the command-palette filter test: a Button that opens a CommandPalette with four commands plus a result div that shows which command ran.
 function CommandPaletteComposition() {
   const [open, setOpen] = useState(false)
   const [result, setResult] = useState<string | null>(null)

@@ -2,6 +2,7 @@
 
 import { CopyButton } from './CopyButton'
 
+// ABOUTME: Props for CodeBlock: the text to display, the "what" label used in the copy toast, an optional caption above the block, and an extra className.
 interface CodeBlockProps {
   text: string
   /** Label for the copy confirmation toast. */

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { EmptyState, type ChecklistStep } from '../../components/EmptyState/EmptyState'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the minimal empty-state test: an EmptyState with title and description only.
 function MinimalComposition() {
   return (
     <EmptyState
@@ -15,6 +16,7 @@ function MinimalComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the illustrated empty-state test: an EmptyState with illustration SVG, primary and secondary action buttons, and a click counter.
 function IllustratedComposition() {
   const [count, setCount] = useState(0)
   return (
@@ -32,6 +34,7 @@ function IllustratedComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the checklist empty-state test: an EmptyState with three steps (one pre-done), action buttons, and an actions-fired echo span.
 function ChecklistComposition() {
   const [actions, setActions] = useState<string[]>([])
   const steps: ChecklistStep[] = [
@@ -51,6 +54,7 @@ function ChecklistComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the generative empty-state test: an EmptyState with two seed fields and onGenerate capturing submitted values to a span.
 function GenerativeComposition() {
   const [submitted, setSubmitted] = useState<Record<string, string> | null>(null)
   return (

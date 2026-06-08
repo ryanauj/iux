@@ -37,10 +37,13 @@ export interface EdgeBundleProps {
   className?: string
 }
 
+// ABOUTME: Default rotation through the six intent tokens applied per top-level group of leaf siblings when no per-node intent is set.
 const INTENTS: EdgeBundleIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Internal node descriptor after radial layout — stores the original node, its depth, angular span [a0, a1], pixel-space coordinates, leaf flag, resolved intent, parent reference, and placed children.
 interface Placed { node: EdgeBundleNode; depth: number; a0: number; a1: number; r: number; x: number; y: number; isLeaf: boolean; intent: EdgeBundleIntent; parent?: Placed; children: Placed[] }
 
+// ABOUTME: Recursively visits the hierarchy tree and assigns each leaf an equal angular slot on the ring and each internal node the angular span of its subtree; computes pixel (x, y) from angle and depth-proportional radius.
 function layoutRadial(root: EdgeBundleNode, cx: number, cy: number, rMax: number): { all: Placed[]; leaves: Placed[]; byId: Map<string, Placed> } {
   const leavesFirst: EdgeBundleNode[] = []
   function collectLeaves(n: EdgeBundleNode) {
@@ -102,7 +105,7 @@ function layoutRadial(root: EdgeBundleNode, cx: number, cy: number, rMax: number
   return { all, leaves, byId }
 }
 
-/** Build the path from a leaf up to the root. */
+// ABOUTME: Walks the parent chain from node n up to the root, returning all ancestors in bottom-to-top order; used by bundlePath to find the LCA and build the control-point sequence.
 function ancestors(n: Placed): Placed[] {
   const out: Placed[] = []
   let cur: Placed | undefined = n
@@ -110,6 +113,7 @@ function ancestors(n: Placed): Placed[] {
   return out
 }
 
+// ABOUTME: Computes an SVG path string for a hierarchically bundled edge: walks from the source leaf up to the LCA then down to the target, pulls each control point toward the straight line by (1-beta), then renders the result as a Catmull-Rom-ish sequence of quadratic curves.
 function bundlePath(from: Placed, to: Placed, beta: number): string {
   // Hierarchical edge bundling: control points = least-common-ancestor path.
   // We pull each intermediate point toward the straight line by (1 - beta).

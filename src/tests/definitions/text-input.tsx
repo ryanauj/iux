@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { TextInput } from '../../components/TextInput/TextInput'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the bare-input test: a TextInput with no label/hint and a span that echoes the typed value.
 function BareComposition() {
   const [value, setValue] = useState('')
   return (
@@ -14,6 +15,7 @@ function BareComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the labeled/hint/required test: a TextInput with label, hint text, and required marker.
 function LabeledHintComposition() {
   const [value, setValue] = useState('')
   return (
@@ -30,6 +32,7 @@ function LabeledHintComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the live-validation test: a TextInput with validate variant and an inline validator that returns danger for short strings and success once long enough.
 function ValidationComposition() {
   const [value, setValue] = useState('')
   const validate = (v: string) => {
@@ -49,6 +52,7 @@ function ValidationComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the ghost-suggestion test: a TextInput with command variant and a fixed suggestion string, plus a value echo span.
 function CommandSuggestionComposition() {
   const [value, setValue] = useState('')
   return (

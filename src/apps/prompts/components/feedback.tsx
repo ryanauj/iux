@@ -7,8 +7,10 @@ import { Toaster, useToastQueue, type ToastItem } from '../../../components/Toas
  * App-scoped toast feedback. A single queue renders through the shared
  * `Toaster`; any page or component pushes via `useToast()`.
  */
+// ABOUTME: Function type for pushing a toast into the queue; returns the assigned id. Omits the auto-generated `id` so callers only supply content and duration.
 type PushToast = (item: Omit<ToastItem, 'id'> & { id?: string }) => string
 
+// ABOUTME: React context holding the PushToast function created by ToastProvider; null when accessed outside the provider.
 const ToastContext = createContext<PushToast | null>(null)
 
 // ABOUTME: Context provider that creates the toast queue, mounts a bottom-right Toaster, and exposes the push function via ToastContext so any descendant can fire a toast with useToast().

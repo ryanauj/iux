@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { Modal, type WizardStep } from '../../components/Modal/Modal'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the centered-modal test: a Modal with centered variant, primary/secondary actions, and a state span that records which action fired.
 function CenteredComposition() {
   const [open, setOpen] = useState(true)
   const [confirmed, setConfirmed] = useState('')
@@ -29,6 +30,7 @@ function CenteredComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the sectioned-modal test: a Modal with sectioned variant rendered open to assert scroll body and sticky footer modifiers.
 function SectionedComposition() {
   const [open, setOpen] = useState(true)
   return (
@@ -48,6 +50,7 @@ function SectionedComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the wizard-modal test: a three-step Modal with wizard variant and an onComplete handler that sets a 'done' state span.
 function WizardComposition() {
   const [open, setOpen] = useState(true)
   const [done, setDone] = useState(false)

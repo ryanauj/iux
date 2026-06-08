@@ -686,6 +686,7 @@ interface PaletteStripSlotProps {
   onClose: () => void
 }
 
+// ABOUTME: Strip-variant wrapper around PalettePicker that forwards the slot button click event so StripVariant can capture the bounding rect for popover positioning alongside generic field slots.
 /**
  * Strip-variant wrapper for the palette picker. Forwards the slot
  * button's click event to the parent so it can capture the rect for

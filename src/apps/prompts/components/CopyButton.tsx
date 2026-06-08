@@ -5,6 +5,7 @@ import { Button, type ButtonProps } from '../../../components/Button/Button'
 import { copyText } from './clipboard'
 import { useToast } from './feedback'
 
+// ABOUTME: Props for CopyButton: the text to copy, an idle button label, a toast noun for the confirmation message, button variant/intent passthrough, and an extra className.
 interface CopyButtonProps {
   /** Text to place on the clipboard. */
   text: string
@@ -58,6 +59,7 @@ export function CopyButton({
   )
 }
 
+// ABOUTME: Two-page copy SVG icon shown in CopyButton's idle state.
 function CopyGlyph() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -67,6 +69,7 @@ function CopyGlyph() {
   )
 }
 
+// ABOUTME: Checkmark SVG icon shown in CopyButton after a successful copy, replacing CopyGlyph for 1.6 s.
 function CheckGlyph() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">

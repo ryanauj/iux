@@ -222,6 +222,7 @@ function CellGlyph({ status }: { status: Status }) {
   return <span aria-hidden="true">·</span>
 }
 
+// ABOUTME: Banner listing failed test ids as clickable chips that scroll-and-flash their row in the matrix table; hidden when no tests have failed.
 function FailureSummary({ results }: { results: Record<string, RunResult> }) {
   const scrollToRow = useCallback((testId: string) => {
     const el = document.getElementById(`test-row-${testId}`)
@@ -259,12 +260,14 @@ function FailureSummary({ results }: { results: Record<string, RunResult> }) {
   )
 }
 
+// ABOUTME: Tiny color dot used in the toolbar legend to illustrate each run-status color.
 function LegendDot({ status }: { status: Status }) {
   return <span className={`viz-matrix__legend-dot viz-matrix__cell--${status}`} aria-hidden="true" />
 }
 
 /* --------------------------------- Network -------------------------------- */
 
+// ABOUTME: Mutable node record used in the force simulation: tracks position, velocity, and degree (test-participation count) for each component.
 interface Node {
   id: string
   x: number

@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 1345
+    "documentedMembers": 1547
   },
   "areas": [
     {
@@ -199,7 +199,7 @@
       "area": "apps",
       "dir": "apps/contracts/components",
       "name": "Bits.tsx",
-      "loc": 111,
+      "loc": 112,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -235,13 +235,14 @@
           "name": "PagerLink",
           "kind": "interface",
           "exported": false,
-          "line": 80
+          "line": 81,
+          "about": "A single prev or next link in the Pager component: a display label and the destination path."
         },
         {
           "name": "Pager",
           "kind": "component",
           "exported": true,
-          "line": 86,
+          "line": 87,
           "about": "Prev/next chapter navigation bar; when there is no next link it falls back to a \"Back to start\" link to the Overview."
         }
       ],
@@ -252,7 +253,7 @@
       "area": "apps",
       "dir": "apps/contracts/components",
       "name": "CapLadder.tsx",
-      "loc": 82,
+      "loc": 83,
       "importCount": 3,
       "externalCount": 0,
       "members": [
@@ -260,20 +261,21 @@
           "name": "CapLadderProps",
           "kind": "interface",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Props for CapLadder: optional payroll marker value, id of the threshold to highlight (dims the rest), whether to render explanatory blurbs on each rung, and an extra className."
         },
         {
           "name": "CapLadder",
           "kind": "component",
           "exported": true,
-          "line": 31,
+          "line": 32,
           "about": "Renders all five THRESHOLDS (floor → cap → tax → first apron → second apron) as vertically proportional rungs; accepts an optional payroll marker (used by TeamSheet) and a highlightId to dim all other rungs (used by Aprons)."
         },
         {
           "name": "Rung",
           "kind": "component",
           "exported": false,
-          "line": 68,
+          "line": 69,
           "about": "Renders one threshold rung (coloured line + label + dollar amount + optional blurb) and applies the `is-dim` class when the parent CapLadder is highlighting a different rung."
         }
       ],
@@ -284,7 +286,7 @@
       "area": "apps",
       "dir": "apps/contracts",
       "name": "ContractsApp.tsx",
-      "loc": 148,
+      "loc": 149,
       "importCount": 18,
       "externalCount": 2,
       "members": [
@@ -292,20 +294,21 @@
           "name": "ContractsAppProps",
           "kind": "interface",
           "exported": false,
-          "line": 37
+          "line": 38,
+          "about": "Props for ContractsApp; passes the full HashLocation so the app can read the chapter path and palette/layout/motion params."
         },
         {
           "name": "ContractsApp",
           "kind": "component",
           "exported": true,
-          "line": 49,
+          "line": 50,
           "about": "Root component for the Cap School app — strips the `/apps/contracts` prefix, matches the remaining path to a ContractsRoute, and passes the result to Shell and RouteContent alongside palette, layout, and motion controls."
         },
         {
           "name": "RouteContent",
           "kind": "component",
           "exported": false,
-          "line": 134,
+          "line": 135,
           "about": "Switches on the matched ContractsRoute kind and returns the appropriate chapter page component (Overview, Ladder, Anatomy, etc.) or NotFound."
         }
       ],
@@ -756,7 +759,7 @@
       "area": "apps",
       "dir": "apps/contracts/pages",
       "name": "Trades.tsx",
-      "loc": 225,
+      "loc": 228,
       "importCount": 6,
       "externalCount": 0,
       "members": [
@@ -764,25 +767,28 @@
           "name": "salaryTotal",
           "kind": "function",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Sums the salary values of a set of trade pieces (ignoring non-salary items like draft picks) to compute one side of a party's outgoing or incoming salary total."
         },
         {
           "name": "PieceList",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 17,
+          "about": "Renders the items sent or received by one trade party as a bulleted list of piece labels and salaries, or a short prose placeholder when the party sends nothing out."
         },
         {
           "name": "PartyCard",
           "kind": "component",
           "exported": false,
-          "line": 33
+          "line": 36,
+          "about": "Renders one trade party as a Card — team name, cap situation, motivating \"why\", the two PieceLists (sends out / takes in), and the legality rule note; accent colour is set by party.intent."
         },
         {
           "name": "Trades",
           "kind": "component",
           "exported": true,
-          "line": 60,
+          "line": 63,
           "about": "Chapter 8 page rendering SAMPLE_TRADE (three PartyCards) from cap.ts: the contender bundles two contracts to match a $34M star, the rebuilder takes a wing + pick, and the cap-space team absorbs the unwanted contract for a pick; KeyIdeas cover aggregation, apron limits, and the Stepien rule."
         }
       ],
@@ -833,7 +839,7 @@
       "area": "apps",
       "dir": "apps/contracts",
       "name": "shell.tsx",
-      "loc": 158,
+      "loc": 164,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -890,44 +896,50 @@
           "name": "ShellProps",
           "kind": "interface",
           "exported": false,
-          "line": 55
+          "line": 56,
+          "about": "Props for the Shell layout wrapper: which layout to use, the active ContractsRoute (to mark the correct nav item), and the chapter page as children."
         },
         {
           "name": "Brand",
           "kind": "component",
           "exported": false,
-          "line": 61
+          "line": 63,
+          "about": "Cap School brand mark — \"CAP\" icon + \"Cap School / How NBA contracts work\" text — linking to the Overview chapter."
         },
         {
           "name": "Exit",
           "kind": "component",
           "exported": false,
-          "line": 73
+          "line": 76,
+          "about": "\"← All apps\" back-link rendered in both shell layouts; navigates to the /apps landing page."
         },
         {
           "name": "RailLinks",
           "kind": "component",
           "exported": false,
-          "line": 77
+          "line": 81,
+          "about": "Renders NAV as a list of Links, applying `is-active` to the entry matching the current route; variant switches between the sidebar rail style (with step numbers) and the topbar bar style."
         },
         {
           "name": "Shell",
           "kind": "component",
           "exported": true,
-          "line": 102,
+          "line": 106,
           "about": "Top-level layout switcher for Cap School — renders SidebarShell (left rail with step numbers) or TopbarShell (hamburger-collapsible bar) based on layoutId, wrapping the active chapter page as children."
         },
         {
           "name": "SidebarShell",
           "kind": "component",
           "exported": false,
-          "line": 107
+          "line": 112,
+          "about": "Sidebar-layout shell for Cap School: left rail with Brand, chapter RailLinks (numbered), and an Exit link; chapter page renders in the main area on the right."
         },
         {
           "name": "TopbarShell",
           "kind": "component",
           "exported": false,
-          "line": 128
+          "line": 134,
+          "about": "Topbar-layout shell for Cap School: horizontal header with Brand, a hamburger toggle that reveals the chapter nav on narrow viewports, and an Exit link; collapses the nav automatically when the route changes."
         }
       ],
       "about": "Chrome for the Cap School app: the Shell component (sidebar or topbar layout), the chapter NAV array, layout constants, and resolveLayoutId — everything ContractsApp needs to wrap each chapter page."
@@ -1038,7 +1050,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "Badge.tsx",
-      "loc": 29,
+      "loc": 30,
       "importCount": 0,
       "externalCount": 1,
       "members": [
@@ -1053,13 +1065,14 @@
           "name": "BadgeProps",
           "kind": "interface",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Props for Badge: the pill content, optional semantic tone (defaults to 'neutral'), an outline/filled variant flag, and an extra className."
         },
         {
           "name": "Badge",
           "kind": "component",
           "exported": true,
-          "line": 18,
+          "line": 19,
           "about": "A small inline pill, toned via the contract intents."
         }
       ],
@@ -1114,7 +1127,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "CopyButton.tsx",
-      "loc": 77,
+      "loc": 79,
       "importCount": 3,
       "externalCount": 1,
       "members": [
@@ -1135,13 +1148,15 @@
           "name": "CopyGlyph",
           "kind": "component",
           "exported": false,
-          "line": 61
+          "line": 62,
+          "about": "Two-page copy SVG icon shown in CopyButton's idle state."
         },
         {
           "name": "CheckGlyph",
           "kind": "component",
           "exported": false,
-          "line": 70
+          "line": 72,
+          "about": "Checkmark SVG icon shown in CopyButton after a successful copy, replacing CopyGlyph for 1.6 s."
         }
       ],
       "about": "A Button that copies `text` and confirms with a transient label + toast."
@@ -1176,7 +1191,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "feedback.tsx",
-      "loc": 31,
+      "loc": 33,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -1184,26 +1199,28 @@
           "name": "PushToast",
           "kind": "type",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Function type for pushing a toast into the queue; returns the assigned id. Omits the auto-generated `id` so callers only supply content and duration."
         },
         {
           "name": "ToastContext",
           "kind": "const",
           "exported": false,
-          "line": 12
+          "line": 14,
+          "about": "React context holding the PushToast function created by ToastProvider; null when accessed outside the provider."
         },
         {
           "name": "ToastProvider",
           "kind": "component",
           "exported": true,
-          "line": 15,
+          "line": 17,
           "about": "Context provider that creates the toast queue, mounts a bottom-right Toaster, and exposes the push function via ToastContext so any descendant can fire a toast with useToast()."
         },
         {
           "name": "useToast",
           "kind": "function",
           "exported": true,
-          "line": 26,
+          "line": 28,
           "about": "Returns the push function from ToastContext; must be called inside ToastProvider. Used by CopyButton, PromptDetail, PromptForm, and StrategyDetail to fire success/error toasts."
         }
       ],
@@ -1283,7 +1300,7 @@
       "area": "apps",
       "dir": "apps/prompts/data",
       "name": "strategies.ts",
-      "loc": 343,
+      "loc": 344,
       "importCount": 1,
       "externalCount": 0,
       "members": [
@@ -1298,13 +1315,14 @@
           "name": "STRATEGY_BY_ID",
           "kind": "const",
           "exported": false,
-          "line": 337
+          "line": 338,
+          "about": "Lookup map from strategy id to Strategy object, built once from STRATEGIES for O(1) access by getStrategy."
         },
         {
           "name": "getStrategy",
           "kind": "function",
           "exported": true,
-          "line": 340,
+          "line": 341,
           "about": "Looks up a Strategy by id from the STRATEGIES map; returns undefined for unknown ids. Used by PromptDetail and StrategyDetail to resolve linked strategy ids."
         }
       ],
@@ -1315,7 +1333,7 @@
       "area": "apps",
       "dir": "apps/prompts",
       "name": "format.ts",
-      "loc": 67,
+      "loc": 68,
       "importCount": 2,
       "externalCount": 0,
       "members": [
@@ -1358,20 +1376,21 @@
           "name": "DATE_FMT",
           "kind": "const",
           "exported": false,
-          "line": 49
+          "line": 50,
+          "about": "Intl.DateTimeFormat instance configured for short US dates (e.g. \"May 20, 2026\"), shared by formatDate to avoid re-creating the formatter on every call."
         },
         {
           "name": "formatDate",
           "kind": "function",
           "exported": true,
-          "line": 56,
+          "line": 57,
           "about": "Formats an ISO date string as a short US locale date (e.g. \"May 20, 2026\"); returns the raw string if parsing fails. Used by PromptCard and PromptDetail to display created/updated timestamps."
         },
         {
           "name": "humanizeVar",
           "kind": "function",
           "exported": true,
-          "line": 63,
+          "line": 64,
           "about": "Variable-name → human label (\"real_input\" → \"Real input\")."
         }
       ],
@@ -1382,7 +1401,7 @@
       "area": "apps",
       "dir": "apps/prompts/pages",
       "name": "Library.tsx",
-      "loc": 212,
+      "loc": 217,
       "importCount": 11,
       "externalCount": 1,
       "members": [
@@ -1390,38 +1409,43 @@
           "name": "CatFilter",
           "kind": "type",
           "exported": false,
-          "line": 16
+          "line": 17,
+          "about": "Union type for the category filter in the Library toolbar: 'all' shows every prompt; a PromptCategory value narrows to that category only."
         },
         {
           "name": "SortKey",
           "kind": "type",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "The three sort orders available in the Library sort Select: by last-updated date, alphabetical title, or favorites-first."
         },
         {
           "name": "SORT_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 19
+          "line": 22,
+          "about": "Option list for the Library sort Select control, mapping each SortKey to a human-readable label."
         },
         {
           "name": "Library",
           "kind": "component",
           "exported": true,
-          "line": 33,
+          "line": 36,
           "about": "Prompt library page: renders a searchable, filterable grid of PromptCard items from the store, with category segmented filter, tag-cloud chip toggle, favorites toggle, and sort (recently updated / title / favorites first)."
         },
         {
           "name": "PlusGlyph",
           "kind": "component",
           "exported": false,
-          "line": 196
+          "line": 200,
+          "about": "Small \"+\" SVG icon used as the leading icon in the \"New prompt\" Button in the Library header."
         },
         {
           "name": "SearchGlyph",
           "kind": "component",
           "exported": false,
-          "line": 204
+          "line": 209,
+          "about": "Magnifying-glass SVG icon used as the leading icon in the Library search TextInput."
         }
       ],
       "about": "Prompt library page: reads all prompts from usePromptStore, exposes full-text search, category pill filter, tag-cloud filter, favorites toggle, and sort controls, then renders results as a PromptCard grid."
@@ -1475,7 +1499,7 @@
       "area": "apps",
       "dir": "apps/prompts/pages",
       "name": "PromptForm.tsx",
-      "loc": 245,
+      "loc": 247,
       "importCount": 14,
       "externalCount": 1,
       "members": [
@@ -1483,19 +1507,21 @@
           "name": "MODEL_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 19
+          "line": 20,
+          "about": "Preset options for the \"Target models\" TokenField in PromptForm, covering the six most common LLMs plus an \"any model\" fallback."
         },
         {
           "name": "PromptFormProps",
           "kind": "interface",
           "exported": false,
-          "line": 24
+          "line": 26,
+          "about": "Props for PromptForm; either editId (load an existing prompt for editing) or prefillStrategyId (seed a new prompt from a strategy template) may be present, but not both."
         },
         {
           "name": "PromptForm",
           "kind": "component",
           "exported": true,
-          "line": 41,
+          "line": 43,
           "about": "Dual-mode form used by both the \"New prompt\" and \"Edit prompt\" routes: when given `editId` it loads the existing prompt from the store; when given `prefillStrategyId` it seeds body and tags from the strategy template. Validates title + body, detects `{{variable}}` slots live, and calls `store.add` or `store.update` on save."
         }
       ],
@@ -1556,7 +1582,7 @@
       "area": "apps",
       "dir": "apps/prompts",
       "name": "PromptsApp.tsx",
-      "loc": 159,
+      "loc": 163,
       "importCount": 16,
       "externalCount": 2,
       "members": [
@@ -1564,32 +1590,36 @@
           "name": "PromptsAppProps",
           "kind": "interface",
           "exported": false,
-          "line": 30
+          "line": 31,
+          "about": "Props for PromptsApp; carries the full HashLocation so the app can match the sub-route and read palette/motion params."
         },
         {
           "name": "NavItem",
           "kind": "interface",
           "exported": false,
-          "line": 34
+          "line": 36,
+          "about": "Shape of one top-level nav entry in the Promptbook header: destination path, display label, and an active-state predicate over the current PromptsRoute."
         },
         {
           "name": "NAV",
           "kind": "const",
           "exported": false,
-          "line": 40
+          "line": 43,
+          "about": "Two primary nav entries for the Promptbook app (Library and Strategies), each marking itself active for its own route cluster."
         },
         {
           "name": "PromptsApp",
           "kind": "component",
           "exported": true,
-          "line": 61,
+          "line": 64,
           "about": "Root shell for the Promptbook app: provides PaletteRoot (palette + motion), PromptStoreProvider, and ToastProvider, renders the header with Library/Strategies nav, and delegates page content to RouteContent via matchPromptsRoute."
         },
         {
           "name": "RouteContent",
           "kind": "component",
           "exported": false,
-          "line": 148
+          "line": 152,
+          "about": "Switches on the matched PromptsRoute kind and returns the appropriate page component (Library, PromptDetail, PromptForm, Strategies, StrategyDetail, or NotFound)."
         }
       ],
       "about": "Root shell for the Promptbook demo app: wraps pages in PaletteRoot and PromptStoreProvider, renders the top nav (Library / Strategies), and dispatches hash routes to Library, PromptDetail, PromptForm, Strategies, StrategyDetail, or NotFound."
@@ -1639,7 +1669,7 @@
       "area": "apps",
       "dir": "apps/prompts",
       "name": "store.tsx",
-      "loc": 111,
+      "loc": 115,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -1654,38 +1684,42 @@
           "name": "PromptStore",
           "kind": "interface",
           "exported": false,
-          "line": 25
+          "line": 26,
+          "about": "Shape of the prompt store value exposed through PromptStoreContext: the live prompts array plus the five CRUD/toggle actions used by Library, PromptDetail, PromptForm, and PromptCard."
         },
         {
           "name": "PromptStoreContext",
           "kind": "const",
           "exported": false,
-          "line": 34
+          "line": 36,
+          "about": "React context holding the PromptStore; null outside PromptStoreProvider so usePromptStore can detect misuse."
         },
         {
           "name": "idCounter",
           "kind": "const",
           "exported": false,
-          "line": 36
+          "line": 39,
+          "about": "Module-level counter used by makeId to ensure generated prompt ids are unique within a session even if multiple prompts are created in the same millisecond."
         },
         {
           "name": "makeId",
           "kind": "function",
           "exported": false,
-          "line": 37
+          "line": 41,
+          "about": "Generates a unique prompt id by combining the current timestamp (base-36) with a monotonically incrementing counter."
         },
         {
           "name": "PromptStoreProvider",
           "kind": "component",
           "exported": true,
-          "line": 51,
+          "line": 55,
           "about": "Context provider that seeds the prompt list from SEED_PROMPTS (newest-first), exposes get/add/update/remove/toggleFavorite via PromptStoreContext, and resets cleanly on page reload — no persistence by design."
         },
         {
           "name": "usePromptStore",
           "kind": "function",
           "exported": true,
-          "line": 106,
+          "line": 110,
           "about": "Returns the PromptStore (prompts list + CRUD actions) from PromptStoreContext; throws if called outside PromptStoreProvider. Used by Library, PromptCard, PromptDetail, PromptForm, and StrategyDetail."
         }
       ],
@@ -1750,7 +1784,7 @@
       "area": "apps",
       "dir": "apps",
       "name": "router.ts",
-      "loc": 109,
+      "loc": 111,
       "importCount": 0,
       "externalCount": 1,
       "members": [
@@ -1765,61 +1799,63 @@
           "name": "parseHash",
           "kind": "function",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Parses a raw hash string (e.g. `#/apps/sports?palette=bold`) into a HashLocation with a normalised path and a URLSearchParams; returns an empty location for a blank or bare `#`."
         },
         {
           "name": "readHash",
           "kind": "function",
           "exported": true,
-          "line": 24,
+          "line": 25,
           "about": "Reads and parses window.location.hash into a HashLocation; returns an empty path in non-browser environments."
         },
         {
           "name": "useHashLocation",
           "kind": "function",
           "exported": true,
-          "line": 30,
+          "line": 31,
           "about": "React hook that returns the current HashLocation and re-renders on every hashchange event."
         },
         {
           "name": "buildHash",
           "kind": "function",
           "exported": true,
-          "line": 41,
+          "line": 42,
           "about": "Builds a `#/path?key=value` string from a path and optional params map, omitting any undefined or empty values."
         },
         {
           "name": "STICKY_PARAMS",
           "kind": "const",
           "exported": false,
-          "line": 59
+          "line": 61,
+          "about": "The set of URL query-param keys that survive every navigate() and replaceParams() call so user-preference settings (palette, layout, motion, etc.) are not lost when a Link updates the path."
         },
         {
           "name": "getStickyParams",
           "kind": "function",
           "exported": true,
-          "line": 63,
+          "line": 65,
           "about": "Read the current values of any sticky params from the URL hash."
         },
         {
           "name": "navigate",
           "kind": "function",
           "exported": true,
-          "line": 74,
+          "line": 76,
           "about": "Navigates to a new hash path, merging caller-supplied params over the current sticky params so palette/layout/motion survive navigation."
         },
         {
           "name": "replaceParams",
           "kind": "function",
           "exported": true,
-          "line": 90,
+          "line": 92,
           "about": "Replace just the query params on the current hash without touching the path."
         },
         {
           "name": "pathSegments",
           "kind": "function",
           "exported": true,
-          "line": 106,
+          "line": 108,
           "about": "Split a path into segments, dropping empties."
         }
       ],
@@ -1856,7 +1892,7 @@
       "area": "apps",
       "dir": "apps/sports/components",
       "name": "ScoreCard.tsx",
-      "loc": 89,
+      "loc": 90,
       "importCount": 7,
       "externalCount": 0,
       "members": [
@@ -1864,13 +1900,14 @@
           "name": "ScoreCardProps",
           "kind": "interface",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Props for ScoreCard — the game to render and an optional flag to visually emphasise the live/final status badge."
         },
         {
           "name": "ScoreCard",
           "kind": "component",
           "exported": true,
-          "line": 22,
+          "line": 23,
           "about": "Resolves both teams via `getTeamById`, then renders a Card with date/status meta and one of three score layouts: an \"at\" matchup chip pair for scheduled games, or mirrored team-score rows (winner highlighted) for live and final games."
         }
       ],
@@ -1881,7 +1918,7 @@
       "area": "apps",
       "dir": "apps/sports/components",
       "name": "TeamChip.tsx",
-      "loc": 41,
+      "loc": 42,
       "importCount": 3,
       "externalCount": 0,
       "members": [
@@ -1889,13 +1926,14 @@
           "name": "TeamChipProps",
           "kind": "interface",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Props for TeamChip — the team to display, an optional size modifier, and whether to render as a navigable link or a plain span."
         },
         {
           "name": "TeamChip",
           "kind": "component",
           "exported": true,
-          "line": 20,
+          "line": 21,
           "about": "Renders a `team-chip` span/link: a colored-background abbreviation badge (using `team.primaryColor`) followed by `team.name`; `size=\"lg\"` adds the `--lg` modifier; `linked={false}` renders as a plain span (used when already inside an anchor, e.g. ScoreCard)."
         }
       ],
@@ -1932,7 +1970,7 @@
       "area": "apps",
       "dir": "apps/sports/data",
       "name": "index.ts",
-      "loc": 96,
+      "loc": 101,
       "importCount": 4,
       "externalCount": 0,
       "members": [
@@ -1940,121 +1978,126 @@
           "name": "teamById",
           "kind": "const",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Pre-built Map from team id to Team for O(1) lookup by id."
         },
         {
           "name": "teamBySlug",
           "kind": "const",
           "exported": false,
-          "line": 11
+          "line": 13,
+          "about": "Pre-built Map from team URL slug to Team for O(1) lookup by slug."
         },
         {
           "name": "playerById",
           "kind": "const",
           "exported": false,
-          "line": 12
+          "line": 15,
+          "about": "Pre-built Map from player id to Player for O(1) lookup by id."
         },
         {
           "name": "playerBySlug",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 17,
+          "about": "Pre-built Map from player URL slug to Player for O(1) lookup by slug."
         },
         {
           "name": "gameById",
           "kind": "const",
           "exported": false,
-          "line": 14
+          "line": 19,
+          "about": "Pre-built Map from game id to Game for O(1) lookup by id."
         },
         {
           "name": "getTeamById",
           "kind": "function",
           "exported": true,
-          "line": 17,
+          "line": 22,
           "about": "O(1) team lookup by id from the module-level Map built over TEAMS."
         },
         {
           "name": "getTeamBySlug",
           "kind": "function",
           "exported": true,
-          "line": 22,
+          "line": 27,
           "about": "O(1) team lookup by URL slug (e.g. \"celtics\") from the module-level Map built over TEAMS."
         },
         {
           "name": "getPlayerById",
           "kind": "function",
           "exported": true,
-          "line": 27,
+          "line": 32,
           "about": "O(1) player lookup by id from the module-level Map built over PLAYERS."
         },
         {
           "name": "getPlayerBySlug",
           "kind": "function",
           "exported": true,
-          "line": 32,
+          "line": 37,
           "about": "O(1) player lookup by URL slug (e.g. \"jayson-tatum\") from the module-level Map built over PLAYERS."
         },
         {
           "name": "getGameById",
           "kind": "function",
           "exported": true,
-          "line": 37,
+          "line": 42,
           "about": "O(1) game lookup by id (e.g. \"game-001\") from the module-level Map built over GAMES."
         },
         {
           "name": "getPlayersForTeam",
           "kind": "function",
           "exported": true,
-          "line": 42,
+          "line": 47,
           "about": "Returns every player whose `teamId` matches, used by TeamDetail's Roster tab and PlayerDetail's recent-games query."
         },
         {
           "name": "getGamesForTeam",
           "kind": "function",
           "exported": true,
-          "line": 47,
+          "line": 52,
           "about": "Returns every game where the team appears as home or away, used by TeamDetail's Schedule tab and PlayerDetail's recent-games ScoreCard grid."
         },
         {
           "name": "getTeamsByConference",
           "kind": "function",
           "exported": true,
-          "line": 52,
+          "line": 57,
           "about": "Returns all teams in the given conference; used by the Matchup analysis and standings helpers."
         },
         {
           "name": "getPlayersByPosition",
           "kind": "function",
           "exported": true,
-          "line": 57,
+          "line": 62,
           "about": "Returns all players at the given position; used to support position-level filtering in the Players page."
         },
         {
           "name": "getStandings",
           "kind": "function",
           "exported": true,
-          "line": 62,
+          "line": 67,
           "about": "Returns teams in the given conference sorted by winning percentage (descending); used by Standings page and the Home standings snapshot."
         },
         {
           "name": "groupGamesByDate",
           "kind": "function",
           "exported": true,
-          "line": 75,
+          "line": 80,
           "about": "Group games by ISO date in chronological order; useful for the schedule view."
         },
         {
           "name": "StatKey",
           "kind": "type",
           "exported": true,
-          "line": 88,
+          "line": 93,
           "about": "Union of the five per-game stat keys available for sorting and leader-board queries across the player roster."
         },
         {
           "name": "getStatLeaders",
           "kind": "function",
           "exported": true,
-          "line": 91,
+          "line": 96,
           "about": "Returns the top `count` players sorted descending by the given stat; used by Home's stat-leader tiles."
         }
       ],
@@ -2419,7 +2462,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "GameDetail.tsx",
-      "loc": 172,
+      "loc": 173,
       "importCount": 8,
       "externalCount": 0,
       "members": [
@@ -2427,13 +2470,14 @@
           "name": "GameDetailProps",
           "kind": "interface",
           "exported": false,
-          "line": 16
+          "line": 17,
+          "about": "Props for GameDetail — the game id string looked up via `getGameById`."
         },
         {
           "name": "GameDetail",
           "kind": "component",
           "exported": true,
-          "line": 27,
+          "line": 28,
           "about": "Renders the full box for a game: a two-sided header with team crests and final scores, a quarter-by-quarter breakdown table (when present), and a sortable top-performers table linking to player detail pages; falls back to NotFound when the id is missing."
         }
       ],
@@ -2444,7 +2488,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "Games.tsx",
-      "loc": 65,
+      "loc": 66,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -2452,13 +2496,14 @@
           "name": "StatusFilter",
           "kind": "type",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Union of the four status options available in the Games page filter: no filter, or one of the three GameStatus values."
         },
         {
           "name": "Games",
           "kind": "component",
           "exported": true,
-          "line": 19,
+          "line": 20,
           "about": "Filters GAMES by the chosen status, groups the result by ISO date via `groupGamesByDate`, and renders each date section as a grid of ScoreCard tiles; shows an EmptyState when no games match."
         }
       ],
@@ -2495,7 +2540,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "Matchup.tsx",
-      "loc": 753,
+      "loc": 776,
       "importCount": 10,
       "externalCount": 1,
       "members": [
@@ -2503,146 +2548,169 @@
           "name": "MatchupProps",
           "kind": "interface",
           "exported": false,
-          "line": 29
+          "line": 30,
+          "about": "Props for the Matchup page — optional URL slugs for team A and team B, both defaulting when absent."
         },
         {
           "name": "DEFAULT_A",
           "kind": "const",
           "exported": false,
-          "line": 34
+          "line": 36,
+          "about": "Default team A slug shown when no `aSlug` URL param is present."
         },
         {
           "name": "DEFAULT_B",
           "kind": "const",
           "exported": false,
-          "line": 35
+          "line": 38,
+          "about": "Default team B slug shown when no `bSlug` URL param is present."
         },
         {
           "name": "TEAM_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 37
+          "line": 41,
+          "about": "Select options for the team-picker dropdowns — one entry per team in slug / full-name format."
         },
         {
           "name": "maxAbsRate",
           "kind": "function",
           "exported": false,
-          "line": 40
+          "line": 45,
+          "about": "Returns the largest absolute rate value across all modelled stats; used to normalise ConversionChip bar widths."
         },
         {
           "name": "Matchup",
           "kind": "component",
           "exported": true,
-          "line": 52,
+          "line": 57,
           "about": "Picks two teams from URL slugs (defaulting to Celtics vs Nuggets), computes `analyzeMatchup` with locally configurable per-stat rates, and renders a summary header plus five Tabs views: Projection bridge, Category battle, Conversion map, Build-up, and Points ledger."
         },
         {
           "name": "ViewProps",
           "kind": "interface",
           "exported": false,
-          "line": 124
+          "line": 130,
+          "about": "Shared props passed into every matchup sub-view (BridgeView, BattleView, etc.): the full analysis result and the two resolved Team objects for colour and label access."
         },
         {
           "name": "ConversionChip",
           "kind": "component",
           "exported": false,
-          "line": 140
+          "line": 147,
+          "about": "Inline chip showing a stat's signed rate (+0.xx) and a proportional intensity bar whose width is `|rate| / maxRate`; used in BattleView's centre column and the PricingPanel."
         },
         {
           "name": "DerivationLine",
           "kind": "component",
           "exported": false,
-          "line": 155
+          "line": 163,
+          "about": "Renders the full derivation equation for one StatContribution as a single inline row: team value − league avg = Δ × rate = points, with units at each step; used in BridgeView's per-stat list and LedgerView's table cells."
         },
         {
           "name": "FormulaKey",
           "kind": "component",
           "exported": false,
-          "line": 179
+          "line": 188,
+          "about": "Static three-part legend labelling \"team avg − league avg\", \"rate\", and \"points\" — anchors the derivation equation for viewers unfamiliar with the model."
         },
         {
           "name": "SumStrip",
           "kind": "component",
           "exported": false,
-          "line": 204
+          "line": 214,
+          "about": "Horizontal row showing a team's five per-stat point chips, the net sum, and the resulting projected total; used below ConversionView and BuildUpView to make the aggregation step explicit."
         },
         {
           "name": "Summary",
           "kind": "component",
           "exported": false,
-          "line": 228
+          "line": 239,
+          "about": "Displays the two projected totals and the net non-scoring margin above the tab panel; uses ProjTeam for each side and shows a centred \"Projected margin\" label."
         },
         {
           "name": "ProjTeam",
           "kind": "component",
           "exported": false,
-          "line": 247
+          "line": 259,
+          "about": "One side of the Summary header: team abbreviation in team colour, projected points, and the baseline + net-points breakdown; `align` controls start/end positioning."
         },
         {
           "name": "BridgeView",
           "kind": "component",
           "exported": false,
-          "line": 265
+          "line": 278,
+          "about": "View 1 — two side-by-side Waterfall charts (one per team) stacking each stat's relative points, with a DerivationLine list beneath each chart to show the raw-stat → points math."
         },
         {
           "name": "TeamBridge",
           "kind": "component",
           "exported": false,
-          "line": 280
+          "line": 294,
+          "about": "One team's bridge panel: a header with projected total, a scrollable Waterfall chart, and an ordered list of ConversionChip + DerivationLine pairs."
         },
         {
           "name": "BattleView",
           "kind": "component",
           "exported": false,
-          "line": 314
+          "line": 329,
+          "about": "View 2 — mirrored horizontal bars per stat, one for each team; the centre column shows the ConversionChip rate; a totals row at the bottom sums each side to its projected total."
         },
         {
           "name": "ConversionView",
           "kind": "component",
           "exported": false,
-          "line": 385
+          "line": 401,
+          "about": "View 3 — SVG scatter with one ray per stat (slope = rate) and team dots at (deviation, points); both teams' SumStrips run below the chart to tie the scatter back to their projected totals."
         },
         {
           "name": "BuildUpView",
           "kind": "component",
           "exported": false,
-          "line": 477
+          "line": 494,
+          "about": "View 4 — SVG with two horizontal tracks on a shared points axis; each team starts at the baseline and each stat segment advances or retreats the projection, making the margin visible as the gap between the two end caps."
         },
         {
           "name": "LedgerRow",
           "kind": "interface",
           "exported": false,
-          "line": 578
+          "line": 596,
+          "about": "One row of the ledger table: the stat definition, each team's StatContribution, and the signed edge (A minus B) for winner colouring."
         },
         {
           "name": "LedgerView",
           "kind": "component",
           "exported": false,
-          "line": 586
+          "line": 605,
+          "about": "View 5 — sortable Table of all five stats with full DerivationLine formulas for each team and an edge column, plus a LedgerTotal block per team beneath the table."
         },
         {
           "name": "LedgerTotal",
           "kind": "component",
           "exported": false,
-          "line": 660
+          "line": 680,
+          "about": "One team's totals block beneath the ledger table: abbreviation, projected score, and the baseline + net non-scoring derivation; `align` mirrors the left/right positioning used in Summary."
         },
         {
           "name": "ViewFrame",
           "kind": "component",
           "exported": false,
-          "line": 672
+          "line": 693,
+          "about": "Shared wrapper for all five matchup tab panels: a bold title, a plain-prose caption, and a slot for the view's own chart/table content."
         },
         {
           "name": "PricingPanel",
           "kind": "component",
           "exported": false,
-          "line": 687
+          "line": 709,
+          "about": "Expandable `<details>` panel showing each stat's derived rate, the possession-weight rationale, and a range slider that overrides it; a Reset button restores DEFAULT_RATES."
         },
         {
           "name": "signedDelta",
           "kind": "function",
           "exported": false,
-          "line": 749
+          "line": 772,
+          "about": "Formats a stat deviation as a signed one-decimal string (\"+2.3\" or \"−1.4\"), using a minus-sign (−) rather than a hyphen for negative values; used in DerivationLine and BattleView tooltips."
         }
       ],
       "about": "Interactive matchup-analysis page that converts five non-scoring team stats (REB, AST, STL, BLK, TOV) into projected point differentials and displays them across five tabbed views with adjustable pricing sliders."
@@ -2652,7 +2720,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "NotFound.tsx",
-      "loc": 30,
+      "loc": 31,
       "importCount": 4,
       "externalCount": 0,
       "members": [
@@ -2660,13 +2728,14 @@
           "name": "NotFoundProps",
           "kind": "interface",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Props for NotFound — an optional caller-supplied message explaining which entity was missing."
         },
         {
           "name": "NotFound",
           "kind": "component",
           "exported": true,
-          "line": 13,
+          "line": 14,
           "about": "Renders a \"Page not found\" EmptyState with an optional caller-supplied message (used by GameDetail, TeamDetail, PlayerDetail to explain the missing entity) and a Home breadcrumb link."
         }
       ],
@@ -2677,7 +2746,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "PlayerDetail.tsx",
-      "loc": 145,
+      "loc": 146,
       "importCount": 8,
       "externalCount": 0,
       "members": [
@@ -2685,20 +2754,21 @@
           "name": "PlayerDetailProps",
           "kind": "interface",
           "exported": false,
-          "line": 16
+          "line": 17,
+          "about": "Props for PlayerDetail — the URL slug string resolved via `getPlayerBySlug`."
         },
         {
           "name": "PlayerDetail",
           "kind": "component",
           "exported": true,
-          "line": 27,
+          "line": 28,
           "about": "Resolves a player by slug via `getPlayerBySlug`, then fetches the team with `getTeamById` and the team's last three final games via `getGamesForTeam`; renders a coloured-avatar header, bio meta row, and three-tab stat/shooting/recent-games panel."
         },
         {
           "name": "Stat",
           "kind": "component",
           "exported": false,
-          "line": 137,
+          "line": 138,
           "about": "Single stat cell rendered in the Season stats and Shooting tabs: a small label above a larger value, using the shared player-stat grid class."
         }
       ],
@@ -2709,7 +2779,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "Players.tsx",
-      "loc": 93,
+      "loc": 94,
       "importCount": 9,
       "externalCount": 1,
       "members": [
@@ -2717,20 +2787,21 @@
           "name": "PosFilter",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 15,
+          "about": "Union of the six position filter values on the Players page: show all, or narrow to one of the five basketball positions."
         },
         {
           "name": "POS_FILTERS",
           "kind": "const",
           "exported": false,
-          "line": 17,
+          "line": 18,
           "about": "All + the five basketball positions available as pill filters on the Players page, fed directly to the Segmented component."
         },
         {
           "name": "Players",
           "kind": "component",
           "exported": true,
-          "line": 27,
+          "line": 28,
           "about": "Renders a position-filterable, sortable table of all players across every team, defaulting to PPG descending; each player name links to PlayerDetail and each team is shown via TeamChip."
         }
       ],
@@ -2760,7 +2831,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "TeamDetail.tsx",
-      "loc": 218,
+      "loc": 219,
       "importCount": 9,
       "externalCount": 0,
       "members": [
@@ -2768,20 +2839,21 @@
           "name": "TeamDetailProps",
           "kind": "interface",
           "exported": false,
-          "line": 18
+          "line": 19,
+          "about": "Props for TeamDetail — the URL slug string resolved via `getTeamBySlug`."
         },
         {
           "name": "TeamDetail",
           "kind": "component",
           "exported": true,
-          "line": 29,
+          "line": 30,
           "about": "Resolves a team by slug via `getTeamBySlug`, fetches its roster with `getPlayersForTeam` and full schedule with `getGamesForTeam`, then renders a header and three-tab Tabs panel; falls back to NotFound when the slug is missing."
         },
         {
           "name": "StatCell",
           "kind": "component",
           "exported": false,
-          "line": 209
+          "line": 210
         }
       ],
       "about": "Team profile page with a coloured-border header (record, conference, coach, arena) and three Tabs: Roster (sortable player table linking to PlayerDetail), Schedule (all games with W/L result and box-score links), and Team stats (PF, PA, net, streaks)."
@@ -6074,7 +6146,7 @@
       "area": "components",
       "dir": "components/DraggableControls",
       "name": "DraggableControls.tsx",
-      "loc": 840,
+      "loc": 845,
       "importCount": 3,
       "externalCount": 2,
       "members": [
@@ -6306,31 +6378,36 @@
           "name": "StripQuadrant",
           "kind": "type",
           "exported": false,
-          "line": 676
+          "line": 677,
+          "about": "The four possible quadrants for Strip-variant popovers, combining horizontal (left/right) and vertical (up/down) directions relative to the slot button."
         },
         {
           "name": "PaletteStripSlotProps",
           "kind": "interface",
           "exported": false,
-          "line": 678
+          "line": 680,
+          "about": "Props for the PaletteStripSlot wrapper — the palette field, popover open state, the computed quadrant and slot rect for positioning, and toggle/close event handlers."
         },
         {
           "name": "PaletteStripSlot",
           "kind": "component",
           "exported": false,
-          "line": 692
+          "line": 695,
+          "about": "Strip-variant wrapper around PalettePicker that forwards the slot button click event so StripVariant can capture the bounding rect for popover positioning alongside generic field slots."
         },
         {
           "name": "pickStripQuadrant",
           "kind": "function",
           "exported": false,
-          "line": 713
+          "line": 717,
+          "about": "Inspects a slot button's bounding rect and returns the StripQuadrant with the most viewport space on each axis, determining which direction the Strip popover opens."
         },
         {
           "name": "StripVariant",
           "kind": "component",
           "exported": false,
-          "line": 723
+          "line": 728,
+          "about": "Renders the Strip-style controls variant — a vertical icon bar with a grip handle and per-slot expand buttons that open positioned popovers; palette fields use PaletteStripSlot, others use StripPopover."
         }
       ],
       "about": "Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or a compact Edge Strip; persists position and open state to localStorage and adapts layout to phone-sized viewports."
@@ -6394,7 +6471,7 @@
       "area": "components",
       "dir": "components/EcdfPlot",
       "name": "EcdfPlot.tsx",
-      "loc": 161,
+      "loc": 167,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6430,43 +6507,49 @@
           "name": "PAD",
           "kind": "const",
           "exported": false,
-          "line": 32
+          "line": 33,
+          "about": "SVG padding insets (px) — left accommodates y-axis percentage labels, bottom the x-axis value labels."
         },
         {
           "name": "INTENTS",
           "kind": "const",
           "exported": false,
-          "line": 33
+          "line": 35,
+          "about": "Default rotation through the six intent tokens applied to series when no per-series intent is provided."
         },
         {
           "name": "HIGHLIGHT_P",
           "kind": "const",
           "exported": false,
-          "line": 34
+          "line": 37,
+          "about": "The four percentile levels (p50/p90/p95/p99) annotated with crosshair markers in the 'percentiles' variant."
         },
         {
           "name": "intentFor",
           "kind": "function",
           "exported": false,
-          "line": 36
+          "line": 40,
+          "about": "Returns the intent for a series at index i — uses the explicit series.intent override if set, otherwise cycles through INTENTS."
         },
         {
           "name": "quantile",
           "kind": "function",
           "exported": false,
-          "line": 40
+          "line": 45,
+          "about": "Computes the p-th quantile of a pre-sorted array using linear interpolation between adjacent values; used to locate the crosshair positions at the HIGHLIGHT_P percentile levels."
         },
         {
           "name": "defaultFormat",
           "kind": "function",
           "exported": false,
-          "line": 48
+          "line": 54,
+          "about": "Default x-axis value formatter — locale-aware with 0 fraction digits for ≥1000, 1 for ≥10, 2 otherwise; used when no formatX prop is provided."
         },
         {
           "name": "EcdfPlot",
           "kind": "component",
           "exported": true,
-          "line": 62,
+          "line": 68,
           "about": "Renders an SVG ECDF chart by sorting each series' values and building a vertical-then-horizontal step path; the 'percentiles' variant overlays crosshair lines and dot markers at p50/p90/p95/p99."
         }
       ],
@@ -6477,7 +6560,7 @@
       "area": "components",
       "dir": "components/EdgeBundle",
       "name": "EdgeBundle.tsx",
-      "loc": 208,
+      "loc": 212,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6520,37 +6603,42 @@
           "name": "INTENTS",
           "kind": "const",
           "exported": false,
-          "line": 40
+          "line": 41,
+          "about": "Default rotation through the six intent tokens applied per top-level group of leaf siblings when no per-node intent is set."
         },
         {
           "name": "Placed",
           "kind": "interface",
           "exported": false,
-          "line": 42
+          "line": 44,
+          "about": "Internal node descriptor after radial layout — stores the original node, its depth, angular span [a0, a1], pixel-space coordinates, leaf flag, resolved intent, parent reference, and placed children."
         },
         {
           "name": "layoutRadial",
           "kind": "function",
           "exported": false,
-          "line": 44
+          "line": 47,
+          "about": "Recursively visits the hierarchy tree and assigns each leaf an equal angular slot on the ring and each internal node the angular span of its subtree; computes pixel (x, y) from angle and depth-proportional radius."
         },
         {
           "name": "ancestors",
           "kind": "function",
           "exported": false,
-          "line": 106
+          "line": 109,
+          "about": "Walks the parent chain from node n up to the root, returning all ancestors in bottom-to-top order; used by bundlePath to find the LCA and build the control-point sequence."
         },
         {
           "name": "bundlePath",
           "kind": "function",
           "exported": false,
-          "line": 113
+          "line": 117,
+          "about": "Computes an SVG path string for a hierarchically bundled edge: walks from the source leaf up to the LCA then down to the target, pulls each control point toward the straight line by (1-beta), then renders the result as a Catmull-Rom-ish sequence of quadratic curves."
         },
         {
           "name": "EdgeBundle",
           "kind": "component",
           "exported": true,
-          "line": 154,
+          "line": 158,
           "about": "Renders a radial edge-bundling SVG: places leaf nodes evenly around a circle, then draws each edge as a Catmull-Rom-ish quadratic-spline path guided through the least-common-ancestor hierarchy nodes."
         }
       ],
@@ -6608,7 +6696,7 @@
       "area": "components",
       "dir": "components/ForceCluster",
       "name": "ForceCluster.tsx",
-      "loc": 291,
+      "loc": 296,
       "importCount": 0,
       "externalCount": 2,
       "members": [
@@ -6651,49 +6739,56 @@
           "name": "INTENTS",
           "kind": "const",
           "exported": false,
-          "line": 38
+          "line": 39,
+          "about": "Default rotation through the six intent tokens applied per group in discovery order."
         },
         {
           "name": "Placed",
           "kind": "interface",
           "exported": false,
-          "line": 40
+          "line": 42,
+          "about": "A node after force-layout placement — carries the original ForceNode, final (x, y) pixel coordinates, circle radius scaled from the node's weight, its resolved intent, and its group key."
         },
         {
           "name": "rng",
           "kind": "function",
           "exported": false,
-          "line": 43
+          "line": 46,
+          "about": "Returns a deterministic pseudo-random number generator seeded from the given value; used to initialise node positions so the layout is identical on every render."
         },
         {
           "name": "relax",
           "kind": "function",
           "exported": false,
-          "line": 53
+          "line": 57,
+          "about": "Runs 80 iterations of force relaxation — places cluster centres on a ring, then applies all-pairs repulsion, per-cluster gravity, and edge attraction — returning a map of node id to final pixel position."
         },
         {
           "name": "convexHull",
           "kind": "function",
           "exported": false,
-          "line": 134
+          "line": 138,
+          "about": "Computes the convex hull of a point set using Andrew's monotone chain algorithm (O(n log n)); returns the minimal bounding polygon used as the base for cluster outlines."
         },
         {
           "name": "inflateHull",
           "kind": "function",
           "exported": false,
-          "line": 155
+          "line": 159,
+          "about": "Expands each hull vertex outward from the polygon centroid by `pad` pixels, producing a slightly larger \"bubble\" boundary that visually encloses the node circles."
         },
         {
           "name": "smoothHull",
           "kind": "function",
           "exported": false,
-          "line": 166
+          "line": 171,
+          "about": "Converts a convex hull polygon into a smooth closed SVG path by rendering midpoint-anchored quadratic Bézier curves between successive vertices, producing a rounded bubble outline."
         },
         {
           "name": "ForceCluster",
           "kind": "component",
           "exported": true,
-          "line": 192,
+          "line": 197,
           "about": "Renders a force-clustered network SVG: runs `relax` (80-iteration force simulation with all-pairs repulsion, cluster gravity, and edge attraction) then draws smooth inflated convex hulls behind edges and intent-coloured node circles."
         }
       ],
@@ -10929,7 +11024,7 @@
       "area": "doctrine",
       "dir": "doctrine",
       "name": "pages.tsx",
-      "loc": 1373,
+      "loc": 1385,
       "importCount": 3,
       "externalCount": 21,
       "members": [
@@ -10958,170 +11053,182 @@
           "name": "GITHUB_BASE",
           "kind": "const",
           "exported": false,
-          "line": 44
+          "line": 45,
+          "about": "Base URL for linking to doctrine source files on GitHub; used by the Source component to link each article to its markdown file."
         },
         {
           "name": "REPO_BASE",
           "kind": "const",
           "exported": false,
-          "line": 45
+          "line": 47,
+          "about": "Base URL for linking to arbitrary repo files on GitHub; used by article pages to link to FINALIZED-APPS.md, FINALIZED-COMPONENTS.md, and similar root docs."
         },
         {
           "name": "DocLink",
           "kind": "component",
           "exported": false,
-          "line": 47
+          "line": 50,
+          "about": "Inline cross-reference link between doctrine pages — updates URL and calls nav on click without a full route change, but allows Cmd-click to open in a new tab."
         },
         {
           "name": "PrevNext",
           "kind": "component",
           "exported": false,
-          "line": 70
+          "line": 74,
+          "about": "Previous/Next navigation footer rendered at the bottom of each doctrine article; shows DocLink arrows to the adjacent pages in the sequence."
         },
         {
           "name": "Source",
           "kind": "component",
           "exported": false,
-          "line": 91
+          "line": 96,
+          "about": "Renders a \"Full doctrine:\" line linking to the article's source markdown file on GitHub so readers can jump to the complete rules not covered by the inline demos."
         },
         {
           "name": "Cross",
           "kind": "component",
           "exported": false,
-          "line": 100
+          "line": 106,
+          "about": "Inline cross-reference paragraph that bridges to a related doctrine page or external document; styled as a callout-link line between sections."
         },
         {
           "name": "Section",
           "kind": "component",
           "exported": false,
-          "line": 104
+          "line": 111,
+          "about": "Named section container within a doctrine article, rendering an H3 title and its child content inside a `doctrine__section` block."
         },
         {
           "name": "Prose",
           "kind": "component",
           "exported": false,
-          "line": 113
+          "line": 121,
+          "about": "Body-copy paragraph inside a doctrine section, styled as `doctrine__prose`."
         },
         {
           "name": "Callout",
           "kind": "component",
           "exported": false,
-          "line": 117
+          "line": 126,
+          "about": "Aside block for failure modes and anti-patterns, rendered with a bold label (default \"Failure mode\") and visually set apart from the prose."
         },
         {
           "name": "Demo",
           "kind": "component",
           "exported": false,
-          "line": 126
+          "line": 136,
+          "about": "Framed live-component demo block with an optional caption; wraps the component story in `doctrine__demo-frame` so each doctrine example is visually contained."
         },
         {
           "name": "Split",
           "kind": "component",
           "exported": false,
-          "line": 135
+          "line": 146,
+          "about": "Two-column side-by-side container used to display a pair of Demo blocks (e.g. Modal vs Drawer) so readers can compare the two options at a glance."
         },
         {
           "name": "Rules",
           "kind": "component",
           "exported": false,
-          "line": 139
+          "line": 151,
+          "about": "Numbered ordered-list of doctrine rules, each item rendered as a `doctrine__rules-item` so the list reads as an authoritative sequence."
         },
         {
           "name": "SPACING_LADDER",
           "kind": "const",
           "exported": false,
-          "line": 154
+          "line": 166
         },
         {
           "name": "SpacingCompare",
           "kind": "component",
           "exported": false,
-          "line": 161
+          "line": 173
         },
         {
           "name": "ALIGN_MARKS",
           "kind": "const",
           "exported": false,
-          "line": 188
+          "line": 200
         },
         {
           "name": "AlignmentCompare",
           "kind": "component",
           "exported": false,
-          "line": 190
+          "line": 202
         },
         {
           "name": "CONTAINER_WIDTHS",
           "kind": "const",
           "exported": false,
-          "line": 222
+          "line": 234
         },
         {
           "name": "ContainerCompare",
           "kind": "component",
           "exported": false,
-          "line": 224
+          "line": 236
         },
         {
           "name": "LayoutPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 243
+          "line": 255
         },
         {
           "name": "LayoutPage",
           "kind": "component",
           "exported": false,
-          "line": 368
+          "line": 380
         },
         {
           "name": "SelectionPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 509
+          "line": 521
         },
         {
           "name": "SelectionPage",
           "kind": "component",
           "exported": false,
-          "line": 650
+          "line": 662
         },
         {
           "name": "CompositionPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 862
+          "line": 874
         },
         {
           "name": "CompositionPage",
           "kind": "component",
           "exported": false,
-          "line": 972
+          "line": 984
         },
         {
           "name": "ModalitiesPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 1117
+          "line": 1129
         },
         {
           "name": "ModalitiesPage",
           "kind": "component",
           "exported": false,
-          "line": 1228
+          "line": 1240
         },
         {
           "name": "DOCTRINE_PAGES",
           "kind": "const",
           "exported": true,
-          "line": 1363,
+          "line": 1375,
           "about": "Ordered array of the four doctrine articles (Layout → Component selection → App composition → Modalities) consumed by DoctrinePage to render the active page and populate the Doc field options."
         },
         {
           "name": "isDoctrineId",
           "kind": "function",
           "exported": true,
-          "line": 1371,
+          "line": 1383,
           "about": "Type guard that returns true when a string is one of the four valid DoctrineId values; used by DoctrinePage to validate URL params."
         }
       ],
@@ -11396,7 +11503,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "cardstock.tsx",
-      "loc": 418,
+      "loc": 421,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -11439,25 +11546,28 @@
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 126
+          "line": 127,
+          "about": "ElevationDemo — slider-driven demo walking the five Cardstock elevation rungs, showing the paired inset-cut-edge plus zero-blur drop shadow recipe and noting how warm-slate tinting replaces neutral black casts."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 176
+          "line": 178,
+          "about": "MotionDemo — switch-controlled motion demo on the Cardstock palette showing the slightly-above-flat duration band (150/220/340 ms) and confirming zero decorative motion — every cut-edge and drop stays identical whether motion is on or off."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 215
+          "line": 218,
+          "about": "IntentDemo — cluster of the six intent buttons on the Cardstock host, illustrating the muted-pastel fills where each chip's border is one luminance step darker than its fill, and the dusty-rose focus ring."
         },
         {
           "name": "cardstockGuide",
           "kind": "const",
           "exported": true,
-          "line": 241,
+          "line": 244,
           "about": "cardstockGuide — the EngineGuideMeta for the Cardstock engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the cardstock-layered palette, covering the paired cut-edge plus zero-blur drop elevation recipe, warm paper tone surfaces, quiet slate-cream borders, the paperEdgeColor / paperEdgeWidth engine signals, and the muted-pastel intent set with dusty-rose focus."
         }
       ],
@@ -11468,7 +11578,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "cel-glass.tsx",
-      "loc": 417,
+      "loc": 425,
       "importCount": 6,
       "externalCount": 7,
       "members": [
@@ -11476,55 +11586,63 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 17
+          "line": 18,
+          "about": "Union type for the five elevation slots used in the Cel-Glass elevation demo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 18
+          "line": 20,
+          "about": "Ordered list of elevation rungs for the slider demo, mapping index to rung label."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 20
+          "line": 23,
+          "about": "PhilosophyDemo — intro Card on a row layout showing a frosted translucent surface with a hard ink outline, a primary and neutral button, and text describing the dual effect.outline/effect.backdropBlur contract slots."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 42
+          "line": 46,
+          "about": "SurfacesDemo — four Cel-Glass surface swatches rendered with backdrop-filter blur and thick ink borders, captioned to explain that the cel line keeps frosted translucent panes from dissolving into each other."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 83
+          "line": 88,
+          "about": "BordersDemo — segmented-toggle demo of the three Cel-Glass border-strength rungs on a frosted backdrop-blur card, explaining the two-path cel-line delivery (border on cards, outline halo on controls) and why using outline avoids interfering with the inset glass highlight."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 128
+          "line": 134,
+          "about": "ElevationDemo — slider-driven demo walking the five Cel-Glass elevation rungs, showing the paired inset-glass-top-highlight plus hard-cel-block recipe and the effect.shadowStyle = 'hard' annotation."
         },
         {
           "name": "VariationsDemo",
           "kind": "component",
           "exported": false,
-          "line": 175
+          "line": 182,
+          "about": "VariationsDemo — side-by-side row of all six Cel-Glass register cards (Frost, Noir, Sunset, Mist, Bone, Orchid) each wrapped in their own PaletteRoot, captioned to explain the saturated-host vs light-ground families and their respective a11y designations."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 223
+          "line": 231,
+          "about": "IntentDemo — six intent buttons on the Cel-Glass host with captions explaining high-alpha fills for legibility over frosted surfaces, uniform cel-line borders across all chips, and the colour-shift focus cue shared with the cel-shaded engine."
         },
         {
           "name": "celGlassGuide",
           "kind": "const",
           "exported": true,
-          "line": 249,
+          "line": 257,
           "about": "celGlassGuide — the EngineGuideMeta for the Cel-Glass engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) plus a variations step showing all six palette registers, demonstrated against the cel-glass-frost palette, covering the dual outline-plus-backdrop-blur delivery, the paired glass-highlight plus hard-cel-block elevation recipe, and the saturated-host vs light-ground register families."
         }
       ],
@@ -11535,7 +11653,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "cel-shaded.tsx",
-      "loc": 413,
+      "loc": 421,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -11543,55 +11661,63 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union type for the five elevation slots used in the Cel-shaded elevation demo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered list of elevation rungs for the slider demo, mapping index to rung label."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 18,
+          "about": "PhilosophyDemo — intro Card showing a cream-cel field with near-black ink outline and primary/neutral buttons, describing the effect.outline and effect.shadowStyle contract slots the engine introduces."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 37
+          "line": 41,
+          "about": "SurfacesDemo — grid of the four Cel-shaded surface swatches each wearing the thick ink border and a block elevation shadow, captioned to explain that all border tokens resolve to the same near-black ink."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 75
+          "line": 80,
+          "about": "BordersDemo — segmented-toggle demo of the three Cel-shaded border-strength rungs, demonstrating that all three resolve to the same near-black ink and explaining the two-path cel-line delivery through both border and outline tokens."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 121
+          "line": 127,
+          "about": "ElevationDemo — slider-driven demo walking the five Cel-shaded elevation rungs, showing hard-offset ink block shadows with no blur and explaining the static-affordance role of the block under prefers-reduced-motion."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 171
+          "line": 178,
+          "about": "MotionDemo — switch-controlled motion demo on a nested Cel-shaded PaletteRoot, demonstrating the snap-fast 80/140/220 ms duration band and confirming that the ink outline still identifies hovered controls with motion off."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 209
+          "line": 217,
+          "about": "IntentDemo — six intent buttons on the Cel-shaded host illustrating the shonen colour triad (orange/sky-blue/chakra-green/gold/battle-red), uniform ink cel-line across all chips, and the colour-shift focus ring at the same 3px ink weight."
         },
         {
           "name": "celShadedGuide",
           "kind": "const",
           "exported": true,
-          "line": 238,
+          "line": 246,
           "about": "celShadedGuide — the EngineGuideMeta for the Cel-shaded engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the cel-shaded-shonen palette, covering the two-path ink-outline delivery, hard-offset block shadow elevation, snap-fast motion with press-jiggle spring, and the shonen colour triad with a colour-shift focus ring."
         }
       ],
@@ -11602,7 +11728,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "claymorphism.tsx",
-      "loc": 430,
+      "loc": 440,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -11610,31 +11736,111 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union type for the five elevation slots used in the Claymorphism elevation demo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered list of elevation rungs for the slider demo, mapping index to rung label."
         },
         {
           "name": "RadiusRung",
           "kind": "type",
           "exported": false,
-          "line": 14
+          "line": 17,
+          "about": "Union type for the four radius rungs exposed in the elevation demo's radius toggle."
         },
         {
           "name": "RADII",
           "kind": "const",
           "exported": false,
-          "line": 15
+          "line": 19,
+          "about": "Ordered list of radius rungs used to populate the segmented toggle in the elevation demo."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 22,
+          "about": "PhilosophyDemo — static demo card on the pastel-violet Clay host with primary/neutral buttons and text describing the triple-layer shadow recipe and large radius that together create the \"inflated cushion\" metaphor."
+        },
+        {
+          "name": "SurfacesDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 43,
+          "about": "SurfacesDemo — grid of the four Claymorphism surface swatches rendered with large radius and elevation.low's triple-shadow, captioned to explain how the inflated-cushion illusion requires a tinted host and opaque surfaces."
+        },
+        {
+          "name": "BordersDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 82,
+          "about": "BordersDemo — static three-panel demo of Claymorphism's border rungs (subtle/default/strong) as violet alphas on rounded white pillows, captioned to explain that all three are violet-family tints keeping each white surface tied to the host hue."
+        },
+        {
+          "name": "ElevationDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 141,
+          "about": "ElevationDemo — slider-plus-radius-toggle demo walking the five Claymorphism elevation rungs, showing the three-layer shadow recipe (inset bottom shade, inset top highlight, outer drop) and allowing the radius to be scrubbed to show how the cushion identity depends on radius.lg."
+        },
+        {
+          "name": "MotionDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 200,
+          "about": "MotionDemo — switch-controlled motion demo on a nested Claymorphism PaletteRoot, showing the wider 180/280/460 ms band and the spring-overshoot easing that gives press releases a physical bounce."
+        },
+        {
+          "name": "IntentDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 241,
+          "about": "IntentDemo — six pastel candy intent buttons on the Clay host, captioned to explain the deep-ink content on saturated fills and the wider 3px focus ring needed against the engine's inflated silhouettes."
+        },
+        {
+          "name": "claymorphismGuide",
+          "kind": "const",
+          "exported": true,
+          "line": 270,
+          "about": "claymorphismGuide — the EngineGuideMeta for the Claymorphism engine: five steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the claymorphism palette, covering the three-layer shadow recipe, large-radius cushion surfaces, violet-alpha borders, spring-overshoot motion, and pastel candy intent fills with deep ink."
+        }
+      ],
+      "about": "Engine guide definition for the Claymorphism rendering engine — the inflated-gumdrop engine that stacks three shadow layers per elevation slot (inset bottom shade, inset top highlight, outer drop shadow) over a pastel violet host, uses large radii to turn every control into a cushion, and drives a spring-overshoot motion curve for a bouncy physical release."
+    },
+    {
+      "id": "src/guides/engines/crt-phosphor.tsx",
+      "area": "guides",
+      "dir": "guides/engines",
+      "name": "crt-phosphor.tsx",
+      "loc": 387,
+      "importCount": 6,
+      "externalCount": 2,
+      "members": [
+        {
+          "name": "ElevationRung",
+          "kind": "type",
+          "exported": false,
+          "line": 13,
+          "about": "Union type for the five elevation slots used in the CRT / Phosphor elevation demo."
+        },
+        {
+          "name": "RUNGS",
+          "kind": "const",
+          "exported": false,
+          "line": 15,
+          "about": "Ordered list of elevation rungs for the slider demo, mapping index to rung label."
+        },
+        {
+          "name": "PhilosophyDemo",
+          "kind": "component",
+          "exported": false,
+          "line": 18,
+          "about": "PhilosophyDemo — intro Card on the scanline-painted CRT host showing near-black field, single phosphor-green text and buttons, and a caption describing the three load-bearing effect slots: overlay.image, glow, and motion.decay."
         },
         {
           "name": "SurfacesDemo",
@@ -11646,98 +11852,31 @@
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 75
+          "line": 72
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 133
+          "line": 107
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 191
+          "line": 151
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 231
-        },
-        {
-          "name": "claymorphismGuide",
-          "kind": "const",
-          "exported": true,
-          "line": 260,
-          "about": "claymorphismGuide — the EngineGuideMeta for the Claymorphism engine: five steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the claymorphism palette, covering the three-layer shadow recipe, large-radius cushion surfaces, violet-alpha borders, spring-overshoot motion, and pastel candy intent fills with deep ink."
-        }
-      ],
-      "about": "Engine guide definition for the Claymorphism rendering engine — the inflated-gumdrop engine that stacks three shadow layers per elevation slot (inset bottom shade, inset top highlight, outer drop shadow) over a pastel violet host, uses large radii to turn every control into a cushion, and drives a spring-overshoot motion curve for a bouncy physical release."
-    },
-    {
-      "id": "src/guides/engines/crt-phosphor.tsx",
-      "area": "guides",
-      "dir": "guides/engines",
-      "name": "crt-phosphor.tsx",
-      "loc": 384,
-      "importCount": 6,
-      "externalCount": 2,
-      "members": [
-        {
-          "name": "ElevationRung",
-          "kind": "type",
-          "exported": false,
-          "line": 12
-        },
-        {
-          "name": "RUNGS",
-          "kind": "const",
-          "exported": false,
-          "line": 13
-        },
-        {
-          "name": "PhilosophyDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 15
-        },
-        {
-          "name": "SurfacesDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 34
-        },
-        {
-          "name": "BordersDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 69
-        },
-        {
-          "name": "ElevationDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 104
-        },
-        {
-          "name": "MotionDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 148
-        },
-        {
-          "name": "IntentDemo",
-          "kind": "component",
-          "exported": false,
-          "line": 189
+          "line": 192
         },
         {
           "name": "crtPhosphorGuide",
           "kind": "const",
           "exported": true,
-          "line": 216,
+          "line": 219,
           "about": "crtPhosphorGuide — the EngineGuideMeta for the CRT / Phosphor engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the crt-phosphor-green palette, covering the scanline overlay, the inset-phosphor-stroke plus outer-bloom elevation recipe, the decay-tail motion regime, and the single-hue alpha-only intent differentiation."
         }
       ],
@@ -13583,7 +13722,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "paletteTags.ts",
-      "loc": 345,
+      "loc": 356,
       "importCount": 3,
       "externalCount": 5,
       "members": [
@@ -13598,199 +13737,210 @@
           "name": "PALETTE_IDS",
           "kind": "const",
           "exported": false,
-          "line": 26
+          "line": 27,
+          "about": "Module-level list of all built-in palette ids in registry order, used by tag derivation, search, and group cycling."
         },
         {
           "name": "PALETTE_ID_SET",
           "kind": "const",
           "exported": false,
-          "line": 27
+          "line": 29,
+          "about": "Set form of PALETTE_IDS for O(1) membership tests in isPaletteId and resolveGroupMembers."
         },
         {
           "name": "isPaletteId",
           "kind": "function",
           "exported": true,
-          "line": 30,
+          "line": 32,
           "about": "Type guard — true when value is a key in the built-in palette registry."
         },
         {
           "name": "inferPrefix",
           "kind": "function",
           "exported": false,
-          "line": 34
+          "line": 37,
+          "about": "Return the engine-family prefix from INFERRED_PREFIXES if the palette id starts with one, otherwise null; used by getPaletteTags to inject implicit family tags."
         },
         {
           "name": "tokenizeAliases",
           "kind": "function",
           "exported": false,
-          "line": 41
+          "line": 45,
+          "about": "Normalize a palette's recallAliases array to lowercase trimmed strings, filtering empties; used by getPaletteTags to add recall aliases to the tag set."
         },
         {
           "name": "tagCache",
           "kind": "const",
           "exported": false,
-          "line": 52
+          "line": 57,
+          "about": "Module-level memoization cache from palette id to its full sorted tag list; populated lazily on first call to getPaletteTags."
         },
         {
           "name": "getPaletteTags",
           "kind": "function",
           "exported": true,
-          "line": 55,
+          "line": 60,
           "about": "Return the full sorted tag list for a palette: explicit tags, engine id, a11y class, inferred family prefix, and recall aliases — cached after first call."
         },
         {
           "name": "tagToPaletteIds",
           "kind": "const",
           "exported": true,
-          "line": 77,
+          "line": 82,
           "about": "Map from tag → palette ids that carry it."
         },
         {
           "name": "allTags",
           "kind": "const",
           "exported": true,
-          "line": 93,
+          "line": 98,
           "about": "Sorted list of every tag across the whole palette registry — used to populate the tag-chip filter UI in the picker popover."
         },
         {
           "name": "searchPalettes",
           "kind": "function",
           "exported": true,
-          "line": 105,
+          "line": 110,
           "about": "Rank palette ids against a query, matching name + id + tags."
         },
         {
           "name": "PINNED_GROUPS_KEY",
           "kind": "const",
           "exported": true,
-          "line": 127,
+          "line": 132,
           "about": "localStorage key for the array of group names the user has pinned in the picker sidebar."
         },
         {
           "name": "ACTIVE_GROUP_KEY",
           "kind": "const",
           "exported": true,
-          "line": 129,
+          "line": 134,
           "about": "localStorage key for the name of the currently active palette group (used by arrow-key cycling)."
         },
         {
           "name": "CUSTOM_GROUPS_KEY",
           "kind": "const",
           "exported": true,
-          "line": 131,
+          "line": 136,
           "about": "localStorage key for the user's custom and overridden palette groups (a JSON map of name → StyleId[])."
         },
         {
           "name": "PINNING_MODE_KEY",
           "kind": "const",
           "exported": true,
-          "line": 133,
+          "line": 138,
           "about": "localStorage key for the pinning-mode pref — controls which groups (pinned, active, or both) appear in the picker's sidebar."
         },
         {
           "name": "PinningMode",
           "kind": "type",
           "exported": true,
-          "line": 136,
+          "line": 141,
           "about": "Which groups the picker sidebar shows: only pinned, only active, or both."
         },
         {
           "name": "isPinningMode",
           "kind": "function",
           "exported": false,
-          "line": 138
+          "line": 144,
+          "about": "Type guard for PinningMode — rejects any stored string that isn't one of the three valid values."
         },
         {
           "name": "isStringArray",
           "kind": "function",
           "exported": false,
-          "line": 141
+          "line": 148,
+          "about": "Type guard ensuring every element of a parsed JSON array is a string; used to validate the pinned-groups storage value."
         },
         {
           "name": "isStyleMemberId",
           "kind": "function",
           "exported": false,
-          "line": 149
+          "line": 157,
+          "about": "Type guard for a single group member — accepts both built-in palette ids and custom pattern ids so favorites and lists can hold either kind."
         },
         {
           "name": "isCustomGroups",
           "kind": "function",
           "exported": false,
-          "line": 152
+          "line": 161,
+          "about": "Type guard for the custom-groups storage value — validates that every key is a string and every value is an array of valid StyleIds."
         },
         {
           "name": "isActiveGroupValue",
           "kind": "function",
           "exported": false,
-          "line": 164
+          "line": 174,
+          "about": "Type guard for the active-group storage value — accepts null (cycling off) or any string (group name)."
         },
         {
           "name": "usePinnedGroups",
           "kind": "function",
           "exported": true,
-          "line": 168,
+          "line": 178,
           "about": "Persisted array of group names the user has pinned in the picker sidebar; synced across tabs."
         },
         {
           "name": "useActiveGroup",
           "kind": "function",
           "exported": true,
-          "line": 173,
+          "line": 183,
           "about": "Persisted name of the group the picker is currently cycling through via arrow keys (null when cycling is off); synced across tabs."
         },
         {
           "name": "useCustomGroups",
           "kind": "function",
           "exported": true,
-          "line": 178,
+          "line": 188,
           "about": "Persisted map of user-defined or user-overridden palette groups (name → StyleId[]); the raw storage layer useGroups builds on."
         },
         {
           "name": "usePinningMode",
           "kind": "function",
           "exported": true,
-          "line": 187,
+          "line": 197,
           "about": "Persisted PinningMode pref that controls which groups appear in the picker sidebar; synced across tabs."
         },
         {
           "name": "resolveGroupMembers",
           "kind": "function",
           "exported": true,
-          "line": 197,
+          "line": 207,
           "about": "Resolve a group name to its palette-id members."
         },
         {
           "name": "useGroups",
           "kind": "function",
           "exported": true,
-          "line": 218,
+          "line": 228,
           "about": "The effective group map shown in the picker: every built-in default group merged with the user's stored overrides."
         },
         {
           "name": "GroupsApi",
           "kind": "interface",
           "exported": true,
-          "line": 301,
+          "line": 311,
           "about": "Mutation methods returned by useGroups: toggle membership, manage favorites, create/delete groups, remove a style from all groups, and reset defaults."
         },
         {
           "name": "isDefaultGroup",
           "kind": "function",
           "exported": true,
-          "line": 312,
+          "line": 322,
           "about": "True when a group name belongs to the built-in default set — used by the picker UI to hide the delete button on default groups."
         },
         {
           "name": "sameIds",
           "kind": "function",
           "exported": false,
-          "line": 316
+          "line": 327,
+          "about": "Shallow ordered equality check for two StyleId arrays; used by useGroups to skip writing an override when the user's edits would reproduce the default list verbatim."
         },
         {
           "name": "cycleInGroup",
           "kind": "function",
           "exported": true,
-          "line": 330,
+          "line": 341,
           "about": "Cycle within a group, wrapping at both ends."
         }
       ],
@@ -13973,7 +14123,7 @@
       "area": "lib",
       "dir": "lib",
       "name": "usePersistedJSON.ts",
-      "loc": 84,
+      "loc": 86,
       "importCount": 1,
       "externalCount": 1,
       "members": [
@@ -13988,13 +14138,15 @@
           "name": "readValue",
           "kind": "function",
           "exported": false,
-          "line": 64
+          "line": 65,
+          "about": "Read and validate a JSON value from localStorage at startup; returns the default when nothing is stored, the key is absent, or validation fails."
         },
         {
           "name": "safeParse",
           "kind": "function",
           "exported": false,
-          "line": 77
+          "line": 79,
+          "about": "Silently parse a JSON string, returning undefined instead of throwing on malformed input."
         }
       ],
       "about": "localStorage-backed React state for JSON-serialisable values."
@@ -14534,7 +14686,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "button.tsx",
-      "loc": 111,
+      "loc": 115,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14542,31 +14694,35 @@
           "name": "ClickCounterComposition",
           "kind": "component",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Sandbox composition for the click-counter test: a Button wired to a counter state, plus a span that echoes the count."
         },
         {
           "name": "DisabledComposition",
           "kind": "component",
           "exported": false,
-          "line": 19
+          "line": 21,
+          "about": "Sandbox composition for the disabled-state test: a disabled Button plus a counter span that should stay at 0 after click attempts."
         },
         {
           "name": "LoadingComposition",
           "kind": "component",
           "exported": false,
-          "line": 31
+          "line": 34,
+          "about": "Sandbox composition for the loading-state test: a Button with loading=true next to a counter, verifying spinner visibility and click suppression."
         },
         {
           "name": "IntentComposition",
           "kind": "component",
           "exported": false,
-          "line": 43
+          "line": 47,
+          "about": "Sandbox composition for the intent-variants test: three Buttons with primary, danger, and neutral intents laid out side by side for data-intent assertions."
         },
         {
           "name": "buttonTests",
           "kind": "const",
           "exported": true,
-          "line": 54,
+          "line": 58,
           "about": "Array of four IntegrationTest definitions for Button: click-counter, disabled blocks click, loading spinner + aria-busy, and intent data attributes."
         }
       ],
@@ -14577,7 +14733,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "card.tsx",
-      "loc": 108,
+      "loc": 112,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14585,31 +14741,35 @@
           "name": "StaticComposition",
           "kind": "component",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Sandbox composition for the static card test: a Card with static variant, title, subtitle, body content, and footer slot."
         },
         {
           "name": "ExpandableComposition",
           "kind": "component",
           "exported": false,
-          "line": 18
+          "line": 20,
+          "about": "Sandbox composition for the expandable card test: a Card with expandable variant and an expanded-content pane, plus a toggle counter."
         },
         {
           "name": "BentoComposition",
           "kind": "component",
           "exported": false,
-          "line": 35
+          "line": 38,
+          "about": "Sandbox composition for the bento accent stripe test: a Card with bento variant and danger accent for data-accent and stripe assertions."
         },
         {
           "name": "SpatialComposition",
           "kind": "component",
           "exported": false,
-          "line": 43
+          "line": 47,
+          "about": "Sandbox composition for the spatial variant test: a Card with spatial variant, used to assert the data-variant attribute (mouse-tilt parallax is not asserted)."
         },
         {
           "name": "cardTests",
           "kind": "const",
           "exported": true,
-          "line": 52,
+          "line": 56,
           "about": "Array of four IntegrationTest definitions for Card: static layout, expandable click-to-reveal, bento accent stripe, and spatial variant class."
         }
       ],
@@ -14620,7 +14780,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "checkbox.tsx",
-      "loc": 127,
+      "loc": 131,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14628,31 +14788,35 @@
           "name": "SingleComposition",
           "kind": "component",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Sandbox composition for the single-toggle test: a Checkbox bound to boolean state plus a span echoing 'on'/'off'."
         },
         {
           "name": "DetailedComposition",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "Sandbox composition for the detailed-variant test: a Checkbox with description and error props to verify those slots render."
         },
         {
           "name": "TreeComposition",
           "kind": "component",
           "exported": false,
-          "line": 28
+          "line": 31,
+          "about": "Sandbox composition for the tree-cascade test: a Checkbox with tree variant holding two levels, plus a span echoing the selected leaf ids."
         },
         {
           "name": "GroupComposition",
           "kind": "component",
           "exported": false,
-          "line": 54
+          "line": 58,
+          "about": "Sandbox composition for the group multi-select test: a Checkbox with group variant and three options, echoing selected values to a span."
         },
         {
           "name": "checkboxTests",
           "kind": "const",
           "exported": true,
-          "line": 75,
+          "line": 79,
           "about": "Array of four IntegrationTest definitions for Checkbox: single toggle, detailed with description/error, tree parent-cascades, and group multi-select."
         }
       ],
@@ -14663,7 +14827,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "command-palette.tsx",
-      "loc": 62,
+      "loc": 63,
       "importCount": 3,
       "externalCount": 1,
       "members": [
@@ -14671,13 +14835,14 @@
           "name": "CommandPaletteComposition",
           "kind": "component",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Sandbox composition for the command-palette filter test: a Button that opens a CommandPalette with four commands plus a result div that shows which command ran."
         },
         {
           "name": "commandPaletteFilter",
           "kind": "const",
           "exported": true,
-          "line": 38,
+          "line": 39,
           "about": "Single IntegrationTest that exercises the filter-and-run flow: open palette, type \"say\" to narrow to one match, press Enter, assert the command's output appears — exercises CommandPalette and Button together."
         }
       ],
@@ -14688,7 +14853,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "empty-state.tsx",
-      "loc": 136,
+      "loc": 140,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14696,31 +14861,35 @@
           "name": "MinimalComposition",
           "kind": "component",
           "exported": false,
-          "line": 9
+          "line": 10,
+          "about": "Sandbox composition for the minimal empty-state test: an EmptyState with title and description only."
         },
         {
           "name": "IllustratedComposition",
           "kind": "component",
           "exported": false,
-          "line": 18
+          "line": 20,
+          "about": "Sandbox composition for the illustrated empty-state test: an EmptyState with illustration SVG, primary and secondary action buttons, and a click counter."
         },
         {
           "name": "ChecklistComposition",
           "kind": "component",
           "exported": false,
-          "line": 35
+          "line": 38,
+          "about": "Sandbox composition for the checklist empty-state test: an EmptyState with three steps (one pre-done), action buttons, and an actions-fired echo span."
         },
         {
           "name": "GenerativeComposition",
           "kind": "component",
           "exported": false,
-          "line": 54
+          "line": 58,
+          "about": "Sandbox composition for the generative empty-state test: an EmptyState with two seed fields and onGenerate capturing submitted values to a span."
         },
         {
           "name": "emptyStateTests",
           "kind": "const",
           "exported": true,
-          "line": 74,
+          "line": 78,
           "about": "Array of four IntegrationTest definitions for EmptyState: minimal layout, illustrated CTA, checklist step actions, and generative seed field submission."
         }
       ],
@@ -14731,7 +14900,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "form-submit-toast.tsx",
-      "loc": 53,
+      "loc": 54,
       "importCount": 4,
       "externalCount": 1,
       "members": [
@@ -14739,13 +14908,14 @@
           "name": "FormSubmitToastComposition",
           "kind": "component",
           "exported": false,
-          "line": 9
+          "line": 10,
+          "about": "Sandbox composition for the form-submit-toast test: a TextInput, a Submit button, and an inline Toaster that shows a success toast containing the typed name."
         },
         {
           "name": "formSubmitToast",
           "kind": "const",
           "exported": true,
-          "line": 33,
+          "line": 34,
           "about": "Single IntegrationTest for the form-submit → confirmation toast flow: type into TextInput, click Button, assert Toast title contains the typed value."
         }
       ],
@@ -14756,7 +14926,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "modal-with-form.tsx",
-      "loc": 84,
+      "loc": 85,
       "importCount": 5,
       "externalCount": 1,
       "members": [
@@ -14764,13 +14934,14 @@
           "name": "ModalWithFormComposition",
           "kind": "component",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Sandbox composition for the modal-with-form test: an Open button, a centered Modal containing a TextInput, a Toaster, and a submit helper that pushes a toast and closes the modal."
         },
         {
           "name": "modalWithForm",
           "kind": "const",
           "exported": true,
-          "line": 51,
+          "line": 52,
           "about": "Single IntegrationTest for the modal-form-submit flow: open Modal, type into TextInput, click Save, assert modal closes and Toast confirms the note — exercises Button, Modal, TextInput, and Toast."
         }
       ],
@@ -14781,7 +14952,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "modal.tsx",
-      "loc": 126,
+      "loc": 129,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14789,25 +14960,28 @@
           "name": "CenteredComposition",
           "kind": "component",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Sandbox composition for the centered-modal test: a Modal with centered variant, primary/secondary actions, and a state span that records which action fired."
         },
         {
           "name": "SectionedComposition",
           "kind": "component",
           "exported": false,
-          "line": 32
+          "line": 34,
+          "about": "Sandbox composition for the sectioned-modal test: a Modal with sectioned variant rendered open to assert scroll body and sticky footer modifiers."
         },
         {
           "name": "WizardComposition",
           "kind": "component",
           "exported": false,
-          "line": 51
+          "line": 54,
+          "about": "Sandbox composition for the wizard-modal test: a three-step Modal with wizard variant and an onComplete handler that sets a 'done' state span."
         },
         {
           "name": "modalTests",
           "kind": "const",
           "exported": true,
-          "line": 76,
+          "line": 79,
           "about": "Array of three IntegrationTest definitions for Modal: centered (dismiss + callback), sectioned (scroll body + sticky footer), and wizard (three-step walk + onComplete)."
         }
       ],
@@ -14818,7 +14992,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "pagination.tsx",
-      "loc": 112,
+      "loc": 115,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14826,25 +15000,28 @@
           "name": "NumberedComposition",
           "kind": "component",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Sandbox composition for the numbered pagination test: a Pagination with 10 pages and a state span echoing the current page."
         },
         {
           "name": "RichComposition",
           "kind": "component",
           "exported": false,
-          "line": 21
+          "line": 23,
+          "about": "Sandbox composition for the rich pagination test: a Pagination with rich variant, 20 pages, page-size control, and state spans echoing page and size."
         },
         {
           "name": "LoadMoreComposition",
           "kind": "component",
           "exported": false,
-          "line": 40
+          "line": 43,
+          "about": "Sandbox composition for the load-more pagination test: a Pagination with load-more variant, 20-item batches up to 60 total, and a state span echoing loaded count."
         },
         {
           "name": "paginationTests",
           "kind": "const",
           "exported": true,
-          "line": 58,
+          "line": 61,
           "about": "Array of three IntegrationTest definitions for Pagination: numbered prev/next with ellipsis, rich first/last jump with page-size select, and load-more button with item count."
         }
       ],
@@ -14855,7 +15032,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "slider.tsx",
-      "loc": 115,
+      "loc": 119,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14863,31 +15040,35 @@
           "name": "SingleComposition",
           "kind": "component",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Sandbox composition for the single-thumb slider test: a Slider starting at 40 with a state span echoing the current value."
         },
         {
           "name": "TicksComposition",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "Sandbox composition for the ticks-variant slider test: a Slider with step=20 tick marks and a state span to assert step-aligned jumps."
         },
         {
           "name": "RangeComposition",
           "kind": "component",
           "exported": false,
-          "line": 35
+          "line": 38,
+          "about": "Sandbox composition for the range-slider test: a Slider with range variant holding a [20, 80] tuple and a state span echoing min-max."
         },
         {
           "name": "CurveComposition",
           "kind": "component",
           "exported": false,
-          "line": 49
+          "line": 53,
+          "about": "Sandbox composition for the curve-variant slider test: a Slider with a 16-point sine curve backdrop to verify the SVG polyline renders."
         },
         {
           "name": "sliderTests",
           "kind": "const",
           "exported": true,
-          "line": 60,
+          "line": 64,
           "about": "Array of four IntegrationTest definitions for Slider: arrow key stepping, ticks with step-aligned jumps, range two-thumb, and curve SVG backdrop."
         }
       ],
@@ -14898,7 +15079,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "tabs.tsx",
-      "loc": 157,
+      "loc": 161,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14906,31 +15087,35 @@
           "name": "BasicComposition",
           "kind": "component",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Sandbox composition for the click-switch and keyboard navigation tests: three Tabs (Alpha, Beta, Gamma) with panel rendering and a state span."
         },
         {
           "name": "RichComposition",
           "kind": "component",
           "exported": false,
-          "line": 34
+          "line": 36,
+          "about": "Sandbox composition for the rich-variant tabs test: Tabs with icons, a badge count on Inbox, and Archive marked disabled."
         },
         {
           "name": "OverflowComposition",
           "kind": "component",
           "exported": false,
-          "line": 46
+          "line": 49,
+          "about": "Sandbox composition for the overflow-variant tabs test: six Tabs with overflow variant to confirm the More button renders."
         },
         {
           "name": "EditableComposition",
           "kind": "component",
           "exported": false,
-          "line": 57
+          "line": 61,
+          "about": "Sandbox composition for the editable-variant tabs test: Tabs with close and add callbacks, and a count span to track tab array length."
         },
         {
           "name": "tabsTests",
           "kind": "const",
           "exported": true,
-          "line": 83,
+          "line": 87,
           "about": "Array of five IntegrationTest definitions for Tabs: click-switch, ArrowRight/End keyboard navigation, rich icons/badges/disabled, overflow More button, and editable close/add."
         }
       ],
@@ -14941,7 +15126,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "text-input.tsx",
-      "loc": 125,
+      "loc": 129,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14949,31 +15134,35 @@
           "name": "BareComposition",
           "kind": "component",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Sandbox composition for the bare-input test: a TextInput with no label/hint and a span that echoes the typed value."
         },
         {
           "name": "LabeledHintComposition",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "Sandbox composition for the labeled/hint/required test: a TextInput with label, hint text, and required marker."
         },
         {
           "name": "ValidationComposition",
           "kind": "component",
           "exported": false,
-          "line": 33
+          "line": 36,
+          "about": "Sandbox composition for the live-validation test: a TextInput with validate variant and an inline validator that returns danger for short strings and success once long enough."
         },
         {
           "name": "CommandSuggestionComposition",
           "kind": "component",
           "exported": false,
-          "line": 52
+          "line": 56,
+          "about": "Sandbox composition for the ghost-suggestion test: a TextInput with command variant and a fixed suggestion string, plus a value echo span."
         },
         {
           "name": "textInputTests",
           "kind": "const",
           "exported": true,
-          "line": 69,
+          "line": 73,
           "about": "Array of four IntegrationTest definitions for TextInput: bare echo, labeled with hint/required, live validation danger→success, and command ghost suggestion."
         }
       ],
@@ -14984,7 +15173,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "toast.tsx",
-      "loc": 139,
+      "loc": 143,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -14992,31 +15181,35 @@
           "name": "PlainComposition",
           "kind": "component",
           "exported": false,
-          "line": 11
+          "line": 12,
+          "about": "Sandbox composition for the plain-toast test: a push button wired to useToastQueue and an inline Toaster, used to assert manual close."
         },
         {
           "name": "ActionComposition",
           "kind": "component",
           "exported": false,
-          "line": 23
+          "line": 25,
+          "about": "Sandbox composition for the action-toast test: a single Toast rendered with action variant and an Undo button that increments an undo counter."
         },
         {
           "name": "SeverityComposition",
           "kind": "component",
           "exported": false,
-          "line": 41
+          "line": 44,
+          "about": "Sandbox composition for the severity-ordering test: a Toaster with three severity toasts (success, danger, warning) and severityOrder enabled."
         },
         {
           "name": "ProgressComposition",
           "kind": "component",
           "exported": false,
-          "line": 61
+          "line": 65,
+          "about": "Sandbox composition for the progress-bar toast test: a single progress Toast at 0.25 with a bump button that advances the progress value."
         },
         {
           "name": "toastTests",
           "kind": "const",
           "exported": true,
-          "line": 80,
+          "line": 84,
           "about": "Array of four IntegrationTest definitions for Toast: plain push and close, action Undo button, severity-ordered stack, and progress bar."
         }
       ],
@@ -15027,7 +15220,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "toggle.tsx",
-      "loc": 117,
+      "loc": 120,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -15035,31 +15228,34 @@
           "name": "SwitchComposition",
           "kind": "component",
           "exported": false,
-          "line": 7
+          "line": 8,
+          "about": "Sandbox composition for the switch-flip test: a Toggle bound to boolean state with a state span echoing 'on'/'off'."
         },
         {
           "name": "SavingComposition",
           "kind": "component",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "Sandbox composition for the saving-microstate test: a Toggle with saving=true and a Settle button that clears it."
         },
         {
           "name": "SegmentedComposition",
           "kind": "component",
           "exported": false,
-          "line": 28
+          "line": 31,
+          "about": "Sandbox composition for the segmented toggle test: a Toggle with three text-alignment options and a state span echoing the active value."
         },
         {
           "name": "TristateComposition",
           "kind": "component",
           "exported": false,
-          "line": 47
+          "line": 50
         },
         {
           "name": "toggleTests",
           "kind": "const",
           "exported": true,
-          "line": 58,
+          "line": 61,
           "about": "Array of four IntegrationTest definitions for Toggle: switch flip, saving spinner, segmented single-select, and tristate three-segment."
         }
       ],
@@ -15649,7 +15845,7 @@
       "area": "theme",
       "dir": "theme",
       "name": "paletteToCssVars.ts",
-      "loc": 215,
+      "loc": 216,
       "importCount": 0,
       "externalCount": 1,
       "members": [
@@ -15657,13 +15853,14 @@
           "name": "scaleDuration",
           "kind": "function",
           "exported": false,
-          "line": 17
+          "line": 18,
+          "about": "Multiply the numeric part of a CSS duration string (e.g. \"150ms\", \"0.3s\") by scale, leaving zero values and non-duration strings unchanged; used by paletteToCssVars to apply the motionScale multiplier."
         },
         {
           "name": "paletteToCssVars",
           "kind": "function",
           "exported": true,
-          "line": 27,
+          "line": 28,
           "about": "Map a SemanticTokens tree to a flat `--name: value` Record for use as inline CSS custom properties; the sole gateway from typed tokens to runtime CSS that PaletteRoot applies."
         }
       ],
@@ -15693,7 +15890,7 @@
       "area": "theme",
       "dir": "theme",
       "name": "renderStyleDescription.ts",
-      "loc": 169,
+      "loc": 174,
       "importCount": 1,
       "externalCount": 2,
       "members": [
@@ -15701,44 +15898,49 @@
           "name": "resolveTokenPath",
           "kind": "function",
           "exported": false,
-          "line": 23
+          "line": 24,
+          "about": "Walk a dotted property path (e.g. \"color.surface.base\") into an arbitrary nested object, returning undefined when any segment is missing; used by renderTokenEvidence to look up live token values."
         },
         {
           "name": "formatTokenValue",
           "kind": "function",
           "exported": false,
-          "line": 32
+          "line": 34,
+          "about": "Format a resolved token value as a backtick-quoted markdown string; handles strings, numbers, elevation objects (boxShadow), and arbitrary JSON, escaping pipes so the result is safe inside a markdown table cell."
         },
         {
           "name": "renderSignatures",
           "kind": "function",
           "exported": false,
-          "line": 41
+          "line": 44,
+          "about": "Render the signatures array as a bulleted markdown list, bolding each label."
         },
         {
           "name": "renderTokenEvidence",
           "kind": "function",
           "exported": false,
-          "line": 45
+          "line": 49,
+          "about": "Render token evidence as a markdown table (Path | resolved Value | Note), resolving each path against the live palette tokens."
         },
         {
           "name": "renderLookalikes",
           "kind": "function",
           "exported": false,
-          "line": 54
+          "line": 59,
+          "about": "Render the lookalikes array as H3 sections linking to each sibling palette's doc file, followed by its differentiator text."
         },
         {
           "name": "renderStyleDescriptionMarkdown",
           "kind": "function",
           "exported": true,
-          "line": 75,
+          "line": 80,
           "about": "Renders the canonical `docs/styles/<id>.md` body for a palette."
         },
         {
           "name": "renderCssVarsBlock",
           "kind": "function",
           "exported": true,
-          "line": 157,
+          "line": 162,
           "about": "Renders the palette's CSS custom properties as a copy-pasteable block for external projects."
         }
       ],

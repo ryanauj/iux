@@ -9,11 +9,16 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the Claymorphism elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union type for the four radius rungs exposed in the elevation demo's radius toggle.
 type RadiusRung = 'sm' | 'md' | 'lg' | 'pill'
+// ABOUTME: Ordered list of radius rungs used to populate the segmented toggle in the elevation demo.
 const RADII: RadiusRung[] = ['sm', 'md', 'lg', 'pill']
 
+// ABOUTME: PhilosophyDemo — static demo card on the pastel-violet Clay host with primary/neutral buttons and text describing the triple-layer shadow recipe and large radius that together create the "inflated cushion" metaphor.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__clay-host">
@@ -34,6 +39,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — grid of the four Claymorphism surface swatches rendered with large radius and elevation.low's triple-shadow, captioned to explain how the inflated-cushion illusion requires a tinted host and opaque surfaces.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -72,6 +78,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — static three-panel demo of Claymorphism's border rungs (subtle/default/strong) as violet alphas on rounded white pillows, captioned to explain that all three are violet-family tints keeping each white surface tied to the host hue.
 function BordersDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -130,6 +137,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-plus-radius-toggle demo walking the five Claymorphism elevation rungs, showing the three-layer shadow recipe (inset bottom shade, inset top highlight, outer drop) and allowing the radius to be scrubbed to show how the cushion identity depends on radius.lg.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const [radius, setRadius] = useState<RadiusRung>('lg')
@@ -188,6 +196,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — switch-controlled motion demo on a nested Claymorphism PaletteRoot, showing the wider 180/280/460 ms band and the spring-overshoot easing that gives press releases a physical bounce.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -228,6 +237,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — six pastel candy intent buttons on the Clay host, captioned to explain the deep-ink content on saturated fills and the wider 3px focus ring needed against the engine's inflated silhouettes.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

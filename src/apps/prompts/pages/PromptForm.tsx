@@ -16,11 +16,13 @@ import { promptRoutes } from '../routes'
 import { extractVariables, strategyCategoryLabel } from '../format'
 import { PROMPT_CATEGORIES, type PromptCategory } from '../types'
 
+// ABOUTME: Preset options for the "Target models" TokenField in PromptForm, covering the six most common LLMs plus an "any model" fallback.
 const MODEL_OPTIONS = ['Claude', 'GPT-4', 'Gemini', 'Llama', 'Mistral', 'any model'].map(m => ({
   value: m,
   label: m,
 }))
 
+// ABOUTME: Props for PromptForm; either editId (load an existing prompt for editing) or prefillStrategyId (seed a new prompt from a strategy template) may be present, but not both.
 interface PromptFormProps {
   /** Present when editing an existing prompt. */
   editId?: string
