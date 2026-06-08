@@ -2,20 +2,20 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Court Hardwood — the basketball-arcade register on the Flat engine.
- * A daytime arena read: warm maple-hardwood field, painted court lines
- * in near-black, basketball-leather orange as the primary action, and
- * a scoreboard vocabulary of bright state colours. Anchored on the UI
- * of arcade hoops games (NBA Jam, NBA Street) and the broadcast
- * scoreboard graphics of modern sim basketball — bold, high-energy,
- * legible from the cheap seats.
+ * A warm daytime arena: sanded-maple field, near-black painted court
+ * lines, basketball-leather orange as the primary action, and an
+ * arcade-neon violet accent (links, focus, info) — the purple-and-
+ * orange clash of NBA Jam attract screens. The field carries a real
+ * three-step wood gradient so panels lift off the floor instead of
+ * floating on one flat tint.
  *
- *   maple field:     #f7ecd9
- *   raised panel:    #fffaf0
+ *   maple field:     #f7efe0  (base) → #fffbf3 (raised) → #ece0cb (sunken)
  *   court-line ink:  #1a1a1a
  *   leather orange:  #e2591b  (primary action)
- *   scoreboard red:  #c8362f  (danger)
- *   jersey blue:     #1d6fb8  (info)
- *   ink (text):      #2a1a0e  — warm near-black, not pure black
+ *   arcade violet:   #7c3aed  (accent — links, focus, info)
+ *   baseline green:  #2f9e44  (success)
+ *   scoreboard red:  #e03131  (danger)
+ *   ink (text):      #281a10  — warm near-black
  */
 export const palette: Palette = {
   id: 'court-hardwood',
@@ -25,36 +25,36 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f7ecd9',
-        raised: '#fffaf0',
-        sunken: '#ecdcc0',
-        overlay: '#fffaf0',
-        scrim: 'rgba(42, 26, 14, 0.52)',
+        base: '#f7efe0',
+        raised: '#fffbf3',
+        sunken: '#ece0cb',
+        overlay: '#fffbf3',
+        scrim: 'rgba(40, 26, 14, 0.52)',
       },
       content: {
-        primary: '#2a1a0e',
-        secondary: '#5a4632',
-        muted: '#8a7560',
-        inverse: '#fffaf0',
-        link: '#c2410c',
+        primary: '#281a10',
+        secondary: '#5c4836',
+        muted: '#8c7763',
+        inverse: '#fffbf3',
+        link: '#6d28d9',
       },
       border: {
-        subtle: '#e6d3b3',
-        default: '#caa877',
+        subtle: '#ecdcc1',
+        default: '#d2b384',
         strong: '#1a1a1a',
-        focus: '#ea580c',
+        focus: '#7c3aed',
       },
-      // Intents map to the court: leather orange = the ball / primary
-      // action, hardwood tan = neutral chrome, baseline green = go,
-      // scoreboard amber = shot-clock warning, foul red = danger,
-      // jersey blue = info.
+      // Two-colour identity: leather orange = primary action / the ball,
+      // arcade violet = accent (links, focus, info). The rest spread
+      // across a real scoreboard: wood-tan neutral, baseline green,
+      // scoreboard amber, foul red.
       intent: {
-        primary: { bg: '#e2591b', content: '#fffaf0', border: '#a83c0f', bgHover: '#c84a14', bgActive: '#a83c0f' },
-        neutral: { bg: '#caa877', content: '#2a1a0e', border: '#a8814b', bgHover: '#b8945f', bgActive: '#a8814b' },
-        success: { bg: '#2f7d4f', content: '#fffaf0', border: '#225c39', bgHover: '#256741', bgActive: '#1a4a2e' },
-        warning: { bg: '#d98a00', content: '#2a1a0e', border: '#a86a00', bgHover: '#bd7800', bgActive: '#8a5700' },
-        danger:  { bg: '#c8362f', content: '#fffaf0', border: '#982621', bgHover: '#ab2c26', bgActive: '#7e201c' },
-        info:    { bg: '#1d6fb8', content: '#fffaf0', border: '#15568f', bgHover: '#185f9e', bgActive: '#114876' },
+        primary: { bg: '#e2591b', content: '#fffbf3', border: '#a83c0f', bgHover: '#c84a14', bgActive: '#a83c0f' },
+        neutral: { bg: '#d2b384', content: '#281a10', border: '#b1905a', bgHover: '#c4a273', bgActive: '#b1905a' },
+        success: { bg: '#2f9e44', content: '#fffbf3', border: '#237a33', bgHover: '#2a8c3c', bgActive: '#1c6629' },
+        warning: { bg: '#f0a500', content: '#281a10', border: '#bd8200', bgHover: '#d49400', bgActive: '#9c6c00' },
+        danger:  { bg: '#e03131', content: '#fffbf3', border: '#ad2424', bgHover: '#c52b2b', bgActive: '#8f1d1d' },
+        info:    { bg: '#7c3aed', content: '#fffbf3', border: '#5f24c0', bgHover: '#6d28d9', bgActive: '#4c1d95' },
       },
     },
     space: {
@@ -85,10 +85,10 @@ export const palette: Palette = {
     },
     elevation: {
       flat: { boxShadow: 'none' },
-      low: { boxShadow: '0 1px 2px rgba(42, 26, 14, 0.10)' },
-      medium: { boxShadow: '0 4px 10px rgba(42, 26, 14, 0.14), 0 2px 4px rgba(42, 26, 14, 0.08)' },
-      high: { boxShadow: '0 12px 22px rgba(42, 26, 14, 0.18), 0 4px 8px rgba(42, 26, 14, 0.10)' },
-      overlay: { boxShadow: '0 24px 36px rgba(42, 26, 14, 0.22), 0 10px 14px rgba(42, 26, 14, 0.12)' },
+      low: { boxShadow: '0 1px 2px rgba(40, 26, 14, 0.10)' },
+      medium: { boxShadow: '0 4px 10px rgba(40, 26, 14, 0.14), 0 2px 4px rgba(40, 26, 14, 0.08)' },
+      high: { boxShadow: '0 12px 22px rgba(40, 26, 14, 0.18), 0 4px 8px rgba(40, 26, 14, 0.10)' },
+      overlay: { boxShadow: '0 24px 36px rgba(40, 26, 14, 0.22), 0 10px 14px rgba(40, 26, 14, 0.12)' },
     },
     typography: {
       family: {
@@ -127,7 +127,7 @@ export const palette: Palette = {
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
-      focusRing: { width: '3px', offset: '2px', color: '#ea580c', style: 'solid' },
+      focusRing: { width: '3px', offset: '2px', color: '#7c3aed', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',

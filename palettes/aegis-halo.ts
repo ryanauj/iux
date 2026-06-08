@@ -2,17 +2,15 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Aegis Halo — the military-sci-fi shield register on the glassmorphism
- * engine, in daylight. A clean visor-HUD read: pale blue field,
- * translucent cyan-glass panels, deep-cyan "ink" borders, and a
- * shield-amber warning that reads as the recharging-shield flash of a
- * powered-armour HUD. Inspired by the heads-up displays of sci-fi
- * shooters (Halo, Destiny) rendered as a bright daytime blueprint
- * rather than a glowing dark visor.
+ * engine, in daylight. A visor HUD built on a cyan-and-gold pairing:
+ * reticle-cyan primary and glow focus, shield-gold accent (links, the
+ * strong border, the recharge-flash warning). Cyan glass panels lift on
+ * a cyan elevation glow over a pale-blue field.
  *
- *   visor field:    #f4f9fc
+ *   visor field:    #f3f8fc
  *   cyan glass:     rgba(56, 189, 248, 0.12)
  *   HUD cyan:       #0ea5e9  (primary / focus)
- *   shield amber:   #f59e0b  (warning)
+ *   shield gold:    #f59e0b  (accent — links, warning, strong border)
  *   ink (text):     #0a2a3d
  */
 export const palette: Palette = {
@@ -23,7 +21,7 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f4f9fc',
+        base: '#f3f8fc',
         raised: 'rgba(56, 189, 248, 0.12)',
         sunken: 'rgba(8, 47, 73, 0.06)',
         overlay: 'rgba(255, 255, 255, 0.78)',
@@ -33,20 +31,20 @@ export const palette: Palette = {
         primary: '#0a2a3d',
         secondary: 'rgba(10, 42, 61, 0.74)',
         muted: 'rgba(10, 42, 61, 0.50)',
-        inverse: '#f4f9fc',
-        link: '#0369a1',
+        inverse: '#f3f8fc',
+        link: '#a87400',
       },
       border: {
         subtle: 'rgba(2, 132, 199, 0.30)',
         default: 'rgba(2, 132, 199, 0.50)',
-        strong: 'rgba(2, 132, 199, 0.72)',
+        strong: 'rgba(245, 158, 11, 0.62)',
         focus: '#0ea5e9',
       },
       intent: {
         primary: { bg: 'rgba(14, 165, 233, 0.42)', content: '#083344', border: '#0ea5e9', bgHover: 'rgba(14, 165, 233, 0.52)', bgActive: 'rgba(14, 165, 233, 0.62)' },
         neutral: { bg: 'rgba(8, 47, 73, 0.10)', content: '#0a2a3d', border: 'rgba(2, 132, 199, 0.34)', bgHover: 'rgba(8, 47, 73, 0.16)', bgActive: 'rgba(8, 47, 73, 0.22)' },
         success: { bg: 'rgba(16, 185, 129, 0.42)', content: '#064e3b', border: '#10b981', bgHover: 'rgba(16, 185, 129, 0.52)', bgActive: 'rgba(16, 185, 129, 0.62)' },
-        warning: { bg: 'rgba(245, 158, 11, 0.46)', content: '#713f12', border: '#f59e0b', bgHover: 'rgba(245, 158, 11, 0.56)', bgActive: 'rgba(245, 158, 11, 0.66)' },
+        warning: { bg: 'rgba(245, 158, 11, 0.50)', content: '#6b4a00', border: '#f59e0b', bgHover: 'rgba(245, 158, 11, 0.60)', bgActive: 'rgba(245, 158, 11, 0.70)' },
         danger:  { bg: 'rgba(225, 29, 72, 0.44)', content: '#7a0f25', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.54)', bgActive: 'rgba(225, 29, 72, 0.64)' },
         info:    { bg: 'rgba(2, 132, 199, 0.42)', content: '#0c4a6e', border: '#0284c7', bgHover: 'rgba(2, 132, 199, 0.52)', bgActive: 'rgba(2, 132, 199, 0.62)' },
       },

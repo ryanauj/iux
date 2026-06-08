@@ -2,18 +2,16 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Mirror Runner — the clean-city first-person register on the
- * glassmorphism engine. A sunlit rooftop read: near-white field,
- * translucent neutral-glass panels, and a single hot runner-red that
- * carries every primary action, link, and focus ring — the "runner
- * vision" highlight that picks the one interactive thing out of a
- * blinding-white world. Inspired by the parkour-FPS look (Mirror's
- * Edge) where the entire HUD is white space plus one saturated red.
+ * glassmorphism engine. A sunlit rooftop: near-white field, translucent
+ * neutral-glass panels, a hot runner-red primary and glow focus ring,
+ * and a cool sign-blue secondary (links, info) — the red-and-blue
+ * wayfinding of a bright parkour city, not a single-red wash.
  *
- *   sunlit field:   #f7f9fb
+ *   sunlit field:   #f6f8fb
  *   glass panel:    rgba(255, 255, 255, 0.55)
- *   runner red:     #e8392f  (primary / focus / link)
+ *   runner red:     #e8392f  (primary / focus)
+ *   sign blue:      #2563eb  (accent — links, info)
  *   ink (text):     #15191f
- *   sign blue:      #2563eb  (info)
  */
 export const palette: Palette = {
   id: 'mirror-runner',
@@ -23,7 +21,7 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f7f9fb',
+        base: '#f6f8fb',
         raised: 'rgba(255, 255, 255, 0.55)',
         sunken: 'rgba(21, 25, 31, 0.05)',
         overlay: 'rgba(255, 255, 255, 0.80)',
@@ -34,7 +32,7 @@ export const palette: Palette = {
         secondary: 'rgba(21, 25, 31, 0.72)',
         muted: 'rgba(21, 25, 31, 0.50)',
         inverse: '#fbfcfe',
-        link: '#dc2626',
+        link: '#2563eb',
       },
       border: {
         subtle: 'rgba(21, 25, 31, 0.12)',
@@ -48,7 +46,7 @@ export const palette: Palette = {
         success: { bg: 'rgba(22, 163, 74, 0.42)', content: '#14532d', border: '#16a34a', bgHover: 'rgba(22, 163, 74, 0.52)', bgActive: 'rgba(22, 163, 74, 0.62)' },
         warning: { bg: 'rgba(217, 119, 6, 0.44)', content: '#713f12', border: '#d97706', bgHover: 'rgba(217, 119, 6, 0.54)', bgActive: 'rgba(217, 119, 6, 0.64)' },
         danger:  { bg: 'rgba(190, 18, 60, 0.46)', content: '#7a0f25', border: '#be123c', bgHover: 'rgba(190, 18, 60, 0.56)', bgActive: 'rgba(190, 18, 60, 0.66)' },
-        info:    { bg: 'rgba(37, 99, 235, 0.42)', content: '#1e3a8a', border: '#2563eb', bgHover: 'rgba(37, 99, 235, 0.52)', bgActive: 'rgba(37, 99, 235, 0.62)' },
+        info:    { bg: 'rgba(37, 99, 235, 0.44)', content: '#1e3a8a', border: '#2563eb', bgHover: 'rgba(37, 99, 235, 0.54)', bgActive: 'rgba(37, 99, 235, 0.64)' },
       },
     },
     space: {

@@ -187,16 +187,16 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'cel-shaded-botanical-glass': ['cel-shaded', 'glass', 'botanical', 'serif', 'naturalist', 'ink-outline'],
 
   /* Group Z9 — light sports video-game registers (flat scoreboard HUDs) */
-  'court-hardwood': ['game-ui', 'sports', 'basketball', 'light', 'arena', 'bold'],
-  'pitch-grass': ['game-ui', 'sports', 'soccer', 'football', 'light', 'green'],
-  'gridiron-broadcast': ['game-ui', 'sports', 'american-football', 'light', 'broadcast', 'condensed'],
-  'baseline-ace': ['game-ui', 'sports', 'tennis', 'light', 'court', 'lime'],
-  'ballpark-day': ['game-ui', 'sports', 'baseball', 'light', 'day-game', 'classic'],
+  'court-hardwood': ['game-ui', 'sports', 'basketball', 'light', 'arena', 'orange', 'violet'],
+  'pitch-grass': ['game-ui', 'sports', 'soccer', 'football', 'light', 'green', 'cyan'],
+  'gridiron-broadcast': ['game-ui', 'sports', 'american-football', 'light', 'broadcast', 'navy', 'red'],
+  'baseline-ace': ['game-ui', 'sports', 'tennis', 'light', 'court', 'blue', 'lime'],
+  'ballpark-day': ['game-ui', 'sports', 'baseball', 'light', 'day-game', 'crimson', 'navy'],
 
   /* Group Z10 — light futuristic-fantasy / FPS HUD registers (glass) */
-  'mirror-runner': ['game-ui', 'fps', 'sci-fi', 'light', 'minimal', 'red-accent'],
-  'aegis-halo': ['game-ui', 'fps', 'sci-fi', 'military', 'light', 'cyan', 'hud'],
-  'tactical-recon': ['game-ui', 'fps', 'tactical', 'competitive', 'light', 'hud'],
-  'nova-vanguard': ['game-ui', 'fps', 'hero-shooter', 'light', 'bright', 'orange'],
-  'arcane-vanguard': ['game-ui', 'fps', 'futuristic-fantasy', 'sci-fantasy', 'light', 'violet', 'magic'],
+  'mirror-runner': ['game-ui', 'fps', 'sci-fi', 'light', 'minimal', 'red', 'blue'],
+  'aegis-halo': ['game-ui', 'fps', 'sci-fi', 'military', 'light', 'cyan', 'gold', 'hud'],
+  'tactical-recon': ['game-ui', 'fps', 'tactical', 'scanner', 'light', 'green', 'magenta', 'hud'],
+  'nova-vanguard': ['game-ui', 'fps', 'hero-shooter', 'light', 'bright', 'orange', 'blue'],
+  'arcane-vanguard': ['game-ui', 'fps', 'futuristic-fantasy', 'sci-fantasy', 'light', 'violet', 'gold', 'magic'],
 }

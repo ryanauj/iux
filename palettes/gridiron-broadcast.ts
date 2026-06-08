@@ -1,20 +1,18 @@
 import type { Palette } from '../tokens/semantic.contract'
 
 /**
- * Gridiron Broadcast — the American-football-sim register on the Flat
- * engine. A network-broadcast read: cool stadium-white field, chalk
- * yard-line borders, stadium navy as the primary action, end-zone red
- * for danger, and a penalty-flag yellow warning. Anchored on the lower-
- * third score bug and play-call HUD of pro-football games and Sunday
- * broadcasts — condensed athletic type, hard edges, navy-and-red team
- * chrome on bright turf.
+ * Gridiron Broadcast — the American-football broadcast register on the
+ * Flat engine. A cool stadium-white field with chalk yard-line borders,
+ * stadium navy as the primary action, and end-zone red as the accent
+ * (links, focus, danger) — the navy-and-red two-colour team chrome of a
+ * Sunday score bug. Condensed uppercase type and tight square panels
+ * finish the lower-third read.
  *
- *   stadium white:   #eef2f6
- *   raised panel:    #fbfdff
+ *   stadium white:   #eef2f6  (base) → #fbfdff (raised) → #dce4ec (sunken)
  *   chalk line:      #bccbd9
- *   stadium navy:    #163a63  (primary action)
- *   penalty yellow:  #e0a400  (warning — flag)
- *   end-zone red:    #c62828  (danger)
+ *   stadium navy:    #1d3a63  (primary action)
+ *   end-zone red:    #c62828  (accent — links, focus, danger)
+ *   flag yellow:     #e0a400  (warning)
  *   first-down blue: #2563c4  (info)
  *   ink (text):      #10243d  — navy near-black
  */
@@ -37,19 +35,20 @@ export const palette: Palette = {
         secondary: '#3a4f66',
         muted: '#6c8096',
         inverse: '#fbfdff',
-        link: '#b91c1c',
+        link: '#c62828',
       },
       border: {
         subtle: '#dde6ee',
         default: '#bccbd9',
         strong: '#0c2742',
-        focus: '#1d4ed8',
+        focus: '#c62828',
       },
-      // Intents map to the broadcast: stadium navy = primary, steel =
-      // neutral chrome, first-down green = success, penalty-flag yellow
-      // = warning, end-zone red = danger, first-down line blue = info.
+      // Two-colour identity: stadium navy = primary, end-zone red =
+      // accent (links, focus, danger). The rest spread the broadcast
+      // graphics kit — steel neutral, first-down green, flag-yellow
+      // warning, first-down-line blue info.
       intent: {
-        primary: { bg: '#163a63', content: '#fbfdff', border: '#0f2a49', bgHover: '#103053', bgActive: '#0c2742' },
+        primary: { bg: '#1d3a63', content: '#fbfdff', border: '#122a49', bgHover: '#163052', bgActive: '#102742' },
         neutral: { bg: '#cdd9e4', content: '#10243d', border: '#aab9c8', bgHover: '#bccbd9', bgActive: '#aab9c8' },
         success: { bg: '#2f8f4e', content: '#fbfdff', border: '#226b3a', bgHover: '#277a42', bgActive: '#1c5731' },
         warning: { bg: '#e0a400', content: '#2a1f00', border: '#ab7e00', bgHover: '#c38f00', bgActive: '#8a6500' },
@@ -127,7 +126,7 @@ export const palette: Palette = {
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
-      focusRing: { width: '3px', offset: '2px', color: '#1d4ed8', style: 'solid' },
+      focusRing: { width: '3px', offset: '2px', color: '#c62828', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',

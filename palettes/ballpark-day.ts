@@ -1,22 +1,19 @@
 import type { Palette } from '../tokens/semantic.contract'
 
 /**
- * Ballpark Day — the baseball-sim register on the Flat engine. A classic
- * day-game read: warm chalk-and-cream field, infield-dirt borders,
- * outfield green as the primary action, and stitching-red wired into
- * danger and links the way a baseball's seams are the one red on a
- * white hide. Anchored on the scoreboard and box-score HUD of baseball
- * games (MLB The Show, classic arcade baseball) — cap navy, grass
- * green, infield clay, and a single stitch red.
+ * Ballpark Day — the baseball-sim register on the Flat engine. A warm
+ * day-game read built on the classic team triad: brick-crimson as the
+ * primary action, cap-navy as the accent (links, info), and outfield
+ * green for success — all sitting on a sunlit cream field with
+ * infield-dirt borders. Three real colours, not one tinted wash.
  *
- *   chalk-cream field: #f3f1e6
- *   raised panel:      #fdfcf5
+ *   chalk-cream field: #f6f1e6  (base) → #fdfbf3 (raised) → #e9e1ce (sunken)
  *   infield dirt:      #cdbf9c
- *   outfield green:    #2f7d3f  (primary action)
- *   stitch red:        #c0392b  (danger / link)
- *   cap navy:          #2456a6  (info)
+ *   brick crimson:     #b3322c  (primary action)
+ *   cap navy:          #1c3a6e  (accent — links, info)
+ *   outfield green:    #3f9e4d  (success)
  *   scoreboard amber:  #e0a400  (warning)
- *   ink (text):        #1c2a3a  — cap navy near-black
+ *   ink (text):        #241a14  — warm brown-black
  */
 export const palette: Palette = {
   id: 'ballpark-day',
@@ -26,36 +23,35 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f3f1e6',
-        raised: '#fdfcf5',
-        sunken: '#e6e2cf',
-        overlay: '#fdfcf5',
-        scrim: 'rgba(28, 42, 58, 0.50)',
+        base: '#f6f1e6',
+        raised: '#fdfbf3',
+        sunken: '#e9e1ce',
+        overlay: '#fdfbf3',
+        scrim: 'rgba(40, 30, 22, 0.50)',
       },
       content: {
-        primary: '#1c2a3a',
-        secondary: '#465468',
-        muted: '#7b8798',
-        inverse: '#fdfcf5',
-        link: '#b3392f',
+        primary: '#241a14',
+        secondary: '#5a4a3e',
+        muted: '#8a7868',
+        inverse: '#fdfbf3',
+        link: '#1c3a6e',
       },
       border: {
-        subtle: '#e7e1cd',
+        subtle: '#e9ddc7',
         default: '#cdbf9c',
-        strong: '#1c2a3a',
-        focus: '#c0392b',
+        strong: '#241a14',
+        focus: '#b3322c',
       },
-      // Intents map to the ballpark: outfield green = primary action,
-      // infield-dirt tan = neutral chrome, fresh-grass green = success,
-      // scoreboard amber = warning, stitching red = danger, cap navy =
-      // info.
+      // Classic team triad: brick crimson = primary, cap navy = accent
+      // (links, info), outfield green = success. Dirt-tan neutral and
+      // scoreboard amber warning sit on the warm cream field.
       intent: {
-        primary: { bg: '#2f7d3f', content: '#fdfcf5', border: '#225c2e', bgHover: '#276835', bgActive: '#1c4a26' },
-        neutral: { bg: '#cdbf9c', content: '#1c2a3a', border: '#ab9c72', bgHover: '#bdad85', bgActive: '#ab9c72' },
-        success: { bg: '#3fae5a', content: '#0c2114', border: '#2d8543', bgHover: '#35994e', bgActive: '#2a7a40' },
+        primary: { bg: '#b3322c', content: '#fdfbf3', border: '#8a2620', bgHover: '#9c2c26', bgActive: '#71201b' },
+        neutral: { bg: '#cdbf9c', content: '#241a14', border: '#ab9c72', bgHover: '#bdad85', bgActive: '#ab9c72' },
+        success: { bg: '#3f9e4d', content: '#0c2114', border: '#2f7a3a', bgHover: '#378c44', bgActive: '#266630' },
         warning: { bg: '#e0a400', content: '#2a1f00', border: '#ab7e00', bgHover: '#c38f00', bgActive: '#8a6500' },
-        danger:  { bg: '#c0392b', content: '#fdfcf5', border: '#922b20', bgHover: '#a33125', bgActive: '#79221a' },
-        info:    { bg: '#2456a6', content: '#fdfcf5', border: '#1a4180', bgHover: '#1e4a8f', bgActive: '#163866' },
+        danger:  { bg: '#c0392b', content: '#fdfbf3', border: '#922b20', bgHover: '#a33125', bgActive: '#79221a' },
+        info:    { bg: '#1c3a6e', content: '#fdfbf3', border: '#142c54', bgHover: '#173263', bgActive: '#102444' },
       },
     },
     space: {
@@ -86,10 +82,10 @@ export const palette: Palette = {
     },
     elevation: {
       flat: { boxShadow: 'none' },
-      low: { boxShadow: '0 1px 2px rgba(28, 42, 58, 0.10)' },
-      medium: { boxShadow: '0 4px 10px rgba(28, 42, 58, 0.13), 0 2px 4px rgba(28, 42, 58, 0.07)' },
-      high: { boxShadow: '0 12px 22px rgba(28, 42, 58, 0.16), 0 4px 8px rgba(28, 42, 58, 0.09)' },
-      overlay: { boxShadow: '0 24px 36px rgba(28, 42, 58, 0.20), 0 10px 14px rgba(28, 42, 58, 0.10)' },
+      low: { boxShadow: '0 1px 2px rgba(40, 30, 22, 0.10)' },
+      medium: { boxShadow: '0 4px 10px rgba(40, 30, 22, 0.13), 0 2px 4px rgba(40, 30, 22, 0.07)' },
+      high: { boxShadow: '0 12px 22px rgba(40, 30, 22, 0.16), 0 4px 8px rgba(40, 30, 22, 0.09)' },
+      overlay: { boxShadow: '0 24px 36px rgba(40, 30, 22, 0.20), 0 10px 14px rgba(40, 30, 22, 0.10)' },
     },
     typography: {
       family: {
@@ -128,7 +124,7 @@ export const palette: Palette = {
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
-      focusRing: { width: '3px', offset: '2px', color: '#c0392b', style: 'solid' },
+      focusRing: { width: '3px', offset: '2px', color: '#b3322c', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',

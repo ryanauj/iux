@@ -2,21 +2,17 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Baseline Ace — the tennis-sim register on the Flat engine. A bright
- * hard-court read: pale blue-green court field, white sideline borders,
- * court-teal as the primary action, and a signature tennis-ball lime
- * carried in the focus ring and links. Anchored on the clean,
- * sun-bleached HUD of tennis games (Top Spin, Mario Tennis, Virtua
- * Tennis) — calm court colours with one electric lime accent for the
- * ball.
+ * hard-court read built on two colours: a vivid hard-court blue as the
+ * primary action and a fluorescent tennis-ball lime as the accent
+ * (focus, links, success). The cool blue court and the electric ball
+ * give it a real complementary palette rather than a single teal wash.
  *
- *   hard-court field: #eaf2f0
- *   raised panel:     #fbfefe
- *   sideline:         #b2cdc8
- *   court teal:       #0f7d6a  (primary action)
- *   tennis-ball lime: #a3d11f  (focus / link accent)
- *   fault red:        #cf3a3a  (danger)
- *   sky info:         #2a8fb8  (info)
- *   ink (text):       #16302b  — deep court green-black
+ *   court light:      #eef3f6  (base) → #fbfeff (raised) → #dde8ee (sunken)
+ *   hard-court blue:  #1f7ec0  (primary action)
+ *   tennis-ball lime: #82c91e  (accent — focus, links, success)
+ *   line-call amber:  #f59f00  (warning)
+ *   fault red:        #e8453c  (danger)
+ *   ink (text):       #122a36  — deep court blue-black
  */
 export const palette: Palette = {
   id: 'baseline-ace',
@@ -26,36 +22,35 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#eaf2f0',
-        raised: '#fbfefe',
-        sunken: '#d6e4e3',
-        overlay: '#fbfefe',
-        scrim: 'rgba(22, 48, 43, 0.50)',
+        base: '#eef3f6',
+        raised: '#fbfeff',
+        sunken: '#dde8ee',
+        overlay: '#fbfeff',
+        scrim: 'rgba(18, 40, 54, 0.50)',
       },
       content: {
-        primary: '#16302b',
-        secondary: '#3c5751',
-        muted: '#6e8983',
-        inverse: '#fbfefe',
-        link: '#0e7c66',
+        primary: '#122a36',
+        secondary: '#3a5563',
+        muted: '#6e8a96',
+        inverse: '#fbfeff',
+        link: '#5a8a0a',
       },
       border: {
-        subtle: '#d8e6e3',
-        default: '#b2cdc8',
-        strong: '#123a32',
-        focus: '#82a814',
+        subtle: '#dbe7ee',
+        default: '#b2ccd8',
+        strong: '#123a4a',
+        focus: '#82c91e',
       },
-      // Intents map to the court: court-teal = primary action, court-grey
-      // = neutral, ball-lime green = success, line-call amber = warning,
-      // fault red = danger, sky = info. The lime success is the ball:
-      // bright, unmistakable, the one electric colour on a calm court.
+      // Complementary two-colour identity: hard-court blue = primary,
+      // tennis-ball lime = accent (focus, links, success). Line-call
+      // amber warning, fault red danger, sky info round out the court.
       intent: {
-        primary: { bg: '#0f7d6a', content: '#fbfefe', border: '#0a5c4e', bgHover: '#0c6759', bgActive: '#094a3f' },
-        neutral: { bg: '#c8dad7', content: '#16302b', border: '#a3c0bb', bgHover: '#b6cdc9', bgActive: '#a3c0bb' },
-        success: { bg: '#82a814', content: '#16240a', border: '#62800e', bgHover: '#719311', bgActive: '#566f0c' },
-        warning: { bg: '#d99100', content: '#2a1f00', border: '#a86f00', bgHover: '#bd7e00', bgActive: '#8a5b00' },
-        danger:  { bg: '#cf3a3a', content: '#fbfefe', border: '#9e2b2b', bgHover: '#b03131', bgActive: '#852323' },
-        info:    { bg: '#2a8fb8', content: '#fbfefe', border: '#1f6d8e', bgHover: '#247b9e', bgActive: '#19566f' },
+        primary: { bg: '#1f7ec0', content: '#fbfeff', border: '#185f92', bgHover: '#1b6ea6', bgActive: '#134f7a' },
+        neutral: { bg: '#cdd9e2', content: '#122a36', border: '#a9bac6', bgHover: '#bccad5', bgActive: '#a9bac6' },
+        success: { bg: '#82c91e', content: '#18240a', border: '#639c12', bgHover: '#74b318', bgActive: '#54820f' },
+        warning: { bg: '#f59f00', content: '#2a1f00', border: '#c27d00', bgHover: '#d88e00', bgActive: '#9c6500' },
+        danger:  { bg: '#e8453c', content: '#fbfeff', border: '#b32f28', bgHover: '#cc372f', bgActive: '#8f231d' },
+        info:    { bg: '#3aa0d8', content: '#fbfeff', border: '#2b7daa', bgHover: '#3090c2', bgActive: '#226488' },
       },
     },
     space: {
@@ -86,10 +81,10 @@ export const palette: Palette = {
     },
     elevation: {
       flat: { boxShadow: 'none' },
-      low: { boxShadow: '0 1px 2px rgba(22, 48, 43, 0.10)' },
-      medium: { boxShadow: '0 4px 10px rgba(22, 48, 43, 0.13), 0 2px 4px rgba(22, 48, 43, 0.07)' },
-      high: { boxShadow: '0 12px 22px rgba(22, 48, 43, 0.16), 0 4px 8px rgba(22, 48, 43, 0.09)' },
-      overlay: { boxShadow: '0 24px 36px rgba(22, 48, 43, 0.20), 0 10px 14px rgba(22, 48, 43, 0.10)' },
+      low: { boxShadow: '0 1px 2px rgba(18, 40, 54, 0.10)' },
+      medium: { boxShadow: '0 4px 10px rgba(18, 40, 54, 0.13), 0 2px 4px rgba(18, 40, 54, 0.07)' },
+      high: { boxShadow: '0 12px 22px rgba(18, 40, 54, 0.16), 0 4px 8px rgba(18, 40, 54, 0.09)' },
+      overlay: { boxShadow: '0 24px 36px rgba(18, 40, 54, 0.20), 0 10px 14px rgba(18, 40, 54, 0.10)' },
     },
     typography: {
       family: {
@@ -128,7 +123,7 @@ export const palette: Palette = {
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
-      focusRing: { width: '3px', offset: '2px', color: '#82a814', style: 'solid' },
+      focusRing: { width: '3px', offset: '2px', color: '#82c91e', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',

@@ -3,27 +3,27 @@ import type { StyleDescription } from '../tokens/style-description.contract'
 export const description: StyleDescription = {
   paletteId: 'court-hardwood',
   tagline:
-    'The basketball-arcade scoreboard register on the Flat engine — warm maple-hardwood field, near-black court lines, leather-orange primary, and bold uppercase athletic display type.',
+    'The basketball-arcade register on the Flat engine — sanded-maple field, basketball-orange primary, and an arcade-neon violet accent on links, focus, and info.',
   summary:
-    'Court Hardwood dresses the Flat engine as a daytime basketball arena. `surface.base` is a warm maple ' +
-    '`#f7ecd9`, `border.strong` is the painted court-line near-black `#1a1a1a`, and `intent.primary` is a ' +
-    'basketball-leather orange `#e2591b` with white text. The state colours read like a scoreboard — baseline ' +
-    'green for go, shot-clock amber for warning, foul red for danger, jersey blue for info — and the display ' +
-    'roles are heavy uppercase Archivo so a score reads from across the gym.',
+    'Court Hardwood is a two-colour basketball arena. `surface.base` is a sanded-maple `#f7efe0` that steps up to ' +
+    'a brighter raised tone and down to a deeper sunken wood, so panels lift off a real gradient. `intent.primary` ' +
+    'is basketball-leather orange `#e2591b`; the counter-accent is an arcade-neon violet `#7c3aed` carried by ' +
+    '`content.link`, `border.focus`, and `intent.info` — the purple-and-orange clash of NBA Jam attract screens. ' +
+    'Baseline green, scoreboard amber, and foul red fill out the scoreboard, and the display roles are heavy ' +
+    'uppercase Archivo Black.',
   origin:
-    'Arcade and sim basketball UI — NBA Jam, NBA Street, and the lower-third score bug of modern broadcast ' +
-    'basketball. The whole register is built from the gym: hardwood floor, painted lines, orange ball, and a ' +
-    'bright LED scoreboard vocabulary of state colours.',
+    'Arcade and sim basketball UI — NBA Jam, NBA Street, and the lower-third score bug of broadcast basketball. ' +
+    'The register pairs the warm wooden court and orange ball with the electric neon accents of an arcade cabinet.',
   signatures: [
     {
-      label: 'Warm maple-hardwood field, not white',
+      label: 'Sanded-maple field with a real wood gradient',
       detail:
-        '`surface.base` is `#f7ecd9` — a sanded-maple court tone. The page is the floor, so it carries a warm wood cast rather than a neutral app grey or pure white.',
+        '`surface.base`, `raised`, and `sunken` step through maple tones (`#f7efe0` → `#fffbf3` → `#ece0cb`), so the floor reads as wood with depth rather than one flat tint.',
     },
     {
-      label: 'Basketball-leather orange as the primary action',
+      label: 'Orange primary against an arcade-violet accent',
       detail:
-        '`intent.primary.bg` is `#e2591b`, the colour of a basketball, carried on every primary button and link. It is the single warmest, most saturated thing on the floor.',
+        '`intent.primary.bg` is basketball orange `#e2591b` while `content.link`, `border.focus`, and `intent.info` carry neon violet `#7c3aed` — a deliberate complementary clash, not a single-hue wash.',
     },
     {
       label: 'Near-black painted court lines',
@@ -37,27 +37,27 @@ export const description: StyleDescription = {
     },
   ],
   antiSignatures: [
+    'A single-hue field where surface, primary, and accent are all the same colour',
     'A pure-white or cool-grey page background — that breaks the hardwood-floor metaphor',
     'Translucent glass panels or backdrop blur — this is a solid Flat engine, not a HUD',
-    'Thin, low-contrast, lowercase display type — the scoreboard wants heavy uppercase weight',
   ],
   tokenEvidence: [
-    { path: 'color.surface.base', note: 'Warm maple `#f7ecd9` — the hardwood floor as the page.' },
+    { path: 'color.surface.base', note: 'Sanded-maple `#f7efe0` — the hardwood floor as the page.' },
     { path: 'color.intent.primary.bg', note: 'Basketball-leather orange `#e2591b` — the primary action.' },
-    { path: 'color.border.strong', note: 'Court-line near-black `#1a1a1a` — emphasis borders as painted lines.' },
-    { path: 'typography.role.display.textTransform', note: 'Uppercase — scoreboard / jersey lettering.' },
+    { path: 'color.intent.info.bg', note: 'Arcade-neon violet `#7c3aed` — the counter-accent.' },
+    { path: 'color.border.focus', note: 'Violet focus ring — the accent picking out the active control.' },
   ],
   lookalikes: [
     {
       against: 'citrus-spark',
       differentiator:
-        'Both are bright, warm, energetic flat light palettes. Citrus Spark is a generic energetic brand register on a near-white field; Court Hardwood is specifically a basketball arena — warm maple ground, court-line black, and a basketball-orange primary rather than a citrus yellow-green.',
+        'Both are bright, warm, energetic flat light palettes. Citrus Spark is a generic energetic brand register on a near-white field; Court Hardwood is a basketball arena — a maple-wood gradient ground, an orange-ball primary, and a deliberate neon-violet counter-accent.',
     },
     {
       against: 'pitch-grass',
       differentiator:
-        'Both are sports-game flat registers. Pitch Grass is the green football pitch with a card-yellow/red state language; Court Hardwood is the warm wooden basketball court with an orange ball primary.',
+        'Both are sports-game flat registers with a primary-plus-accent structure. Pitch Grass is a green football pitch with a broadcast-cyan accent and the referee’s card language; Court Hardwood is a warm wooden basketball court with an orange primary and a violet accent.',
     },
   ],
-  recallAliases: ['court hardwood', 'basketball', 'nba', 'hardwood', 'arena', 'hoops', 'court'],
+  recallAliases: ['court hardwood', 'basketball', 'nba', 'nba jam', 'hardwood', 'arena', 'hoops', 'court'],
 }

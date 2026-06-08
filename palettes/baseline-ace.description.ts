@@ -3,31 +3,32 @@ import type { StyleDescription } from '../tokens/style-description.contract'
 export const description: StyleDescription = {
   paletteId: 'baseline-ace',
   tagline:
-    'The tennis-sim register on the Flat engine — pale blue-green hard-court field, calm court-teal primary, and one electric tennis-ball lime as the focus, link, and success accent.',
+    'The tennis-sim register on the Flat engine — cool hard-court field, a vivid hard-court-blue primary, and a fluorescent tennis-ball lime accent on focus, links, and success.',
   summary:
-    'Baseline Ace dresses the Flat engine as a sunlit tennis court. `surface.base` is a pale hard-court ' +
-    'blue-green `#eaf2f0`, `intent.primary` is a calm court-teal `#0f7d6a`, and the signature is a single ' +
-    'electric tennis-ball lime `#82a814` carried by `border.focus`, `content.link`, and `intent.success`. ' +
-    'Generous radii and Rajdhani type keep it bright and modern — calm court colours with one unmistakable ball.',
+    'Baseline Ace is a complementary blue-and-lime tennis court. `surface.base` is a cool court-light `#eef3f6`, ' +
+    '`intent.primary` is a vivid hard-court blue `#1f7ec0`, and the counter-accent is a fluorescent tennis-ball ' +
+    'lime `#82c91e` carried by `border.focus`, `intent.success`, and (a deeper shade) `content.link`. The blue ' +
+    'court and the electric ball give it a real two-colour palette rather than a single teal wash; line-call ' +
+    'amber, fault red, and sky info round it out, set in airy Rajdhani type.',
   origin:
     'Tennis video games and broadcast — Top Spin, Virtua Tennis, Mario Tennis, and the clean line-call HUD of ' +
-    'televised tennis. Built from the court: hard-court blue-green, white sidelines, and the fluorescent yellow ' +
-    'of the ball as the one electric accent.',
+    'televised tennis. Built from the complementary pair that defines the sport on screen: the blue hard court ' +
+    'and the fluorescent yellow ball.',
   signatures: [
     {
-      label: 'Pale hard-court blue-green field',
+      label: 'Hard-court-blue primary against a ball-lime accent',
       detail:
-        '`surface.base` is `#eaf2f0` — the cool blue-green of a modern hard court, not a neutral app grey or warm paper.',
+        '`intent.primary.bg` is hard-court blue `#1f7ec0` while `border.focus` and `intent.success` carry fluorescent ball-lime `#82c91e` — a complementary blue/lime pairing, not one hue.',
     },
     {
-      label: 'Tennis-ball lime as the single electric accent',
+      label: 'Cool court-light field',
       detail:
-        '`border.focus`, `content.link`, and `intent.success` all carry the fluorescent ball-lime `#82a814` — the one saturated colour on an otherwise calm court.',
+        '`surface.base` is `#eef3f6` — the cool light of a modern hard court, near-neutral so the blue and lime both read against it.',
     },
     {
-      label: 'Calm court-teal primary',
+      label: 'Lime as the single electric accent',
       detail:
-        '`intent.primary.bg` is `#0f7d6a` — a restrained court-teal that lets the lime ball stay the brightest thing on screen.',
+        'The ball-lime appears only on focus, success, and links — the one fluorescent colour on an otherwise cool court, like the ball itself.',
     },
     {
       label: 'Generous radii, bright modern type',
@@ -36,26 +37,26 @@ export const description: StyleDescription = {
     },
   ],
   antiSignatures: [
-    'Lime used everywhere rather than as a single ball-bright accent',
-    'A warm-paper or hardwood page background — the court reads cool blue-green',
+    'A single teal or green wash where surface, primary, and accent share one hue',
+    'A warm-paper or hardwood page background — the court reads cool',
     'Translucent glass panels or backdrop blur — this is a solid Flat engine, not a HUD',
   ],
   tokenEvidence: [
-    { path: 'color.surface.base', note: 'Pale hard-court blue-green `#eaf2f0`.' },
-    { path: 'color.border.focus', note: 'Tennis-ball lime `#82a814` — the one electric accent.' },
-    { path: 'color.intent.primary.bg', note: 'Calm court-teal `#0f7d6a` — the primary action.' },
+    { path: 'color.intent.primary.bg', note: 'Hard-court blue `#1f7ec0` — the primary action.' },
+    { path: 'color.border.focus', note: 'Tennis-ball lime `#82c91e` — the complementary accent.' },
+    { path: 'color.intent.success.bg', note: 'Ball-lime success — the electric accent reused for state.' },
     { path: 'radius.lg', note: '16px — airy, modern court HUD.' },
   ],
   lookalikes: [
     {
       against: 'coastal-modern',
       differentiator:
-        'Both are cool blue-green light palettes. Coastal Modern is a calm seaside brand register; Baseline Ace is a tennis HUD whose defining move is a single fluorescent ball-lime accent against the cool court — coastal has no such electric pop.',
+        'Both use cool blue on a light field. Coastal Modern is a calm single-family seaside brand register; Baseline Ace is a tennis HUD whose defining move is a complementary fluorescent ball-lime accent against the blue court — coastal has no such electric pop.',
     },
     {
-      against: 'pitch-grass',
+      against: 'gridiron-broadcast',
       differentiator:
-        'Both are sports-game flat registers in the green family. Pitch Grass is a warm-green football pitch with a card-yellow/red language; Baseline Ace is a cool blue-green tennis court with one lime accent and a restrained teal primary.',
+        'Both are cool-field sports flat registers in the blue family. Gridiron Broadcast is a deep stadium-navy with a red accent and condensed type; Baseline Ace is a brighter hard-court blue with a fluorescent lime accent and airy rounded type.',
     },
   ],
   recallAliases: ['baseline ace', 'tennis', 'top spin', 'mario tennis', 'court', 'ace'],
