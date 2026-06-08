@@ -187,11 +187,12 @@ export function HowItWorksPage() {
           functions, classes, consts, types) — with file-to-file import
           links between them. Each file and exported member also carries a
           plain-English summary, lifted from its <code>ABOUTME:</code>{' '}
-          comment and shown beside the name. The clusters start arranged by
-          their import dependencies so the zoomed-out map stays legible —
-          toggle <em>Auto layout</em> off for a plain grid. Tap a directory to
-          open it, tap a file to reveal its members, and pinch or scroll to
-          zoom. It
+          comment and shown beside the name. It opens in <em>Focus</em> on the
+          app entry point: walk outward through <em>Depends on</em> /{' '}
+          <em>Used by</em> cards and your path builds up as breadcrumbs you can
+          save as a reusable <em>flow</em>, replayed end-to-end under the{' '}
+          <em>Flows</em> tab. The <em>Graph</em>, <em>Outline</em>, and{' '}
+          <em>Matrix</em> tabs show the same data as a whole map. It
           paints with the active palette&apos;s tokens, so switch the Palette
           to watch it re-theme.
         </div>
@@ -225,9 +226,9 @@ export function HowItWorksPage() {
                   {astGraph.stats.files} files, and {astGraph.stats.members}{' '}
                   members, joined by {astGraph.stats.imports} import links.
                   Every file and {astGraph.stats.documentedMembers} exported
-                  members carry a plain-English summary beside the name. Tap a
-                  directory to open it, tap a file to reveal its members, and
-                  zoom to navigate.
+                  members carry a plain-English summary beside the name. Start
+                  in Focus at the entry point, walk the imports one hop at a
+                  time, and save the trails you care about as flows.
                 </p>
               </header>
 

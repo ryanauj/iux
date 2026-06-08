@@ -25,6 +25,8 @@ import { astNodeTypes, MEMBER_KIND_ORDER, memberKindColor, memberKindGlyph } fro
 import { AstOutline } from './AstOutline'
 import { AstFocus } from './AstFocus'
 import { AstMatrix } from './AstMatrix'
+import { AstFlows } from './AstFlows'
+import { DEFAULT_FOCUS_FILE } from './astViews'
 import './astGraph.css'
 
 // ABOUTME: The generated graph JSON typed as AstGraph — the dataset this viewer reads.
@@ -249,27 +251,34 @@ function GraphView() {
   )
 }
 
-// ABOUTME: The four view modes and their tab labels/hints, rendered by the AstGraph switcher.
+// ABOUTME: The five view modes and their tab labels/hints, rendered by the AstGraph switcher.
 const VIEW_OPTIONS = [
+  { id: 'focus', label: 'Focus', hint: 'One file and its neighbours' },
+  { id: 'flows', label: 'Flows', hint: 'Saved breadcrumb trails' },
   { id: 'graph', label: 'Graph', hint: 'Force-directed network' },
   { id: 'outline', label: 'Outline', hint: 'Nested list of areas, files, links' },
-  { id: 'focus', label: 'Focus', hint: 'One file and its neighbours' },
   { id: 'matrix', label: 'Matrix', hint: 'Area-to-area dependency grid' },
 ] as const
 
-// ABOUTME: The id of one of the four views ('graph' | 'outline' | 'focus' | 'matrix').
+// ABOUTME: The id of one of the five views ('focus' | 'flows' | 'graph' | 'outline' | 'matrix').
 type ViewMode = (typeof VIEW_OPTIONS)[number]['id']
 
-// ABOUTME: Picks the initial view — Outline on phones (≤720px), the network Graph on wider screens.
-/** Lists (Outline/Focus/Matrix) read better than a network graph on a phone. */
-function defaultView(): ViewMode {
-  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches) return 'outline'
-  return 'graph'
-}
-
-// ABOUTME: The AST viewer shell: a view switcher over the graph, outline, focus, and matrix views.
+// ABOUTME: The AST viewer shell: a view switcher defaulting to Focus, over the focus, flows, graph, outline, and matrix views; owns the Focus breadcrumb trail so a saved flow can be replayed in Focus.
+/**
+ * Focus is the default entry: the page opens on a single file ({@link
+ * DEFAULT_FOCUS_FILE}, the app entry point) and the reader walks outward, the
+ * Graph/Outline/Matrix being alternative whole-map presentations a tab away.
+ * The Focus breadcrumb trail lives here, not in `AstFocus`, so the Flows view's
+ * "Open in Focus" can drop a saved trail into Focus and switch to it.
+ */
 export function AstGraph() {
-  const [view, setView] = useState<ViewMode>(defaultView)
+  const [view, setView] = useState<ViewMode>('focus')
+  const [focusTrail, setFocusTrail] = useState<string[]>(() => [DEFAULT_FOCUS_FILE])
+
+  const openFlow = (trail: string[]) => {
+    if (trail.length > 0) setFocusTrail(trail)
+    setView('focus')
+  }
 
   return (
     <div className="astg">
@@ -289,13 +298,14 @@ export function AstGraph() {
         ))}
       </div>
 
+      {view === 'focus' && <AstFocus trail={focusTrail} onTrailChange={setFocusTrail} />}
+      {view === 'flows' && <AstFlows onOpenFlow={openFlow} />}
       {view === 'graph' && (
         <ReactFlowProvider>
           <GraphView />
         </ReactFlowProvider>
       )}
       {view === 'outline' && <AstOutline />}
-      {view === 'focus' && <AstFocus />}
       {view === 'matrix' && <AstMatrix />}
     </div>
   )

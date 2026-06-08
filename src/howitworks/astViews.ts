@@ -139,3 +139,16 @@ export const MOST_CONNECTED_FILE: string = (() => {
   }
   return best
 })()
+
+// ABOUTME: The file the Focus view opens on — the app entry point (src/main.tsx) when present, so every breadcrumb trail starts where the app boots; falls back to the most-connected file.
+/**
+ * Where the Focus view's breadcrumb trail begins. The entry point
+ * `src/main.tsx` is the natural root of any "how does the app get here?"
+ * walk, so the first card is the boot file and every saved flow shares a
+ * common origin. If the graph has no `src/main.tsx` (e.g. a renamed entry),
+ * this falls back to {@link MOST_CONNECTED_FILE} so Focus always opens on a
+ * real, link-rich node.
+ */
+export const DEFAULT_FOCUS_FILE: string = FILE_BY_ID.has('src/main.tsx')
+  ? 'src/main.tsx'
+  : MOST_CONNECTED_FILE
