@@ -30,11 +30,13 @@ import './palettes.css'
 // Vite eagerly loads every palette README at build time so the
 // "Copy as markdown" button can include the same long-form notes the
 // disk docs do. `?raw` + `import: 'default'` gives us a string per file.
+// ABOUTME: Eagerly loaded map of all palette README.md files keyed by their import path, so the "Copy as markdown" button can embed long-form notes at build time without a runtime fetch.
 const README_MODULES = import.meta.glob(
   '../../../palettes/*.README.md',
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>
 
+// ABOUTME: Finds and returns the raw README string for the given palette id by matching the trailing path segment in README_MODULES, or undefined if no README file exists for that id.
 function readmeFor(id: PaletteId): string | undefined {
   for (const [path, body] of Object.entries(README_MODULES)) {
     if (path.endsWith(`/${id}.README.md`)) return body
@@ -42,6 +44,7 @@ function readmeFor(id: PaletteId): string | undefined {
   return undefined
 }
 
+// ABOUTME: Walks a dot-separated token path string through a nested object, returning the value at that path or undefined if any segment is missing or non-object.
 function resolveTokenPath(obj: unknown, dotted: string): unknown {
   let cur: unknown = obj
   for (const segment of dotted.split('.')) {
@@ -51,6 +54,7 @@ function resolveTokenPath(obj: unknown, dotted: string): unknown {
   return cur
 }
 
+// ABOUTME: Converts a resolved token value to a display string for the token evidence table, handling strings, numbers, boxShadow objects, and falling back to JSON for other shapes.
 function formatTokenValue(v: unknown): string {
   if (v === undefined) return '(unresolved)'
   if (typeof v === 'string' || typeof v === 'number') return String(v)
@@ -60,6 +64,7 @@ function formatTokenValue(v: unknown): string {
   return JSON.stringify(v)
 }
 
+// ABOUTME: A button that calls navigator.clipboard.writeText with the string returned by getText(), briefly showing "Copied!" feedback before reverting to the provided label.
 function CopyButton({ label, getText }: { label: string; getText: () => string }) {
   const [copied, setCopied] = useState(false)
   return (
@@ -81,10 +86,12 @@ function CopyButton({ label, getText }: { label: string; getText: () => string }
   )
 }
 
+// ABOUTME: Props for the internal PaletteDesignPage component, carrying the resolved Palette object for the id extracted by the routed wrapper.
 interface PageProps {
   palette: Palette
 }
 
+// ABOUTME: Renders the full palette design page body: breadcrumbs, header, all structured description sections (summary through recall aliases), the CSS custom-properties block with a copy button, a markdown copy button, and the raw README in a collapsible details block.
 function PaletteDesignPage({ palette }: PageProps) {
   const desc = descriptions[palette.id as PaletteId]
   const cssBlock = useMemo(

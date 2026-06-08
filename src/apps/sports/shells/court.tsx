@@ -5,6 +5,7 @@ import { navigate } from '../../router'
 import { sportsRoutes } from '../routes'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Definition for a single interactive puck on the court SVG: its centre coordinates, button label, secondary hint text, and the route it navigates to.
 interface Hotspot {
   cx: number
   cy: number
@@ -13,6 +14,7 @@ interface Hotspot {
   to: string
 }
 
+// ABOUTME: Six hotspot puck definitions placed at basketball-meaningful positions on the court: two in the paint (hoop and free-throw), two on the wings (East/West standings), one at the arc (Shooters), and one at the tip-off circle.
 const HOTSPOTS: Hotspot[] = [
   { cx: 250, cy: 460, label: 'Top scorers', hint: 'PPG leaders', to: sportsRoutes.players() },
   { cx: 250, cy: 380, label: 'Bigs', hint: 'Centers & PFs', to: sportsRoutes.players() },
@@ -22,6 +24,7 @@ const HOTSPOTS: Hotspot[] = [
   { cx: 250, cy: 50, label: 'Tip-off', hint: "Today's games", to: sportsRoutes.games() },
 ]
 
+// ABOUTME: Renders a 500×500 SVG half-court with floor, key, free-throw circle, 3-pt arc, backboard, hoop, and the six HOTSPOTS as keyboard-accessible puck groups; placed on the Home route by CourtShell.
 function CourtMap() {
   return (
     <div className="sports-court">
@@ -95,6 +98,7 @@ function CourtMap() {
   )
 }
 
+// ABOUTME: Primary navigation bar rendered in the CourtShell header; links to all sports sections with `is-active` on the current route.
 function CourtNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__court-nav" aria-label="Primary">

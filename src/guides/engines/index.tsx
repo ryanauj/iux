@@ -21,6 +21,7 @@ import {
 } from '../../components/DraggableControls/DraggableControls'
 import './guides.css'
 
+// ABOUTME: Complete list of all fifteen engine ids with display names and availability flags, used by EnginesIndex to render available engine links and pending stubs.
 const ALL_ENGINES: { id: string; name: string; available: boolean }[] = [
   { id: 'flat',         name: 'Flat',         available: true },
   { id: 'material',     name: 'Material',     available: true },

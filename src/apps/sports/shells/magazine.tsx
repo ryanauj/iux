@@ -14,11 +14,13 @@ import { sportsRoutes } from '../routes'
 import type { Game, Player, Team } from '../types'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Label/id pair for each editorial section of the magazine home page, used by SectionNav to generate scroll-to buttons.
 interface Section {
   id: string
   label: string
 }
 
+// ABOUTME: Ordered list of the four editorial sections (Cover, Pull quote, Leaderboard, Inside the East) whose ids are also HTML element ids targeted by SectionNav.
 const SECTIONS: Section[] = [
   { id: 'cover', label: 'Cover' },
   { id: 'pullquote', label: 'Pull quote' },
@@ -26,6 +28,7 @@ const SECTIONS: Section[] = [
   { id: 'feature', label: 'Inside the East' },
 ]
 
+// ABOUTME: Picks the marquee game for the cover: returns the live game if one exists, otherwise today's highest-combined-record scheduled game, falling back to the most recent final.
 /** Pick the marquee matchup: prefer the live game, else today's biggest
  *  scheduled game (matchup involving the best combined record), else the
  *  most recent final. */
@@ -46,6 +49,7 @@ function gameOfTheNight(): Game | undefined {
   return finals[finals.length - 1]
 }
 
+// ABOUTME: Returns a capitalised kicker string for the magazine cover (e.g. "LIVE NOW · Q3" / "TONIGHT'S TIP-OFF · Jun 8" / "LATEST FINAL · Jun 7") based on game status.
 function statusKicker(g: Game): string {
   if (g.status === 'live') {
     const q = g.quarter ? `Q${g.quarter}` : 'Live'
@@ -56,6 +60,7 @@ function statusKicker(g: Game): string {
   return `LATEST FINAL · ${formatDate(g.date)}`
 }
 
+// ABOUTME: Generates a one-paragraph editorial lede for the marquee game: a "visiting" sentence for live, a preview sentence for scheduled, or a margin/winner recap sentence for finals.
 function gameLede(g: Game, home: Team, away: Team): string {
   if (g.status === 'live') {
     return `${away.city} visits ${home.city} with the league's eyes on the floor — every possession scaled up to a headline.`
@@ -69,6 +74,7 @@ function gameLede(g: Game, home: Team, away: Team): string {
   return `${winner} took it by ${margin} — the kind of evening that rewrites a paragraph in the season preview.`
 }
 
+// ABOUTME: Magazine front-cover section showing masthead, status kicker, "Game of the Night" headline, a two-team matchup block with crests/scores, an editorial lede, and a "Read the box score" link; placed first on the Home route.
 function MagazineCover({ game }: { game: Game }) {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -138,6 +144,7 @@ function MagazineCover({ game }: { game: Game }) {
   )
 }
 
+// ABOUTME: Editorial pull-quote section featuring the league's PPG leader: displays the stat value large, a fixed attributed quote, and linked player/team names; placed after MagazineCover.
 function PullQuote({ player, team }: { player: Player; team: Team | undefined }) {
   return (
     <section id="pullquote" className="sports-magazine__pullquote">
@@ -163,6 +170,7 @@ function PullQuote({ player, team }: { player: Player; team: Team | undefined })
   )
 }
 
+// ABOUTME: Three-column "By the Numbers" section showing the top-5 for scoring, rebounding, and playmaking (PPG/RPG/APG) as ranked linked lists; placed after PullQuote on the Home route.
 function Leaderboard() {
   const ppg = getStatLeaders('ppg', 5)
   const rpg = getStatLeaders('rpg', 5)
@@ -209,6 +217,7 @@ function Leaderboard() {
   )
 }
 
+// ABOUTME: Editorial feature section for the Eastern Conference: a prose blurb driven by the top two standings entries, beside a sidebar of the East top-5 with coloured marks and records; placed last on the Home route.
 function InsideTheEast() {
   const standings = getStandings('East')
   const leader = standings[0]
@@ -281,6 +290,7 @@ function InsideTheEast() {
   )
 }
 
+// ABOUTME: Primary navigation bar rendered in the MagazineShell header; links to all sports sections with `is-active` on the current route.
 function MagazineNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__magazine-nav" aria-label="Primary">
@@ -301,6 +311,7 @@ function MagazineNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'
   )
 }
 
+// ABOUTME: In-page "jump to section" nav rendered above the magazine cover; each button scrolls to the matching `id` element using scrollIntoView without touching the hash router.
 function SectionNav({ sections }: { sections: Section[] }) {
   // Scroll to an in-page anchor without touching the hash router. Plain
   // `href="#cover"` would clobber the route hash.

@@ -111,6 +111,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs five rungs showing ink-blue hard-offset shadows with a secondary soft blur at higher levels, and the heavier wobble variant applied to the card class.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -154,6 +155,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle shows that toggling motion only affects colour transition durations, not the static SVG wobble — the drawn-line look stays regardless of motion state.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -191,6 +193,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons with marker fills where each border sits one luminance step darker than its fill, making each chip read as outline-drawn-first after the displacement pass.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

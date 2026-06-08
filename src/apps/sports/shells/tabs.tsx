@@ -11,8 +11,10 @@ import { getPlayerBySlug, getTeamBySlug, getGameById, getTeamById } from '../dat
 import { matchSportsRoute, sportsRoutes, SPORTS_BASE, type SportsRoute } from '../routes'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Sentinel string used as the tab key for the sports home route, stored in `?tabs=` in place of the full path suffix.
 const HOME_KEY = 'home'
 
+// ABOUTME: Converts a full router path to the shorthand stored in `?tabs=` (strips SPORTS_BASE prefix; empty suffix becomes HOME_KEY).
 /** Convert a full router path to the shorthand we store in `?tabs=`. */
 function pathToKey(fullPath: string): string {
   if (!fullPath.startsWith(SPORTS_BASE)) return HOME_KEY
@@ -20,17 +22,20 @@ function pathToKey(fullPath: string): string {
   return rest === '' ? HOME_KEY : rest
 }
 
+// ABOUTME: Converts a tab key back to a navigable router path by prepending SPORTS_BASE, or returning the home route for HOME_KEY.
 function keyToPath(key: string): string {
   if (key === HOME_KEY) return sportsRoutes.home()
   return `${SPORTS_BASE}/${key}`
 }
 
+// ABOUTME: Derives a human-readable tab label from a raw tab key by parsing it back to a SportsRoute and delegating to labelForRoute.
 function labelForKey(key: string): string {
   if (key === HOME_KEY) return 'Home'
   const route = matchSportsRoute(key.split('/'))
   return labelForRoute(route, key)
 }
 
+// ABOUTME: Maps a typed SportsRoute to a short display string for the tab strip (e.g. team name, "J. Smith" for a player, "BOS @ NYK" for a game); returns the raw fallback string for unrecognised route kinds.
 function labelForRoute(route: SportsRoute, fallback: string): string {
   switch (route.kind) {
     case 'home': return 'Home'
@@ -54,6 +59,7 @@ function labelForRoute(route: SportsRoute, fallback: string): string {
   }
 }
 
+// ABOUTME: Secondary navigation menu rendered below the tab strip; links to all sports sections so the user can open any section as a new tab.
 function TabsNavMenu({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   return (
     <nav className="sports-app__tabs-nav" aria-label="Open in tab">
