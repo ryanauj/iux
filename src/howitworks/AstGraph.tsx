@@ -16,7 +16,9 @@ import '@xyflow/react/dist/style.css'
 import graphData from './generated/ast-graph.json'
 import type { AstGraph as AstGraphData } from './generated/astGraph.types'
 import {
+  areaNodeId,
   buildGraph,
+  fileNodeId,
   type AstEdge,
   type AstNode,
   type AstNodeData,
@@ -26,7 +28,7 @@ import { AstOutline } from './AstOutline'
 import { AstFocus } from './AstFocus'
 import { AstMatrix } from './AstMatrix'
 import { AstFlows } from './AstFlows'
-import { DEFAULT_FOCUS_FILE } from './astViews'
+import { DEFAULT_FOCUS_FILE, importersOfMember, parseNodeId } from './astViews'
 import './astGraph.css'
 
 // ABOUTME: The generated graph JSON typed as AstGraph — the dataset this viewer reads.
@@ -62,6 +64,9 @@ function GraphView() {
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(new Set())
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  // A selected member node id (`fileId#name`): lights up the files that import
+  // that exact method/class/type. Cleared whenever a node or the pane is tapped.
+  const [selectedMember, setSelectedMember] = useState<string | null>(null)
   // Auto-layout is on by default: the collapsed overview is otherwise a tall
   // single column that fitView shrinks to an unreadable ribbon. Arranging the
   // clusters by their import dependencies fills the canvas 2-dimensionally, so
@@ -96,15 +101,58 @@ function GraphView() {
     [effectiveAreas, effectiveFiles, matchedFiles, autoLayout],
   )
 
-  // Re-point edge styling to the current selection: the selected node's
-  // edges are emphasised, the rest recede. Pure styling — recomputed when
-  // selection or the built graph changes.
+  // Selecting a member in a file node highlights the dependency lines to the
+  // files that import that exact member; the file node it belongs to is also
+  // selected so its own edges stay visible.
+  const onMemberClick = useCallback((memberId: string) => {
+    setSelectedMember(memberId)
+    setSelectedId(fileNodeId(parseNodeId(memberId).fileId))
+  }, [])
+
+  // Inject the live member-selection state and click handler into each file
+  // node's data. buildGraph stays pure (memoised on layout inputs); this thin
+  // pass only re-runs when the selection or the built nodes change.
+  const nodes = useMemo<AstNode[]>(
+    () =>
+      built.nodes.map(n =>
+        n.data.kind === 'file' ? { ...n, data: { ...n.data, selectedMember, onMemberClick } } : n,
+      ),
+    [built.nodes, selectedMember, onMemberClick],
+  )
+
+  // The currently-visible endpoints for a selected member: the node showing its
+  // defining file, and the nodes showing each file that imports it (a file node
+  // when its area is open, else the area cluster it collapses into).
+  const memberHighlight = useMemo(() => {
+    if (!selectedMember) return null
+    const present = new Set(built.nodes.map(n => n.id))
+    const endpointOf = (fid: string): string =>
+      present.has(fileNodeId(fid)) ? fileNodeId(fid) : areaNodeId(areaOfFileId.get(fid) ?? '')
+    const def = endpointOf(parseNodeId(selectedMember).fileId)
+    const importers = new Set(importersOfMember(selectedMember).map(endpointOf))
+    importers.delete(def)
+    return { def, importers }
+  }, [selectedMember, built.nodes])
+
+  // Re-point edge styling to the current selection: a selected member emphasises
+  // only the lines to its importers; otherwise the selected node's edges are
+  // emphasised. The rest recede. Pure styling, recomputed on selection change.
   const styledEdges = useMemo<AstEdge[]>(() => {
     return built.edges.map(e => {
-      const active = selectedId != null && (e.source === selectedId || e.target === selectedId)
+      let active = false
+      let hasSelection = false
+      if (memberHighlight) {
+        hasSelection = true
+        active =
+          (e.target === memberHighlight.def && memberHighlight.importers.has(e.source)) ||
+          (e.source === memberHighlight.def && memberHighlight.importers.has(e.target))
+      } else if (selectedId != null) {
+        hasSelection = true
+        active = e.source === selectedId || e.target === selectedId
+      }
       const weight = e.data?.weight ?? 1
       const width = Math.min(3.5, 1 + Math.log2(weight + 1))
-      const dim = selectedId != null && !active
+      const dim = hasSelection && !active
       return {
         ...e,
         zIndex: active ? 2000 : 0,
@@ -117,11 +165,12 @@ function GraphView() {
         },
       }
     })
-  }, [built.edges, selectedId])
+  }, [built.edges, selectedId, memberHighlight])
 
   const onNodeClick = useCallback<NodeMouseHandler<AstNode>>((_evt, node: Node<AstNodeData>) => {
     const data = node.data
     setSelectedId(node.id)
+    setSelectedMember(null)
     if (data.kind === 'area') {
       setExpandedAreas(prev => {
         const next = new Set(prev)
@@ -162,6 +211,7 @@ function GraphView() {
     setExpandedAreas(new Set())
     setExpandedFiles(new Set())
     setSelectedId(null)
+    setSelectedMember(null)
     setQuery('')
     setFitToken(t => t + 1)
   }, [])
@@ -221,7 +271,7 @@ function GraphView() {
 
       <div className="astg__canvas">
         <ReactFlow<AstNode, AstEdge>
-          nodes={built.nodes}
+          nodes={nodes}
           edges={styledEdges}
           nodeTypes={astNodeTypes}
           onNodeClick={(evt, node) => {
@@ -231,7 +281,10 @@ function GraphView() {
           onInit={inst => {
             rf.current = inst
           }}
-          onPaneClick={() => setSelectedId(null)}
+          onPaneClick={() => {
+            setSelectedId(null)
+            setSelectedMember(null)
+          }}
           fitView
           fitViewOptions={{ padding: 0.12 }}
           minZoom={0.05}

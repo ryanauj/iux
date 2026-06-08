@@ -2,6 +2,15 @@ import { describe, expect, it } from 'vitest'
 import graphData from './generated/ast-graph.json'
 import type { AstGraph, MemberKind } from './generated/astGraph.types'
 import { areaNodeId, buildGraph, fileNodeId, regionNodeId } from './astGraphLayout'
+import {
+  importersOfMember,
+  importMembersOf,
+  isMemberNode,
+  memberNodeId,
+  nodeLabel,
+  parseNodeId,
+  searchNodes,
+} from './astViews'
 
 const GRAPH = graphData as AstGraph
 
@@ -9,12 +18,14 @@ const KINDS: MemberKind[] = ['component', 'function', 'class', 'const', 'type', 
 
 describe('generated AST graph', () => {
   it('has self-consistent stats', () => {
-    expect(GRAPH.schemaVersion).toBe(1)
+    expect(GRAPH.schemaVersion).toBe(2)
     expect(GRAPH.stats.areas).toBe(GRAPH.areas.length)
     expect(GRAPH.stats.files).toBe(GRAPH.files.length)
     expect(GRAPH.stats.imports).toBe(GRAPH.imports.length)
     const memberTotal = GRAPH.files.reduce((n, f) => n + f.members.length, 0)
     expect(GRAPH.stats.members).toBe(memberTotal)
+    const memberEdgeTotal = GRAPH.imports.reduce((n, imp) => n + imp.members.length, 0)
+    expect(GRAPH.stats.memberEdges).toBe(memberEdgeTotal)
   })
 
   it('groups every file under a declared area', () => {
@@ -29,6 +40,29 @@ describe('generated AST graph', () => {
       expect(fileIds.has(imp.target)).toBe(true)
       expect(imp.source).not.toBe(imp.target)
     }
+  })
+
+  it('only names real exported members on import edges, sorted and unique', () => {
+    const exportedByFile = new Map(
+      GRAPH.files.map(f => [f.id, new Set(f.members.filter(m => m.exported).map(m => m.name))]),
+    )
+    for (const imp of GRAPH.imports) {
+      const exported = exportedByFile.get(imp.target)!
+      for (const name of imp.members) expect(exported.has(name)).toBe(true)
+      // Unique.
+      expect(new Set(imp.members).size).toBe(imp.members.length)
+      // Sorted.
+      expect(imp.members).toEqual([...imp.members].sort((a, b) => a.localeCompare(b)))
+    }
+  })
+
+  it('resolves a known member edge (AstFocus imports importsOf from astViews)', () => {
+    const edge = GRAPH.imports.find(
+      i => i.source === 'src/howitworks/AstFocus.tsx' && i.target === 'src/howitworks/astViews.ts',
+    )
+    expect(edge).toBeTruthy()
+    expect(edge!.members).toContain('importsOf')
+    expect(edge!.members).toContain('importedBy')
   })
 
   it('uses only known member kinds', () => {
@@ -52,6 +86,36 @@ describe('generated AST graph', () => {
     expect(areaIds).toEqual([...areaIds].sort((a, b) => a.localeCompare(b)))
     const fileIds = GRAPH.files.map(f => f.id)
     expect(fileIds).toEqual([...fileIds].sort((a, b) => a.localeCompare(b)))
+  })
+})
+
+describe('member-level node indexes', () => {
+  it('round-trips member node ids', () => {
+    const id = memberNodeId('src/howitworks/astViews.ts', 'importsOf')
+    expect(isMemberNode(id)).toBe(true)
+    expect(parseNodeId(id)).toEqual({ fileId: 'src/howitworks/astViews.ts', member: 'importsOf' })
+    expect(nodeLabel(id)).toBe('importsOf')
+    expect(isMemberNode('src/howitworks/astViews.ts')).toBe(false)
+    expect(parseNodeId('src/howitworks/astViews.ts')).toEqual({ fileId: 'src/howitworks/astViews.ts' })
+  })
+
+  it('importersOfMember is the inverse of importMembersOf', () => {
+    // Every file that importMembersOf says depends on a member must appear in
+    // that member's importersOfMember list, and vice versa.
+    for (const f of GRAPH.files) {
+      for (const group of importMembersOf(f.id)) {
+        for (const name of group.members) {
+          expect(importersOfMember(memberNodeId(group.target, name))).toContain(f.id)
+        }
+      }
+    }
+  })
+
+  it('searchNodes surfaces members as selectable hits', () => {
+    const hits = searchNodes('importsOf', 10)
+    const exact = hits.find(h => h.member?.name === 'importsOf')
+    expect(exact).toBeTruthy()
+    expect(exact!.id).toBe(memberNodeId('src/howitworks/astViews.ts', 'importsOf'))
   })
 })
 

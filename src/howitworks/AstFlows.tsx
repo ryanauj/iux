@@ -2,7 +2,8 @@
 // ABOUTME: end-to-end walks through the import graph, reopenable in Focus.
 
 import { Fragment } from 'react'
-import { FILE_BY_ID, fileLabel } from './astViews'
+import { FILE_BY_ID, MEMBER_BY_ID, nodeLabel, parseNodeId } from './astViews'
+import { memberKindColor, memberKindGlyph } from './astGraphNodes'
 import { deleteFlow, useFlows } from './flows'
 
 // ABOUTME: Props for AstFlows: a callback that drops a saved trail back into the Focus view.
@@ -55,8 +56,8 @@ export function AstFlows({ onOpenFlow }: AstFlowsProps) {
             <div className="astv-flows__title-wrap">
               <h3 className="astv-flows__name">{flow.name}</h3>
               <p className="astv-flows__meta">
-                {flow.trail.length} steps · {fileLabel(flow.trail[0])} →{' '}
-                {fileLabel(flow.trail[flow.trail.length - 1])}
+                {flow.trail.length} steps · {nodeLabel(flow.trail[0])} →{' '}
+                {nodeLabel(flow.trail[flow.trail.length - 1])}
               </p>
             </div>
             <div className="astv-flows__actions">
@@ -75,7 +76,10 @@ export function AstFlows({ onOpenFlow }: AstFlowsProps) {
 
           <ol className="astv-flows__steps">
             {flow.trail.map((id, i) => {
-              const f = FILE_BY_ID.get(id)
+              const { fileId, member: memberName } = parseNodeId(id)
+              const hit = memberName ? MEMBER_BY_ID.get(id) : undefined
+              const f = FILE_BY_ID.get(fileId)
+              const m = hit?.member
               return (
                 <Fragment key={`${id}#${i}`}>
                   {i > 0 && (
@@ -89,10 +93,25 @@ export function AstFlows({ onOpenFlow }: AstFlowsProps) {
                     </span>
                     <span className="astv-flows__step-text">
                       <span className="astv-flows__step-name">
-                        {f?.name ?? fileLabel(id)}
-                        {f && <span className="astv-flows__step-area">{f.area}</span>}
+                        {m && (
+                          <span
+                            className="astv-flows__step-dot"
+                            style={{ color: memberKindColor(m.kind) }}
+                            aria-hidden="true"
+                          >
+                            {memberKindGlyph(m.kind)}
+                          </span>
+                        )}
+                        {nodeLabel(id)}
+                        {m ? (
+                          <span className="astv-flows__step-area">{m.kind} · {f?.name ?? fileId}</span>
+                        ) : (
+                          f && <span className="astv-flows__step-area">{f.area}</span>
+                        )}
                       </span>
-                      {f?.about && <span className="astv-flows__step-about">{f.about}</span>}
+                      {(m?.about ?? (m ? undefined : f?.about)) && (
+                        <span className="astv-flows__step-about">{m?.about ?? f?.about}</span>
+                      )}
                     </span>
                   </li>
                 </Fragment>

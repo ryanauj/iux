@@ -12,7 +12,9 @@
  *   - imports  — file → file edges, resolved from relative import/export
  *                specifiers (npm + tokens/palettes imports are counted as
  *                "external" but don't become edges, keeping the graph
- *                scoped to authored UI source).
+ *                scoped to authored UI source). Each edge also records the
+ *                target's named members the source pulls in (`members`), so a
+ *                method/class/type is a selectable endpoint, not just its file.
  *
  * The output is deterministic: every collection is sorted by a stable
  * key and no timestamps are written, so the committed JSON only changes
@@ -204,19 +206,39 @@ function extractMembers(sf: ts.SourceFile, text: string): AstMember[] {
   return members
 }
 
-/** Collect raw import/export module specifiers from a file. */
-function collectSpecifiers(sf: ts.SourceFile): string[] {
-  const specs: string[] = []
+/** One import/export statement: the module specifier and the member names it
+ * pulls in by name (`import { a, b as c }` → `['a', 'b']`, using the *imported*
+ * name, not the local alias). `named` is empty for default, namespace, bare
+ * side-effect, and wildcard (`export *`) imports. */
+interface RawImport {
+  spec: string
+  named: string[]
+}
+
+/** Collect each import/export module specifier and its named bindings. */
+function collectImports(sf: ts.SourceFile): RawImport[] {
+  const out: RawImport[] = []
   for (const stmt of sf.statements) {
-    if (
-      (ts.isImportDeclaration(stmt) || ts.isExportDeclaration(stmt)) &&
-      stmt.moduleSpecifier &&
-      ts.isStringLiteral(stmt.moduleSpecifier)
-    ) {
-      specs.push(stmt.moduleSpecifier.text)
+    if (ts.isImportDeclaration(stmt) && stmt.moduleSpecifier && ts.isStringLiteral(stmt.moduleSpecifier)) {
+      const named: string[] = []
+      const bindings = stmt.importClause?.namedBindings
+      // Only `{ … }` named imports name members; `* as ns` and a default
+      // binding don't pin a specific exported member, so they add no edge.
+      if (bindings && ts.isNamedImports(bindings)) {
+        for (const el of bindings.elements) named.push((el.propertyName ?? el.name).text)
+      }
+      out.push({ spec: stmt.moduleSpecifier.text, named })
+    } else if (ts.isExportDeclaration(stmt) && stmt.moduleSpecifier && ts.isStringLiteral(stmt.moduleSpecifier)) {
+      const named: string[] = []
+      // `export { a, b as c } from '…'` re-exports named members; `export *`
+      // has no clause and names none.
+      if (stmt.exportClause && ts.isNamedExports(stmt.exportClause)) {
+        for (const el of stmt.exportClause.elements) named.push((el.propertyName ?? el.name).text)
+      }
+      out.push({ spec: stmt.moduleSpecifier.text, named })
     }
   }
-  return specs
+  return out
 }
 
 /** Resolve a relative specifier to a known file id, or null if external. */
@@ -242,7 +264,15 @@ function generate(): AstGraph {
   const known = new Set(ids)
 
   const files: AstFile[] = []
-  const importPairs = new Set<string>()
+  // Per "source target" pair, the union of member names the source imports from
+  // the target — resolved against the target's real exported members in a
+  // second pass (a target may be parsed after the source that imports it).
+  const edgeMembers = new Map<string, Set<string>>()
+  // Every resolved import statement, kept for that second pass.
+  const pending: { source: string; target: string; named: string[] }[] = []
+  // Per file, the names it actually exports — the only members another file may
+  // legitimately name in an import edge.
+  const exportedNames = new Map<string, Set<string>>()
 
   for (const abs of absFiles) {
     const id = toId(abs)
@@ -250,15 +280,16 @@ function generate(): AstGraph {
     const sf = ts.createSourceFile(abs, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
 
     const members = extractMembers(sf, source)
+    exportedNames.set(id, new Set(members.filter(m => m.exported).map(m => m.name)))
     const about = aboutFromRanges(source, fileHeaderRanges(sf, source))
-    const specs = collectSpecifiers(sf)
+    const imports = collectImports(sf)
     let importCount = 0
     let externalCount = 0
-    for (const spec of specs) {
-      const resolved = resolveSpecifier(abs, spec, known)
+    for (const imp of imports) {
+      const resolved = resolveSpecifier(abs, imp.spec, known)
       if (resolved && resolved !== id) {
         importCount++
-        importPairs.add(`${id} ${resolved}`)
+        pending.push({ source: id, target: resolved, named: imp.named })
       } else if (!resolved) {
         externalCount++
       }
@@ -278,6 +309,22 @@ function generate(): AstGraph {
     files.push(file)
   }
 
+  // Second pass: keep only named bindings that resolve to a real exported
+  // member of the target, so every member edge points at a selectable node.
+  // Seeding a key for every resolved pair (even one that names no member) lets
+  // bare/namespace/default imports keep their file edge.
+  for (const e of pending) {
+    const exported = exportedNames.get(e.target)
+    if (!exported) continue
+    const key = `${e.source} ${e.target}`
+    let set = edgeMembers.get(key)
+    if (!set) {
+      set = new Set<string>()
+      edgeMembers.set(key, set)
+    }
+    for (const name of e.named) if (exported.has(name)) set.add(name)
+  }
+
   // Areas, derived from files.
   const areaMap = new Map<string, AstArea>()
   for (const f of files) {
@@ -288,10 +335,10 @@ function generate(): AstGraph {
   }
   const areas = [...areaMap.values()].sort((a, b) => a.id.localeCompare(b.id))
 
-  const imports: AstImport[] = [...importPairs]
-    .map(pair => {
-      const [source, target] = pair.split(' ')
-      return { source, target }
+  const imports: AstImport[] = [...edgeMembers.entries()]
+    .map(([key, set]) => {
+      const [source, target] = key.split(' ')
+      return { source, target, members: [...set].sort((a, b) => a.localeCompare(b)) }
     })
     .sort((a, b) => a.source.localeCompare(b.source) || a.target.localeCompare(b.target))
 
@@ -302,13 +349,16 @@ function generate(): AstGraph {
     0,
   )
 
+  const memberEdges = imports.reduce((n, imp) => n + imp.members.length, 0)
+
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     stats: {
       areas: areas.length,
       files: files.length,
       members: memberTotal,
       imports: imports.length,
+      memberEdges,
       documentedFiles,
       documentedMembers,
     },
@@ -325,7 +375,7 @@ function main(): void {
   const { stats } = graph
   console.log(
     `gen:ast-graph → ${path.relative(ROOT, OUT)} · ` +
-      `${stats.areas} areas, ${stats.files} files, ${stats.members} members, ${stats.imports} imports · ` +
+      `${stats.areas} areas, ${stats.files} files, ${stats.members} members, ${stats.imports} imports (${stats.memberEdges} member links) · ` +
       `aboutme: ${stats.documentedFiles}/${stats.files} files, ${stats.documentedMembers}/${stats.members} members`,
   )
 }

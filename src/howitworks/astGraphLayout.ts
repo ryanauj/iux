@@ -46,13 +46,20 @@ export interface AreaRegionNodeData {
   [key: string]: unknown
 }
 
-// ABOUTME: Data carried by a file node, including its members and expand state.
+// ABOUTME: Data carried by a file node, including its members, expand state, and member-selection wiring.
 export interface FileNodeData {
   kind: 'file'
   file: AstFile
   expanded: boolean
   /** Matches the active search query (drives highlight). */
   matched: boolean
+  /** The selected member node id (`fileId#name`), if any, so the matching
+   *  member row in this file renders highlighted. Injected per render, not by
+   *  {@link buildGraph}, to keep the layout a pure function of its inputs. */
+  selectedMember?: string | null
+  /** Selects a member node when its row is tapped, lighting up the files that
+   *  import that exact method/class/type. Also injected per render. */
+  onMemberClick?: (memberId: string) => void
   [key: string]: unknown
 }
 

@@ -2,8 +2,10 @@
 // ABOUTME: useSyncExternalStore hook so the Focus view and Flows section share one live list.
 
 /**
- * A flow is a named Focus breadcrumb trail: the ordered list of file ids a
- * reader walked from the entry point outward. Saving one freezes that path so
+ * A flow is a named Focus breadcrumb trail: the ordered list of node ids a
+ * reader walked from the entry point outward. Each id is a file (`src/foo.ts`)
+ * or a member (`src/foo.ts#bar`), so a saved walk can drill through a specific
+ * method, class, or type, not just whole files. Saving one freezes that path so
  * the Flows view can replay it as an end-to-end story, and re-opening it drops
  * the reader back into Focus at the same trail. Everything persists under one
  * localStorage key and is broadcast through a tiny pub/sub so the Focus view's
@@ -11,8 +13,9 @@
  */
 import { useSyncExternalStore } from 'react'
 
-// ABOUTME: One saved Focus trail: a stable id, a human name, the ordered file ids walked, and when it was saved.
-/** One saved Focus trail: a stable id, a human name, the file-id path, and a save timestamp. */
+// ABOUTME: One saved Focus trail: a stable id, a human name, the ordered node ids walked (files or members), and when it was saved.
+/** One saved Focus trail: a stable id, a human name, the node-id path (file or
+ * member ids), and a save timestamp. */
 export interface Flow {
   id: string
   name: string
@@ -69,10 +72,10 @@ export function listFlows(): Flow[] {
   return snapshot
 }
 
-// ABOUTME: Saves a named breadcrumb trail as a new flow and returns it; ignores trails shorter than two files.
+// ABOUTME: Saves a named breadcrumb trail as a new flow and returns it; ignores trails shorter than two steps.
 /**
  * Saves `trail` under `name` as a new flow at the top of the list. A single
- * file is not a journey, so trails of fewer than two ids are rejected (returns
+ * node is not a journey, so trails of fewer than two ids are rejected (returns
  * null). The id is time-based, which is also the natural newest-first sort key.
  */
 export function saveFlow(name: string, trail: string[]): Flow | null {

@@ -77,11 +77,22 @@ export interface AstArea {
   memberCount: number
 }
 
-// ABOUTME: A resolved file → file import edge (deduplicated, no self-edges).
-/** A resolved file → file import edge (deduplicated, no self-edges). */
+// ABOUTME: A resolved file → file import edge (deduplicated, no self-edges), plus the named members of the target it pulls in.
+/**
+ * A resolved file → file import edge (deduplicated, no self-edges).
+ *
+ * `members` are the exported member names of `target` that `source` imports
+ * **by name** (`import { foo, Bar }` / `export { baz } from …`), each one
+ * matching a real exported member of the target file — so a method, class, or
+ * type is a first-class, selectable endpoint, not just the file it lives in.
+ * It is empty for default, namespace (`import * as ns`), bare side-effect, or
+ * wildcard re-export imports that name no resolvable member; the file edge
+ * still stands in those cases. Names are sorted and de-duplicated.
+ */
 export interface AstImport {
   source: string
   target: string
+  members: string[]
 }
 
 // ABOUTME: The whole graph: schema version, headline stats, and the areas/files/imports the viewer renders.
@@ -98,6 +109,12 @@ export interface AstGraph {
     files: number
     members: number
     imports: number
+    /**
+     * Total member-level links: the sum of `members.length` across every
+     * import edge — i.e. how many (file imports a specific method/class/type)
+     * pairs the graph resolved.
+     */
+    memberEdges: number
     /** Files that carry an `ABOUTME:` summary. */
     documentedFiles: number
     /** Members that carry an `ABOUTME:` summary. */
