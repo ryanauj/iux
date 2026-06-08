@@ -185,4 +185,18 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'cel-shaded-constructivist-glass': ['cel-shaded', 'glass', 'agitprop', 'poster', 'red', 'ink-outline'],
   'cel-shaded-nouveau-glass': ['cel-shaded', 'glass', 'organic', 'ornate', 'serif', 'ink-outline'],
   'cel-shaded-botanical-glass': ['cel-shaded', 'glass', 'botanical', 'serif', 'naturalist', 'ink-outline'],
+
+  /* Group Z9 — light sports video-game registers (flat scoreboard HUDs) */
+  'court-hardwood': ['game-ui', 'sports', 'basketball', 'light', 'arena', 'bold'],
+  'pitch-grass': ['game-ui', 'sports', 'soccer', 'football', 'light', 'green'],
+  'gridiron-broadcast': ['game-ui', 'sports', 'american-football', 'light', 'broadcast', 'condensed'],
+  'baseline-ace': ['game-ui', 'sports', 'tennis', 'light', 'court', 'lime'],
+  'ballpark-day': ['game-ui', 'sports', 'baseball', 'light', 'day-game', 'classic'],
+
+  /* Group Z10 — light futuristic-fantasy / FPS HUD registers (glass) */
+  'mirror-runner': ['game-ui', 'fps', 'sci-fi', 'light', 'minimal', 'red-accent'],
+  'aegis-halo': ['game-ui', 'fps', 'sci-fi', 'military', 'light', 'cyan', 'hud'],
+  'tactical-recon': ['game-ui', 'fps', 'tactical', 'competitive', 'light', 'hud'],
+  'nova-vanguard': ['game-ui', 'fps', 'hero-shooter', 'light', 'bright', 'orange'],
+  'arcane-vanguard': ['game-ui', 'fps', 'futuristic-fantasy', 'sci-fantasy', 'light', 'violet', 'magic'],
 }

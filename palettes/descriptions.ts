@@ -118,6 +118,16 @@ import { description as celGlassSunset } from './cel-glass-sunset.description'
 import { description as celGlassMist } from './cel-glass-mist.description'
 import { description as celGlassBone } from './cel-glass-bone.description'
 import { description as celGlassOrchid } from './cel-glass-orchid.description'
+import { description as courtHardwood } from './court-hardwood.description'
+import { description as pitchGrass } from './pitch-grass.description'
+import { description as gridironBroadcast } from './gridiron-broadcast.description'
+import { description as baselineAce } from './baseline-ace.description'
+import { description as ballparkDay } from './ballpark-day.description'
+import { description as mirrorRunner } from './mirror-runner.description'
+import { description as aegisHalo } from './aegis-halo.description'
+import { description as tacticalRecon } from './tactical-recon.description'
+import { description as novaVanguard } from './nova-vanguard.description'
+import { description as arcaneVanguard } from './arcane-vanguard.description'
 
 export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   aaa,
@@ -163,6 +173,16 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'cel-glass-mist': celGlassMist,
   'cel-glass-bone': celGlassBone,
   'cel-glass-orchid': celGlassOrchid,
+  'court-hardwood': courtHardwood,
+  'pitch-grass': pitchGrass,
+  'gridiron-broadcast': gridironBroadcast,
+  'baseline-ace': baselineAce,
+  'ballpark-day': ballparkDay,
+  'mirror-runner': mirrorRunner,
+  'aegis-halo': aegisHalo,
+  'tactical-recon': tacticalRecon,
+  'nova-vanguard': novaVanguard,
+  'arcane-vanguard': arcaneVanguard,
   'citrus-spark': citrusSpark,
   claymorphism,
   'coastal-modern': coastalModern,

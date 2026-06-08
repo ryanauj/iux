@@ -185,6 +185,20 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'art-deco-ivory',
     'bauhaus',
   ],
+  Sports: [
+    'court-hardwood',
+    'pitch-grass',
+    'gridiron-broadcast',
+    'baseline-ace',
+    'ballpark-day',
+  ],
+  'Futuristic FPS': [
+    'mirror-runner',
+    'aegis-halo',
+    'tactical-recon',
+    'nova-vanguard',
+    'arcane-vanguard',
+  ],
 }
 
 function buildEngineGroups(): Record<string, PaletteId[]> {

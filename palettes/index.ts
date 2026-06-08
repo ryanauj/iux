@@ -108,6 +108,16 @@ import { palette as celShadedUkiyoGlass } from './cel-shaded-ukiyo-glass'
 import { palette as celShadedConstructivistGlass } from './cel-shaded-constructivist-glass'
 import { palette as celShadedNouveauGlass } from './cel-shaded-nouveau-glass'
 import { palette as celShadedBotanicalGlass } from './cel-shaded-botanical-glass'
+import { palette as courtHardwood } from './court-hardwood'
+import { palette as pitchGrass } from './pitch-grass'
+import { palette as gridironBroadcast } from './gridiron-broadcast'
+import { palette as baselineAce } from './baseline-ace'
+import { palette as ballparkDay } from './ballpark-day'
+import { palette as mirrorRunner } from './mirror-runner'
+import { palette as aegisHalo } from './aegis-halo'
+import { palette as tacticalRecon } from './tactical-recon'
+import { palette as novaVanguard } from './nova-vanguard'
+import { palette as arcaneVanguard } from './arcane-vanguard'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -220,6 +230,16 @@ export const palettes = {
   'cel-shaded-constructivist-glass': celShadedConstructivistGlass,
   'cel-shaded-nouveau-glass': celShadedNouveauGlass,
   'cel-shaded-botanical-glass': celShadedBotanicalGlass,
+  'court-hardwood': courtHardwood,
+  'pitch-grass': pitchGrass,
+  'gridiron-broadcast': gridironBroadcast,
+  'baseline-ace': baselineAce,
+  'ballpark-day': ballparkDay,
+  'mirror-runner': mirrorRunner,
+  'aegis-halo': aegisHalo,
+  'tactical-recon': tacticalRecon,
+  'nova-vanguard': novaVanguard,
+  'arcane-vanguard': arcaneVanguard,
 } as const
 
 export type PaletteId = keyof typeof palettes
