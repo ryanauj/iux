@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
+  OpenControlsHelp,
+  OpenControlsHint,
   type ControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -45,7 +47,7 @@ function readUrlSettings(persistedChrome: StyleId): UrlSettings {
   const chrome: StyleId = isStyleId(chromeRaw) ? chromeRaw : persistedChrome
   const controlsRaw = p.get(URL_PARAM.controls) ?? ''
   const controls: ControlsStyle =
-    controlsRaw === 'strip' || controlsRaw === 'button'
+    controlsRaw === 'hidden' || controlsRaw === 'button'
       ? controlsRaw
       : DEFAULT_CONTROLS
   return { chrome, controls }
@@ -159,6 +161,7 @@ export function QuizPage() {
         >
           i
         </button>
+        <OpenControlsHint />
       </h1>
       {infoOpen && (
         <div
@@ -174,6 +177,7 @@ export function QuizPage() {
           forces you to discriminate within a family (e.g. <em>which</em>{' '}
           pixel-art palette is this). Stimuli rotate across components,
           visualizations, and a sample app.
+          <OpenControlsHelp />
         </div>
       )}
     </>

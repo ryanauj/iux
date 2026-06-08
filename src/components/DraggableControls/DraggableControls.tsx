@@ -1,6 +1,6 @@
-// ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or a compact Edge Strip; persists position and open state to localStorage and adapts layout to phone-sized viewports.
+// ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or as nothing at all (Hidden style, summoned only by a tap gesture); persists position and open state to localStorage and adapts layout to phone-sized viewports.
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { PalettePicker } from '../PalettePicker/PalettePicker'
 import { Select } from '../Select/Select'
@@ -9,27 +9,28 @@ import type { NavControls } from '../AppShell/navLayouts'
 import './DraggableControls.css'
 
 /**
- * Threshold at which an in-popover search input is shown (Strip variant).
- * Below this, the list fits comfortably without filtering; above it, long
- * lists like the palette catalogue (40+) benefit from typing to narrow.
+ * Threshold at which a single field's Select switches from an inline radio
+ * group to a searchable combobox in the Button panel. Below this, the list
+ * fits comfortably as buttons; above it (e.g. the palette catalogue, 40+),
+ * typing to narrow is faster.
  */
-// ABOUTME: Minimum option count at which a search/filter input is added to Strip popovers; lists shorter than this are shown without a filter field.
+// ABOUTME: Minimum option count at which a CollapsibleSection renders a searchable combobox instead of an inline radio group; shorter lists stay as buttons.
 const SEARCHABLE_THRESHOLD = 6
 
-// ABOUTME: Presentation mode: 'button' is a circular FAB that opens a floating panel, 'strip' is a compact icon bar anchored to an edge with slot-level popovers.
-export type ControlsStyle = 'button' | 'strip'
+// ABOUTME: Presentation mode: 'button' is a circular FAB that opens a floating panel; 'hidden' shows nothing on screen and is summoned only by the tap gesture, which relocates the panel under the tap and opens it.
+export type ControlsStyle = 'button' | 'hidden'
 
-// ABOUTME: localStorage key under which the user's preferred controls style (button or strip) is persisted.
+// ABOUTME: localStorage key under which the user's preferred controls style (button or hidden) is persisted.
 const CONTROLS_STYLE_KEY = 'iux-controls-style'
 // ABOUTME: Fallback controls style used when no persisted preference exists.
 const DEFAULT_CONTROLS_STYLE: ControlsStyle = 'button'
 
 /**
  * Open state of the "Settings" group that nests the non-palette fields
- * (view, layout, nav, motion). Collapsed by default — these are reached
- * occasionally, so the panel opens to just the palette picker and a single
- * disclosure rather than the full settings stack. Persisted so the choice
- * sticks across pages and reopens.
+ * (view, layout, nav, motion, open-gesture). Collapsed by default — these
+ * are reached occasionally, so the panel opens to just the palette picker
+ * and a single disclosure rather than the full settings stack. Persisted so
+ * the choice sticks across pages and reopens.
  */
 // ABOUTME: localStorage key for the open/closed state of the Settings disclosure group inside the Button-variant panel.
 const SETTINGS_OPEN_KEY = 'iux-controls-settings-open'
@@ -38,53 +39,52 @@ const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
 // ABOUTME: Type guard that validates a raw localStorage string as a ControlsStyle value before applying it.
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
-  raw === 'button' || raw === 'strip'
+  raw === 'button' || raw === 'hidden'
 
 // ABOUTME: localStorage key for the open/closed state of the Navigation disclosure shown in the panel when the active nav layout is 'in-controls'.
 const NAV_OPEN_KEY = 'iux-controls-nav-open'
 
-// ABOUTME: What a double-tap anywhere on the page does to the floating controls — 'move-open' relocates them under the tap and opens, 'open' just opens in place, 'move' just relocates, 'off' disables the gesture.
-export type DoubleTapAction = 'off' | 'move-open' | 'open' | 'move'
+// ABOUTME: Which tap gesture summons the floating controls — 'double' for a double-tap, 'triple' for a triple-tap. The gesture always relocates the controls under the tap and opens them; only the trigger is configurable.
+export type TapGesture = 'double' | 'triple'
 
-// ABOUTME: localStorage key under which the double-tap gesture action is persisted.
-const DOUBLETAP_KEY = 'iux-controls-doubletap'
-// ABOUTME: Fallback double-tap action when no preference is stored — relocate the controls under the tap and open them.
-const DEFAULT_DOUBLETAP: DoubleTapAction = 'move-open'
+// ABOUTME: localStorage key under which the open-gesture (double- vs triple-tap) is persisted.
+const TAP_GESTURE_KEY = 'iux-controls-tap-gesture'
+// ABOUTME: Fallback open-gesture when no preference is stored — a double-tap summons the controls.
+const DEFAULT_TAP_GESTURE: TapGesture = 'double'
 
-// ABOUTME: Type guard that validates a raw localStorage string as a DoubleTapAction before applying it.
-const isDoubleTapAction = (raw: string): raw is DoubleTapAction =>
-  raw === 'off' || raw === 'move-open' || raw === 'open' || raw === 'move'
+// ABOUTME: Type guard that validates a raw localStorage string as a TapGesture before applying it.
+const isTapGesture = (raw: string): raw is TapGesture =>
+  raw === 'double' || raw === 'triple'
 
-// ABOUTME: The selectable double-tap actions, ordered most- to least-active, used to build the "Double-tap" field shown inside the controls' Settings group.
-const DOUBLETAP_OPTIONS: { value: DoubleTapAction; label: string }[] = [
-  { value: 'move-open', label: 'Move here & open' },
-  { value: 'open', label: 'Open in place' },
-  { value: 'move', label: 'Move here' },
-  { value: 'off', label: 'Off' },
+// ABOUTME: The selectable open-gestures used to build the "Open gesture" field shown inside the controls' Settings group.
+const TAP_GESTURE_OPTIONS: { value: TapGesture; label: string }[] = [
+  { value: 'double', label: 'Double-tap' },
+  { value: 'triple', label: 'Triple-tap' },
 ]
 
-// ABOUTME: Shared user preference for what a double-tap on the page does to the floating controls.
+// ABOUTME: Shared user preference for which tap gesture (double- or triple-tap) summons the floating controls.
 /**
- * Shared user preference for the double-tap gesture, backed by
- * localStorage so the choice survives navigation and stays in sync across
- * every mounted DraggableControls in the tab. The root container reads it
- * to wire (or skip) a document-level `dblclick` handler that relocates and
- * opens the controls at the tap point.
+ * Shared user preference for the open-gesture, backed by localStorage so the
+ * choice survives navigation and stays in sync across every mounted
+ * DraggableControls in the tab. The root container reads it to decide how
+ * many rapid clicks (2 or 3) relocate and open the controls at the tap
+ * point; `OpenControlsHint` / `OpenControlsHelp` read it to describe the
+ * gesture in plain English.
  */
-export function useDoubleTapAction() {
-  return usePersistedPref<DoubleTapAction>(
-    DOUBLETAP_KEY,
-    DEFAULT_DOUBLETAP,
-    isDoubleTapAction,
+export function useTapGesture() {
+  return usePersistedPref<TapGesture>(
+    TAP_GESTURE_KEY,
+    DEFAULT_TAP_GESTURE,
+    isTapGesture,
   )
 }
 
-// ABOUTME: Shared user preference for the floating controls' style (Button FAB vs Edge Strip).
+// ABOUTME: Shared user preference for the floating controls' style (Button FAB vs Hidden).
 /**
  * Shared user preference for the floating controls' style (Button FAB vs
- * Edge Strip). Backed by localStorage so the choice survives navigation
- * between the showcase pages and the standalone apps, and stays in sync
- * across every mounted DraggableControls in the same tab.
+ * Hidden). Backed by localStorage so the choice survives navigation between
+ * the showcase pages and the standalone apps, and stays in sync across
+ * every mounted DraggableControls in the same tab.
  */
 export function useControlsStyle() {
   return usePersistedPref<ControlsStyle>(
@@ -94,7 +94,100 @@ export function useControlsStyle() {
   )
 }
 
-// ABOUTME: A single control field descriptor: key, label, short label for the Strip icon, current value, options array, onChange callback, and an optional kind='palette' flag that substitutes PalettePicker for a generic select.
+// ABOUTME: Plain-English sentence describing how to open the floating preferences for a given style and tap gesture; reused by the page info popovers (OpenControlsHelp) and the Hidden-mode "?" badge (OpenControlsHint).
+/**
+ * Builds the one-sentence "how to open the preferences" explanation. When
+ * the float is hidden there is no on-screen affordance, so the sentence
+ * leads with the tap gesture; when the Button FAB is shown, it names the
+ * button first and offers the gesture as a shortcut. The gesture word
+ * (double-/triple-tap) tracks the user's `useTapGesture` choice so the help
+ * never drifts from the behaviour.
+ */
+export function openControlsHelpText(style: ControlsStyle, gesture: TapGesture): string {
+  const lower = gesture === 'triple' ? 'triple-tap' : 'double-tap'
+  const Upper = gesture === 'triple' ? 'Triple-tap' : 'Double-tap'
+  return style === 'hidden'
+    ? `The floating preferences are hidden. ${Upper} anywhere on the page to open them where you tap.`
+    : `Open the floating preferences from the ◉ button, or ${lower} anywhere on the page to summon them where you tap.`
+}
+
+// ABOUTME: One-line "how to open preferences" note for a page's info/help popover, reading the live controls style and open-gesture so the help stays accurate whether the float is shown or hidden.
+/**
+ * Drop this inside a page's info popover (the help section) so every surface
+ * states how to reach the preferences. It reads `useControlsStyle` and
+ * `useTapGesture` and renders `openControlsHelpText`, re-rendering whenever
+ * the user changes either pref — so a reader who has hidden the float still
+ * learns the tap gesture, and a reader on Button learns the shortcut.
+ */
+export function OpenControlsHelp() {
+  const [style] = useControlsStyle()
+  const [gesture] = useTapGesture()
+  return <p className="ctrl-howto">{openControlsHelpText(style, gesture)}</p>
+}
+
+// ABOUTME: A "?" badge shown beside a page's info button only when the floating preferences are Hidden; clicking it reveals a short popover explaining the tap gesture that opens them, keeping the controls discoverable with no float on screen.
+/**
+ * Renders nothing while the Button FAB is on screen (the FAB is its own
+ * affordance). When the float is hidden it shows a circular "?" next to the
+ * page's info "i" and, on click, a small popover with the same sentence
+ * `OpenControlsHelp` shows — so a user who picked Hidden can still discover
+ * the double-/triple-tap that summons the panel. Closes on outside click or
+ * Escape, mirroring the page info popover.
+ */
+export function OpenControlsHint() {
+  const [style] = useControlsStyle()
+  const [gesture] = useTapGesture()
+  const [open, setOpen] = useState(false)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const popRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const onDoc = (e: MouseEvent) => {
+      const t = e.target as Node
+      if (btnRef.current?.contains(t) || popRef.current?.contains(t)) return
+      setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDoc)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDoc)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  if (style !== 'hidden') return null
+
+  return (
+    <span className="ctrl-hint">
+      <button
+        ref={btnRef}
+        type="button"
+        className="ctrl-hint__btn"
+        aria-label="How to open preferences"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+      >
+        ?
+      </button>
+      {open && (
+        <div
+          ref={popRef}
+          role="region"
+          aria-label="How to open preferences"
+          className="ctrl-hint__popover"
+        >
+          {openControlsHelpText(style, gesture)}
+        </div>
+      )}
+    </span>
+  )
+}
+
+// ABOUTME: A single control field descriptor: key, label, short label, current value, options array, onChange callback, and an optional kind='palette' flag that substitutes PalettePicker for a generic select.
 export type Field = {
   key: string
   label: string
@@ -103,11 +196,11 @@ export type Field = {
   options: { value: string; label: string }[]
   onChange: (next: string) => void
   /**
-   * Optional marker that swaps the generic Select / StripPopover for a
-   * dedicated picker. `'palette'` substitutes `PalettePicker`, which
-   * handles tag search, pinned / active groups, inline arrow cycling,
-   * and custom-group management. The full palette registry is read by
-   * the picker itself, so `options` can be empty for palette fields.
+   * Optional marker that swaps the generic Select for a dedicated picker.
+   * `'palette'` substitutes `PalettePicker`, which handles tag search,
+   * pinned / active groups, inline arrow cycling, and custom-group
+   * management. The full palette registry is read by the picker itself, so
+   * `options` can be empty for palette fields.
    */
   kind?: 'palette'
 }
@@ -137,7 +230,7 @@ const OPEN_KEY = (s: ControlsStyle) => `iux-controls-open-${s}`
 // ABOUTME: Factory-default pixel positions for each controls style when no saved position exists on a desktop viewport.
 const DEFAULTS: Record<ControlsStyle, Position> = {
   button: { x: 24, y: 24 },
-  strip: { x: 16, y: 96 },
+  hidden: { x: 24, y: 24 },
 }
 
 // ABOUTME: Clamps n to the inclusive [lo, hi] range; used to keep the draggable container within the viewport bounds.
@@ -151,22 +244,19 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
  * title is clear and the FAB sits in the thumb-reachable zone. The check
  * uses BOTH width and height so phone landscape (e.g. iPhone 13 at
  * 664×390 — just over the 640px width breakpoint) is still treated as a
- * phone. Strip starts mid-left on desktop; on phones we keep it on the
- * left edge but push it down past the header.
+ * phone. Hidden has no on-screen anchor until a tap relocates it, so its
+ * default only matters for the first summon and reuses the desktop spot.
  */
-// ABOUTME: Computes the initial position for a controls style, placing the button FAB in the bottom-right thumb zone and the strip near the left edge on phone-sized viewports (≤640px wide or ≤480px tall).
+// ABOUTME: Computes the initial position for a controls style, placing the button FAB in the bottom-right thumb zone on phone-sized viewports (≤640px wide or ≤480px tall).
 function defaultPos(style: ControlsStyle): Position {
   if (typeof window === 'undefined') return DEFAULTS[style]
   const isPhone = window.innerWidth <= 640 || window.innerHeight <= 480
-  if (isPhone) {
-    if (style === 'button') {
-      // 3rem button + 16px margin on each side ≈ 64px.
-      return {
-        x: Math.max(16, window.innerWidth - 64),
-        y: Math.max(16, window.innerHeight - 96),
-      }
+  if (isPhone && style === 'button') {
+    // 3rem button + 16px margin on each side ≈ 64px.
+    return {
+      x: Math.max(16, window.innerWidth - 64),
+      y: Math.max(16, window.innerHeight - 96),
     }
-    return { x: 16, y: 72 }
   }
   return DEFAULTS[style]
 }
@@ -200,7 +290,7 @@ function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
 // ABOUTME: The two available controls-style options rendered by the StyleSwitcher radiogroup.
 const STYLE_OPTIONS: { value: ControlsStyle; label: string }[] = [
   { value: 'button', label: 'Button' },
-  { value: 'strip', label: 'Strip' },
+  { value: 'hidden', label: 'Hidden' },
 ]
 
 // ABOUTME: Vertical half of the popover quadrant — 'up' means the panel opens upward from the anchor, 'down' means downward.
@@ -210,7 +300,7 @@ type HorizontalDir = 'left' | 'right'
 // ABOUTME: The four possible quadrants for the Button-variant panel, expressed as a vertical-horizontal direction pair.
 type Quadrant = `${VerticalDir}-${HorizontalDir}`
 
-// ABOUTME: Inspects the trigger button's bounding rect and returns the quadrant with the most available viewport space, used to anchor the floating panel away from viewport edges.
+// ABOUTME: Inspects the trigger's bounding rect and returns the quadrant with the most available viewport space, used to anchor the floating panel away from viewport edges.
 function pickQuadrant(rect: DOMRect): Quadrant {
   const spaceBelow = window.innerHeight - rect.bottom
   const spaceAbove = rect.top
@@ -255,18 +345,20 @@ function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
   }, [ref, active])
 }
 
-// ABOUTME: Root draggable container that handles pointer-based drag positioning, viewport clamping on resize/orientation-change, and localStorage persistence of position and open state; delegates to ButtonVariant or StripVariant based on the style prop.
+// ABOUTME: Root draggable container that handles pointer-based drag positioning, viewport clamping on resize/orientation-change, the tap-to-summon gesture, and localStorage persistence of position and open state; delegates rendering to ButtonVariant (which shows a FAB for 'button' or an invisible anchor for 'hidden').
 /**
  * Uses pointer capture (`setPointerCapture`) for smooth drag without losing
- * the pointer on fast movement. Position is stored per style key so Button and
- * Strip remember independent locations. Delegates rendering to `ButtonVariant`
- * (FAB + expandable panel) or `StripVariant` (icon row with per-slot popovers)
- * according to the `style` prop; both sub-renderers receive shared drag handlers.
+ * the pointer on fast movement. Position is stored per style key so Button
+ * and Hidden remember independent locations. A document-level click handler
+ * implements tap-to-summon: a double- or triple-click (per `useTapGesture`)
+ * anywhere outside the controls relocates them under the tap and opens them
+ * — the only way to reach the panel in Hidden mode, and a shortcut in Button
+ * mode. Rendering is delegated to `ButtonVariant`.
  */
 export function DraggableControls({ style, onStyleChange, fields, nav }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
-  const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'button'))
-  const [doubleTap, setDoubleTap] = useDoubleTapAction()
+  const [open, setOpen] = useState<boolean>(() => loadOpen(style, false))
+  const [gesture, setGesture] = useTapGesture()
   const containerRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{
     sx: number; sy: number; ox: number; oy: number; pointerId: number; el: Element
@@ -274,7 +366,7 @@ export function DraggableControls({ style, onStyleChange, fields, nav }: Props) 
 
   useEffect(() => {
     setPos(loadPos(style))
-    setOpen(loadOpen(style, style !== 'button'))
+    setOpen(loadOpen(style, false))
   }, [style])
 
   useEffect(() => {
@@ -316,34 +408,34 @@ export function DraggableControls({ style, onStyleChange, fields, nav }: Props) 
   }, [style, open])
 
   /*
-   * Double-tap-to-summon. When enabled, a double-click anywhere on the
-   * page (except inside the controls themselves) relocates the container
-   * so its top-left sits at the tap point — clamped to stay on-screen —
-   * and/or opens it, per the user's chosen action. Listening on `dblclick`
-   * covers both mouse double-clicks and the touch double-tap browsers
-   * synthesise from it.
+   * Tap-to-summon. A double- or triple-click anywhere on the page (except
+   * inside the controls themselves) relocates the container so its top-left
+   * sits at the tap point — clamped to stay on-screen — and opens it. The
+   * gesture always moves AND opens: it is the only way to reach the panel in
+   * Hidden mode and a shortcut in Button mode. `click`'s `detail` counts the
+   * rapid-click run (2 for double, 3 for triple), which covers both mouse
+   * multi-clicks and the touch taps browsers synthesise from them.
    */
   useEffect(() => {
-    if (doubleTap === 'off') return
-    const onDouble = (e: MouseEvent) => {
+    const want = gesture === 'triple' ? 3 : 2
+    const onClick = (e: MouseEvent) => {
+      if (e.detail !== want) return
       const el = containerRef.current
       if (!el) return
-      // Ignore double-clicks that land inside the controls — those are
-      // interactions with the panel, not a request to move it.
+      // Ignore taps that land inside the controls — those are interactions
+      // with the panel, not a request to summon it.
       if (el.contains(e.target as Node)) return
-      if (doubleTap === 'move-open' || doubleTap === 'move') {
-        const w = el.offsetWidth
-        const h = el.offsetHeight
-        setPos({
-          x: clamp(e.clientX, 4, Math.max(4, window.innerWidth - w - 4)),
-          y: clamp(e.clientY, 4, Math.max(4, window.innerHeight - h - 4)),
-        })
-      }
-      if (doubleTap === 'move-open' || doubleTap === 'open') setOpen(true)
+      const w = el.offsetWidth
+      const h = el.offsetHeight
+      setPos({
+        x: clamp(e.clientX, 4, Math.max(4, window.innerWidth - w - 4)),
+        y: clamp(e.clientY, 4, Math.max(4, window.innerHeight - h - 4)),
+      })
+      setOpen(true)
     }
-    document.addEventListener('dblclick', onDouble)
-    return () => document.removeEventListener('dblclick', onDouble)
-  }, [doubleTap])
+    document.addEventListener('click', onClick)
+    return () => document.removeEventListener('click', onClick)
+  }, [gesture])
 
   const onDragStart = (e: ReactPointerEvent) => {
     if (e.button !== 0) return
@@ -384,19 +476,18 @@ export function DraggableControls({ style, onStyleChange, fields, nav }: Props) 
     onPointerCancel: onDragEnd,
   }
 
-  // The double-tap behaviour is a control of the controls themselves, so
-  // it's injected here rather than passed in by every page — it lands in
-  // the Settings group (Button) / an icon slot (Strip) alongside the
-  // page's own fields.
-  const doubleTapField: Field = {
-    key: 'doubletap',
-    label: 'Double-tap',
+  // The open-gesture is a control of the controls themselves, so it's
+  // injected here rather than passed in by every page — it lands in the
+  // Settings group alongside the page's own fields.
+  const gestureField: Field = {
+    key: 'gesture',
+    label: 'Open gesture',
     short: '⊙',
-    value: doubleTap,
-    options: DOUBLETAP_OPTIONS,
-    onChange: v => setDoubleTap(v as DoubleTapAction),
+    value: gesture,
+    options: TAP_GESTURE_OPTIONS,
+    onChange: v => setGesture(v as TapGesture),
   }
-  const allFields = [...fields, doubleTapField]
+  const allFields = [...fields, gestureField]
 
   const containerStyle: CSSProperties = { left: pos.x, top: pos.y }
   const summaries = allFields.map(f => {
@@ -412,35 +503,21 @@ export function DraggableControls({ style, onStyleChange, fields, nav }: Props) 
       role="region"
       aria-label="Demo controls"
     >
-      {style === 'button' && (
-        <ButtonVariant
-          fields={allFields}
-          nav={nav}
-          summaries={summaries}
-          open={open}
-          setOpen={setOpen}
-          dragHandlers={dragHandlers}
-          variantStyle={style}
-          onStyleChange={onStyleChange}
-        />
-      )}
-      {style === 'strip' && (
-        <StripVariant
-          fields={allFields}
-          nav={nav}
-          summaries={summaries}
-          open={open}
-          setOpen={setOpen}
-          dragHandlers={dragHandlers}
-          variantStyle={style}
-          onStyleChange={onStyleChange}
-        />
-      )}
+      <ButtonVariant
+        fields={allFields}
+        nav={nav}
+        summaries={summaries}
+        open={open}
+        setOpen={setOpen}
+        dragHandlers={dragHandlers}
+        variantStyle={style}
+        onStyleChange={onStyleChange}
+      />
     </div>
   )
 }
 
-// ABOUTME: Shared props passed down to both ButtonVariant and StripVariant — the field list, the optional in-controls nav bundle, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback.
+// ABOUTME: Props passed down to ButtonVariant — the field list, the optional in-controls nav bundle, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback.
 type VariantProps = {
   fields: Field[]
   nav?: NavControls
@@ -457,7 +534,7 @@ type VariantProps = {
   onStyleChange: (next: ControlsStyle) => void
 }
 
-// ABOUTME: Radiogroup of two buttons (Button / Strip) that lets the user switch the controls presentation style; used in the footer of both ButtonVariant and StripVariant.
+// ABOUTME: Radiogroup of two buttons (Button / Hidden) that lets the user switch the controls presentation style; used in the footer of the Button panel so a user who summoned a Hidden panel can switch back to the always-visible FAB.
 function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (next: ControlsStyle) => void }) {
   return (
     <div className="ctrl__style-switcher" role="radiogroup" aria-label="Controls style">
@@ -477,24 +554,26 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
   )
 }
 
-/* ===== Variation A: Floating Button ===== */
-// ABOUTME: Renders the Button-style controls variant — a circular FAB that opens a floating panel containing the palette picker, a collapsible Settings group for other fields, and a footer style-switcher; computes available height and panel quadrant on open.
+/* ===== Button / Hidden variant ===== */
+// ABOUTME: Renders the floating panel and its trigger. For 'button' the trigger is a draggable circular FAB; for 'hidden' it is an invisible zero-size anchor (the panel is summoned by the tap gesture instead). The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open.
 function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const panelRef = useRef<HTMLDivElement>(null)
-  const triggerRef = useRef<HTMLButtonElement>(null)
+  const triggerRef = useRef<HTMLElement>(null)
   const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
   const [maxHeight, setMaxHeight] = useState<number | null>(null)
+  const hidden = variantStyle === 'hidden'
 
   /*
    * Recompute which corner the panel expands toward AND cap its height to
    * the space actually available in that direction. Up quadrants anchor by
-   * the panel's bottom edge (at the FAB top, less the 0.5rem gap), so the
-   * room to grow is everything from there up to the top margin; down
+   * the panel's bottom edge (at the trigger top, less the 0.5rem gap), so
+   * the room to grow is everything from there up to the top margin; down
    * quadrants mirror it downward. Without this cap a bottom-anchored panel
    * taller than the space above runs straight off the top of the screen
    * with its first rows clipped and unreachable — `max-height` alone
    * (sized to the viewport) doesn't help, because it measures content, not
-   * the gap above the anchor.
+   * the gap above the anchor. In Hidden mode the trigger is a zero-size
+   * anchor at the tap point, so the rect still drives the quadrant.
    */
   const recompute = () => {
     const el = triggerRef.current
@@ -548,17 +627,25 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
 
   return (
     <div className="ctrl-button">
-      <button
-        ref={triggerRef}
-        type="button"
-        className={`ctrl-button__fab${open ? ' ctrl-button__fab--open' : ''}`}
-        aria-label={open ? 'Close controls. Drag to move.' : `Open controls. Current: ${summaries.join(', ')}. Drag to move.`}
-        aria-expanded={open}
-        onClick={handleClick}
-        {...dragHandlers}
-      >
-        <span className="ctrl-button__fab-icon" aria-hidden="true">{open ? '×' : '◉'}</span>
-      </button>
+      {hidden ? (
+        <span
+          ref={triggerRef as RefObject<HTMLSpanElement>}
+          className="ctrl-button__anchor"
+          aria-hidden="true"
+        />
+      ) : (
+        <button
+          ref={triggerRef as RefObject<HTMLButtonElement>}
+          type="button"
+          className={`ctrl-button__fab${open ? ' ctrl-button__fab--open' : ''}`}
+          aria-label={open ? 'Close controls. Drag to move.' : `Open controls. Current: ${summaries.join(', ')}. Drag to move.`}
+          aria-expanded={open}
+          onClick={handleClick}
+          {...dragHandlers}
+        >
+          <span className="ctrl-button__fab-icon" aria-hidden="true">{open ? '×' : '◉'}</span>
+        </button>
+      )}
       {open && (
         <div
           ref={panelRef}
@@ -636,11 +723,11 @@ function NavGroup({ nav }: { nav: NavControls }) {
 }
 
 /**
- * Wraps the non-palette fields (view, layout, nav, motion) in one
- * collapsed-by-default disclosure so the panel stays compact — the palette
- * picker is the everyday control, and these sit one click away under
- * "Settings" rather than always stacked open. Each field keeps its own
- * inner CollapsibleSection so only the chosen one expands.
+ * Wraps the non-palette fields (view, layout, nav, motion, open-gesture) in
+ * one collapsed-by-default disclosure so the panel stays compact — the
+ * palette picker is the everyday control, and these sit one click away under
+ * "Settings" rather than always stacked open. Each field keeps its own inner
+ * CollapsibleSection so only the chosen one expands.
  */
 // ABOUTME: Persisted collapsible disclosure that wraps the non-palette fields under a "Settings" heading; persists its own open state to localStorage so it re-opens in the same state on next visit.
 function SettingsGroup({ fields }: { fields: Field[] }) {
@@ -719,337 +806,6 @@ function CollapsibleSection({ field }: { field: Field }) {
             </div>
           )}
         </div>
-      )}
-    </div>
-  )
-}
-
-// ABOUTME: Props for the StripPopover sub-component — the field to display, the computed quadrant for positioning, the slot button's bounding rect for max-height calculation, and an onSelect callback.
-interface StripPopoverProps {
-  field: Field
-  quadrant: StripQuadrant
-  slotRect: DOMRect | null
-  onSelect: (value: string) => void
-}
-
-// ABOUTME: Floating popover for a single Strip slot — renders the field label, an optional search input (above SEARCHABLE_THRESHOLD options), a filtered option list, and fires onSelect when an option is chosen.
-function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps) {
-  const [query, setQuery] = useState('')
-  const searchable = field.options.length >= SEARCHABLE_THRESHOLD
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (searchable) inputRef.current?.focus()
-  }, [searchable])
-
-  const filtered = useMemo(() => {
-    if (!searchable) return field.options
-    const q = query.trim().toLowerCase()
-    if (!q) return field.options
-    return field.options.filter(o => o.label.toLowerCase().includes(q))
-  }, [searchable, query, field.options])
-
-  /*
-   * Grow max-height to fill the viewport space available from the slot
-   * anchor instead of capping at a fixed ~22rem. Without this, long lists
-   * (e.g. the 40+ palette catalogue) get clipped and force an awkward
-   * inner scroll even when there's plenty of room on screen. The CSS
-   * custom property keeps the mobile media-query override authoritative.
-   *
-   * Cap at the actual available space — flooring to a minimum that
-   * exceeds it pushes the popover past the opposite viewport edge.
-   */
-  const dynamicStyle = useMemo<CSSProperties>(() => {
-    if (!slotRect) return {}
-    const margin = 16
-    const available = quadrant.endsWith('down')
-      ? window.innerHeight - slotRect.top - margin
-      : slotRect.bottom - margin
-    return { '--popover-max-height': `${Math.max(0, Math.round(available))}px` } as CSSProperties
-  }, [slotRect, quadrant])
-
-  return (
-    <div
-      className={`ctrl-strip__popover ctrl-strip__popover--${quadrant}`}
-      style={dynamicStyle}
-      role="menu"
-      aria-label={field.label}
-    >
-      <div className="ctrl-strip__popover-title">{field.label}</div>
-      {searchable && (
-        <input
-          ref={inputRef}
-          type="text"
-          className="ctrl-strip__popover-search"
-          placeholder={`Filter ${field.options.length} options…`}
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          aria-label={`Filter ${field.label} options`}
-        />
-      )}
-      {filtered.length === 0 ? (
-        <div className="ctrl-strip__popover-empty">No matches</div>
-      ) : (
-        <ul className="ctrl-strip__list">
-          {filtered.map(o => {
-            const selected = o.value === field.value
-            return (
-              <li key={o.value}>
-                <button
-                  type="button"
-                  role="menuitemradio"
-                  aria-checked={selected}
-                  className={`ctrl-strip__list-item${selected ? ' ctrl-strip__list-item--selected' : ''}`}
-                  onClick={() => onSelect(o.value)}
-                >
-                  {o.label}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-    </div>
-  )
-}
-
-/* ===== Variation B: Edge Strip ===== */
-// ABOUTME: The four possible quadrants for Strip-variant popovers, combining horizontal (left/right) and vertical (up/down) directions relative to the slot button.
-type StripQuadrant = `${HorizontalDir}-${VerticalDir}`
-
-// ABOUTME: Reserved activeKey for the Strip's Navigation slot, kept out of the field-key namespace so it can share the same open/close machinery as the field slots.
-const NAV_SLOT_KEY = '__nav'
-
-// ABOUTME: Strip-variant popover that lists the cross-page nav links (shown when the active layout is 'in-controls'); mirrors StripPopover's positioning and chrome but renders routing-aware NavAnchors instead of radio options, closing the popover after a link is followed.
-function StripNavPopover({
-  nav,
-  quadrant,
-  slotRect,
-  onNavigate,
-}: {
-  nav: NavControls
-  quadrant: StripQuadrant
-  slotRect: DOMRect | null
-  onNavigate: () => void
-}) {
-  const dynamicStyle = useMemo<CSSProperties>(() => {
-    if (!slotRect) return {}
-    const margin = 16
-    const available = quadrant.endsWith('down')
-      ? window.innerHeight - slotRect.top - margin
-      : slotRect.bottom - margin
-    return { '--popover-max-height': `${Math.max(0, Math.round(available))}px` } as CSSProperties
-  }, [slotRect, quadrant])
-
-  return (
-    <nav
-      className={`ctrl-strip__popover ctrl-strip__popover--${quadrant}`}
-      style={dynamicStyle}
-      aria-label="Site sections"
-    >
-      <div className="ctrl-strip__popover-title">Navigation</div>
-      <ul className="ctrl-strip__list">
-        {nav.links.map(link => {
-          const active = link.id === nav.activeId
-          return (
-            <li key={link.id} onClick={onNavigate}>
-              <NavAnchor
-                link={link}
-                active={active}
-                className={`ctrl-strip__list-item${active ? ' ctrl-strip__list-item--selected' : ''}`}
-              />
-            </li>
-          )
-        })}
-      </ul>
-    </nav>
-  )
-}
-
-// ABOUTME: Props for the PaletteStripSlot wrapper — the palette field, popover open state, the computed quadrant and slot rect for positioning, and toggle/close event handlers.
-interface PaletteStripSlotProps {
-  field: Field
-  isActive: boolean
-  quadrant: StripQuadrant
-  slotRect: DOMRect | null
-  onToggle: (e: ReactMouseEvent<HTMLButtonElement>) => void
-  onClose: () => void
-}
-
-// ABOUTME: Strip-variant wrapper around PalettePicker that forwards the slot button click event so StripVariant can capture the bounding rect for popover positioning alongside generic field slots.
-/**
- * Strip-variant wrapper for the palette picker. Forwards the slot
- * button's click event to the parent so it can capture the rect for
- * popover positioning the same way `toggleSlot` does for generic fields.
- */
-function PaletteStripSlot({
-  field,
-  isActive,
-  quadrant,
-  slotRect,
-  onToggle,
-  onClose,
-}: PaletteStripSlotProps) {
-  return (
-    <PalettePicker
-      field={field}
-      variant="strip"
-      popoverOpen={isActive}
-      onSlotClick={onToggle}
-      onPanelClose={onClose}
-      popoverQuadrant={quadrant}
-      slotRect={slotRect}
-    />
-  )
-}
-
-// ABOUTME: Inspects a slot button's bounding rect and returns the StripQuadrant with the most viewport space on each axis, determining which direction the Strip popover opens.
-function pickStripQuadrant(rect: DOMRect): StripQuadrant {
-  const spaceRight = window.innerWidth - rect.right
-  const spaceLeft = rect.left
-  const spaceDown = window.innerHeight - rect.top
-  const spaceUp = rect.bottom
-  const h: HorizontalDir = spaceRight >= spaceLeft ? 'right' : 'left'
-  const v: VerticalDir = spaceDown >= spaceUp ? 'down' : 'up'
-  return `${h}-${v}`
-}
-
-// ABOUTME: Renders the Strip-style controls variant — a vertical icon bar with a grip handle and per-slot expand buttons that open positioned popovers; palette fields use PaletteStripSlot, others use StripPopover.
-function StripVariant({ fields, nav, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
-  const [activeKey, setActiveKey] = useState<string | null>(null)
-  const [popoverQuadrant, setPopoverQuadrant] = useState<StripQuadrant>('right-down')
-  const [slotRect, setSlotRect] = useState<DOMRect | null>(null)
-  const stripRef = useRef<HTMLDivElement>(null)
-
-  const toggleSlot = (key: string, e: ReactMouseEvent<HTMLButtonElement>) => {
-    if (activeKey === key) {
-      setActiveKey(null)
-      return
-    }
-    const rect = e.currentTarget.getBoundingClientRect()
-    setPopoverQuadrant(pickStripQuadrant(rect))
-    setSlotRect(rect)
-    setActiveKey(key)
-  }
-
-  useEffect(() => {
-    if (!activeKey) return
-    const onDocPointer = (e: MouseEvent) => {
-      const t = e.target as Node
-      if (stripRef.current && !stripRef.current.contains(t)) {
-        setActiveKey(null)
-      }
-    }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActiveKey(null)
-    }
-    document.addEventListener('mousedown', onDocPointer)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onDocPointer)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [activeKey])
-
-  return (
-    <div className="ctrl-strip" ref={stripRef}>
-      <button
-        type="button"
-        className="ctrl-strip__grip"
-        aria-label="Drag controls"
-        {...dragHandlers}
-      >
-        <span className="ctrl-strip__grip-dots" aria-hidden="true">⋮⋮</span>
-      </button>
-      {open ? (
-        <>
-          <div className="ctrl-strip__icons" role="toolbar" aria-label="Demo controls">
-            {[...fields.filter(f => f.kind === 'palette'), ...fields.filter(f => f.kind !== 'palette')].map(f => {
-              const opt = f.options.find(o => o.value === f.value)
-              const isActive = activeKey === f.key
-              if (f.kind === 'palette') {
-                return (
-                  <PaletteStripSlot
-                    key={f.key}
-                    field={f}
-                    isActive={isActive}
-                    quadrant={popoverQuadrant}
-                    slotRect={slotRect}
-                    onToggle={e => toggleSlot(f.key, e)}
-                    onClose={() => setActiveKey(null)}
-                  />
-                )
-              }
-              return (
-                <div key={f.key} className="ctrl-strip__slot">
-                  <button
-                    type="button"
-                    className={`ctrl-strip__icon${isActive ? ' ctrl-strip__icon--active' : ''}`}
-                    aria-label={`${f.label}: ${opt?.label ?? f.value}`}
-                    aria-expanded={isActive}
-                    onClick={e => toggleSlot(f.key, e)}
-                  >
-                    <span className="ctrl-strip__icon-short" aria-hidden="true">{f.short}</span>
-                    <span className="ctrl-strip__icon-val">{opt?.label ?? f.value}</span>
-                  </button>
-                  {isActive && (
-                    <StripPopover
-                      field={f}
-                      quadrant={popoverQuadrant}
-                      slotRect={slotRect}
-                      onSelect={value => {
-                        f.onChange(value)
-                        setActiveKey(null)
-                      }}
-                    />
-                  )}
-                </div>
-              )
-            })}
-            {nav?.inControls && (
-              <div className="ctrl-strip__slot">
-                <button
-                  type="button"
-                  className={`ctrl-strip__icon${activeKey === NAV_SLOT_KEY ? ' ctrl-strip__icon--active' : ''}`}
-                  aria-label="Site sections"
-                  aria-expanded={activeKey === NAV_SLOT_KEY}
-                  onClick={e => toggleSlot(NAV_SLOT_KEY, e)}
-                >
-                  <span className="ctrl-strip__icon-short" aria-hidden="true">☰</span>
-                  <span className="ctrl-strip__icon-val">Navigation</span>
-                </button>
-                {activeKey === NAV_SLOT_KEY && (
-                  <StripNavPopover
-                    nav={nav}
-                    quadrant={popoverQuadrant}
-                    slotRect={slotRect}
-                    onNavigate={() => setActiveKey(null)}
-                  />
-                )}
-              </div>
-            )}
-          </div>
-          <div className="ctrl-strip__footer">
-            <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
-            <button
-              type="button"
-              className="ctrl-strip__collapse"
-              aria-label="Collapse controls"
-              onClick={() => { setActiveKey(null); setOpen(false) }}
-            >
-              −
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          type="button"
-          className="ctrl-strip__expand"
-          aria-label="Expand controls"
-          onClick={() => setOpen(true)}
-        >
-          +
-        </button>
       )}
     </div>
   )

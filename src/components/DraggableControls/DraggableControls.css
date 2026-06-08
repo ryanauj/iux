@@ -1,10 +1,11 @@
 /*
- * DraggableControls — floating, draggable, sticky, collapsible
- * variants. Both variants use position: fixed so they stay in view as the
- * page scrolls. Drag handles set pointer capture so cursor tracking is
- * smooth across iframes / other elements. When opened, the menu chooses
- * which corner (up/down × left/right) to expand toward based on which
- * direction has the most open space.
+ * DraggableControls — a floating, draggable, collapsible controls overlay.
+ * Uses position: fixed so it stays in view as the page scrolls. The drag
+ * handle sets pointer capture so cursor tracking is smooth across iframes /
+ * other elements. When opened, the panel chooses which corner (up/down ×
+ * left/right) to expand toward based on which direction has the most open
+ * space. The 'hidden' style shows no FAB — a zero-size anchor stands in for
+ * the trigger and the panel is summoned by the tap gesture.
  */
 
 .ctrl {
@@ -12,16 +13,27 @@
   z-index: 100;
   font-family: var(--type-label-family, system-ui);
   color: var(--color-content-primary, CanvasText);
-  /* Prevent text selection while dragging grip handles */
+  /* Prevent text selection while dragging the grip handle */
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* ===== Variation A: Floating Button ===== */
+/* ===== Button / Hidden variant ===== */
 
 .ctrl-button {
   display: inline-block;
   position: relative;
+}
+
+/*
+ * Hidden-style trigger. A zero-size, invisible anchor sitting at the
+ * container's top-left (the tap point, once summoned). It gives the panel a
+ * rect to anchor and quadrant from without putting anything on screen.
+ */
+.ctrl-button__anchor {
+  display: block;
+  width: 0;
+  height: 0;
 }
 
 .ctrl-button__fab {
@@ -77,7 +89,7 @@
   max-width: calc(100vw - 32px);
   /*
    * Cap the panel to the space available toward the corner it expands into
-   * — JS sets `--panel-max-height` from the FAB's rect (see
+   * — JS sets `--panel-max-height` from the trigger's rect (see
    * DraggableControls.tsx). This is what keeps a bottom-anchored (up
    * quadrant) panel from running off the top of the viewport; the panel
    * scrolls internally instead, with its first row pinned at the top
@@ -110,12 +122,12 @@
 }
 
 /*
- * The button-variant panel is now a stack: palette picker at the top
- * (full-width tile with its own expand-in-place panel), then a column
- * of slim disclosure rows for the other fields, then the style-switcher
- * footer. The disclosure rows mirror the look of the palette picker's
- * own Browse/Preferences toggles so the whole panel reads as one
- * collapsible surface instead of two competing systems.
+ * The panel is a stack: palette picker at the top (full-width tile with its
+ * own expand-in-place panel), then a column of slim disclosure rows for the
+ * other fields, then the style-switcher footer. The disclosure rows mirror
+ * the look of the palette picker's own Browse/Preferences toggles so the
+ * whole panel reads as one collapsible surface instead of two competing
+ * systems.
  */
 .ctrl-button__palette {
   display: flex;
@@ -381,261 +393,6 @@
   opacity: 1;
 }
 
-/* ===== Variation B: Edge Strip ===== */
-
-.ctrl-strip {
-  display: inline-flex;
-  flex-direction: column;
-  background: var(--color-surface-raised, Canvas);
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  border-radius: var(--radius-md, 8px);
-  box-shadow: var(--elevation-overlay, none);
-  overflow: visible;
-  width: 12rem;
-}
-
-.ctrl-strip__grip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  background: var(--color-surface-sunken, Canvas);
-  border: none;
-  border-bottom: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-  color: var(--color-content-muted, GrayText);
-  cursor: grab;
-  touch-action: none;
-  font: inherit;
-  font-size: 0.7rem;
-  border-radius: var(--radius-md, 8px) var(--radius-md, 8px) 0 0;
-}
-
-.ctrl-strip__grip:active {
-  cursor: grabbing;
-}
-
-.ctrl-strip__grip-dots {
-  letter-spacing: -0.15em;
-  font-weight: bold;
-  transform: rotate(90deg);
-  display: inline-block;
-}
-
-.ctrl-strip__icons {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-1, 0.25rem);
-  gap: 2px;
-}
-
-.ctrl-strip__slot {
-  position: relative;
-}
-
-.ctrl-strip__icon {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2, 0.5rem);
-  padding: 6px 8px;
-  border: var(--border-width-thin, 1px) solid transparent;
-  background: transparent;
-  color: var(--color-content-primary, CanvasText);
-  border-radius: var(--radius-sm, 4px);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--type-caption-size, 0.75rem);
-  text-align: left;
-}
-
-.ctrl-strip__icon:hover {
-  background: var(--color-surface-sunken, Canvas);
-}
-
-.ctrl-strip__icon--active {
-  background: var(--color-surface-sunken, Canvas);
-  border-color: var(--color-border-default, GrayText);
-}
-
-.ctrl-strip__icon-short {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  background: var(--color-surface-base, Canvas);
-  border: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-  border-radius: var(--radius-sm, 4px);
-  font-weight: var(--type-label-weight, 600);
-  font-size: 0.7rem;
-  flex-shrink: 0;
-}
-
-.ctrl-strip__icon-val {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--color-content-secondary, GrayText);
-}
-
-.ctrl-strip__popover {
-  position: absolute;
-  min-width: 14rem;
-  /*
-   * Grow to fill the viewport space available from the slot anchor —
-   * StripPopover sets `--popover-max-height` from the slot's bounding
-   * rect at open time so long lists (40+ palettes) don't get clipped to
-   * a fixed ~22rem cap with awkward inner scroll. The 22rem fallback
-   * preserves the previous look if the variable isn't set.
-   */
-  max-height: var(--popover-max-height, 22rem);
-  overflow-y: auto;
-  /*
-   * Trap scroll chaining inside the popover so touch/wheel gestures that
-   * hit a scroll limit don't bleed through to the page underneath. Pairs
-   * with PalettePicker dropping its own inner list scroll — there's one
-   * scroller per popover now, and it owns the chain.
-   */
-  overscroll-behavior: contain;
-  /*
-   * Use the surface-overlay token (matches the Select listbox) so glassy
-   * palettes still get a slightly opaque card on top of the page. The
-   * backdrop blur reinforces the layer separation on the same palettes
-   * — without it, a transparent surface stacked over the strip icons
-   * underneath reads as overlapping text on small screens.
-   */
-  background: var(--color-surface-overlay, var(--color-surface-raised, Canvas));
-  backdrop-filter: var(--effect-backdrop-blur-md);
-  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  border-radius: var(--radius-md, 8px);
-  box-shadow: var(--elevation-overlay, none);
-  padding: var(--space-2, 0.5rem);
-  z-index: 10;
-}
-
-.ctrl-strip__popover--right-down {
-  top: 0;
-  left: calc(100% + 6px);
-}
-
-.ctrl-strip__popover--right-up {
-  bottom: 0;
-  left: calc(100% + 6px);
-}
-
-.ctrl-strip__popover--left-down {
-  top: 0;
-  right: calc(100% + 6px);
-}
-
-.ctrl-strip__popover--left-up {
-  bottom: 0;
-  right: calc(100% + 6px);
-}
-
-.ctrl-strip__popover-title {
-  font-size: var(--type-caption-size, 0.7rem);
-  color: var(--color-content-muted, GrayText);
-  text-transform: var(--type-label-text-transform, uppercase);
-  letter-spacing: var(--type-label-tracking, 0.05em);
-  padding: 0 var(--space-2, 0.5rem) var(--space-1, 0.25rem);
-}
-
-.ctrl-strip__popover-search {
-  width: 100%;
-  font: inherit;
-  font-size: var(--type-caption-size, 0.8rem);
-  padding: 6px var(--space-2, 0.5rem);
-  margin-bottom: var(--space-1, 0.25rem);
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  background: var(--color-surface-sunken, Canvas);
-  color: var(--color-content-primary, CanvasText);
-  border-radius: var(--radius-sm, 4px);
-  box-sizing: border-box;
-}
-
-.ctrl-strip__popover-search:focus {
-  outline: var(--effect-focus-ring-width, 2px) var(--effect-focus-ring-style, solid) var(--color-focus-ring, currentColor);
-  outline-offset: var(--effect-focus-ring-offset, 1px);
-  border-color: var(--color-border-focus, currentColor);
-}
-
-.ctrl-strip__popover-empty {
-  padding: var(--space-2, 0.5rem);
-  color: var(--color-content-muted, GrayText);
-  font-size: var(--type-caption-size, 0.8rem);
-  text-align: center;
-}
-
-.ctrl-strip__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.ctrl-strip__list-item {
-  width: 100%;
-  text-align: left;
-  padding: 6px var(--space-2, 0.5rem);
-  border: none;
-  background: transparent;
-  color: var(--color-content-primary, CanvasText);
-  font: inherit;
-  font-size: var(--type-caption-size, 0.8rem);
-  border-radius: var(--radius-sm, 4px);
-  cursor: pointer;
-}
-
-.ctrl-strip__list-item:hover {
-  background: var(--color-surface-sunken, Canvas);
-}
-
-/* Nav links in the Strip's Navigation popover are anchors, not buttons —
- * strip the default underline so they match the radio-style list rows. */
-a.ctrl-strip__list-item {
-  display: block;
-  text-decoration: none;
-}
-
-.ctrl-strip__list-item--selected {
-  background: var(--color-surface-sunken, Canvas);
-  font-weight: var(--type-label-weight, 600);
-}
-
-.ctrl-strip__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2, 0.5rem);
-  padding: var(--space-2, 0.5rem);
-  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
-}
-
-.ctrl-strip__collapse,
-.ctrl-strip__expand {
-  width: 1.5rem;
-  height: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
-  background: var(--color-surface-raised, Canvas);
-  color: var(--color-content-secondary, GrayText);
-  border-radius: var(--radius-full, 999px);
-  cursor: pointer;
-  font: inherit;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.ctrl-strip__expand {
-  margin: var(--space-2, 0.5rem) auto;
-}
-
 /* ===== Shared style switcher ===== */
 
 .ctrl__style-switcher {
@@ -661,19 +418,77 @@ a.ctrl-strip__list-item {
   color: var(--color-surface-base, Canvas);
 }
 
+/* ===== Open-controls hint ("?") and help line =====
+ *
+ * `OpenControlsHint` renders a "?" badge beside a page's info "i" when the
+ * float is hidden; `OpenControlsHelp` renders a one-line how-to inside the
+ * page info popover. Both keep the controls discoverable without a FAB. The
+ * "?" badge mirrors the info button's pill so the pair reads as a set.
+ */
+.ctrl-hint {
+  position: relative;
+  display: inline-flex;
+}
+
+.ctrl-hint__btn {
+  font: inherit;
+  font-family: var(--type-label-family);
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-label-weight);
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background: var(--color-surface-raised);
+  color: var(--color-content-secondary);
+  border-radius: var(--radius-full, 999px);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ctrl-hint__btn[aria-expanded="true"] {
+  background: var(--color-surface-sunken);
+  color: var(--color-content-primary);
+}
+
+.ctrl-hint__popover {
+  position: absolute;
+  top: calc(100% + var(--space-2, 0.5rem));
+  left: 0;
+  z-index: 50;
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 32px));
+  padding: var(--space-3, 0.75rem);
+  background: var(--color-surface-overlay, var(--color-surface-raised, Canvas));
+  backdrop-filter: var(--effect-backdrop-blur-md);
+  -webkit-backdrop-filter: var(--effect-backdrop-blur-md);
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, GrayText);
+  border-radius: var(--radius-sm, 4px);
+  box-shadow: var(--elevation-overlay, none);
+  color: var(--color-content-secondary, GrayText);
+  font-family: var(--type-body-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-body-line-height, 1.5);
+}
+
+.ctrl-howto {
+  margin: var(--space-3, 0.75rem) 0 0;
+  padding-top: var(--space-2, 0.5rem);
+  border-top: var(--border-width-thin, 1px) solid var(--color-border-subtle, GrayText);
+  color: var(--color-content-secondary, GrayText);
+}
+
 /* ===== Mobile =====
  *
- * On phone widths the two main hazards are (a) the FAB panel's 2-column
- * grid pushing tiles past the viewport edge, and (b) the strip popover
- * being positioned right-of (or left-of) a 10rem strip — strip + 6px gap
- * + 14rem popover ≈ 24rem, which doesn't fit on a 23rem-wide phone.
- *
- * The panel collapses to a single column so each Select trigger and its
- * listbox can use the full available width — long palette labels like
- * "Cyberpunk Neon Noir (gradient-luminescent)" otherwise truncate to the
- * point of being unreadable. The strip popover detaches and re-anchors
- * as a fixed, viewport-margined overlay so it always fits regardless of
- * which side the strip is on.
+ * On phone widths the FAB panel's content can push past the viewport edge,
+ * so the panel uses the full available width and a single scroll container
+ * for the whole window — long palette labels like "Cyberpunk Neon Noir
+ * (gradient-luminescent)" otherwise truncate to the point of being
+ * unreadable.
  */
 
 @media (max-width: 40rem) {
@@ -693,42 +508,5 @@ a.ctrl-strip__list-item {
      */
     max-height: var(--panel-max-height, calc(100vh - 24px));
     max-height: var(--panel-max-height, calc(100dvh - 24px));
-  }
-
-  .ctrl-strip {
-    width: 10rem;
-  }
-
-  /*
-   * Override all four quadrant positions with a viewport-anchored
-   * overlay. The doubled `.ctrl-strip__popover` class lifts specificity
-   * above the unprefixed variant rules above so we don't need !important.
-   *
-   * Anchored near the top of the viewport so the on-screen keyboard
-   * (which the search input may summon) pushes nothing important
-   * out of view — the list scrolls inside the popover instead.
-   */
-  .ctrl-strip__popover.ctrl-strip__popover--right-down,
-  .ctrl-strip__popover.ctrl-strip__popover--right-up,
-  .ctrl-strip__popover.ctrl-strip__popover--left-down,
-  .ctrl-strip__popover.ctrl-strip__popover--left-up {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    right: 16px;
-    bottom: auto;
-    min-width: 0;
-    max-width: none;
-    max-height: min(70vh, calc(100vh - 32px));
-  }
-
-  /* Larger tap targets for list rows. */
-  .ctrl-strip__list-item {
-    padding: 10px var(--space-2, 0.5rem);
-    font-size: var(--type-body-size, 0.9rem);
-  }
-
-  .ctrl-strip__popover-search {
-    padding: 10px var(--space-2, 0.5rem);
   }
 }

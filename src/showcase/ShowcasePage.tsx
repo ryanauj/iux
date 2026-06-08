@@ -7,7 +7,7 @@ import { PaletteRoot } from '../theme/PaletteRoot'
 import type { Component, StoryEntry } from './components'
 import { PaletteShowcase, type ShowcaseLayout } from './PaletteShowcase'
 import './showcase.css'
-import { DraggableControls, useControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
+import { DraggableControls, OpenControlsHelp, OpenControlsHint, useControlsStyle, type Field } from '../components/DraggableControls/DraggableControls'
 import { MOTION_SCALES } from '../theme/motionScales'
 import { ENGINE_GUIDE_IDS } from '../guides/engines/registry'
 import { AppShell } from '../components/AppShell/AppShell'
@@ -370,6 +370,7 @@ export function ShowcasePage({
         >
           i
         </button>
+        <OpenControlsHint />
       </h1>
       {infoOpen && (
         <div
@@ -380,6 +381,7 @@ export function ShowcasePage({
           className="stories__info-popover"
         >
           {infoText}
+          <OpenControlsHelp />
         </div>
       )}
     </>
