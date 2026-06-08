@@ -19,7 +19,7 @@ import { runTest, type RunOptions } from './runner'
 import type { RunResult } from './types'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { useNavLayout } from '../components/AppShell/navLayouts'
+import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 
 // ABOUTME: Discriminated union selecting which visualization is active: the test card workbench ('tests') or the coverage matrix/network ('coverage').
 export type VizId = 'tests' | 'coverage'
@@ -182,6 +182,7 @@ export function TestsPage() {
         style={controlsStyle}
         onStyleChange={setControlsStyle}
         fields={fields}
+        nav={navControlsFor(navLayout, 'tests')}
       />
     </PaletteRoot>
   )

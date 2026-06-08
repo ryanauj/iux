@@ -5,7 +5,7 @@ import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { useNavLayout } from '../components/AppShell/navLayouts'
+import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 import {
   DraggableControls,
   useControlsStyle,
@@ -287,6 +287,7 @@ export function StyleEditorPage() {
           style={controlsStyle}
           onStyleChange={setControlsStyle}
           fields={[chromeField]}
+          nav={navControlsFor(navLayout, 'editor')}
         />
       </AppShell>
     </PaletteRoot>

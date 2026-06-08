@@ -20,6 +20,7 @@ import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import {
   NAV_LAYOUT_OPTIONS,
+  navControlsFor,
   useNavLayout,
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
@@ -163,6 +164,7 @@ export function AppsLanding({ location }: AppsLandingProps) {
         style={controlsStyle}
         onStyleChange={setControlsStyle}
         fields={fields}
+        nav={navControlsFor(navLayout, 'apps')}
       />
     </PaletteRoot>
   )

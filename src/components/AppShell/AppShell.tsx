@@ -1,4 +1,4 @@
-// ABOUTME: Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations.
+// ABOUTME: Renders the page chrome (brand + cross-page nav + main content) in one of eleven configurable nav locations.
 
 import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -21,12 +21,14 @@ export interface AppShellProps {
   brandExtra?: ReactNode
 }
 
-// ABOUTME: Switches on `layoutId` to delegate to one of ten private shell components (TopbarShell, SidebarShell, DockShell, RailShell, DrawerShell, FabShell, FooterShell, TabbarShell), each placing nav, brand, and main slots differently.
+// ABOUTME: Switches on `layoutId` to delegate to one of eleven private shell components (TopbarShell, SidebarShell, DockShell, RailShell, DrawerShell, FabShell, FooterShell, TabbarShell, InControlsShell), each placing nav, brand, and main slots differently.
 /**
  * Renders the page chrome (brand + cross-page nav + main content) in
- * one of ten configurable nav locations. The brand bar is always
+ * one of eleven configurable nav locations. The brand bar is always
  * present; the nav moves between top, side, bottom, drawer, dock, fab,
- * and rail slots depending on `layoutId`.
+ * and rail slots depending on `layoutId`. The `in-controls` layout is the
+ * exception: it drops the page nav entirely, leaving the cross-page links
+ * to the floating DraggableControls panel (see `navControlsFor`).
  */
 export function AppShell(props: AppShellProps) {
   switch (props.layoutId) {
@@ -40,6 +42,7 @@ export function AppShell(props: AppShellProps) {
     case 'fab':          return <FabShell {...props} />
     case 'footer':       return <FooterShell {...props} />
     case 'tabbar':       return <TabbarShell {...props} />
+    case 'in-controls':  return <InControlsShell {...props} />
   }
 }
 
@@ -47,7 +50,7 @@ export function AppShell(props: AppShellProps) {
 /* Anchor renderer                                                     */
 /* ------------------------------------------------------------------ */
 
-// ABOUTME: Renders one nav link as a react-router `<Link>` that works in both the main router and the hash router; rewrites `#`-prefixed hrefs and dispatches a synthetic `hashchange` after pushState so the hash router re-reads the URL.
+// ABOUTME: Renders one nav link as a react-router `<Link>` that works in both the main router and the hash router; rewrites `#`-prefixed hrefs and dispatches a synthetic `hashchange` after pushState so the hash router re-reads the URL. Exported so the floating controls' in-controls Navigation section reuses the same routing-aware anchor.
 /**
  * Renders one nav entry as an anchor that works across BOTH routing
  * contexts — react-router (`/engines`) and the hash router (`#/viz`).
@@ -59,7 +62,7 @@ export function AppShell(props: AppShellProps) {
  * `useHashLocation` hook in Stories re-reads the URL — pushState
  * doesn't fire `hashchange` on its own, even when the hash changes.
  */
-function NavAnchor({
+export function NavAnchor({
   link,
   active,
   className,
@@ -369,6 +372,26 @@ function TabbarShell({ brand, brandExtra, nav, activeId, children }: AppShellPro
           className="iux-appshell__tabbar-link"
         />
       </nav>
+    </div>
+  )
+}
+
+// ABOUTME: Shell variant that omits the page nav slot entirely — the cross-page links are rendered inside the floating DraggableControls panel's Navigation section instead, so the chrome is just a minimal brand header above the main content.
+/**
+ * The `in-controls` layout. Unlike every other shell it renders no nav
+ * region at all; the cross-page links live in the floating controls (the
+ * page passes `navControlsFor(navLayout, …)` to `DraggableControls`). The
+ * `nav` / `activeId` props are accepted for a uniform AppShell signature
+ * but intentionally unused here.
+ */
+function InControlsShell({ brand, brandExtra, children }: AppShellProps) {
+  return (
+    <div className="iux-appshell iux-appshell--in-controls">
+      <header className="iux-appshell__top iux-appshell__top--minimal">
+        <div className="iux-appshell__brand">{brand}</div>
+        {brandExtra && <div className="iux-appshell__brand-extra">{brandExtra}</div>}
+      </header>
+      <main className="iux-appshell__main">{children}</main>
     </div>
   )
 }

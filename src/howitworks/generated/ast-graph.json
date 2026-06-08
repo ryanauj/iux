@@ -3,11 +3,11 @@
   "stats": {
     "areas": 14,
     "files": 257,
-    "members": 1903,
-    "imports": 769,
-    "memberEdges": 1186,
+    "members": 1917,
+    "imports": 774,
+    "memberEdges": 1216,
     "documentedFiles": 257,
-    "documentedMembers": 1901
+    "documentedMembers": 1915
   },
   "areas": [
     {
@@ -26,7 +26,7 @@
       "id": "components",
       "label": "components",
       "fileCount": 93,
-      "memberCount": 835
+      "memberCount": 849
     },
     {
       "id": "doctrine",
@@ -134,7 +134,7 @@
       "area": "apps",
       "dir": "apps",
       "name": "AppsLanding.tsx",
-      "loc": 170,
+      "loc": 172,
       "importCount": 11,
       "externalCount": 2,
       "members": [
@@ -142,28 +142,28 @@
           "name": "AppEntry",
           "kind": "interface",
           "exported": false,
-          "line": 29,
+          "line": 30,
           "about": "Shape of one entry in the APPS registry: id, display name, tagline, href, and icon text abbreviation."
         },
         {
           "name": "APPS",
           "kind": "const",
           "exported": false,
-          "line": 38,
+          "line": 39,
           "about": "Registry of the three mini-apps (Hoops Hub, Cap School, Promptbook) rendered as tiles on the landing grid."
         },
         {
           "name": "AppsLandingProps",
           "kind": "interface",
           "exported": false,
-          "line": 63,
+          "line": 64,
           "about": "Props for AppsLanding; passes the current HashLocation so the component can read palette/motion params and seed the persisted style store."
         },
         {
           "name": "AppsLanding",
           "kind": "component",
           "exported": true,
-          "line": 74,
+          "line": 75,
           "about": "Renders the apps directory: a grid of app-tile cards for Hoops Hub, Cap School, and Promptbook, with a floating DraggableControls panel for palette, nav layout, and motion."
         }
       ],
@@ -4243,7 +4243,7 @@
       "area": "components",
       "dir": "components/AppShell",
       "name": "AppShell.tsx",
-      "loc": 375,
+      "loc": 398,
       "importCount": 2,
       "externalCount": 3,
       "members": [
@@ -4258,149 +4258,177 @@
           "name": "AppShell",
           "kind": "component",
           "exported": true,
-          "line": 31,
-          "about": "Switches on `layoutId` to delegate to one of ten private shell components (TopbarShell, SidebarShell, DockShell, RailShell, DrawerShell, FabShell, FooterShell, TabbarShell), each placing nav, brand, and main slots differently."
+          "line": 33,
+          "about": "Switches on `layoutId` to delegate to one of eleven private shell components (TopbarShell, SidebarShell, DockShell, RailShell, DrawerShell, FabShell, FooterShell, TabbarShell, InControlsShell), each placing nav, brand, and main slots differently."
         },
         {
           "name": "NavAnchor",
           "kind": "component",
-          "exported": false,
-          "line": 62,
-          "about": "Renders one nav link as a react-router `<Link>` that works in both the main router and the hash router; rewrites `#`-prefixed hrefs and dispatches a synthetic `hashchange` after pushState so the hash router re-reads the URL."
+          "exported": true,
+          "line": 65,
+          "about": "Renders one nav link as a react-router `<Link>` that works in both the main router and the hash router; rewrites `#`-prefixed hrefs and dispatches a synthetic `hashchange` after pushState so the hash router re-reads the URL. Exported so the floating controls' in-controls Navigation section reuses the same routing-aware anchor."
         },
         {
           "name": "NavList",
           "kind": "component",
           "exported": false,
-          "line": 109,
+          "line": 112,
           "about": "Renders all nav links in order, delegating each to `NavAnchor`; used by every shell variant to avoid repeating the mapping loop."
         },
         {
           "name": "TopbarShell",
           "kind": "component",
           "exported": false,
-          "line": 140,
+          "line": 143,
           "about": "Shell variant that places the brand on the left and the nav inline to its right in a single top `<header>` bar."
         },
         {
           "name": "SidebarShell",
           "kind": "component",
           "exported": false,
-          "line": 156,
+          "line": 159,
           "about": "Shell variant that places the brand and full nav links in a persistent left or right `<aside>` sidebar alongside the main content."
         },
         {
           "name": "DockShell",
           "kind": "component",
           "exported": false,
-          "line": 179,
+          "line": 182,
           "about": "Shell variant that positions the nav as a floating pill anchored to the top or bottom of the viewport, with a minimal brand header above the main content."
         },
         {
           "name": "RailShell",
           "kind": "component",
           "exported": false,
-          "line": 202,
+          "line": 205,
           "about": "Shell variant that renders a narrow left icon rail of abbreviated nav links beside a content area that still has its own minimal brand header."
         },
         {
           "name": "DrawerShell",
           "kind": "component",
           "exported": false,
-          "line": 227,
+          "line": 230,
           "about": "Shell variant that hides the nav behind a hamburger button; toggling it slides in a left drawer panel with a scrim overlay, dismissible via Escape or clicking outside."
         },
         {
           "name": "FabShell",
           "kind": "component",
           "exported": false,
-          "line": 290,
+          "line": 293,
           "about": "Shell variant that exposes the nav through a floating action button (⋯) in the lower corner; clicking it opens a compact link menu, dismissed by Escape or clicking away."
         },
         {
           "name": "FooterShell",
           "kind": "component",
           "exported": false,
-          "line": 339,
+          "line": 342,
           "about": "Shell variant that anchors the nav links in a `<footer>` bar below the main content, giving the page a traditional bottom-navigation feel."
         },
         {
           "name": "TabbarShell",
           "kind": "component",
           "exported": false,
-          "line": 357,
+          "line": 360,
           "about": "Shell variant that renders the nav as a bottom tab bar where each link occupies an equal-width column, mimicking a mobile app tab layout."
+        },
+        {
+          "name": "InControlsShell",
+          "kind": "component",
+          "exported": false,
+          "line": 387,
+          "about": "Shell variant that omits the page nav slot entirely — the cross-page links are rendered inside the floating DraggableControls panel's Navigation section instead, so the chrome is just a minimal brand header above the main content."
         }
       ],
-      "about": "Renders the page chrome (brand + cross-page nav + main content) in one of ten configurable nav locations."
+      "about": "Renders the page chrome (brand + cross-page nav + main content) in one of eleven configurable nav locations."
     },
     {
       "id": "src/components/AppShell/navLayouts.ts",
       "area": "components",
       "dir": "components/AppShell",
       "name": "navLayouts.ts",
-      "loc": 77,
-      "importCount": 1,
+      "loc": 123,
+      "importCount": 2,
       "externalCount": 0,
       "members": [
         {
           "name": "NAV_LAYOUT_IDS",
           "kind": "const",
           "exported": true,
-          "line": 16,
-          "about": "Ordered tuple of all ten nav-location ids that AppShell accepts as its `layoutId` prop."
+          "line": 22,
+          "about": "Ordered tuple of all eleven nav-location ids that AppShell accepts as its `layoutId` prop."
         },
         {
           "name": "NavLayoutId",
           "kind": "type",
           "exported": true,
-          "line": 30,
-          "about": "Union of all ten nav-location id strings, derived from NAV_LAYOUT_IDS for exhaustive type safety."
+          "line": 37,
+          "about": "Union of all eleven nav-location id strings, derived from NAV_LAYOUT_IDS for exhaustive type safety."
         },
         {
           "name": "DEFAULT_NAV_LAYOUT",
           "kind": "const",
           "exported": true,
-          "line": 33,
+          "line": 40,
           "about": "Fallback layout id used when no persisted preference exists; set to 'topbar'."
         },
         {
           "name": "NAV_LAYOUT_OPTIONS",
           "kind": "const",
           "exported": true,
-          "line": 36,
+          "line": 43,
           "about": "Display-ready list of all ten nav layouts with human-readable labels, used to drive layout-picker UI (e.g. a `<select>` in the brand-extra slot)."
+        },
+        {
+          "name": "IN_CONTROLS_NAV_LAYOUT",
+          "kind": "const",
+          "exported": true,
+          "line": 58,
+          "about": "The single nav-location id whose chrome routes the cross-page nav into the floating controls panel instead of a fixed page slot."
+        },
+        {
+          "name": "NavControls",
+          "kind": "interface",
+          "exported": true,
+          "line": 68,
+          "about": "What the floating controls need to render the cross-page nav as its own collapsible section: the shared link list, the active page id, and an inControls flag set only when the active layout is 'in-controls'."
+        },
+        {
+          "name": "navControlsFor",
+          "kind": "function",
+          "exported": true,
+          "line": 84,
+          "about": "Builds the NavControls descriptor a page hands to DraggableControls, pairing the shared APP_SHELL_NAV with the page's active id and the inControls flag derived from whether the chosen layout is 'in-controls'."
         },
         {
           "name": "resolveNavLayoutId",
           "kind": "function",
           "exported": true,
-          "line": 50,
+          "line": 96,
           "about": "Validates a raw string against NAV_LAYOUT_IDS and returns it as a NavLayoutId, or falls back to DEFAULT_NAV_LAYOUT for unknown or nullish values."
         },
         {
           "name": "NAV_LAYOUT_KEY",
           "kind": "const",
           "exported": false,
-          "line": 58,
+          "line": 104,
           "about": "localStorage key under which the user's chosen nav layout is persisted across pages."
         },
         {
           "name": "isNavLayoutId",
           "kind": "function",
           "exported": false,
-          "line": 61,
+          "line": 107,
           "about": "Type predicate that checks whether a raw string is a member of `NAV_LAYOUT_IDS`, used as the validator argument to `usePersistedPref`."
         },
         {
           "name": "useNavLayout",
           "kind": "function",
           "exported": true,
-          "line": 70,
+          "line": 116,
           "about": "Persistent nav layout preference, shared across every page that mounts an `<AppShell>`."
         }
       ],
-      "about": "Defines the ten AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar) and the persisted useNavLayout hook that shares the active choice across every showcase page."
+      "about": "Defines the eleven AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar, in-controls) and the persisted useNavLayout hook that shares the active choice across every showcase page, plus the navControlsFor helper that hands the nav to the floating controls when the in-controls layout is active."
     },
     {
       "id": "src/components/AppShell/navLinks.ts",
@@ -6289,267 +6317,337 @@
       "area": "components",
       "dir": "components/DraggableControls",
       "name": "DraggableControls.tsx",
-      "loc": 845,
-      "importCount": 3,
+      "loc": 1057,
+      "importCount": 5,
       "externalCount": 2,
       "members": [
         {
           "name": "SEARCHABLE_THRESHOLD",
           "kind": "const",
           "exported": false,
-          "line": 15,
+          "line": 17,
           "about": "Minimum option count at which a search/filter input is added to Strip popovers; lists shorter than this are shown without a filter field."
         },
         {
           "name": "ControlsStyle",
           "kind": "type",
           "exported": true,
-          "line": 18,
+          "line": 20,
           "about": "Presentation mode: 'button' is a circular FAB that opens a floating panel, 'strip' is a compact icon bar anchored to an edge with slot-level popovers."
         },
         {
           "name": "CONTROLS_STYLE_KEY",
           "kind": "const",
           "exported": false,
-          "line": 21,
+          "line": 23,
           "about": "localStorage key under which the user's preferred controls style (button or strip) is persisted."
         },
         {
           "name": "DEFAULT_CONTROLS_STYLE",
           "kind": "const",
           "exported": false,
-          "line": 23,
+          "line": 25,
           "about": "Fallback controls style used when no persisted preference exists."
         },
         {
           "name": "SETTINGS_OPEN_KEY",
           "kind": "const",
           "exported": false,
-          "line": 33,
+          "line": 35,
           "about": "localStorage key for the open/closed state of the Settings disclosure group inside the Button-variant panel."
         },
         {
           "name": "isBoolPref",
           "kind": "function",
           "exported": false,
-          "line": 35,
+          "line": 37,
           "about": "Type guard that accepts only the '0' or '1' string literals stored for boolean localStorage prefs."
         },
         {
           "name": "isControlsStyle",
           "kind": "function",
           "exported": false,
-          "line": 38,
+          "line": 40,
           "about": "Type guard that validates a raw localStorage string as a ControlsStyle value before applying it."
+        },
+        {
+          "name": "NAV_OPEN_KEY",
+          "kind": "const",
+          "exported": false,
+          "line": 44,
+          "about": "localStorage key for the open/closed state of the Navigation disclosure shown in the panel when the active nav layout is 'in-controls'."
+        },
+        {
+          "name": "DoubleTapAction",
+          "kind": "type",
+          "exported": true,
+          "line": 47,
+          "about": "What a double-tap anywhere on the page does to the floating controls — 'move-open' relocates them under the tap and opens, 'open' just opens in place, 'move' just relocates, 'off' disables the gesture."
+        },
+        {
+          "name": "DOUBLETAP_KEY",
+          "kind": "const",
+          "exported": false,
+          "line": 50,
+          "about": "localStorage key under which the double-tap gesture action is persisted."
+        },
+        {
+          "name": "DEFAULT_DOUBLETAP",
+          "kind": "const",
+          "exported": false,
+          "line": 52,
+          "about": "Fallback double-tap action when no preference is stored — relocate the controls under the tap and open them."
+        },
+        {
+          "name": "isDoubleTapAction",
+          "kind": "function",
+          "exported": false,
+          "line": 55,
+          "about": "Type guard that validates a raw localStorage string as a DoubleTapAction before applying it."
+        },
+        {
+          "name": "DOUBLETAP_OPTIONS",
+          "kind": "const",
+          "exported": false,
+          "line": 59,
+          "about": "The selectable double-tap actions, ordered most- to least-active, used to build the \"Double-tap\" field shown inside the controls' Settings group."
+        },
+        {
+          "name": "useDoubleTapAction",
+          "kind": "function",
+          "exported": true,
+          "line": 74,
+          "about": "Shared user preference for what a double-tap on the page does to the floating controls."
         },
         {
           "name": "useControlsStyle",
           "kind": "function",
           "exported": true,
-          "line": 48,
+          "line": 89,
           "about": "Shared user preference for the floating controls' style (Button FAB vs Edge Strip)."
         },
         {
           "name": "Field",
           "kind": "type",
           "exported": true,
-          "line": 57,
+          "line": 98,
           "about": "A single control field descriptor: key, label, short label for the Strip icon, current value, options array, onChange callback, and an optional kind='palette' flag that substitutes PalettePicker for a generic select."
         },
         {
           "name": "Position",
           "kind": "type",
           "exported": false,
-          "line": 75,
+          "line": 116,
           "about": "An x/y pixel coordinate representing the floating container's top-left position within the viewport."
         },
         {
           "name": "Props",
           "kind": "type",
           "exported": false,
-          "line": 78,
-          "about": "Props for the DraggableControls root — the current controls style, a callback to change it, and the array of control field descriptors to render."
+          "line": 119,
+          "about": "Props for the DraggableControls root — the current controls style, a callback to change it, the array of control field descriptors to render, and an optional NavControls bundle that renders the cross-page nav as a collapsible section when the active layout is 'in-controls'."
         },
         {
           "name": "POS_KEY",
           "kind": "component",
           "exported": false,
-          "line": 85,
+          "line": 133,
           "about": "Returns the per-style localStorage key used to persist the floating container's position."
         },
         {
           "name": "OPEN_KEY",
           "kind": "component",
           "exported": false,
-          "line": 87,
+          "line": 135,
           "about": "Returns the per-style localStorage key used to persist the panel's open/closed state."
         },
         {
           "name": "DEFAULTS",
           "kind": "const",
           "exported": false,
-          "line": 90,
+          "line": 138,
           "about": "Factory-default pixel positions for each controls style when no saved position exists on a desktop viewport."
         },
         {
           "name": "clamp",
           "kind": "function",
           "exported": false,
-          "line": 96,
+          "line": 144,
           "about": "Clamps n to the inclusive [lo, hi] range; used to keep the draggable container within the viewport bounds."
         },
         {
           "name": "defaultPos",
           "kind": "function",
           "exported": false,
-          "line": 110,
+          "line": 158,
           "about": "Computes the initial position for a controls style, placing the button FAB in the bottom-right thumb zone and the strip near the left edge on phone-sized viewports (≤640px wide or ≤480px tall)."
         },
         {
           "name": "loadPos",
           "kind": "function",
           "exported": false,
-          "line": 127,
+          "line": 175,
           "about": "Reads the saved Position for a controls style from localStorage; falls back to defaultPos when absent or unparseable."
         },
         {
           "name": "loadOpen",
           "kind": "function",
           "exported": false,
-          "line": 141,
+          "line": 189,
           "about": "Reads the saved open/closed state for a controls style from localStorage; returns the fallback boolean when no stored value is found."
         },
         {
           "name": "STYLE_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 153,
+          "line": 201,
           "about": "The two available controls-style options rendered by the StyleSwitcher radiogroup."
         },
         {
           "name": "VerticalDir",
           "kind": "type",
           "exported": false,
-          "line": 159,
+          "line": 207,
           "about": "Vertical half of the popover quadrant — 'up' means the panel opens upward from the anchor, 'down' means downward."
         },
         {
           "name": "HorizontalDir",
           "kind": "type",
           "exported": false,
-          "line": 161,
+          "line": 209,
           "about": "Horizontal half of the popover quadrant — 'left' means the panel extends leftward from the anchor, 'right' means rightward."
         },
         {
           "name": "Quadrant",
           "kind": "type",
           "exported": false,
-          "line": 163,
+          "line": 211,
           "about": "The four possible quadrants for the Button-variant panel, expressed as a vertical-horizontal direction pair."
         },
         {
           "name": "pickQuadrant",
           "kind": "function",
           "exported": false,
-          "line": 166,
+          "line": 214,
           "about": "Inspects the trigger button's bounding rect and returns the quadrant with the most available viewport space, used to anchor the floating panel away from viewport edges."
         },
         {
           "name": "useOverflowEdges",
           "kind": "function",
           "exported": false,
-          "line": 186,
+          "line": 234,
           "about": "Hook that toggles data-overflow-top and data-overflow-bottom attributes on a scrollable panel element when content is hidden above or below the visible area, enabling CSS fade indicators."
         },
         {
           "name": "DraggableControls",
           "kind": "component",
           "exported": true,
-          "line": 218,
+          "line": 266,
           "about": "Root draggable container that handles pointer-based drag positioning, viewport clamping on resize/orientation-change, and localStorage persistence of position and open state; delegates to ButtonVariant or StripVariant based on the style prop."
         },
         {
           "name": "VariantProps",
           "kind": "type",
           "exported": false,
-          "line": 349,
-          "about": "Shared props passed down to both ButtonVariant and StripVariant — the field list, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback."
+          "line": 444,
+          "about": "Shared props passed down to both ButtonVariant and StripVariant — the field list, the optional in-controls nav bundle, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback."
         },
         {
           "name": "StyleSwitcher",
           "kind": "component",
           "exported": false,
-          "line": 365,
+          "line": 461,
           "about": "Radiogroup of two buttons (Button / Strip) that lets the user switch the controls presentation style; used in the footer of both ButtonVariant and StripVariant."
         },
         {
           "name": "ButtonVariant",
           "kind": "component",
           "exported": false,
-          "line": 386,
+          "line": 482,
           "about": "Renders the Button-style controls variant — a circular FAB that opens a floating panel containing the palette picker, a collapsible Settings group for other fields, and a footer style-switcher; computes available height and panel quadrant on open."
+        },
+        {
+          "name": "NavGroup",
+          "kind": "component",
+          "exported": false,
+          "line": 604,
+          "about": "Persisted collapsible disclosure that lists the cross-page nav links inside the Button panel when the active layout is 'in-controls'; reuses the routing-aware NavAnchor from AppShell and persists its own open state (default open) so the nav stays reachable across visits."
         },
         {
           "name": "SettingsGroup",
           "kind": "component",
           "exported": false,
-          "line": 505,
+          "line": 646,
           "about": "Persisted collapsible disclosure that wraps the non-palette fields under a \"Settings\" heading; persists its own open state to localStorage so it re-opens in the same state on next visit."
         },
         {
           "name": "CollapsibleSection",
           "kind": "component",
           "exported": false,
-          "line": 535,
+          "line": 676,
           "about": "Accordion-style disclosure for a single non-palette field inside the Settings group — shows the current value in the collapsed header and expands to a Select combobox or a radio button group depending on option count."
         },
         {
           "name": "StripPopoverProps",
           "kind": "interface",
           "exported": false,
-          "line": 587,
+          "line": 728,
           "about": "Props for the StripPopover sub-component — the field to display, the computed quadrant for positioning, the slot button's bounding rect for max-height calculation, and an onSelect callback."
         },
         {
           "name": "StripPopover",
           "kind": "component",
           "exported": false,
-          "line": 595,
+          "line": 736,
           "about": "Floating popover for a single Strip slot — renders the field label, an optional search input (above SEARCHABLE_THRESHOLD options), a filtered option list, and fires onSelect when an option is chosen."
         },
         {
           "name": "StripQuadrant",
           "kind": "type",
           "exported": false,
-          "line": 677,
+          "line": 818,
           "about": "The four possible quadrants for Strip-variant popovers, combining horizontal (left/right) and vertical (up/down) directions relative to the slot button."
+        },
+        {
+          "name": "NAV_SLOT_KEY",
+          "kind": "const",
+          "exported": false,
+          "line": 821,
+          "about": "Reserved activeKey for the Strip's Navigation slot, kept out of the field-key namespace so it can share the same open/close machinery as the field slots."
+        },
+        {
+          "name": "StripNavPopover",
+          "kind": "component",
+          "exported": false,
+          "line": 824,
+          "about": "Strip-variant popover that lists the cross-page nav links (shown when the active layout is 'in-controls'); mirrors StripPopover's positioning and chrome but renders routing-aware NavAnchors instead of radio options, closing the popover after a link is followed."
         },
         {
           "name": "PaletteStripSlotProps",
           "kind": "interface",
           "exported": false,
-          "line": 680,
+          "line": 870,
           "about": "Props for the PaletteStripSlot wrapper — the palette field, popover open state, the computed quadrant and slot rect for positioning, and toggle/close event handlers."
         },
         {
           "name": "PaletteStripSlot",
           "kind": "component",
           "exported": false,
-          "line": 695,
+          "line": 885,
           "about": "Strip-variant wrapper around PalettePicker that forwards the slot button click event so StripVariant can capture the bounding rect for popover positioning alongside generic field slots."
         },
         {
           "name": "pickStripQuadrant",
           "kind": "function",
           "exported": false,
-          "line": 717,
+          "line": 907,
           "about": "Inspects a slot button's bounding rect and returns the StripQuadrant with the most viewport space on each axis, determining which direction the Strip popover opens."
         },
         {
           "name": "StripVariant",
           "kind": "component",
           "exported": false,
-          "line": 728,
+          "line": 918,
           "about": "Renders the Strip-style controls variant — a vertical icon bar with a grip handle and per-slot expand buttons that open positioned popovers; palette fields use PaletteStripSlot, others use StripPopover."
         }
       ],
@@ -11136,7 +11234,7 @@
       "area": "doctrine",
       "dir": "doctrine",
       "name": "DoctrinePage.tsx",
-      "loc": 251,
+      "loc": 253,
       "importCount": 11,
       "externalCount": 3,
       "members": [
@@ -11144,21 +11242,21 @@
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 32,
+          "line": 33,
           "about": "Canonical URL search-parameter names for DoctrinePage's three URL-driven state values: the chrome palette, the active doctrine article, and the motion scale."
         },
         {
           "name": "UrlSettings",
           "kind": "type",
           "exported": false,
-          "line": 39,
+          "line": 40,
           "about": "Shape of the URL-derived settings parsed on load and on popstate: the chrome style id, the active doctrine article id, and the motion scale multiplier."
         },
         {
           "name": "DoctrinePage",
           "kind": "component",
           "exported": true,
-          "line": 46,
+          "line": 47,
           "about": "Root component for the Doctrine surface: reads chrome/doc/motion URL params, syncs the persisted style store, renders the active DOCTRINE_PAGES entry inside a nested PaletteRoot so live demos respond to palette changes, and provides a DraggableControls panel for switching doc, chrome, nav layout, and motion scale."
         }
       ],
@@ -11473,7 +11571,7 @@
       "area": "editor",
       "dir": "editor",
       "name": "StyleEditorPage.tsx",
-      "loc": 657,
+      "loc": 658,
       "importCount": 16,
       "externalCount": 3,
       "members": [
@@ -11509,91 +11607,91 @@
           "name": "KnobControlProps",
           "kind": "interface",
           "exported": false,
-          "line": 297,
+          "line": 298,
           "about": "Props shared by all KnobControl variants: the knob descriptor, the current resolved value, whether the value is overridden from the base, and change/reset callbacks."
         },
         {
           "name": "KnobControl",
           "kind": "component",
           "exported": false,
-          "line": 306,
+          "line": 307,
           "about": "Dispatcher that routes a knob descriptor to the correct control widget: LengthKnob for length tokens, BlockKnob+FontControl for font stacks, or SimpleKnob for colors/text/select."
         },
         {
           "name": "ResetButton",
           "kind": "component",
           "exported": false,
-          "line": 319,
+          "line": 320,
           "about": "Small circular reset button that clears a single knob's override back to its base-palette value; disabled when the knob is already at the base value."
         },
         {
           "name": "SimpleKnob",
           "kind": "component",
           "exported": false,
-          "line": 336,
+          "line": 337,
           "about": "Compact two-column knob row (label | control) for color, text, and select kinds; highlights the row when the value differs from the base palette."
         },
         {
           "name": "BlockKnob",
           "kind": "component",
           "exported": false,
-          "line": 368,
+          "line": 369,
           "about": "Full-width knob layout with a head row (label + optional actions + reset button) above a control body that spans the full width; used by LengthKnob in slider mode and FontControl, both of which need the extra horizontal space."
         },
         {
           "name": "ColorControl",
           "kind": "component",
           "exported": false,
-          "line": 398,
+          "line": 399,
           "about": "Color knob control: a native color-picker swatch when the value parses as a hex color (with applyPickedHex to preserve alpha), plus a free-text input for arbitrary CSS values like oklch() or var()."
         },
         {
           "name": "parseLength",
           "kind": "function",
           "exported": false,
-          "line": 430,
+          "line": 431,
           "about": "Parses a CSS length string like \"12px\" or \"1.5rem\" into a numeric value and unit suffix; returns null for values that can't be cleanly split (e.g. calc() expressions), disabling the slider mode."
         },
         {
           "name": "tidy",
           "kind": "function",
           "exported": false,
-          "line": 439,
+          "line": 440,
           "about": "Rounds a float to at most 4 decimal places and strips trailing zeros, keeping slider output values compact (e.g. 0.5 not 0.5000)."
         },
         {
           "name": "LengthKnob",
           "kind": "component",
           "exported": false,
-          "line": 450,
+          "line": 451,
           "about": "Length knob that defaults to a text input (accepting calc(), clamp(), etc.) with a toggle into a full-width BlockKnob slider + unit-picker via SliderUnit; the slider toggle is disabled when parseLength returns null."
         },
         {
           "name": "SliderUnit",
           "kind": "component",
           "exported": false,
-          "line": 497,
+          "line": 498,
           "about": "Slider-plus-unit-picker control used inside LengthKnob's block mode: a Slider component for the numeric part and a Select dropdown for the unit suffix, emitting combined CSS length strings on every change."
         },
         {
           "name": "splitStack",
           "kind": "function",
           "exported": false,
-          "line": 537,
+          "line": 538,
           "about": "Splits a CSS font-family stack string (comma-separated) into individual trimmed family tokens for FontControl to render as a reorderable list."
         },
         {
           "name": "FontControl",
           "kind": "component",
           "exported": false,
-          "line": 547,
+          "line": 548,
           "about": "Font-stack builder used inside the font knob's BlockKnob: renders each CSS family as a Select dropdown with up/down/remove buttons; injects unknown families from the current value as options so nothing is lost, and emits the full comma-joined stack on every change."
         },
         {
           "name": "PreviewSampler",
           "kind": "component",
           "exported": false,
-          "line": 630,
+          "line": 631,
           "about": "Live preview panel rendered inside a nested PaletteRoot that uses the working (edited) palette: shows headings, body text, a link, all six intent buttons, and two Card variants so token changes are visible immediately."
         }
       ],
@@ -12068,7 +12166,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "EngineGuide.tsx",
-      "loc": 206,
+      "loc": 208,
       "importCount": 12,
       "externalCount": 5,
       "members": [
@@ -12076,28 +12174,28 @@
           "name": "PalettePanelProps",
           "kind": "interface",
           "exported": false,
-          "line": 30,
+          "line": 31,
           "about": "Props for PalettePanel — holds the structured StyleDescription, the display name of the palette, and the current doc mode (technical vs plain)."
         },
         {
           "name": "PalettePanel",
           "kind": "component",
           "exported": false,
-          "line": 37,
+          "line": 38,
           "about": "PalettePanel — sidebar block that renders a palette's tagline, summary, and \"what to look for\" list; switches between plain-English and technical copy based on the doc mode."
         },
         {
           "name": "EngineGuideProps",
           "kind": "interface",
           "exported": false,
-          "line": 71,
+          "line": 72,
           "about": "Props for EngineGuide — carries the EngineGuideMeta describing the engine's name, steps, palette, and summaries."
         },
         {
           "name": "EngineGuide",
           "kind": "component",
           "exported": true,
-          "line": 76,
+          "line": 77,
           "about": "EngineGuide — renders one engine walkthrough given its EngineGuideMeta: wraps the Stepper in a PaletteRoot bound to the guide's demoPalette, syncs the active step to ?step= in the URL, and toggles technical vs. plain-English copy via DocModeToggle."
         }
       ],
@@ -12272,7 +12370,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "index.tsx",
-      "loc": 146,
+      "loc": 148,
       "importCount": 10,
       "externalCount": 2,
       "members": [
@@ -12280,14 +12378,14 @@
           "name": "ALL_ENGINES",
           "kind": "const",
           "exported": false,
-          "line": 25,
+          "line": 26,
           "about": "Complete list of all fifteen engine ids with display names and availability flags, used by EnginesIndex to render available engine links and pending stubs."
         },
         {
           "name": "EnginesIndex",
           "kind": "component",
           "exported": true,
-          "line": 44,
+          "line": 45,
           "about": "EnginesIndex — the /engines index page: renders the full engine list inside an AppShell, reads plain/technical summaries from ENGINE_GUIDES based on the current DocMode, and links each available engine to its walkthrough at /engines/:id."
         }
       ],
@@ -12938,64 +13036,64 @@
       "area": "guides",
       "dir": "guides/palettes",
       "name": "PaletteDesignPage.tsx",
-      "loc": 301,
-      "importCount": 5,
+      "loc": 327,
+      "importCount": 6,
       "externalCount": 6,
       "members": [
         {
           "name": "README_MODULES",
           "kind": "const",
           "exported": false,
-          "line": 34,
+          "line": 44,
           "about": "Eagerly loaded map of all palette README.md files keyed by their import path, so the \"Copy as markdown\" button can embed long-form notes at build time without a runtime fetch."
         },
         {
           "name": "readmeFor",
           "kind": "function",
           "exported": false,
-          "line": 40,
+          "line": 50,
           "about": "Finds and returns the raw README string for the given palette id by matching the trailing path segment in README_MODULES, or undefined if no README file exists for that id."
         },
         {
           "name": "resolveTokenPath",
           "kind": "function",
           "exported": false,
-          "line": 48,
+          "line": 58,
           "about": "Walks a dot-separated token path string through a nested object, returning the value at that path or undefined if any segment is missing or non-object."
         },
         {
           "name": "formatTokenValue",
           "kind": "function",
           "exported": false,
-          "line": 58,
+          "line": 68,
           "about": "Converts a resolved token value to a display string for the token evidence table, handling strings, numbers, boxShadow objects, and falling back to JSON for other shapes."
         },
         {
           "name": "CopyButton",
           "kind": "component",
           "exported": false,
-          "line": 68,
+          "line": 78,
           "about": "A button that calls navigator.clipboard.writeText with the string returned by getText(), briefly showing \"Copied!\" feedback before reverting to the provided label."
         },
         {
           "name": "PageProps",
           "kind": "interface",
           "exported": false,
-          "line": 90,
+          "line": 100,
           "about": "Props for the internal PaletteDesignPage component, carrying the resolved Palette object for the id extracted by the routed wrapper."
         },
         {
           "name": "PaletteDesignPage",
           "kind": "component",
           "exported": false,
-          "line": 95,
+          "line": 105,
           "about": "Renders the full palette design page body: breadcrumbs, header, all structured description sections (summary through recall aliases), the CSS custom-properties block with a copy button, a markdown copy button, and the raw README in a collapsible details block."
         },
         {
           "name": "PaletteDesignPageRoute",
           "kind": "component",
           "exported": true,
-          "line": 294,
+          "line": 320,
           "about": "PaletteDesignPageRoute — the routed entry point at /palettes/:paletteId/design; extracts the paletteId param, redirects unknown ids to /palettes, and delegates to the internal PaletteDesignPage component."
         }
       ],
@@ -13006,29 +13104,29 @@
       "area": "guides",
       "dir": "guides/palettes",
       "name": "PalettesIndex.tsx",
-      "loc": 111,
-      "importCount": 6,
+      "loc": 146,
+      "importCount": 7,
       "externalCount": 5,
       "members": [
         {
           "name": "Group",
           "kind": "interface",
           "exported": false,
-          "line": 20,
+          "line": 30,
           "about": "Shape of one engine group produced by groupByEngine: the engine name and the sorted list of palette ids that belong to it."
         },
         {
           "name": "groupByEngine",
           "kind": "function",
           "exported": false,
-          "line": 26,
+          "line": 36,
           "about": "Builds an array of Groups by iterating the palettes registry, bucketing each palette id under its engine, then sorting the groups by engine name and each bucket alphabetically by palette display name."
         },
         {
           "name": "PalettesIndex",
           "kind": "component",
           "exported": true,
-          "line": 39,
+          "line": 49,
           "about": "PalettesIndex — the /palettes index page: groups all palettes by engine using the palettes registry, renders each group as a section with engine-keyed headings, and links each entry to its design doc, falling back to \"Description pending\" for palettes without a structured descriptions entry."
         }
       ],
@@ -13850,7 +13948,7 @@
       "area": "howitworks",
       "dir": "howitworks",
       "name": "HowItWorksPage.tsx",
-      "loc": 259,
+      "loc": 261,
       "importCount": 8,
       "externalCount": 4,
       "members": [
@@ -13858,28 +13956,28 @@
           "name": "AstGraph",
           "kind": "const",
           "exported": false,
-          "line": 32,
+          "line": 33,
           "about": "The AST explorer, lazily imported so React Flow only loads on this route."
         },
         {
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 35,
+          "line": 36,
           "about": "Query-param keys that persist the page's chrome palette and motion scale in the URL."
         },
         {
           "name": "UrlSettings",
           "kind": "type",
           "exported": false,
-          "line": 41,
+          "line": 42,
           "about": "The page's URL-backed settings: which chrome palette and motion scale are active."
         },
         {
           "name": "HowItWorksPage",
           "kind": "component",
           "exported": true,
-          "line": 47,
+          "line": 48,
           "about": "Renders the \"how it works\" page and its palette-aware chrome around the AST graph."
         }
       ],
@@ -14783,7 +14881,7 @@
       "area": "quiz",
       "dir": "quiz",
       "name": "QuizPage.tsx",
-      "loc": 201,
+      "loc": 203,
       "importCount": 8,
       "externalCount": 2,
       "members": [
@@ -14791,35 +14889,35 @@
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 23,
+          "line": 24,
           "about": "Canonical URL search-parameter names for the quiz page's chrome palette and controls-style state."
         },
         {
           "name": "DEFAULT_CONTROLS",
           "kind": "const",
           "exported": false,
-          "line": 29,
+          "line": 30,
           "about": "The controls-style used when the URL has no controls= param: show the floating button rather than the strip."
         },
         {
           "name": "UrlSettings",
           "kind": "type",
           "exported": false,
-          "line": 32,
+          "line": 33,
           "about": "Shape of URL-derived settings read by readUrlSettings: the chrome palette id and the DraggableControls display mode."
         },
         {
           "name": "readUrlSettings",
           "kind": "function",
           "exported": false,
-          "line": 38,
+          "line": 39,
           "about": "Parses chrome and controls URL search params, falling back to the persisted chrome and the default controls style for any missing or invalid value."
         },
         {
           "name": "QuizPage",
           "kind": "component",
           "exported": true,
-          "line": 54,
+          "line": 55,
           "about": "Root component of the quiz page: reads chrome/controls URL params, seeds the persisted style on first mount, follows cross-surface style changes, and passes a stable seed to QuizView so the endless question sequence is reproducible within a session but fresh each reload."
         }
       ],
@@ -14910,7 +15008,7 @@
       "area": "settings",
       "dir": "settings",
       "name": "SettingsPage.tsx",
-      "loc": 91,
+      "loc": 92,
       "importCount": 8,
       "externalCount": 2,
       "members": [
@@ -15051,7 +15149,7 @@
       "area": "showcase",
       "dir": "showcase",
       "name": "ShowcasePage.tsx",
-      "loc": 441,
+      "loc": 443,
       "importCount": 11,
       "externalCount": 4,
       "members": [
@@ -15059,56 +15157,56 @@
           "name": "PALETTE_IDS",
           "kind": "const",
           "exported": false,
-          "line": 24,
+          "line": 25,
           "about": "All built-in palette ids in insertion order; used to iterate palettes in per-component mode and validate the palette= URL param."
         },
         {
           "name": "ViewMode",
           "kind": "type",
           "exported": false,
-          "line": 27,
+          "line": 28,
           "about": "The two top-level display modes: per-component shows one story across all palettes as stacked rows; per-palette feeds all stories through a single palette in feed/deck/grid layout."
         },
         {
           "name": "PaletteChoice",
           "kind": "type",
           "exported": false,
-          "line": 29,
+          "line": 30,
           "about": "The palette filter value for per-component mode: either a specific built-in palette id or 'all' to show every palette row."
         },
         {
           "name": "VariantChoice",
           "kind": "type",
           "exported": false,
-          "line": 31,
+          "line": 32,
           "about": "The variant filter for per-component mode: either a specific variant name from the active entry or 'all' to render every variant."
         },
         {
           "name": "LAYOUTS",
           "kind": "const",
           "exported": false,
-          "line": 34,
+          "line": 35,
           "about": "The three available per-palette layout options surfaced in the DraggableControls Layout field, passed as options to the layout Field and used to select the PaletteShowcase layout prop."
         },
         {
           "name": "URL_PARAM",
           "kind": "const",
           "exported": false,
-          "line": 41,
+          "line": 42,
           "about": "Canonical URL search-parameter names for all of ShowcasePage's URL-driven state: view mode, selected component, variant filter, palette filter, chrome palette, showcase palette, layout, and motion scale."
         },
         {
           "name": "ShowcasePageProps",
           "kind": "interface",
           "exported": true,
-          "line": 53,
+          "line": 54,
           "about": "Configuration props for ShowcasePage: the story entries to display, singular/plural noun labels, page title, default selected entry id, the nav link to mark active, and the info popover body text."
         },
         {
           "name": "ShowcasePage",
           "kind": "component",
           "exported": true,
-          "line": 71,
+          "line": 72,
           "about": "Root component of the showcase surface: reads and writes view/component/variant/palette/chrome/layout/motion URL params, syncs with the persisted style store, renders DraggableControls with context-appropriate fields, and delegates to per-component PaletteRoot rows or a full PaletteShowcase depending on the active view mode."
         }
       ],
@@ -15950,7 +16048,7 @@
       "area": "tests",
       "dir": "tests",
       "name": "TestsPage.tsx",
-      "loc": 189,
+      "loc": 190,
       "importCount": 14,
       "externalCount": 2,
       "members": [
@@ -16641,6 +16739,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -19661,6 +19760,15 @@
     },
     {
       "source": "src/components/AppShell/navLayouts.ts",
+      "target": "src/components/AppShell/navLinks.ts",
+      "members": [
+        "APP_SHELL_NAV",
+        "AppShellNavId",
+        "AppShellNavLink"
+      ]
+    },
+    {
+      "source": "src/components/AppShell/navLayouts.ts",
       "target": "src/lib/usePersistedPref.ts",
       "members": [
         "usePersistedPref"
@@ -19678,6 +19786,20 @@
       "target": "src/lib/useDocMode.ts",
       "members": [
         "DocMode"
+      ]
+    },
+    {
+      "source": "src/components/DraggableControls/DraggableControls.tsx",
+      "target": "src/components/AppShell/AppShell.tsx",
+      "members": [
+        "NavAnchor"
+      ]
+    },
+    {
+      "source": "src/components/DraggableControls/DraggableControls.tsx",
+      "target": "src/components/AppShell/navLayouts.ts",
+      "members": [
+        "NavControls"
       ]
     },
     {
@@ -19815,6 +19937,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -19933,6 +20056,7 @@
       "source": "src/editor/StyleEditorPage.tsx",
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
+        "navControlsFor",
         "useNavLayout"
       ]
     },
@@ -20309,6 +20433,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -20477,6 +20602,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -20958,6 +21084,9 @@
       "source": "src/guides/palettes/PaletteDesignPage.tsx",
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
+        "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
+        "NavLayoutId",
         "useNavLayout"
       ]
     },
@@ -20966,6 +21095,15 @@
       "target": "src/components/AppShell/navLinks.ts",
       "members": [
         "APP_SHELL_NAV"
+      ]
+    },
+    {
+      "source": "src/guides/palettes/PaletteDesignPage.tsx",
+      "target": "src/components/DraggableControls/DraggableControls.tsx",
+      "members": [
+        "DraggableControls",
+        "Field",
+        "useControlsStyle"
       ]
     },
     {
@@ -20994,6 +21132,9 @@
       "source": "src/guides/palettes/PalettesIndex.tsx",
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
+        "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
+        "NavLayoutId",
         "useNavLayout"
       ]
     },
@@ -21006,15 +21147,27 @@
     },
     {
       "source": "src/guides/palettes/PalettesIndex.tsx",
+      "target": "src/components/DraggableControls/DraggableControls.tsx",
+      "members": [
+        "DraggableControls",
+        "Field",
+        "useControlsStyle"
+      ]
+    },
+    {
+      "source": "src/guides/palettes/PalettesIndex.tsx",
       "target": "src/lib/customPatterns.ts",
       "members": [
-        "resolveStyle"
+        "resolveStyle",
+        "StyleId"
       ]
     },
     {
       "source": "src/guides/palettes/PalettesIndex.tsx",
       "target": "src/lib/persistedStyle.ts",
       "members": [
+        "buildPaletteField",
+        "isStyleId",
         "useSelectedStyle"
       ]
     },
@@ -21226,6 +21379,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -21422,6 +21576,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -21530,6 +21685,7 @@
       "source": "src/settings/SettingsPage.tsx",
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
+        "navControlsFor",
         "useNavLayout"
       ]
     },
@@ -21614,6 +21770,7 @@
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
         "NAV_LAYOUT_OPTIONS",
+        "navControlsFor",
         "NavLayoutId",
         "useNavLayout"
       ]
@@ -22122,6 +22279,7 @@
       "source": "src/tests/TestsPage.tsx",
       "target": "src/components/AppShell/navLayouts.ts",
       "members": [
+        "navControlsFor",
         "useNavLayout"
       ]
     },
