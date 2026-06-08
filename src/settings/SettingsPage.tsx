@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { useNavLayout } from '../components/AppShell/navLayouts'
+import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 import {
   DraggableControls,
   useControlsStyle,
@@ -84,6 +84,7 @@ export function SettingsPage() {
         style={controlsStyle}
         onStyleChange={setControlsStyle}
         fields={fields}
+        nav={navControlsFor(navLayout, 'settings')}
       />
     </PaletteRoot>
   )

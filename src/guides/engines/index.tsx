@@ -11,6 +11,7 @@ import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
 import {
   NAV_LAYOUT_OPTIONS,
+  navControlsFor,
   useNavLayout,
   type NavLayoutId,
 } from '../../components/AppShell/navLayouts'
@@ -73,6 +74,7 @@ export function EnginesIndex() {
             style={controlsStyle}
             onStyleChange={setControlsStyle}
             fields={fields}
+            nav={navControlsFor(navLayout, 'engines')}
           />
           <nav className="iux-engine-guide__crumbs" aria-label="Breadcrumb">
             <Link to="/" className="iux-engine-guide__crumb">Stories</Link>

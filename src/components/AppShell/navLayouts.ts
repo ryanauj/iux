@@ -1,14 +1,20 @@
-// ABOUTME: Defines the ten AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar) and the persisted useNavLayout hook that shares the active choice across every showcase page.
+// ABOUTME: Defines the eleven AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar, in-controls) and the persisted useNavLayout hook that shares the active choice across every showcase page, plus the navControlsFor helper that hands the nav to the floating controls when the in-controls layout is active.
 
 import { usePersistedPref } from '../../lib/usePersistedPref'
+import { APP_SHELL_NAV, type AppShellNavId, type AppShellNavLink } from './navLinks'
 
-// ABOUTME: Ordered tuple of all ten nav-location ids that AppShell accepts as its `layoutId` prop.
+// ABOUTME: Ordered tuple of all eleven nav-location ids that AppShell accepts as its `layoutId` prop.
 /**
- * App-shell nav locations. Ten variations that place the cross-page nav
+ * App-shell nav locations. Eleven variations that place the cross-page nav
  * (Components / Visualizations / Apps / Quiz / Tests / Engines) in
  * different parts of the viewport. Inspired by the sports-app layout
  * picker, but applied to every showcase page so the chrome can adapt
  * when the top bar gets cramped.
+ *
+ * Ten anchor the nav to a fixed page slot; `in-controls` is the odd one
+ * out — it removes the page nav entirely and routes the links into the
+ * floating DraggableControls panel as a collapsible Navigation section
+ * (see `navControlsFor`), so the chrome shrinks to just a brand header.
  *
  * Each layout has its own JSX shell in `AppShell.tsx`; the CSS lives in
  * `AppShell.css`.
@@ -24,9 +30,10 @@ export const NAV_LAYOUT_IDS = [
   'fab',
   'footer',
   'tabbar',
+  'in-controls',
 ] as const
 
-// ABOUTME: Union of all ten nav-location id strings, derived from NAV_LAYOUT_IDS for exhaustive type safety.
+// ABOUTME: Union of all eleven nav-location id strings, derived from NAV_LAYOUT_IDS for exhaustive type safety.
 export type NavLayoutId = (typeof NAV_LAYOUT_IDS)[number]
 
 // ABOUTME: Fallback layout id used when no persisted preference exists; set to 'topbar'.
@@ -44,7 +51,46 @@ export const NAV_LAYOUT_OPTIONS: { value: NavLayoutId; label: string }[] = [
   { value: 'fab',          label: 'FAB — floating action menu' },
   { value: 'footer',       label: 'Footer — anchored bottom bar' },
   { value: 'tabbar',       label: 'Tab bar — bottom equal-width' },
+  { value: 'in-controls',  label: 'In controls — inside the preferences panel' },
 ]
+
+// ABOUTME: The single nav-location id whose chrome routes the cross-page nav into the floating controls panel instead of a fixed page slot.
+export const IN_CONTROLS_NAV_LAYOUT: NavLayoutId = 'in-controls'
+
+// ABOUTME: What the floating controls need to render the cross-page nav as its own collapsible section: the shared link list, the active page id, and an inControls flag set only when the active layout is 'in-controls'.
+/**
+ * Bundle handed from a page to `DraggableControls` so the controls can
+ * show the cross-page nav inside their own collapsible Navigation
+ * section. `inControls` gates the rendering: it is true only for the
+ * `in-controls` layout, so for every other layout the controls leave the
+ * nav to AppShell and render nothing extra. Built by `navControlsFor`.
+ */
+export interface NavControls {
+  /** The cross-page links to list — normally `APP_SHELL_NAV`. */
+  links: AppShellNavLink[]
+  /** Which link to mark current, mirroring the page's AppShell `activeId`. */
+  activeId?: AppShellNavId
+  /** True when the active layout routes nav into the controls. */
+  inControls: boolean
+}
+
+// ABOUTME: Builds the NavControls descriptor a page hands to DraggableControls, pairing the shared APP_SHELL_NAV with the page's active id and the inControls flag derived from whether the chosen layout is 'in-controls'.
+/**
+ * Convenience builder a page calls as `navControlsFor(navLayout, 'tests')`
+ * to feed `DraggableControls`. Keeps the `in-controls` comparison in one
+ * place so pages never hard-code the layout id, and reuses the shared
+ * `APP_SHELL_NAV` so the nav stays identical to the fixed-slot layouts.
+ */
+export function navControlsFor(
+  layoutId: NavLayoutId,
+  activeId?: AppShellNavId,
+): NavControls {
+  return {
+    links: APP_SHELL_NAV,
+    activeId,
+    inControls: layoutId === IN_CONTROLS_NAV_LAYOUT,
+  }
+}
 
 // ABOUTME: Validates a raw string against NAV_LAYOUT_IDS and returns it as a NavLayoutId, or falls back to DEFAULT_NAV_LAYOUT for unknown or nullish values.
 export function resolveNavLayoutId(raw: string | null | undefined): NavLayoutId {

@@ -8,11 +8,21 @@ import { Link } from 'react-router-dom'
 import { palettes, type PaletteId } from '../../../palettes'
 import { descriptions } from '../../../palettes/descriptions'
 import { PaletteRoot } from '../../theme/PaletteRoot'
-import { useSelectedStyle } from '../../lib/persistedStyle'
-import { resolveStyle } from '../../lib/customPatterns'
+import { buildPaletteField, isStyleId, useSelectedStyle } from '../../lib/persistedStyle'
+import { resolveStyle, type StyleId } from '../../lib/customPatterns'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
-import { useNavLayout } from '../../components/AppShell/navLayouts'
+import {
+  NAV_LAYOUT_OPTIONS,
+  navControlsFor,
+  useNavLayout,
+  type NavLayoutId,
+} from '../../components/AppShell/navLayouts'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
 import type { Engine } from '../../../tokens/semantic.contract'
 import './palettes.css'
 
@@ -37,11 +47,30 @@ function groupByEngine(): Group[] {
 
 // ABOUTME: PalettesIndex — the /palettes index page: groups all palettes by engine using the palettes registry, renders each group as a section with engine-keyed headings, and links each entry to its design doc, falling back to "Description pending" for palettes without a structured descriptions entry.
 export function PalettesIndex() {
-  const [navLayout] = useNavLayout()
-  const [selectedStyle] = useSelectedStyle()
+  const [navLayout, setNavLayout] = useNavLayout()
+  const [selectedStyle, setSelectedStyle] = useSelectedStyle()
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
   const groups = groupByEngine()
   const total = Object.keys(palettes).length
   const populated = Object.keys(descriptions).length
+
+  const handlePaletteChange = (next: string) => {
+    if (isStyleId(next)) setSelectedStyle(next as StyleId)
+  }
+
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
+
+  const fields: Field[] = [
+    buildPaletteField(selectedStyle, handlePaletteChange),
+    navLayoutField,
+  ]
 
   const brand = <h1 className="iux-palette-page__brand-title">iux — palettes</h1>
 
@@ -105,6 +134,12 @@ export function PalettesIndex() {
           ))}
         </main>
       </AppShell>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={fields}
+        nav={navControlsFor(navLayout, 'palettes')}
+      />
     </PaletteRoot>
   )
 }

@@ -19,7 +19,17 @@ import { descriptions } from '../../../palettes/descriptions'
 import { PaletteRoot } from '../../theme/PaletteRoot'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
-import { useNavLayout } from '../../components/AppShell/navLayouts'
+import {
+  NAV_LAYOUT_OPTIONS,
+  navControlsFor,
+  useNavLayout,
+  type NavLayoutId,
+} from '../../components/AppShell/navLayouts'
+import {
+  DraggableControls,
+  useControlsStyle,
+  type Field,
+} from '../../components/DraggableControls/DraggableControls'
 import {
   renderStyleDescriptionMarkdown,
   renderCssVarsBlock,
@@ -105,7 +115,17 @@ function PaletteDesignPage({ palette }: PageProps) {
     [desc, palette.id],
   )
   const readme = readmeFor(palette.id as PaletteId)
-  const [navLayout] = useNavLayout()
+  const [navLayout, setNavLayout] = useNavLayout()
+  const [controlsStyle, setControlsStyle] = useControlsStyle()
+
+  const navLayoutField: Field = {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value: navLayout,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => setNavLayout(v as NavLayoutId),
+  }
 
   const brand = <h1 className="iux-palette-page__brand-title">iux — palettes</h1>
 
@@ -286,6 +306,12 @@ function PaletteDesignPage({ palette }: PageProps) {
           )}
         </main>
       </AppShell>
+      <DraggableControls
+        style={controlsStyle}
+        onStyleChange={setControlsStyle}
+        fields={[navLayoutField]}
+        nav={navControlsFor(navLayout, 'palettes')}
+      />
     </PaletteRoot>
   )
 }

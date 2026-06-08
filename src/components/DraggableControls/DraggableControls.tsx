@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEve
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { PalettePicker } from '../PalettePicker/PalettePicker'
 import { Select } from '../Select/Select'
+import { NavAnchor } from '../AppShell/AppShell'
+import type { NavControls } from '../AppShell/navLayouts'
 import './DraggableControls.css'
 
 /**
@@ -37,6 +39,45 @@ const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 // ABOUTME: Type guard that validates a raw localStorage string as a ControlsStyle value before applying it.
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
   raw === 'button' || raw === 'strip'
+
+// ABOUTME: localStorage key for the open/closed state of the Navigation disclosure shown in the panel when the active nav layout is 'in-controls'.
+const NAV_OPEN_KEY = 'iux-controls-nav-open'
+
+// ABOUTME: What a double-tap anywhere on the page does to the floating controls — 'move-open' relocates them under the tap and opens, 'open' just opens in place, 'move' just relocates, 'off' disables the gesture.
+export type DoubleTapAction = 'off' | 'move-open' | 'open' | 'move'
+
+// ABOUTME: localStorage key under which the double-tap gesture action is persisted.
+const DOUBLETAP_KEY = 'iux-controls-doubletap'
+// ABOUTME: Fallback double-tap action when no preference is stored — relocate the controls under the tap and open them.
+const DEFAULT_DOUBLETAP: DoubleTapAction = 'move-open'
+
+// ABOUTME: Type guard that validates a raw localStorage string as a DoubleTapAction before applying it.
+const isDoubleTapAction = (raw: string): raw is DoubleTapAction =>
+  raw === 'off' || raw === 'move-open' || raw === 'open' || raw === 'move'
+
+// ABOUTME: The selectable double-tap actions, ordered most- to least-active, used to build the "Double-tap" field shown inside the controls' Settings group.
+const DOUBLETAP_OPTIONS: { value: DoubleTapAction; label: string }[] = [
+  { value: 'move-open', label: 'Move here & open' },
+  { value: 'open', label: 'Open in place' },
+  { value: 'move', label: 'Move here' },
+  { value: 'off', label: 'Off' },
+]
+
+// ABOUTME: Shared user preference for what a double-tap on the page does to the floating controls.
+/**
+ * Shared user preference for the double-tap gesture, backed by
+ * localStorage so the choice survives navigation and stays in sync across
+ * every mounted DraggableControls in the tab. The root container reads it
+ * to wire (or skip) a document-level `dblclick` handler that relocates and
+ * opens the controls at the tap point.
+ */
+export function useDoubleTapAction() {
+  return usePersistedPref<DoubleTapAction>(
+    DOUBLETAP_KEY,
+    DEFAULT_DOUBLETAP,
+    isDoubleTapAction,
+  )
+}
 
 // ABOUTME: Shared user preference for the floating controls' style (Button FAB vs Edge Strip).
 /**
@@ -74,11 +115,18 @@ export type Field = {
 // ABOUTME: An x/y pixel coordinate representing the floating container's top-left position within the viewport.
 type Position = { x: number; y: number }
 
-// ABOUTME: Props for the DraggableControls root — the current controls style, a callback to change it, and the array of control field descriptors to render.
+// ABOUTME: Props for the DraggableControls root — the current controls style, a callback to change it, the array of control field descriptors to render, and an optional NavControls bundle that renders the cross-page nav as a collapsible section when the active layout is 'in-controls'.
 type Props = {
   style: ControlsStyle
   onStyleChange: (next: ControlsStyle) => void
   fields: Field[]
+  /**
+   * When supplied with `inControls: true` (the `in-controls` nav layout),
+   * the panel grows a collapsible Navigation section listing these links.
+   * Built by `navControlsFor`; omitted or `inControls: false` renders no
+   * nav, leaving it to AppShell's fixed-slot layouts.
+   */
+  nav?: NavControls
 }
 
 // ABOUTME: Returns the per-style localStorage key used to persist the floating container's position.
@@ -215,9 +263,10 @@ function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
  * (FAB + expandable panel) or `StripVariant` (icon row with per-slot popovers)
  * according to the `style` prop; both sub-renderers receive shared drag handlers.
  */
-export function DraggableControls({ style, onStyleChange, fields }: Props) {
+export function DraggableControls({ style, onStyleChange, fields, nav }: Props) {
   const [pos, setPos] = useState<Position>(() => loadPos(style))
   const [open, setOpen] = useState<boolean>(() => loadOpen(style, style !== 'button'))
+  const [doubleTap, setDoubleTap] = useDoubleTapAction()
   const containerRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{
     sx: number; sy: number; ox: number; oy: number; pointerId: number; el: Element
@@ -266,6 +315,36 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
     }
   }, [style, open])
 
+  /*
+   * Double-tap-to-summon. When enabled, a double-click anywhere on the
+   * page (except inside the controls themselves) relocates the container
+   * so its top-left sits at the tap point — clamped to stay on-screen —
+   * and/or opens it, per the user's chosen action. Listening on `dblclick`
+   * covers both mouse double-clicks and the touch double-tap browsers
+   * synthesise from it.
+   */
+  useEffect(() => {
+    if (doubleTap === 'off') return
+    const onDouble = (e: MouseEvent) => {
+      const el = containerRef.current
+      if (!el) return
+      // Ignore double-clicks that land inside the controls — those are
+      // interactions with the panel, not a request to move it.
+      if (el.contains(e.target as Node)) return
+      if (doubleTap === 'move-open' || doubleTap === 'move') {
+        const w = el.offsetWidth
+        const h = el.offsetHeight
+        setPos({
+          x: clamp(e.clientX, 4, Math.max(4, window.innerWidth - w - 4)),
+          y: clamp(e.clientY, 4, Math.max(4, window.innerHeight - h - 4)),
+        })
+      }
+      if (doubleTap === 'move-open' || doubleTap === 'open') setOpen(true)
+    }
+    document.addEventListener('dblclick', onDouble)
+    return () => document.removeEventListener('dblclick', onDouble)
+  }, [doubleTap])
+
   const onDragStart = (e: ReactPointerEvent) => {
     if (e.button !== 0) return
     e.preventDefault()
@@ -305,8 +384,22 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
     onPointerCancel: onDragEnd,
   }
 
+  // The double-tap behaviour is a control of the controls themselves, so
+  // it's injected here rather than passed in by every page — it lands in
+  // the Settings group (Button) / an icon slot (Strip) alongside the
+  // page's own fields.
+  const doubleTapField: Field = {
+    key: 'doubletap',
+    label: 'Double-tap',
+    short: '⊙',
+    value: doubleTap,
+    options: DOUBLETAP_OPTIONS,
+    onChange: v => setDoubleTap(v as DoubleTapAction),
+  }
+  const allFields = [...fields, doubleTapField]
+
   const containerStyle: CSSProperties = { left: pos.x, top: pos.y }
-  const summaries = fields.map(f => {
+  const summaries = allFields.map(f => {
     const opt = f.options.find(o => o.value === f.value)
     return opt?.label ?? f.value
   })
@@ -321,7 +414,8 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
     >
       {style === 'button' && (
         <ButtonVariant
-          fields={fields}
+          fields={allFields}
+          nav={nav}
           summaries={summaries}
           open={open}
           setOpen={setOpen}
@@ -332,7 +426,8 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
       )}
       {style === 'strip' && (
         <StripVariant
-          fields={fields}
+          fields={allFields}
+          nav={nav}
           summaries={summaries}
           open={open}
           setOpen={setOpen}
@@ -345,9 +440,10 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
   )
 }
 
-// ABOUTME: Shared props passed down to both ButtonVariant and StripVariant — the field list, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback.
+// ABOUTME: Shared props passed down to both ButtonVariant and StripVariant — the field list, the optional in-controls nav bundle, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback.
 type VariantProps = {
   fields: Field[]
+  nav?: NavControls
   summaries: string[]
   open: boolean
   setOpen: (next: boolean) => void
@@ -383,7 +479,7 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
 
 /* ===== Variation A: Floating Button ===== */
 // ABOUTME: Renders the Button-style controls variant — a circular FAB that opens a floating panel containing the palette picker, a collapsible Settings group for other fields, and a footer style-switcher; computes available height and panel quadrant on open.
-function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
+function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
@@ -479,9 +575,10 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
               ))}
             </div>
           )}
-          {otherFields.length > 0 && (
+          {(nav?.inControls || otherFields.length > 0) && (
             <div className="ctrl-button__sections">
-              <SettingsGroup fields={otherFields} />
+              {nav?.inControls && <NavGroup nav={nav} />}
+              {otherFields.length > 0 && <SettingsGroup fields={otherFields} />}
             </div>
           )}
           <div className="ctrl-button__footer">
@@ -489,6 +586,50 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
           </div>
           <span className="ctrl-button__edge ctrl-button__edge--bottom" aria-hidden="true" />
         </div>
+      )}
+    </div>
+  )
+}
+
+// ABOUTME: Persisted collapsible disclosure that lists the cross-page nav links inside the Button panel when the active layout is 'in-controls'; reuses the routing-aware NavAnchor from AppShell and persists its own open state (default open) so the nav stays reachable across visits.
+/**
+ * The in-controls nav. Rendered only when the `in-controls` layout routes
+ * the cross-page nav into the floating panel (gated by `nav.inControls`
+ * upstream). Mirrors `SettingsGroup`'s disclosure chrome but defaults to
+ * open — the nav is the page's primary way to move between sections, so it
+ * should be visible the moment the panel opens — and lists the links with
+ * the same `NavAnchor` the fixed-slot AppShell layouts use, so hash- and
+ * path-routed entries behave identically here.
+ */
+function NavGroup({ nav }: { nav: NavControls }) {
+  const [openRaw, setOpenRaw] = usePersistedPref<'0' | '1'>(
+    NAV_OPEN_KEY,
+    '1',
+    isBoolPref,
+  )
+  const open = openRaw === '1'
+  return (
+    <div className={`ctrl-button__group${open ? ' is-open' : ''}`}>
+      <button
+        type="button"
+        className="ctrl-button__group-toggle"
+        aria-expanded={open}
+        onClick={() => setOpenRaw(open ? '0' : '1')}
+      >
+        <span className="ctrl-button__group-caret" aria-hidden="true">{open ? '▾' : '▸'}</span>
+        <span className="ctrl-button__group-label">Navigation</span>
+      </button>
+      {open && (
+        <nav className="ctrl-button__group-body ctrl-button__nav" aria-label="Site sections">
+          {nav.links.map(link => (
+            <NavAnchor
+              key={link.id}
+              link={link}
+              active={link.id === nav.activeId}
+              className="ctrl-button__nav-link"
+            />
+          ))}
+        </nav>
       )}
     </div>
   )
@@ -676,6 +817,55 @@ function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps
 // ABOUTME: The four possible quadrants for Strip-variant popovers, combining horizontal (left/right) and vertical (up/down) directions relative to the slot button.
 type StripQuadrant = `${HorizontalDir}-${VerticalDir}`
 
+// ABOUTME: Reserved activeKey for the Strip's Navigation slot, kept out of the field-key namespace so it can share the same open/close machinery as the field slots.
+const NAV_SLOT_KEY = '__nav'
+
+// ABOUTME: Strip-variant popover that lists the cross-page nav links (shown when the active layout is 'in-controls'); mirrors StripPopover's positioning and chrome but renders routing-aware NavAnchors instead of radio options, closing the popover after a link is followed.
+function StripNavPopover({
+  nav,
+  quadrant,
+  slotRect,
+  onNavigate,
+}: {
+  nav: NavControls
+  quadrant: StripQuadrant
+  slotRect: DOMRect | null
+  onNavigate: () => void
+}) {
+  const dynamicStyle = useMemo<CSSProperties>(() => {
+    if (!slotRect) return {}
+    const margin = 16
+    const available = quadrant.endsWith('down')
+      ? window.innerHeight - slotRect.top - margin
+      : slotRect.bottom - margin
+    return { '--popover-max-height': `${Math.max(0, Math.round(available))}px` } as CSSProperties
+  }, [slotRect, quadrant])
+
+  return (
+    <nav
+      className={`ctrl-strip__popover ctrl-strip__popover--${quadrant}`}
+      style={dynamicStyle}
+      aria-label="Site sections"
+    >
+      <div className="ctrl-strip__popover-title">Navigation</div>
+      <ul className="ctrl-strip__list">
+        {nav.links.map(link => {
+          const active = link.id === nav.activeId
+          return (
+            <li key={link.id} onClick={onNavigate}>
+              <NavAnchor
+                link={link}
+                active={active}
+                className={`ctrl-strip__list-item${active ? ' ctrl-strip__list-item--selected' : ''}`}
+              />
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
+  )
+}
+
 // ABOUTME: Props for the PaletteStripSlot wrapper — the palette field, popover open state, the computed quadrant and slot rect for positioning, and toggle/close event handlers.
 interface PaletteStripSlotProps {
   field: Field
@@ -725,7 +915,7 @@ function pickStripQuadrant(rect: DOMRect): StripQuadrant {
 }
 
 // ABOUTME: Renders the Strip-style controls variant — a vertical icon bar with a grip handle and per-slot expand buttons that open positioned popovers; palette fields use PaletteStripSlot, others use StripPopover.
-function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
+function StripVariant({ fields, nav, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
   const [popoverQuadrant, setPopoverQuadrant] = useState<StripQuadrant>('right-down')
   const [slotRect, setSlotRect] = useState<DOMRect | null>(null)
@@ -816,6 +1006,28 @@ function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onSty
                 </div>
               )
             })}
+            {nav?.inControls && (
+              <div className="ctrl-strip__slot">
+                <button
+                  type="button"
+                  className={`ctrl-strip__icon${activeKey === NAV_SLOT_KEY ? ' ctrl-strip__icon--active' : ''}`}
+                  aria-label="Site sections"
+                  aria-expanded={activeKey === NAV_SLOT_KEY}
+                  onClick={e => toggleSlot(NAV_SLOT_KEY, e)}
+                >
+                  <span className="ctrl-strip__icon-short" aria-hidden="true">☰</span>
+                  <span className="ctrl-strip__icon-val">Navigation</span>
+                </button>
+                {activeKey === NAV_SLOT_KEY && (
+                  <StripNavPopover
+                    nav={nav}
+                    quadrant={popoverQuadrant}
+                    slotRect={slotRect}
+                    onNavigate={() => setActiveKey(null)}
+                  />
+                )}
+              </div>
+            )}
           </div>
           <div className="ctrl-strip__footer">
             <StyleSwitcher value={variantStyle} onChange={onStyleChange} />
