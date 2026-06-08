@@ -7,8 +7,10 @@ import { PLAYERS, TEAMS, GAMES, getTeamById } from '../data'
 import { sportsRoutes } from '../routes'
 import type { ShellProps } from '../layouts'
 
+// ABOUTME: Union of the four result categories the palette can return: top-level sections, teams, players, and games.
 type Kind = 'section' | 'team' | 'player' | 'game'
 
+// ABOUTME: A single search result row: a stable key, the result category, the primary label, secondary meta text, and the route to navigate on selection.
 interface PaletteResult {
   key: string
   kind: Kind
@@ -17,6 +19,7 @@ interface PaletteResult {
   to: string
 }
 
+// ABOUTME: Pre-built section results for Home, Teams, Players, Games, and Standings; returned as the full result list when the query is empty.
 const SECTIONS: PaletteResult[] = [
   { key: 's-home', kind: 'section', label: 'Home', meta: 'Dashboard', to: sportsRoutes.home() },
   { key: 's-teams', kind: 'section', label: 'Teams', meta: 'All 10 franchises', to: sportsRoutes.teams() },
@@ -25,6 +28,7 @@ const SECTIONS: PaletteResult[] = [
   { key: 's-standings', kind: 'section', label: 'Standings', meta: 'East / West tables', to: sportsRoutes.standings() },
 ]
 
+// ABOUTME: Runs a case-insensitive substring search across sections, teams, players, and games, returning up to 20 PaletteResult rows in priority order (sections first, then teams, players, games).
 function searchAll(q: string): PaletteResult[] {
   const needle = q.trim().toLowerCase()
   if (!needle) return SECTIONS

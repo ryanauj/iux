@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 1816
+    "documentedMembers": 1874
   },
   "areas": [
     {
@@ -3069,7 +3069,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "chat.tsx",
-      "loc": 548,
+      "loc": 560,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3133,79 +3133,91 @@
           "name": "findPlayers",
           "kind": "function",
           "exported": false,
-          "line": 94
+          "line": 95,
+          "about": "Scans PLAYERS for anyone whose full name or last name appears in the query text, returning up to `max` unique matches in array order."
         },
         {
           "name": "answer",
           "kind": "function",
           "exported": false,
-          "line": 106
+          "line": 108,
+          "about": "Rule-based intent classifier that converts a user query string into a bot Message with text, entity cards, and follow-up chip prompts; checks for tonight/live/standings/leaders/compare/team/player intents in priority order."
         },
         {
           "name": "TeamCardView",
           "kind": "component",
           "exported": false,
-          "line": 237
+          "line": 240,
+          "about": "Inline entity card for a team rendered inside a bot message; shows abbreviation mark, full name, conference, record, streak, and arena in a coloured bordered link row."
         },
         {
           "name": "PlayerCardView",
           "kind": "component",
           "exported": false,
-          "line": 253
+          "line": 257,
+          "about": "Inline entity card for a player rendered inside a bot message; shows initials mark in team colour, full name, position, jersey, team abbreviation, and PPG in a bordered link row."
         },
         {
           "name": "GameCardView",
           "kind": "component",
           "exported": false,
-          "line": 272
+          "line": 277,
+          "about": "Inline entity card for a game rendered inside a bot message; shows status/quarter, two team rows with colour marks and conditional scores, linking to the game detail page."
         },
         {
           "name": "LeaderboardView",
           "kind": "component",
           "exported": false,
-          "line": 298
+          "line": 304,
+          "about": "Ranked list card showing up to five players with their rank number, name, and the formatted stat value; each row links to the player's detail page."
         },
         {
           "name": "StandingsView",
           "kind": "component",
           "exported": false,
-          "line": 316
+          "line": 323,
+          "about": "Conference standings card showing ranked team rows with colour marks, record, and win percentage; each row links to the team detail page."
         },
         {
           "name": "ComparisonView",
           "kind": "component",
           "exported": false,
-          "line": 340
+          "line": 348,
+          "about": "Side-by-side stat table for two or more players with PPG/RPG/APG/SPG/BPG rows; the highest value in each row gets the `is-best` CSS class for visual emphasis."
         },
         {
           "name": "CardView",
           "kind": "component",
           "exported": false,
-          "line": 385
+          "line": 394,
+          "about": "Dispatcher that selects the correct card view component (TeamCardView, PlayerCardView, GameCardView, LeaderboardView, StandingsView, or ComparisonView) based on the Card discriminant."
         },
         {
           "name": "MessageView",
           "kind": "component",
           "exported": false,
-          "line": 403
+          "line": 413,
+          "about": "Renders a single chat message bubble (user or bot) with optional entity cards below the text and optional follow-up chip buttons that call onChip when clicked."
         },
         {
           "name": "ChatSurface",
           "kind": "component",
           "exported": false,
-          "line": 427
+          "line": 438,
+          "about": "Full chat interface including the scrollable message log, quick-chip bar, text input, send button, and reset button; appends to the module-level LOG on submit and chip clicks, then forces a re-render."
         },
         {
           "name": "ChatNav",
           "kind": "component",
           "exported": false,
-          "line": 495
+          "line": 507,
+          "about": "Primary navigation bar rendered in the ChatShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "ChatShell",
           "kind": "component",
           "exported": true,
-          "line": 523,
+          "line": 535,
           "about": "Conversational shell that renders the chat surface on the Home route and a back-link + detail page on every other route; the shared module-level LOG survives layout switches so the thread is never lost."
         }
       ],
@@ -3216,7 +3228,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "court.tsx",
-      "loc": 141,
+      "loc": 145,
       "importCount": 4,
       "externalCount": 0,
       "members": [
@@ -3224,31 +3236,35 @@
           "name": "Hotspot",
           "kind": "interface",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Definition for a single interactive puck on the court SVG: its centre coordinates, button label, secondary hint text, and the route it navigates to."
         },
         {
           "name": "HOTSPOTS",
           "kind": "const",
           "exported": false,
-          "line": 16
+          "line": 18,
+          "about": "Six hotspot puck definitions placed at basketball-meaningful positions on the court: two in the paint (hoop and free-throw), two on the wings (East/West standings), one at the arc (Shooters), and one at the tip-off circle."
         },
         {
           "name": "CourtMap",
           "kind": "component",
           "exported": false,
-          "line": 25
+          "line": 28,
+          "about": "Renders a 500×500 SVG half-court with floor, key, free-throw circle, 3-pt arc, backboard, hoop, and the six HOTSPOTS as keyboard-accessible puck groups; placed on the Home route by CourtShell."
         },
         {
           "name": "CourtNav",
           "kind": "component",
           "exported": false,
-          "line": 98
+          "line": 102,
+          "about": "Primary navigation bar rendered in the CourtShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "CourtShell",
           "kind": "component",
           "exported": true,
-          "line": 125,
+          "line": 129,
           "about": "Shell that shows an SVG court with labelled hotspot pucks on the Home route and renders the standard page on all other routes; hotspots are keyboard-accessible (Enter/Space triggers navigate)."
         }
       ],
@@ -3694,7 +3710,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "magazine.tsx",
-      "loc": 370,
+      "loc": 381,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3702,73 +3718,84 @@
           "name": "Section",
           "kind": "interface",
           "exported": false,
-          "line": 17
+          "line": 18,
+          "about": "Label/id pair for each editorial section of the magazine home page, used by SectionNav to generate scroll-to buttons."
         },
         {
           "name": "SECTIONS",
           "kind": "const",
           "exported": false,
-          "line": 22
+          "line": 24,
+          "about": "Ordered list of the four editorial sections (Cover, Pull quote, Leaderboard, Inside the East) whose ids are also HTML element ids targeted by SectionNav."
         },
         {
           "name": "gameOfTheNight",
           "kind": "function",
           "exported": false,
-          "line": 32
+          "line": 35,
+          "about": "Picks the marquee game for the cover: returns the live game if one exists, otherwise today's highest-combined-record scheduled game, falling back to the most recent final."
         },
         {
           "name": "statusKicker",
           "kind": "function",
           "exported": false,
-          "line": 49
+          "line": 53,
+          "about": "Returns a capitalised kicker string for the magazine cover (e.g. \"LIVE NOW · Q3\" / \"TONIGHT'S TIP-OFF · Jun 8\" / \"LATEST FINAL · Jun 7\") based on game status."
         },
         {
           "name": "gameLede",
           "kind": "function",
           "exported": false,
-          "line": 59
+          "line": 64,
+          "about": "Generates a one-paragraph editorial lede for the marquee game: a \"visiting\" sentence for live, a preview sentence for scheduled, or a margin/winner recap sentence for finals."
         },
         {
           "name": "MagazineCover",
           "kind": "component",
           "exported": false,
-          "line": 72
+          "line": 78,
+          "about": "Magazine front-cover section showing masthead, status kicker, \"Game of the Night\" headline, a two-team matchup block with crests/scores, an editorial lede, and a \"Read the box score\" link; placed first on the Home route."
         },
         {
           "name": "PullQuote",
           "kind": "component",
           "exported": false,
-          "line": 141
+          "line": 148,
+          "about": "Editorial pull-quote section featuring the league's PPG leader: displays the stat value large, a fixed attributed quote, and linked player/team names; placed after MagazineCover."
         },
         {
           "name": "Leaderboard",
           "kind": "component",
           "exported": false,
-          "line": 166
+          "line": 174,
+          "about": "Three-column \"By the Numbers\" section showing the top-5 for scoring, rebounding, and playmaking (PPG/RPG/APG) as ranked linked lists; placed after PullQuote on the Home route."
         },
         {
           "name": "InsideTheEast",
           "kind": "component",
           "exported": false,
-          "line": 212
+          "line": 221,
+          "about": "Editorial feature section for the Eastern Conference: a prose blurb driven by the top two standings entries, beside a sidebar of the East top-5 with coloured marks and records; placed last on the Home route."
         },
         {
           "name": "MagazineNav",
           "kind": "component",
           "exported": false,
-          "line": 284
+          "line": 294,
+          "about": "Primary navigation bar rendered in the MagazineShell header; links to all sports sections with `is-active` on the current route."
         },
         {
           "name": "SectionNav",
           "kind": "component",
           "exported": false,
-          "line": 304
+          "line": 315,
+          "about": "In-page \"jump to section\" nav rendered above the magazine cover; each button scrolls to the matching `id` element using scrollIntoView without touching the hash router."
         },
         {
           "name": "MagazineShell",
           "kind": "component",
           "exported": true,
-          "line": 336,
+          "line": 347,
           "about": "Shell that renders a long-scroll editorial cover on the Home route and a single-column article layout on other routes; the in-page section nav scrolls to anchors without clobbering the hash router."
         }
       ],
@@ -3779,7 +3806,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "palette.tsx",
-      "loc": 178,
+      "loc": 182,
       "importCount": 5,
       "externalCount": 1,
       "members": [
@@ -3787,31 +3814,35 @@
           "name": "Kind",
           "kind": "type",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Union of the four result categories the palette can return: top-level sections, teams, players, and games."
         },
         {
           "name": "PaletteResult",
           "kind": "interface",
           "exported": false,
-          "line": 12
+          "line": 14,
+          "about": "A single search result row: a stable key, the result category, the primary label, secondary meta text, and the route to navigate on selection."
         },
         {
           "name": "SECTIONS",
           "kind": "const",
           "exported": false,
-          "line": 20
+          "line": 23,
+          "about": "Pre-built section results for Home, Teams, Players, Games, and Standings; returned as the full result list when the query is empty."
         },
         {
           "name": "searchAll",
           "kind": "function",
           "exported": false,
-          "line": 28
+          "line": 32,
+          "about": "Runs a case-insensitive substring search across sections, teams, players, and games, returning up to 20 PaletteResult rows in priority order (sections first, then teams, players, games)."
         },
         {
           "name": "PaletteShell",
           "kind": "component",
           "exported": true,
-          "line": 85,
+          "line": 89,
           "about": "Shell that renders a command-palette search box above the main content area on every route; unlike other shells it does not replace the Home page — it augments all pages with the palette affordance."
         }
       ],
@@ -3822,7 +3853,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "tabs.tsx",
-      "loc": 182,
+      "loc": 188,
       "importCount": 5,
       "externalCount": 1,
       "members": [
@@ -3830,43 +3861,49 @@
           "name": "HOME_KEY",
           "kind": "const",
           "exported": false,
-          "line": 14
+          "line": 15,
+          "about": "Sentinel string used as the tab key for the sports home route, stored in `?tabs=` in place of the full path suffix."
         },
         {
           "name": "pathToKey",
           "kind": "function",
           "exported": false,
-          "line": 17
+          "line": 19,
+          "about": "Converts a full router path to the shorthand stored in `?tabs=` (strips SPORTS_BASE prefix; empty suffix becomes HOME_KEY)."
         },
         {
           "name": "keyToPath",
           "kind": "function",
           "exported": false,
-          "line": 23
+          "line": 26,
+          "about": "Converts a tab key back to a navigable router path by prepending SPORTS_BASE, or returning the home route for HOME_KEY."
         },
         {
           "name": "labelForKey",
           "kind": "function",
           "exported": false,
-          "line": 28
+          "line": 32,
+          "about": "Derives a human-readable tab label from a raw tab key by parsing it back to a SportsRoute and delegating to labelForRoute."
         },
         {
           "name": "labelForRoute",
           "kind": "function",
           "exported": false,
-          "line": 34
+          "line": 39,
+          "about": "Maps a typed SportsRoute to a short display string for the tab strip (e.g. team name, \"J. Smith\" for a player, \"BOS @ NYK\" for a game); returns the raw fallback string for unrecognised route kinds."
         },
         {
           "name": "TabsNavMenu",
           "kind": "component",
           "exported": false,
-          "line": 57
+          "line": 63,
+          "about": "Secondary navigation menu rendered below the tab strip; links to all sports sections so the user can open any section as a new tab."
         },
         {
           "name": "TabsShell",
           "kind": "component",
           "exported": true,
-          "line": 84,
+          "line": 90,
           "about": "Shell that renders a tab strip above a standard-page main area; opening a new route appends it to the strip, closing a tab focuses the neighbour and removes it from the `?tabs=` param, and the \"+\" button opens a fresh Home tab."
         }
       ],
@@ -12234,7 +12271,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "index.tsx",
-      "loc": 145,
+      "loc": 146,
       "importCount": 10,
       "externalCount": 2,
       "members": [
@@ -12242,13 +12279,14 @@
           "name": "ALL_ENGINES",
           "kind": "const",
           "exported": false,
-          "line": 24
+          "line": 25,
+          "about": "Complete list of all fifteen engine ids with display names and availability flags, used by EnginesIndex to render available engine links and pending stubs."
         },
         {
           "name": "EnginesIndex",
           "kind": "component",
           "exported": true,
-          "line": 43,
+          "line": 44,
           "about": "EnginesIndex — the /engines index page: renders the full engine list inside an AppShell, reads plain/technical summaries from ENGINE_GUIDES based on the current DocMode, and links each available engine to its walkthrough at /engines/:id."
         }
       ],
@@ -12634,7 +12672,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "sketch.tsx",
-      "loc": 390,
+      "loc": 393,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12677,25 +12715,28 @@
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 114
+          "line": 115,
+          "about": "Renders the elevation step demo: a Slider scrubs five rungs showing ink-blue hard-offset shadows with a secondary soft blur at higher levels, and the heavier wobble variant applied to the card class."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 157
+          "line": 159,
+          "about": "Renders the motion step demo: a motion toggle shows that toggling motion only affects colour transition durations, not the static SVG wobble — the drawn-line look stays regardless of motion state."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 194
+          "line": 197,
+          "about": "Renders the intent step demo: all six intent buttons with marker fills where each border sits one luminance step darker than its fill, making each chip read as outline-drawn-first after the displacement pass."
         },
         {
           "name": "sketchGuide",
           "kind": "const",
           "exported": true,
-          "line": 220,
+          "line": 223,
           "about": "sketchGuide — the EngineGuideMeta for the Sketch engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the sketch-marker palette, covering the SVG displacement filter, warm paper tone surfaces, thickened marker-line borders, ink-blue cast shadows with a heavier wobble on cards, ink-settling motion, and the five-marker intent set with a red-marker focus loop."
         }
       ],
@@ -12795,7 +12836,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "terminal-tui.tsx",
-      "loc": 415,
+      "loc": 423,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -12803,55 +12844,63 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered array of ElevationRung values used to map a Slider index to a rung name."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 18,
+          "about": "Renders the philosophy step demo: a Card inside the TUI host with box-drawing corners, monospace type, and bracketed button labels, establishing the character-grid layout unit."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 36
+          "line": 40,
+          "about": "Renders the surfaces step demo: a four-swatch grid of near-black tones within a few luminance steps of each other, showing that effect.surfaceBy is border, not luminance."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 72
+          "line": 77,
+          "about": "Renders the borders step demo: a segmented control picks border strength on a TUI-host panel and a plain div, illustrating the box-drawing corner hybrid and how strength rungs shift alpha rather than width."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 127
+          "line": 133,
+          "about": "Renders the elevation step demo: a Slider walks five rungs but the card never changes because every elevation token resolves to boxShadow: none — the engine names this explicitly."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 176
+          "line": 183,
+          "about": "Renders the motion step demo: a motion toggle controls the TUI palette's 40–140 ms linear snap durations, showing that with motion off hovers re-colour on the same frame the cursor enters."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 216
+          "line": 224,
+          "about": "Renders the intent step demo: all six intent buttons in bracketed TUI style where fills stay a low-alpha wash and colour lives only in the border and content text."
         },
         {
           "name": "terminalTuiGuide",
           "kind": "const",
           "exported": true,
-          "line": 244,
+          "line": 252,
           "about": "terminalTuiGuide — the EngineGuideMeta for the Terminal / TUI engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the terminal-tui palette, covering the character-grid layout unit, near-black neutral surfaces, the box-drawing-glyph corner trick, all-none elevation, linear snap-fast motion with no decay, and colour-on-border intent encoding with a link-blue focus outline."
         }
       ],
@@ -12888,7 +12937,7 @@
       "area": "guides",
       "dir": "guides/palettes",
       "name": "PaletteDesignPage.tsx",
-      "loc": 294,
+      "loc": 301,
       "importCount": 5,
       "externalCount": 6,
       "members": [
@@ -12896,49 +12945,56 @@
           "name": "README_MODULES",
           "kind": "const",
           "exported": false,
-          "line": 33
+          "line": 34,
+          "about": "Eagerly loaded map of all palette README.md files keyed by their import path, so the \"Copy as markdown\" button can embed long-form notes at build time without a runtime fetch."
         },
         {
           "name": "readmeFor",
           "kind": "function",
           "exported": false,
-          "line": 38
+          "line": 40,
+          "about": "Finds and returns the raw README string for the given palette id by matching the trailing path segment in README_MODULES, or undefined if no README file exists for that id."
         },
         {
           "name": "resolveTokenPath",
           "kind": "function",
           "exported": false,
-          "line": 45
+          "line": 48,
+          "about": "Walks a dot-separated token path string through a nested object, returning the value at that path or undefined if any segment is missing or non-object."
         },
         {
           "name": "formatTokenValue",
           "kind": "function",
           "exported": false,
-          "line": 54
+          "line": 58,
+          "about": "Converts a resolved token value to a display string for the token evidence table, handling strings, numbers, boxShadow objects, and falling back to JSON for other shapes."
         },
         {
           "name": "CopyButton",
           "kind": "component",
           "exported": false,
-          "line": 63
+          "line": 68,
+          "about": "A button that calls navigator.clipboard.writeText with the string returned by getText(), briefly showing \"Copied!\" feedback before reverting to the provided label."
         },
         {
           "name": "PageProps",
           "kind": "interface",
           "exported": false,
-          "line": 84
+          "line": 90,
+          "about": "Props for the internal PaletteDesignPage component, carrying the resolved Palette object for the id extracted by the routed wrapper."
         },
         {
           "name": "PaletteDesignPage",
           "kind": "component",
           "exported": false,
-          "line": 88
+          "line": 95,
+          "about": "Renders the full palette design page body: breadcrumbs, header, all structured description sections (summary through recall aliases), the CSS custom-properties block with a copy button, a markdown copy button, and the raw README in a collapsible details block."
         },
         {
           "name": "PaletteDesignPageRoute",
           "kind": "component",
           "exported": true,
-          "line": 287,
+          "line": 294,
           "about": "PaletteDesignPageRoute — the routed entry point at /palettes/:paletteId/design; extracts the paletteId param, redirects unknown ids to /palettes, and delegates to the internal PaletteDesignPage component."
         }
       ],
@@ -12949,7 +13005,7 @@
       "area": "guides",
       "dir": "guides/palettes",
       "name": "PalettesIndex.tsx",
-      "loc": 109,
+      "loc": 111,
       "importCount": 6,
       "externalCount": 5,
       "members": [
@@ -12957,19 +13013,21 @@
           "name": "Group",
           "kind": "interface",
           "exported": false,
-          "line": 19
+          "line": 20,
+          "about": "Shape of one engine group produced by groupByEngine: the engine name and the sorted list of palette ids that belong to it."
         },
         {
           "name": "groupByEngine",
           "kind": "function",
           "exported": false,
-          "line": 24
+          "line": 26,
+          "about": "Builds an array of Groups by iterating the palettes registry, bucketing each palette id under its engine, then sorting the groups by engine name and each bucket alphabetically by palette display name."
         },
         {
           "name": "PalettesIndex",
           "kind": "component",
           "exported": true,
-          "line": 37,
+          "line": 39,
           "about": "PalettesIndex — the /palettes index page: groups all palettes by engine using the palettes registry, renders each group as a section with engine-keyed headings, and links each entry to its design doc, falling back to \"Description pending\" for palettes without a structured descriptions entry."
         }
       ],

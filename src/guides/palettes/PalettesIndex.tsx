@@ -16,11 +16,13 @@ import { useNavLayout } from '../../components/AppShell/navLayouts'
 import type { Engine } from '../../../tokens/semantic.contract'
 import './palettes.css'
 
+// ABOUTME: Shape of one engine group produced by groupByEngine: the engine name and the sorted list of palette ids that belong to it.
 interface Group {
   engine: Engine
   ids: PaletteId[]
 }
 
+// ABOUTME: Builds an array of Groups by iterating the palettes registry, bucketing each palette id under its engine, then sorting the groups by engine name and each bucket alphabetically by palette display name.
 function groupByEngine(): Group[] {
   const groups = new Map<Engine, PaletteId[]>()
   for (const id of Object.keys(palettes) as PaletteId[]) {

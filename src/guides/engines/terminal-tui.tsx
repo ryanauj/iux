@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: Renders the philosophy step demo: a Card inside the TUI host with box-drawing corners, monospace type, and bracketed button labels, establishing the character-grid layout unit.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__tui-host">
@@ -33,6 +36,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid of near-black tones within a few luminance steps of each other, showing that effect.surfaceBy is border, not luminance.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -69,6 +73,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: a segmented control picks border strength on a TUI-host panel and a plain div, illustrating the box-drawing corner hybrid and how strength rungs shift alpha rather than width.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -124,6 +129,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider walks five rungs but the card never changes because every elevation token resolves to boxShadow: none — the engine names this explicitly.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -173,6 +179,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle controls the TUI palette's 40–140 ms linear snap durations, showing that with motion off hovers re-colour on the same frame the cursor enters.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -213,6 +220,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons in bracketed TUI style where fills stay a low-alpha wash and colour lives only in the border and content text.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__tui-host">

@@ -91,6 +91,7 @@ function findTeam(text: string): Team | undefined {
   )
 }
 
+// ABOUTME: Scans PLAYERS for anyone whose full name or last name appears in the query text, returning up to `max` unique matches in array order.
 function findPlayers(text: string, max: number): Player[] {
   const out: Player[] = []
   for (const p of PLAYERS) {
@@ -103,6 +104,7 @@ function findPlayers(text: string, max: number): Player[] {
   return out
 }
 
+// ABOUTME: Rule-based intent classifier that converts a user query string into a bot Message with text, entity cards, and follow-up chip prompts; checks for tonight/live/standings/leaders/compare/team/player intents in priority order.
 function answer(query: string): Message {
   const text = query.trim().toLowerCase()
   if (!text) {
@@ -234,6 +236,7 @@ function answer(query: string): Message {
   }
 }
 
+// ABOUTME: Inline entity card for a team rendered inside a bot message; shows abbreviation mark, full name, conference, record, streak, and arena in a coloured bordered link row.
 function TeamCardView({ team }: { team: Team }) {
   return (
     <Link to={sportsRoutes.teamDetail(team.slug)} className="sports-chat__entity" style={{ borderColor: team.primaryColor }}>
@@ -250,6 +253,7 @@ function TeamCardView({ team }: { team: Team }) {
   )
 }
 
+// ABOUTME: Inline entity card for a player rendered inside a bot message; shows initials mark in team colour, full name, position, jersey, team abbreviation, and PPG in a bordered link row.
 function PlayerCardView({ player }: { player: Player }) {
   const team = getTeamById(player.teamId)
   const accent = team?.primaryColor ?? 'var(--color-content-secondary)'
@@ -269,6 +273,7 @@ function PlayerCardView({ player }: { player: Player }) {
   )
 }
 
+// ABOUTME: Inline entity card for a game rendered inside a bot message; shows status/quarter, two team rows with colour marks and conditional scores, linking to the game detail page.
 function GameCardView({ game }: { game: Game }) {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -295,6 +300,7 @@ function GameCardView({ game }: { game: Game }) {
   )
 }
 
+// ABOUTME: Ranked list card showing up to five players with their rank number, name, and the formatted stat value; each row links to the player's detail page.
 function LeaderboardView({ stat, playerIds }: { stat: StatKey; playerIds: string[] }) {
   return (
     <div className="sports-chat__leaderboard" role="list">
@@ -313,6 +319,7 @@ function LeaderboardView({ stat, playerIds }: { stat: StatKey; playerIds: string
   )
 }
 
+// ABOUTME: Conference standings card showing ranked team rows with colour marks, record, and win percentage; each row links to the team detail page.
 function StandingsView({ conference }: { conference: Conference }) {
   const teams = getStandings(conference)
   return (
@@ -337,6 +344,7 @@ function StandingsView({ conference }: { conference: Conference }) {
   )
 }
 
+// ABOUTME: Side-by-side stat table for two or more players with PPG/RPG/APG/SPG/BPG rows; the highest value in each row gets the `is-best` CSS class for visual emphasis.
 function ComparisonView({ playerIds }: { playerIds: string[] }) {
   const players = playerIds.map(id => getPlayerById(id)).filter((p): p is Player => Boolean(p))
   if (players.length === 0) return null
@@ -382,6 +390,7 @@ function ComparisonView({ playerIds }: { playerIds: string[] }) {
   )
 }
 
+// ABOUTME: Dispatcher that selects the correct card view component (TeamCardView, PlayerCardView, GameCardView, LeaderboardView, StandingsView, or ComparisonView) based on the Card discriminant.
 function CardView({ card }: { card: Card }) {
   if (card.kind === 'team') {
     const t = getTeamById(card.teamId)
@@ -400,6 +409,7 @@ function CardView({ card }: { card: Card }) {
   return <ComparisonView playerIds={card.playerIds} />
 }
 
+// ABOUTME: Renders a single chat message bubble (user or bot) with optional entity cards below the text and optional follow-up chip buttons that call onChip when clicked.
 function MessageView({ message, onChip }: { message: Message; onChip: (q: string) => void }) {
   return (
     <li className={`sports-chat__msg sports-chat__msg--${message.role}`}>
@@ -424,6 +434,7 @@ function MessageView({ message, onChip }: { message: Message; onChip: (q: string
   )
 }
 
+// ABOUTME: Full chat interface including the scrollable message log, quick-chip bar, text input, send button, and reset button; appends to the module-level LOG on submit and chip clicks, then forces a re-render.
 function ChatSurface(): ReactNode {
   const [, force] = useState(0)
   const [draft, setDraft] = useState('')
@@ -492,6 +503,7 @@ function ChatSurface(): ReactNode {
   )
 }
 
+// ABOUTME: Primary navigation bar rendered in the ChatShell header; links to all sports sections with `is-active` on the current route.
 function ChatNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__chat-nav" aria-label="Primary">
