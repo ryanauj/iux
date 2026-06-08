@@ -10,6 +10,7 @@ import { promptRoutes } from '../routes'
 import { strategyCategoryLabel } from '../format'
 import { STRATEGY_CATEGORIES, type StrategyCategory } from '../types'
 
+// ABOUTME: Union type for the Strategies page category filter: 'all' shows every strategy; a StrategyCategory value narrows the list to that category.
 type CatFilter = 'all' | StrategyCategory
 
 // ABOUTME: Strategies catalogue page: renders all entries from the static STRATEGIES array as Card tiles filterable by category via a Segmented pill; each card shows the category badge, name, tagline, summary excerpt, tags, and an "Open" link to StrategyDetail.

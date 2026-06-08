@@ -277,16 +277,21 @@ interface Node {
   degree: number
 }
 
+// ABOUTME: Weighted edge between two component nodes in the network graph; weight counts how many tests co-exercise both components.
 interface Edge {
   a: string
   b: string
   weight: number
 }
 
+// ABOUTME: SVG canvas width in pixels for the force-directed network graph.
 const WIDTH = 720
+// ABOUTME: SVG canvas height in pixels for the force-directed network graph.
 const HEIGHT = 480
+// ABOUTME: Minimum margin in pixels keeping nodes away from the SVG edges during force simulation.
 const PAD = 40
 
+// ABOUTME: Renders the force-directed SVG graph of component co-usage: nodes sized by degree, edges weighted by co-test count, with hover highlighting and a self-stopping simulation.
 function NetworkMode({
   selected,
   onSelect,
@@ -368,6 +373,7 @@ function NetworkMode({
   )
 }
 
+// ABOUTME: Derives node and edge data from INTEGRATION_TESTS: places nodes in a circle, computes per-component degree, and counts co-usage edges between component pairs.
 function buildGraph() {
   const ids = involvedComponentIds()
   const degree = new Map<string, number>()
@@ -406,6 +412,7 @@ function buildGraph() {
   return { nodes, edges: Array.from(edgeMap.values()) }
 }
 
+// ABOUTME: Runs a rAF-based force simulation (repulsion + spring + centering + friction) for up to 200 ticks, calling onTick after each frame; returns a stop handle to cancel the loop.
 function simulateForces(
   nodes: Node[],
   edges: Edge[],
@@ -471,6 +478,7 @@ function simulateForces(
 
 /* -------------------------------- Side panel ------------------------------ */
 
+// ABOUTME: Aside panel listing the tests that include the hovered/selected component, with per-test run buttons; shows a hint prompt when nothing is selected.
 function SidePanel({
   selected,
   statusFor,

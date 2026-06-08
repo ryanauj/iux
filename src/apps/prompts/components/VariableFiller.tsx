@@ -5,6 +5,7 @@ import { TextInput } from '../../../components/TextInput/TextInput'
 import { CopyButton } from './CopyButton'
 import { fillTemplate, humanizeVar } from '../format'
 
+// ABOUTME: Props for VariableFiller: the raw template body (with `{{slot}}` markers) and the pre-extracted list of variable names to render as labelled inputs.
 interface VariableFillerProps {
   body: string
   variables: string[]

@@ -38,6 +38,7 @@ const WIDGET_LABELS: Record<WidgetId, string> = {
 // `?bento=` is sticky; format is the visible widget IDs in display order
 // (comma-separated). A missing id is hidden. An empty/absent param falls
 // back to all widgets in their canonical order.
+// ABOUTME: Parses the `?bento=` param (comma-joined WidgetIds) into an ordered visible list, filtering invalid tokens and falling back to ALL_WIDGETS when the result is empty.
 function parseBento(raw: string | null): WidgetId[] {
   if (!raw) return ALL_WIDGETS.slice()
   const parsed = raw.split(',').filter((s): s is WidgetId =>
@@ -46,6 +47,7 @@ function parseBento(raw: string | null): WidgetId[] {
   return parsed.length > 0 ? Array.from(new Set(parsed)) : ALL_WIDGETS.slice()
 }
 
+// ABOUTME: Serialises a WidgetId array to a comma-joined string for `?bento=`, returning undefined when it matches the default order so clean URLs are preserved.
 function serializeBento(ids: WidgetId[]): string | undefined {
   // Omit the param when it would match the default — keeps clean URLs.
   const isDefault =
@@ -53,10 +55,12 @@ function serializeBento(ids: WidgetId[]): string | undefined {
   return isDefault ? undefined : ids.join(',')
 }
 
+// ABOUTME: Returns the first live game in GAMES, or undefined if none are currently in progress.
 function liveGame(): Game | undefined {
   return GAMES.find(g => g.status === 'live')
 }
 
+// ABOUTME: Returns the team with the best winning percentage across both conferences — used as the Spotlight widget's featured team.
 function topTeam(): Team | undefined {
   const east = getStandings('East')[0]
   const west = getStandings('West')[0]
@@ -67,6 +71,7 @@ function topTeam(): Team | undefined {
     : west
 }
 
+// ABOUTME: Maps a WidgetId to the canonical deep-link route for "Open full page" — live goes to the live game or the schedule, spotlight goes to the top team or teams list.
 function widgetRoute(id: WidgetId): string {
   if (id === 'live') {
     const g = liveGame()
@@ -79,6 +84,7 @@ function widgetRoute(id: WidgetId): string {
   return t ? sportsRoutes.teamDetail(t.slug) : sportsRoutes.teams()
 }
 
+// ABOUTME: Compact live-scoreboard widget: shows a pulsing indicator, clock string, and one row per team with abbreviation badge and current score; shows an empty message when no game is live.
 function LiveWidget() {
   const g = liveGame()
   if (!g) {
@@ -112,6 +118,7 @@ function LiveWidget() {
   )
 }
 
+// ABOUTME: Compact PPG leaders widget: ordered list of the top-5 scorers with rank, abbreviated first name, last name, and PPG value.
 function LeadersWidget() {
   const leaders = getStatLeaders('ppg', 5)
   return (
@@ -127,6 +134,7 @@ function LeadersWidget() {
   )
 }
 
+// ABOUTME: Compact standings widget: two side-by-side columns (East / West) each showing the top-3 teams with rank, abbreviation badge, and W-L record.
 function StandingsWidget() {
   return (
     <div className="sports-bento__standings">
@@ -152,6 +160,7 @@ function StandingsWidget() {
   )
 }
 
+// ABOUTME: Compact schedule widget: lists the next four upcoming (scheduled) games with date and away @ home abbreviation matchup.
 function ScheduleWidget() {
   const today = TODAY
   const upcoming = GAMES
@@ -179,6 +188,7 @@ function ScheduleWidget() {
   )
 }
 
+// ABOUTME: Compact team spotlight widget: shows the best-record team's crest, city/name, conference, W-L record, last-10, and streak.
 function SpotlightWidget() {
   const team = topTeam()
   if (!team) return <p className="sports-bento__empty">No teams on file.</p>
@@ -206,6 +216,7 @@ function SpotlightWidget() {
   )
 }
 
+// ABOUTME: Switches on WidgetId and returns the appropriate compact widget component for rendering inside a bento tile.
 function widgetBody(id: WidgetId): ReactNode {
   if (id === 'live') return <LiveWidget />
   if (id === 'leaders') return <LeadersWidget />
@@ -214,6 +225,7 @@ function widgetBody(id: WidgetId): ReactNode {
   return <SpotlightWidget />
 }
 
+// ABOUTME: Switches on WidgetId and returns the full page component to render inside the expanded Modal when a tile is clicked.
 function widgetModal(id: WidgetId): ReactNode {
   if (id === 'live') {
     const g = liveGame()
@@ -226,6 +238,7 @@ function widgetModal(id: WidgetId): ReactNode {
   return t ? <TeamDetail slug={t.slug} /> : <Standings />
 }
 
+// ABOUTME: Horizontal nav bar for the bento shell, rendering each NavItem as a styled link with active-state highlighting.
 function BentoNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__bento-nav" aria-label="Primary">

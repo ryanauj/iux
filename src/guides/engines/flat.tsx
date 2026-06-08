@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the Flat elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — reference Card with a single opaque surface, hairline border, primary/neutral buttons, and caption explaining the "one accent colour" flat philosophy.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -29,6 +32,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — bare grid of the four flat-classic surface swatches with no elevation or border, demonstrating opaque tonal hierarchy and that base and raised may be nearly identical in value.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -51,6 +55,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — segmented-toggle demo of the three Flat border-strength rungs, showing how swapping a single border token re-keys the whole panel hierarchy without any shape changes.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -78,6 +83,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five Flat elevation rungs, showing that depth is a softly-blurred drop shadow with no inset or hard offset, and noting that elevation.flat resolves to 'none'.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -110,6 +116,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — switch-controlled motion demo on the flat-classic palette, demonstrating the 200 ms base transition as a softener and confirming that toggling motion off leaves state fully readable because the engine never relies on animation to convey change.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -144,6 +151,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — cluster of all six intent buttons for Flat, with a caption prompting the user to click and observe the 2px solid blue focus ring that is independent of the button's own intent colour.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">
