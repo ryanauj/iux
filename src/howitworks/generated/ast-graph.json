@@ -6,7 +6,7 @@
     "members": 1874,
     "imports": 763,
     "documentedFiles": 255,
-    "documentedMembers": 1547
+    "documentedMembers": 1632
   },
   "areas": [
     {
@@ -1102,7 +1102,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "CodeBlock.tsx",
-      "loc": 29,
+      "loc": 30,
       "importCount": 1,
       "externalCount": 0,
       "members": [
@@ -1110,13 +1110,14 @@
           "name": "CodeBlockProps",
           "kind": "interface",
           "exported": false,
-          "line": 5
+          "line": 6,
+          "about": "Props for CodeBlock: the text to display, the \"what\" label used in the copy toast, an optional caption above the block, and an extra className."
         },
         {
           "name": "CodeBlock",
           "kind": "component",
           "exported": true,
-          "line": 16,
+          "line": 17,
           "about": "A monospaced, copyable text block for prompt bodies, templates, examples."
         }
       ],
@@ -1127,7 +1128,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "CopyButton.tsx",
-      "loc": 79,
+      "loc": 80,
       "importCount": 3,
       "externalCount": 1,
       "members": [
@@ -1135,27 +1136,28 @@
           "name": "CopyButtonProps",
           "kind": "interface",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Props for CopyButton: the text to copy, an idle button label, a toast noun for the confirmation message, button variant/intent passthrough, and an extra className."
         },
         {
           "name": "CopyButton",
           "kind": "component",
           "exported": true,
-          "line": 22,
+          "line": 23,
           "about": "A Button that copies `text` and confirms with a transient label + toast."
         },
         {
           "name": "CopyGlyph",
           "kind": "component",
           "exported": false,
-          "line": 62,
+          "line": 63,
           "about": "Two-page copy SVG icon shown in CopyButton's idle state."
         },
         {
           "name": "CheckGlyph",
           "kind": "component",
           "exported": false,
-          "line": 72,
+          "line": 73,
           "about": "Checkmark SVG icon shown in CopyButton after a successful copy, replacing CopyGlyph for 1.6 s."
         }
       ],
@@ -1166,7 +1168,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "FavoriteButton.tsx",
-      "loc": 34,
+      "loc": 35,
       "importCount": 0,
       "externalCount": 0,
       "members": [
@@ -1174,13 +1176,14 @@
           "name": "FavoriteButtonProps",
           "kind": "interface",
           "exported": false,
-          "line": 3
+          "line": 4,
+          "about": "Props for FavoriteButton: the current starred state, a toggle callback, the prompt name (for the accessible aria-label), and an extra className."
         },
         {
           "name": "FavoriteButton",
           "kind": "component",
           "exported": true,
-          "line": 13,
+          "line": 14,
           "about": "A star toggle that marks a prompt as a favorite."
         }
       ],
@@ -1231,7 +1234,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "PromptCard.tsx",
-      "loc": 75,
+      "loc": 76,
       "importCount": 9,
       "externalCount": 0,
       "members": [
@@ -1239,13 +1242,14 @@
           "name": "PromptCardProps",
           "kind": "interface",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Props for PromptCard; carries the full Prompt object so the card can render all metadata without any additional lookups."
         },
         {
           "name": "PromptCard",
           "kind": "component",
           "exported": true,
-          "line": 25,
+          "line": 26,
           "about": "Renders a prompt summary card used in the Library grid; reads toggleFavorite from the store, computes variable count via extractVariables, and links to the prompt detail page."
         }
       ],
@@ -1256,7 +1260,7 @@
       "area": "apps",
       "dir": "apps/prompts/components",
       "name": "VariableFiller.tsx",
-      "loc": 52,
+      "loc": 53,
       "importCount": 3,
       "externalCount": 1,
       "members": [
@@ -1264,13 +1268,14 @@
           "name": "VariableFillerProps",
           "kind": "interface",
           "exported": false,
-          "line": 8
+          "line": 9,
+          "about": "Props for VariableFiller: the raw template body (with `{{slot}}` markers) and the pre-extracted list of variable names to render as labelled inputs."
         },
         {
           "name": "VariableFiller",
           "kind": "component",
           "exported": true,
-          "line": 19,
+          "line": 20,
           "about": "Live template tool: one input per `{{variable}}`, with a running preview of the filled prompt and a copy button for the result."
         }
       ],
@@ -1474,7 +1479,7 @@
       "area": "apps",
       "dir": "apps/prompts/pages",
       "name": "PromptDetail.tsx",
-      "loc": 170,
+      "loc": 171,
       "importCount": 14,
       "externalCount": 1,
       "members": [
@@ -1482,13 +1487,14 @@
           "name": "PromptDetailProps",
           "kind": "interface",
           "exported": false,
-          "line": 24
+          "line": 25,
+          "about": "Props for PromptDetail; the prompt id string used to look up the prompt in the store."
         },
         {
           "name": "PromptDetail",
           "kind": "component",
           "exported": true,
-          "line": 38,
+          "line": 39,
           "about": "Full-page view for a single saved prompt: displays category/model badges, favorite toggle, CodeBlock with copy, an optional VariableFiller when `{{variables}}` are detected, notes, and a sidebar listing linked strategies; delete is confirmed via a Modal and removes the prompt from the store."
         }
       ],
@@ -1532,7 +1538,7 @@
       "area": "apps",
       "dir": "apps/prompts/pages",
       "name": "Strategies.tsx",
-      "loc": 77,
+      "loc": 78,
       "importCount": 8,
       "externalCount": 1,
       "members": [
@@ -1540,13 +1546,14 @@
           "name": "CatFilter",
           "kind": "type",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Union type for the Strategies page category filter: 'all' shows every strategy; a StrategyCategory value narrows the list to that category."
         },
         {
           "name": "Strategies",
           "kind": "component",
           "exported": true,
-          "line": 22,
+          "line": 23,
           "about": "Strategies catalogue page: renders all entries from the static STRATEGIES array as Card tiles filterable by category via a Segmented pill; each card shows the category badge, name, tagline, summary excerpt, tags, and an \"Open\" link to StrategyDetail."
         }
       ],
@@ -1557,7 +1564,7 @@
       "area": "apps",
       "dir": "apps/prompts/pages",
       "name": "StrategyDetail.tsx",
-      "loc": 153,
+      "loc": 154,
       "importCount": 10,
       "externalCount": 1,
       "members": [
@@ -1565,13 +1572,14 @@
           "name": "StrategyDetailProps",
           "kind": "interface",
           "exported": false,
-          "line": 15
+          "line": 16,
+          "about": "Props for StrategyDetail; the strategy id string used to look up the entry via getStrategy."
         },
         {
           "name": "StrategyDetail",
           "kind": "component",
           "exported": true,
-          "line": 30,
+          "line": 31,
           "about": "Full-page view for one prompting strategy: displays category badge + tags, summary prose, when-to-use checklist, template CodeBlock, worked example CodeBlock, and two aside sections — related strategies (from strategy.related) and saved prompts that link this strategy (from the store)."
         }
       ],
@@ -2831,7 +2839,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "TeamDetail.tsx",
-      "loc": 219,
+      "loc": 220,
       "importCount": 9,
       "externalCount": 0,
       "members": [
@@ -2853,7 +2861,8 @@
           "name": "StatCell",
           "kind": "component",
           "exported": false,
-          "line": 210
+          "line": 211,
+          "about": "Single stat cell in the Team stats tab: a small label above a larger value; returns null for an empty label so the grid can be padded with blank entries."
         }
       ],
       "about": "Team profile page with a coloured-border header (record, conference, coach, arena) and three Tabs: Roster (sortable player table linking to PlayerDetail), Schedule (all games with W/L result and box-score links), and Team stats (PF, PA, net, streaks)."
@@ -2863,7 +2872,7 @@
       "area": "apps",
       "dir": "apps/sports/pages",
       "name": "Teams.tsx",
-      "loc": 81,
+      "loc": 82,
       "importCount": 8,
       "externalCount": 1,
       "members": [
@@ -2871,13 +2880,14 @@
           "name": "ConfFilter",
           "kind": "type",
           "exported": false,
-          "line": 13
+          "line": 14,
+          "about": "Union of the three conference filter options on the Teams page: show all teams, or narrow to Eastern or Western Conference only."
         },
         {
           "name": "Teams",
           "kind": "component",
           "exported": true,
-          "line": 16,
+          "line": 17,
           "about": "Filters TEAMS by the chosen conference, renders each as a gradient-banner Card with city, division, W-L record, and current streak; shows an EmptyState when no teams match."
         }
       ],
@@ -2928,7 +2938,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "bento.tsx",
-      "loc": 414,
+      "loc": 430,
       "importCount": 13,
       "externalCount": 1,
       "members": [
@@ -2936,103 +2946,119 @@
           "name": "WidgetId",
           "kind": "type",
           "exported": false,
-          "line": 24
+          "line": 25,
+          "about": "Union of the five dashboard widget identifiers available in the bento layout."
         },
         {
           "name": "ALL_WIDGETS",
           "kind": "const",
           "exported": false,
-          "line": 25
+          "line": 27,
+          "about": "Canonical widget order used as the default and as the reset target."
         },
         {
           "name": "WIDGET_LABELS",
           "kind": "const",
           "exported": false,
-          "line": 27
+          "line": 30,
+          "about": "Human-readable display names for each widget, shown in tile headers and the hidden-widgets tray."
         },
         {
           "name": "parseBento",
           "kind": "function",
           "exported": false,
-          "line": 38
+          "line": 42,
+          "about": "Parses the `?bento=` param (comma-joined WidgetIds) into an ordered visible list, filtering invalid tokens and falling back to ALL_WIDGETS when the result is empty."
         },
         {
           "name": "serializeBento",
           "kind": "function",
           "exported": false,
-          "line": 46
+          "line": 51,
+          "about": "Serialises a WidgetId array to a comma-joined string for `?bento=`, returning undefined when it matches the default order so clean URLs are preserved."
         },
         {
           "name": "liveGame",
           "kind": "function",
           "exported": false,
-          "line": 53
+          "line": 59,
+          "about": "Returns the first live game in GAMES, or undefined if none are currently in progress."
         },
         {
           "name": "topTeam",
           "kind": "function",
           "exported": false,
-          "line": 57
+          "line": 64,
+          "about": "Returns the team with the best winning percentage across both conferences — used as the Spotlight widget's featured team."
         },
         {
           "name": "widgetRoute",
           "kind": "function",
           "exported": false,
-          "line": 67
+          "line": 75,
+          "about": "Maps a WidgetId to the canonical deep-link route for \"Open full page\" — live goes to the live game or the schedule, spotlight goes to the top team or teams list."
         },
         {
           "name": "LiveWidget",
           "kind": "component",
           "exported": false,
-          "line": 79
+          "line": 88,
+          "about": "Compact live-scoreboard widget: shows a pulsing indicator, clock string, and one row per team with abbreviation badge and current score; shows an empty message when no game is live."
         },
         {
           "name": "LeadersWidget",
           "kind": "component",
           "exported": false,
-          "line": 112
+          "line": 122,
+          "about": "Compact PPG leaders widget: ordered list of the top-5 scorers with rank, abbreviated first name, last name, and PPG value."
         },
         {
           "name": "StandingsWidget",
           "kind": "component",
           "exported": false,
-          "line": 127
+          "line": 138,
+          "about": "Compact standings widget: two side-by-side columns (East / West) each showing the top-3 teams with rank, abbreviation badge, and W-L record."
         },
         {
           "name": "ScheduleWidget",
           "kind": "component",
           "exported": false,
-          "line": 152
+          "line": 164,
+          "about": "Compact schedule widget: lists the next four upcoming (scheduled) games with date and away @ home abbreviation matchup."
         },
         {
           "name": "SpotlightWidget",
           "kind": "component",
           "exported": false,
-          "line": 179
+          "line": 192,
+          "about": "Compact team spotlight widget: shows the best-record team's crest, city/name, conference, W-L record, last-10, and streak."
         },
         {
           "name": "widgetBody",
           "kind": "function",
           "exported": false,
-          "line": 206
+          "line": 220,
+          "about": "Switches on WidgetId and returns the appropriate compact widget component for rendering inside a bento tile."
         },
         {
           "name": "widgetModal",
           "kind": "function",
           "exported": false,
-          "line": 214
+          "line": 229,
+          "about": "Switches on WidgetId and returns the full page component to render inside the expanded Modal when a tile is clicked."
         },
         {
           "name": "BentoNav",
           "kind": "component",
           "exported": false,
-          "line": 226
+          "line": 242,
+          "about": "Horizontal nav bar for the bento shell, rendering each NavItem as a styled link with active-state highlighting."
         },
         {
           "name": "BentoShell",
           "kind": "component",
           "exported": true,
-          "line": 256,
+          "line": 272,
           "about": "Dashboard shell with a user-customisable widget grid on the Home route and a standard page layout on every other route; widget visibility and order persist in the `?bento=` URL param so the configuration survives navigation."
         }
       ],
@@ -3043,7 +3069,7 @@
       "area": "apps",
       "dir": "apps/sports/shells",
       "name": "chat.tsx",
-      "loc": 540,
+      "loc": 544,
       "importCount": 6,
       "externalCount": 1,
       "members": [
@@ -3051,127 +3077,131 @@
           "name": "Card",
           "kind": "type",
           "exported": false,
-          "line": 22
+          "line": 23,
+          "about": "Discriminated union of the six inline entity card variants the chat bot can emit: team, player, game, leaderboard, standings, and player comparison."
         },
         {
           "name": "Message",
           "kind": "interface",
           "exported": false,
-          "line": 30
+          "line": 32,
+          "about": "One entry in the chat log: a numeric id, sender role (user/bot), the text bubble, optional entity cards, and optional follow-up chip prompts."
         },
         {
           "name": "SUGGESTIONS",
           "kind": "const",
           "exported": false,
-          "line": 38
+          "line": 41,
+          "about": "Pre-seeded quick-prompt strings shown as chips on first load and as follow-up suggestions after bot responses."
         },
         {
           "name": "STAT_LABELS",
           "kind": "const",
           "exported": false,
-          "line": 47
+          "line": 51,
+          "about": "Human-readable labels for each StatKey used in bot response text (e.g. \"points per game\" for ppg)."
         },
         {
           "name": "SEQ",
           "kind": "const",
           "exported": false,
-          "line": 58
+          "line": 62
         },
         {
           "name": "LOG",
           "kind": "const",
           "exported": false,
-          "line": 59
+          "line": 63
         },
         {
           "name": "classifyStat",
           "kind": "function",
           "exported": false,
-          "line": 68
+          "line": 72
         },
         {
           "name": "findTeam",
           "kind": "function",
           "exported": false,
-          "line": 77
+          "line": 81
         },
         {
           "name": "findPlayers",
           "kind": "function",
           "exported": false,
-          "line": 86
+          "line": 90
         },
         {
           "name": "answer",
           "kind": "function",
           "exported": false,
-          "line": 98
+          "line": 102
         },
         {
           "name": "TeamCardView",
           "kind": "component",
           "exported": false,
-          "line": 229
+          "line": 233
         },
         {
           "name": "PlayerCardView",
           "kind": "component",
           "exported": false,
-          "line": 245
+          "line": 249
         },
         {
           "name": "GameCardView",
           "kind": "component",
           "exported": false,
-          "line": 264
+          "line": 268
         },
         {
           "name": "LeaderboardView",
           "kind": "component",
           "exported": false,
-          "line": 290
+          "line": 294
         },
         {
           "name": "StandingsView",
           "kind": "component",
           "exported": false,
-          "line": 308
+          "line": 312
         },
         {
           "name": "ComparisonView",
           "kind": "component",
           "exported": false,
-          "line": 332
+          "line": 336
         },
         {
           "name": "CardView",
           "kind": "component",
           "exported": false,
-          "line": 377
+          "line": 381
         },
         {
           "name": "MessageView",
           "kind": "component",
           "exported": false,
-          "line": 395
+          "line": 399
         },
         {
           "name": "ChatSurface",
           "kind": "component",
           "exported": false,
-          "line": 419
+          "line": 423
         },
         {
           "name": "ChatNav",
           "kind": "component",
           "exported": false,
-          "line": 487
+          "line": 491
         },
         {
           "name": "ChatShell",
           "kind": "component",
           "exported": true,
-          "line": 515,
+          "line": 519,
           "about": "Conversational shell that renders the chat surface on the Home route and a back-link + detail page on every other route; the shared module-level LOG survives layout switches so the thread is never lost."
         }
       ],
@@ -11024,7 +11054,7 @@
       "area": "doctrine",
       "dir": "doctrine",
       "name": "pages.tsx",
-      "loc": 1385,
+      "loc": 1399,
       "importCount": 3,
       "externalCount": 21,
       "members": [
@@ -11137,98 +11167,112 @@
           "name": "SPACING_LADDER",
           "kind": "const",
           "exported": false,
-          "line": 166
+          "line": 167,
+          "about": "The four palettes whose space.3 token actually differs from the common default, paired with their display name, the literal space.3 value, and a note; used by SpacingCompare to render a side-by-side spacing demonstration."
         },
         {
           "name": "SpacingCompare",
           "kind": "component",
           "exported": false,
-          "line": 173
+          "line": 175,
+          "about": "Side-by-side demo of the four palettes from SPACING_LADDER, each rendered in its own PaletteRoot with the same button row so the gap and padding differences are visible without switching palettes in the controls."
         },
         {
           "name": "ALIGN_MARKS",
           "kind": "const",
           "exported": false,
-          "line": 200
+          "line": 203,
+          "about": "Size sequence for the AlignmentCompare demo — mixed s/m/l marks in a row whose non-uniform sizes make box-alignment vs optical-center alignment visibly different."
         },
         {
           "name": "AlignmentCompare",
           "kind": "component",
           "exported": false,
-          "line": 202
+          "line": 206,
+          "about": "Two-row visual demo showing the same ALIGN_MARKS row aligned to the bounding box (top edges flush, centers stagger) versus aligned to the optical center (reads even); illustrates the optical-over-metric alignment rule."
         },
         {
           "name": "CONTAINER_WIDTHS",
           "kind": "const",
           "exported": false,
-          "line": 234
+          "line": 239,
+          "about": "The three fixed widths used by ContainerCompare to show the same panel component responding to its container width via `@container (min-width)` rather than viewport breakpoints."
         },
         {
           "name": "ContainerCompare",
           "kind": "component",
           "exported": false,
-          "line": 236
+          "line": 242,
+          "about": "Demo that renders the same panel at the three CONTAINER_WIDTHS side by side on the page, proving that the layout switches on container width rather than viewport width."
         },
         {
           "name": "LayoutPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 255
+          "line": 262,
+          "about": "Plain-English version of the Layout doctrine article: five everyday rules (named gaps, one axis, density is the style's job, names over pixels, baseline/edge alignment), SpacingCompare and AlignmentCompare demos, container-query panel, and palette-misfit warning."
         },
         {
           "name": "LayoutPage",
           "kind": "component",
           "exported": false,
-          "line": 380
+          "line": 388,
+          "about": "Dispatcher for the Layout doctrine article — renders LayoutPagePlain in plain mode or the technical version with code references and counterexamples in technical mode."
         },
         {
           "name": "SelectionPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 521
+          "line": 530,
+          "about": "Plain-English version of the Component Selection doctrine article: three simple rules, then side-by-side Demo pairs (Drawer/Modal, Toast/StackedToasts, Tabs/Segmented, Tooltip/Coachmark, Select/CommandPalette) so readers feel the difference without needing vocabulary."
         },
         {
           "name": "SelectionPage",
           "kind": "component",
           "exported": false,
-          "line": 662
+          "line": 672,
+          "about": "Dispatcher for the Component Selection article — renders the plain-English side-by-side version or the technical version with FINALIZED-COMPONENTS reference, affordance-load rules, and Stepper/Wizard and Sidebar/Tabs disambiguation."
         },
         {
           "name": "CompositionPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 874
+          "line": 885,
+          "about": "Plain-English version of the App Composition doctrine article: four simple rules, the five-step pipeline (what → core idea → must-work component → everything else → look), and kanban Card / EmptyState demos."
         },
         {
           "name": "CompositionPage",
           "kind": "component",
           "exported": false,
-          "line": 984
+          "line": 996,
+          "about": "Dispatcher for the App Composition article — renders the plain-English pipeline walkthrough or the technical version with FINALIZED-APPS links, kanban and outliner case studies, and palette-fit rationale."
         },
         {
           "name": "ModalitiesPagePlain",
           "kind": "component",
           "exported": false,
-          "line": 1129
+          "line": 1142,
+          "about": "Plain-English version of the Modalities doctrine article: five simple rules, then OptimisticUndo/CommandPalette/NLBar demos showing the same action reachable by click, Cmd+K, and natural language."
         },
         {
           "name": "ModalitiesPage",
           "kind": "component",
           "exported": false,
-          "line": 1240
+          "line": 1254,
+          "about": "Dispatcher for the Modalities article — renders the plain-English intent-parity explanation or the technical version with intent-parity hard rules, state-sync analysis, single-Store contract, and per-action promotion decision rules."
         },
         {
           "name": "DOCTRINE_PAGES",
           "kind": "const",
           "exported": true,
-          "line": 1375,
+          "line": 1389,
           "about": "Ordered array of the four doctrine articles (Layout → Component selection → App composition → Modalities) consumed by DoctrinePage to render the active page and populate the Doc field options."
         },
         {
           "name": "isDoctrineId",
           "kind": "function",
           "exported": true,
-          "line": 1383,
+          "line": 1397,
           "about": "Type guard that returns true when a string is one of the four valid DoctrineId values; used by DoctrinePage to validate URL params."
         }
       ],
@@ -11313,7 +11357,7 @@
       "area": "editor",
       "dir": "editor",
       "name": "StyleEditorPage.tsx",
-      "loc": 641,
+      "loc": 645,
       "importCount": 16,
       "externalCount": 3,
       "members": [
@@ -11321,104 +11365,108 @@
           "name": "BASE_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 44
+          "line": 45,
+          "about": "Select options list for the \"Clone of\" built-in palette dropdown, mapping every palette id to a \"Name (engine)\" label."
         },
         {
           "name": "WorkingState",
           "kind": "interface",
           "exported": false,
-          "line": 49
+          "line": 51,
+          "about": "Local editor state: the built-in base palette, the pattern name, the sparse token overrides, and the id of the pattern being edited in place (null for a new clone)."
         },
         {
           "name": "deriveInitial",
           "kind": "function",
           "exported": false,
-          "line": 64
+          "line": 67,
+          "about": "Derive the editor's initial WorkingState from URL params and the selected style: prefers ?edit= (edit in place) over ?palette= (shared token clone) over the current selected style (silent clone)."
         },
         {
           "name": "StyleEditorPage",
           "kind": "component",
           "exported": true,
-          "line": 90,
+          "line": 93,
           "about": "Root component of the style editor: derives initial working state from URL params (?edit= to edit in place, ?palette= to clone a shared token), renders KNOB_GROUPS as fieldsets of KnobControl rows, and shows a live PreviewSampler in the right panel; save/save-as-new/share/delete actions persist to the custom patterns store via useCustomPatterns."
         },
         {
           "name": "KnobControlProps",
           "kind": "interface",
           "exported": false,
-          "line": 293
+          "line": 297,
+          "about": "Props shared by all KnobControl variants: the knob descriptor, the current resolved value, whether the value is overridden from the base, and change/reset callbacks."
         },
         {
           "name": "KnobControl",
           "kind": "component",
           "exported": false,
-          "line": 301
+          "line": 305
         },
         {
           "name": "ResetButton",
           "kind": "component",
           "exported": false,
-          "line": 313
+          "line": 317
         },
         {
           "name": "SimpleKnob",
           "kind": "component",
           "exported": false,
-          "line": 329
+          "line": 333
         },
         {
           "name": "BlockKnob",
           "kind": "component",
           "exported": false,
-          "line": 360
+          "line": 364
         },
         {
           "name": "ColorControl",
           "kind": "component",
           "exported": false,
-          "line": 389
+          "line": 393
         },
         {
           "name": "parseLength",
           "kind": "function",
           "exported": false,
-          "line": 420
+          "line": 424
         },
         {
           "name": "tidy",
           "kind": "function",
           "exported": false,
-          "line": 428
+          "line": 432
         },
         {
           "name": "LengthKnob",
           "kind": "component",
           "exported": false,
-          "line": 438
+          "line": 442
         },
         {
           "name": "SliderUnit",
           "kind": "component",
           "exported": false,
-          "line": 484
+          "line": 488
         },
         {
           "name": "splitStack",
           "kind": "function",
           "exported": false,
-          "line": 523
+          "line": 527
         },
         {
           "name": "FontControl",
           "kind": "component",
           "exported": false,
-          "line": 532
+          "line": 536
         },
         {
           "name": "PreviewSampler",
           "kind": "component",
           "exported": false,
-          "line": 614
+          "line": 618
         }
       ],
       "about": "Page for creating and editing custom palette patterns: lets users clone a built-in palette, tweak token knobs (colors, radius, spacing, fonts, motion), preview changes live in a PreviewSampler, and save/share/delete the result; URL params drive initial state and are kept in sync as the user edits."
@@ -11817,7 +11865,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "crt-phosphor.tsx",
-      "loc": 387,
+      "loc": 392,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -11846,37 +11894,42 @@
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 37
+          "line": 38,
+          "about": "SurfacesDemo — four CRT surface swatches inside the scanline-painted host, captioned to explain that tonal hierarchy is deliberately refused and separation comes from the inset phosphor stroke in elevation tokens."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 72
+          "line": 74,
+          "about": "BordersDemo — segmented-toggle demo of the three CRT border-strength rungs, showing that all rungs are the same phosphor green at different alphas and explaining that brightness rather than hue separates them."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 107
+          "line": 110,
+          "about": "ElevationDemo — slider-driven demo walking the five CRT elevation rungs, showing the paired inset-phosphor-stroke plus outer-phosphor-bloom recipe and noting that the flat rung still paints the inset stroke so no card ever loses its edge."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 151
+          "line": 155,
+          "about": "MotionDemo — switch-controlled motion demo on the CRT phosphor palette, letting the user hover buttons to feel the 80 ms decay tail that lingers hover colour like a phosphor trail, and toggle motion off to confirm scanlines stay (decoration, not motion)."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 192
+          "line": 197,
+          "about": "IntentDemo — six intent buttons inside the CRT host showing that every fill and border is the same phosphor colour with only alpha differentiating them, and describing the decay-regime pulsing glow focus halo."
         },
         {
           "name": "crtPhosphorGuide",
           "kind": "const",
           "exported": true,
-          "line": 219,
+          "line": 224,
           "about": "crtPhosphorGuide — the EngineGuideMeta for the CRT / Phosphor engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the crt-phosphor-green palette, covering the scanline overlay, the inset-phosphor-stroke plus outer-bloom elevation recipe, the decay-tail motion regime, and the single-hue alpha-only intent differentiation."
         }
       ],
@@ -11927,7 +11980,7 @@
       "area": "guides",
       "dir": "guides/engines",
       "name": "flat.tsx",
-      "loc": 428,
+      "loc": 436,
       "importCount": 6,
       "externalCount": 2,
       "members": [
@@ -11935,55 +11988,63 @@
           "name": "ElevationRung",
           "kind": "type",
           "exported": false,
-          "line": 12
+          "line": 13,
+          "about": "Union type for the five elevation slots used in the Flat elevation demo."
         },
         {
           "name": "RUNGS",
           "kind": "const",
           "exported": false,
-          "line": 13
+          "line": 15,
+          "about": "Ordered list of elevation rungs for the slider demo, mapping index to rung label."
         },
         {
           "name": "PhilosophyDemo",
           "kind": "component",
           "exported": false,
-          "line": 15
+          "line": 18,
+          "about": "PhilosophyDemo — reference Card with a single opaque surface, hairline border, primary/neutral buttons, and caption explaining the \"one accent colour\" flat philosophy."
         },
         {
           "name": "SurfacesDemo",
           "kind": "component",
           "exported": false,
-          "line": 32
+          "line": 36,
+          "about": "SurfacesDemo — bare grid of the four flat-classic surface swatches with no elevation or border, demonstrating opaque tonal hierarchy and that base and raised may be nearly identical in value."
         },
         {
           "name": "BordersDemo",
           "kind": "component",
           "exported": false,
-          "line": 54
+          "line": 59,
+          "about": "BordersDemo — segmented-toggle demo of the three Flat border-strength rungs, showing how swapping a single border token re-keys the whole panel hierarchy without any shape changes."
         },
         {
           "name": "ElevationDemo",
           "kind": "component",
           "exported": false,
-          "line": 81
+          "line": 87,
+          "about": "ElevationDemo — slider-driven demo walking the five Flat elevation rungs, showing that depth is a softly-blurred drop shadow with no inset or hard offset, and noting that elevation.flat resolves to 'none'."
         },
         {
           "name": "MotionDemo",
           "kind": "component",
           "exported": false,
-          "line": 113
+          "line": 120,
+          "about": "MotionDemo — switch-controlled motion demo on the flat-classic palette, demonstrating the 200 ms base transition as a softener and confirming that toggling motion off leaves state fully readable because the engine never relies on animation to convey change."
         },
         {
           "name": "IntentDemo",
           "kind": "component",
           "exported": false,
-          "line": 147
+          "line": 155,
+          "about": "IntentDemo — cluster of all six intent buttons for Flat, with a caption prompting the user to click and observe the 2px solid blue focus ring that is independent of the button's own intent colour."
         },
         {
           "name": "flatGuide",
           "kind": "const",
           "exported": true,
-          "line": 167,
+          "line": 175,
           "about": "flatGuide — the EngineGuideMeta for the Flat engine: six steps (philosophy, surfaces, borders, elevation, motion, intent) demonstrated against the flat-classic palette, with full plain-English copy for every step."
         }
       ],
@@ -15220,7 +15281,7 @@
       "area": "tests",
       "dir": "tests/definitions",
       "name": "toggle.tsx",
-      "loc": 120,
+      "loc": 121,
       "importCount": 2,
       "externalCount": 1,
       "members": [
@@ -15249,13 +15310,14 @@
           "name": "TristateComposition",
           "kind": "component",
           "exported": false,
-          "line": 50
+          "line": 51,
+          "about": "Sandbox composition for the tristate toggle test: a Toggle with tristate variant defaulting to 'inherit', plus a state span echoing the active value."
         },
         {
           "name": "toggleTests",
           "kind": "const",
           "exported": true,
-          "line": 61,
+          "line": 62,
           "about": "Array of four IntegrationTest definitions for Toggle: switch flip, saving spinner, segmented single-select, and tristate three-segment."
         }
       ],
@@ -15529,7 +15591,7 @@
       "area": "tests",
       "dir": "tests/visualizations",
       "name": "CoverageViz.tsx",
-      "loc": 522,
+      "loc": 533,
       "importCount": 4,
       "externalCount": 1,
       "members": [
@@ -15579,67 +15641,78 @@
           "name": "FailureSummary",
           "kind": "component",
           "exported": false,
-          "line": 225
+          "line": 226,
+          "about": "Banner listing failed test ids as clickable chips that scroll-and-flash their row in the matrix table; hidden when no tests have failed."
         },
         {
           "name": "LegendDot",
           "kind": "component",
           "exported": false,
-          "line": 262
+          "line": 264,
+          "about": "Tiny color dot used in the toolbar legend to illustrate each run-status color."
         },
         {
           "name": "Node",
           "kind": "interface",
           "exported": false,
-          "line": 268
+          "line": 271,
+          "about": "Mutable node record used in the force simulation: tracks position, velocity, and degree (test-participation count) for each component."
         },
         {
           "name": "Edge",
           "kind": "interface",
           "exported": false,
-          "line": 277
+          "line": 281,
+          "about": "Weighted edge between two component nodes in the network graph; weight counts how many tests co-exercise both components."
         },
         {
           "name": "WIDTH",
           "kind": "const",
           "exported": false,
-          "line": 283
+          "line": 288,
+          "about": "SVG canvas width in pixels for the force-directed network graph."
         },
         {
           "name": "HEIGHT",
           "kind": "const",
           "exported": false,
-          "line": 284
+          "line": 290,
+          "about": "SVG canvas height in pixels for the force-directed network graph."
         },
         {
           "name": "PAD",
           "kind": "const",
           "exported": false,
-          "line": 285
+          "line": 292,
+          "about": "Minimum margin in pixels keeping nodes away from the SVG edges during force simulation."
         },
         {
           "name": "NetworkMode",
           "kind": "component",
           "exported": false,
-          "line": 287
+          "line": 295,
+          "about": "Renders the force-directed SVG graph of component co-usage: nodes sized by degree, edges weighted by co-test count, with hover highlighting and a self-stopping simulation."
         },
         {
           "name": "buildGraph",
           "kind": "function",
           "exported": false,
-          "line": 368
+          "line": 377,
+          "about": "Derives node and edge data from INTEGRATION_TESTS: places nodes in a circle, computes per-component degree, and counts co-usage edges between component pairs."
         },
         {
           "name": "simulateForces",
           "kind": "function",
           "exported": false,
-          "line": 406
+          "line": 416,
+          "about": "Runs a rAF-based force simulation (repulsion + spring + centering + friction) for up to 200 ticks, calling onTick after each frame; returns a stop handle to cancel the loop."
         },
         {
           "name": "SidePanel",
           "kind": "component",
           "exported": false,
-          "line": 471
+          "line": 482,
+          "about": "Aside panel listing the tests that include the hovered/selected component, with per-test run buttons; shows a hint prompt when nothing is selected."
         }
       ],
       "about": "Coverage visualization for the integration test suite: renders a component × test matrix table (with per-row run buttons and a failure summary) and a force-directed network graph of component co-usage, toggled by a pill segmented control; reads INTEGRATION_TESTS and involvedComponentIds from the registry."
@@ -15682,7 +15755,7 @@
       "area": "tests",
       "dir": "tests/visualizations",
       "name": "TestsViz.tsx",
-      "loc": 557,
+      "loc": 569,
       "importCount": 5,
       "externalCount": 1,
       "members": [
@@ -15690,80 +15763,92 @@
           "name": "Props",
           "kind": "interface",
           "exported": false,
-          "line": 10
+          "line": 11,
+          "about": "Props for TestsViz: the accumulated result map, which test id is currently running (or null), and the runFor callback to trigger execution."
         },
         {
           "name": "Density",
           "kind": "type",
           "exported": false,
-          "line": 16
+          "line": 18,
+          "about": "Controls whether the collapsed card shows the storyboard bubble strip or the compact numbered step list."
         },
         {
           "name": "Status",
           "kind": "type",
           "exported": false,
-          "line": 17
+          "line": 20,
+          "about": "Per-card run status used to drive CSS modifiers and the StatusPill label in TestsViz."
         },
         {
           "name": "RunAllMode",
           "kind": "type",
           "exported": false,
-          "line": 18
+          "line": 22,
+          "about": "Run-all strategy: 'live' focuses each card sequentially with the sandbox visible; 'fast' runs each test offscreen without switching focus."
         },
         {
           "name": "Override",
           "kind": "interface",
           "exported": false,
-          "line": 20
+          "line": 25,
+          "about": "Per-card overrides that shadow the global stepped/delay settings for a specific test card."
         },
         {
           "name": "TestsViz",
           "kind": "component",
           "exported": true,
-          "line": 26,
+          "line": 31,
           "about": "Root component of the test card workbench: manages global stepped/delay settings, per-card overrides, the focused-card expanded sandbox, offscreen fast-run sandbox, and \"Run all\" with an AbortController; delegates rendering to TestCard for each test."
         },
         {
           "name": "CardProps",
           "kind": "interface",
           "exported": false,
-          "line": 301
+          "line": 307,
+          "about": "Full prop surface for TestCard: test definition, last result, run/focus/step callbacks, override settings, and the shared sandbox ref used when the card is focused."
         },
         {
           "name": "TestCard",
           "kind": "component",
           "exported": false,
-          "line": 324
+          "line": 331,
+          "about": "Individual test card showing name, description, component chips, run status, and — when focused — a live sandbox, override controls, step controls, and a LiveSteps list; collapses to StoryboardStrip or CompactSteps otherwise."
         },
         {
           "name": "CardOverrides",
           "kind": "component",
           "exported": false,
-          "line": 426
+          "line": 434,
+          "about": "Card-level stepped/delay override controls with 'override' badges when they differ from the global settings, and a 'Match global' reset button."
         },
         {
           "name": "LiveSteps",
           "kind": "component",
           "exported": false,
-          "line": 488
+          "line": 497,
+          "about": "Ordered list of live step rows for the focused card workbench, highlighting the next-up step when paused and showing timing and error details per step."
         },
         {
           "name": "StoryboardStrip",
           "kind": "component",
           "exported": false,
-          "line": 518
+          "line": 528,
+          "about": "Horizontal strip of bubble cells showing each step's kind, icon, and detail label — the storyboard density view for collapsed test cards."
         },
         {
           "name": "CompactSteps",
           "kind": "component",
           "exported": false,
-          "line": 535
+          "line": 546,
+          "about": "Compact numbered list of step rows showing kind, label, and any error — the compact density view for collapsed test cards."
         },
         {
           "name": "StatusPill",
           "kind": "component",
           "exported": false,
-          "line": 553
+          "line": 565,
+          "about": "Small colored pill badge in the card header showing the run status label ('Not run', 'Running', 'Passed', or 'Failed')."
         }
       ],
       "about": "Card-workbench visualization for the integration test suite: renders each IntegrationTest as a card with a live sandbox, storyboard strip or compact step list, per-card delay/stepped overrides, and a \"Run all\" mode that can sweep tests live (with the focused sandbox visible) or fast (offscreen); reads INTEGRATION_TESTS from the registry and delegates execution to TestsPage via the RunFor callback."
