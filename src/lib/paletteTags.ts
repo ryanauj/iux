@@ -23,7 +23,9 @@ import { isCustomPatternId, type StyleId } from './customPatterns'
 // ABOUTME: Id prefixes whose presence on a palette id signals membership in a named engine family; used to auto-generate implicit tags without manual entries in palettes/tags.ts.
 const INFERRED_PREFIXES = ['pixel-art', 'cel-shaded', 'crt-phosphor', 'liquid-glass'] as const
 
+// ABOUTME: Module-level list of all built-in palette ids in registry order, used by tag derivation, search, and group cycling.
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
+// ABOUTME: Set form of PALETTE_IDS for O(1) membership tests in isPaletteId and resolveGroupMembers.
 const PALETTE_ID_SET = new Set<string>(PALETTE_IDS)
 
 // ABOUTME: Type guard — true when value is a key in the built-in palette registry.
@@ -31,6 +33,7 @@ export function isPaletteId(value: string): value is PaletteId {
   return PALETTE_ID_SET.has(value)
 }
 
+// ABOUTME: Return the engine-family prefix from INFERRED_PREFIXES if the palette id starts with one, otherwise null; used by getPaletteTags to inject implicit family tags.
 function inferPrefix(id: PaletteId): string | null {
   for (const prefix of INFERRED_PREFIXES) {
     if (id.startsWith(`${prefix}-`)) return prefix
@@ -38,6 +41,7 @@ function inferPrefix(id: PaletteId): string | null {
   return null
 }
 
+// ABOUTME: Normalize a palette's recallAliases array to lowercase trimmed strings, filtering empties; used by getPaletteTags to add recall aliases to the tag set.
 function tokenizeAliases(aliases: readonly string[] | undefined): string[] {
   if (!aliases) return []
   const out: string[] = []
@@ -49,6 +53,7 @@ function tokenizeAliases(aliases: readonly string[] | undefined): string[] {
   return out
 }
 
+// ABOUTME: Module-level memoization cache from palette id to its full sorted tag list; populated lazily on first call to getPaletteTags.
 const tagCache = new Map<PaletteId, string[]>()
 
 // ABOUTME: Return the full sorted tag list for a palette: explicit tags, engine id, a11y class, inferred family prefix, and recall aliases — cached after first call.
@@ -135,9 +140,11 @@ export const PINNING_MODE_KEY = 'iux-palette-pinning-mode'
 // ABOUTME: Which groups the picker sidebar shows: only pinned, only active, or both.
 export type PinningMode = 'pinned' | 'active' | 'both'
 
+// ABOUTME: Type guard for PinningMode — rejects any stored string that isn't one of the three valid values.
 const isPinningMode = (raw: string): raw is PinningMode =>
   raw === 'pinned' || raw === 'active' || raw === 'both'
 
+// ABOUTME: Type guard ensuring every element of a parsed JSON array is a string; used to validate the pinned-groups storage value.
 const isStringArray = (parsed: unknown): parsed is string[] =>
   Array.isArray(parsed) && parsed.every(v => typeof v === 'string')
 
@@ -146,9 +153,11 @@ const isStringArray = (parsed: unknown): parsed is string[] =>
  * lists and favorites hold both kinds since a user can save a custom
  * pattern into any list the same way they save a built-in palette.
  */
+// ABOUTME: Type guard for a single group member — accepts both built-in palette ids and custom pattern ids so favorites and lists can hold either kind.
 const isStyleMemberId = (id: unknown): id is StyleId =>
   typeof id === 'string' && (isPaletteId(id) || isCustomPatternId(id))
 
+// ABOUTME: Type guard for the custom-groups storage value — validates that every key is a string and every value is an array of valid StyleIds.
 const isCustomGroups = (parsed: unknown): parsed is Record<string, StyleId[]> => {
   if (!parsed || typeof parsed !== 'object') return false
   for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
@@ -161,6 +170,7 @@ const isCustomGroups = (parsed: unknown): parsed is Record<string, StyleId[]> =>
   return true
 }
 
+// ABOUTME: Type guard for the active-group storage value — accepts null (cycling off) or any string (group name).
 const isActiveGroupValue = (parsed: unknown): parsed is string | null =>
   parsed === null || typeof parsed === 'string'
 
@@ -313,6 +323,7 @@ export function isDefaultGroup(name: string): boolean {
   return DEFAULT_GROUP_NAMES.has(name)
 }
 
+// ABOUTME: Shallow ordered equality check for two StyleId arrays; used by useGroups to skip writing an override when the user's edits would reproduce the default list verbatim.
 function sameIds(a: readonly StyleId[], b: readonly StyleId[]): boolean {
   if (a.length !== b.length) return false
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false

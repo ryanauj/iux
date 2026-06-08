@@ -50,6 +50,7 @@ function quantile(sorted: number[], p: number): number {
   return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)
 }
 
+// ABOUTME: Default x-axis value formatter — locale-aware with 0 fraction digits for ≥1000, 1 for ≥10, 2 otherwise; used when no formatX prop is provided.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })

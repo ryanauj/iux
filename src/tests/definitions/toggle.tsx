@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Toggle } from '../../components/Toggle/Toggle'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the switch-flip test: a Toggle bound to boolean state with a state span echoing 'on'/'off'.
 function SwitchComposition() {
   const [on, setOn] = useState(false)
   return (
@@ -14,6 +15,7 @@ function SwitchComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the saving-microstate test: a Toggle with saving=true and a Settle button that clears it.
 function SavingComposition() {
   const [on, setOn] = useState(true)
   const [saving, setSaving] = useState(true)
@@ -25,6 +27,7 @@ function SavingComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the segmented toggle test: a Toggle with three text-alignment options and a state span echoing the active value.
 function SegmentedComposition() {
   const [value, setValue] = useState('center')
   return (
@@ -44,6 +47,7 @@ function SegmentedComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the tristate toggle test: a Toggle with tristate variant defaulting to 'inherit', plus a state span echoing the active value.
 function TristateComposition() {
   const [value, setValue] = useState('inherit')
   return (

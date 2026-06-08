@@ -7,6 +7,7 @@ import { TextInput } from '../../components/TextInput/TextInput'
 import { Toaster, useToastQueue } from '../../components/Toast/Toast'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the modal-with-form test: an Open button, a centered Modal containing a TextInput, a Toaster, and a submit helper that pushes a toast and closes the modal.
 function ModalWithFormComposition() {
   const [open, setOpen] = useState(false)
   const [note, setNote] = useState('')

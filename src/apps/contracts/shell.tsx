@@ -52,12 +52,14 @@ export const NAV: NavItem[] = [
   { to: contractsRoutes.team(), label: 'A team cap sheet', step: 9, isActive: r => r.kind === 'team' },
 ]
 
+// ABOUTME: Props for the Shell layout wrapper: which layout to use, the active ContractsRoute (to mark the correct nav item), and the chapter page as children.
 interface ShellProps {
   layoutId: LayoutId
   route: ContractsRoute
   children: ReactNode
 }
 
+// ABOUTME: Cap School brand mark — "CAP" icon + "Cap School / How NBA contracts work" text — linking to the Overview chapter.
 function Brand() {
   return (
     <Link to={contractsRoutes.overview()} className="cap-app__brand">
@@ -70,10 +72,12 @@ function Brand() {
   )
 }
 
+// ABOUTME: "← All apps" back-link rendered in both shell layouts; navigates to the /apps landing page.
 const Exit = () => (
   <Link to="/apps" className="cap-app__exit">← All apps</Link>
 )
 
+// ABOUTME: Renders NAV as a list of Links, applying `is-active` to the entry matching the current route; variant switches between the sidebar rail style (with step numbers) and the topbar bar style.
 function RailLinks({ route, variant }: { route: ContractsRoute; variant: 'rail' | 'bar' }) {
   const cls = variant === 'rail' ? 'cap-rail__link' : 'cap-bar__link'
   return (
@@ -104,6 +108,7 @@ export function Shell({ layoutId, route, children }: ShellProps) {
   return <SidebarShell route={route}>{children}</SidebarShell>
 }
 
+// ABOUTME: Sidebar-layout shell for Cap School: left rail with Brand, chapter RailLinks (numbered), and an Exit link; chapter page renders in the main area on the right.
 function SidebarShell({ route, children }: { route: ContractsRoute; children: ReactNode }) {
   return (
     <div className="cap-app cap-app--sidebar">
@@ -125,6 +130,7 @@ function SidebarShell({ route, children }: { route: ContractsRoute; children: Re
   )
 }
 
+// ABOUTME: Topbar-layout shell for Cap School: horizontal header with Brand, a hamburger toggle that reveals the chapter nav on narrow viewports, and an Exit link; collapses the nav automatically when the route changes.
 function TopbarShell({ route, children }: { route: ContractsRoute; children: ReactNode }) {
   // Compact layout collapses the chapter list behind a toggle on narrow
   // viewports; on wide ones the bar wraps naturally.

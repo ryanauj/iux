@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the Cel-shaded elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — intro Card showing a cream-cel field with near-black ink outline and primary/neutral buttons, describing the effect.outline and effect.shadowStyle contract slots the engine introduces.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -34,6 +37,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — grid of the four Cel-shaded surface swatches each wearing the thick ink border and a block elevation shadow, captioned to explain that all border tokens resolve to the same near-black ink.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -72,6 +76,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — segmented-toggle demo of the three Cel-shaded border-strength rungs, demonstrating that all three resolve to the same near-black ink and explaining the two-path cel-line delivery through both border and outline tokens.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -118,6 +123,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five Cel-shaded elevation rungs, showing hard-offset ink block shadows with no blur and explaining the static-affordance role of the block under prefers-reduced-motion.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -168,6 +174,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — switch-controlled motion demo on a nested Cel-shaded PaletteRoot, demonstrating the snap-fast 80/140/220 ms duration band and confirming that the ink outline still identifies hovered controls with motion off.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -206,6 +213,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — six intent buttons on the Cel-shaded host illustrating the shonen colour triad (orange/sky-blue/chakra-green/gold/battle-red), uniform ink cel-line across all chips, and the colour-shift focus ring at the same 3px ink weight.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

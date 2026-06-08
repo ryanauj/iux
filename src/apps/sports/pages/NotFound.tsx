@@ -5,6 +5,7 @@ import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
 import { Breadcrumbs } from '../components/Breadcrumbs'
 
+// ABOUTME: Props for NotFound — an optional caller-supplied message explaining which entity was missing.
 interface NotFoundProps {
   message?: string
 }

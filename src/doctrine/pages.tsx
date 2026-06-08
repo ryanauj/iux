@@ -41,9 +41,12 @@ export type DoctrinePage = {
   render: (nav: DoctrineNav, mode: DocMode) => ReactNode
 }
 
+// ABOUTME: Base URL for linking to doctrine source files on GitHub; used by the Source component to link each article to its markdown file.
 const GITHUB_BASE = 'https://github.com/ryanauj/iux/blob/main/doctrine'
+// ABOUTME: Base URL for linking to arbitrary repo files on GitHub; used by article pages to link to FINALIZED-APPS.md, FINALIZED-COMPONENTS.md, and similar root docs.
 const REPO_BASE = 'https://github.com/ryanauj/iux/blob/main'
 
+// ABOUTME: Inline cross-reference link between doctrine pages — updates URL and calls nav on click without a full route change, but allows Cmd-click to open in a new tab.
 function DocLink({
   to,
   nav,
@@ -67,6 +70,7 @@ function DocLink({
   )
 }
 
+// ABOUTME: Previous/Next navigation footer rendered at the bottom of each doctrine article; shows DocLink arrows to the adjacent pages in the sequence.
 function PrevNext({ nav, prev, next }: { nav: DoctrineNav; prev?: DoctrineId; next?: DoctrineId }) {
   const prevPage = prev ? DOCTRINE_PAGES.find(p => p.id === prev) : null
   const nextPage = next ? DOCTRINE_PAGES.find(p => p.id === next) : null
@@ -88,6 +92,7 @@ function PrevNext({ nav, prev, next }: { nav: DoctrineNav; prev?: DoctrineId; ne
   )
 }
 
+// ABOUTME: Renders a "Full doctrine:" line linking to the article's source markdown file on GitHub so readers can jump to the complete rules not covered by the inline demos.
 function Source({ file }: { file: string }) {
   return (
     <p className="doctrine__source">
@@ -97,10 +102,12 @@ function Source({ file }: { file: string }) {
   )
 }
 
+// ABOUTME: Inline cross-reference paragraph that bridges to a related doctrine page or external document; styled as a callout-link line between sections.
 function Cross({ children }: { children: ReactNode }) {
   return <p className="doctrine__cross">{children}</p>
 }
 
+// ABOUTME: Named section container within a doctrine article, rendering an H3 title and its child content inside a `doctrine__section` block.
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="doctrine__section">
@@ -110,10 +117,12 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   )
 }
 
+// ABOUTME: Body-copy paragraph inside a doctrine section, styled as `doctrine__prose`.
 function Prose({ children }: { children: ReactNode }) {
   return <p className="doctrine__prose">{children}</p>
 }
 
+// ABOUTME: Aside block for failure modes and anti-patterns, rendered with a bold label (default "Failure mode") and visually set apart from the prose.
 function Callout({ label = 'Failure mode', children }: { label?: string; children: ReactNode }) {
   return (
     <aside className="doctrine__callout">
@@ -123,6 +132,7 @@ function Callout({ label = 'Failure mode', children }: { label?: string; childre
   )
 }
 
+// ABOUTME: Framed live-component demo block with an optional caption; wraps the component story in `doctrine__demo-frame` so each doctrine example is visually contained.
 function Demo({ caption, children }: { caption?: string; children: ReactNode }) {
   return (
     <div className="doctrine__demo">
@@ -132,10 +142,12 @@ function Demo({ caption, children }: { caption?: string; children: ReactNode }) 
   )
 }
 
+// ABOUTME: Two-column side-by-side container used to display a pair of Demo blocks (e.g. Modal vs Drawer) so readers can compare the two options at a glance.
 function Split({ children }: { children: ReactNode }) {
   return <div className="doctrine__split">{children}</div>
 }
 
+// ABOUTME: Numbered ordered-list of doctrine rules, each item rendered as a `doctrine__rules-item` so the list reads as an authoritative sequence.
 function Rules({ items }: { items: ReactNode[] }) {
   return (
     <ol className="doctrine__rules">
@@ -151,6 +163,7 @@ function Rules({ items }: { items: ReactNode[] }) {
 // default 12px ramp. This strip renders the same button row under the four
 // palettes whose space scale actually diverges, side by side, so the gap
 // difference is visible without hunting through the palette list.
+// ABOUTME: The four palettes whose space.3 token actually differs from the common default, paired with their display name, the literal space.3 value, and a note; used by SpacingCompare to render a side-by-side spacing demonstration.
 const SPACING_LADDER: { id: PaletteId; name: string; space3: string; note: string }[] = [
   { id: 'aaa', name: 'AAA', space3: '10px', note: 'tightens the ramp' },
   { id: 'material', name: 'Material', space3: '12px', note: 'the shared default' },
@@ -158,6 +171,7 @@ const SPACING_LADDER: { id: PaletteId; name: string; space3: string; note: strin
   { id: 'academic', name: 'Academic', space3: '20px', note: 'widest ramp' },
 ]
 
+// ABOUTME: Side-by-side demo of the four palettes from SPACING_LADDER, each rendered in its own PaletteRoot with the same button row so the gap and padding differences are visible without switching palettes in the controls.
 function SpacingCompare() {
   return (
     <div className="doctrine__spacing">
@@ -185,6 +199,7 @@ function SpacingCompare() {
 // reads "almost aligned but off") versus aligned to the optical center (reads
 // even). Sizes are drawn from the space scale so the contrast survives a
 // palette swap.
+// ABOUTME: Size sequence for the AlignmentCompare demo — mixed s/m/l marks in a row whose non-uniform sizes make box-alignment vs optical-center alignment visibly different.
 const ALIGN_MARKS = ['s', 'l', 'm', 'l', 's'] as const
 
 function AlignmentCompare() {

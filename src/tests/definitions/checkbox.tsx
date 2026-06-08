@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Checkbox } from '../../components/Checkbox/Checkbox'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the single-toggle test: a Checkbox bound to boolean state plus a span echoing 'on'/'off'.
 function SingleComposition() {
   const [on, setOn] = useState(false)
   return (
@@ -14,6 +15,7 @@ function SingleComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the detailed-variant test: a Checkbox with description and error props to verify those slots render.
 function DetailedComposition() {
   return (
     <Checkbox
@@ -25,6 +27,7 @@ function DetailedComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the tree-cascade test: a Checkbox with tree variant holding two levels, plus a span echoing the selected leaf ids.
 function TreeComposition() {
   const [values, setValues] = useState<string[]>([])
   return (
@@ -51,6 +54,7 @@ function TreeComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the group multi-select test: a Checkbox with group variant and three options, echoing selected values to a span.
 function GroupComposition() {
   const [values, setValues] = useState<string[]>([])
   return (

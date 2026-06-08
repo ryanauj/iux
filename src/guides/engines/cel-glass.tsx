@@ -84,6 +84,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — segmented-toggle demo of the three Cel-Glass border-strength rungs on a frosted backdrop-blur card, explaining the two-path cel-line delivery (border on cards, outline halo on controls) and why using outline avoids interfering with the inset glass highlight.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -129,6 +130,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five Cel-Glass elevation rungs, showing the paired inset-glass-top-highlight plus hard-cel-block recipe and the effect.shadowStyle = 'hard' annotation.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -176,6 +178,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: VariationsDemo — side-by-side row of all six Cel-Glass register cards (Frost, Noir, Sunset, Mist, Bone, Orchid) each wrapped in their own PaletteRoot, captioned to explain the saturated-host vs light-ground families and their respective a11y designations.
 function VariationsDemo() {
   const registers = [
     { palette: celGlassFrost,  label: 'Frost' },
@@ -224,6 +227,7 @@ function VariationsDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — six intent buttons on the Cel-Glass host with captions explaining high-alpha fills for legibility over frosted surfaces, uniform cel-line borders across all chips, and the colour-shift focus cue shared with the cel-shaded engine.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

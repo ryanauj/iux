@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Pagination } from '../../components/Pagination/Pagination'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the numbered pagination test: a Pagination with 10 pages and a state span echoing the current page.
 function NumberedComposition() {
   const [page, setPage] = useState(1)
   return (
@@ -18,6 +19,7 @@ function NumberedComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the rich pagination test: a Pagination with rich variant, 20 pages, page-size control, and state spans echoing page and size.
 function RichComposition() {
   const [page, setPage] = useState(5)
   const [size, setSize] = useState(25)
@@ -37,6 +39,7 @@ function RichComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the load-more pagination test: a Pagination with load-more variant, 20-item batches up to 60 total, and a state span echoing loaded count.
 function LoadMoreComposition() {
   const [loaded, setLoaded] = useState(20)
   const total = 60

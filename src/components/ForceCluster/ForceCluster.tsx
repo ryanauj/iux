@@ -35,11 +35,14 @@ export interface ForceClusterProps {
   className?: string
 }
 
+// ABOUTME: Default rotation through the six intent tokens applied per group in discovery order.
 const INTENTS: ForceClusterIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: A node after force-layout placement — carries the original ForceNode, final (x, y) pixel coordinates, circle radius scaled from the node's weight, its resolved intent, and its group key.
 interface Placed { node: ForceNode; x: number; y: number; r: number; intent: ForceClusterIntent; group: string }
 
 /** Deterministic seeded RNG so the layout is stable across renders. */
+// ABOUTME: Returns a deterministic pseudo-random number generator seeded from the given value; used to initialise node positions so the layout is identical on every render.
 function rng(seed: number) {
   let s = seed >>> 0
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
@@ -50,6 +53,7 @@ function rng(seed: number) {
  * a per-node pass with intra-cluster attraction plus all-pairs repulsion.
  * No animation, no randomness once the seeded layout is built.
  */
+// ABOUTME: Runs 80 iterations of force relaxation — places cluster centres on a ring, then applies all-pairs repulsion, per-cluster gravity, and edge attraction — returning a map of node id to final pixel position.
 function relax(nodes: ForceNode[], edges: ForceEdge[], width: number, height: number): Map<string, { x: number; y: number }> {
   const cx = width / 2; const cy = height / 2
   const groups = new Map<string, ForceNode[]>()
@@ -130,7 +134,7 @@ function relax(nodes: ForceNode[], edges: ForceEdge[], width: number, height: nu
   return pos
 }
 
-/** Convex hull (Andrew's monotone chain), O(n log n). */
+// ABOUTME: Computes the convex hull of a point set using Andrew's monotone chain algorithm (O(n log n)); returns the minimal bounding polygon used as the base for cluster outlines.
 function convexHull(points: Array<{ x: number; y: number }>): Array<{ x: number; y: number }> {
   if (points.length < 3) return points.slice()
   const pts = points.slice().sort((a, b) => a.x - b.x || a.y - b.y)
@@ -151,7 +155,7 @@ function convexHull(points: Array<{ x: number; y: number }>): Array<{ x: number;
   return lower.concat(upper)
 }
 
-/** Expand the hull outward by padding for a soft "bubble" around the cluster. */
+// ABOUTME: Expands each hull vertex outward from the polygon centroid by `pad` pixels, producing a slightly larger "bubble" boundary that visually encloses the node circles.
 function inflateHull(hull: Array<{ x: number; y: number }>, pad: number): Array<{ x: number; y: number }> {
   if (hull.length === 0) return hull
   const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length
@@ -163,6 +167,7 @@ function inflateHull(hull: Array<{ x: number; y: number }>, pad: number): Array<
   })
 }
 
+// ABOUTME: Converts a convex hull polygon into a smooth closed SVG path by rendering midpoint-anchored quadratic Bézier curves between successive vertices, producing a rounded bubble outline.
 function smoothHull(hull: Array<{ x: number; y: number }>): string {
   if (hull.length === 0) return ''
   if (hull.length < 3) return ''

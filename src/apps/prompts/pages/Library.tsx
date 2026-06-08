@@ -13,9 +13,12 @@ import { usePromptStore } from '../store'
 import { promptRoutes } from '../routes'
 import { PROMPT_CATEGORIES, type PromptCategory } from '../types'
 
+// ABOUTME: Union type for the category filter in the Library toolbar: 'all' shows every prompt; a PromptCategory value narrows to that category only.
 type CatFilter = 'all' | PromptCategory
+// ABOUTME: The three sort orders available in the Library sort Select: by last-updated date, alphabetical title, or favorites-first.
 type SortKey = 'updated' | 'title' | 'favorites'
 
+// ABOUTME: Option list for the Library sort Select control, mapping each SortKey to a human-readable label.
 const SORT_OPTIONS = [
   { value: 'updated', label: 'Recently updated' },
   { value: 'title', label: 'Title (A–Z)' },
@@ -193,6 +196,7 @@ export function Library() {
   )
 }
 
+// ABOUTME: Small "+" SVG icon used as the leading icon in the "New prompt" Button in the Library header.
 function PlusGlyph() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -201,6 +205,7 @@ function PlusGlyph() {
   )
 }
 
+// ABOUTME: Magnifying-glass SVG icon used as the leading icon in the Library search TextInput.
 function SearchGlyph() {
   return (
     <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">

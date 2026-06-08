@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 // ABOUTME: The set of semantic tones a Badge can render (maps to contract intent colours).
 export type BadgeTone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
+// ABOUTME: Props for Badge: the pill content, optional semantic tone (defaults to 'neutral'), an outline/filled variant flag, and an extra className.
 interface BadgeProps {
   children: ReactNode
   tone?: BadgeTone

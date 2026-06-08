@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Toast, Toaster, useToastQueue, type ToastItem } from '../../components/Toast/Toast'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the plain-toast test: a push button wired to useToastQueue and an inline Toaster, used to assert manual close.
 function PlainComposition() {
   const { toasts, push, dismiss } = useToastQueue()
   return (
@@ -20,6 +21,7 @@ function PlainComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the action-toast test: a single Toast rendered with action variant and an Undo button that increments an undo counter.
 function ActionComposition() {
   const [undid, setUndid] = useState(0)
   const item: ToastItem = {
@@ -38,6 +40,7 @@ function ActionComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the severity-ordering test: a Toaster with three severity toasts (success, danger, warning) and severityOrder enabled.
 function SeverityComposition() {
   const initial: ToastItem[] = [
     { id: '1', variant: 'severity', intent: 'success', title: 'Success message', durationMs: 0 },
@@ -58,6 +61,7 @@ function SeverityComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the progress-bar toast test: a single progress Toast at 0.25 with a bump button that advances the progress value.
 function ProgressComposition() {
   const [progress, setProgress] = useState(0.25)
   const item: ToastItem = {

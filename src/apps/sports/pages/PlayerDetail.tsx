@@ -13,6 +13,7 @@ import { ScoreCard } from '../components/ScoreCard'
 import { formatHeight, formatStat, formatPct } from '../format'
 import { NotFound } from './NotFound'
 
+// ABOUTME: Props for PlayerDetail — the URL slug string resolved via `getPlayerBySlug`.
 interface PlayerDetailProps {
   slug: string
 }

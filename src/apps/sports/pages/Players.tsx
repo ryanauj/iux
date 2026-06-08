@@ -11,6 +11,7 @@ import { formatStat, formatPct } from '../format'
 import type { Player, Position } from '../types'
 import { TeamChip } from '../components/TeamChip'
 
+// ABOUTME: Union of the six position filter values on the Players page: show all, or narrow to one of the five basketball positions.
 type PosFilter = 'all' | Position
 
 // ABOUTME: All + the five basketball positions available as pill filters on the Players page, fed directly to the Segmented component.

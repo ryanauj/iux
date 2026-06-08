@@ -20,6 +20,7 @@ import type {
 } from '../../tokens/style-description.contract'
 import { paletteToCssVars } from './paletteToCssVars'
 
+// ABOUTME: Walk a dotted property path (e.g. "color.surface.base") into an arbitrary nested object, returning undefined when any segment is missing; used by renderTokenEvidence to look up live token values.
 function resolveTokenPath(obj: unknown, dotted: string): unknown {
   let cur: unknown = obj
   for (const segment of dotted.split('.')) {
@@ -29,6 +30,7 @@ function resolveTokenPath(obj: unknown, dotted: string): unknown {
   return cur
 }
 
+// ABOUTME: Format a resolved token value as a backtick-quoted markdown string; handles strings, numbers, elevation objects (boxShadow), and arbitrary JSON, escaping pipes so the result is safe inside a markdown table cell.
 function formatTokenValue(v: unknown): string {
   if (v === undefined) return '_(unresolved)_'
   if (typeof v === 'string' || typeof v === 'number') return `\`${String(v)}\``
@@ -38,10 +40,12 @@ function formatTokenValue(v: unknown): string {
   return '`' + JSON.stringify(v).replace(/\|/g, '\\|') + '`'
 }
 
+// ABOUTME: Render the signatures array as a bulleted markdown list, bolding each label.
 function renderSignatures(sigs: Signature[]): string {
   return sigs.map(s => `- **${s.label}** — ${s.detail}`).join('\n')
 }
 
+// ABOUTME: Render token evidence as a markdown table (Path | resolved Value | Note), resolving each path against the live palette tokens.
 function renderTokenEvidence(palette: Palette, ev: TokenEvidence[]): string {
   const head = '| Path | Value | Note |\n|---|---|---|'
   const rows = ev.map(e => {
@@ -51,6 +55,7 @@ function renderTokenEvidence(palette: Palette, ev: TokenEvidence[]): string {
   return [head, ...rows].join('\n')
 }
 
+// ABOUTME: Render the lookalikes array as H3 sections linking to each sibling palette's doc file, followed by its differentiator text.
 function renderLookalikes(
   lk: Lookalike[],
   palettes: Record<string, Palette>,

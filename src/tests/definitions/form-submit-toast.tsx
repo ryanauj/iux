@@ -6,6 +6,7 @@ import { TextInput } from '../../components/TextInput/TextInput'
 import { Toaster, useToastQueue } from '../../components/Toast/Toast'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the form-submit-toast test: a TextInput, a Submit button, and an inline Toaster that shows a success toast containing the typed name.
 function FormSubmitToastComposition() {
   const [name, setName] = useState('')
   const { toasts, push, dismiss } = useToastQueue()

@@ -26,17 +26,22 @@ import {
 } from '../matchup'
 import type { Team } from '../types'
 
+// ABOUTME: Props for the Matchup page — optional URL slugs for team A and team B, both defaulting when absent.
 interface MatchupProps {
   aSlug?: string
   bSlug?: string
 }
 
+// ABOUTME: Default team A slug shown when no `aSlug` URL param is present.
 const DEFAULT_A = 'celtics'
+// ABOUTME: Default team B slug shown when no `bSlug` URL param is present.
 const DEFAULT_B = 'nuggets'
 
+// ABOUTME: Select options for the team-picker dropdowns — one entry per team in slug / full-name format.
 const TEAM_OPTIONS = TEAMS.map(t => ({ value: t.slug, label: `${t.city} ${t.name}` }))
 
 /** Strongest rate in a map, for scaling the conversion-rate intensity bars. */
+// ABOUTME: Returns the largest absolute rate value across all modelled stats; used to normalise ConversionChip bar widths.
 function maxAbsRate(rates: Record<StatKey, number>): number {
   return Math.max(0.01, ...STAT_DEFS.map(d => Math.abs(rates[d.key])))
 }
@@ -121,6 +126,7 @@ export function Matchup({ aSlug, bSlug }: MatchupProps) {
   )
 }
 
+// ABOUTME: Shared props passed into every matchup sub-view (BridgeView, BattleView, etc.): the full analysis result and the two resolved Team objects for colour and label access.
 interface ViewProps {
   analysis: MatchupAnalysis
   teamA: Team
@@ -137,6 +143,7 @@ interface ViewProps {
  * length is proportional to the rate. A steal's bar runs near full; a
  * rebound's is short — that ratio IS the reason a steal is worth more.
  */
+// ABOUTME: Inline chip showing a stat's signed rate (+0.xx) and a proportional intensity bar whose width is `|rate| / maxRate`; used in BattleView's centre column and the PricingPanel.
 function ConversionChip({ def, rate, maxRate, showLabel = true }: { def: StatDef; rate: number; maxRate: number; showLabel?: boolean }) {
   const signed = `${rate > 0 ? '+' : '−'}${Math.abs(rate).toFixed(2)}`
   const pct = (Math.abs(rate) / maxRate) * 100
@@ -152,6 +159,7 @@ function ConversionChip({ def, rate, maxRate, showLabel = true }: { def: StatDef
 }
 
 /** A single stat's full derivation as one line, units included: value − avg (stat/gm) = Δ × rate = points. */
+// ABOUTME: Renders the full derivation equation for one StatContribution as a single inline row: team value − league avg = Δ × rate = points, with units at each step; used in BridgeView's per-stat list and LedgerView's table cells.
 function DerivationLine({ c }: { c: StatContribution }) {
   const unit = c.def.short.toLowerCase()
   return (
@@ -176,6 +184,7 @@ function DerivationLine({ c }: { c: StatContribution }) {
  * A units legend for the derivation equation, the table-view analogue of the
  * conversion map's axis labels: it names what each number in the formula is.
  */
+// ABOUTME: Static three-part legend labelling "team avg − league avg", "rate", and "points" — anchors the derivation equation for viewers unfamiliar with the model.
 function FormulaKey() {
   return (
     <div className="formula-key">
@@ -201,6 +210,7 @@ function FormulaKey() {
  * The "how it adds up": every stat's signed points as a chip, then the sum and
  * the resulting projected total. The aggregation made literal.
  */
+// ABOUTME: Horizontal row showing a team's five per-stat point chips, the net sum, and the resulting projected total; used below ConversionView and BuildUpView to make the aggregation step explicit.
 function SumStrip({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
   return (
     <div className="sum-strip">
@@ -225,6 +235,7 @@ function SumStrip({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
 }
 
 /** Headline: projected totals for each team and the resulting margin. */
+// ABOUTME: Displays the two projected totals and the net non-scoring margin above the tab panel; uses ProjTeam for each side and shows a centred "Projected margin" label.
 function Summary({ analysis, teamA, teamB }: ViewProps) {
   const { a, b, netEdge, baseline } = analysis
   const favored = netEdge >= 0 ? teamA : teamB
@@ -244,6 +255,7 @@ function Summary({ analysis, teamA, teamB }: ViewProps) {
   )
 }
 
+// ABOUTME: One side of the Summary header: team abbreviation in team colour, projected points, and the baseline + net-points breakdown; `align` controls start/end positioning.
 function ProjTeam({ tm, baseline, align }: { tm: TeamMatchup; baseline: number; align: 'start' | 'end' }) {
   return (
     <div className={`matchup__summary-team matchup__summary-team--${align}`}>
@@ -262,6 +274,7 @@ function ProjTeam({ tm, baseline, align }: { tm: TeamMatchup; baseline: number; 
    net. A derivation row under every team makes the raw-stat → points chain
    explicit; the header carries baseline + net = projected total.
    ---------------------------------------------------------------- */
+// ABOUTME: View 1 — two side-by-side Waterfall charts (one per team) stacking each stat's relative points, with a DerivationLine list beneath each chart to show the raw-stat → points math.
 function BridgeView({ analysis }: ViewProps) {
   return (
     <ViewFrame
@@ -277,6 +290,7 @@ function BridgeView({ analysis }: ViewProps) {
   )
 }
 
+// ABOUTME: One team's bridge panel: a header with projected total, a scrollable Waterfall chart, and an ordered list of ConversionChip + DerivationLine pairs.
 function TeamBridge({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
   const maxRate = Math.max(0.01, ...tm.contributions.map(c => Math.abs(c.rate)))
   const steps: WaterfallStep[] = [
@@ -311,6 +325,7 @@ function TeamBridge({ tm, baseline }: { tm: TeamMatchup; baseline: number }) {
    the raw deviation, so each row reads "value → ×rate → bar". A totals row
    aggregates each side into its projected total.
    ---------------------------------------------------------------- */
+// ABOUTME: View 2 — mirrored horizontal bars per stat, one for each team; the centre column shows the ConversionChip rate; a totals row at the bottom sums each side to its projected total.
 function BattleView({ analysis, teamA, teamB }: ViewProps) {
   const { maxAbsPoints } = analysis
   const maxRate = maxAbsRate(analysis.rates)
@@ -382,6 +397,7 @@ function BattleView({ analysis, teamA, teamB }: ViewProps) {
    sits on the ray — the steeper the ray, the more a unit of that stat is worth.
    Sum strips below turn the five points into each team's projected total.
    ---------------------------------------------------------------- */
+// ABOUTME: View 3 — SVG scatter with one ray per stat (slope = rate) and team dots at (deviation, points); both teams' SumStrips run below the chart to tie the scatter back to their projected totals.
 function ConversionView({ analysis, teamA, teamB }: ViewProps) {
   const width = 580
   const height = 360
@@ -474,6 +490,7 @@ function ConversionView({ analysis, teamA, teamB }: ViewProps) {
    (costs) until it lands on its projected total. Because the two tracks share
    the axis, the horizontal gap between the end caps IS the projected margin.
    ---------------------------------------------------------------- */
+// ABOUTME: View 4 — SVG with two horizontal tracks on a shared points axis; each team starts at the baseline and each stat segment advances or retreats the projection, making the margin visible as the gap between the two end caps.
 function BuildUpView({ analysis, teamA, teamB }: ViewProps) {
   const width = 600
   const rowH = 64
@@ -575,6 +592,7 @@ function BuildUpView({ analysis, teamA, teamB }: ViewProps) {
    resulting points laid out as the literal formula, with a totals block that
    sums to each team's projected score.
    ---------------------------------------------------------------- */
+// ABOUTME: One row of the ledger table: the stat definition, each team's StatContribution, and the signed edge (A minus B) for winner colouring.
 interface LedgerRow {
   key: string
   def: StatDef
@@ -583,6 +601,7 @@ interface LedgerRow {
   edge: number
 }
 
+// ABOUTME: View 5 — sortable Table of all five stats with full DerivationLine formulas for each team and an edge column, plus a LedgerTotal block per team beneath the table.
 function LedgerView({ analysis, teamA, teamB }: ViewProps) {
   const rows: LedgerRow[] = analysis.edges.map((e, i) => ({
     key: e.def.key,
@@ -657,6 +676,7 @@ function LedgerView({ analysis, teamA, teamB }: ViewProps) {
   )
 }
 
+// ABOUTME: One team's totals block beneath the ledger table: abbreviation, projected score, and the baseline + net non-scoring derivation; `align` mirrors the left/right positioning used in Summary.
 function LedgerTotal({ tm, baseline, align = 'start' }: { tm: TeamMatchup; baseline: number; align?: 'start' | 'end' }) {
   return (
     <div className={`matchup__ledger-total matchup__ledger-total--${align}`}>
@@ -669,6 +689,7 @@ function LedgerTotal({ tm, baseline, align = 'start' }: { tm: TeamMatchup; basel
   )
 }
 
+// ABOUTME: Shared wrapper for all five matchup tab panels: a bold title, a plain-prose caption, and a slot for the view's own chart/table content.
 function ViewFrame({ title, caption, children }: { title: string; caption: string; children: ReactNode }) {
   return (
     <div className="matchup__view">
@@ -684,6 +705,7 @@ function ViewFrame({ title, caption, children }: { title: string; caption: strin
  * league's points-per-possession (computed from the teams) times the stat's
  * possession weight. Sliders override any rate; reset restores the data-fit.
  */
+// ABOUTME: Expandable `<details>` panel showing each stat's derived rate, the possession-weight rationale, and a range slider that overrides it; a Reset button restores DEFAULT_RATES.
 function PricingPanel({ rates, onChange }: { rates: Record<StatKey, number>; onChange: (r: Record<StatKey, number>) => void }) {
   const maxRate = maxAbsRate(rates)
   const dirty = STAT_DEFS.some(d => Math.abs(rates[d.key] - DEFAULT_RATES[d.key]) > 0.001)
@@ -746,6 +768,7 @@ function PricingPanel({ rates, onChange }: { rates: Record<StatKey, number>; onC
 }
 
 /** "+2.3" / "-1.4" — signed one-decimal for stat deviations. */
+// ABOUTME: Formats a stat deviation as a signed one-decimal string ("+2.3" or "−1.4"), using a minus-sign (−) rather than a hyphen for negative values; used in DerivationLine and BattleView tooltips.
 function signedDelta(n: number): string {
   const fixed = Math.abs(n) < 0.05 ? '0.0' : Math.abs(n).toFixed(1)
   return `${n >= 0.05 ? '+' : n <= -0.05 ? '−' : ''}${fixed}`

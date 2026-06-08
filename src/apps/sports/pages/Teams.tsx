@@ -10,6 +10,7 @@ import { sportsRoutes } from '../routes'
 import { winPct } from '../format'
 import type { Conference } from '../types'
 
+// ABOUTME: Union of the three conference filter options on the Teams page: show all teams, or narrow to Eastern or Western Conference only.
 type ConfFilter = 'all' | Conference
 
 // ABOUTME: Filters TEAMS by the chosen conference, renders each as a gradient-banner Card with city, division, W-L record, and current streak; shows an EmptyState when no teams match.

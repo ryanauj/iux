@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { Tabs, type TabItem } from '../../components/Tabs/Tabs'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the click-switch and keyboard navigation tests: three Tabs (Alpha, Beta, Gamma) with panel rendering and a state span.
 function BasicComposition() {
   const [value, setValue] = useState('a')
   const tabs: TabItem[] = [
@@ -31,6 +32,7 @@ function BasicComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the rich-variant tabs test: Tabs with icons, a badge count on Inbox, and Archive marked disabled.
 function RichComposition() {
   const [value, setValue] = useState('inbox')
   const tabs: TabItem[] = [
@@ -43,6 +45,7 @@ function RichComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the overflow-variant tabs test: six Tabs with overflow variant to confirm the More button renders.
 function OverflowComposition() {
   const [value, setValue] = useState('t1')
   const tabs: TabItem[] = Array.from({ length: 6 }, (_, i) => ({
@@ -54,6 +57,7 @@ function OverflowComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the editable-variant tabs test: Tabs with close and add callbacks, and a count span to track tab array length.
 function EditableComposition() {
   const [tabs, setTabs] = useState<TabItem[]>([
     { id: 'a', label: 'Alpha' },

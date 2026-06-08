@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the CRT / Phosphor elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — intro Card on the scanline-painted CRT host showing near-black field, single phosphor-green text and buttons, and a caption describing the three load-bearing effect slots: overlay.image, glow, and motion.decay.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__crt-host">
@@ -31,6 +34,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — four CRT surface swatches inside the scanline-painted host, captioned to explain that tonal hierarchy is deliberately refused and separation comes from the inset phosphor stroke in elevation tokens.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -66,6 +70,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — segmented-toggle demo of the three CRT border-strength rungs, showing that all rungs are the same phosphor green at different alphas and explaining that brightness rather than hue separates them.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (

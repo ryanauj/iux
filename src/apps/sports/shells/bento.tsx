@@ -21,9 +21,12 @@ import { Standings } from '../pages/Standings'
 import { TeamDetail } from '../pages/TeamDetail'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Union of the five dashboard widget identifiers available in the bento layout.
 type WidgetId = 'live' | 'leaders' | 'standings' | 'schedule' | 'spotlight'
+// ABOUTME: Canonical widget order used as the default and as the reset target.
 const ALL_WIDGETS: WidgetId[] = ['live', 'leaders', 'standings', 'schedule', 'spotlight']
 
+// ABOUTME: Human-readable display names for each widget, shown in tile headers and the hidden-widgets tray.
 const WIDGET_LABELS: Record<WidgetId, string> = {
   live: 'Live scoreboard',
   leaders: 'Stat leaders',

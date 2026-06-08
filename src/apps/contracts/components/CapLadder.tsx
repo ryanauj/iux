@@ -4,6 +4,7 @@ import { THRESHOLDS, SEASON } from '../data/cap'
 import { money } from '../format'
 import type { CapThreshold } from '../types'
 
+// ABOUTME: Props for CapLadder: optional payroll marker value, id of the threshold to highlight (dims the rest), whether to render explanatory blurbs on each rung, and an extra className.
 interface CapLadderProps {
   /** Optional payroll marker drawn as a moving "you are here" line. */
   payroll?: number
