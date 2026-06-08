@@ -10,6 +10,7 @@ import type { StoryEntry, Tier } from './components'
 // ABOUTME: Discriminant for PaletteShowcase's three layout modes: feed (stacked masonry cards with variant chip tabs), deck (horizontally swipeable variant carousel), or grid (tap-to-expand tiles).
 export type ShowcaseLayout = 'feed' | 'deck' | 'grid'
 
+// ABOUTME: Props for PaletteShowcase: the palette to render inside, which layout to use, an optional motion scale multiplier, the story entries to display, a plural kind label for the header meta line, and a flag to suppress the palette name/engine header (used by QuizView to avoid revealing the answer).
 interface Props {
   palette: Palette
   layout: ShowcaseLayout
@@ -66,12 +67,14 @@ export function PaletteShowcase({
   )
 }
 
+// ABOUTME: Small inline badge that displays a story entry's tier number (1, 2, or 3) with a tier-specific CSS modifier class; shown in card headers across all three layout modes.
 function TierBadge({ tier }: { tier: Tier }) {
   return <span className={`showcase__tier showcase__tier--${tier}`}>Tier {tier}</span>
 }
 
 /* ---------- Layout 21: stacked masonry feed ---------- */
 
+// ABOUTME: Stacked masonry feed layout: renders each story entry as a card with variant chip tabs; clicking a chip swaps the rendered variant inside the card without navigation.
 function FeedLayout({ entries }: { entries: StoryEntry[] }) {
   const [selected, setSelected] = useState<Record<string, string>>({})
 
@@ -116,6 +119,7 @@ function FeedLayout({ entries }: { entries: StoryEntry[] }) {
 
 /* ---------- Layout 22: swipeable variant deck ---------- */
 
+// ABOUTME: Horizontal swipeable deck layout: renders each entry as a DeckCard with a scrollable slide track; the active slide index drives the dot indicators and prev/next arrow buttons.
 function DeckLayout({ entries }: { entries: StoryEntry[] }) {
   return (
     <div className="showcase-deck">
@@ -126,6 +130,7 @@ function DeckLayout({ entries }: { entries: StoryEntry[] }) {
   )
 }
 
+// ABOUTME: Individual card in the DeckLayout: a scroll-snap track of variant slides with prev/next arrow buttons, a dot-tab row, and a counter; detects the active slide via a scroll listener on the track element.
 function DeckCard({ entry }: { entry: StoryEntry }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
@@ -216,6 +221,7 @@ function DeckCard({ entry }: { entry: StoryEntry }) {
 
 /* ---------- Layout 23: tap-to-expand tile grid ---------- */
 
+// ABOUTME: Tap-to-expand tile grid: initially shows each entry as a compact button tile with tier badge and variant count; clicking expands it into a full showcase-card panel in place, with Escape and a close button to collapse.
 function GridLayout({ entries }: { entries: StoryEntry[] }) {
   const [expanded, setExpanded] = useState<string | null>(null)
   const tileRefs = useRef<Record<string, HTMLButtonElement | null>>({})

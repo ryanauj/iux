@@ -11,10 +11,12 @@ import { makeRng, nextQuestion } from './generators'
 import type { IdentifyQuestion, StimulusKind } from './types'
 import './quiz.css'
 
+// ABOUTME: Props for QuizView: a numeric seed used to initialise the Mulberry32 PRNG so the question sequence is reproducible within a page session.
 interface Props {
   seed: number
 }
 
+// ABOUTME: Records the user's answer for the current question: whether it was correct and which palette id they picked, used to drive feedback styling on the option buttons.
 interface AnswerState {
   correct: boolean
   pickedId: PaletteId
@@ -91,6 +93,7 @@ export function QuizView({ seed }: Props) {
   )
 }
 
+// ABOUTME: Renders one quiz stimulus inside a shield div that hides the palette name: shows a PaletteShowcase grid for components or visualizations, or a PaletteRoot-wrapped SportsHome for the app kind.
 function Stimulus({ palette, kind }: { palette: PaletteId; kind: StimulusKind }) {
   return (
     <div className="quiz-stimulus">
@@ -123,12 +126,14 @@ function Stimulus({ palette, kind }: { palette: PaletteId; kind: StimulusKind })
   )
 }
 
+// ABOUTME: Maps a StimulusKind to the human-readable hint shown in parentheses beside the quiz prompt so users know what they are looking at.
 function stimulusLabel(kind: StimulusKind): string {
   if (kind === 'components') return 'components'
   if (kind === 'visualizations') return 'visualizations'
   return 'app'
 }
 
+// ABOUTME: Computes the CSS class string for an option button based on post-answer state: correct answer gets --correct, wrong pick gets --wrong, unchosen wrong answers get --dim; no modifier before the user answers.
 function optionClass(
   answer: AnswerState | null,
   correct: boolean,

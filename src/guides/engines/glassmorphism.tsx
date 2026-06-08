@@ -9,11 +9,16 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union of the four backdrop-blur step names exposed by the glassmorphism palette, used in MotionDemo.
 type BlurRung = 'none' | 'sm' | 'md' | 'lg'
+// ABOUTME: Ordered array of BlurRung values so the segmented Toggle in MotionDemo can cycle through blur steps.
 const BLURS: BlurRung[] = ['none', 'sm', 'md', 'lg']
 
+// ABOUTME: Renders the philosophy step demo: a single frosted Card on the saturated indigo host with Save/Cancel buttons, illustrating the alpha-plus-blur recipe.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__glass-host">
@@ -33,6 +38,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid showing base through overlay at their alpha values against the indigo host with backdrop-blur applied.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -69,6 +75,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: three stacked bordered panels showing subtle, default, and strong hairline-white rim borders against the frosted glass host.
 function BordersDemo() {
   return (
     <div className="iux-engine-demo__glass-host">
@@ -90,6 +97,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs through the five elevation rungs, showing the paired inset-highlight plus outer-cast-shadow growing against the indigo host.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -137,6 +145,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle and blur-rung segmented control let the user feel the engine's wide 260 ms base duration and scrub backdrop-blur from none to lg.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   const [blur, setBlur] = useState<BlurRung>('md')
@@ -207,6 +216,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons against the glass host, showing near-opaque fills for five intents and the fully glassy neutral chip.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__glass-host">

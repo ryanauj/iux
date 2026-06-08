@@ -9,11 +9,16 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union of the four bevel rung names available for the segmented bevel picker in MotionDemo (flat through high, excluding overlay which has no bevel step).
 type BevelRung = 'flat' | 'low' | 'medium' | 'high'
+// ABOUTME: Ordered array of BevelRung values so the segmented Toggle in MotionDemo can cycle through the four bevelled elevation slots.
 const BEVELS: BevelRung[] = ['flat', 'low', 'medium', 'high']
 
+// ABOUTME: Renders the philosophy step demo: a warm-parchment Card with bevelled elevation, illustrating that the engine evokes physical material through stacked shadow strings alone, without a CSS gradient.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -34,6 +39,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid showing the warm parchment tone ladder from desk-base through overlay-sheet, each with a low-elevation bevel.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -70,6 +76,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: three stacked panels showing warm-black ink-alpha borders at subtle, default, and strong opacities, each already carrying a low-elevation bevel.
 function BordersDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -123,6 +130,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs through five rungs to show the three-layer bevel (inset top highlight, inset bottom shade, outer drop) thickening with each step.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -172,6 +180,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle and bevel-rung picker let the user watch the highlight and shade thicken in lockstep through the engine's tight 200 ms base curve.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   const [bevel, setBevel] = useState<BevelRung>('low')
@@ -237,6 +246,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons showing brushed-tone fills with cream ink for five intents and the parchment-tile neutral, plus the umber focus ring.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

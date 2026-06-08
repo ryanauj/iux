@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import type { Palette } from '../../tokens/semantic.contract'
 import { paletteToCssVars } from './paletteToCssVars'
 
+// ABOUTME: Props for PaletteRoot: the palette whose tokens will be applied as CSS variables, children to render inside, an optional className, which HTML element to render as (div/section/article), and an optional motion scale multiplier.
 interface PaletteRootProps {
   palette: Palette
   children: ReactNode

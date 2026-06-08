@@ -9,11 +9,16 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
+// ABOUTME: Union of the four border-width step names in the neubrutalism palette, from hairline dividers to the canonical 4px heavy stroke.
 type BorderRung = 'hairline' | 'thin' | 'thick' | 'heavy'
+// ABOUTME: Ordered array of BorderRung values so the segmented Toggle in BordersDemo can cycle through all four width steps.
 const BORDERS: BorderRung[] = ['hairline', 'thin', 'thick', 'heavy']
 
+// ABOUTME: Renders the philosophy step demo: a card with zero radius, near-black 4px border, and clashing-colour Save/Cancel buttons, illustrating the engine's single structural language.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -32,6 +37,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid showing the cream base and the three identical-white raised/sunken/overlay surfaces, each wrapped in the heavy near-black border.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -61,6 +67,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: a segmented control cycles through hairline/thin/thick/heavy widths on a zero-radius bordered div, demonstrating that all three colour rungs are the same near-black.
 function BordersDemo() {
   const [rung, setRung] = useState<BorderRung>('heavy')
   return (
@@ -97,6 +104,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs through five rungs but the card never changes because every elevation token is set to none in this palette.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -141,6 +149,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle controls the neubrutalism palette's 40–90 ms linear snap durations, showing how removing motion barely affects the experience.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -177,6 +186,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons with clashing fills and near-black content, showing each wrapped in the same 4px black border with the flush magenta focus ring.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">

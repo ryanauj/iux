@@ -15,8 +15,10 @@ import { sportsRoutes } from '../routes'
 import type { Game, Player, Team } from '../types'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Union of the three card stacks the deck can show: teams alphabetically, players by PPG, games by date.
 type Stack = 'teams' | 'players' | 'games'
 
+// ABOUTME: Ordered metadata for each stack: its id, button label, and pluralised noun used in empty-state messages.
 const STACKS: { id: Stack; label: string; pluralized: string }[] = [
   { id: 'teams', label: 'Teams', pluralized: 'teams' },
   { id: 'players', label: 'Players', pluralized: 'players' },
@@ -27,6 +29,7 @@ const STACKS: { id: Stack; label: string; pluralized: string }[] = [
 // `stack=...&index=...`) keeps the global sticky-params list minimal —
 // `index` and `stack` are generic names that would collide with other
 // shells if added at the top level.
+// ABOUTME: Parses the `?deck=<stack>.<index>` URL param into a typed stack id and a non-negative integer index, defaulting to `teams` at 0 when the param is absent or malformed.
 function parseDeck(raw: string | null): { stack: Stack; index: number } {
   if (!raw) return { stack: 'teams', index: 0 }
   const [stackRaw, indexRaw] = raw.split('.')
@@ -38,6 +41,7 @@ function parseDeck(raw: string | null): { stack: Stack; index: number } {
   return { stack, index }
 }
 
+// ABOUTME: Serialises stack and card index back to the `?deck=` string, returning undefined (omit the param) when the values match the canonical default so the URL stays clean before the user interacts.
 function serializeDeck(stack: Stack, index: number): string | undefined {
   // Omit the param when it would match the canonical first card —
   // keeps the URL clean before the user has interacted with the deck.
@@ -47,16 +51,21 @@ function serializeDeck(stack: Stack, index: number): string | undefined {
 
 // Stack data, sorted in a way that makes "next card" feel intentional
 // (alphabetical teams, top scorers first, most recent games first).
+// ABOUTME: All teams sorted alphabetically by city — the traversal order for the Teams card stack.
 const TEAMS_SORTED = TEAMS.slice().sort((a, b) => a.city.localeCompare(b.city))
+// ABOUTME: All players sorted by PPG descending — the traversal order for the Players card stack.
 const PLAYERS_SORTED = PLAYERS.slice().sort((a, b) => b.stats.ppg - a.stats.ppg)
+// ABOUTME: All games sorted by date descending (most recent first) — the traversal order for the Games card stack.
 const GAMES_SORTED = GAMES.slice().sort((a, b) => b.date.localeCompare(a.date))
 
+// ABOUTME: Returns the total number of cards in the given stack by consulting the matching sorted array.
 function stackLength(stack: Stack): number {
   if (stack === 'teams') return TEAMS_SORTED.length
   if (stack === 'players') return PLAYERS_SORTED.length
   return GAMES_SORTED.length
 }
 
+// ABOUTME: Clamps an arbitrary index into the valid range [0, stackLength − 1], returning 0 for an empty stack.
 function clampIndex(stack: Stack, index: number): number {
   const len = stackLength(stack)
   if (len === 0) return 0
@@ -65,6 +74,7 @@ function clampIndex(stack: Stack, index: number): number {
   return index
 }
 
+// ABOUTME: Full-bleed card for a single team showing the crest, conference/division kicker, record stats, the top-3 scorers by PPG, and the team's most recent final game; placed in the Teams stack by CardFor.
 function TeamCard({ team }: { team: Team }) {
   const roster = PLAYERS_SORTED.filter(p => p.teamId === team.id).slice(0, 3)
   const recent = GAMES_SORTED.filter(
@@ -126,6 +136,7 @@ function TeamCard({ team }: { team: Team }) {
   )
 }
 
+// ABOUTME: Full-bleed card for a single player showing initials crest in team colour, jersey/position kicker, six per-game stat tiles, and a link to the full player page; placed in the Players stack by CardFor.
 function PlayerCard({ player }: { player: Player }) {
   const team = getTeamById(player.teamId)
   const initials = `${player.firstName[0] ?? ''}${player.lastName[0] ?? ''}`
@@ -174,6 +185,7 @@ function PlayerCard({ player }: { player: Player }) {
   )
 }
 
+// ABOUTME: Full-bleed card for a single game showing status/quarter kicker, a two-row matchup block with scores, and up to three top-performer rows; placed in the Games stack by CardFor.
 function GameCard({ game }: { game: Game }) {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -244,6 +256,7 @@ function GameCard({ game }: { game: Game }) {
   )
 }
 
+// ABOUTME: Compact one-row summary of a single game (away abbreviation, scores, home abbreviation, and formatted date) rendered as a link inside TeamCard's "Most recent final" section.
 function RecentGameRow({ game }: { game: Game }) {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -258,6 +271,7 @@ function RecentGameRow({ game }: { game: Game }) {
   )
 }
 
+// ABOUTME: Single label/value tile used inside card stat grids; renders a small kicker label above a bold numeric value.
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="sports-deck__stat">
@@ -267,6 +281,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   )
 }
 
+// ABOUTME: Dispatcher that picks the correct card component (TeamCard, PlayerCard, or GameCard) for the current stack and index, returning null when the index falls out of range.
 function CardFor({ stack, index }: { stack: Stack; index: number }) {
   if (stack === 'teams') {
     const team = TEAMS_SORTED[index]
@@ -280,6 +295,7 @@ function CardFor({ stack, index }: { stack: Stack; index: number }) {
   return game ? <GameCard game={game} /> : null
 }
 
+// ABOUTME: Primary navigation bar rendered in the DeckShell header; links to all sports sections, marking the active route with `is-active`.
 function DeckNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] }) {
   return (
     <nav className="sports-app__deck-nav" aria-label="Primary">
@@ -300,6 +316,7 @@ function DeckNav({ nav, route }: { nav: NavItem[]; route: ShellProps['route'] })
   )
 }
 
+// ABOUTME: Props for DeckSurface: the current stack id and card index, plus callbacks to change either when the user navigates.
 interface DeckProps {
   stack: Stack
   index: number
@@ -307,6 +324,7 @@ interface DeckProps {
   onIndexChange: (next: number) => void
 }
 
+// ABOUTME: Interactive swipe/keyboard surface that renders the stack-selector tab bar, the active card (via CardFor), prev/next arrow controls, and touch-swipe handlers; keyboard ←/→ flips cards, ↑/↓ cycles stacks.
 function DeckSurface({ stack, index, onStackChange, onIndexChange }: DeckProps): ReactNode {
   const len = stackLength(stack)
   const safeIndex = clampIndex(stack, index)
@@ -429,6 +447,7 @@ function DeckSurface({ stack, index, onStackChange, onIndexChange }: DeckProps):
   )
 }
 
+// ABOUTME: Breadcrumb bar shown on detail routes with a "← Back to deck" link and a position indicator (e.g. "Players · 3 of 12") so the user knows which card they left before navigating away.
 function DeckBreadcrumb({ stack, index }: { stack: Stack; index: number }) {
   const len = stackLength(stack)
   const safe = clampIndex(stack, index)

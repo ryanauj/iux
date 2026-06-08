@@ -106,6 +106,7 @@ export const KNOB_GROUPS = [
   'Effects',
 ] as const
 
+// ABOUTME: The six semantic intent names used to generate one color knob per intent background in the KNOBS array; keyed to color.intent.<name>.bg token paths.
 const INTENTS = ['primary', 'neutral', 'success', 'warning', 'danger', 'info'] as const
 
 // ABOUTME: The master array of editable token knobs rendered by StyleEditorPage: surface colors, content colors, border/focus ring colors, six intent backgrounds, radius scale, spacing scale (space.2–5), border widths, font family stacks, motion durations, and shadow style.

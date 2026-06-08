@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union of the five named elevation rungs used to drive the interactive elevation slider in ElevationDemo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered array of ElevationRung values used to map a Slider index to a rung name.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: Renders the philosophy step demo: three stacked identical-colour sheets at low/medium/high elevation, proving that shadow alone encodes z-order in the Material engine.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -33,6 +36,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: Renders the surfaces step demo: a four-swatch grid of opaque near-identical paper tones, showing that base is a hair grey so white raised sheets read as lifted.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -62,6 +66,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: Renders the borders step demo: three stacked divs showing subtle, default, and strong alpha-over-ink border rungs, with a caption noting Material rarely leans on them because shadow already separates levels.
 function BordersDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -83,6 +88,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: Renders the elevation step demo: a Slider scrubs through five rungs showing the paired ambient + key shadow growing together as the sheet lifts off the page.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -119,6 +125,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: Renders the motion step demo: a motion toggle controls the material palette's 250 ms standard-curve base duration, showing the deliberate press-weight feel on hover.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -155,6 +162,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: Renders the intent step demo: all six intent buttons showing saturated fills with white inverse text and a uniform indigo focus ring, plus the grey neutral chip.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__col">
@@ -176,6 +184,7 @@ function IntentDemo() {
   )
 }
 
+// ABOUTME: Renders a static Card composition inlined inside the philosophy step body, showing a canonical Material card with elevation.low, indigo accent, and Save/Cancel buttons.
 function CardComposition() {
   return (
     <Card title="Settings" subtitle="A Material card is a sheet of paper." variant="static">

@@ -19,18 +19,22 @@ import {
   type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 
+// ABOUTME: Canonical URL search-parameter names for the quiz page's chrome palette and controls-style state.
 const URL_PARAM = {
   chrome: 'chrome',
   controls: 'controls',
 } as const
 
+// ABOUTME: The controls-style used when the URL has no controls= param: show the floating button rather than the strip.
 const DEFAULT_CONTROLS: ControlsStyle = 'button'
 
+// ABOUTME: Shape of URL-derived settings read by readUrlSettings: the chrome palette id and the DraggableControls display mode.
 type UrlSettings = {
   chrome: StyleId
   controls: ControlsStyle
 }
 
+// ABOUTME: Parses chrome and controls URL search params, falling back to the persisted chrome and the default controls style for any missing or invalid value.
 function readUrlSettings(persistedChrome: StyleId): UrlSettings {
   if (typeof window === 'undefined') {
     return { chrome: persistedChrome, controls: DEFAULT_CONTROLS }

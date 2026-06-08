@@ -20,19 +20,23 @@ import { sportsRoutes, type SportsRoute } from '../routes'
 import type { Game, Player, Team } from '../types'
 import type { ShellProps, NavItem } from '../layouts'
 
+// ABOUTME: Union of the three browseable sections in col-1 of the triptych: teams, players, and games.
 type Section = 'teams' | 'players' | 'games'
+// ABOUTME: Ordered metadata for the three section tabs rendered in col-1's section switcher.
 const SECTIONS: { id: Section; label: string }[] = [
   { id: 'teams', label: 'Teams' },
   { id: 'players', label: 'Players' },
   { id: 'games', label: 'Games' },
 ]
 
+// ABOUTME: Infers which triptych section (teams/players/games) best matches a given route, defaulting to teams for home and list routes.
 function sectionFromRoute(route: SportsRoute): Section {
   if (route.kind === 'players' || route.kind === 'playerDetail') return 'players'
   if (route.kind === 'games' || route.kind === 'gameDetail') return 'games'
   return 'teams'
 }
 
+// ABOUTME: Extracts the entity id (team id, player id, or game id) implied by the current route so col-1 and col-2 can pre-select the matching item when navigating via a deep link.
 function entityIdFromRoute(route: SportsRoute): string | null {
   if (route.kind === 'teamDetail') return getTeamBySlug(route.slug)?.id ?? null
   if (route.kind === 'playerDetail') return getPlayerBySlug(route.slug)?.id ?? null
@@ -40,6 +44,7 @@ function entityIdFromRoute(route: SportsRoute): string | null {
   return null
 }
 
+// ABOUTME: Normalised row shape for the col-1 scrollable list: entity id, display label, secondary meta string, and optional colour swatch.
 interface ListItem {
   id: string
   label: string
@@ -47,6 +52,7 @@ interface ListItem {
   swatch?: string
 }
 
+// ABOUTME: Builds the col-1 list for a given section: teams sorted alphabetically by city, players sorted by PPG descending, games sorted by date descending.
 function listForSection(section: Section): ListItem[] {
   if (section === 'teams') {
     return TEAMS.slice()
@@ -85,12 +91,14 @@ function listForSection(section: Section): ListItem[] {
     })
 }
 
+// ABOUTME: Returns true if the given entity id belongs to the specified section's data set, used to validate selectedId after a section switch.
 function isInSection(id: string, section: Section): boolean {
   if (section === 'teams') return TEAMS.some(t => t.id === id)
   if (section === 'players') return PLAYERS.some(p => p.id === id)
   return GAMES.some(g => g.id === id)
 }
 
+// ABOUTME: Grid of label/value stat tiles used inside TeamSummary and PlayerSummary panels in col-2.
 function Stats({ items }: { items: [string, string][] }) {
   return (
     <div className="sports-triptych__stats">
@@ -104,6 +112,7 @@ function Stats({ items }: { items: [string, string][] }) {
   )
 }
 
+// ABOUTME: Shape for a sub-list row in col-2 summary panels: a unique key, a route destination, and label/meta ReactNodes.
 interface SubLink {
   key: string
   to: string
@@ -111,6 +120,7 @@ interface SubLink {
   meta: ReactNode
 }
 
+// ABOUTME: Titled linked list used inside summary panels (col-2) to show sub-entities such as top scorers under a TeamSummary or recent games under a PlayerSummary.
 function SubList({ title, links, empty }: { title: string; links: SubLink[]; empty: string }) {
   return (
     <section className="sports-triptych__sub">
@@ -130,6 +140,7 @@ function SubList({ title, links, empty }: { title: string; links: SubLink[]; emp
   )
 }
 
+// ABOUTME: Header block shared by all three summary types (team/player/game) in col-2; renders an optional coloured crest, a kicker line, the entity name, and a meta line with an optional accent border.
 function SummaryHead({
   kicker,
   name,
@@ -166,6 +177,7 @@ function SummaryHead({
   )
 }
 
+// ABOUTME: Converts a Game into a SubLink (away@home label + formatted date) for use in TeamSummary and PlayerSummary sub-lists; returns null if either team is missing.
 function gameLink(game: Game): SubLink | null {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -178,6 +190,7 @@ function gameLink(game: Game): SubLink | null {
   }
 }
 
+// ABOUTME: Col-2 panel for a selected team showing crest/header, six record stats, a top-5 scorers sub-list, a recent-games sub-list, and a link to open the full team page in col-3.
 function TeamSummary({ team }: { team: Team }) {
   const roster = getPlayersForTeam(team.id)
     .slice()
@@ -228,6 +241,7 @@ function TeamSummary({ team }: { team: Team }) {
   )
 }
 
+// ABOUTME: Col-2 panel for a selected player showing initials crest, jersey/position kicker, six per-game stat tiles, a recent-games sub-list for the player's team, and a link to open the full player page in col-3.
 function PlayerSummary({ player }: { player: Player }) {
   const team = getTeamById(player.teamId)
   const recent = team
@@ -278,6 +292,7 @@ function PlayerSummary({ player }: { player: Player }) {
   )
 }
 
+// ABOUTME: Col-2 panel for a selected game showing status kicker, a two-row matchup board with scores, a top-performers sub-list, and a link to open the full game page in col-3.
 function GameSummary({ game }: { game: Game }) {
   const home = getTeamById(game.homeTeamId)
   const away = getTeamById(game.awayTeamId)
@@ -336,6 +351,7 @@ function GameSummary({ game }: { game: Game }) {
   )
 }
 
+// ABOUTME: Dispatcher that renders the correct summary panel (TeamSummary, PlayerSummary, or GameSummary) for the current col-1 selection, or a prompt when nothing is selected.
 function SummaryFor({ id, section }: { id: string | null; section: Section }) {
   if (!id) {
     const noun = section === 'teams' ? 'team' : section === 'players' ? 'player' : 'game'
@@ -359,6 +375,7 @@ function SummaryFor({ id, section }: { id: string | null; section: Section }) {
     : <div className="sports-triptych__empty">Game not found.</div>
 }
 
+// ABOUTME: Primary navigation bar rendered in the TriptychShell header; links to all sports sections with `is-active` on the current route.
 function TriNav({ nav, route }: { nav: NavItem[]; route: SportsRoute }) {
   return (
     <nav className="sports-app__triptych-nav" aria-label="Primary">

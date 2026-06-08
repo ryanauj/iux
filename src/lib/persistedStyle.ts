@@ -10,6 +10,7 @@ export const SELECTED_STYLE_KEY = 'iux-selected-style'
 // ABOUTME: The built-in palette id used when no valid style has been persisted yet.
 export const DEFAULT_SELECTED_STYLE: PaletteId = 'flat-classic'
 
+// ABOUTME: Pre-built Set of all built-in palette id strings; used by isPaletteId for O(1) membership tests when validating stored or URL-supplied style ids.
 const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
 // ABOUTME: Type guard — true when value is a key in the built-in palette registry; used to validate storage reads.

@@ -20,18 +20,24 @@ import {
 import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import { baseOf, resolveStyle, type StyleId } from '../lib/customPatterns'
 
+// ABOUTME: All built-in palette ids in insertion order; used to iterate palettes in per-component mode and validate the palette= URL param.
 const PALETTE_IDS = Object.keys(palettes) as PaletteId[]
 
+// ABOUTME: The two top-level display modes: per-component shows one story across all palettes as stacked rows; per-palette feeds all stories through a single palette in feed/deck/grid layout.
 type ViewMode = 'per-component' | 'per-palette'
+// ABOUTME: The palette filter value for per-component mode: either a specific built-in palette id or 'all' to show every palette row.
 type PaletteChoice = 'all' | PaletteId
+// ABOUTME: The variant filter for per-component mode: either a specific variant name from the active entry or 'all' to render every variant.
 type VariantChoice = 'all' | string
 
+// ABOUTME: The three available per-palette layout options surfaced in the DraggableControls Layout field, passed as options to the layout Field and used to select the PaletteShowcase layout prop.
 const LAYOUTS: { value: ShowcaseLayout; label: string }[] = [
   { value: 'feed', label: 'Feed — stacked masonry' },
   { value: 'deck', label: 'Deck — swipeable variants' },
   { value: 'grid', label: 'Grid — tap-to-expand tiles' },
 ]
 
+// ABOUTME: Canonical URL search-parameter names for all of ShowcasePage's URL-driven state: view mode, selected component, variant filter, palette filter, chrome palette, showcase palette, layout, and motion scale.
 const URL_PARAM = {
   view: 'view',
   component: 'component',
