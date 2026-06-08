@@ -30,8 +30,10 @@ export interface BarProps {
   className?: string
 }
 
+// ABOUTME: Fixed pixel padding on each side of the vertical SVG plot area, reserving space for axis labels and category tick text.
 const PAD = { top: 12, right: 12, bottom: 28, left: 40 }
 
+// ABOUTME: Formats a bar value with locale-appropriate decimal places, switching precision thresholds at 10 and 1000.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })

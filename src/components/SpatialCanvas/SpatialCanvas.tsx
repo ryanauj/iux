@@ -55,6 +55,7 @@ export interface SpatialCanvasProps {
   className?: string
 }
 
+// ABOUTME: Internal camera state: pixel offsets (x, y) of the world origin relative to the viewport top-left corner, and the current zoom scale factor.
 interface Transform {
   x: number
   y: number
@@ -367,6 +368,7 @@ export function SpatialCanvas({
   )
 }
 
+// ABOUTME: Props for the Minimap sub-component — the world extent, the current object list, the live viewport transform, the viewport pixel dimensions, and a pan callback for click-to-navigate.
 interface MinimapProps {
   worldBounds: { x: number; y: number; w: number; h: number }
   objects: CanvasObject[]
@@ -375,6 +377,7 @@ interface MinimapProps {
   onPanTo: (world: { x: number; y: number }) => void
 }
 
+// ABOUTME: Renders a 140×90 thumbnail overview of the world with scaled object rectangles and a viewport indicator rectangle; clicking the minimap pans the canvas to that world position via onPanTo.
 function Minimap({ worldBounds, objects, viewportTransform, viewportSize, onPanTo }: MinimapProps) {
   const mmW = 140
   const mmH = 90

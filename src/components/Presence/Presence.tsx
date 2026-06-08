@@ -36,6 +36,7 @@ export interface PresenceProps {
   className?: string
 }
 
+// ABOUTME: Extracts up to two uppercase initials from a display name by splitting on whitespace and taking the first character of each word.
 function initials(name: string): string {
   return name.split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase()
 }
@@ -149,6 +150,7 @@ export function Presence({
   )
 }
 
+// ABOUTME: Renders a small triangular arrow SVG icon used as the cursor shape in the cursors and chat overlay modes; aria-hidden so screen readers ignore it.
 function CursorIcon() {
   return (
     <svg className="iux-presence__cursor-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">

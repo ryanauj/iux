@@ -64,17 +64,29 @@ export type AstNode = Node<AstNodeData>
 export type AstEdge = Edge<{ weight: number }>
 
 // ── Geometry constants (px in flow coordinates) ────────────────────────
+// ABOUTME: Width of a collapsed area cluster node.
 const AREA_W = 260
+// ABOUTME: Height of a collapsed area cluster node.
 const AREA_H = 156
+// ABOUTME: Width of a file node (same collapsed or expanded).
 const FILE_W = 232
+// ABOUTME: Height of a collapsed (members-hidden) file node.
 const FILE_COLLAPSED_H = 116
+// ABOUTME: Height of a file node's header above its member list.
 const FILE_HEAD_H = 92
+// ABOUTME: Height each member row adds to an expanded file node.
 const MEMBER_ROW_H = 40
+// ABOUTME: Bottom padding below the last member row in an expanded file.
 const FILE_PAD_B = 14
+// ABOUTME: Gap between sibling nodes in the file grid.
 const GAP = 24
+// ABOUTME: Inner padding between a region's edge and its file grid.
 const REGION_PAD = 22
+// ABOUTME: Height reserved for an expanded region's header strip.
 const REGION_HEAD = 46
+// ABOUTME: Vertical gap between stacked top-level clusters.
 const AREA_STACK_GAP = 48
+// ABOUTME: Maximum columns in an expanded area's file grid.
 const MAX_COLS = 4
 
 // ABOUTME: Computes a file node's height from its member count and expand state.
@@ -83,6 +95,7 @@ export function fileHeight(file: AstFile, expanded: boolean): number {
   return FILE_HEAD_H + Math.max(1, file.members.length) * MEMBER_ROW_H + FILE_PAD_B
 }
 
+// ABOUTME: Chooses a near-square column count for a file grid of `count` files, capped at MAX_COLS.
 function columnsFor(count: number): number {
   return Math.min(MAX_COLS, Math.max(1, Math.ceil(Math.sqrt(count))))
 }
@@ -235,6 +248,7 @@ export function buildGraph(graph: AstGraph, opts: BuildOptions): BuiltGraph {
  * seed (clusters on a circle, ordered by id) and the iteration count are
  * fixed, so the same graph always lands in the same place — no randomness.
  */
+// ABOUTME: Deterministically re-positions the top-level clusters by their import links (Fruchterman–Reingold + overlap resolution) for the auto-layout map.
 function applyForceLayout(nodes: AstNode[], edges: AstEdge[]): void {
   const tops = nodes.filter(n => !n.parentId)
   if (tops.length <= 1) return

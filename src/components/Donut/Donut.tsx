@@ -31,18 +31,22 @@ export interface DonutProps {
   className?: string
 }
 
+// ABOUTME: Default rotation through the six intent tokens applied to slices when no per-slice intent is provided.
 const INTENTS: DonutIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a slice at index i — uses the explicit slice.intent override if set, otherwise cycles through INTENTS.
 function intentFor(s: DonutSlice, i: number): DonutIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Default value formatter — locale-aware with 0 fraction digits for ≥1000, 1 for ≥10, 2 otherwise; used when no formatValue prop is provided.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Builds an SVG path string for a pie or donut arc segment: uses a center-to-arc wedge when rInner is 0 (solid), or an outer-arc + inner-arc closed ring path for donut variants.
 function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: number, a1: number): string {
   const large = a1 - a0 > Math.PI ? 1 : 0
   const x0o = cx + rOuter * Math.cos(a0)

@@ -29,14 +29,19 @@ export interface EcdfPlotProps {
   className?: string
 }
 
+// ABOUTME: SVG padding insets (px) — left accommodates y-axis percentage labels, bottom the x-axis value labels.
 const PAD = { top: 16, right: 16, bottom: 28, left: 44 }
+// ABOUTME: Default rotation through the six intent tokens applied to series when no per-series intent is provided.
 const INTENTS: EcdfIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
+// ABOUTME: The four percentile levels (p50/p90/p95/p99) annotated with crosshair markers in the 'percentiles' variant.
 const HIGHLIGHT_P = [0.5, 0.9, 0.95, 0.99] as const
 
+// ABOUTME: Returns the intent for a series at index i — uses the explicit series.intent override if set, otherwise cycles through INTENTS.
 function intentFor(s: EcdfSeries, i: number): EcdfIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Computes the p-th quantile of a pre-sorted array using linear interpolation between adjacent values; used to locate the crosshair positions at the HIGHLIGHT_P percentile levels.
 function quantile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0
   const idx = (sorted.length - 1) * p

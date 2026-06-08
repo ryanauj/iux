@@ -39,6 +39,7 @@ export interface BentoProps {
   className?: string
 }
 
+// ABOUTME: Clamps `n` to the inclusive range [lo, hi]; used to bound column/row span values during drag-resize.
 function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, n))
 }

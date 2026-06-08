@@ -1,5 +1,6 @@
 // ABOUTME: In-tab pub/sub bus shared by usePersistedPref and usePersistedJSON so same-key hooks stay in sync without a storage event.
 
+// ABOUTME: Callback signature for in-tab storage subscribers — receives the raw localStorage string whenever a sibling hook writes to the same key.
 type Listener = (raw: string) => void
 
 // ABOUTME: In-memory subscribers keyed by storage key.

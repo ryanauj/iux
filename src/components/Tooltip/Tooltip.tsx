@@ -58,6 +58,7 @@ export interface TooltipProps {
   className?: string
 }
 
+// ABOUTME: Resolved absolute page-coordinate position for the tooltip bubble, including which side it was anchored against (used to apply the correct CSS arrow class).
 interface Position {
   top: number
   left: number

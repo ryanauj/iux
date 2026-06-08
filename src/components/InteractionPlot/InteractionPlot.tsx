@@ -32,20 +32,25 @@ export interface InteractionPlotProps {
   className?: string
 }
 
+// ABOUTME: Pixel padding around the plot area: reserves space for y-axis labels on the left and right-side inline line labels.
 const PAD = { top: 16, right: 96, bottom: 32, left: 44 }
+// ABOUTME: Ordered intent palette cycled over lines when no explicit intent is set on an InteractionLine.
 const INTENTS: InteractionIntent[] = ['info', 'primary', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Maps a data-space value to a pixel coordinate via a linear interpolation between domain [d0, d1] and range [r0, r1]; returns the midpoint when the domain collapses to a single point.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats axis tick numbers compactly: 0 decimals for ≥ 100, 1 decimal for ≥ 10, 2 decimals otherwise.
 function num(n: number): string {
   if (Math.abs(n) >= 100) return n.toFixed(0)
   if (Math.abs(n) >= 10)  return n.toFixed(1)
   return n.toFixed(2)
 }
 
+// ABOUTME: Returns the resolved intent for a line, falling back to cycling through INTENTS by line index when no explicit intent is set.
 function intentFor(l: InteractionLine, i: number): InteractionIntent {
   return l.intent ?? INTENTS[i % INTENTS.length]
 }

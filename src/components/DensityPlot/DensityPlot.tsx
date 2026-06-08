@@ -31,15 +31,20 @@ export interface DensityPlotProps {
   className?: string
 }
 
+// ABOUTME: SVG padding insets (px) — left holds y-axis labels, bottom holds x-axis tick labels.
 const PAD = { top: 16, right: 16, bottom: 28, left: 44 }
+// ABOUTME: Default rotation through the six intent tokens applied to series when no per-series intent is provided.
 const INTENTS: DensityIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a series at index i — uses the explicit series.intent override if set, otherwise cycles through INTENTS.
 function intentFor(s: DensitySeries, i: number): DensityIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: A single evaluated KDE point pairing an x-axis value with its estimated probability density y.
 interface Curve { x: number; y: number }
 
+// ABOUTME: Evaluates a Gaussian KDE at `res+1` equally-spaced x positions across xDom, using Silverman's rule-of-thumb bandwidth derived from the sample standard deviation and count.
 function kde(values: number[], xDom: [number, number], res: number): Curve[] {
   if (values.length === 0) return []
   const n = values.length
@@ -63,6 +68,7 @@ function kde(values: number[], xDom: [number, number], res: number): Curve[] {
   return out
 }
 
+// ABOUTME: Default x-axis value formatter — locale-aware with 0 fraction digits for ≥1000, 1 for ≥10, 2 otherwise; used when no formatX prop is provided.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })

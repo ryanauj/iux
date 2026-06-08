@@ -4,6 +4,7 @@ import { Link } from '../../Link'
 import { sportsRoutes } from '../routes'
 import type { Team } from '../types'
 
+// ABOUTME: Props for TeamChip — the team to display, an optional size modifier, and whether to render as a navigable link or a plain span.
 interface TeamChipProps {
   team: Team
   size?: 'sm' | 'lg'

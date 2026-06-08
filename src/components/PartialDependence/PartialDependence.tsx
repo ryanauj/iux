@@ -37,14 +37,17 @@ export interface PartialDependenceProps {
   className?: string
 }
 
+// ABOUTME: Pixel inset for the SVG plot area; bottom is larger than usual to accommodate the rug tick marks and the x-axis label below the baseline.
 const PAD = { top: 16, right: 16, bottom: 36, left: 44 }
 
+// ABOUTME: Formats a predictor or response value for axis tick labels: locale-formatted with up to 0/1/2 fraction digits depending on magnitude.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Linear interpolation from a domain interval to a pixel range; returns the midpoint when the domain is degenerate (d0 === d1) to avoid division by zero.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)

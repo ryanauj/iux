@@ -8,6 +8,7 @@ import { formatLongDate } from '../format'
 import { ScoreCard } from '../components/ScoreCard'
 import type { GameStatus } from '../types'
 
+// ABOUTME: Union of the four status options available in the Games page filter: no filter, or one of the three GameStatus values.
 type StatusFilter = 'all' | GameStatus
 
 // ABOUTME: Filters GAMES by the chosen status, groups the result by ISO date via `groupGamesByDate`, and renders each date section as a grid of ScoreCard tiles; shows an EmptyState when no games match.

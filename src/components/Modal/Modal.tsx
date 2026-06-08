@@ -73,9 +73,11 @@ export interface ModalProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: CSS selector string matching all keyboard-focusable elements within the dialog — used by `getFocusable` to build the Tab-cycle list for focus trapping.
 const FOCUSABLE_SELECTOR =
   'a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
+// ABOUTME: Queries `root` for all elements matching FOCUSABLE_SELECTOR and filters out those with the `hidden` attribute; returns the ordered focus-trap list for the modal keyboard handler.
 function getFocusable(root: HTMLElement | null): HTMLElement[] {
   if (!root) return []
   return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
@@ -370,11 +372,13 @@ export function Modal(props: ModalProps) {
   return createPortal(dialog, getPortalTarget())
 }
 
+// ABOUTME: Internal props for WizardProgress: the full steps array and the zero-based index of the currently active step.
 interface WizardProgressProps {
   steps: WizardStep[]
   currentStep: number
 }
 
+// ABOUTME: Renders the wizard step indicator as an `<ol>` where each item is styled as complete, current, or upcoming based on its index relative to `currentStep`, with an accessible `aria-current="step"` on the active item.
 function WizardProgress({ steps, currentStep }: WizardProgressProps) {
   return (
     <ol className="iux-modal__progress" aria-label="Progress">

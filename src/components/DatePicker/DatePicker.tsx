@@ -64,26 +64,32 @@ export interface DatePickerProps {
 
 // ---------- Date helpers ----------
 
+// ABOUTME: Short month name strings used to populate the calendar navigation month-select dropdown.
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+// ABOUTME: Single-character weekday header labels rendered above the calendar day grid, starting Sunday.
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
+// ABOUTME: Returns a new Date with the time component zeroed to midnight local time, used for day-boundary comparisons throughout the picker.
 function startOfDay(d: Date): Date {
   const x = new Date(d)
   x.setHours(0, 0, 0, 0)
   return x
 }
 
+// ABOUTME: Returns true when two nullable Dates fall on the same calendar day (year, month, date); used to apply selected and today CSS modifiers to grid cells.
 function isSameDay(a: Date | null | undefined, b: Date | null | undefined): boolean {
   if (!a || !b) return false
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
 }
 
+// ABOUTME: Returns true when date d falls strictly between lo and hi at day granularity; used to apply the is-in-range CSS modifier to calendar cells inside a committed or hover range.
 function inRange(d: Date, lo: Date | null, hi: Date | null): boolean {
   if (!lo || !hi) return false
   const t = startOfDay(d).getTime()
   return t > startOfDay(lo).getTime() && t < startOfDay(hi).getTime()
 }
 
+// ABOUTME: Formats a nullable Date as a short "Mon D, YYYY" locale string using Intl.DateTimeFormat; used for the trigger button label in calendar and range modes.
 function formatDate(d: Date | null | undefined, tz?: string): string {
   if (!d) return ''
   return new Intl.DateTimeFormat('en-US', {
@@ -92,6 +98,7 @@ function formatDate(d: Date | null | undefined, tz?: string): string {
   }).format(d)
 }
 
+// ABOUTME: Formats a nullable Date with both date and time components (and optional time zone name) for the NL variant's range readout display.
 function formatDateTime(d: Date | null | undefined, tz?: string): string {
   if (!d) return ''
   return new Intl.DateTimeFormat('en-US', {
@@ -101,12 +108,14 @@ function formatDateTime(d: Date | null | undefined, tz?: string): string {
   }).format(d)
 }
 
+// ABOUTME: Attempts to parse a free-text date string via Date.parse; returns a Date on success or null when the string cannot be interpreted.
 function tryParseInput(s: string): Date | null {
   const t = Date.parse(s)
   if (!Number.isNaN(t)) return new Date(t)
   return null
 }
 
+// ABOUTME: Converts natural-language date phrases such as "tomorrow at 9am", "next tue", or "in 3 days" to a Date; falls back to tryParseInput for ISO-style strings.
 function parseNaturalLanguage(input: string, now: Date = new Date()): Date | null {
   const s = input.trim().toLowerCase()
   if (!s) return null
@@ -153,12 +162,14 @@ function parseNaturalLanguage(input: string, now: Date = new Date()): Date | nul
   return tryParseInput(input)
 }
 
+// ABOUTME: Returns a new Date offset by the given number of days from d, used by natural-language parsing and calendar keyboard navigation.
 function addDays(d: Date, days: number): Date {
   const x = new Date(d)
   x.setDate(x.getDate() + days)
   return x
 }
 
+// ABOUTME: Builds a 6×7 matrix of Date objects for the calendar grid, padding the first row with days from the preceding month to align Sunday as the first column.
 function monthMatrix(viewYear: number, viewMonth: number): Date[][] {
   const first = new Date(viewYear, viewMonth, 1)
   const start = new Date(first)

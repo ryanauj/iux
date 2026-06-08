@@ -36,19 +36,23 @@ export interface CoefficientPlotProps {
   className?: string
 }
 
+// ABOUTME: SVG padding insets (px) — left is wide enough to hold the predictor label column.
 const PAD = { top: 16, right: 16, bottom: 32, left: 128 }
 
+// ABOUTME: Default value formatter — 1 decimal for |n|≥100, 2 for |n|≥1, 3 otherwise; used when no formatValue prop is provided.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 100) return n.toFixed(1)
   if (Math.abs(n) >= 1) return n.toFixed(2)
   return n.toFixed(3)
 }
 
+// ABOUTME: Linear interpolation from data domain [d0, d1] to pixel range [r0, r1]; returns the midpoint when the domain is degenerate.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Derives the display intent for a coefficient row — uses the explicit override if set, otherwise picks 'success'/'danger'/'neutral' from CI bounds, or sign-based 'primary'/'info' for point-only rows.
 function intentFor(c: Coefficient): CoefficientIntent {
   if (c.intent) return c.intent
   if (c.lower !== undefined && c.upper !== undefined) {

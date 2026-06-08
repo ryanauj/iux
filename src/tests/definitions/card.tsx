@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { Card } from '../../components/Card/Card'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the static card test: a Card with static variant, title, subtitle, body content, and footer slot.
 function StaticComposition() {
   return (
     <Card variant="static" title="Hello" subtitle="card subtitle" footer={<span data-testid="footer">F</span>}>
@@ -15,6 +16,7 @@ function StaticComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the expandable card test: a Card with expandable variant and an expanded-content pane, plus a toggle counter.
 function ExpandableComposition() {
   const [count, setCount] = useState(0)
   return (
@@ -32,6 +34,7 @@ function ExpandableComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the bento accent stripe test: a Card with bento variant and danger accent for data-accent and stripe assertions.
 function BentoComposition() {
   return (
     <Card variant="bento" accent="danger" title="Bento" subtitle="dashboard tile">
@@ -40,6 +43,7 @@ function BentoComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the spatial variant test: a Card with spatial variant, used to assert the data-variant attribute (mouse-tilt parallax is not asserted).
 function SpatialComposition() {
   return (
     <Card variant="spatial" title="Spatial" subtitle="hover to tilt">

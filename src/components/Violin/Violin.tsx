@@ -32,13 +32,17 @@ export interface ViolinProps {
   className?: string
 }
 
+// ABOUTME: Fixed pixel margins around the plot area reserving space for axis tick labels on the left and category labels at the bottom.
 const PAD = { top: 16, right: 16, bottom: 36, left: 48 }
+// ABOUTME: Ordered palette of intent tokens applied to series by index when a ViolinSeries carries no explicit intent.
 const INTENTS: ViolinIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a series, falling back to the INTENTS palette cycled by series index when no intent is explicitly set.
 function intentFor(s: ViolinSeries, i: number): ViolinIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Computes the p-th quantile of a pre-sorted numeric array using linear interpolation between adjacent values; returns 0 for empty arrays.
 function quantile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0
   const idx = (sorted.length - 1) * p
@@ -48,8 +52,10 @@ function quantile(sorted: number[], p: number): number {
   return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)
 }
 
+// ABOUTME: A single KDE sample point: the y-axis value at the bin centre and its normalised density weight in [0, 1].
 interface Density { center: number; weight: number }
 
+// ABOUTME: Estimates the probability density of values at a uniform grid of bins using a Gaussian kernel with Silverman's rule-of-thumb bandwidth; normalises the resulting weights to [0, 1] so all series reach the same max violin width.
 /** Coarse, fast KDE: gaussian on a uniform y-grid using Silverman bandwidth. */
 function kde(values: number[], yDom: [number, number], bins: number): Density[] {
   if (values.length === 0) return []

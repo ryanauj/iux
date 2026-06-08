@@ -15,6 +15,7 @@
  * we shim it defensively since runner.ts leans on it to flush React updates.
  */
 
+// ABOUTME: Minimal no-op stub that satisfies both the ResizeObserver and IntersectionObserver interfaces without performing any layout work.
 class NoopObserver {
   observe() {}
   unobserve() {}
@@ -24,6 +25,7 @@ class NoopObserver {
   }
 }
 
+// ABOUTME: Typed alias for globalThis used to assign polyfills without TypeScript property errors.
 const g = globalThis as Record<string, unknown>
 
 if (!g.ResizeObserver) g.ResizeObserver = NoopObserver

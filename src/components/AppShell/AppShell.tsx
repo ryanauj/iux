@@ -47,6 +47,7 @@ export function AppShell(props: AppShellProps) {
 /* Anchor renderer                                                     */
 /* ------------------------------------------------------------------ */
 
+// ABOUTME: Renders one nav link as a react-router `<Link>` that works in both the main router and the hash router; rewrites `#`-prefixed hrefs and dispatches a synthetic `hashchange` after pushState so the hash router re-reads the URL.
 /**
  * Renders one nav entry as an anchor that works across BOTH routing
  * contexts — react-router (`/engines`) and the hash router (`#/viz`).
@@ -104,6 +105,7 @@ function NavAnchor({
   )
 }
 
+// ABOUTME: Renders all nav links in order, delegating each to `NavAnchor`; used by every shell variant to avoid repeating the mapping loop.
 function NavList({
   nav,
   activeId,
@@ -134,6 +136,7 @@ function NavList({
 /* Shells                                                              */
 /* ------------------------------------------------------------------ */
 
+// ABOUTME: Shell variant that places the brand on the left and the nav inline to its right in a single top `<header>` bar.
 function TopbarShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   return (
     <div className="iux-appshell iux-appshell--topbar">
@@ -149,6 +152,7 @@ function TopbarShell({ brand, brandExtra, nav, activeId, children }: AppShellPro
   )
 }
 
+// ABOUTME: Shell variant that places the brand and full nav links in a persistent left or right `<aside>` sidebar alongside the main content.
 function SidebarShell({
   brand,
   brandExtra,
@@ -171,6 +175,7 @@ function SidebarShell({
   )
 }
 
+// ABOUTME: Shell variant that positions the nav as a floating pill anchored to the top or bottom of the viewport, with a minimal brand header above the main content.
 function DockShell({
   brand,
   brandExtra,
@@ -193,6 +198,7 @@ function DockShell({
   )
 }
 
+// ABOUTME: Shell variant that renders a narrow left icon rail of abbreviated nav links beside a content area that still has its own minimal brand header.
 function RailShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   return (
     <div className="iux-appshell iux-appshell--rail">
@@ -217,6 +223,7 @@ function RailShell({ brand, brandExtra, nav, activeId, children }: AppShellProps
   )
 }
 
+// ABOUTME: Shell variant that hides the nav behind a hamburger button; toggling it slides in a left drawer panel with a scrim overlay, dismissible via Escape or clicking outside.
 function DrawerShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   const [open, setOpen] = useState(false)
 
@@ -279,6 +286,7 @@ function DrawerShell({ brand, brandExtra, nav, activeId, children }: AppShellPro
   )
 }
 
+// ABOUTME: Shell variant that exposes the nav through a floating action button (⋯) in the lower corner; clicking it opens a compact link menu, dismissed by Escape or clicking away.
 function FabShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   const [open, setOpen] = useState(false)
 
@@ -327,6 +335,7 @@ function FabShell({ brand, brandExtra, nav, activeId, children }: AppShellProps)
   )
 }
 
+// ABOUTME: Shell variant that anchors the nav links in a `<footer>` bar below the main content, giving the page a traditional bottom-navigation feel.
 function FooterShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   return (
     <div className="iux-appshell iux-appshell--footer">
@@ -344,6 +353,7 @@ function FooterShell({ brand, brandExtra, nav, activeId, children }: AppShellPro
   )
 }
 
+// ABOUTME: Shell variant that renders the nav as a bottom tab bar where each link occupies an equal-width column, mimicking a mobile app tab layout.
 function TabbarShell({ brand, brandExtra, nav, activeId, children }: AppShellProps) {
   return (
     <div className="iux-appshell iux-appshell--tabbar">

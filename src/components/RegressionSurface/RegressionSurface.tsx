@@ -40,13 +40,16 @@ export interface RegressionSurfaceProps {
   className?: string
 }
 
+// ABOUTME: Pixel inset for the SVG plot area on each side, leaving room for axis tick labels and labels below the x-axis.
 const PAD = { top: 16, right: 16, bottom: 32, left: 44 }
 
+// ABOUTME: Linear interpolation from a domain interval to a pixel range; returns the midpoint when the domain is degenerate (d0 === d1) to avoid division by zero.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a grid value for contour labels and the ŷ range footer: no decimals for |n|≥100, one decimal for |n|≥10, two decimals otherwise.
 function num(n: number): string {
   if (Math.abs(n) >= 100) return n.toFixed(0)
   if (Math.abs(n) >= 10)  return n.toFixed(1)

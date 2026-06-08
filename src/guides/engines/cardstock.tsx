@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the Cardstock elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — static demo card on the cardstock host illustrating the cut-edge paper metaphor with a Settings card, primary/neutral buttons, and a brief description of the paired inset-plus-drop recipe.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__cardstock-host">
@@ -32,6 +35,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — grid of the four warm paper-tone surface swatches each carrying elevation.low's cut-edge, captioned to explain base/raised/sunken/overlay roles.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -69,6 +73,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — segmented-toggle demo of the three Cardstock border-strength rungs on a thick-border card, with a note on effect.paperEdgeColor and effect.paperEdgeWidth as engine-only signals.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -118,6 +123,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five Cardstock elevation rungs, showing the paired inset-cut-edge plus zero-blur drop shadow recipe and noting how warm-slate tinting replaces neutral black casts.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -168,6 +174,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — switch-controlled motion demo on the Cardstock palette showing the slightly-above-flat duration band (150/220/340 ms) and confirming zero decorative motion — every cut-edge and drop stays identical whether motion is on or off.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -207,6 +214,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — cluster of the six intent buttons on the Cardstock host, illustrating the muted-pastel fills where each chip's border is one luminance step darker than its fill, and the dusty-rose focus ring.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__cardstock-host">

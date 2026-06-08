@@ -6,13 +6,16 @@ import { INTEGRATION_TESTS, involvedComponentIds } from '../registry'
 import type { RunFor } from '../TestsPage'
 import type { IntegrationTest, RunResult } from '../types'
 
+// ABOUTME: Props shared by CoverageViz: the accumulated result map, the currently running test id (or null), and the runFor callback to trigger execution against an offscreen sandbox.
 interface Props {
   results: Record<string, RunResult>
   runningId: string | null
   runFor: RunFor
 }
 
+// ABOUTME: Discriminated union for the two sub-views inside CoverageViz: 'table' (matrix grid) or 'network' (force-directed graph).
 type Mode = 'table' | 'network'
+// ABOUTME: Per-test run status used to drive CSS modifiers and glyph icons throughout the coverage views.
 type Status = 'idle' | 'running' | 'passed' | 'failed'
 
 // ABOUTME: Root component that owns the coverage view: switches between TableMode (matrix of test rows × component columns with run-status glyphs) and NetworkMode (force-directed SVG of component co-usage), and runs tests against an offscreen sandbox div via the runFor callback from TestsPage.
@@ -118,6 +121,7 @@ export function CoverageViz({ results, runningId, runFor }: Props) {
 
 /* --------------------------------- Table --------------------------------- */
 
+// ABOUTME: Renders the component × test matrix as an HTML table with per-column hover highlighting, per-row run-status glyphs, and an inline run button for each test row.
 function TableMode({
   selected,
   onSelect,
@@ -210,6 +214,7 @@ function TableMode({
   )
 }
 
+// ABOUTME: Renders the status glyph (✓, ✗, spinning dot, or ·) shown inside each matrix cell and in the row-head status indicator.
 function CellGlyph({ status }: { status: Status }) {
   if (status === 'passed') return <span aria-hidden="true">✓</span>
   if (status === 'failed') return <span aria-hidden="true">✗</span>

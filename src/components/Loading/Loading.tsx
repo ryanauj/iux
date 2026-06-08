@@ -97,6 +97,7 @@ export function Loading({
   )
 }
 
+// ABOUTME: Renders one aria-hidden skeleton placeholder in the shape named by `shape`: a card block, a horizontal table row, an avatar+text pair, a full-width list bar, or a three-line paragraph block.
 function SkeletonShapeNode({ shape }: { shape: SkeletonShape }) {
   if (shape === 'card') {
     return (

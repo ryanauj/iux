@@ -29,11 +29,15 @@ export interface BoxPlotProps {
   className?: string
 }
 
+// ABOUTME: Fixed pixel padding on each side of the SVG plot area, reserving space for axis tick labels and series labels below.
 const PAD = { top: 12, right: 12, bottom: 36, left: 44 }
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to series when no explicit intent is provided.
 const INTENTS: BoxIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Precomputed Tukey box statistics for one series: quartiles, IQR, fence bounds, actual whisker extents, and the list of outlier values beyond the 1.5×IQR fences.
 interface Stats { q1: number; q2: number; q3: number; iqr: number; loFence: number; hiFence: number; whiskLo: number; whiskHi: number; outliers: number[] }
 
+// ABOUTME: Returns the p-th quantile of an already-sorted array using linear interpolation between adjacent elements.
 function quantile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0
   const idx = (sorted.length - 1) * p
@@ -43,6 +47,7 @@ function quantile(sorted: number[], p: number): number {
   return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)
 }
 
+// ABOUTME: Sorts a values array, computes Q1/median/Q3 via `quantile`, derives IQR and Tukey fences, then finds the actual whisker extents (most extreme non-outlier values) and collects all points outside the fences as outliers.
 function computeStats(values: number[]): Stats {
   const sorted = values.slice().sort((a, b) => a - b)
   const q1 = quantile(sorted, 0.25)
@@ -60,10 +65,12 @@ function computeStats(values: number[]): Stats {
   return { q1, q2, q3, iqr, loFence, hiFence, whiskLo, whiskHi, outliers }
 }
 
+// ABOUTME: Returns the series' explicit intent override if set, otherwise picks from the INTENTS rotation by series index.
 function intentFor(s: BoxSeries, i: number): BoxIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Returns a deterministic pseudo-random number generator seeded by `seed`, used to produce repeatable jitter offsets for the 'jitter' variant so rerenders don't shuffle the dots.
 function rng(seed: number) {
   let s = seed >>> 0
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }

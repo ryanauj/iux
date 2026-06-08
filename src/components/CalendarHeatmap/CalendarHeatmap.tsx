@@ -23,29 +23,35 @@ export interface CalendarHeatmapProps {
   className?: string
 }
 
+// ABOUTME: Monday-first weekday labels for the year/streak row axis; empty strings for Tuesday, Thursday, Saturday, Sunday keep the axis uncluttered.
 const WEEKDAY_LABELS = ['Mon', '', 'Wed', '', 'Fri', '', '']
 
+// ABOUTME: Parses an ISO yyyy-mm-dd string into a UTC `Date` object; used to convert datum keys into date values for cell placement.
 function parseISO(s: string): Date {
   const [y, m, d] = s.split('-').map(Number)
   return new Date(Date.UTC(y, (m ?? 1) - 1, d ?? 1))
 }
 
+// ABOUTME: Formats a UTC `Date` as an ISO yyyy-mm-dd string, matching the format used as keys in the datum map for O(1) cell lookup.
 function isoKey(d: Date): string {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`
 }
 
+// ABOUTME: Returns a new `Date` that is `n` days after `d` in UTC, used to iterate over the cell grid from `firstCell` to `lastCell`.
 function addDays(d: Date, n: number): Date {
   const out = new Date(d.getTime())
   out.setUTCDate(out.getUTCDate() + n)
   return out
 }
 
+// ABOUTME: Returns the ISO weekday index (Monday = 0 … Sunday = 6) for a UTC date, used to compute leading-cell padding and week-column alignment.
 /** ISO-style week: Monday = 0, Sunday = 6. */
 function isoWeekday(d: Date): number {
   const js = d.getUTCDay() // 0=Sun..6=Sat
   return (js + 6) % 7
 }
 
+// ABOUTME: Maps a day's activity value to one of five discrete tint levels (0 = no activity, 1–4 = quartile bands relative to the dataset max) for CSS cell coloring.
 function tintLevel(value: number, max: number): 0 | 1 | 2 | 3 | 4 {
   if (max <= 0 || value <= 0) return 0
   const r = value / max
@@ -210,6 +216,7 @@ export function CalendarHeatmap({
   )
 }
 
+// ABOUTME: Renders a small five-chip tint legend strip ("less · · · · · more · max N") appended to the header of every heatmap variant for scale reference.
 function Scale({ max, fmt }: { max: number; fmt: (n: number) => string }) {
   return (
     <span className="iux-calheat__scale" aria-hidden="true">

@@ -29,10 +29,13 @@ export interface DendrogramProps {
   className?: string
 }
 
+// ABOUTME: Default rotation through the six intent tokens applied per depth level when no node-level intent is set.
 const INTENTS: DendrogramIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Internal tree node after the layout pass — stores the original node, its depth, fractional slot position (leaves are integers, internal nodes are means of children), merge distance, child references, and resolved intent.
 interface Placed { node: DendrogramNode; depth: number; slot: number; distance: number; children: Placed[]; intent: DendrogramIntent }
 
+// ABOUTME: Recursively walks the DendrogramNode tree, assigning each leaf an integer slot, each internal node the mean of its children's slots, and tracking max depth and max merge distance for coordinate scaling.
 function layout(root: DendrogramNode, intents: DendrogramIntent[]): { all: Placed[]; leafSlots: number; maxDepth: number; maxDistance: number } {
   let leaf = 0
   let maxDepth = 0

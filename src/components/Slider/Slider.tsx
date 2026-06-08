@@ -54,15 +54,18 @@ export interface SliderProps {
   stateLock?: 'hover' | 'focus' | 'active'
 }
 
+// ABOUTME: Clamps n to the inclusive [lo, hi] range.
 function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, n))
 }
 
+// ABOUTME: Rounds n to the nearest step multiple from min; returns n unchanged when step is zero or negative.
 function quantize(n: number, min: number, step: number) {
   if (!step || step <= 0) return n
   return min + Math.round((n - min) / step) * step
 }
 
+// ABOUTME: Snaps n to the closest value in the ticks array; returns n unchanged when the array is empty.
 function snapTo(n: number, ticks: number[]): number {
   if (ticks.length === 0) return n
   let best = ticks[0]
@@ -74,6 +77,7 @@ function snapTo(n: number, ticks: number[]): number {
   return best
 }
 
+// ABOUTME: Returns the percentage position of value within [min, max] as a 0–100 number; returns 0 for a degenerate range.
 function pctOf(value: number, min: number, max: number): number {
   if (max === min) return 0
   return ((value - min) / (max - min)) * 100
@@ -365,6 +369,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   )
 })
 
+// ABOUTME: Props for the Thumb sub-component — pixel position as a percentage, current value for ARIA, min/max bounds, and a bubble-visibility flag for story demos.
 interface ThumbProps {
   id: string
   ariaLabel?: string
@@ -378,6 +383,7 @@ interface ThumbProps {
   onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void
 }
 
+// ABOUTME: Renders a single ARIA slider thumb div with a positioned tooltip bubble; the bubble is always mounted but visible only when showBubble is true or during drag focus.
 function Thumb({ id, ariaLabel, percent, value, min, max, disabled, showBubble, format, onKeyDown }: ThumbProps) {
   return (
     <div
@@ -401,10 +407,12 @@ function Thumb({ id, ariaLabel, percent, value, min, max, disabled, showBubble, 
   )
 }
 
+// ABOUTME: Props for CurveBackdrop — an array of y-values sampled evenly across the slider domain.
 interface CurveBackdropProps {
   curve: number[]
 }
 
+// ABOUTME: Renders a normalized polyline SVG behind the slider track for the 'curve' variant; maps the y-values to a 100×24 viewBox and uses preserveAspectRatio="none" to stretch freely.
 function CurveBackdrop({ curve }: CurveBackdropProps) {
   const lo = Math.min(...curve)
   const hi = Math.max(...curve)

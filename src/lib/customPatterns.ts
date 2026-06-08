@@ -40,6 +40,7 @@ export function isCustomPatternId(value: string): value is CustomPatternId {
   return value.startsWith(CUSTOM_PREFIX) && value.length > CUSTOM_PREFIX.length
 }
 
+// ABOUTME: Module-local set of built-in palette ids used by isBuiltInPaletteId to avoid importing the persistedStyle guard.
 const PALETTE_ID_SET = new Set<string>(Object.keys(palettes))
 
 // ABOUTME: Local built-in check that doesn't pull in the `persistedStyle` guard.
@@ -228,6 +229,7 @@ export function resolveStyle(id: string, customs?: CustomPatternMap): Palette {
 // ABOUTME: localStorage key under which the custom-pattern map is stored.
 export const CUSTOM_PATTERNS_KEY = 'iux-custom-patterns'
 
+// ABOUTME: Type guard for a single stored custom pattern entry; validates id prefix, name, base palette, and overrides shape so corrupt localStorage data is rejected before reaching callers.
 function isCustomPattern(x: unknown): x is CustomPattern {
   return (
     isPlainObject(x) &&

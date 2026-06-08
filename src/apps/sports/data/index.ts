@@ -7,10 +7,15 @@ import { GAMES, TODAY } from './games'
 
 export { TEAMS, PLAYERS, GAMES, TODAY }
 
+// ABOUTME: Pre-built Map from team id to Team for O(1) lookup by id.
 const teamById = new Map(TEAMS.map(t => [t.id, t]))
+// ABOUTME: Pre-built Map from team URL slug to Team for O(1) lookup by slug.
 const teamBySlug = new Map(TEAMS.map(t => [t.slug, t]))
+// ABOUTME: Pre-built Map from player id to Player for O(1) lookup by id.
 const playerById = new Map(PLAYERS.map(p => [p.id, p]))
+// ABOUTME: Pre-built Map from player URL slug to Player for O(1) lookup by slug.
 const playerBySlug = new Map(PLAYERS.map(p => [p.slug, p]))
+// ABOUTME: Pre-built Map from game id to Game for O(1) lookup by id.
 const gameById = new Map(GAMES.map(g => [g.id, g]))
 
 // ABOUTME: O(1) team lookup by id from the module-level Map built over TEAMS.

@@ -61,6 +61,7 @@ export interface TimelineProps {
   className?: string
 }
 
+// ABOUTME: Formats a time value in seconds as M:SS.S (e.g. "1:04.3"), zero-padding the seconds portion so columns align.
 function fmt(t: number): string {
   const m = Math.floor(t / 60)
   const s = (t - m * 60).toFixed(1)
@@ -295,6 +296,7 @@ export function Timeline({
   )
 }
 
+// ABOUTME: Renders a normalized SVG polyline through the keyframes of a single track lane, connecting their time/value positions in a 0–100 viewBox so the curve stretches freely to fill the lane.
 function CurvePolyline({ kfs, duration }: { kfs: TimelineKeyframe[]; duration: number }) {
   const points = kfs.map(k => `${(k.at / duration) * 100},${(1 - k.value) * 100}`).join(' ')
   return (

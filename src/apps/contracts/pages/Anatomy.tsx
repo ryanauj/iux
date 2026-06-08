@@ -13,6 +13,7 @@ import {
 import { money, pct } from '../format'
 import type { ContractYear } from '../types'
 
+// ABOUTME: Maps each guarantee status key to a human-readable label shown in the contract-year list on the Anatomy page.
 const GUARANTEE_LABEL: Record<ContractYear['guarantee'], string> = {
   full: 'Fully guaranteed',
   partial: 'Partially guaranteed',
@@ -21,6 +22,7 @@ const GUARANTEE_LABEL: Record<ContractYear['guarantee'], string> = {
   non: 'Non-guaranteed',
 }
 
+// ABOUTME: Maps each guarantee status key to a semantic intent colour, driving the tinted row styling in the contract-year list.
 const GUARANTEE_INTENT: Record<ContractYear['guarantee'], 'success' | 'warning' | 'info' | 'danger'> = {
   full: 'success',
   partial: 'warning',

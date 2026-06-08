@@ -8,12 +8,14 @@ import { EXCEPTIONS } from '../data/cap'
 import { money } from '../format'
 import type { Exception } from '../types'
 
+// ABOUTME: Maps each apronLimited value to a short readable string for the "Apron limit" column in the Exceptions Table.
 const APRON_LABEL: Record<Exception['apronLimited'], string> = {
   none: 'Always available',
   first: 'Lost at first apron',
   second: 'Lost at second apron',
 }
 
+// ABOUTME: Column definitions for the sortable exceptions Table: exception name, max salary, max years, and apron-limit label.
 const columns: TableColumn<Exception>[] = [
   {
     key: 'name',
@@ -55,8 +57,10 @@ const columns: TableColumn<Exception>[] = [
   },
 ]
 
+// ABOUTME: Looks up an Exception by id from the EXCEPTIONS array; throws if the id is not found (used only with known static ids).
 const byId = (id: string): Exception => EXCEPTIONS.find(e => e.id === id)!
 
+// ABOUTME: The three featured exceptions (Bird, full non-taxpayer MLE, veteran minimum) displayed as explanation cards above the full reference table — the tools that account for most real signings.
 /** The three tools that explain most of what you'll see in any offseason. */
 const CORE = [
   {

@@ -33,15 +33,20 @@ export interface RidgePlotProps {
   className?: string
 }
 
+// ABOUTME: Pixel inset for the SVG plot area; the large left value reserves horizontal space for series name labels to the left of each baseline.
 const PAD = { top: 14, right: 16, bottom: 28, left: 100 }
+// ABOUTME: Ordered intent cycle used to assign distinct colors to ridge series when no explicit intent is set on a RidgeSeries; wraps modularly.
 const INTENTS: RidgeIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the intent for a ridge series: uses the series' own intent if set, otherwise picks from the INTENTS cycle by index.
 function intentFor(s: RidgeSeries, i: number): RidgeIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Represents one point on a computed KDE curve: the x value in data space and the corresponding density estimate y.
 interface Curve { x: number; y: number }
 
+// ABOUTME: Computes a Gaussian KDE for a value array using Silverman's rule-of-thumb bandwidth (1.06 * σ * n^{-1/5}); evaluates density at `res+1` evenly spaced points across the given domain.
 function kde(values: number[], xDom: [number, number], res: number): Curve[] {
   if (values.length === 0) return []
   const n = values.length
@@ -64,6 +69,7 @@ function kde(values: number[], xDom: [number, number], res: number): Curve[] {
   return out
 }
 
+// ABOUTME: Locale-aware number formatter for x-axis tick labels: no decimals for |n|≥1000, one decimal for |n|≥10, two decimals otherwise; used when no custom formatX is provided.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })

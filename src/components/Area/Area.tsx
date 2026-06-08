@@ -29,19 +29,23 @@ export interface AreaProps {
   className?: string
 }
 
+// ABOUTME: Fixed pixel padding on each side of the SVG plot area, reserving space for axis labels and tick text.
 const PAD = { top: 12, right: 12, bottom: 24, left: 40 }
 
+// ABOUTME: Linear interpolation from domain [d0, d1] to range [r0, r1]; returns the midpoint when the domain is degenerate.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Formats a numeric timestamp as a short locale date string ("Jan 1"); falls back to the raw number when the value is not a valid date.
 function defaultFormatT(t: number): string {
   const d = new Date(t)
   if (!Number.isFinite(d.getTime())) return String(t)
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+// ABOUTME: Formats a y-axis value with locale-appropriate decimal places, switching precision thresholds at 10 and 1000.
 function defaultFormatY(y: number): string {
   if (Math.abs(y) >= 1000) return y.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(y) >= 10) return y.toLocaleString(undefined, { maximumFractionDigits: 1 })

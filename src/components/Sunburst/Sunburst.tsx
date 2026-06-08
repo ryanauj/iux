@@ -28,13 +28,16 @@ export interface SunburstProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent palette assigned to root-level children in cycle order; deeper nodes inherit their parent's intent unless explicitly overridden.
 const INTENTS: SunburstIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Recursively sums the leaf values of a node tree; branch nodes have no own value, only the sum of their children.
 function sumValue(n: SunburstNode): number {
   if (n.children && n.children.length > 0) return n.children.reduce((s, c) => s + sumValue(c), 0)
   return Math.max(0, n.value ?? 0)
 }
 
+// ABOUTME: Flat arc descriptor produced after the recursive tree walk: the source node, its ring depth, start/end angles in radians, and resolved intent color.
 interface Slice {
   node: SunburstNode
   depth: number
@@ -43,10 +46,12 @@ interface Slice {
   intent: SunburstIntent
 }
 
+// ABOUTME: Converts polar coordinates (center cx/cy, radius r, angle a in radians) to a Cartesian {x, y} point on the SVG canvas.
 function polar(cx: number, cy: number, r: number, a: number) {
   return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r }
 }
 
+// ABOUTME: Builds a closed SVG arc-ring path for a slice spanning angles [a0, a1] between inner radius rIn and outer radius rOut; uses a two-circle shortcut for full rings to avoid SVG arc degenerate cases.
 function ringPath(cx: number, cy: number, rIn: number, rOut: number, a0: number, a1: number): string {
   const span = a1 - a0
   if (span <= 0) return ''

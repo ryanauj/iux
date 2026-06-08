@@ -36,16 +36,19 @@ export interface GaugeProps {
   className?: string
 }
 
+// ABOUTME: Formats a gauge value for the centre label: locale thousands for large numbers, one decimal for ≥ 10, two decimals otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toFixed(1)
   return n.toFixed(2)
 }
 
+// ABOUTME: Converts polar (radius, angle) to Cartesian (x, y) relative to a centre point — used for all arc endpoint calculations.
 function polar(cx: number, cy: number, r: number, ang: number): [number, number] {
   return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]
 }
 
+// ABOUTME: Builds an SVG path string for a donut-arc segment between two angles, sweeping from rInner to rOuter — used for the track, value arc, and zone bands.
 function arcPath(cx: number, cy: number, rOuter: number, rInner: number, a0: number, a1: number): string {
   const large = a1 - a0 > Math.PI ? 1 : 0
   const [x0o, y0o] = polar(cx, cy, rOuter, a0)

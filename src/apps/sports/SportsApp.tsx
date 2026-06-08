@@ -36,10 +36,12 @@ import { Matchup } from './pages/Matchup'
 import { NotFound } from './pages/NotFound'
 import './sports-app.css'
 
+// ABOUTME: Props for SportsApp — carries the current hash location (path + query params) from the router.
 interface SportsAppProps {
   location: HashLocation
 }
 
+// ABOUTME: Primary navigation entries wired to route kinds; `isActive` highlights the tab for both the list page and its detail sub-routes.
 const NAV: NavItem[] = [
   { to: sportsRoutes.home(), label: 'Home', isActive: r => r.kind === 'home' },
   { to: sportsRoutes.teams(), label: 'Teams', isActive: r => r.kind === 'teams' || r.kind === 'teamDetail' },
@@ -157,6 +159,7 @@ export function SportsApp({ location }: SportsAppProps) {
   )
 }
 
+// ABOUTME: Switch component that maps each SportsRoute kind to its page component, forwarding slug/id params; used as the sole child of Shell so every layout automatically wraps the correct page.
 function RouteContent({ route }: { route: SportsRoute }) {
   switch (route.kind) {
     case 'home': return <Home />

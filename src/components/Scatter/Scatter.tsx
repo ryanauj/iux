@@ -42,24 +42,30 @@ export interface ScatterProps {
   className?: string
 }
 
+// ABOUTME: Inner padding (pixels) on each edge of the SVG plot area; reserves space for axis tick labels.
 const PAD = { top: 16, right: 16, bottom: 32, left: 44 }
+// ABOUTME: Ordered intent palette cycled by series index when a series has no explicit intent.
 const INTENTS: ScatterIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Returns the resolved intent color for a series — the series' own intent if set, otherwise the next palette entry by index.
 function intentFor(s: ScatterSeries, i: number): ScatterIntent {
   return s.intent ?? INTENTS[i % INTENTS.length]
 }
 
+// ABOUTME: Formats a tick value with adaptive precision — no decimals ≥1000, one decimal ≥10, two decimals otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   if (Math.abs(n) >= 10) return n.toLocaleString(undefined, { maximumFractionDigits: 1 })
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 })
 }
 
+// ABOUTME: Linear interpolation from domain [d0, d1] to range [r0, r1]; returns the midpoint when the domain is degenerate.
 function scale(value: number, d0: number, d1: number, r0: number, r1: number): number {
   if (d0 === d1) return (r0 + r1) / 2
   return r0 + ((value - d0) / (d1 - d0)) * (r1 - r0)
 }
 
+// ABOUTME: Computes OLS slope (m), intercept (b), and R² for a set of scatter points; returns null when fewer than two points are provided or the x-variance is zero.
 function leastSquares(pts: ScatterPoint[]): { m: number; b: number; r2: number } | null {
   if (pts.length < 2) return null
   const n = pts.length

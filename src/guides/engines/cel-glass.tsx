@@ -14,9 +14,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots used in the Cel-Glass elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs for the slider demo, mapping index to rung label.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — intro Card on a row layout showing a frosted translucent surface with a hard ink outline, a primary and neutral button, and text describing the dual effect.outline/effect.backdropBlur contract slots.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__row">
@@ -39,6 +42,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — four Cel-Glass surface swatches rendered with backdrop-filter blur and thick ink borders, captioned to explain that the cel line keeps frosted translucent panes from dissolving into each other.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },

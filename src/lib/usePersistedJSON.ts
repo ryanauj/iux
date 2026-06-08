@@ -61,6 +61,7 @@ export function usePersistedJSON<T>(
   return [value, set]
 }
 
+// ABOUTME: Read and validate a JSON value from localStorage at startup; returns the default when nothing is stored, the key is absent, or validation fails.
 function readValue<T>(key: string, defaultValue: T, validate: (parsed: unknown) => parsed is T): T {
   if (typeof window === 'undefined') return defaultValue
   try {
@@ -74,6 +75,7 @@ function readValue<T>(key: string, defaultValue: T, validate: (parsed: unknown) 
   return defaultValue
 }
 
+// ABOUTME: Silently parse a JSON string, returning undefined instead of throwing on malformed input.
 function safeParse(raw: string): unknown {
   try {
     return JSON.parse(raw)

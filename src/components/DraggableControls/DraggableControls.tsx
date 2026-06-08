@@ -11,12 +11,15 @@ import './DraggableControls.css'
  * Below this, the list fits comfortably without filtering; above it, long
  * lists like the palette catalogue (40+) benefit from typing to narrow.
  */
+// ABOUTME: Minimum option count at which a search/filter input is added to Strip popovers; lists shorter than this are shown without a filter field.
 const SEARCHABLE_THRESHOLD = 6
 
 // ABOUTME: Presentation mode: 'button' is a circular FAB that opens a floating panel, 'strip' is a compact icon bar anchored to an edge with slot-level popovers.
 export type ControlsStyle = 'button' | 'strip'
 
+// ABOUTME: localStorage key under which the user's preferred controls style (button or strip) is persisted.
 const CONTROLS_STYLE_KEY = 'iux-controls-style'
+// ABOUTME: Fallback controls style used when no persisted preference exists.
 const DEFAULT_CONTROLS_STYLE: ControlsStyle = 'button'
 
 /**
@@ -26,9 +29,12 @@ const DEFAULT_CONTROLS_STYLE: ControlsStyle = 'button'
  * disclosure rather than the full settings stack. Persisted so the choice
  * sticks across pages and reopens.
  */
+// ABOUTME: localStorage key for the open/closed state of the Settings disclosure group inside the Button-variant panel.
 const SETTINGS_OPEN_KEY = 'iux-controls-settings-open'
+// ABOUTME: Type guard that accepts only the '0' or '1' string literals stored for boolean localStorage prefs.
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
+// ABOUTME: Type guard that validates a raw localStorage string as a ControlsStyle value before applying it.
 const isControlsStyle = (raw: string): raw is ControlsStyle =>
   raw === 'button' || raw === 'strip'
 
@@ -65,22 +71,28 @@ export type Field = {
   kind?: 'palette'
 }
 
+// ABOUTME: An x/y pixel coordinate representing the floating container's top-left position within the viewport.
 type Position = { x: number; y: number }
 
+// ABOUTME: Props for the DraggableControls root — the current controls style, a callback to change it, and the array of control field descriptors to render.
 type Props = {
   style: ControlsStyle
   onStyleChange: (next: ControlsStyle) => void
   fields: Field[]
 }
 
+// ABOUTME: Returns the per-style localStorage key used to persist the floating container's position.
 const POS_KEY = (s: ControlsStyle) => `iux-controls-pos-${s}`
+// ABOUTME: Returns the per-style localStorage key used to persist the panel's open/closed state.
 const OPEN_KEY = (s: ControlsStyle) => `iux-controls-open-${s}`
 
+// ABOUTME: Factory-default pixel positions for each controls style when no saved position exists on a desktop viewport.
 const DEFAULTS: Record<ControlsStyle, Position> = {
   button: { x: 24, y: 24 },
   strip: { x: 16, y: 96 },
 }
 
+// ABOUTME: Clamps n to the inclusive [lo, hi] range; used to keep the draggable container within the viewport bounds.
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
 
 /*
@@ -94,6 +106,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
  * phone. Strip starts mid-left on desktop; on phones we keep it on the
  * left edge but push it down past the header.
  */
+// ABOUTME: Computes the initial position for a controls style, placing the button FAB in the bottom-right thumb zone and the strip near the left edge on phone-sized viewports (≤640px wide or ≤480px tall).
 function defaultPos(style: ControlsStyle): Position {
   if (typeof window === 'undefined') return DEFAULTS[style]
   const isPhone = window.innerWidth <= 640 || window.innerHeight <= 480
@@ -110,6 +123,7 @@ function defaultPos(style: ControlsStyle): Position {
   return DEFAULTS[style]
 }
 
+// ABOUTME: Reads the saved Position for a controls style from localStorage; falls back to defaultPos when absent or unparseable.
 function loadPos(style: ControlsStyle): Position {
   try {
     const raw = localStorage.getItem(POS_KEY(style))
@@ -123,6 +137,7 @@ function loadPos(style: ControlsStyle): Position {
   return defaultPos(style)
 }
 
+// ABOUTME: Reads the saved open/closed state for a controls style from localStorage; returns the fallback boolean when no stored value is found.
 function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
   try {
     const raw = localStorage.getItem(OPEN_KEY(style))
@@ -134,15 +149,20 @@ function loadOpen(style: ControlsStyle, fallback: boolean): boolean {
   return fallback
 }
 
+// ABOUTME: The two available controls-style options rendered by the StyleSwitcher radiogroup.
 const STYLE_OPTIONS: { value: ControlsStyle; label: string }[] = [
   { value: 'button', label: 'Button' },
   { value: 'strip', label: 'Strip' },
 ]
 
+// ABOUTME: Vertical half of the popover quadrant — 'up' means the panel opens upward from the anchor, 'down' means downward.
 type VerticalDir = 'up' | 'down'
+// ABOUTME: Horizontal half of the popover quadrant — 'left' means the panel extends leftward from the anchor, 'right' means rightward.
 type HorizontalDir = 'left' | 'right'
+// ABOUTME: The four possible quadrants for the Button-variant panel, expressed as a vertical-horizontal direction pair.
 type Quadrant = `${VerticalDir}-${HorizontalDir}`
 
+// ABOUTME: Inspects the trigger button's bounding rect and returns the quadrant with the most available viewport space, used to anchor the floating panel away from viewport edges.
 function pickQuadrant(rect: DOMRect): Quadrant {
   const spaceBelow = window.innerHeight - rect.bottom
   const spaceAbove = rect.top
@@ -162,6 +182,7 @@ function pickQuadrant(rect: DOMRect): Quadrant {
  * mutations — the palette Browse disclosure and the settings group add and remove
  * rows, which changes how much is hidden.
  */
+// ABOUTME: Hook that toggles data-overflow-top and data-overflow-bottom attributes on a scrollable panel element when content is hidden above or below the visible area, enabling CSS fade indicators.
 function useOverflowEdges(ref: RefObject<HTMLElement>, active: boolean) {
   useEffect(() => {
     if (!active) return
@@ -324,6 +345,7 @@ export function DraggableControls({ style, onStyleChange, fields }: Props) {
   )
 }
 
+// ABOUTME: Shared props passed down to both ButtonVariant and StripVariant — the field list, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback.
 type VariantProps = {
   fields: Field[]
   summaries: string[]
@@ -339,6 +361,7 @@ type VariantProps = {
   onStyleChange: (next: ControlsStyle) => void
 }
 
+// ABOUTME: Radiogroup of two buttons (Button / Strip) that lets the user switch the controls presentation style; used in the footer of both ButtonVariant and StripVariant.
 function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (next: ControlsStyle) => void }) {
   return (
     <div className="ctrl__style-switcher" role="radiogroup" aria-label="Controls style">
@@ -359,6 +382,7 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
 }
 
 /* ===== Variation A: Floating Button ===== */
+// ABOUTME: Renders the Button-style controls variant — a circular FAB that opens a floating panel containing the palette picker, a collapsible Settings group for other fields, and a footer style-switcher; computes available height and panel quadrant on open.
 function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -477,6 +501,7 @@ function ButtonVariant({ fields, summaries, open, setOpen, dragHandlers, variant
  * "Settings" rather than always stacked open. Each field keeps its own
  * inner CollapsibleSection so only the chosen one expands.
  */
+// ABOUTME: Persisted collapsible disclosure that wraps the non-palette fields under a "Settings" heading; persists its own open state to localStorage so it re-opens in the same state on next visit.
 function SettingsGroup({ fields }: { fields: Field[] }) {
   const [openRaw, setOpenRaw] = usePersistedPref<'0' | '1'>(
     SETTINGS_OPEN_KEY,
@@ -506,6 +531,7 @@ function SettingsGroup({ fields }: { fields: Field[] }) {
   )
 }
 
+// ABOUTME: Accordion-style disclosure for a single non-palette field inside the Settings group — shows the current value in the collapsed header and expands to a Select combobox or a radio button group depending on option count.
 function CollapsibleSection({ field }: { field: Field }) {
   const [open, setOpen] = useState(false)
   const current = field.options.find(o => o.value === field.value)
@@ -557,6 +583,7 @@ function CollapsibleSection({ field }: { field: Field }) {
   )
 }
 
+// ABOUTME: Props for the StripPopover sub-component — the field to display, the computed quadrant for positioning, the slot button's bounding rect for max-height calculation, and an onSelect callback.
 interface StripPopoverProps {
   field: Field
   quadrant: StripQuadrant
@@ -564,6 +591,7 @@ interface StripPopoverProps {
   onSelect: (value: string) => void
 }
 
+// ABOUTME: Floating popover for a single Strip slot — renders the field label, an optional search input (above SEARCHABLE_THRESHOLD options), a filtered option list, and fires onSelect when an option is chosen.
 function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps) {
   const [query, setQuery] = useState('')
   const searchable = field.options.length >= SEARCHABLE_THRESHOLD
@@ -645,8 +673,10 @@ function StripPopover({ field, quadrant, slotRect, onSelect }: StripPopoverProps
 }
 
 /* ===== Variation B: Edge Strip ===== */
+// ABOUTME: The four possible quadrants for Strip-variant popovers, combining horizontal (left/right) and vertical (up/down) directions relative to the slot button.
 type StripQuadrant = `${HorizontalDir}-${VerticalDir}`
 
+// ABOUTME: Props for the PaletteStripSlot wrapper — the palette field, popover open state, the computed quadrant and slot rect for positioning, and toggle/close event handlers.
 interface PaletteStripSlotProps {
   field: Field
   isActive: boolean
@@ -682,6 +712,7 @@ function PaletteStripSlot({
   )
 }
 
+// ABOUTME: Inspects a slot button's bounding rect and returns the StripQuadrant with the most viewport space on each axis, determining which direction the Strip popover opens.
 function pickStripQuadrant(rect: DOMRect): StripQuadrant {
   const spaceRight = window.innerWidth - rect.right
   const spaceLeft = rect.left
@@ -692,6 +723,7 @@ function pickStripQuadrant(rect: DOMRect): StripQuadrant {
   return `${h}-${v}`
 }
 
+// ABOUTME: Renders the Strip-style controls variant — a vertical icon bar with a grip handle and per-slot expand buttons that open positioned popovers; palette fields use PaletteStripSlot, others use StripPopover.
 function StripVariant({ fields, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const [activeKey, setActiveKey] = useState<string | null>(null)
   const [popoverQuadrant, setPopoverQuadrant] = useState<StripQuadrant>('right-down')

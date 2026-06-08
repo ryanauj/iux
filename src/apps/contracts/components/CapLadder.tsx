@@ -64,6 +64,7 @@ export function CapLadder({ payroll, highlightId, detailed = false, className }:
   )
 }
 
+// ABOUTME: Renders one threshold rung (coloured line + label + dollar amount + optional blurb) and applies the `is-dim` class when the parent CapLadder is highlighting a different rung.
 function Rung({ rung, dim, detailed }: { rung: CapThreshold; dim: boolean; detailed: boolean }) {
   return (
     <div className={`cap-rung cap-rung--${rung.intent}${dim ? ' is-dim' : ''}`}>

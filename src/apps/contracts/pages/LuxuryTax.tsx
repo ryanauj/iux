@@ -11,6 +11,7 @@ import { TAX_BRACKETS, SEASON, computeTax } from '../data/cap'
 import { money, moneyFull, rate } from '../format'
 import type { TaxBracket } from '../types'
 
+// ABOUTME: Four preset overage amounts ($5M / $10M / $20M / $40M) offered by the Segmented control so readers can jump to common tax scenarios without typing.
 const OVERAGE_PRESETS = [
   { value: '5000000', label: '$5M over' },
   { value: '10000000', label: '$10M over' },
@@ -18,6 +19,7 @@ const OVERAGE_PRESETS = [
   { value: '40000000', label: '$40M over' },
 ]
 
+// ABOUTME: Column definitions for the static tax-bracket reference Table: overage band, standard rate pill, and repeater rate pill.
 const bracketColumns: TableColumn<TaxBracket>[] = [
   {
     key: 'band',

@@ -9,9 +9,12 @@ import { Toggle } from '../../components/Toggle/Toggle'
 import { Slider } from '../../components/Slider/Slider'
 import type { EngineGuideMeta } from './types'
 
+// ABOUTME: Union type for the five elevation slots exposed in the Aurora elevation demo.
 type ElevationRung = 'flat' | 'low' | 'medium' | 'high' | 'overlay'
+// ABOUTME: Ordered list of elevation rungs used to drive the slider demo and label the active slot.
 const RUNGS: ElevationRung[] = ['flat', 'low', 'medium', 'high', 'overlay']
 
+// ABOUTME: PhilosophyDemo — intro demo card showing the Aurora atmospheric host with a translucent luminance-lift Card and primary/neutral buttons to illustrate the "surfaces by light density" philosophy.
 function PhilosophyDemo() {
   return (
     <div className="iux-engine-demo__aurora-host">
@@ -32,6 +35,7 @@ function PhilosophyDemo() {
   )
 }
 
+// ABOUTME: SurfacesDemo — renders all four Aurora surface tokens as frosted swatches over the atmospheric host with backdrop-blur applied, captioned to explain which is opaque vs translucent.
 function SurfacesDemo() {
   const swatches: { label: string; cssVar: string }[] = [
     { label: 'surface.base',    cssVar: '--color-surface-base' },
@@ -72,6 +76,7 @@ function SurfacesDemo() {
   )
 }
 
+// ABOUTME: BordersDemo — interactive demo of Aurora's three border-strength rungs (subtle/default/strong), showing how the low-alpha white borders are structural cues subordinate to the luminance halo, with a note on the effect.surfaceBy = 'luminance' contract slot.
 function BordersDemo() {
   const [strength, setStrength] = useState<'subtle' | 'default' | 'strong'>('default')
   return (
@@ -120,6 +125,7 @@ function BordersDemo() {
   )
 }
 
+// ABOUTME: ElevationDemo — slider-driven demo walking the five Aurora elevation rungs, showing the paired outer-luminance-halo plus inner-lift recipe with backdrop blur applied to each rung's card.
 function ElevationDemo() {
   const [idx, setIdx] = useState(2)
   const rung = RUNGS[idx]
@@ -174,6 +180,7 @@ function ElevationDemo() {
   )
 }
 
+// ABOUTME: MotionDemo — toggle-controlled demo that scales motionScale between 1 and 0 on a nested PaletteRoot, demonstrating Aurora's wide duration band and the separate 48-second drift freeze under prefers-reduced-motion.
 function MotionDemo() {
   const [motionOn, setMotionOn] = useState(true)
   return (
@@ -219,6 +226,7 @@ function MotionDemo() {
   )
 }
 
+// ABOUTME: IntentDemo — cluster of all six intent buttons on the aurora atmospheric host, illustrating atmospheric-register fills with translucent tint borders and the halo-closing-in hover/focus brightening.
 function IntentDemo() {
   return (
     <div className="iux-engine-demo__aurora-host">

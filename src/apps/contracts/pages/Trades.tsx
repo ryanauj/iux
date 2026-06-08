@@ -7,11 +7,13 @@ import { SAMPLE_TRADE, TRADE_STAR_SALARY } from '../data/cap'
 import { money } from '../format'
 import type { TradeParty, TradePiece } from '../types'
 
+// ABOUTME: Sums the salary values of a set of trade pieces (ignoring non-salary items like draft picks) to compute one side of a party's outgoing or incoming salary total.
 /** Sum the salaried pieces on one side of a party's ledger. */
 function salaryTotal(pieces: TradePiece[]): number {
   return pieces.reduce((sum, p) => sum + (p.salary ?? 0), 0)
 }
 
+// ABOUTME: Renders the items sent or received by one trade party as a bulleted list of piece labels and salaries, or a short prose placeholder when the party sends nothing out.
 function PieceList({ pieces }: { pieces: TradePiece[] }) {
   if (pieces.length === 0) {
     return <p className="cap-trade__empty">Nothing — just takes a player in.</p>
@@ -30,6 +32,7 @@ function PieceList({ pieces }: { pieces: TradePiece[] }) {
   )
 }
 
+// ABOUTME: Renders one trade party as a Card — team name, cap situation, motivating "why", the two PieceLists (sends out / takes in), and the legality rule note; accent colour is set by party.intent.
 function PartyCard({ party }: { party: TradeParty }) {
   return (
     <Card variant="static" accent={party.intent} title={party.team} subtitle={party.situation}>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
 import type { IntegrationTest } from '../types'
 
+// ABOUTME: Sandbox composition for the click-counter test: a Button wired to a counter state, plus a span that echoes the count.
 function ClickCounterComposition() {
   const [count, setCount] = useState(0)
   return (
@@ -16,6 +17,7 @@ function ClickCounterComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the disabled-state test: a disabled Button plus a counter span that should stay at 0 after click attempts.
 function DisabledComposition() {
   const [count, setCount] = useState(0)
   return (
@@ -28,6 +30,7 @@ function DisabledComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the loading-state test: a Button with loading=true next to a counter, verifying spinner visibility and click suppression.
 function LoadingComposition() {
   const [count, setCount] = useState(0)
   return (
@@ -40,6 +43,7 @@ function LoadingComposition() {
   )
 }
 
+// ABOUTME: Sandbox composition for the intent-variants test: three Buttons with primary, danger, and neutral intents laid out side by side for data-intent assertions.
 function IntentComposition() {
   return (
     <div style={{ display: 'flex', gap: 'var(--space-3)' }}>

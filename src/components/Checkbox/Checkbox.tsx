@@ -73,6 +73,7 @@ export interface CheckboxProps {
 
 // ---------- Tree helpers ----------
 
+// ABOUTME: Recursively walks a tree of CheckboxTreeNode entries and collects all leaf node ids (nodes with no children) into `acc`; used to enumerate the full leaf set under any branch.
 function collectLeafIds(nodes: CheckboxTreeNode[], acc: string[] = []): string[] {
   for (const n of nodes) {
     if (n.children && n.children.length > 0) collectLeafIds(n.children, acc)
@@ -81,6 +82,7 @@ function collectLeafIds(nodes: CheckboxTreeNode[], acc: string[] = []): string[]
   return acc
 }
 
+// ABOUTME: Derives the checked/indeterminate/unchecked state for a tree node by counting how many of its leaf descendants are in `leafSet`: all → true, none → false, some → 'indeterminate'.
 function nodeState(node: CheckboxTreeNode, leafSet: Set<string>): CheckboxState {
   if (!node.children || node.children.length === 0) {
     return leafSet.has(node.id)
@@ -93,6 +95,7 @@ function nodeState(node: CheckboxTreeNode, leafSet: Set<string>): CheckboxState 
   return 'indeterminate'
 }
 
+// ABOUTME: Returns a new `Set<string>` that either adds all leaf descendants of `node` (when it is unchecked or indeterminate) or removes them all (when it is fully checked), implementing the tree's click-to-toggle behavior.
 function toggleNode(node: CheckboxTreeNode, leafSet: Set<string>): Set<string> {
   const leaves = collectLeafIds([node])
   const state = nodeState(node, leafSet)
@@ -303,6 +306,7 @@ export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Check
 
 // ---------- internal row ----------
 
+// ABOUTME: Internal props for CheckboxRow — id, name, label, description, tristate `state`, disabled/required/invalid flags, onChange, optional label-click override for group mode, and visual stateLock.
 interface CheckboxRowProps {
   id: string
   name?: string
@@ -317,6 +321,7 @@ interface CheckboxRowProps {
   stateLock?: CheckboxProps['stateLock']
 }
 
+// ABOUTME: Renders a single labeled checkbox row with a hidden native `<input>` (for form/screen-reader semantics), a styled visible square, and optional description text; handles the indeterminate state via a ref effect and forwards Enter-key presses as change events.
 function CheckboxRow({
   id, name, label, description, state, disabled, required, invalid, onChange, onLabelClick, stateLock,
 }: CheckboxRowProps) {
@@ -380,6 +385,7 @@ function CheckboxRow({
   )
 }
 
+// ABOUTME: Internal props for TreeRow — the tree node to render, its nesting depth level, the current leaf set for state derivation, a disabled flag, and a toggle callback.
 interface TreeRowProps {
   node: CheckboxTreeNode
   level: number
@@ -388,6 +394,7 @@ interface TreeRowProps {
   onToggle: (node: CheckboxTreeNode) => void
 }
 
+// ABOUTME: Renders one tree node as a `<li role="treeitem">` wrapping a `CheckboxRow`; recursively renders its children in a nested `<ul role="group">` when present, propagating the disabled flag and toggling via `onToggle`.
 function TreeRow({ node, level, leafSet, disabled, onToggle }: TreeRowProps) {
   const state = nodeState(node, leafSet)
   const hasChildren = node.children && node.children.length > 0
@@ -418,6 +425,7 @@ function TreeRow({ node, level, leafSet, disabled, onToggle }: TreeRowProps) {
   )
 }
 
+// ABOUTME: Renders a small SVG checkmark (✓ path) used as the checked-state icon inside the styled checkbox square.
 function CheckMark() {
   return (
     <svg className="iux-checkbox__check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
@@ -426,6 +434,7 @@ function CheckMark() {
   )
 }
 
+// ABOUTME: Renders a small SVG horizontal dash (–) used as the indeterminate-state icon inside the styled checkbox square.
 function Dash() {
   return (
     <svg className="iux-checkbox__check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">

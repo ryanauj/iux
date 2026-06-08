@@ -34,6 +34,7 @@ import { TeamSheet } from './pages/TeamSheet'
 import { NotFound } from './pages/NotFound'
 import './contracts-app.css'
 
+// ABOUTME: Props for ContractsApp; passes the full HashLocation so the app can read the chapter path and palette/layout/motion params.
 interface ContractsAppProps {
   location: HashLocation
 }
@@ -130,6 +131,7 @@ export function ContractsApp({ location }: ContractsAppProps) {
   )
 }
 
+// ABOUTME: Switches on the matched ContractsRoute kind and returns the appropriate chapter page component (Overview, Ladder, Anatomy, etc.) or NotFound.
 function RouteContent({ route }: { route: ContractsRoute }) {
   switch (route.kind) {
     case 'overview': return <Overview />

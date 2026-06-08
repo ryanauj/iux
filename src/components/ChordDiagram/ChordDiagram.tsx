@@ -35,14 +35,19 @@ export interface ChordDiagramProps {
   className?: string
 }
 
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to nodes by index when no explicit intent is provided.
 const INTENTS: ChordIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
+// ABOUTME: Radians of dead space inserted between consecutive node arc segments to visually separate them on the circle.
 const ARC_GAP = 0.04
+// ABOUTME: Pixel width of each node's arc band (the filled ring segment), controlling the visual thickness of the ring.
 const ARC_W = 14
 
+// ABOUTME: Converts polar coordinates (center cx/cy, radius r, angle a in radians) to Cartesian {x, y}, used to compute arc and ribbon path endpoints.
 function polar(cx: number, cy: number, r: number, a: number) {
   return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r }
 }
 
+// ABOUTME: Builds an SVG path for a donut-ring arc segment between angles `a0` and `a1`, bounded by inner radius `rIn` and outer radius `rOut`; used to draw each node's colored band on the ring.
 function arcPath(cx: number, cy: number, rIn: number, rOut: number, a0: number, a1: number): string {
   const p0 = polar(cx, cy, rOut, a0)
   const p1 = polar(cx, cy, rOut, a1)
@@ -52,6 +57,7 @@ function arcPath(cx: number, cy: number, rIn: number, rOut: number, a0: number, 
   return `M ${p0.x} ${p0.y} A ${rOut} ${rOut} 0 ${large} 1 ${p1.x} ${p1.y} L ${p2.x} ${p2.y} A ${rIn} ${rIn} 0 ${large} 0 ${p3.x} ${p3.y} Z`
 }
 
+// ABOUTME: Builds an SVG path for a filled ribbon connecting arc sub-span [a0, a1] on one node to sub-span [b0, b1] on another, using two arc segments on the ring and quadratic Bézier curves through the center to fill the enclosed shape.
 function ribbonPath(cx: number, cy: number, r: number, a0: number, a1: number, b0: number, b1: number): string {
   const p0 = polar(cx, cy, r, a0)
   const p1 = polar(cx, cy, r, a1)

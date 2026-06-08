@@ -133,6 +133,7 @@ export function PlayerDetail({ slug }: PlayerDetailProps) {
   )
 }
 
+// ABOUTME: Single stat cell rendered in the Season stats and Shooting tabs: a small label above a larger value, using the shared player-stat grid class.
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="player-stat">

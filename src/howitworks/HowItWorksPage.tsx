@@ -28,13 +28,16 @@ import './howitworks.css'
 
 // React Flow is heavy; load the graph only on this route to keep the rest
 // of the site lean on mobile.
+// ABOUTME: The AST explorer, lazily imported so React Flow only loads on this route.
 const AstGraph = lazy(() => import('./AstGraph').then(m => ({ default: m.AstGraph })))
 
+// ABOUTME: Query-param keys that persist the page's chrome palette and motion scale in the URL.
 const URL_PARAM = {
   chrome: 'chrome',
   motion: 'motion',
 } as const
 
+// ABOUTME: The page's URL-backed settings: which chrome palette and motion scale are active.
 type UrlSettings = {
   chrome: StyleId
   motion: MotionScale

@@ -39,18 +39,24 @@ export interface SankeyProps {
   className?: string
 }
 
+// ABOUTME: Pixel width of each node bar rectangle.
 const NODE_W = 12
+// ABOUTME: Minimum vertical gap in pixels between stacked node bars within the same column.
 const NODE_GAP = 12
 
+// ABOUTME: Ordered palette of intent colors cycled by stage index when a node has no explicit intent.
 const INTENTS: SankeyIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Computed layout record for one node after column placement: pixel position (x, y), bar height (h), resolved intent, and total inbound/outbound flow values.
 interface PlacedNode { node: SankeyNode; x: number; y: number; h: number; resolvedIntent: SankeyIntent; outValue: number; inValue: number }
 
+// ABOUTME: Formats a flow value for labels and tooltips — locale-string for values ≥1000, one decimal place otherwise.
 function defaultFormat(n: number): string {
   if (Math.abs(n) >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 0 })
   return n.toFixed(1)
 }
 
+// ABOUTME: Builds a closed cubic Bézier ribbon SVG path from source center (x0, y0) to target center (x1, y1) with the given pixel thickness.
 function curvedLink(x0: number, y0: number, x1: number, y1: number, thickness: number): string {
   const mx = (x0 + x1) / 2
   const half = thickness / 2

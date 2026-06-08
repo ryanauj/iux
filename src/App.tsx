@@ -18,6 +18,7 @@ import { SettingsPage } from './settings/SettingsPage'
 import { StyleEditorPage } from './editor/StyleEditorPage'
 import { useSharedPatternHydration } from './lib/useSharedPatternHydration'
 
+// ABOUTME: Dispatches the hash-routed path to the correct page surface; handles /apps, /editor, /viz, /quiz, /tests, /doctrine, /how-it-works, /settings, and falls back to Stories.
 function HomeRoute() {
   const location = useHashLocation()
   if (location.path.startsWith('/apps')) {
@@ -47,6 +48,7 @@ function HomeRoute() {
   return <Stories />
 }
 
+// ABOUTME: Reads the :engineId URL param and renders the matching EngineGuide, redirecting to /engines when the id is absent or unknown.
 function EngineGuideRoute() {
   const { engineId } = useParams<{ engineId: string }>()
   const guide = engineId && (engineId in ENGINE_GUIDES)

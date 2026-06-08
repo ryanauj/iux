@@ -28,8 +28,10 @@ export interface IcicleProps {
   className?: string
 }
 
+// ABOUTME: Ordered intent colour palette cycled over top-level children of the root; all descendant nodes inherit their subtree root's colour.
 const INTENTS: IcicleIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Internal layout record for one rendered rectangle: its source node, nesting depth, pixel position (x, y, w, h), resolved intent colour, and depth-based tint level (1–4).
 interface Block {
   node: IcicleNode
   depth: number
@@ -41,11 +43,13 @@ interface Block {
   tintLevel: number
 }
 
+// ABOUTME: Recursively sums a node's effective value — returns the node's own value for leaves and the total of all descendant leaf values for branches.
 function sumValue(n: IcicleNode): number {
   if (n.children && n.children.length > 0) return n.children.reduce((s, c) => s + sumValue(c), 0)
   return Math.max(0, n.value ?? 0)
 }
 
+// ABOUTME: Returns the maximum nesting depth of any leaf in the subtree, used to compute layer thickness so the chart fills the canvas.
 function maxDepth(n: IcicleNode): number {
   if (!n.children || n.children.length === 0) return 0
   return 1 + Math.max(...n.children.map(maxDepth))

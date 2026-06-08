@@ -55,6 +55,7 @@ export interface ToggleProps {
   stateLock?: 'hover' | 'focus'
 }
 
+// ABOUTME: Default three-way option set for the tristate variant; used when no custom options prop is provided, giving Off/Inherit/On in fixed order.
 const TRISTATE_OPTIONS: ToggleOption[] = [
   { value: 'off', label: 'Off' },
   { value: 'inherit', label: 'Inherit' },

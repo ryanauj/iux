@@ -28,15 +28,19 @@ export interface CirclePackProps {
   className?: string
 }
 
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to root-level nodes when no explicit intent is provided; propagated down to children as the parent intent.
 const INTENTS: CirclePackIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: A fully resolved circle placement — the original tree node, its nesting depth, center coordinates, radius, and resolved intent color, output by `packTree` for direct rendering.
 interface Placed { node: CirclePackNode; depth: number; x: number; y: number; r: number; intent: CirclePackIntent }
 
+// ABOUTME: Recursively sums the `value` fields of all leaf descendants of `n`, returning the subtree's total weight; used to size parent circles proportionally in `packChildren`.
 function sumValue(n: CirclePackNode): number {
   if (n.children && n.children.length > 0) return n.children.reduce((s, c) => s + sumValue(c), 0)
   return Math.max(0.0001, n.value ?? 1)
 }
 
+// ABOUTME: Places `children` inside a bounding circle of radius `R` using a deterministic front-chain algorithm: scales each child's radius so the summed area fills 75% of the parent, places the first two on the x-axis, then iterates — placing each new circle tangent to the best adjacent pair in the convex-envelope chain.
 /** Pack children inside a bounding circle using a deterministic front-chain
  * algorithm (Wang et al., simplified). */
 function packChildren(children: { value: number }[], R: number): { x: number; y: number; r: number }[] {
@@ -133,6 +137,7 @@ function packChildren(children: { value: number }[], R: number): { x: number; y:
   return placed.map(p => ({ x: (p.x - mx) * k, y: (p.y - my) * k, r: p.r * k }))
 }
 
+// ABOUTME: Recursively visits every node in the tree, calling `packChildren` for each branch to place children within their parent's circle, and collects all placed nodes as a flat `Placed[]` array for rendering.
 function packTree(root: CirclePackNode, cx: number, cy: number, R: number): Placed[] {
   const out: Placed[] = []
   function visit(n: CirclePackNode, depth: number, x: number, y: number, r: number, parentIntent?: CirclePackIntent, siblingIndex = 0) {

@@ -7,10 +7,12 @@ import { contractsRoutes } from '../routes'
 import { SEASON } from '../data/cap'
 import { money } from '../format'
 
+// ABOUTME: One bullet-point restriction imposed by an apron threshold, rendered as a list item in the Aprons page restriction cards.
 interface Restriction {
   text: string
 }
 
+// ABOUTME: Ordered list of tools lost when a team's payroll crosses the first apron ($195.9M); rendered in the "At the first apron" Card.
 const FIRST_APRON: Restriction[] = [
   { text: 'No sign-and-trade acquisitions (you can\'t bring a player in this way).' },
   { text: 'No using the bi-annual exception.' },
@@ -19,6 +21,7 @@ const FIRST_APRON: Restriction[] = [
   { text: 'Can\'t sign a player who was waived if his pre-waiver salary was above the non-taxpayer MLE.' },
 ]
 
+// ABOUTME: Additional tools lost at the second apron ($207.8M), stacked on top of FIRST_APRON restrictions in the "At the second apron" Card.
 const SECOND_APRON: Restriction[] = [
   { text: 'No mid-level exception at all — not even the taxpayer version.' },
   { text: 'Can\'t aggregate (combine) multiple salaries to match a bigger one in a trade.' },

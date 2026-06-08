@@ -37,8 +37,10 @@ export interface AdjacencyMatrixProps {
   className?: string
 }
 
+// ABOUTME: Rotation of the six contract intents used to assign distinct colors to node groups in the 'clustered' variant.
 const INTENTS: AdjacencyMatrixIntent[] = ['primary', 'info', 'success', 'warning', 'danger', 'neutral']
 
+// ABOUTME: Maps an edge value to one of five discrete tint levels (0 = empty, 1–4 = lightest to darkest) by comparing it to the observed maximum, used by the 'weighted' variant to shade cells.
 function tintLevel(v: number, max: number): 0 | 1 | 2 | 3 | 4 {
   if (max <= 0 || v <= 0) return 0
   const r = v / max

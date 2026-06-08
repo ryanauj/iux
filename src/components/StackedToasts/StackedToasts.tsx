@@ -28,12 +28,14 @@ export interface StackedToastsProps {
   inlineRender?: boolean
 }
 
+// ABOUTME: Numeric sort key per intent used by the severity variant to order toasts from most critical (danger=0) to least (success=4).
 const SEVERITY_RANK: Record<ToastIntent, number> = {
   danger: 0, warning: 1, info: 2, neutral: 3, success: 4,
 }
 
 // Decay (override durationMs) per intent for severity variant: info fades
 // fastest, danger sticks.
+// ABOUTME: Auto-dismiss duration in milliseconds per intent for the severity variant; danger uses 0 (never auto-dismiss) while info fades quickest at 2000ms.
 const SEVERITY_FADE: Record<ToastIntent, number> = {
   info: 2000,
   success: 3000,
@@ -42,6 +44,7 @@ const SEVERITY_FADE: Record<ToastIntent, number> = {
   danger: 0,
 }
 
+// ABOUTME: Produces a stable string key from a toast's intent, title, and body used by the dedupe variant to detect and collapse duplicate messages.
 function fingerprint(t: ToastItem): string {
   return `${t.intent ?? 'neutral'}::${String(t.title ?? '')}::${String(t.body ?? '')}`
 }

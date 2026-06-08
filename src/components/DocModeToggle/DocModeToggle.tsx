@@ -3,12 +3,14 @@
 import type { DocMode } from '../../lib/useDocMode'
 import './DocModeToggle.css'
 
+// ABOUTME: Props for DocModeToggle — a controlled value/onChange pair for the DocMode selection plus an optional className.
 interface DocModeToggleProps {
   value: DocMode
   onChange: (next: DocMode) => void
   className?: string
 }
 
+// ABOUTME: The two toggle options (plain and technical), each with a display label and a tooltip title string.
 const OPTIONS: { value: DocMode; label: string; title: string }[] = [
   {
     value: 'plain',
