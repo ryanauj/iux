@@ -1,6 +1,6 @@
 // ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or as nothing at all (Hidden style, summoned by a tap gesture or the keyboard "Open preferences" skip-link); persists position and open state to localStorage, moves focus into the panel on open, and adapts layout to phone-sized viewports.
 
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { PalettePicker } from '../PalettePicker/PalettePicker'
 import { Select } from '../Select/Select'
@@ -141,8 +141,29 @@ export function OpenControlsHint() {
   const [style] = useControlsStyle()
   const [gesture] = useTapGesture()
   const [open, setOpen] = useState(false)
+  const [placement, setPlacement] = useState<{ side: 'left' | 'right'; maxWidth: number }>({ side: 'left', maxWidth: 320 })
   const btnRef = useRef<HTMLButtonElement>(null)
   const popRef = useRef<HTMLDivElement>(null)
+
+  /*
+   * Open toward whichever side of the "?" has more room and cap the width
+   * to it, so the popover never runs off the viewport edge — the info "i"
+   * and "?" sit at the end of the title, which lands near the right edge on
+   * phones (left-anchored, the help text was clipped). Measured with
+   * useLayoutEffect so the side is chosen before paint, avoiding a flash of
+   * the overflowing default.
+   */
+  useLayoutEffect(() => {
+    if (!open) return
+    const r = btnRef.current?.getBoundingClientRect()
+    if (!r) return
+    const margin = 12
+    const spaceRight = window.innerWidth - r.left - margin
+    const spaceLeft = r.right - margin
+    const side: 'left' | 'right' = spaceRight >= spaceLeft ? 'left' : 'right'
+    const maxWidth = Math.min(320, Math.round(Math.max(spaceRight, spaceLeft)))
+    setPlacement({ side, maxWidth })
+  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -181,7 +202,8 @@ export function OpenControlsHint() {
           ref={popRef}
           role="region"
           aria-label="How to open preferences"
-          className="ctrl-hint__popover"
+          className={`ctrl-hint__popover ctrl-hint__popover--${placement.side}`}
+          style={{ maxWidth: placement.maxWidth }}
         >
           {openControlsHelpText(style, gesture)}
         </div>

@@ -6317,7 +6317,7 @@
       "area": "components",
       "dir": "components/DraggableControls",
       "name": "DraggableControls.tsx",
-      "loc": 870,
+      "loc": 892,
       "importCount": 5,
       "externalCount": 2,
       "members": [
@@ -6451,161 +6451,161 @@
           "name": "Field",
           "kind": "type",
           "exported": true,
-          "line": 194,
+          "line": 216,
           "about": "A single control field descriptor: key, label, short label, current value, options array, onChange callback, and an optional kind='palette' flag that substitutes PalettePicker for a generic select."
         },
         {
           "name": "Position",
           "kind": "type",
           "exported": false,
-          "line": 212,
+          "line": 234,
           "about": "An x/y pixel coordinate representing the floating container's top-left position within the viewport."
         },
         {
           "name": "Props",
           "kind": "type",
           "exported": false,
-          "line": 215,
+          "line": 237,
           "about": "Props for the DraggableControls root — the current controls style, a callback to change it, the array of control field descriptors to render, and an optional NavControls bundle that renders the cross-page nav as a collapsible section when the active layout is 'in-controls'."
         },
         {
           "name": "POS_KEY",
           "kind": "component",
           "exported": false,
-          "line": 229,
+          "line": 251,
           "about": "Returns the per-style localStorage key used to persist the floating container's position."
         },
         {
           "name": "OPEN_KEY",
           "kind": "component",
           "exported": false,
-          "line": 231,
+          "line": 253,
           "about": "Returns the per-style localStorage key used to persist the panel's open/closed state."
         },
         {
           "name": "DEFAULTS",
           "kind": "const",
           "exported": false,
-          "line": 234,
+          "line": 256,
           "about": "Factory-default pixel positions for each controls style when no saved position exists on a desktop viewport."
         },
         {
           "name": "clamp",
           "kind": "function",
           "exported": false,
-          "line": 240,
+          "line": 262,
           "about": "Clamps n to the inclusive [lo, hi] range; used to keep the draggable container within the viewport bounds."
         },
         {
           "name": "defaultPos",
           "kind": "function",
           "exported": false,
-          "line": 254,
+          "line": 276,
           "about": "Computes the initial position for a controls style, placing the button FAB in the bottom-right thumb zone on phone-sized viewports (≤640px wide or ≤480px tall)."
         },
         {
           "name": "loadPos",
           "kind": "function",
           "exported": false,
-          "line": 268,
+          "line": 290,
           "about": "Reads the saved Position for a controls style from localStorage; falls back to defaultPos when absent or unparseable."
         },
         {
           "name": "loadOpen",
           "kind": "function",
           "exported": false,
-          "line": 282,
+          "line": 304,
           "about": "Reads the saved open/closed state for a controls style from localStorage; returns the fallback boolean when no stored value is found."
         },
         {
           "name": "STYLE_OPTIONS",
           "kind": "const",
           "exported": false,
-          "line": 294,
+          "line": 316,
           "about": "The two available controls-style options rendered by the StyleSwitcher radiogroup."
         },
         {
           "name": "VerticalDir",
           "kind": "type",
           "exported": false,
-          "line": 300,
+          "line": 322,
           "about": "Vertical half of the popover quadrant — 'up' means the panel opens upward from the anchor, 'down' means downward."
         },
         {
           "name": "HorizontalDir",
           "kind": "type",
           "exported": false,
-          "line": 302,
+          "line": 324,
           "about": "Horizontal half of the popover quadrant — 'left' means the panel extends leftward from the anchor, 'right' means rightward."
         },
         {
           "name": "Quadrant",
           "kind": "type",
           "exported": false,
-          "line": 304,
+          "line": 326,
           "about": "The four possible quadrants for the Button-variant panel, expressed as a vertical-horizontal direction pair."
         },
         {
           "name": "pickQuadrant",
           "kind": "function",
           "exported": false,
-          "line": 307,
+          "line": 329,
           "about": "Inspects the trigger's bounding rect and returns the quadrant with the most available viewport space, used to anchor the floating panel away from viewport edges."
         },
         {
           "name": "useOverflowEdges",
           "kind": "function",
           "exported": false,
-          "line": 327,
+          "line": 349,
           "about": "Hook that toggles data-overflow-top and data-overflow-bottom attributes on a scrollable panel element when content is hidden above or below the visible area, enabling CSS fade indicators."
         },
         {
           "name": "DraggableControls",
           "kind": "component",
           "exported": true,
-          "line": 361,
+          "line": 383,
           "about": "Root draggable container that handles pointer-based drag positioning, viewport clamping on resize/orientation-change, the tap-to-summon gesture, and localStorage persistence of position and open state; delegates rendering to ButtonVariant (which shows a FAB for 'button' or an invisible anchor for 'hidden')."
         },
         {
           "name": "VariantProps",
           "kind": "type",
           "exported": false,
-          "line": 524,
+          "line": 546,
           "about": "Props passed down to ButtonVariant — the field list, the optional in-controls nav bundle, current-value summary strings, open state, drag event handlers, the active controls style, and the style-change callback."
         },
         {
           "name": "StyleSwitcher",
           "kind": "component",
           "exported": false,
-          "line": 541,
+          "line": 563,
           "about": "Radiogroup of two buttons (Button / Hidden) that lets the user switch the controls presentation style; used in the footer of the Button panel so a user who summoned a Hidden panel can switch back to the always-visible FAB."
         },
         {
           "name": "ButtonVariant",
           "kind": "component",
           "exported": false,
-          "line": 562,
+          "line": 584,
           "about": "Renders the floating panel and its triggers — a visually-hidden \"Open preferences\" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open."
         },
         {
           "name": "NavGroup",
           "kind": "component",
           "exported": false,
-          "line": 748,
+          "line": 770,
           "about": "Persisted collapsible disclosure that lists the cross-page nav links inside the Button panel when the active layout is 'in-controls'; reuses the routing-aware NavAnchor from AppShell and persists its own open state (default open) so the nav stays reachable across visits."
         },
         {
           "name": "SettingsGroup",
           "kind": "component",
           "exported": false,
-          "line": 790,
+          "line": 812,
           "about": "Persisted collapsible disclosure that wraps the non-palette fields under a \"Settings\" heading; persists its own open state to localStorage so it re-opens in the same state on next visit."
         },
         {
           "name": "CollapsibleSection",
           "kind": "component",
           "exported": false,
-          "line": 820,
+          "line": 842,
           "about": "Accordion-style disclosure for a single non-palette field inside the Settings group — shows the current value in the collapsed header and expands to a Select combobox or a radio button group depending on option count."
         }
       ],

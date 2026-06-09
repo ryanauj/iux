@@ -504,10 +504,9 @@
 .ctrl-hint__popover {
   position: absolute;
   top: calc(100% + var(--space-2, 0.5rem));
-  left: 0;
   z-index: 50;
   width: max-content;
-  max-width: min(20rem, calc(100vw - 32px));
+  /* max-width is set inline from the measured space toward the open side. */
   padding: var(--space-3, 0.75rem);
   background: var(--color-surface-overlay, var(--color-surface-raised, Canvas));
   backdrop-filter: var(--effect-backdrop-blur-md);
@@ -519,6 +518,18 @@
   font-family: var(--type-body-family);
   font-size: var(--type-caption-size);
   line-height: var(--type-body-line-height, 1.5);
+}
+
+/* Open from the side of the "?" with more room (chosen in JS) so the
+ * popover never spills past the viewport edge on narrow screens. */
+.ctrl-hint__popover--left {
+  left: 0;
+  right: auto;
+}
+
+.ctrl-hint__popover--right {
+  right: 0;
+  left: auto;
 }
 
 .ctrl-howto {
