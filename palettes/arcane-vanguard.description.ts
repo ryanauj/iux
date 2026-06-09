@@ -3,10 +3,10 @@ import type { StyleDescription } from '../tokens/style-description.contract'
 export const description: StyleDescription = {
   paletteId: 'arcane-vanguard',
   tagline:
-    'The futuristic-fantasy register on the glassmorphism engine — luminous lilac field, violet-glass panels, an arcane-violet primary, and a rune-gold accent on links, strong borders, and the warning.',
+    'The futuristic-fantasy register on the glassmorphism engine — near-white field, neutral white-glass panels with violet borders, an arcane-violet primary, and a rune-gold accent on links, strong borders, and the warning.',
   summary:
     'Arcane Vanguard is a "tech-meets-magic" ability HUD built on a violet-and-gold pairing. `surface.base` is a ' +
-    'pale lilac `#f7f5fd`, `surface.raised` is translucent violet glass, and `intent.primary` is arcane-violet ' +
+    'near-neutral off-white `#faf9fc`, `surface.raised` is neutral white glass with violet borders, and `intent.primary` is arcane-violet ' +
     '`#8b5cf6` with a glow focus ring. The counter-accent is rune-gold `#d9a014` on `content.link`, ' +
     '`border.strong`, and `intent.warning`; rune-green success and indigo info make the glyph states read as real ' +
     'spell colours. The display role is a Cinzel serif over an Exo 2 sci-fi UI stack.',
@@ -21,9 +21,9 @@ export const description: StyleDescription = {
         '`intent.primary.bg`/`border.focus` are violet `#8b5cf6`, while `content.link`, `border.strong`, and `intent.warning` carry rune-gold `#d9a014` — a violet/gold pairing, not one hue.',
     },
     {
-      label: 'Luminous lilac field with violet glass',
+      label: 'Near-white field with neutral white-glass panels',
       detail:
-        '`surface.base` is `#f7f5fd` and `surface.raised` is `rgba(167,139,250,0.12)` — a pale violet-tinted ground with frosted violet panels.',
+        '`surface.base` is a near-neutral off-white `#faf9fc` and `surface.raised` is neutral white glass — the violet lives in `border.*` and the elevation glow, not a tinted page.',
     },
     {
       label: 'Rune-coloured glyph states',
@@ -42,7 +42,7 @@ export const description: StyleDescription = {
     'A purely technical sans throughout — the fantasy serif display is part of the identity',
   ],
   tokenEvidence: [
-    { path: 'color.surface.raised', note: 'Translucent violet glass `rgba(167,139,250,0.12)`.' },
+    { path: 'color.surface.raised', note: 'Neutral white glass — colour lives in the violet borders and glow, not the fill.' },
     { path: 'color.intent.primary.bg', note: 'Arcane-violet primary — the spell-energy action.' },
     { path: 'color.intent.warning.bg', note: 'Rune-gold `#d9a014` — the warm counter-accent.' },
     { path: 'typography.family.display', note: 'Cinzel fantasy serif over an Exo 2 UI stack — tech meets magic.' },

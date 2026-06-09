@@ -2,14 +2,13 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Court Hardwood — the basketball-arcade register on the Flat engine.
- * A warm daytime arena: sanded-maple field, near-black painted court
- * lines, basketball-leather orange as the primary action, and an
- * arcade-neon violet accent (links, focus, info) — the purple-and-
- * orange clash of NBA Jam attract screens. The field carries a real
- * three-step wood gradient so panels lift off the floor instead of
- * floating on one flat tint.
+ * A warm daytime arena kept on a light off-white field, with near-black
+ * painted court lines, basketball-leather orange as the primary action,
+ * and an arcade-neon violet accent (links, focus, info) — the purple-
+ * and-orange clash of NBA Jam attract screens. The field stays neutral
+ * so the colour lives in the chrome, not the page.
  *
- *   maple field:     #f7efe0  (base) → #fffbf3 (raised) → #ece0cb (sunken)
+ *   warm off-white:  #f7f4ee  (base) → #fffefb (raised) → #ece6db (sunken)
  *   court-line ink:  #1a1a1a
  *   leather orange:  #e2591b  (primary action)
  *   arcade violet:   #7c3aed  (accent — links, focus, info)
@@ -25,10 +24,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f7efe0',
-        raised: '#fffbf3',
-        sunken: '#ece0cb',
-        overlay: '#fffbf3',
+        base: '#f7f4ee',
+        raised: '#fffefb',
+        sunken: '#ece6db',
+        overlay: '#fffefb',
         scrim: 'rgba(40, 26, 14, 0.52)',
       },
       content: {

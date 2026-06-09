@@ -3,10 +3,10 @@ import type { StyleDescription } from '../tokens/style-description.contract'
 export const description: StyleDescription = {
   paletteId: 'aegis-halo',
   tagline:
-    'The military-sci-fi shield register on the glassmorphism engine, in daylight — pale-blue field, cyan-glass panels, a reticle-cyan primary, and a shield-gold accent on links, strong borders, and the recharge-flash warning.',
+    'The military-sci-fi shield register on the glassmorphism engine, in daylight — off-white field, neutral white-glass panels with cyan borders, a reticle-cyan primary, and a shield-gold accent on links, strong borders, and the recharge-flash warning.',
   summary:
-    'Aegis Halo is a visor HUD built on a cyan-and-gold pairing. `surface.base` is a pale blue `#f3f8fc`, ' +
-    '`surface.raised` is translucent cyan glass on a cyan elevation glow, and `intent.primary` is reticle-cyan ' +
+    'Aegis Halo is a visor HUD built on a cyan-and-gold pairing. `surface.base` is a neutral off-white `#f7f9fb`, ' +
+    '`surface.raised` is neutral white glass over a cyan elevation glow and cyan borders, and `intent.primary` is reticle-cyan ' +
     '`#0ea5e9` with a glow focus ring. The counter-accent is shield-gold `#f59e0b`, carried by `content.link`, ' +
     '`border.strong`, and the recharge-flash `intent.warning` — the warm signal that keeps the HUD from reading ' +
     'as a single cyan wash. Orbitron type finishes the sci-fi-shooter look.',
@@ -16,9 +16,9 @@ export const description: StyleDescription = {
     'as a clean cyan-and-gold blueprint.',
   signatures: [
     {
-      label: 'Cyan-glass panels with a cyan elevation glow',
+      label: 'Neutral white-glass panels with cyan borders and glow',
       detail:
-        '`surface.raised` is `rgba(56,189,248,0.12)` and `elevation.*` carries a cyan glow — cyan-tinted frosted panels over a daylight blue ground.',
+        '`surface.raised` is neutral white glass while `border.default`/`elevation.*` carry the cyan — frosted panels read by their cyan edges and glow, not a tinted fill, over an off-white ground.',
     },
     {
       label: 'Reticle-cyan primary against a shield-gold accent',
@@ -42,7 +42,7 @@ export const description: StyleDescription = {
     'Solid opaque cards with no blur — the panels must read as cyan glass',
   ],
   tokenEvidence: [
-    { path: 'color.surface.raised', note: 'Translucent cyan glass `rgba(56,189,248,0.12)`.' },
+    { path: 'color.surface.raised', note: 'Neutral white glass — colour lives in the cyan borders and glow, not the fill.' },
     { path: 'color.intent.primary.bg', note: 'Reticle-cyan `#0ea5e9` — the primary colour.' },
     { path: 'color.intent.warning.bg', note: 'Shield-gold `#f59e0b` — the recharge-flash accent.' },
     { path: 'color.border.strong', note: 'Gold strong border — the accent on emphasis edges.' },

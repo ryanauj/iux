@@ -4,11 +4,12 @@ import type { Palette } from '../tokens/semantic.contract'
  * Aegis Halo — the military-sci-fi shield register on the glassmorphism
  * engine, in daylight. A visor HUD built on a cyan-and-gold pairing:
  * reticle-cyan primary and glow focus, shield-gold accent (links, the
- * strong border, the recharge-flash warning). Cyan glass panels lift on
- * a cyan elevation glow over a pale-blue field.
+ * strong border, the recharge-flash warning). Neutral white-glass panels
+ * lift on a cyan elevation glow with cyan borders, over an off-white
+ * field — the colour is in the HUD edges, not the page.
  *
- *   visor field:    #f3f8fc
- *   cyan glass:     rgba(56, 189, 248, 0.12)
+ *   off-white field: #f7f9fb
+ *   white glass:     rgba(255, 255, 255, 0.58)
  *   HUD cyan:       #0ea5e9  (primary / focus)
  *   shield gold:    #f59e0b  (accent — links, warning, strong border)
  *   ink (text):     #0a2a3d
@@ -21,10 +22,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f3f8fc',
-        raised: 'rgba(56, 189, 248, 0.12)',
-        sunken: 'rgba(8, 47, 73, 0.06)',
-        overlay: 'rgba(255, 255, 255, 0.78)',
+        base: '#f7f9fb',
+        raised: 'rgba(255, 255, 255, 0.58)',
+        sunken: 'rgba(8, 30, 46, 0.05)',
+        overlay: 'rgba(255, 255, 255, 0.80)',
         scrim: 'rgba(8, 30, 46, 0.34)',
       },
       content: {

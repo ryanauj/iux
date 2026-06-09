@@ -2,12 +2,12 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Baseline Ace — the tennis-sim register on the Flat engine. A bright
- * hard-court read built on two colours: a vivid hard-court blue as the
- * primary action and a fluorescent tennis-ball lime as the accent
- * (focus, links, success). The cool blue court and the electric ball
- * give it a real complementary palette rather than a single teal wash.
+ * read on a neutral off-white field, built on two colours: a vivid
+ * hard-court blue as the primary action and a fluorescent tennis-ball
+ * lime as the accent (focus, links, success). The blue and the electric
+ * ball-lime give it a real complementary palette rather than a wash.
  *
- *   court light:      #eef3f6  (base) → #fbfeff (raised) → #dde8ee (sunken)
+ *   off-white field:  #f7f9fa  (base) → #ffffff (raised) → #e9edf0 (sunken)
  *   hard-court blue:  #1f7ec0  (primary action)
  *   tennis-ball lime: #82c91e  (accent — focus, links, success)
  *   line-call amber:  #f59f00  (warning)
@@ -22,10 +22,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#eef3f6',
-        raised: '#fbfeff',
-        sunken: '#dde8ee',
-        overlay: '#fbfeff',
+        base: '#f7f9fa',
+        raised: '#ffffff',
+        sunken: '#e9edf0',
+        overlay: '#ffffff',
         scrim: 'rgba(18, 40, 54, 0.50)',
       },
       content: {

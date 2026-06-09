@@ -5,7 +5,7 @@ export const description: StyleDescription = {
   tagline:
     'The baseball-sim register on the Flat engine — warm chalk-cream field, infield-dirt borders, a brick-crimson primary, a cap-navy accent, and outfield-green success.',
   summary:
-    'Ballpark Day is a classic-team-triad day game. `surface.base` is a warm chalk-cream `#f6f1e6` with ' +
+    'Ballpark Day is a classic-team-triad day game. `surface.base` is a light cream off-white `#f8f5ee` with ' +
     'infield-dirt borders and a warm brown-black ink. The three team colours do real work: `intent.primary` is ' +
     'brick-crimson `#b3322c`, the accent on `content.link` and `intent.info` is cap-navy `#1c3a6e`, and ' +
     '`intent.success` is outfield green `#3f9e4d`. A scoreboard amber and a dirt-tan neutral round it out, all ' +
@@ -16,9 +16,9 @@ export const description: StyleDescription = {
     'crimson-and-navy of a classic team.',
   signatures: [
     {
-      label: 'Warm chalk-cream field with infield-dirt borders',
+      label: 'Light cream off-white field with infield-dirt borders',
       detail:
-        '`surface.base` is `#f6f1e6` and `border.default` is infield-dirt tan `#cdbf9c` — a warm, sunlit day-game ground, not a cool broadcast white.',
+        '`surface.base` is a light cream `#f8f5ee` and `border.default` is infield-dirt tan `#cdbf9c` — a warm-leaning but light, near-neutral day-game ground, not a saturated cream.',
     },
     {
       label: 'Crimson primary, cap-navy accent, outfield-green success',
@@ -42,7 +42,7 @@ export const description: StyleDescription = {
     'Translucent glass panels or backdrop blur — this is a solid Flat engine, not a HUD',
   ],
   tokenEvidence: [
-    { path: 'color.surface.base', note: 'Warm chalk-cream `#f6f1e6` — the day-game ground.' },
+    { path: 'color.surface.base', note: 'Light cream off-white `#f8f5ee` — a warm-leaning but neutral ground.' },
     { path: 'color.intent.primary.bg', note: 'Brick-crimson `#b3322c` — the primary action.' },
     { path: 'color.intent.info.bg', note: 'Cap-navy `#1c3a6e` — the accent half of the team triad.' },
     { path: 'color.intent.success.bg', note: 'Outfield green `#3f9e4d` — the third triad colour.' },

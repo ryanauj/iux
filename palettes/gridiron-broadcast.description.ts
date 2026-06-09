@@ -5,7 +5,7 @@ export const description: StyleDescription = {
   tagline:
     'The American-football broadcast register on the Flat engine — cool stadium-white field, chalk yard-line borders, stadium-navy primary, and an end-zone-red accent on links, focus, and danger.',
   summary:
-    'Gridiron Broadcast is a navy-and-red network score bug. `surface.base` is a cool stadium-white `#eef2f6` with ' +
+    'Gridiron Broadcast is a navy-and-red network score bug. `surface.base` is a clean off-white `#f6f7f9` with ' +
     'chalk yard-line borders, `intent.primary` is stadium navy `#1d3a63`, and the counter-accent is end-zone red ' +
     '`#c62828` carried by `content.link`, `border.focus`, and `intent.danger` — the classic two-colour team chrome. ' +
     'A first-down green, a penalty-flag yellow, and a first-down-line blue fill out the graphics kit, all set in ' +
@@ -15,9 +15,9 @@ export const description: StyleDescription = {
     'Built from the stadium: bright turf-white, chalk lines, and the navy-and-red two-colour team chrome.',
   signatures: [
     {
-      label: 'Cool stadium-white field with chalk borders',
+      label: 'Clean off-white field with chalk borders',
       detail:
-        '`surface.base` is `#eef2f6` and `border.default` is the chalk yard-line `#bccbd9` — a bright, cool broadcast ground rather than a warm paper.',
+        '`surface.base` is an off-white `#f6f7f9` lifting to pure-white cards, with `border.default` the chalk yard-line `#bccbd9` — a bright neutral broadcast ground, colour carried by the navy/red chrome.',
     },
     {
       label: 'Stadium-navy primary against an end-zone-red accent',
@@ -41,7 +41,7 @@ export const description: StyleDescription = {
     'Translucent glass panels or backdrop blur — this is a solid Flat engine, not a HUD',
   ],
   tokenEvidence: [
-    { path: 'color.surface.base', note: 'Cool stadium-white `#eef2f6` — the broadcast ground.' },
+    { path: 'color.surface.base', note: 'Clean off-white `#f6f7f9` — a neutral broadcast ground.' },
     { path: 'color.intent.primary.bg', note: 'Stadium navy `#1d3a63` — the primary team chrome.' },
     { path: 'color.content.link', note: 'End-zone red `#c62828` — the counter-accent on links and focus.' },
     { path: 'radius.md', note: '4px — square-cornered broadcast panels.' },

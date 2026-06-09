@@ -5,11 +5,12 @@ import type { Palette } from '../tokens/semantic.contract'
  * engine, in a luminous daylight read. A "tech-meets-magic" ability HUD
  * built on a violet-and-gold pairing: arcane-violet primary and glow
  * focus, rune-gold accent (links, the strong border, the warning).
- * Rune-green carries success and indigo carries info, so the glyph
- * states read as real spell colours rather than one violet wash.
+ * Rune-green carries success and indigo carries info. The field stays a
+ * near-neutral off-white with white-glass panels, so the violet and gold
+ * live in the borders and chrome rather than washing the page.
  *
- *   lilac field:    #f7f5fd
- *   violet glass:   rgba(167, 139, 250, 0.12)
+ *   lilac-white:    #faf9fc  (near-neutral)
+ *   white glass:    rgba(255, 255, 255, 0.55)
  *   arcane violet:  #8b5cf6  (primary / focus)
  *   rune gold:      #d9a014  (accent — links, warning, strong border)
  *   rune green:     #10b981  (success)
@@ -23,9 +24,9 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f7f5fd',
-        raised: 'rgba(167, 139, 250, 0.12)',
-        sunken: 'rgba(49, 34, 82, 0.06)',
+        base: '#faf9fc',
+        raised: 'rgba(255, 255, 255, 0.55)',
+        sunken: 'rgba(49, 34, 82, 0.05)',
         overlay: 'rgba(255, 255, 255, 0.80)',
         scrim: 'rgba(30, 20, 50, 0.34)',
       },

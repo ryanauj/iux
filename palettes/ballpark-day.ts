@@ -4,10 +4,10 @@ import type { Palette } from '../tokens/semantic.contract'
  * Ballpark Day — the baseball-sim register on the Flat engine. A warm
  * day-game read built on the classic team triad: brick-crimson as the
  * primary action, cap-navy as the accent (links, info), and outfield
- * green for success — all sitting on a sunlit cream field with
+ * green for success — all sitting on a light cream off-white field with
  * infield-dirt borders. Three real colours, not one tinted wash.
  *
- *   chalk-cream field: #f6f1e6  (base) → #fdfbf3 (raised) → #e9e1ce (sunken)
+ *   light cream field: #f8f5ee  (base) → #fffefa (raised) → #efe9db (sunken)
  *   infield dirt:      #cdbf9c
  *   brick crimson:     #b3322c  (primary action)
  *   cap navy:          #1c3a6e  (accent — links, info)
@@ -23,10 +23,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f6f1e6',
-        raised: '#fdfbf3',
-        sunken: '#e9e1ce',
-        overlay: '#fdfbf3',
+        base: '#f8f5ee',
+        raised: '#fffefa',
+        sunken: '#efe9db',
+        overlay: '#fffefa',
         scrim: 'rgba(40, 30, 22, 0.50)',
       },
       content: {

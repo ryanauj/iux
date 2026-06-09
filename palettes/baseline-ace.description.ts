@@ -5,7 +5,7 @@ export const description: StyleDescription = {
   tagline:
     'The tennis-sim register on the Flat engine — cool hard-court field, a vivid hard-court-blue primary, and a fluorescent tennis-ball lime accent on focus, links, and success.',
   summary:
-    'Baseline Ace is a complementary blue-and-lime tennis court. `surface.base` is a cool court-light `#eef3f6`, ' +
+    'Baseline Ace is a complementary blue-and-lime tennis court. `surface.base` is a neutral off-white `#f7f9fa`, ' +
     '`intent.primary` is a vivid hard-court blue `#1f7ec0`, and the counter-accent is a fluorescent tennis-ball ' +
     'lime `#82c91e` carried by `border.focus`, `intent.success`, and (a deeper shade) `content.link`. The blue ' +
     'court and the electric ball give it a real two-colour palette rather than a single teal wash; line-call ' +
@@ -21,9 +21,9 @@ export const description: StyleDescription = {
         '`intent.primary.bg` is hard-court blue `#1f7ec0` while `border.focus` and `intent.success` carry fluorescent ball-lime `#82c91e` — a complementary blue/lime pairing, not one hue.',
     },
     {
-      label: 'Cool court-light field',
+      label: 'Neutral off-white field',
       detail:
-        '`surface.base` is `#eef3f6` — the cool light of a modern hard court, near-neutral so the blue and lime both read against it.',
+        '`surface.base` is `#f7f9fa` lifting to pure-white cards — a clean neutral page, so the blue primary and lime accent both read against it rather than a tinted court.',
     },
     {
       label: 'Lime as the single electric accent',
@@ -38,7 +38,7 @@ export const description: StyleDescription = {
   ],
   antiSignatures: [
     'A single teal or green wash where surface, primary, and accent share one hue',
-    'A warm-paper or hardwood page background — the court reads cool',
+    'A saturated or warm-paper page background — the field stays a neutral off-white',
     'Translucent glass panels or backdrop blur — this is a solid Flat engine, not a HUD',
   ],
   tokenEvidence: [

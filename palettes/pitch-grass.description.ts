@@ -3,10 +3,10 @@ import type { StyleDescription } from '../tokens/style-description.contract'
 export const description: StyleDescription = {
   paletteId: 'pitch-grass',
   tagline:
-    'The football-sim register on the Flat engine — cool stadium-light field with a faint grass tint, grass-green primary, broadcast-cyan accent, and the referee’s yellow-card / red-card alerts.',
+    'The football-sim register on the Flat engine — neutral off-white field, grass-green primary, broadcast-cyan accent, and the referee’s yellow-card / red-card alerts.',
   summary:
-    'Pitch Grass is a two-colour football broadcast. `surface.base` is a cool stadium-light `#f1f5ee` with only a ' +
-    'faint grass cast, so it never collapses into a green wash. `intent.primary` is grass green `#2f9e44`, and the ' +
+    'Pitch Grass is a two-colour football broadcast on a neutral off-white field (`surface.base` `#f7f8f7`, raised ' +
+    'to pure white), so it never collapses into a green wash. `intent.primary` is grass green `#2f9e44`, and the ' +
     'counter-accent is a vivid broadcast-cyan `#0891b2` on `content.link`, `border.focus`, and `intent.info`. The ' +
     'alerts keep the laws of the game: `intent.warning` is caution-yellow `#f5b800` (the yellow card) and ' +
     '`intent.danger` is sending-off red `#e03131` (the red card). Saira athletic type finishes the touchline read.',
@@ -16,9 +16,9 @@ export const description: StyleDescription = {
     'borrows the referee’s card-and-whistle state language.',
   signatures: [
     {
-      label: 'Cool stadium-light field, only faintly green',
+      label: 'Neutral off-white field',
       detail:
-        '`surface.base` is `#f1f5ee` — a near-neutral light with a faint grass tint, so the green primary and cyan accent read against it rather than blending in.',
+        '`surface.base` is `#f7f8f7` lifting to pure-white raised cards — a clean near-neutral page, so the green primary and cyan accent read against it rather than blending into a tinted field.',
     },
     {
       label: 'Grass-green primary against a broadcast-cyan accent',
@@ -42,7 +42,7 @@ export const description: StyleDescription = {
     'A warning/danger pair that is not yellow-then-red — the card metaphor is load-bearing',
   ],
   tokenEvidence: [
-    { path: 'color.surface.base', note: 'Cool stadium-light `#f1f5ee` — faintly green, near-neutral.' },
+    { path: 'color.surface.base', note: 'Neutral off-white `#f7f8f7` — a clean page, not a green field.' },
     { path: 'color.intent.primary.bg', note: 'Grass green `#2f9e44` — the primary action.' },
     { path: 'color.content.link', note: 'Broadcast-cyan `#0e8aa8` — the counter-accent on links.' },
     { path: 'color.intent.danger.bg', note: 'Sending-off red `#e03131` — the red card.' },

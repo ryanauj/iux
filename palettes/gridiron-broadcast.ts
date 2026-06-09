@@ -2,13 +2,13 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Gridiron Broadcast — the American-football broadcast register on the
- * Flat engine. A cool stadium-white field with chalk yard-line borders,
+ * Flat engine. A clean off-white field with chalk yard-line borders,
  * stadium navy as the primary action, and end-zone red as the accent
  * (links, focus, danger) — the navy-and-red two-colour team chrome of a
  * Sunday score bug. Condensed uppercase type and tight square panels
  * finish the lower-third read.
  *
- *   stadium white:   #eef2f6  (base) → #fbfdff (raised) → #dce4ec (sunken)
+ *   off-white field: #f6f7f9  (base) → #ffffff (raised) → #e9ecf0 (sunken)
  *   chalk line:      #bccbd9
  *   stadium navy:    #1d3a63  (primary action)
  *   end-zone red:    #c62828  (accent — links, focus, danger)
@@ -24,10 +24,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#eef2f6',
-        raised: '#fbfdff',
-        sunken: '#dce4ec',
-        overlay: '#fbfdff',
+        base: '#f6f7f9',
+        raised: '#ffffff',
+        sunken: '#e9ecf0',
+        overlay: '#ffffff',
         scrim: 'rgba(16, 36, 61, 0.52)',
       },
       content: {

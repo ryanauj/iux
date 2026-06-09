@@ -1,14 +1,14 @@
 import type { Palette } from '../tokens/semantic.contract'
 
 /**
- * Pitch Grass — the football-sim register on the Flat engine. A cool
- * stadium-light field with a faint grass tint, grass-green as the
- * primary action, and a vivid broadcast-cyan accent (links, focus) that
- * pulls the palette away from a single-hue green wash. The referee's
+ * Pitch Grass — the football-sim register on the Flat engine. A neutral
+ * off-white field, grass-green as the primary action, and a vivid
+ * broadcast-cyan accent (links, focus) — colour in the chrome, not the
+ * page, so it never reads as a single-hue green wash. The referee's
  * cards stay wired into the alerts: caution-yellow warning, sending-off
  * red danger.
  *
- *   stadium light:   #f1f5ee  (base) → #fbfdf9 (raised) → #e2eadb (sunken)
+ *   off-white field: #f7f8f7  (base) → #ffffff (raised) → #edefec (sunken)
  *   grass green:     #2f9e44  (primary action)
  *   broadcast cyan:  #0891b2  (accent — links, focus, info)
  *   caution yellow:  #f5b800  (warning — yellow card)
@@ -23,10 +23,10 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f1f5ee',
-        raised: '#fbfdf9',
-        sunken: '#e2eadb',
-        overlay: '#fbfdf9',
+        base: '#f7f8f7',
+        raised: '#ffffff',
+        sunken: '#edefec',
+        overlay: '#ffffff',
         scrim: 'rgba(19, 38, 26, 0.52)',
       },
       content: {
