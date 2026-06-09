@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
+import { buildNavLayoutField, navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -26,7 +27,7 @@ import './settings.css'
 export function SettingsPage() {
   const [controlsStyle, setControlsStyle] = useControlsStyle()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
-  const [navLayout] = useNavLayout()
+  const [navLayout, setNavLayout] = useNavLayout()
   const [, groupsApi] = useGroups()
   const [resetNote, setResetNote] = useState<string | null>(null)
 
@@ -36,7 +37,10 @@ export function SettingsPage() {
     if (isStyleId(next)) setSelectedStyle(next as StyleId)
   }
 
-  const fields: Field[] = [buildPaletteField(selectedStyle, handlePaletteChange)]
+  const fields: Field[] = [
+    buildPaletteField(selectedStyle, handlePaletteChange),
+    buildNavLayoutField(navLayout, setNavLayout),
+  ]
 
   const onResetDefaults = () => {
     if (!window.confirm('Reset all default palette groups to their starting members? Groups you created are kept.')) return
@@ -44,7 +48,12 @@ export function SettingsPage() {
     setResetNote('Default groups restored to their starting members.')
   }
 
-  const brand = <h1 className="iux-settings__title">iux — settings</h1>
+  const brand = (
+    <h1 className="iux-settings__title">
+      iux — settings
+      <OpenControlsHint />
+    </h1>
+  )
 
   return (
     <PaletteRoot palette={palette} as="section" motionScale={1}>

@@ -8,13 +8,13 @@ import { Stepper, type StepperStep } from '../../components/Stepper/Stepper'
 import { AppShell } from '../../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../../components/AppShell/navLinks'
 import {
-  NAV_LAYOUT_OPTIONS,
+  buildNavLayoutField,
   navControlsFor,
   useNavLayout,
-  type NavLayoutId,
 } from '../../components/AppShell/navLayouts'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../../components/DraggableControls/DraggableControls'
@@ -127,18 +127,14 @@ export function EngineGuide({ guide }: EngineGuideProps) {
 
   const [navLayout, setNavLayout] = useNavLayout()
   const brand = (
-    <h1 className="iux-engine-guide__brand-title">iux — engines</h1>
+    <h1 className="iux-engine-guide__brand-title">
+      iux — engines
+      <OpenControlsHint />
+    </h1>
   )
 
   const chromeField: Field = buildPaletteField(selectedStyle, setSelectedStyle)
-  const navLayoutField: Field = {
-    key: 'navLayout',
-    label: 'Nav',
-    short: 'N',
-    value: navLayout,
-    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
-    onChange: v => setNavLayout(v as NavLayoutId),
-  }
+  const navLayoutField: Field = buildNavLayoutField(navLayout, setNavLayout)
   const fields: Field[] = [chromeField, navLayoutField]
 
   return (

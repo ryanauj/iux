@@ -1,7 +1,8 @@
-// ABOUTME: Defines the eleven AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar, in-controls) and the persisted useNavLayout hook that shares the active choice across every showcase page, plus the navControlsFor helper that hands the nav to the floating controls when the in-controls layout is active.
+// ABOUTME: Defines the eleven AppShell nav-location variants (topbar, sidebars, docks, rail, drawer, fab, footer, tabbar, in-controls) and the persisted useNavLayout hook that shares the active choice across every showcase page, plus the navControlsFor helper that hands the nav to the floating controls when the in-controls layout is active and the buildNavLayoutField helper that builds the shared "Nav" picker every page drops into its controls.
 
 import { usePersistedPref } from '../../lib/usePersistedPref'
 import { APP_SHELL_NAV, type AppShellNavId, type AppShellNavLink } from './navLinks'
+import type { Field } from '../DraggableControls/DraggableControls'
 
 // ABOUTME: Ordered tuple of all eleven nav-location ids that AppShell accepts as its `layoutId` prop.
 /**
@@ -89,6 +90,29 @@ export function navControlsFor(
     links: APP_SHELL_NAV,
     activeId,
     inControls: layoutId === IN_CONTROLS_NAV_LAYOUT,
+  }
+}
+
+// ABOUTME: Builds the "Nav" control Field shown in the DraggableControls Settings group, listing every NAV_LAYOUT_OPTIONS choice (including 'in-controls') so any page can let the user move the cross-page nav — including into the controls panel — from one shared definition.
+/**
+ * Single source for the "Nav" field every page hands to
+ * `DraggableControls`, so the label, short glyph, and option list stay
+ * identical everywhere instead of being re-typed per page. Pass the
+ * current `useNavLayout()` value and setter; the field's options come
+ * straight from `NAV_LAYOUT_OPTIONS`, so 'in-controls' (route the nav into
+ * the controls panel) is always selectable.
+ */
+export function buildNavLayoutField(
+  value: NavLayoutId,
+  onChange: (next: NavLayoutId) => void,
+): Field {
+  return {
+    key: 'navLayout',
+    label: 'Nav',
+    short: 'N',
+    value,
+    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
+    onChange: v => onChange(v as NavLayoutId),
   }
 }
 

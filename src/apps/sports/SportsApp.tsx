@@ -16,6 +16,7 @@ import {
 } from './layouts'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../../components/DraggableControls/DraggableControls'
@@ -136,7 +137,10 @@ export function SportsApp({ location }: SportsAppProps) {
   )
 
   const exit = (
-    <Link to="/apps" className="sports-app__exit">← Apps</Link>
+    <>
+      <Link to="/apps" className="sports-app__exit">← Apps</Link>
+      <OpenControlsHint />
+    </>
   )
 
   return (

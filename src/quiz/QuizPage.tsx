@@ -16,10 +16,9 @@ import { QuizView } from './QuizView'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import {
-  NAV_LAYOUT_OPTIONS,
+  buildNavLayoutField,
   navControlsFor,
   useNavLayout,
-  type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 
 // ABOUTME: Canonical URL search-parameter names for the quiz page's chrome palette and controls-style state.
@@ -135,14 +134,7 @@ export function QuizPage() {
     setSelectedStyle(next)
   })
 
-  const navLayoutField: Field = {
-    key: 'navLayout',
-    label: 'Nav',
-    short: 'N',
-    value: navLayout,
-    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
-    onChange: v => setNavLayout(v as NavLayoutId),
-  }
+  const navLayoutField: Field = buildNavLayoutField(navLayout, setNavLayout)
 
   const fields: Field[] = [chromeField, navLayoutField]
 
