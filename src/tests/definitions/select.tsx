@@ -1,9 +1,10 @@
 // Select ladder rungs: native, dropdown (custom), combobox (searchable), async
-// (server-side load + creatable). The listbox is portaled to .palette-root —
-// scopedQuery walks into it. Options use onMouseDown for selection, so we
-// drive selection via keyboard (ArrowDown + Enter) rather than click. Rung 4
-// (async) is skipped: the debounced loadOptions resolution is hard to
-// observe deterministically from the sandbox runner.
+// (server-side load + creatable). The listbox is portaled to .palette-root,
+// so each composition wraps itself in a palette-root div to keep the
+// portaled subtree inside the test host. Options use onMouseDown for
+// selection, so we drive selection via keyboard (ArrowDown + Enter) rather
+// than click. Rung 4 (async) is skipped: the debounced loadOptions
+// resolution is hard to observe deterministically from the sandbox runner.
 import { useState } from 'react'
 import { Select, type SelectOption } from '../../components/Select/Select'
 import type { IntegrationTest } from '../types'
@@ -35,7 +36,7 @@ function NativeComposition() {
 function DropdownComposition() {
   const [val, setVal] = useState<string>('')
   return (
-    <div>
+    <div className="palette-root">
       <Select
         variant="dropdown"
         options={GROUPED}
@@ -51,7 +52,7 @@ function DropdownComposition() {
 function ComboboxComposition() {
   const [val, setVal] = useState<string>('')
   return (
-    <div>
+    <div className="palette-root">
       <Select
         variant="combobox"
         options={FRUITS}

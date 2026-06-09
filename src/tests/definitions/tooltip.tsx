@@ -1,15 +1,17 @@
 // Tooltip ladder rungs: plain, shortcut (kbd chip), rich (title + thumb +
 // pinnable), coach (step indicator + next/skip). The tooltip is portaled to
-// .palette-root — scopedQuery walks into it. All tests force `open={true}`
-// and `delayMs={0}` to bypass the hover/focus delay timer that the runner
-// can't deterministically drive.
+// .palette-root — each composition wraps itself in one so the portaled
+// subtree stays inside the test host (the runner's scopedQuery walks into
+// .palette-root, and tooltip has no inlineRender escape hatch). All tests
+// force `open={true}` and `delayMs={0}` to bypass the hover/focus delay
+// timer that the runner can't deterministically drive.
 import { useState } from 'react'
 import { Tooltip } from '../../components/Tooltip/Tooltip'
 import type { IntegrationTest } from '../types'
 
 function PlainComposition() {
   return (
-    <div style={{ padding: 80 }}>
+    <div className="palette-root" style={{ padding: 80 }}>
       <Tooltip variant="plain" content="Hi there" open delayMs={0}>
         <button data-testid="trigger">trigger</button>
       </Tooltip>
@@ -19,7 +21,7 @@ function PlainComposition() {
 
 function ShortcutComposition() {
   return (
-    <div style={{ padding: 80 }}>
+    <div className="palette-root" style={{ padding: 80 }}>
       <Tooltip variant="shortcut" content="Save" shortcut="⌘S" open delayMs={0}>
         <button data-testid="trigger">save</button>
       </Tooltip>
@@ -29,7 +31,7 @@ function ShortcutComposition() {
 
 function RichComposition() {
   return (
-    <div style={{ padding: 80 }}>
+    <div className="palette-root" style={{ padding: 80 }}>
       <Tooltip
         variant="rich"
         title="Pull request"
@@ -49,7 +51,7 @@ function CoachComposition() {
   const [next, setNext] = useState(0)
   const [skipped, setSkipped] = useState(false)
   return (
-    <div style={{ padding: 80 }}>
+    <div className="palette-root" style={{ padding: 80 }}>
       <Tooltip
         variant="coach"
         content="This is step one of the tour"
