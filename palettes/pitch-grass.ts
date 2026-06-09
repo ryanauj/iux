@@ -1,22 +1,19 @@
 import type { Palette } from '../tokens/semantic.contract'
 
 /**
- * Pitch Grass — the football-sim register on the Flat engine. A fresh
- * daytime pitch read: pale mown-grass field, white kit lines, grass
- * green as the primary action, and the referee's card vocabulary
- * (yellow caution, red sending-off) wired straight into the warning /
- * danger intents. Anchored on the management-sim and broadcast HUD of
- * association-football games — clean, green, and built around the
- * card-and-whistle state language every player already reads.
+ * Pitch Grass — the football-sim register on the Flat engine. A neutral
+ * off-white field, grass-green as the primary action, and a vivid
+ * broadcast-cyan accent (links, focus) — colour in the chrome, not the
+ * page, so it never reads as a single-hue green wash. The referee's
+ * cards stay wired into the alerts: caution-yellow warning, sending-off
+ * red danger.
  *
- *   mown-grass field: #eef6e7
- *   raised panel:     #fbfdf7
- *   pitch line:       #15401f
- *   grass green:      #2e8b46  (primary action)
- *   caution yellow:   #e0b400  (warning — yellow card)
- *   sending-off red:  #d23030  (danger — red card)
- *   sky blue:         #2a83c4  (info)
- *   ink (text):       #13261a  — deep forest, not pure black
+ *   off-white field: #f7f8f7  (base) → #ffffff (raised) → #edefec (sunken)
+ *   grass green:     #2f9e44  (primary action)
+ *   broadcast cyan:  #0891b2  (accent — links, focus, info)
+ *   caution yellow:  #f5b800  (warning — yellow card)
+ *   sending-off red: #e03131  (danger — red card)
+ *   ink (text):      #14271a  — deep forest, not pure black
  */
 export const palette: Palette = {
   id: 'pitch-grass',
@@ -26,35 +23,35 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#eef6e7',
-        raised: '#fbfdf7',
-        sunken: '#dde9d2',
-        overlay: '#fbfdf7',
+        base: '#f7f8f7',
+        raised: '#ffffff',
+        sunken: '#edefec',
+        overlay: '#ffffff',
         scrim: 'rgba(19, 38, 26, 0.52)',
       },
       content: {
-        primary: '#13261a',
-        secondary: '#3a5240',
-        muted: '#6c8270',
-        inverse: '#fbfdf7',
-        link: '#1b7a3e',
+        primary: '#14271a',
+        secondary: '#3b5340',
+        muted: '#6d8371',
+        inverse: '#fbfdf9',
+        link: '#0e8aa8',
       },
       border: {
-        subtle: '#dce9d0',
-        default: '#b8cfa8',
+        subtle: '#dde8d3',
+        default: '#b7cda7',
         strong: '#15401f',
-        focus: '#16a34a',
+        focus: '#0891b2',
       },
-      // Intents map to the laws of the game: grass green = play / primary,
-      // pitch-grey = neutral, brighter green = success, yellow card =
-      // warning, red card = danger, broadcast sky = info.
+      // Two-colour identity: grass green = primary / the pitch,
+      // broadcast cyan = accent (links, focus, info). The alerts keep
+      // the laws of the game — caution-yellow warning, red-card danger.
       intent: {
-        primary: { bg: '#2e8b46', content: '#fbfdf7', border: '#206334', bgHover: '#26723a', bgActive: '#1c5630' },
-        neutral: { bg: '#cfdcc4', content: '#13261a', border: '#a8bf97', bgHover: '#bfceb1', bgActive: '#a8bf97' },
-        success: { bg: '#3fae5a', content: '#0c2114', border: '#2d8543', bgHover: '#35994e', bgActive: '#2a7a40' },
-        warning: { bg: '#e0b400', content: '#2a2400', border: '#ab8a00', bgHover: '#c39c00', bgActive: '#8a6e00' },
-        danger:  { bg: '#d23030', content: '#fbfdf7', border: '#a02323', bgHover: '#b32828', bgActive: '#871d1d' },
-        info:    { bg: '#2a83c4', content: '#fbfdf7', border: '#1f6499', bgHover: '#2472aa', bgActive: '#195680' },
+        primary: { bg: '#2f9e44', content: '#fbfdf9', border: '#237a33', bgHover: '#2a8c3c', bgActive: '#1c6629' },
+        neutral: { bg: '#cdd9c2', content: '#14271a', border: '#a7ba98', bgHover: '#bdcbb0', bgActive: '#a7ba98' },
+        success: { bg: '#40c057', content: '#0c2114', border: '#2f9e44', bgHover: '#37ad4d', bgActive: '#2c8c3f' },
+        warning: { bg: '#f5b800', content: '#2a2400', border: '#c29200', bgHover: '#d8a300', bgActive: '#9c7500' },
+        danger:  { bg: '#e03131', content: '#fbfdf9', border: '#ad2424', bgHover: '#c52b2b', bgActive: '#8f1d1d' },
+        info:    { bg: '#0891b2', content: '#fbfdf9', border: '#066a85', bgHover: '#077d9b', bgActive: '#05566d' },
       },
     },
     space: {
@@ -127,7 +124,7 @@ export const palette: Palette = {
     },
     effect: {
       backdropBlur: { none: 'none', sm: 'none', md: 'none', lg: 'none' },
-      focusRing: { width: '3px', offset: '2px', color: '#16a34a', style: 'solid' },
+      focusRing: { width: '3px', offset: '2px', color: '#0891b2', style: 'solid' },
       overlay: { image: 'none', size: 'auto', blend: 'normal' },
       glow: { radius: '0', color: 'transparent', intensity: 0 },
       pixelGrid: '0',

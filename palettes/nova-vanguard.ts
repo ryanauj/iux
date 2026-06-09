@@ -2,17 +2,16 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Nova Vanguard — the optimistic hero-shooter register on the
- * glassmorphism engine, in daylight. A bright, friendly objective-HUD
- * read: cool near-white field, translucent panels, a warm hero-orange
- * primary, and a confident team-blue info — the two-colour hero/objective
- * language of squad shooters. Inspired by the welcoming, high-saturation
- * HUDs of hero shooters (Overwatch, Apex Legends) rendered light and
- * airy rather than dark and cinematic.
+ * glassmorphism engine, in daylight. A bright objective HUD built on a
+ * complementary orange-and-blue pairing: hero-orange primary and glow
+ * focus, team-blue accent (links, info). Soft radii and an orange
+ * elevation glow keep it friendly and airy rather than dark and
+ * cinematic.
  *
- *   sky field:      #f9fbfe
+ *   sky field:      #f7fafe
  *   glass panel:    rgba(255, 255, 255, 0.58)
  *   hero orange:    #f97316  (primary / focus)
- *   team blue:      #2563eb  (info)
+ *   team blue:      #2563eb  (accent — links, info)
  *   ink (text):     #13243a
  */
 export const palette: Palette = {
@@ -23,7 +22,7 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f9fbfe',
+        base: '#f7fafe',
         raised: 'rgba(255, 255, 255, 0.58)',
         sunken: 'rgba(19, 36, 58, 0.05)',
         overlay: 'rgba(255, 255, 255, 0.80)',
@@ -33,8 +32,8 @@ export const palette: Palette = {
         primary: '#13243a',
         secondary: 'rgba(19, 36, 58, 0.72)',
         muted: 'rgba(19, 36, 58, 0.50)',
-        inverse: '#f9fbfe',
-        link: '#ea6a16',
+        inverse: '#f7fafe',
+        link: '#2563eb',
       },
       border: {
         subtle: 'rgba(19, 36, 58, 0.12)',

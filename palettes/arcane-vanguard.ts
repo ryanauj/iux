@@ -2,17 +2,17 @@ import type { Palette } from '../tokens/semantic.contract'
 
 /**
  * Arcane Vanguard — the futuristic-fantasy register on the glassmorphism
- * engine, in a luminous daylight read. Pale lilac field, translucent
- * violet-glass panels, an arcane-violet primary, and a rune-gold warning
- * — the "tech-meets-magic" palette of sci-fantasy shooters where energy
- * shields and spell glyphs share one HUD. Inspired by the light-magic
- * and ability HUDs of games like Destiny and Warframe rendered bright
- * and ceremonial rather than dark and cosmic.
+ * engine, in a luminous daylight read. A "tech-meets-magic" ability HUD
+ * built on a violet-and-gold pairing: arcane-violet primary and glow
+ * focus, rune-gold accent (links, the strong border, the warning).
+ * Rune-green carries success and indigo carries info. The field stays a
+ * near-neutral off-white with white-glass panels, so the violet and gold
+ * live in the borders and chrome rather than washing the page.
  *
- *   lilac field:    #f8f6fd
- *   violet glass:   rgba(167, 139, 250, 0.12)
+ *   lilac-white:    #faf9fc  (near-neutral)
+ *   white glass:    rgba(255, 255, 255, 0.55)
  *   arcane violet:  #8b5cf6  (primary / focus)
- *   rune gold:      #d9a014  (warning)
+ *   rune gold:      #d9a014  (accent — links, warning, strong border)
  *   rune green:     #10b981  (success)
  *   ink (text):     #241445
  */
@@ -24,9 +24,9 @@ export const palette: Palette = {
   tokens: {
     color: {
       surface: {
-        base: '#f8f6fd',
-        raised: 'rgba(167, 139, 250, 0.12)',
-        sunken: 'rgba(49, 34, 82, 0.06)',
+        base: '#faf9fc',
+        raised: 'rgba(255, 255, 255, 0.55)',
+        sunken: 'rgba(49, 34, 82, 0.05)',
         overlay: 'rgba(255, 255, 255, 0.80)',
         scrim: 'rgba(30, 20, 50, 0.34)',
       },
@@ -34,20 +34,20 @@ export const palette: Palette = {
         primary: '#241445',
         secondary: 'rgba(36, 20, 69, 0.72)',
         muted: 'rgba(36, 20, 69, 0.50)',
-        inverse: '#f8f6fd',
-        link: '#7c3aed',
+        inverse: '#f7f5fd',
+        link: '#b07d00',
       },
       border: {
         subtle: 'rgba(124, 58, 237, 0.28)',
         default: 'rgba(124, 58, 237, 0.48)',
-        strong: 'rgba(124, 58, 237, 0.70)',
+        strong: 'rgba(217, 160, 20, 0.62)',
         focus: '#8b5cf6',
       },
       intent: {
         primary: { bg: 'rgba(139, 92, 246, 0.46)', content: '#3b0764', border: '#8b5cf6', bgHover: 'rgba(139, 92, 246, 0.56)', bgActive: 'rgba(139, 92, 246, 0.66)' },
         neutral: { bg: 'rgba(49, 34, 82, 0.10)', content: '#241445', border: 'rgba(124, 58, 237, 0.32)', bgHover: 'rgba(49, 34, 82, 0.16)', bgActive: 'rgba(49, 34, 82, 0.22)' },
         success: { bg: 'rgba(16, 185, 129, 0.44)', content: '#064e3b', border: '#10b981', bgHover: 'rgba(16, 185, 129, 0.54)', bgActive: 'rgba(16, 185, 129, 0.64)' },
-        warning: { bg: 'rgba(217, 160, 20, 0.48)', content: '#6b4a00', border: '#d9a014', bgHover: 'rgba(217, 160, 20, 0.58)', bgActive: 'rgba(217, 160, 20, 0.68)' },
+        warning: { bg: 'rgba(217, 160, 20, 0.50)', content: '#6b4a00', border: '#d9a014', bgHover: 'rgba(217, 160, 20, 0.60)', bgActive: 'rgba(217, 160, 20, 0.70)' },
         danger:  { bg: 'rgba(225, 29, 72, 0.46)', content: '#7a0f25', border: '#e11d48', bgHover: 'rgba(225, 29, 72, 0.56)', bgActive: 'rgba(225, 29, 72, 0.66)' },
         info:    { bg: 'rgba(79, 70, 229, 0.46)', content: '#312e81', border: '#4f46e5', bgHover: 'rgba(79, 70, 229, 0.56)', bgActive: 'rgba(79, 70, 229, 0.66)' },
       },
