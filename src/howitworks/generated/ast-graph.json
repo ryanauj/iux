@@ -6317,7 +6317,7 @@
       "area": "components",
       "dir": "components/DraggableControls",
       "name": "DraggableControls.tsx",
-      "loc": 892,
+      "loc": 905,
       "importCount": 5,
       "externalCount": 2,
       "members": [
@@ -6591,21 +6591,21 @@
           "name": "NavGroup",
           "kind": "component",
           "exported": false,
-          "line": 770,
+          "line": 783,
           "about": "Persisted collapsible disclosure that lists the cross-page nav links inside the Button panel when the active layout is 'in-controls'; reuses the routing-aware NavAnchor from AppShell and persists its own open state (default open) so the nav stays reachable across visits."
         },
         {
           "name": "SettingsGroup",
           "kind": "component",
           "exported": false,
-          "line": 812,
+          "line": 825,
           "about": "Persisted collapsible disclosure that wraps the non-palette fields under a \"Settings\" heading; persists its own open state to localStorage so it re-opens in the same state on next visit."
         },
         {
           "name": "CollapsibleSection",
           "kind": "component",
           "exported": false,
-          "line": 842,
+          "line": 855,
           "about": "Accordion-style disclosure for a single non-palette field inside the Settings group — shows the current value in the collapsed header and expands to a Select combobox or a radio button group depending on option count."
         }
       ],

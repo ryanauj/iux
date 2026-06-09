@@ -616,15 +616,28 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
     setMaxHeight(Math.max(0, Math.round(available)))
   }
 
-  useEffect(() => {
+  /*
+   * Re-pick the quadrant synchronously, before paint, whenever the panel
+   * opens. Running it in a layout effect — not a post-paint effect — is what
+   * stops the panel from flashing a frame in its previous orientation and
+   * then flipping: a double-tap that relocates the panel closes and re-opens
+   * it, and this recompute lands the new orientation before the browser
+   * paints the re-opened panel.
+   */
+  useLayoutEffect(() => {
     if (!open) return
     recompute()
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
     window.addEventListener('resize', recompute)
     window.addEventListener('orientationchange', recompute)
     return () => {
       window.removeEventListener('resize', recompute)
       window.removeEventListener('orientationchange', recompute)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   useEffect(() => {
