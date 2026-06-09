@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from '../Link'
+import { OpenControlsHint } from '../../components/DraggableControls/DraggableControls'
 import { contractsRoutes, type ContractsRoute } from './routes'
 
 // ABOUTME: Shell = the chrome around every Cap School page: brand, the chapter nav, and where the page lands.
@@ -74,7 +75,10 @@ function Brand() {
 
 // ABOUTME: "← All apps" back-link rendered in both shell layouts; navigates to the /apps landing page.
 const Exit = () => (
-  <Link to="/apps" className="cap-app__exit">← All apps</Link>
+  <>
+    <Link to="/apps" className="cap-app__exit">← All apps</Link>
+    <OpenControlsHint />
+  </>
 )
 
 // ABOUTME: Renders NAV as a list of Links, applying `is-active` to the entry matching the current route; variant switches between the sidebar rail style (with step numbers) and the topbar bar style.

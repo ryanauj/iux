@@ -5,9 +5,10 @@ import { palettes, type PaletteId } from '../../palettes'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
+import { buildNavLayoutField, navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -98,7 +99,7 @@ export function StyleEditorPage() {
   const [patterns, setPatterns] = useCustomPatterns()
   const [, groupsApi] = useGroups()
   const [selectedStyle, setSelectedStyle] = useSelectedStyle()
-  const [navLayout] = useNavLayout()
+  const [navLayout, setNavLayout] = useNavLayout()
   const [controlsStyle, setControlsStyle] = useControlsStyle()
 
   // Seed once from the URL / selected style. Subsequent edits live in local
@@ -192,7 +193,13 @@ export function StyleEditorPage() {
   }, [editingId, name, patterns, selectedStyle, base, setPatterns, setSelectedStyle, groupsApi])
 
   const chromeField: Field = buildPaletteField(selectedStyle, setSelectedStyle)
-  const brand = <h1 className="iux-style-editor__title">iux — style editor</h1>
+  const navLayoutField: Field = buildNavLayoutField(navLayout, setNavLayout)
+  const brand = (
+    <h1 className="iux-style-editor__title">
+      iux — style editor
+      <OpenControlsHint />
+    </h1>
+  )
 
   return (
     <PaletteRoot palette={resolveStyle(selectedStyle)} as="section">
@@ -286,7 +293,7 @@ export function StyleEditorPage() {
         <DraggableControls
           style={controlsStyle}
           onStyleChange={setControlsStyle}
-          fields={[chromeField]}
+          fields={[chromeField, navLayoutField]}
           nav={navControlsFor(navLayout, 'editor')}
         />
       </AppShell>

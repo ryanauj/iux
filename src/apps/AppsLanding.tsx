@@ -6,6 +6,7 @@ import { Card } from '../components/Card/Card'
 import { Link } from './Link'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -19,10 +20,9 @@ import { replaceParams, type HashLocation } from './router'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import {
-  NAV_LAYOUT_OPTIONS,
+  buildNavLayoutField,
   navControlsFor,
   useNavLayout,
-  type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 import './apps.css'
 
@@ -107,14 +107,7 @@ export function AppsLanding({ location }: AppsLandingProps) {
 
   const fields: Field[] = [
     buildPaletteField(styleId, handlePaletteChange),
-    {
-      key: 'navLayout',
-      label: 'Nav',
-      short: 'N',
-      value: navLayout,
-      options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
-      onChange: v => setNavLayout(v as NavLayoutId),
-    },
+    buildNavLayoutField(navLayout, setNavLayout),
     {
       key: 'motion',
       label: 'Motion',
@@ -126,7 +119,10 @@ export function AppsLanding({ location }: AppsLandingProps) {
   ]
 
   const brand = (
-    <h1 className="apps-landing__brand-title">iux — apps</h1>
+    <h1 className="apps-landing__brand-title">
+      iux — apps
+      <OpenControlsHint />
+    </h1>
   )
 
   return (

@@ -9,6 +9,7 @@ import { pathSegments, replaceParams, type HashLocation } from '../router'
 import { matchPromptsRoute, promptRoutes, type PromptsRoute } from './routes'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../../components/DraggableControls/DraggableControls'
@@ -132,6 +133,7 @@ export function PromptsApp({ location }: PromptsAppProps) {
               </nav>
               <span className="promptbook-app__spacer" />
               <Link to="/apps" className="promptbook-app__exit">← Apps</Link>
+              <OpenControlsHint />
             </header>
             <main className="promptbook-app__main">
               <RouteContent route={route} location={location} />

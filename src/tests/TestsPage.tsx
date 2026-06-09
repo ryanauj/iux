@@ -6,6 +6,7 @@ import { Segmented } from '../components/Segmented/Segmented'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -19,7 +20,7 @@ import { runTest, type RunOptions } from './runner'
 import type { RunResult } from './types'
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
-import { navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
+import { buildNavLayoutField, navControlsFor, useNavLayout } from '../components/AppShell/navLayouts'
 
 // ABOUTME: Discriminated union selecting which visualization is active: the test card workbench ('tests') or the coverage matrix/network ('coverage').
 export type VizId = 'tests' | 'coverage'
@@ -135,14 +136,18 @@ export function TestsPage() {
 
   const palette = resolveStyle(styleId)
   const activeHint = VIZ_OPTIONS.find(v => v.value === viz)?.hint
-  const [navLayout] = useNavLayout()
+  const [navLayout, setNavLayout] = useNavLayout()
 
   const fields: Field[] = [
     buildPaletteField(styleId, handlePaletteChange),
+    buildNavLayoutField(navLayout, setNavLayout),
   ]
 
   const brand = (
-    <h1 className="iux-tests__title">iux — integration tests</h1>
+    <h1 className="iux-tests__title">
+      iux — integration tests
+      <OpenControlsHint />
+    </h1>
   )
 
   return (

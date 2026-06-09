@@ -18,10 +18,9 @@ import {
 import { AppShell } from '../components/AppShell/AppShell'
 import { APP_SHELL_NAV } from '../components/AppShell/navLinks'
 import {
-  NAV_LAYOUT_OPTIONS,
+  buildNavLayoutField,
   navControlsFor,
   useNavLayout,
-  type NavLayoutId,
 } from '../components/AppShell/navLayouts'
 import { buildPaletteField, isStyleId, readSelectedStyle, useSelectedStyle } from '../lib/persistedStyle'
 import { resolveStyle, type StyleId } from '../lib/customPatterns'
@@ -169,14 +168,7 @@ export function DoctrinePage() {
     onChange: v => setMotionScale(resolveMotionScale(v)),
   }
 
-  const navLayoutField: Field = {
-    key: 'navLayout',
-    label: 'Nav',
-    short: 'N',
-    value: navLayout,
-    options: NAV_LAYOUT_OPTIONS.map(o => ({ value: o.value, label: o.label })),
-    onChange: v => setNavLayout(v as NavLayoutId),
-  }
+  const navLayoutField: Field = buildNavLayoutField(navLayout, setNavLayout)
 
   const fields: Field[] = [docField, chromeField, navLayoutField, motionField]
 
