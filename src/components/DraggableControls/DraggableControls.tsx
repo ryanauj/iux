@@ -94,21 +94,24 @@ export function useControlsStyle() {
   )
 }
 
-// ABOUTME: Plain-English sentence describing how to open the floating preferences for a given style and tap gesture; reused by the page info popovers (OpenControlsHelp) and the Hidden-mode "?" badge (OpenControlsHint).
+// ABOUTME: Plain-English sentence describing how to open the floating preferences for a given style and tap gesture, plus the keyboard "Open preferences" button; reused by the page info popovers (OpenControlsHelp) and the Hidden-mode "?" badge (OpenControlsHint).
 /**
  * Builds the one-sentence "how to open the preferences" explanation. When
  * the float is hidden there is no on-screen affordance, so the sentence
  * leads with the tap gesture; when the Button FAB is shown, it names the
  * button first and offers the gesture as a shortcut. The gesture word
  * (double-/triple-tap) tracks the user's `useTapGesture` choice so the help
- * never drifts from the behaviour.
+ * never drifts from the behaviour, and a closing clause points keyboard
+ * users at the focusable "Open preferences" button that works in both
+ * styles.
  */
 export function openControlsHelpText(style: ControlsStyle, gesture: TapGesture): string {
   const lower = gesture === 'triple' ? 'triple-tap' : 'double-tap'
   const Upper = gesture === 'triple' ? 'Triple-tap' : 'Double-tap'
+  const keyboard = ' Keyboard users can Tab to the "Open preferences" button.'
   return style === 'hidden'
-    ? `The floating preferences are hidden. ${Upper} anywhere on the page to open them where you tap.`
-    : `Open the floating preferences from the ◉ button, or ${lower} anywhere on the page to summon them where you tap.`
+    ? `The floating preferences are hidden. ${Upper} anywhere on the page to open them where you tap.${keyboard}`
+    : `Open the floating preferences from the ◉ button, or ${lower} anywhere on the page to summon them where you tap.${keyboard}`
 }
 
 // ABOUTME: One-line "how to open preferences" note for a page's info/help popover, reading the live controls style and open-gesture so the help stays accurate whether the float is shown or hidden.
@@ -681,9 +684,18 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
         <button
           ref={triggerRef as RefObject<HTMLButtonElement>}
           type="button"
+          /*
+           * Pointer-only. The visually-hidden "Open preferences" skip-link
+           * is the sole keyboard trigger and carries the accessible name and
+           * expanded state, so the FAB is a redundant duplicate for AT: keep
+           * it out of the tab order and out of the accessibility tree so a
+           * screen reader doesn't announce a second open/close control.
+           * Escape and the skip-link still drive it for keyboard users.
+           */
+          tabIndex={-1}
+          aria-hidden="true"
+          title={open ? 'Close controls' : `Controls: ${summaries.join(', ')}`}
           className={`ctrl-button__fab${open ? ' ctrl-button__fab--open' : ''}`}
-          aria-label={open ? 'Close controls. Drag to move.' : `Open controls. Current: ${summaries.join(', ')}. Drag to move.`}
-          aria-expanded={open}
           onClick={handleClick}
           {...dragHandlers}
         >
