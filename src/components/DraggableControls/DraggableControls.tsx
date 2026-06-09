@@ -1,4 +1,4 @@
-// ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or as nothing at all (Hidden style, summoned only by a tap gesture); persists position and open state to localStorage and adapts layout to phone-sized viewports.
+// ABOUTME: Floating, freely draggable demo-controls overlay that renders either as a circular FAB (Button style) or as nothing at all (Hidden style, summoned by a tap gesture or the keyboard "Open preferences" skip-link); persists position and open state to localStorage, moves focus into the panel on open, and adapts layout to phone-sized viewports.
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type RefObject } from 'react'
 import { usePersistedPref } from '../../lib/usePersistedPref'
@@ -555,10 +555,12 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
 }
 
 /* ===== Button / Hidden variant ===== */
-// ABOUTME: Renders the floating panel and its trigger. For 'button' the trigger is a draggable circular FAB; for 'hidden' it is an invisible zero-size anchor (the panel is summoned by the tap gesture instead). The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open.
+// ABOUTME: Renders the floating panel and its triggers — a visually-hidden "Open preferences" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open.
 function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement>(null)
+  const restoreRef = useRef<HTMLElement | null>(null)
+  const wasOpen = useRef(false)
   const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
   const [maxHeight, setMaxHeight] = useState<number | null>(null)
   const hidden = variantStyle === 'hidden'
@@ -620,6 +622,45 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
     setOpen(!open)
   }
 
+  // Keyboard entry point. The visually-hidden "Open preferences" button is
+  // the focusable affordance that summons the panel without a pointer — the
+  // only way in for keyboard / AT users in Hidden mode, and a labelled
+  // alternative to the FAB in Button mode. Re-activating while open just
+  // sends focus back into the panel.
+  const openViaKeyboard = () => {
+    if (!open) {
+      recompute()
+      setOpen(true)
+    } else {
+      panelRef.current?.focus({ preventScroll: true })
+    }
+  }
+
+  /*
+   * Move focus into the panel when it opens and restore it when it closes.
+   * Non-modal: Tab can still leave the panel (no focus trap). On open we
+   * remember whatever had focus (the trigger, for keyboard opens) and move
+   * focus to the panel container so AT lands on the labelled group. On
+   * close we only restore if focus fell back to the body — i.e. it was
+   * inside the now-unmounted panel — so we never yank focus away from
+   * wherever a pointer user clicked to dismiss it.
+   */
+  useEffect(() => {
+    if (open && !wasOpen.current) {
+      restoreRef.current = (document.activeElement as HTMLElement | null) ?? null
+      requestAnimationFrame(() => panelRef.current?.focus({ preventScroll: true }))
+    } else if (!open && wasOpen.current) {
+      const el = restoreRef.current
+      restoreRef.current = null
+      const active = document.activeElement
+      const focusFellToBody = !active || active === document.body
+      if (focusFellToBody && el && document.contains(el)) {
+        el.focus?.({ preventScroll: true })
+      }
+    }
+    wasOpen.current = open
+  }, [open])
+
   useOverflowEdges(panelRef, open)
 
   const paletteFields = fields.filter(f => f.kind === 'palette')
@@ -627,13 +668,16 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
 
   return (
     <div className="ctrl-button">
-      {hidden ? (
-        <span
-          ref={triggerRef as RefObject<HTMLSpanElement>}
-          className="ctrl-button__anchor"
-          aria-hidden="true"
-        />
-      ) : (
+      <button
+        ref={hidden ? (triggerRef as RefObject<HTMLButtonElement>) : undefined}
+        type="button"
+        className="ctrl-button__open-sr"
+        aria-expanded={open}
+        onClick={openViaKeyboard}
+      >
+        Open preferences
+      </button>
+      {!hidden && (
         <button
           ref={triggerRef as RefObject<HTMLButtonElement>}
           type="button"
@@ -653,6 +697,7 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
           style={maxHeight != null ? ({ '--panel-max-height': `${maxHeight}px` } as CSSProperties) : undefined}
           role="group"
           aria-label="Demo controls"
+          tabIndex={-1}
         >
           <span className="ctrl-button__edge ctrl-button__edge--top" aria-hidden="true" />
           {paletteFields.length > 0 && (
