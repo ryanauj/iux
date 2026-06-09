@@ -4,6 +4,8 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
+  OpenControlsHelp,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -173,6 +175,7 @@ export function HowItWorksPage() {
         >
           i
         </button>
+        <OpenControlsHint />
       </h1>
       {infoOpen && (
         <div
@@ -197,6 +200,7 @@ export function HowItWorksPage() {
           <em>Matrix</em> tabs show the same data as a whole map. It
           paints with the active palette&apos;s tokens, so switch the Palette
           to watch it re-theme.
+          <OpenControlsHelp />
         </div>
       )}
     </>

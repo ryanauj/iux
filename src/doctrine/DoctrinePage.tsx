@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { PaletteRoot } from '../theme/PaletteRoot'
 import {
   DraggableControls,
+  OpenControlsHelp,
+  OpenControlsHint,
   useControlsStyle,
   type Field,
 } from '../components/DraggableControls/DraggableControls'
@@ -195,6 +197,7 @@ export function DoctrinePage() {
         >
           i
         </button>
+        <OpenControlsHint />
         <DocModeToggle
           className="stories__doc-mode"
           value={docMode}
@@ -216,6 +219,7 @@ export function DoctrinePage() {
           Use Doc to switch pages. Toggle the voice between plain
           English and the technical original with the control next
           to the title.
+          <OpenControlsHelp />
         </div>
       )}
     </>
