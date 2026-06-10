@@ -511,9 +511,10 @@ export interface EffectTokens {
    * engine's intended surface model directly.
    *
    * This is the most load-bearing contract addition in the palette
-   * surface group — every palette must declare it, and Aurora is the
-   * only palette using `'luminance'` today. A second atmospheric engine
-   * could plug into the same slot later.
+   * surface group — every palette must declare it, and only the
+   * Aurora-engine family (light and dark gradient registers) uses
+   * `'luminance'` today. A second atmospheric engine could plug into
+   * the same slot later.
    *
    * CSS var emits as `--surface-by`.
    */

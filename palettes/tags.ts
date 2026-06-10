@@ -203,6 +203,10 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   /* Group Z11 — "new tech gradient" family (modern-app mesh gradients + glass / cel variations) */
   'aurora-nebula': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'violet', 'magenta', 'cyan', 'atmospheric'],
   'aurora-spectrum': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'azure', 'cyan', 'emerald', 'atmospheric', 'dashboard'],
+  'aurora-ember': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'warm', 'sunset', 'orange', 'amber', 'rose', 'atmospheric'],
+  'aurora-verdant': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'green', 'emerald', 'teal', 'lime', 'eco', 'atmospheric'],
+  'aurora-daybreak': ['tech-gradient', 'gradient', 'mesh', 'modern', 'light', 'cool', 'azure', 'cyan', 'pastel', 'atmospheric'],
+  'aurora-bloom': ['tech-gradient', 'gradient', 'mesh', 'modern', 'light', 'warm', 'pink', 'peach', 'lavender', 'pastel', 'atmospheric'],
   'cel-glass-flux': ['tech-gradient', 'glass', 'translucent', 'frosted', 'modern', 'dark', 'indigo', 'cyan', 'cel-shaded'],
   'cel-shaded-circuit': ['tech-gradient', 'cel-shaded', 'cyberpunk', 'hud', 'modern', 'dark', 'indigo', 'cyan', 'neon', 'ink-outline'],
 }

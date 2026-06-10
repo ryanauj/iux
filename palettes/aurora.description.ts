@@ -5,7 +5,7 @@ export const description: StyleDescription = {
   tagline:
     'Deep midnight base with a slowly drifting multi-radial atmosphere — surfaces demarcated by light density (`surfaceBy: \'luminance\'`), not by borders, with a 48-second drift loop that never reaches the same composition twice.',
   summary:
-    'Aurora is the only palette in the codebase on the `aurora` engine and the only one that sets ' +
+    'Aurora is the original of the `aurora`-engine family and the canonical example of ' +
     '`effect.surfaceBy = \'luminance\'`. The signature surface model is light density: `surface.base` is near-black ' +
     '`#0a0e1a`, `raised` is `rgba(255,255,255, 0.05)`, and the engine paints a four-radial atmospheric gradient ' +
     '(deep purple, atmospheric green, teal, secondary purple wash) at the palette root that slowly drifts across ' +
@@ -28,12 +28,12 @@ export const description: StyleDescription = {
     {
       label: '`effect.surfaceBy: \'luminance\'` — surfaces by light density, not by borders',
       detail:
-        'Aurora is the only palette in the codebase that sets `surfaceBy: \'luminance\'`; every other palette declares `\'border\'`. The slot is the most load-bearing contract distinction in the engine: a raised card here is *not* a different opaque fill, it\'s a translucent luminance lift over the same atmosphere. The engine block paints a soft outer white halo via `--luminance-center` plus a `backdrop-filter` blur so the edge dissolves into the gradient instead of cutting it.',
+        'Aurora and its engine siblings set `surfaceBy: \'luminance\'`; every non-aurora palette declares `\'border\'`. The slot is the most load-bearing contract distinction in the engine: a raised card here is *not* a different opaque fill, it\'s a translucent luminance lift over the same atmosphere. The engine block paints a `backdrop-filter` blur so the edge dissolves into the gradient instead of cutting it.',
     },
     {
       label: '`effect.luminanceCenter` = `rgba(255,255,255, 0.08)`',
       detail:
-        'A translucent near-white tint that the engine paints as the soft outer glow around raised surfaces and intensifies on hover (to `0.10`) and focus (to `0.14`). The slot is `\'transparent\'` on every other palette in the codebase — Aurora is the only one to put it to work. The var inherits down the tree, so nested raised surfaces pick up the same luminance unless they override locally.',
+        'A translucent near-white tint that records the luminance lift around raised surfaces. The slot is `\'transparent\'` on every non-aurora palette — only the aurora-engine family puts it to work. The var inherits down the tree, so nested raised surfaces pick up the same luminance unless they override locally.',
     },
     {
       label: 'Paired outer-purple-glow + inner-white-lift elevation (no hard offset shadows)',
@@ -55,13 +55,13 @@ export const description: StyleDescription = {
     'Any opaque `surface.raised` fill (defeats the luminance surface model — cards would punch holes in the atmosphere)',
     'Hard offset shadows on `elevation.*` (the metaphor is brighter atmosphere, not paper-above-paper)',
     'Full-chroma 1px outlines on non-focus borders (the recessive `0.05–0.18` white tints are the contract)',
-    '`atmosphereGradient: \'none\'` (every other palette sets this — Aurora is the only one that paints the gradient at the engine root)',
+    '`atmosphereGradient: \'none\'` (every non-aurora palette sets this — only the aurora-engine family paints a gradient at the engine root)',
     'A saturated chromatic `surface.base` like Glassmorphism\'s indigo or Aero\'s Vista-blue (Aurora\'s floor is near-neutral midnight so the gradient supplies all chroma)',
   ],
   tokenEvidence: [
     {
       path: 'effect.surfaceBy',
-      note: '`\'luminance\'` — the only palette in the codebase that sets this. Records that surfaces are demarcated by light density, not by strokes.',
+      note: '`\'luminance\'` — set by the aurora-engine family (every non-aurora palette declares `\'border\'`). Records that surfaces are demarcated by light density, not by strokes.',
     },
     {
       path: 'effect.atmosphereGradient',
