@@ -199,4 +199,10 @@ export const paletteTags: Partial<Record<PaletteId, string[]>> = {
   'tactical-recon': ['game-ui', 'fps', 'tactical', 'scanner', 'light', 'green', 'magenta', 'hud'],
   'nova-vanguard': ['game-ui', 'fps', 'hero-shooter', 'light', 'bright', 'orange', 'blue'],
   'arcane-vanguard': ['game-ui', 'fps', 'futuristic-fantasy', 'sci-fantasy', 'light', 'violet', 'gold', 'magic'],
+
+  /* Group Z11 — "new tech gradient" family (modern-app mesh gradients + glass / cel variations) */
+  'aurora-nebula': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'violet', 'magenta', 'cyan', 'atmospheric'],
+  'aurora-spectrum': ['tech-gradient', 'gradient', 'mesh', 'modern', 'dark', 'azure', 'cyan', 'emerald', 'atmospheric', 'dashboard'],
+  'cel-glass-flux': ['tech-gradient', 'glass', 'translucent', 'frosted', 'modern', 'dark', 'indigo', 'cyan', 'cel-shaded'],
+  'cel-shaded-circuit': ['tech-gradient', 'cel-shaded', 'cyberpunk', 'hud', 'modern', 'dark', 'indigo', 'cyan', 'neon', 'ink-outline'],
 }
