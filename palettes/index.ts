@@ -118,6 +118,10 @@ import { palette as aegisHalo } from './aegis-halo'
 import { palette as tacticalRecon } from './tactical-recon'
 import { palette as novaVanguard } from './nova-vanguard'
 import { palette as arcaneVanguard } from './arcane-vanguard'
+import { palette as auroraNebula } from './aurora-nebula'
+import { palette as auroraSpectrum } from './aurora-spectrum'
+import { palette as celGlassFlux } from './cel-glass-flux'
+import { palette as celShadedCircuit } from './cel-shaded-circuit'
 
 export const palettes = {
   'flat-classic': flatClassic,
@@ -240,6 +244,10 @@ export const palettes = {
   'tactical-recon': tacticalRecon,
   'nova-vanguard': novaVanguard,
   'arcane-vanguard': arcaneVanguard,
+  'aurora-nebula': auroraNebula,
+  'aurora-spectrum': auroraSpectrum,
+  'cel-glass-flux': celGlassFlux,
+  'cel-shaded-circuit': celShadedCircuit,
 } as const
 
 export type PaletteId = keyof typeof palettes

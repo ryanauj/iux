@@ -34,6 +34,10 @@ import { description as celShadedNordCrt } from './cel-shaded-nord-crt.descripti
 import { description as celShadedSolarizedCrt } from './cel-shaded-solarized-crt.description'
 import { description as celShadedUkiyoGlass } from './cel-shaded-ukiyo-glass.description'
 import { description as aurora } from './aurora.description'
+import { description as auroraNebula } from './aurora-nebula.description'
+import { description as auroraSpectrum } from './aurora-spectrum.description'
+import { description as celGlassFlux } from './cel-glass-flux.description'
+import { description as celShadedCircuit } from './cel-shaded-circuit.description'
 import { description as bauhaus } from './bauhaus.description'
 import { description as blueprint } from './blueprint.description'
 import { description as brutalistElegant } from './brutalist-elegant.description'
@@ -156,6 +160,10 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   'cel-shaded-solarized-crt': celShadedSolarizedCrt,
   'cel-shaded-ukiyo-glass': celShadedUkiyoGlass,
   aurora,
+  'aurora-nebula': auroraNebula,
+  'aurora-spectrum': auroraSpectrum,
+  'cel-glass-flux': celGlassFlux,
+  'cel-shaded-circuit': celShadedCircuit,
   bauhaus,
   blueprint,
   'brutalist-elegant': brutalistElegant,

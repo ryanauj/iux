@@ -199,6 +199,15 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'nova-vanguard',
     'arcane-vanguard',
   ],
+  'Tech Gradient': [
+    'aurora-nebula',
+    'aurora-spectrum',
+    'cel-glass-flux',
+    'cel-shaded-circuit',
+    'aurora',
+    'linear-workspace',
+    'vercel-geist',
+  ],
 }
 
 function buildEngineGroups(): Record<string, PaletteId[]> {
