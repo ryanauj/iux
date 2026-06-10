@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "stats": {
     "areas": 14,
-    "files": 257,
-    "members": 1912,
-    "imports": 776,
-    "memberEdges": 1230,
+    "files": 265,
+    "members": 1959,
+    "imports": 800,
+    "memberEdges": 1261,
     "documentedFiles": 257,
-    "documentedMembers": 1910
+    "documentedMembers": 1911
   },
   "areas": [
     {
@@ -26,7 +26,7 @@
       "id": "components",
       "label": "components",
       "fileCount": 93,
-      "memberCount": 844
+      "memberCount": 845
     },
     {
       "id": "doctrine",
@@ -85,8 +85,8 @@
     {
       "id": "tests",
       "label": "tests",
-      "fileCount": 22,
-      "memberCount": 121
+      "fileCount": 30,
+      "memberCount": 167
     },
     {
       "id": "theme",
@@ -8442,7 +8442,7 @@
       "area": "components",
       "dir": "components/PalettePicker",
       "name": "PalettePicker.tsx",
-      "loc": 797,
+      "loc": 830,
       "importCount": 4,
       "externalCount": 4,
       "members": [
@@ -8475,60 +8475,67 @@
           "about": "localStorage key used by usePersistedPref to remember whether the Custom patterns section is expanded across sessions."
         },
         {
+          "name": "LIBRARY_OPEN_KEY",
+          "kind": "const",
+          "exported": false,
+          "line": 49,
+          "about": "localStorage key used by usePersistedPref to remember whether the parent Library group (active group + custom patterns + browse) is expanded across sessions."
+        },
+        {
           "name": "isBoolPref",
           "kind": "function",
           "exported": false,
-          "line": 49,
+          "line": 51,
           "about": "Type guard for the '0'/'1' string preference values stored by usePersistedPref; rejects any other string so the hook falls back to the default."
         },
         {
           "name": "PalettePickerVariant",
           "kind": "type",
           "exported": true,
-          "line": 52,
+          "line": 54,
           "about": "Determines the layout context: 'button' manages its own open state and renders inside the button tile, 'strip' delegates open/close to the parent DraggableControls strip so only one slot popover is shown at a time."
         },
         {
           "name": "StripQuadrant",
           "kind": "type",
           "exported": false,
-          "line": 60,
+          "line": 62,
           "about": "Quadrant of the viewport where the DraggableControls strip slot sits; used by the strip variant to position the popover so it opens toward available screen space rather than off-edge."
         },
         {
           "name": "FieldShape",
           "kind": "interface",
           "exported": false,
-          "line": 63,
+          "line": 65,
           "about": "Minimal field descriptor passed into PalettePicker: the current style id as 'value', the setter as 'onChange', an optional human label, and a short abbreviation for the strip icon slot."
         },
         {
           "name": "PalettePickerProps",
           "kind": "interface",
           "exported": false,
-          "line": 71,
+          "line": 73,
           "about": "Internal props for PalettePicker: wraps the FieldShape plus variant-specific controlled-open, slot-click, and close callbacks for the strip variant, and popover positioning data forwarded from DraggableControls."
         },
         {
           "name": "PalettePicker",
           "kind": "component",
           "exported": true,
-          "line": 104,
+          "line": 106,
           "about": "Renders prev/next arrow buttons that cycle through the active group (or the full catalog when no group is active) and a trigger button that opens the `PalettePickerPanel` popover; the 'strip' variant proxies open state and click events to the parent, while 'button' manages its own `internalOpen`."
         },
         {
           "name": "PanelProps",
           "kind": "interface",
           "exported": false,
-          "line": 247,
+          "line": 249,
           "about": "Props forwarded from PalettePicker to PalettePickerPanel: the full group/API state, the current StyleId, popover-positioning geometry, and the onClose callback."
         },
         {
           "name": "PalettePickerPanel",
           "kind": "component",
           "exported": false,
-          "line": 262,
-          "about": "The popover dialog body rendered when the picker is open: contains a current-style quick-action row (favorite, add-to-list, edit for custom), the active-group selector, the collapsible custom-patterns list, and the collapsible search + full-catalog browse list; positions itself via CSS custom property for the strip variant."
+          "line": 264,
+          "about": "The popover dialog body rendered when the picker is open: an always-visible current-style quick-action row (favorite, add-to-list, edit for custom) above a collapsible parent Library group that holds the active-group selector, the collapsible custom-patterns list, and the collapsible search + full-catalog browse list; positions itself via CSS custom property for the strip variant."
         }
       ],
       "about": "Palette and custom-pattern selector used in the DraggableControls strip and button tile; renders prev/next cycle arrows and a popover panel with search, group management, custom pattern CRUD, and favorite toggling — backed by `paletteTags` and `customPatterns` hooks."
@@ -15440,6 +15447,88 @@
       "about": "Composition integration test for CommandPalette + Button: opens the palette via a button click, types to narrow the command list to a single match, presses Enter to run the highlighted command, and asserts the command's result appears in the DOM."
     },
     {
+      "id": "src/tests/definitions/date-picker.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "date-picker.tsx",
+      "loc": 114,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "InputComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 8
+        },
+        {
+          "name": "CalendarComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 19
+        },
+        {
+          "name": "RangeComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 30
+        },
+        {
+          "name": "NlComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 43
+        },
+        {
+          "name": "datePickerTests",
+          "kind": "const",
+          "exported": true,
+          "line": 53
+        }
+      ]
+    },
+    {
+      "id": "src/tests/definitions/drawer.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "drawer.tsx",
+      "loc": 159,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "SideComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 10
+        },
+        {
+          "name": "SectionedComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 28
+        },
+        {
+          "name": "NavigableComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 49
+        },
+        {
+          "name": "SheetComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 74
+        },
+        {
+          "name": "drawerTests",
+          "kind": "const",
+          "exported": true,
+          "line": 93
+        }
+      ]
+    },
+    {
       "id": "src/tests/definitions/empty-state.tsx",
       "area": "tests",
       "dir": "tests/definitions",
@@ -15511,6 +15600,47 @@
         }
       ],
       "about": "Composition integration test for TextInput + Button + Toast: types a name into a text field, clicks Submit, waits for a success toast, and asserts the toast title contains the entered value — exercises three components together."
+    },
+    {
+      "id": "src/tests/definitions/loading.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "loading.tsx",
+      "loc": 87,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "SpinnerComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 7
+        },
+        {
+          "name": "ShimmerComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 11
+        },
+        {
+          "name": "SkeletonComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 15
+        },
+        {
+          "name": "OptimisticComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 19
+        },
+        {
+          "name": "loadingTests",
+          "kind": "const",
+          "exported": true,
+          "line": 31
+        }
+      ]
     },
     {
       "id": "src/tests/definitions/modal-with-form.tsx",
@@ -15619,6 +15749,100 @@
       "about": "Integration tests for the Pagination component covering three ladder rungs: numbered (aria-current page, prev/next, ellipsis gaps), rich (first/last jump buttons and page-size select), and load-more (item count display and Load more button extends the list); rung 4 (infinite scroll) requires IntersectionObserver and is omitted."
     },
     {
+      "id": "src/tests/definitions/select.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "select.tsx",
+      "loc": 116,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "FRUITS",
+          "kind": "const",
+          "exported": false,
+          "line": 12
+        },
+        {
+          "name": "GROUPED",
+          "kind": "const",
+          "exported": false,
+          "line": 18
+        },
+        {
+          "name": "NativeComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 25
+        },
+        {
+          "name": "DropdownComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 36
+        },
+        {
+          "name": "ComboboxComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 52
+        },
+        {
+          "name": "selectTests",
+          "kind": "const",
+          "exported": true,
+          "line": 68
+        }
+      ]
+    },
+    {
+      "id": "src/tests/definitions/sidebar.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "sidebar.tsx",
+      "loc": 131,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "ITEMS",
+          "kind": "const",
+          "exported": false,
+          "line": 8
+        },
+        {
+          "name": "LinksComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 14
+        },
+        {
+          "name": "GroupsComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 24
+        },
+        {
+          "name": "RailComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 48
+        },
+        {
+          "name": "SearchComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 56
+        },
+        {
+          "name": "sidebarTests",
+          "kind": "const",
+          "exported": true,
+          "line": 65
+        }
+      ]
+    },
+    {
       "id": "src/tests/definitions/slider.tsx",
       "area": "tests",
       "dir": "tests/definitions",
@@ -15664,6 +15888,71 @@
         }
       ],
       "about": "Integration tests for the Slider component covering four ladder rungs: arrow keys step a single-thumb slider (rung 1), ticks variant renders marks and keyboard step respects the step prop (rung 2), range variant has two thumbs and max thumb responds to arrows (rung 3), and curve variant renders an SVG polyline backdrop (rung 4)."
+    },
+    {
+      "id": "src/tests/definitions/table.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "table.tsx",
+      "loc": 143,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "Row",
+          "kind": "interface",
+          "exported": false,
+          "line": 11
+        },
+        {
+          "name": "ROWS",
+          "kind": "const",
+          "exported": false,
+          "line": 13
+        },
+        {
+          "name": "STATIC_COLS",
+          "kind": "const",
+          "exported": false,
+          "line": 19
+        },
+        {
+          "name": "SORTABLE_COLS",
+          "kind": "const",
+          "exported": false,
+          "line": 24
+        },
+        {
+          "name": "StaticComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 29
+        },
+        {
+          "name": "SortableComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 40
+        },
+        {
+          "name": "ResizableComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 58
+        },
+        {
+          "name": "EditableComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 69
+        },
+        {
+          "name": "tableTests",
+          "kind": "const",
+          "exported": true,
+          "line": 80
+        }
+      ]
     },
     {
       "id": "src/tests/definitions/tabs.tsx",
@@ -15854,33 +16143,115 @@
       "about": "Integration tests for the Toggle component covering four ladder rungs: plain switch flips on click and updates aria-checked (rung 1), saving microstate shows aria-busy spinner while saving (rung 2), segmented picks one option and updates aria-checked across the group (rung 3), and tristate exposes on/off/inherit with three segments (rung 4)."
     },
     {
+      "id": "src/tests/definitions/token-field.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "token-field.tsx",
+      "loc": 146,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "SplitComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 10
+        },
+        {
+          "name": "TypeaheadComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 20
+        },
+        {
+          "name": "GroupedComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 35
+        },
+        {
+          "name": "StructuredComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 60
+        },
+        {
+          "name": "tokenFieldTests",
+          "kind": "const",
+          "exported": true,
+          "line": 72
+        }
+      ]
+    },
+    {
+      "id": "src/tests/definitions/tooltip.tsx",
+      "area": "tests",
+      "dir": "tests/definitions",
+      "name": "tooltip.tsx",
+      "loc": 129,
+      "importCount": 2,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "PlainComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 12
+        },
+        {
+          "name": "ShortcutComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 22
+        },
+        {
+          "name": "RichComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 32
+        },
+        {
+          "name": "CoachComposition",
+          "kind": "component",
+          "exported": false,
+          "line": 50
+        },
+        {
+          "name": "tooltipTests",
+          "kind": "const",
+          "exported": true,
+          "line": 70
+        }
+      ]
+    },
+    {
       "id": "src/tests/registry.ts",
       "area": "tests",
       "dir": "tests",
       "name": "registry.ts",
-      "loc": 51,
-      "importCount": 15,
+      "loc": 67,
+      "importCount": 23,
       "externalCount": 0,
       "members": [
         {
           "name": "INTEGRATION_TESTS",
           "kind": "const",
           "exported": true,
-          "line": 20,
+          "line": 28,
           "about": "Ordered master list of all integration tests — composition flows first (form-submit, modal-with-form, command-palette) then per-component ladder-rung suites — read by the runner, TestsViz, and CoverageViz."
         },
         {
           "name": "findTest",
           "kind": "function",
           "exported": true,
-          "line": 40,
+          "line": 56,
           "about": "Look up a single test by its id string, returning undefined when not found; used by CoverageViz and the autorun loop."
         },
         {
           "name": "involvedComponentIds",
           "kind": "function",
           "exported": true,
-          "line": 46,
+          "line": 62,
           "about": "Return deduplicated component ids that appear in at least one test's `components` array, in insertion order — used by CoverageViz to build its matrix columns and network nodes."
         }
       ],
@@ -21951,6 +22322,35 @@
       ]
     },
     {
+      "source": "src/tests/definitions/date-picker.tsx",
+      "target": "src/components/DatePicker/DatePicker.tsx",
+      "members": [
+        "DatePicker"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/date-picker.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/drawer.tsx",
+      "target": "src/components/Drawer/Drawer.tsx",
+      "members": [
+        "Drawer",
+        "DrawerView"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/drawer.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
       "source": "src/tests/definitions/empty-state.tsx",
       "target": "src/components/EmptyState/EmptyState.tsx",
       "members": [
@@ -21989,6 +22389,20 @@
     },
     {
       "source": "src/tests/definitions/form-submit-toast.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/loading.tsx",
+      "target": "src/components/Loading/Loading.tsx",
+      "members": [
+        "Loading"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/loading.tsx",
       "target": "src/tests/types.ts",
       "members": [
         "IntegrationTest"
@@ -22060,6 +22474,37 @@
       ]
     },
     {
+      "source": "src/tests/definitions/select.tsx",
+      "target": "src/components/Select/Select.tsx",
+      "members": [
+        "Select",
+        "SelectOption"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/select.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/sidebar.tsx",
+      "target": "src/components/Sidebar/Sidebar.tsx",
+      "members": [
+        "Sidebar",
+        "SidebarGroup",
+        "SidebarItem"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/sidebar.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
       "source": "src/tests/definitions/slider.tsx",
       "target": "src/components/Slider/Slider.tsx",
       "members": [
@@ -22068,6 +22513,21 @@
     },
     {
       "source": "src/tests/definitions/slider.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/table.tsx",
+      "target": "src/components/Table/Table.tsx",
+      "members": [
+        "Table",
+        "TableColumn"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/table.tsx",
       "target": "src/tests/types.ts",
       "members": [
         "IntegrationTest"
@@ -22134,6 +22594,36 @@
       ]
     },
     {
+      "source": "src/tests/definitions/token-field.tsx",
+      "target": "src/components/TokenField/TokenField.tsx",
+      "members": [
+        "Token",
+        "TokenField",
+        "TokenOption"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/token-field.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/tooltip.tsx",
+      "target": "src/components/Tooltip/Tooltip.tsx",
+      "members": [
+        "Tooltip"
+      ]
+    },
+    {
+      "source": "src/tests/definitions/tooltip.tsx",
+      "target": "src/tests/types.ts",
+      "members": [
+        "IntegrationTest"
+      ]
+    },
+    {
       "source": "src/tests/registry.ts",
       "target": "src/tests/definitions/button.tsx",
       "members": [
@@ -22163,6 +22653,20 @@
     },
     {
       "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/date-picker.tsx",
+      "members": [
+        "datePickerTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/drawer.tsx",
+      "members": [
+        "drawerTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
       "target": "src/tests/definitions/empty-state.tsx",
       "members": [
         "emptyStateTests"
@@ -22173,6 +22677,13 @@
       "target": "src/tests/definitions/form-submit-toast.tsx",
       "members": [
         "formSubmitToast"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/loading.tsx",
+      "members": [
+        "loadingTests"
       ]
     },
     {
@@ -22198,9 +22709,30 @@
     },
     {
       "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/select.tsx",
+      "members": [
+        "selectTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/sidebar.tsx",
+      "members": [
+        "sidebarTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
       "target": "src/tests/definitions/slider.tsx",
       "members": [
         "sliderTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/table.tsx",
+      "members": [
+        "tableTests"
       ]
     },
     {
@@ -22229,6 +22761,20 @@
       "target": "src/tests/definitions/toggle.tsx",
       "members": [
         "toggleTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/token-field.tsx",
+      "members": [
+        "tokenFieldTests"
+      ]
+    },
+    {
+      "source": "src/tests/registry.ts",
+      "target": "src/tests/definitions/tooltip.tsx",
+      "members": [
+        "tooltipTests"
       ]
     },
     {

@@ -43,6 +43,16 @@
   flex-direction: column-reverse;
 }
 
+/*
+ * The Library group is itself a flex column, so the outer column-reverse
+ * only flips it as a whole (Library above the current-style row). Reverse
+ * its inner sections too so the lightweight active-group selector again
+ * lands nearest the thumb and the heavier Browse list stacks furthest away.
+ */
+.palette-picker--up .palette-picker__library-body {
+  flex-direction: column-reverse;
+}
+
 .palette-picker--button {
   /* Sits inside the ctrl-button panel; constrained by the panel's
    * min-width: 22rem. */
@@ -511,6 +521,54 @@
   margin-top: 2px;
   padding-top: 6px;
   color: var(--color-content-secondary, GrayText);
+}
+
+/* ─────────── library group (parent disclosure) ─────────── */
+
+/*
+ * Wraps the active-group selector, custom patterns, and the browse list
+ * under a single parent toggle so the whole stack collapses to just the
+ * current-style quick-action row while the palette popover stays open —
+ * the compact state for small screens where the expanded sections cover
+ * the showcase view underneath.
+ */
+.palette-picker__library {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  /* Forward the shrink chain down to the browse list when the popover hits
+   * its own max-height. See the comment on `.palette-picker__list`. */
+  min-height: 0;
+}
+
+.palette-picker__library-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  min-height: 0;
+}
+
+.palette-picker__library-toggle {
+  font: inherit;
+  font-size: var(--type-caption-size, 0.75rem);
+  font-weight: var(--type-label-weight, 600);
+  text-align: left;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-content-primary, CanvasText);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.palette-picker__library-toggle:hover {
+  background: var(--color-surface-sunken, Canvas);
+}
+
+.palette-picker__library-toggle:focus-visible {
+  outline: var(--effect-focus-ring-width, 2px) var(--effect-focus-ring-style, solid) var(--color-focus-ring, currentColor);
+  outline-offset: var(--effect-focus-ring-offset, 1px);
 }
 
 /* ─────────── browse disclosure ─────────── */

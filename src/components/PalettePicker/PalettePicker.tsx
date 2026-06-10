@@ -45,6 +45,8 @@ function styleName(id: string, customs: CustomPatternMap): string {
 const LIST_OPEN_KEY = 'palette-picker:list-open'
 // ABOUTME: localStorage key used by usePersistedPref to remember whether the Custom patterns section is expanded across sessions.
 const CUSTOM_OPEN_KEY = 'palette-picker:custom-open'
+// ABOUTME: localStorage key used by usePersistedPref to remember whether the parent Library group (active group + custom patterns + browse) is expanded across sessions.
+const LIBRARY_OPEN_KEY = 'palette-picker:library-open'
 // ABOUTME: Type guard for the '0'/'1' string preference values stored by usePersistedPref; rejects any other string so the hook falls back to the default.
 const isBoolPref = (raw: string): raw is '0' | '1' => raw === '0' || raw === '1'
 
@@ -258,7 +260,7 @@ interface PanelProps {
   onClose: () => void
 }
 
-// ABOUTME: The popover dialog body rendered when the picker is open: contains a current-style quick-action row (favorite, add-to-list, edit for custom), the active-group selector, the collapsible custom-patterns list, and the collapsible search + full-catalog browse list; positions itself via CSS custom property for the strip variant.
+// ABOUTME: The popover dialog body rendered when the picker is open: an always-visible current-style quick-action row (favorite, add-to-list, edit for custom) above a collapsible parent Library group that holds the active-group selector, the collapsible custom-patterns list, and the collapsible search + full-catalog browse list; positions itself via CSS custom property for the strip variant.
 function PalettePickerPanel(props: PanelProps) {
   const {
     field,
@@ -299,6 +301,16 @@ function PalettePickerPanel(props: PanelProps) {
     (next: boolean) => setCustomOpenRaw(next ? '1' : '0'),
     [setCustomOpenRaw],
   )
+  const [libraryOpenRaw, setLibraryOpenRaw] = usePersistedPref<'0' | '1'>(
+    LIBRARY_OPEN_KEY,
+    '1',
+    isBoolPref,
+  )
+  const libraryOpen = libraryOpenRaw === '1'
+  const setLibraryOpen = useCallback(
+    (next: boolean) => setLibraryOpenRaw(next ? '1' : '0'),
+    [setLibraryOpenRaw],
+  )
   const [groupPaletteId, setGroupPaletteId] = useState<PaletteId | null>(null)
   /* Add-to-list menu for a custom pattern row (separate from the built-in
    * browse list's `groupPaletteId` so opening one closes the other). */
@@ -311,10 +323,11 @@ function PalettePickerPanel(props: PanelProps) {
 
   /* Auto-focus the search input only when the list is actually visible —
    * otherwise focusing a hidden field is a no-op that silently swallows
-   * the keyboard intent. */
+   * the keyboard intent. The list is only mounted when both the parent
+   * Library group and the Browse disclosure are expanded. */
   useEffect(() => {
-    if (listOpen) searchRef.current?.focus()
-  }, [listOpen])
+    if (libraryOpen && listOpen) searchRef.current?.focus()
+  }, [libraryOpen, listOpen])
 
   /* Compose the visible palette list. When an active group is set, the
    * list narrows to its members so the picker doubles as a group editor.
@@ -492,8 +505,25 @@ function PalettePickerPanel(props: PanelProps) {
         )}
       </div>
 
-      {/* Active group selector — always visible so the user can switch
-       * groups and cycle palettes even when the browse list is collapsed. */}
+      {/* Library group — one parent disclosure over the active-group
+       * selector, custom patterns, and the full browse list. Collapsing it
+       * shrinks the open popover to just the current-style quick actions
+       * above, so the palette can stay open without the section stack
+       * covering the showcase view underneath on small screens. */}
+      <div className="palette-picker__library">
+        <button
+          type="button"
+          className="palette-picker__library-toggle"
+          aria-expanded={libraryOpen}
+          onClick={() => setLibraryOpen(!libraryOpen)}
+        >
+          {libraryOpen ? '▾' : '▸'} Palette library
+        </button>
+        {libraryOpen && (
+          <div className="palette-picker__library-body">
+      {/* Active group selector — always visible (within the Library group) so
+       * the user can switch groups and cycle palettes even when the browse
+       * list is collapsed. */}
       <div className="palette-picker__active-group">
         <label className="palette-picker__active-label">
           Active group
@@ -787,6 +817,9 @@ function PalettePickerPanel(props: PanelProps) {
                   })}
                 </ul>
               )}
+          </div>
+        )}
+      </div>
           </div>
         )}
       </div>
