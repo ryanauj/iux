@@ -878,16 +878,19 @@ body {
 /*
  * Hover / focus bends the luminance toward the interactive element.
  * We can't track the cursor without JS, but we can intensify the
- * luminance center under the hovered / focused element — a brighter
- * inset glow that reads as "the atmosphere closing in here."
+ * luminance under the hovered / focused element — a glow that reads as
+ * "the atmosphere closing in here."
  *
- * The selector list targets the components that are most likely to
- * carry the affordance: buttons, interactive cards, table rows, and
- * any element marked with the standard `[data-interactive]` attribute
- * that some components use for hover regions. Components that don't
- * appear here still get hover via their own CSS — this block is the
- * engine's CONSISTENT brighten across all interactive surfaces, not
- * an attempt to override every per-component rule.
+ * The glow is the palette's own focus hue (`--color-border-focus`) at
+ * low alpha rather than a hardcoded purple, so each register hovers in
+ * its own brand (violet for Nebula, cyan for Spectrum) and the cue
+ * survives on light grounds, where a fixed purple would clash. The
+ * selector list targets the components most likely to carry the
+ * affordance: buttons, interactive cards, table rows, and any element
+ * marked with the standard `[data-interactive]` attribute. Components
+ * that don't appear here still get hover via their own CSS — this
+ * block is the engine's CONSISTENT brighten across all interactive
+ * surfaces, not an attempt to override every per-component rule.
  */
 .palette-root[data-palette^='aurora'] .iux-button:hover,
 .palette-root[data-palette^='aurora'] .iux-card--interactive:hover,
@@ -895,7 +898,7 @@ body {
 .palette-root[data-palette^='aurora'] [data-interactive]:hover {
   background-image: radial-gradient(
     circle at center,
-    rgba(167, 139, 250, 0.10),
+    color-mix(in srgb, var(--color-border-focus) 12%, transparent),
     transparent 70%
   );
 }
@@ -904,7 +907,7 @@ body {
 .palette-root[data-palette^='aurora'] .iux-card--interactive:focus-visible {
   background-image: radial-gradient(
     circle at center,
-    rgba(167, 139, 250, 0.14),
+    color-mix(in srgb, var(--color-border-focus) 16%, transparent),
     transparent 70%
   );
 }
@@ -915,19 +918,24 @@ body {
  * surface (every raised surface is already a luminance lift), they
  * need a luminance SHIFT that reads instantly. We layer two cues:
  *
- *   1. A brighter translucent fill (`rgba(255, 255, 255, 0.13)`) —
- *      noticeably above the `0.05` raised-surface baseline and the
- *      `0.10` hover state, so selection wins both rest and hover.
- *   2. An inset purple-accent rule (the focus color) at low alpha,
- *      painted with an inset box shadow so it doesn't push layout —
- *      reads as "the atmosphere closed in around the selection,"
- *      which is the cel-animated equivalent of a hard selection
+ *   1. A translucent tint of the palette's own `--color-content-primary`
+ *      — which is near-white on the dark registers (so the fill
+ *      brightens) and near-black on the light registers (so it
+ *      darkens). Either way the selected surface shifts noticeably
+ *      away from the `raised` baseline and the hover state, so
+ *      selection wins both rest and hover on any ground.
+ *   2. An inset focus-accent rule (`--color-border-focus`) at low
+ *      alpha, painted with an inset box shadow so it doesn't push
+ *      layout — reads as "the atmosphere closed in around the
+ *      selection," the cel-animated equivalent of a hard selection
  *      border in the border-based palettes.
  *
- * Both `[aria-selected="true"]` and `[data-selected="true"]` are
- * targeted because components use both conventions (Tabs use
- * `aria-selected`, Table rows use `is-selected` via class, etc.) —
- * see the Table rule below for the class-based escalation.
+ * Both cues are token-driven rather than hardcoded white/purple so the
+ * light and dark gradient registers both read. Both
+ * `[aria-selected="true"]` and `[data-selected="true"]` are targeted
+ * because components use both conventions (Tabs use `aria-selected`,
+ * Table rows use `is-selected` via class, etc.) — see the Table rule
+ * below for the class-based escalation.
  *
  * Tested against the Task board (`iux-card` with `data-selected`)
  * and Note outliner (current-line indicator). See the README.
@@ -936,10 +944,10 @@ body {
 .palette-root[data-palette^='aurora'] [data-selected="true"],
 .palette-root[data-palette^='aurora'] .iux-table__tr.is-selected,
 .palette-root[data-palette^='aurora'] .is-selected {
-  background-color: rgba(255, 255, 255, 0.13);
+  background-color: color-mix(in srgb, var(--color-content-primary) 12%, transparent);
   box-shadow:
-    inset 0 0 0 var(--border-width-hairline) rgba(167, 139, 250, 0.45),
-    0 0 var(--space-5) var(--border-width-thick) rgba(167, 139, 250, 0.18);
+    inset 0 0 0 var(--border-width-hairline) color-mix(in srgb, var(--color-border-focus) 50%, transparent),
+    0 0 var(--space-5) var(--border-width-thick) color-mix(in srgb, var(--color-border-focus) 20%, transparent);
 }
 
 /*

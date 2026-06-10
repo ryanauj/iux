@@ -6,7 +6,14 @@ const BASE = 'http://localhost:5173/iux/#/apps/contracts'
 const OUT = '/tmp/tech-shots'
 mkdirSync(OUT, { recursive: true })
 
-const ids = ['aurora-nebula', 'aurora-spectrum', 'cel-glass-flux', 'cel-shaded-circuit']
+const ids = [
+  // dark gradient registers
+  'aurora-nebula', 'aurora-spectrum', 'aurora-ember', 'aurora-verdant',
+  // light gradient registers
+  'aurora-daybreak', 'aurora-bloom',
+  // glass + cel-shaded variations
+  'cel-glass-flux', 'cel-shaded-circuit',
+]
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({

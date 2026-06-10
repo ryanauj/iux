@@ -120,6 +120,10 @@ import { palette as novaVanguard } from './nova-vanguard'
 import { palette as arcaneVanguard } from './arcane-vanguard'
 import { palette as auroraNebula } from './aurora-nebula'
 import { palette as auroraSpectrum } from './aurora-spectrum'
+import { palette as auroraEmber } from './aurora-ember'
+import { palette as auroraVerdant } from './aurora-verdant'
+import { palette as auroraDaybreak } from './aurora-daybreak'
+import { palette as auroraBloom } from './aurora-bloom'
 import { palette as celGlassFlux } from './cel-glass-flux'
 import { palette as celShadedCircuit } from './cel-shaded-circuit'
 
@@ -246,6 +250,10 @@ export const palettes = {
   'arcane-vanguard': arcaneVanguard,
   'aurora-nebula': auroraNebula,
   'aurora-spectrum': auroraSpectrum,
+  'aurora-ember': auroraEmber,
+  'aurora-verdant': auroraVerdant,
+  'aurora-daybreak': auroraDaybreak,
+  'aurora-bloom': auroraBloom,
   'cel-glass-flux': celGlassFlux,
   'cel-shaded-circuit': celShadedCircuit,
 } as const

@@ -93,6 +93,10 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'financial-terminal',
     'modern-royal',
     'liquid-glass-dark',
+    'aurora-nebula',
+    'aurora-spectrum',
+    'aurora-ember',
+    'aurora-verdant',
   ],
   Minimal: [
     'flat-classic',
@@ -122,6 +126,8 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
     'cel-glass-mist',
     'cel-glass-bone',
     'cel-glass-orchid',
+    'aurora-daybreak',
+    'aurora-bloom',
   ],
   Anime: [
     'cel-shaded-shonen',
@@ -202,6 +208,10 @@ const MOOD_GROUPS: Record<string, PaletteId[]> = {
   'Tech Gradient': [
     'aurora-nebula',
     'aurora-spectrum',
+    'aurora-ember',
+    'aurora-verdant',
+    'aurora-daybreak',
+    'aurora-bloom',
     'cel-glass-flux',
     'cel-shaded-circuit',
     'aurora',

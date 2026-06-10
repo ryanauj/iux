@@ -36,6 +36,10 @@ import { description as celShadedUkiyoGlass } from './cel-shaded-ukiyo-glass.des
 import { description as aurora } from './aurora.description'
 import { description as auroraNebula } from './aurora-nebula.description'
 import { description as auroraSpectrum } from './aurora-spectrum.description'
+import { description as auroraEmber } from './aurora-ember.description'
+import { description as auroraVerdant } from './aurora-verdant.description'
+import { description as auroraDaybreak } from './aurora-daybreak.description'
+import { description as auroraBloom } from './aurora-bloom.description'
 import { description as celGlassFlux } from './cel-glass-flux.description'
 import { description as celShadedCircuit } from './cel-shaded-circuit.description'
 import { description as bauhaus } from './bauhaus.description'
@@ -162,6 +166,10 @@ export const descriptions: Partial<Record<PaletteId, StyleDescription>> = {
   aurora,
   'aurora-nebula': auroraNebula,
   'aurora-spectrum': auroraSpectrum,
+  'aurora-ember': auroraEmber,
+  'aurora-verdant': auroraVerdant,
+  'aurora-daybreak': auroraDaybreak,
+  'aurora-bloom': auroraBloom,
   'cel-glass-flux': celGlassFlux,
   'cel-shaded-circuit': celShadedCircuit,
   bauhaus,
