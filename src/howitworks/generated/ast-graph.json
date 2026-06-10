@@ -6324,7 +6324,7 @@
       "area": "components",
       "dir": "components/DraggableControls",
       "name": "DraggableControls.tsx",
-      "loc": 905,
+      "loc": 964,
       "importCount": 5,
       "externalCount": 2,
       "members": [
@@ -6592,27 +6592,27 @@
           "kind": "component",
           "exported": false,
           "line": 584,
-          "about": "Renders the floating panel and its triggers — a visually-hidden \"Open preferences\" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open."
+          "about": "Renders the floating panel and its triggers — a visually-hidden \"Open preferences\" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open and translates the panel back inside the viewport so a double-tap summon or Button open never renders off-screen (the FAB stays put, so it can still be dragged anywhere)."
         },
         {
           "name": "NavGroup",
           "kind": "component",
           "exported": false,
-          "line": 783,
+          "line": 842,
           "about": "Persisted collapsible disclosure that lists the cross-page nav links inside the Button panel when the active layout is 'in-controls'; reuses the routing-aware NavAnchor from AppShell and persists its own open state (default open) so the nav stays reachable across visits."
         },
         {
           "name": "SettingsGroup",
           "kind": "component",
           "exported": false,
-          "line": 825,
+          "line": 884,
           "about": "Persisted collapsible disclosure that wraps the non-palette fields under a \"Settings\" heading; persists its own open state to localStorage so it re-opens in the same state on next visit."
         },
         {
           "name": "CollapsibleSection",
           "kind": "component",
           "exported": false,
-          "line": 855,
+          "line": 914,
           "about": "Accordion-style disclosure for a single non-palette field inside the Settings group — shows the current value in the collapsed header and expands to a Select combobox or a radio button group depending on option count."
         }
       ],
