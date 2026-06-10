@@ -580,7 +580,7 @@ function StyleSwitcher({ value, onChange }: { value: ControlsStyle; onChange: (n
 }
 
 /* ===== Button / Hidden variant ===== */
-// ABOUTME: Renders the floating panel and its triggers — a visually-hidden "Open preferences" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open.
+// ABOUTME: Renders the floating panel and its triggers — a visually-hidden "Open preferences" skip-link (the keyboard/AT entry point, present in both styles) plus, in Button style, a draggable circular FAB; in Hidden style the skip-link is the only trigger and also anchors the panel. Moves focus into the panel on open and restores it on close. The open panel holds the palette picker, a collapsible Settings group, and a footer style-switcher; it computes available height and quadrant on open and translates the panel back inside the viewport so a double-tap summon or Button open never renders off-screen (the FAB stays put, so it can still be dragged anywhere).
 function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, variantStyle, onStyleChange }: VariantProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement>(null)
@@ -588,6 +588,9 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
   const wasOpen = useRef(false)
   const [quadrant, setQuadrant] = useState<Quadrant>('down-right')
   const [maxHeight, setMaxHeight] = useState<number | null>(null)
+  const [panelOffset, setPanelOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const panelOffsetRef = useRef(panelOffset)
+  panelOffsetRef.current = panelOffset
   const hidden = variantStyle === 'hidden'
 
   /*
@@ -639,6 +642,57 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
+
+  /*
+   * Keep the opened panel fully on-screen. The quadrant + max-height maths
+   * anchor the panel to the trigger and cap its height, but they only pick
+   * the side with more room — they never guarantee the panel's fixed width
+   * actually fits it. A wide panel summoned by a double-tap near the middle
+   * of a narrow viewport (or a FAB opened near an edge) then overflows past
+   * the side it expands into — the off-screen render in the report. After the
+   * panel lays out, measure it and translate it back inside the viewport so
+   * neither a double-tap summon nor a Button open ever renders off-screen.
+   * The FAB itself is untouched, so it can still be dragged anywhere.
+   * Re-runs when the quadrant or height cap changes and on resize; reads the
+   * applied offset from a ref to recover the panel's natural position, so it
+   * settles in one pass instead of chasing its own transform.
+   */
+  useLayoutEffect(() => {
+    if (!open) {
+      if (panelOffsetRef.current.x !== 0 || panelOffsetRef.current.y !== 0) {
+        setPanelOffset({ x: 0, y: 0 })
+      }
+      return
+    }
+    const clampPanel = () => {
+      const el = panelRef.current
+      if (!el) return
+      const margin = 8
+      const cur = panelOffsetRef.current
+      const rect = el.getBoundingClientRect()
+      // Undo the currently-applied offset to find the panel's natural position.
+      const left = rect.left - cur.x
+      const right = rect.right - cur.x
+      const top = rect.top - cur.y
+      const bottom = rect.bottom - cur.y
+      let dx = 0
+      if (left < margin) dx = margin - left
+      else if (right > window.innerWidth - margin) dx = window.innerWidth - margin - right
+      let dy = 0
+      if (top < margin) dy = margin - top
+      else if (bottom > window.innerHeight - margin) dy = window.innerHeight - margin - bottom
+      dx = Math.round(dx)
+      dy = Math.round(dy)
+      if (dx !== cur.x || dy !== cur.y) setPanelOffset({ x: dx, y: dy })
+    }
+    clampPanel()
+    window.addEventListener('resize', clampPanel)
+    window.addEventListener('orientationchange', clampPanel)
+    return () => {
+      window.removeEventListener('resize', clampPanel)
+      window.removeEventListener('orientationchange', clampPanel)
+    }
+  }, [open, quadrant, maxHeight])
 
   useEffect(() => {
     if (!open) return
@@ -741,7 +795,12 @@ function ButtonVariant({ fields, nav, summaries, open, setOpen, dragHandlers, va
         <div
           ref={panelRef}
           className={`ctrl-button__panel ctrl-button__panel--${quadrant}`}
-          style={maxHeight != null ? ({ '--panel-max-height': `${maxHeight}px` } as CSSProperties) : undefined}
+          style={{
+            ...(maxHeight != null ? { '--panel-max-height': `${maxHeight}px` } : {}),
+            ...(panelOffset.x !== 0 || panelOffset.y !== 0
+              ? { transform: `translate(${panelOffset.x}px, ${panelOffset.y}px)` }
+              : {}),
+          } as CSSProperties}
           role="group"
           aria-label="Demo controls"
           tabIndex={-1}
