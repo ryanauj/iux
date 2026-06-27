@@ -6,18 +6,19 @@ import { AppsLanding } from './AppsLanding'
 import { SportsApp } from './sports/SportsApp'
 import { ContractsApp } from './contracts/ContractsApp'
 import { PromptsApp } from './prompts/PromptsApp'
+import { FlowStylesApp } from './flowstyles/FlowStylesApp'
 
 // ABOUTME: Props for AppsRouter; carries the full HashLocation so sub-apps can read their own path segments and query params.
 interface AppsRouterProps {
   location: HashLocation
 }
 
-// ABOUTME: Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, or AppsLanding; each registered app owns its own sub-route matching from that point on.
+// ABOUTME: Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, FlowStylesApp, or AppsLanding; each registered app owns its own sub-route matching from that point on.
 /**
  * Reads the second path segment (e.g. "contracts") from the hash location
- * and renders the matching app root — SportsApp, ContractsApp, or PromptsApp —
- * or falls back to AppsLanding for an unknown or missing segment.
- * Each app handles its own sub-routes internally.
+ * and renders the matching app root — SportsApp, ContractsApp, PromptsApp, or
+ * FlowStylesApp — or falls back to AppsLanding for an unknown or missing
+ * segment. Each app handles its own sub-routes internally.
  */
 export function AppsRouter({ location }: AppsRouterProps) {
   const segments = useMemo(() => pathSegments(location.path), [location.path])
@@ -28,6 +29,7 @@ export function AppsRouter({ location }: AppsRouterProps) {
   if (appId === 'sports') return <SportsApp location={location} />
   if (appId === 'contracts') return <ContractsApp location={location} />
   if (appId === 'prompts') return <PromptsApp location={location} />
+  if (appId === 'flowstyles') return <FlowStylesApp location={location} />
 
   return <AppsLanding location={location} />
 }

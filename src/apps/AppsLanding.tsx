@@ -35,7 +35,7 @@ interface AppEntry {
   iconText: string
 }
 
-// ABOUTME: Registry of the three mini-apps (Hoops Hub, Cap School, Promptbook) rendered as tiles on the landing grid.
+// ABOUTME: Registry of the four mini-apps (Hoops Hub, Cap School, Promptbook, Recipe Flow) rendered as tiles on the landing grid.
 const APPS: AppEntry[] = [
   {
     id: 'sports',
@@ -57,6 +57,13 @@ const APPS: AppEntry[] = [
     tagline: 'Save, fill, and copy prompts — plus a reference deck of prompting strategies.',
     href: '/apps/prompts',
     iconText: '›_',
+  },
+  {
+    id: 'flowstyles',
+    name: 'Recipe Flow',
+    tagline: 'One recipe graph styled six ways — a gallery of React Flow node & edge treatments.',
+    href: '/apps/flowstyles',
+    iconText: '◍',
   },
 ]
 
