@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "stats": {
     "areas": 14,
-    "files": 265,
-    "members": 1959,
-    "imports": 800,
-    "memberEdges": 1261,
-    "documentedFiles": 257,
-    "documentedMembers": 1911
+    "files": 273,
+    "members": 1994,
+    "imports": 818,
+    "memberEdges": 1297,
+    "documentedFiles": 265,
+    "documentedMembers": 1946
   },
   "areas": [
     {
@@ -19,8 +19,8 @@
     {
       "id": "apps",
       "label": "apps",
-      "fileCount": 76,
-      "memberCount": 447
+      "fileCount": 84,
+      "memberCount": 482
     },
     {
       "id": "components",
@@ -134,7 +134,7 @@
       "area": "apps",
       "dir": "apps",
       "name": "AppsLanding.tsx",
-      "loc": 168,
+      "loc": 175,
       "importCount": 11,
       "externalCount": 2,
       "members": [
@@ -150,20 +150,20 @@
           "kind": "const",
           "exported": false,
           "line": 39,
-          "about": "Registry of the three mini-apps (Hoops Hub, Cap School, Promptbook) rendered as tiles on the landing grid."
+          "about": "Registry of the four mini-apps (Hoops Hub, Cap School, Promptbook, Recipe Flow) rendered as tiles on the landing grid."
         },
         {
           "name": "AppsLandingProps",
           "kind": "interface",
           "exported": false,
-          "line": 64,
+          "line": 71,
           "about": "Props for AppsLanding; passes the current HashLocation so the component can read palette/motion params and seed the persisted style store."
         },
         {
           "name": "AppsLanding",
           "kind": "component",
           "exported": true,
-          "line": 75,
+          "line": 82,
           "about": "Renders the apps directory: a grid of app-tile cards for Hoops Hub, Cap School, and Promptbook, with a floating DraggableControls panel for palette, nav layout, and motion."
         }
       ],
@@ -174,23 +174,23 @@
       "area": "apps",
       "dir": "apps",
       "name": "AppsRouter.tsx",
-      "loc": 34,
-      "importCount": 5,
+      "loc": 36,
+      "importCount": 6,
       "externalCount": 1,
       "members": [
         {
           "name": "AppsRouterProps",
           "kind": "interface",
           "exported": false,
-          "line": 11,
+          "line": 12,
           "about": "Props for AppsRouter; carries the full HashLocation so sub-apps can read their own path segments and query params."
         },
         {
           "name": "AppsRouter",
           "kind": "component",
           "exported": true,
-          "line": 22,
-          "about": "Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, or AppsLanding; each registered app owns its own sub-route matching from that point on."
+          "line": 23,
+          "about": "Reads segments[1] from the hash path and renders SportsApp, ContractsApp, PromptsApp, FlowStylesApp, or AppsLanding; each registered app owns its own sub-route matching from that point on."
         }
       ],
       "about": "Dispatches `#/apps/...` to either the landing page or a registered app's shell."
@@ -1019,6 +1019,347 @@
         }
       ],
       "about": "Domain types for the Cap School app."
+    },
+    {
+      "id": "src/apps/flowstyles/components/nodes.tsx",
+      "area": "apps",
+      "dir": "apps/flowstyles/components",
+      "name": "nodes.tsx",
+      "loc": 107,
+      "importCount": 1,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "RecipeNode",
+          "kind": "component",
+          "exported": true,
+          "line": 24,
+          "about": "Renders the recipe header node — title, blurb, and serving/time meta — pinned at the start of the timeline with a single outgoing handle into step one."
+        },
+        {
+          "name": "IngredientNode",
+          "kind": "component",
+          "exported": true,
+          "line": 48,
+          "about": "Renders an ingredient node — name, quantity, optional prep note, and a fan-out badge counting the steps that use it — with one outgoing handle dropping into the steps below."
+        },
+        {
+          "name": "StepNode",
+          "kind": "component",
+          "exported": true,
+          "line": 70,
+          "about": "Renders a step node — its order number, title, instruction, optional minutes, and the chips of ingredients it uses — with sequence handles on the sides and a usage handle on top."
+        },
+        {
+          "name": "recipeNodeTypes",
+          "kind": "const",
+          "exported": true,
+          "line": 102,
+          "about": "Maps React Flow node-type keys to their renderer components for the recipe graph."
+        }
+      ],
+      "about": "The custom React Flow node renderers for Recipe Flow — RecipeNode, IngredientNode, and StepNode plus the nodeTypes map; the markup is treatment-agnostic and every look comes from CSS scoped by the canvas class."
+    },
+    {
+      "id": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "area": "apps",
+      "dir": "apps/flowstyles/components",
+      "name": "RecipeFlow.tsx",
+      "loc": 213,
+      "importCount": 4,
+      "externalCount": 3,
+      "members": [
+        {
+          "name": "Selection",
+          "kind": "interface",
+          "exported": false,
+          "line": 23,
+          "about": "The current selection in the canvas — an ingredient node, a step node, or nothing — used to compute the highlight/dim styling."
+        },
+        {
+          "name": "RecipeFlowProps",
+          "kind": "interface",
+          "exported": false,
+          "line": 30,
+          "about": "Props for RecipeFlow — the recipe to render, the active treatment, and a callback to change it (so the URL can stay in sync)."
+        },
+        {
+          "name": "PHASE_LEGEND",
+          "kind": "const",
+          "exported": false,
+          "line": 37,
+          "about": "The legend entries for step phases, shown beneath the picker so the phase colour-coding reads without trial and error."
+        },
+        {
+          "name": "RecipeFlow",
+          "kind": "component",
+          "exported": true,
+          "line": 53,
+          "about": "Renders the styled React Flow canvas for a recipe — the picker, legend, and graph — and owns the selection state that drives edge/node highlighting; same data across every treatment, only the look changes."
+        }
+      ],
+      "about": "The interactive Recipe Flow canvas — renders the recipe graph in the chosen treatment, with a treatment picker, a legend, and click-to-highlight that lights an ingredient's usages (or a step's neighbours) and dims the rest."
+    },
+    {
+      "id": "src/apps/flowstyles/data/shakshuka.ts",
+      "area": "apps",
+      "dir": "apps/flowstyles/data",
+      "name": "shakshuka.ts",
+      "loc": 97,
+      "importCount": 1,
+      "externalCount": 0,
+      "members": [
+        {
+          "name": "SHAKSHUKA",
+          "kind": "const",
+          "exported": true,
+          "line": 13,
+          "about": "The weeknight-shakshuka Recipe instance — 10 ingredients and 7 ordered steps with their ingredient usages — used as the default graph across all treatments."
+        }
+      ],
+      "about": "The sample dataset for Recipe Flow — a weeknight shakshuka recipe whose ingredients and steps form the graph every styling treatment renders."
+    },
+    {
+      "id": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "area": "apps",
+      "dir": "apps/flowstyles",
+      "name": "FlowStylesApp.tsx",
+      "loc": 122,
+      "importCount": 10,
+      "externalCount": 3,
+      "members": [
+        {
+          "name": "FlowStylesAppProps",
+          "kind": "interface",
+          "exported": false,
+          "line": 27,
+          "about": "Props for FlowStylesApp; carries the full HashLocation so the app can read palette, motion, and treatment query params."
+        },
+        {
+          "name": "FlowStylesApp",
+          "kind": "component",
+          "exported": true,
+          "line": 39,
+          "about": "Root shell for the Recipe Flow gallery — resolves palette/motion/treatment from the URL (seeding the persisted style on first mount), renders the brand header and the styled canvas, and exposes palette + motion in a floating DraggableControls panel."
+        }
+      ],
+      "about": "Root shell for the Recipe Flow app — wraps the styled React Flow canvas in PaletteRoot, reads the palette/motion/treatment from the URL, and renders the header plus the floating palette/motion controls."
+    },
+    {
+      "id": "src/apps/flowstyles/graph.ts",
+      "area": "apps",
+      "dir": "apps/flowstyles",
+      "name": "graph.ts",
+      "loc": 168,
+      "importCount": 1,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "RecipeNodeData",
+          "kind": "interface",
+          "exported": true,
+          "line": 17,
+          "about": "Data carried by the single recipe header node — the whole Recipe, shown as a title card at the start of the timeline."
+        },
+        {
+          "name": "IngredientNodeData",
+          "kind": "interface",
+          "exported": true,
+          "line": 24,
+          "about": "Data carried by an ingredient node — the ingredient plus how many steps consume it (the fan-out count shown as a badge)."
+        },
+        {
+          "name": "StepNodeData",
+          "kind": "interface",
+          "exported": true,
+          "line": 33,
+          "about": "Data carried by a step node — the step plus its resolved ingredient objects, so a step can render its own ingredient chips without re-looking-up the recipe."
+        },
+        {
+          "name": "FlowNodeData",
+          "kind": "type",
+          "exported": true,
+          "line": 42,
+          "about": "Union of every Recipe Flow node's data payload (recipe, ingredient, or step)."
+        },
+        {
+          "name": "FlowNode",
+          "kind": "type",
+          "exported": true,
+          "line": 44,
+          "about": "A React Flow node specialised to the recipe graph's data."
+        },
+        {
+          "name": "EdgeKind",
+          "kind": "type",
+          "exported": true,
+          "line": 47,
+          "about": "Which relationship an edge represents — `start` (recipe→first step), `sequence` (step→next step), or `usage` (ingredient→step). Treatments and highlighting key off this."
+        },
+        {
+          "name": "FlowEdgeData",
+          "kind": "interface",
+          "exported": true,
+          "line": 50,
+          "about": "Data carried by every edge — its EdgeKind plus, for usage edges, the ingredient id it represents (so selecting an ingredient can light up exactly its edges)."
+        },
+        {
+          "name": "FlowEdge",
+          "kind": "type",
+          "exported": true,
+          "line": 57,
+          "about": "A React Flow edge specialised to the recipe graph's data."
+        },
+        {
+          "name": "HANDLES",
+          "kind": "const",
+          "exported": true,
+          "line": 60,
+          "about": "Stable handle ids shared by the node renderers and the edge builder so every treatment anchors edges to the same ports."
+        },
+        {
+          "name": "LAYOUT",
+          "kind": "const",
+          "exported": false,
+          "line": 74,
+          "about": "Layout spacing constants (in flow units) — the horizontal gap between steps, the row heights for ingredients and steps, and the left margin."
+        },
+        {
+          "name": "buildRecipeGraph",
+          "kind": "function",
+          "exported": true,
+          "line": 87,
+          "about": "Builds the full set of positioned nodes and edges for a recipe — one recipe node, one node per ingredient, one per step, plus start/sequence/usage edges."
+        }
+      ],
+      "about": "Pure layout engine for Recipe Flow — turns a Recipe into positioned React Flow nodes and edges (recipe + ingredient + step nodes; start, sequence, and usage edges) that every treatment renders."
+    },
+    {
+      "id": "src/apps/flowstyles/routes.ts",
+      "area": "apps",
+      "dir": "apps/flowstyles",
+      "name": "routes.ts",
+      "loc": 10,
+      "importCount": 0,
+      "externalCount": 0,
+      "members": [
+        {
+          "name": "FLOWSTYLES_BASE",
+          "kind": "const",
+          "exported": true,
+          "line": 4,
+          "about": "Base path prefix for all Recipe Flow hash routes."
+        },
+        {
+          "name": "flowstylesRoutes",
+          "kind": "const",
+          "exported": true,
+          "line": 7,
+          "about": "Factory for Recipe Flow URLs — the single gallery page, optionally pinned to a treatment id via the `t` query param."
+        }
+      ],
+      "about": "Route helpers for the Recipe Flow app — the base path and a builder so links never hand-write the hash path; the chosen treatment rides along as a `?t=` query param rather than a path segment."
+    },
+    {
+      "id": "src/apps/flowstyles/treatments.ts",
+      "area": "apps",
+      "dir": "apps/flowstyles",
+      "name": "treatments.ts",
+      "loc": 127,
+      "importCount": 0,
+      "externalCount": 1,
+      "members": [
+        {
+          "name": "TreatmentBackground",
+          "kind": "interface",
+          "exported": true,
+          "line": 16,
+          "about": "How a treatment paints the React Flow background — the dot/line/cross variant (or null for none) plus its gap and dot/line size."
+        },
+        {
+          "name": "Treatment",
+          "kind": "interface",
+          "exported": true,
+          "line": 23,
+          "about": "One styling treatment — its id/name/blurb for the picker, the edge router and animation/arrow flags, the background spec, and the `canvasClass` that scopes its CSS."
+        },
+        {
+          "name": "TREATMENTS",
+          "kind": "const",
+          "exported": true,
+          "line": 43,
+          "about": "The six built-in treatments (cards, neon, brutalist, blueprint, glass, pill) — the gallery of styling looks the app cycles through."
+        },
+        {
+          "name": "DEFAULT_TREATMENT_ID",
+          "kind": "const",
+          "exported": true,
+          "line": 107,
+          "about": "The id of the treatment shown on first load."
+        },
+        {
+          "name": "getTreatment",
+          "kind": "function",
+          "exported": true,
+          "line": 110,
+          "about": "Looks up a treatment by id, falling back to the default when the id is unknown (e.g. a stale `?t=` URL param)."
+        },
+        {
+          "name": "MARKER_COLOR",
+          "kind": "const",
+          "exported": false,
+          "line": 115,
+          "about": "Marker color token reused by every arrowhead-bearing treatment so arrowheads re-theme with the palette."
+        },
+        {
+          "name": "edgeOptionsFor",
+          "kind": "function",
+          "exported": true,
+          "line": 118,
+          "about": "Builds the React Flow defaultEdgeOptions for a treatment — wiring its edge router, animation, and (optional) palette-themed arrowhead in one place."
+        }
+      ],
+      "about": "The styling-treatment registry for Recipe Flow — each Treatment is one way to style the same graph (edge shape, animation, arrowheads, background, and the scoped CSS class) so the gallery can swap looks without touching the data."
+    },
+    {
+      "id": "src/apps/flowstyles/types.ts",
+      "area": "apps",
+      "dir": "apps/flowstyles",
+      "name": "types.ts",
+      "loc": 57,
+      "importCount": 0,
+      "externalCount": 0,
+      "members": [
+        {
+          "name": "Ingredient",
+          "kind": "interface",
+          "exported": true,
+          "line": 12,
+          "about": "A single ingredient line — id, display name, quantity string, optional prep note, and a `pantry` flag that marks staples (oil, salt) apart from the star ingredients for styling accents."
+        },
+        {
+          "name": "StepPhase",
+          "kind": "type",
+          "exported": true,
+          "line": 26,
+          "about": "The cooking phase a step belongs to (prep, cook, or finish) — used to colour-code step nodes by where they fall in the flow."
+        },
+        {
+          "name": "Step",
+          "kind": "interface",
+          "exported": true,
+          "line": 29,
+          "about": "One ordered cooking step — its sequence index, short imperative title, full instruction, optional minutes, the ids of ingredients it consumes, and its phase."
+        },
+        {
+          "name": "Recipe",
+          "kind": "interface",
+          "exported": true,
+          "line": 47,
+          "about": "A whole recipe — title, blurb, servings, total time, its ingredient list, and its ordered steps; this is the single dataset every treatment in the gallery visualises."
+        }
+      ],
+      "about": "Recipe-graph domain types for the Recipe Flow app — the Ingredient, Step, and Recipe shapes that every styling treatment renders as a React Flow graph."
     },
     {
       "id": "src/apps/Link.tsx",
@@ -17151,6 +17492,13 @@
     },
     {
       "source": "src/apps/AppsRouter.tsx",
+      "target": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "members": [
+        "FlowStylesApp"
+      ]
+    },
+    {
+      "source": "src/apps/AppsRouter.tsx",
       "target": "src/apps/prompts/PromptsApp.tsx",
       "members": [
         "PromptsApp"
@@ -17913,6 +18261,143 @@
       "target": "src/components/DraggableControls/DraggableControls.tsx",
       "members": [
         "OpenControlsHint"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/components/nodes.tsx",
+      "target": "src/apps/flowstyles/graph.ts",
+      "members": [
+        "HANDLES",
+        "IngredientNodeData",
+        "RecipeNodeData",
+        "StepNodeData"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "target": "src/apps/flowstyles/components/nodes.tsx",
+      "members": [
+        "recipeNodeTypes"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "target": "src/apps/flowstyles/graph.ts",
+      "members": [
+        "buildRecipeGraph",
+        "FlowEdge",
+        "FlowNode"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "target": "src/apps/flowstyles/treatments.ts",
+      "members": [
+        "edgeOptionsFor",
+        "Treatment",
+        "TREATMENTS"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "target": "src/apps/flowstyles/types.ts",
+      "members": [
+        "Recipe"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/data/shakshuka.ts",
+      "target": "src/apps/flowstyles/types.ts",
+      "members": [
+        "Recipe"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/apps/flowstyles/components/RecipeFlow.tsx",
+      "members": [
+        "RecipeFlow"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/apps/flowstyles/data/shakshuka.ts",
+      "members": [
+        "SHAKSHUKA"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/apps/flowstyles/treatments.ts",
+      "members": [
+        "getTreatment"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/apps/Link.tsx",
+      "members": [
+        "Link"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/apps/router.ts",
+      "members": [
+        "HashLocation",
+        "replaceParams"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/components/DraggableControls/DraggableControls.tsx",
+      "members": [
+        "DraggableControls",
+        "Field",
+        "OpenControlsHint",
+        "useControlsStyle"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/lib/customPatterns.ts",
+      "members": [
+        "resolveStyle",
+        "StyleId"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/lib/persistedStyle.ts",
+      "members": [
+        "buildPaletteField",
+        "isStyleId",
+        "useSelectedStyle"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/theme/motionScales.ts",
+      "members": [
+        "DEFAULT_MOTION_SCALE",
+        "MOTION_FIELD_OPTIONS",
+        "resolveMotionScale"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/FlowStylesApp.tsx",
+      "target": "src/theme/PaletteRoot.tsx",
+      "members": [
+        "PaletteRoot"
+      ]
+    },
+    {
+      "source": "src/apps/flowstyles/graph.ts",
+      "target": "src/apps/flowstyles/types.ts",
+      "members": [
+        "Ingredient",
+        "Recipe",
+        "Step"
       ]
     },
     {
